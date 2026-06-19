@@ -1,35 +1,35 @@
 ---
 name: quarkus-tdd
-description: Test-driven development for Quarkus 3.x LTS using JUnit 5, Mockito, REST Assured, Camel testing, and JaCoCo. Use when adding features, fixing bugs, or refactoring event-driven services.
+description: Desenvolvimento orientado a testes para Quarkus 3.x LTS usando JUnit 5, Mockito, REST Assured, testes Camel e JaCoCo. Use ao adicionar features, corrigir bugs ou refatorar serviços orientados a eventos.
 metadata:
   origin: ECC
 ---
 
-# Quarkus TDD Workflow
+# Fluxo de Trabalho TDD com Quarkus
 
-TDD guidance for Quarkus 3.x services with 80%+ coverage (unit + integration). Optimized for event-driven architectures with Apache Camel.
+Orientação de TDD para serviços Quarkus 3.x com cobertura de 80%+ (unitários + integração). Otimizado para arquiteturas orientadas a eventos com Apache Camel.
 
-## When to Use
+## Quando Usar
 
-- New features or REST endpoints
-- Bug fixes or refactors
-- Adding data access logic, security rules, or reactive streams
-- Testing Apache Camel routes and event handlers
-- Testing event-driven services with RabbitMQ
-- Testing conditional flow logic
-- Validating CompletableFuture async operations
-- Testing LogContext propagation
+- Novas features ou endpoints REST
+- Correções de bugs ou refatorações
+- Adicionando lógica de acesso a dados, regras de segurança ou streams reativos
+- Testando rotas Apache Camel e handlers de eventos
+- Testando serviços orientados a eventos com RabbitMQ
+- Testando lógica de fluxo condicional
+- Validando operações assíncronas com CompletableFuture
+- Testando propagação de LogContext
 
-## Workflow
+## Fluxo de Trabalho
 
-1. Write tests first (they should fail)
-2. Implement minimal code to pass
-3. Refactor with tests green
-4. Enforce coverage with JaCoCo (80%+ target)
+1. Escreva os testes primeiro (devem falhar)
+2. Implemente o código mínimo para passar
+3. Refatore com os testes verdes
+4. Aplique a cobertura com JaCoCo (meta de 80%+)
 
-## Unit Tests with @Nested Organization
+## Testes Unitários com Organização @Nested
 
-Follow this structured approach for comprehensive, readable tests:
+Siga esta abordagem estruturada para testes abrangentes e legíveis:
 
 ```java
 @ExtendWith(MockitoExtension.class)
@@ -133,20 +133,20 @@ class OrderServiceTest {
 }
 ```
 
-### Key Testing Patterns
+### Padrões Chave de Teste
 
-1. **@Nested Classes**: Group tests by method being tested
-2. **@DisplayName**: Provide readable test descriptions for test reports
-3. **Naming Convention**: `givenX_whenY_thenZ` for clarity
-4. **AAA Pattern**: Explicit `// ARRANGE`, `// ACT`, `// ASSERT` comments
-5. **@BeforeEach**: Setup common test data to reduce duplication
-6. **assertDoesNotThrow**: Test success scenarios without catching exceptions
-7. **assertThrows**: Test exception scenarios with message validation using AssertJ
-8. **Comprehensive Coverage**: Test happy paths, null inputs, edge cases, exceptions
-9. **Verify Interactions**: Use Mockito `verify()` to ensure methods are called correctly
-10. **Never Verify**: Use `never()` to ensure methods are NOT called in error scenarios
+1. **Classes @Nested**: Agrupe testes pelo método sendo testado
+2. **@DisplayName**: Forneça descrições legíveis de testes para relatórios
+3. **Convenção de Nomenclatura**: `givenX_whenY_thenZ` para clareza
+4. **Padrão AAA**: Comentários explícitos `// ARRANGE`, `// ACT`, `// ASSERT`
+5. **@BeforeEach**: Configure dados de teste comuns para reduzir duplicação
+6. **assertDoesNotThrow**: Teste cenários de sucesso sem capturar exceções
+7. **assertThrows**: Teste cenários de exceção com validação de mensagem usando AssertJ
+8. **Cobertura Abrangente**: Teste caminhos felizes, entradas nulas, casos extremos, exceções
+9. **Verificar Interações**: Use `verify()` do Mockito para garantir que os métodos são chamados corretamente
+10. **Nunca Verificar**: Use `never()` para garantir que os métodos NÃO são chamados em cenários de erro
 
-## Testing Camel Routes
+## Testando Rotas Camel
 
 ```java
 @QuarkusTest
@@ -169,7 +169,7 @@ class BusinessRulesRouteTest {
 
   @BeforeEach
   void setUp() {
-    // ARRANGE - Test data
+    // ARRANGE - Dados de teste
     testPayload = new BusinessRulesPayload();
     testPayload.setDocumentId(1L);
     testPayload.setFlowProfile(FlowProfile.BASIC);
@@ -186,7 +186,7 @@ class BusinessRulesRouteTest {
       MockEndpoint mockRabbitMQ = camelContext.getEndpoint("mock:rabbitmq", MockEndpoint.class);
       mockRabbitMQ.expectedMessageCount(1);
 
-      // Replace real endpoint with mock for testing
+      // Substituir endpoint real por Mock para testes
       camelContext.getRouteController().stopRoute("business-rules-publisher");
       AdviceWith.adviceWith(camelContext, "business-rules-publisher", advice -> {
         advice.replaceFromWith("direct:business-rules-publisher");
@@ -197,7 +197,7 @@ class BusinessRulesRouteTest {
       // ACT
       producerTemplate.sendBody("direct:business-rules-publisher", testPayload);
 
-      // ASSERT — body is a JSON String after .marshal().json(JsonLibrary.Jackson)
+      // ASSERT — o corpo é uma String JSON após .marshal().json(JsonLibrary.Jackson)
       mockRabbitMQ.assertIsSatisfied(5000);
 
       assertThat(mockRabbitMQ.getExchanges()).hasSize(1);
@@ -270,7 +270,7 @@ class BusinessRulesRouteTest {
       });
       camelContext.getRouteController().startRoute("document-processing");
 
-      // Mock validator bean to throw exception
+      // Mock do bean validador para lançar exceção
       when(documentValidator.validate(any())).thenThrow(new ValidationException("Invalid document"));
 
       // ACT
@@ -287,7 +287,7 @@ class BusinessRulesRouteTest {
 }
 ```
 
-## Testing Event Services
+## Testando Serviços de Eventos
 
 ```java
 @ExtendWith(MockitoExtension.class)
@@ -392,7 +392,7 @@ class EventServiceTest {
 }
 ```
 
-## Testing CompletableFuture
+## Testando CompletableFuture
 
 ```java
 @ExtendWith(MockitoExtension.class)
@@ -454,7 +454,7 @@ class FileStorageServiceTest {
     @Test
     @DisplayName("Should handle S3 upload failure")
     void givenS3Failure_whenUpload_thenCompletableFutureFails() {
-      // ARRANGE — run synchronously so exception propagates through the future
+      // ARRANGE — executar sincronamente para que a exceção se propague pelo future
       doAnswer(invocation -> {
         ((Runnable) invocation.getArgument(0)).run();
         return null;
@@ -499,7 +499,7 @@ class FileStorageServiceTest {
 }
 ```
 
-## Resource Layer Tests (REST Assured)
+## Testes da Camada de Recurso (REST Assured)
 
 ```java
 @QuarkusTest
@@ -587,7 +587,7 @@ class DocumentResourceTest {
 }
 ```
 
-## Integration Tests with Real Database
+## Testes de Integração com Banco de Dados Real
 
 ```java
 @QuarkusTest
@@ -599,7 +599,7 @@ class DocumentIntegrationTest {
   @Transactional
   @DisplayName("Should create and retrieve document via API")
   void givenNewDocument_whenCreateAndRetrieve_thenSuccessful() {
-    // ACT - Create via API
+    // ACT - Criar via API
     Long id = given()
         .contentType(ContentType.JSON)
         .body("""
@@ -615,7 +615,7 @@ class DocumentIntegrationTest {
         .statusCode(201)
         .extract().path("id");
 
-    // ASSERT - Retrieve via API
+    // ASSERT - Recuperar via API
     given()
         .when().get("/api/documents/" + id)
         .then()
@@ -625,9 +625,9 @@ class DocumentIntegrationTest {
 }
 ```
 
-## Coverage with JaCoCo
+## Cobertura com JaCoCo
 
-### Maven Configuration (Complete)
+### Configuração Maven (Completa)
 
 ```xml
 <plugin>
@@ -635,7 +635,7 @@ class DocumentIntegrationTest {
   <artifactId>jacoco-maven-plugin</artifactId>
   <version>0.8.13</version>
   <executions>
-    <!-- Prepare agent for test execution -->
+    <!-- Preparar agente para execução de testes -->
     <execution>
       <id>prepare-agent</id>
       <goals>
@@ -643,7 +643,7 @@ class DocumentIntegrationTest {
       </goals>
     </execution>
 
-    <!-- Generate coverage report -->
+    <!-- Gerar relatório de cobertura -->
     <execution>
       <id>report</id>
       <phase>verify</phase>
@@ -652,7 +652,7 @@ class DocumentIntegrationTest {
       </goals>
     </execution>
 
-    <!-- Enforce coverage thresholds -->
+    <!-- Aplicar limites de cobertura -->
     <execution>
       <id>check</id>
       <goals>
@@ -682,20 +682,20 @@ class DocumentIntegrationTest {
 </plugin>
 ```
 
-Run tests with coverage:
+Execute os testes com cobertura:
 ```bash
 mvn clean test
 mvn jacoco:report
 mvn jacoco:check
 
-# Report at: target/site/jacoco/index.html
+# Relatório em: target/site/jacoco/index.html
 ```
 
-## Test Dependencies
+## Dependências de Teste
 
 ```xml
 <dependencies>
-    <!-- Quarkus Testing -->
+    <!-- Testes Quarkus -->
     <dependency>
         <groupId>io.quarkus</groupId>
         <artifactId>quarkus-junit5</artifactId>
@@ -714,7 +714,7 @@ mvn jacoco:check
         <scope>test</scope>
     </dependency>
 
-    <!-- AssertJ (preferred over JUnit assertions) -->
+    <!-- AssertJ (preferido em vez de asserções JUnit) -->
     <dependency>
         <groupId>org.assertj</groupId>
         <artifactId>assertj-core</artifactId>
@@ -729,7 +729,7 @@ mvn jacoco:check
         <scope>test</scope>
     </dependency>
 
-    <!-- Camel Testing -->
+    <!-- Testes Camel -->
     <dependency>
         <groupId>org.apache.camel.quarkus</groupId>
         <artifactId>camel-quarkus-junit5</artifactId>
@@ -738,75 +738,75 @@ mvn jacoco:check
 </dependencies>
 ```
 
-## Best Practices
+## Boas Práticas
 
-### Test Organization
-- Use `@Nested` classes to group tests by method being tested
-- Use `@DisplayName` for readable test descriptions visible in reports
-- Follow `givenX_whenY_thenZ` naming convention for test methods
-- Use `@BeforeEach` for common test data setup to reduce duplication
+### Organização de Testes
+- Use classes `@Nested` para agrupar testes pelo método sendo testado
+- Use `@DisplayName` para descrições de testes legíveis visíveis nos relatórios
+- Siga a convenção de nomenclatura `givenX_whenY_thenZ` para métodos de teste
+- Use `@BeforeEach` para configuração de dados de teste comuns para reduzir duplicação
 
-### Test Structure
-- Follow AAA pattern with explicit comments (`// ARRANGE`, `// ACT`, `// ASSERT`)
-- Use `assertDoesNotThrow` for success scenarios
-- Use `assertThrows` for exception scenarios with message validation
-- Verify exception messages match expected values using AssertJ `contains()` or `isEqualTo()`
+### Estrutura de Testes
+- Siga o padrão AAA com comentários explícitos (`// ARRANGE`, `// ACT`, `// ASSERT`)
+- Use `assertDoesNotThrow` para cenários de sucesso
+- Use `assertThrows` para cenários de exceção com validação de mensagem
+- Verifique se as mensagens de exceção correspondem aos valores esperados usando `contains()` ou `isEqualTo()` do AssertJ
 
-### Test Coverage
-- Test happy paths for all public methods
-- Test null input handling
-- Test edge cases (empty collections, boundary values, negative IDs, blank strings)
-- Test exception scenarios comprehensively
-- Mock all external dependencies (repositories, services, Camel endpoints)
-- Aim for 80%+ line coverage, 70%+ branch coverage
+### Cobertura de Testes
+- Teste caminhos felizes para todos os métodos públicos
+- Teste o tratamento de entradas nulas
+- Teste casos extremos (coleções vazias, valores limite, IDs negativos, strings em branco)
+- Teste cenários de exceção de forma abrangente
+- Mock de todas as dependências externas (repositórios, serviços, endpoints Camel)
+- Busque 80%+ de cobertura de linha, 70%+ de cobertura de branch
 
-### Assertions
-- **Prefer AssertJ** (`assertThat`) over JUnit assertions for value checks
-- Use fluent AssertJ API for readability: `assertThat(list).hasSize(3).contains(item)`
-- For exceptions: use JUnit `assertThrows` to capture, then AssertJ to validate the message
-- For non-throwing success paths: use JUnit `assertDoesNotThrow`
-- For collections: `extracting()`, `filteredOn()`, `containsExactly()`
+### Asserções
+- **Prefira AssertJ** (`assertThat`) em vez de asserções JUnit para verificações de valor
+- Use a API fluente do AssertJ para legibilidade: `assertThat(list).hasSize(3).contains(item)`
+- Para exceções: use `assertThrows` do JUnit para capturar, depois AssertJ para validar a mensagem
+- Para caminhos de sucesso que não lançam: use `assertDoesNotThrow` do JUnit
+- Para coleções: `extracting()`, `filteredOn()`, `containsExactly()`
 
-### Testing Integration
-- Use `@QuarkusTest` for integration tests
-- Use `@InjectMock` to mock dependencies in Quarkus tests
-- Prefer REST Assured for API testing
-- Use `@TestProfile` for test-specific configuration
+### Integração de Testes
+- Use `@QuarkusTest` para testes de integração
+- Use `@InjectMock` para Mock de dependências em testes Quarkus
+- Prefira REST Assured para testes de API
+- Use `@TestProfile` para configuração específica de testes
 
-### Event-Driven Testing
-- Test Camel routes with `AdviceWith` and `MockEndpoint`
-- Use `@CamelQuarkusTest` annotation (if using standalone Camel tests)
-- Verify message content, headers, and routing logic
-- Test error handling routes separately
-- Mock external systems (RabbitMQ, S3, databases) in unit tests
+### Testes Orientados a Eventos
+- Teste rotas Camel com `AdviceWith` e `MockEndpoint`
+- Use anotação `@CamelQuarkusTest` (se usando testes Camel autônomos)
+- Verifique conteúdo de mensagens, cabeçalhos e lógica de roteamento
+- Teste rotas de tratamento de erros separadamente
+- Mock de sistemas externos (RabbitMQ, S3, bancos de dados) em testes unitários
 
-### Camel Route Testing
-- Use `MockEndpoint` for asserting message flow
-- Use `AdviceWith` to modify routes for testing (replace endpoints with mocks)
-- Test message transformation and marshalling
-- Test exception handling and dead letter queues
+### Testes de Rota Camel
+- Use `MockEndpoint` para afirmar o fluxo de mensagens
+- Use `AdviceWith` para modificar rotas para testes (substituir endpoints por Mocks)
+- Teste transformação de mensagens e marshalling
+- Teste tratamento de exceções e filas de dead letter
 
-### Testing Async Operations
-- Test CompletableFuture success and failure scenarios
-- Use `.join()` in tests to wait for async completion
-- Test exception propagation from CompletableFuture
-- Verify LogContext propagation to async operations
+### Testando Operações Assíncronas
+- Teste cenários de sucesso e falha de CompletableFuture
+- Use `.join()` nos testes para aguardar a conclusão assíncrona
+- Teste a propagação de exceções do CompletableFuture
+- Verifique a propagação do LogContext para operações assíncronas
 
 ### Performance
-- Keep tests fast and isolated
-- Run tests in continuous mode: `mvn quarkus:test`
-- Use parameterized tests (`@ParameterizedTest`) for input variations
-- Build reusable test data builders or factory methods
+- Mantenha os testes rápidos e isolados
+- Execute testes em modo contínuo: `mvn quarkus:test`
+- Use testes parametrizados (`@ParameterizedTest`) para variações de entrada
+- Construa builders de dados de teste reutilizáveis ou métodos de fábrica
 
-### Quarkus-Specific
-- Stay on latest LTS version (Quarkus 3.x)
-- Test native compilation compatibility periodically
-- Use Quarkus test profiles for different scenarios
-- Leverage Quarkus dev services for local testing
-- Use `@InjectMock` instead of `@MockBean` (Quarkus-specific)
+### Específico para Quarkus
+- Mantenha-se na versão LTS mais recente (Quarkus 3.x)
+- Teste periodicamente a compatibilidade de compilação nativa
+- Use perfis de teste Quarkus para diferentes cenários
+- Aproveite os dev services do Quarkus para testes locais
+- Use `@InjectMock` em vez de `@MockBean` (específico do Quarkus)
 
-### Verification Best Practices
-- Always verify interactions on mocked dependencies
-- Use `verify(mock, never())` to ensure methods are NOT called in error scenarios
-- Use `argThat()` for complex argument matching
-- Verify the order of calls when it matters: `InOrder` from Mockito
+### Boas Práticas de Verificação
+- Sempre verifique interações em dependências mockadas
+- Use `verify(mock, never())` para garantir que métodos NÃO são chamados em cenários de erro
+- Use `argThat()` para correspondência de argumentos complexos
+- Verifique a ordem das chamadas quando importa: `InOrder` do Mockito

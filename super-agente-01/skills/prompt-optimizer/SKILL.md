@@ -1,17 +1,17 @@
 ---
 name: prompt-optimizer
 description: >-
-  Analyze raw prompts, identify intent and gaps, match ECC components
-  (skills/commands/agents/hooks), and output a ready-to-paste optimized
-  prompt. Advisory role only — never executes the task itself.
-  TRIGGER when: user says "optimize prompt", "improve my prompt",
-  "how to write a prompt for", "help me prompt", "rewrite this prompt",
-  or explicitly asks to enhance prompt quality. Also triggers on Chinese
-  equivalents: "优化prompt", "改进prompt", "怎么写prompt", "帮我优化这个指令".
-  DO NOT TRIGGER when: user wants the task executed directly, or says
-  "just do it" / "直接做". DO NOT TRIGGER when user says "优化代码",
-  "优化性能", "optimize performance", "optimize this code" — those are
-  refactoring/performance tasks, not prompt optimization.
+  Analisa Prompts brutos, identifica intenção e lacunas, combina componentes ECC
+  (skills/commands/agents/hooks) e gera um Prompt otimizado pronto para colar.
+  Papel apenas consultivo — nunca executa a tarefa em si.
+  GATILHO quando: o usuário diz "otimizar prompt", "melhorar meu prompt",
+  "como escrever um prompt para", "me ajude com o prompt", "reescrever este prompt",
+  ou pede explicitamente para melhorar a qualidade do Prompt. Também aciona em
+  equivalentes em chinês: "优化prompt", "改进prompt", "怎么写prompt", "帮我优化这个指令".
+  NÃO ACIONAR quando: o usuário quer a tarefa executada diretamente, ou diz
+  "apenas faça" / "直接做". NÃO ACIONAR quando o usuário diz "优化代码",
+  "优化性能", "optimize performance", "optimize this code" — essas são
+  tarefas de refatoração/performance, não otimização de Prompt.
 metadata:
   origin: community
   author: YannJY02
@@ -20,117 +20,117 @@ metadata:
 
 # Prompt Optimizer
 
-Analyze a draft prompt, critique it, match it to ECC ecosystem components,
-and output a complete optimized prompt the user can paste and run.
+Analise um Prompt rascunho, critique-o, combine-o com componentes do ecossistema ECC
+e gere um Prompt completo otimizado que o usuário pode colar e executar.
 
-## When to Use
+## Quando Usar
 
-- User says "optimize this prompt", "improve my prompt", "rewrite this prompt"
-- User says "help me write a better prompt for..."
-- User says "what's the best way to ask Claude Code to..."
-- User says "优化prompt", "改进prompt", "怎么写prompt", "帮我优化这个指令"
-- User pastes a draft prompt and asks for feedback or enhancement
-- User says "I don't know how to prompt for this"
-- User says "how should I use ECC for..."
-- User explicitly invokes `/prompt-optimize`
+- Usuário diz "otimizar este prompt", "melhorar meu prompt", "reescrever este prompt"
+- Usuário diz "me ajude a escrever um prompt melhor para..."
+- Usuário diz "qual é a melhor forma de pedir ao Claude Code para..."
+- Usuário diz "优化prompt", "改进prompt", "怎么写prompt", "帮我优化这个指令"
+- Usuário cola um Prompt rascunho e pede feedback ou melhoria
+- Usuário diz "não sei como criar um Prompt para isso"
+- Usuário diz "como devo usar o ECC para..."
+- Usuário invoca explicitamente `/prompt-optimize`
 
-### Do Not Use When
+### Não Usar Quando
 
-- User wants the task done directly (just execute it)
-- User says "优化代码", "优化性能", "optimize this code", "optimize performance" — these are refactoring tasks, not prompt optimization
-- User is asking about ECC configuration (use `configure-ecc` instead)
-- User wants a skill inventory (use `skill-stocktake` instead)
-- User says "just do it" or "直接做"
+- Usuário quer a tarefa feita diretamente (apenas execute-a)
+- Usuário diz "优化代码", "优化性能", "optimize this code", "optimize performance" — essas são tarefas de refatoração, não otimização de Prompt
+- Usuário pergunta sobre configuração do ECC (use `configure-ecc` em vez disso)
+- Usuário quer um inventário de skills (use `skill-stocktake` em vez disso)
+- Usuário diz "apenas faça" ou "直接做"
 
-## How It Works
+## Como Funciona
 
-**Advisory only — do not execute the user's task.**
+**Apenas consultivo — não execute a tarefa do usuário.**
 
-Do NOT write code, create files, run commands, or take any implementation
-action. Your ONLY output is an analysis plus an optimized prompt.
+NÃO escreva código, crie arquivos, execute comandos ou tome qualquer ação de implementação.
+Sua ÚNICA saída é uma análise mais um Prompt otimizado.
 
-If the user says "just do it", "直接做", or "don't optimize, just execute",
-do not switch into implementation mode inside this skill. Tell the user this
-skill only produces optimized prompts, and instruct them to make a normal
-task request if they want execution instead.
+Se o usuário disser "apenas faça", "直接做", ou "não otimize, apenas execute",
+não mude para o modo de implementação dentro desta skill. Diga ao usuário que
+esta skill só produz Prompts otimizados e instrua-os a fazer uma solicitação de
+tarefa normal se quiserem execução em vez disso.
 
-Run this 6-phase pipeline sequentially. Present results using the Output Format below.
+Execute este pipeline de 6 fases sequencialmente. Apresente os resultados usando o Formato de Saída abaixo.
 
-### Analysis Pipeline
+### Pipeline de Análise
 
-### Phase 0: Project Detection
+### Fase 0: Detecção de Projeto
 
-Before analyzing the prompt, detect the current project context:
+Antes de analisar o Prompt, detecte o contexto atual do projeto:
 
-1. Check if a `CLAUDE.md` exists in the working directory — read it for project conventions
-2. Detect tech stack from project files:
+1. Verifique se existe um `CLAUDE.md` no diretório de trabalho — leia-o para as convenções do projeto
+2. Detecte o stack tecnológico a partir dos arquivos do projeto:
    - `package.json` → Node.js / TypeScript / React / Next.js
    - `go.mod` → Go
    - `pyproject.toml` / `requirements.txt` → Python
    - `Cargo.toml` → Rust
-   - `build.gradle` / `pom.xml` → Java / Kotlin (then check for `quarkus` in build file → Quarkus, or `spring-boot` → Spring Boot)
+   - `build.gradle` / `pom.xml` → Java / Kotlin (depois verifique `quarkus` no arquivo de build → Quarkus, ou `spring-boot` → Spring Boot)
    - `Package.swift` → Swift
    - `Gemfile` → Ruby
    - `composer.json` → PHP
    - `*.csproj` / `*.sln` → .NET
    - `Makefile` / `CMakeLists.txt` → C / C++
    - `cpanfile` / `Makefile.PL` → Perl
-3. Note detected tech stack for use in Phase 3 and Phase 4
+3. Anote o stack tecnológico detectado para uso nas Fases 3 e 4
 
-If no project files are found (e.g., the prompt is abstract or for a new project),
-skip detection and flag "tech stack unknown" in Phase 4.
+Se nenhum arquivo de projeto for encontrado (ex.: o Prompt é abstrato ou para um novo projeto),
+pule a detecção e sinalize "stack tecnológico desconhecido" na Fase 4.
 
-### Phase 1: Intent Detection
+### Fase 1: Detecção de Intenção
 
-Classify the user's task into one or more categories:
+Classifique a tarefa do usuário em uma ou mais categorias:
 
-| Category | Signal Words | Example |
+| Categoria | Palavras de Sinal | Exemplo |
 |----------|-------------|---------|
-| New Feature | build, create, add, implement, 创建, 实现, 添加 | "Build a login page" |
-| Bug Fix | fix, broken, not working, error, 修复, 报错 | "Fix the auth flow" |
-| Refactor | refactor, clean up, restructure, 重构, 整理 | "Refactor the API layer" |
-| Research | how to, what is, explore, investigate, 怎么, 如何 | "How to add SSO" |
-| Testing | test, coverage, verify, 测试, 覆盖率 | "Add tests for the cart" |
-| Review | review, audit, check, 审查, 检查 | "Review my PR" |
-| Documentation | document, update docs, 文档 | "Update the API docs" |
-| Infrastructure | deploy, CI, docker, database, 部署, 数据库 | "Set up CI/CD pipeline" |
-| Design | design, architecture, plan, 设计, 架构 | "Design the data model" |
+| Nova Feature | build, create, add, implement, 创建, 实现, 添加 | "Criar uma página de login" |
+| Correção de Bug | fix, broken, not working, error, 修复, 报错 | "Corrigir o fluxo de auth" |
+| Refatoração | refactor, clean up, restructure, 重构, 整理 | "Refatorar a camada de API" |
+| Pesquisa | how to, what is, explore, investigate, 怎么, 如何 | "Como adicionar SSO" |
+| Testes | test, coverage, verify, 测试, 覆盖率 | "Adicionar testes para o carrinho" |
+| Revisão | review, audit, check, 审查, 检查 | "Revisar meu PR" |
+| Documentação | document, update docs, 文档 | "Atualizar a documentação da API" |
+| Infraestrutura | deploy, CI, docker, database, 部署, 数据库 | "Configurar pipeline CI/CD" |
+| Design | design, architecture, plan, 设计, 架构 | "Projetar o modelo de dados" |
 
-### Phase 2: Scope Assessment
+### Fase 2: Avaliação de Escopo
 
-If Phase 0 detected a project, use codebase size as a signal. Otherwise, estimate
-from the prompt description alone and mark the estimate as uncertain.
+Se a Fase 0 detectou um projeto, use o tamanho da base de código como sinal. Caso contrário, estime
+a partir da descrição do Prompt sozinha e marque a estimativa como incerta.
 
-| Scope | Heuristic | Orchestration |
+| Escopo | Heurística | Orquestração |
 |-------|-----------|---------------|
-| TRIVIAL | Single file, < 50 lines | Direct execution |
-| LOW | Single component or module | Single command or skill |
-| MEDIUM | Multiple components, same domain | Command chain + /verify |
-| HIGH | Cross-domain, 5+ files | /plan first, then phased execution |
-| EPIC | Multi-session, multi-PR, architectural shift | Use blueprint skill for multi-session plan |
+| TRIVIAL | Arquivo único, < 50 linhas | Execução direta |
+| BAIXO | Componente ou módulo único | Command ou skill único |
+| MÉDIO | Múltiplos componentes, mesmo domínio | Cadeia de commands + /verify |
+| ALTO | Multi-domínio, 5+ arquivos | /plan primeiro, depois execução em fases |
+| ÉPICO | Multi-sessão, multi-PR, mudança arquitetural | Use a skill blueprint para plano multi-sessão |
 
-### Phase 3: ECC Component Matching
+### Fase 3: Correspondência de Componentes ECC
 
-Map intent + scope + tech stack (from Phase 0) to specific ECC components.
+Mapeie intenção + escopo + stack tecnológico (da Fase 0) para componentes ECC específicos.
 
-#### By Intent Type
+#### Por Tipo de Intenção
 
-| Intent | Commands | Skills | Agents |
+| Intenção | Commands | Skills | Agents |
 |--------|----------|--------|--------|
-| New Feature | /plan, /tdd, /code-review, /verify | tdd-workflow, verification-loop | planner, tdd-guide, code-reviewer |
-| Bug Fix | /tdd, /build-fix, /verify | tdd-workflow | tdd-guide, build-error-resolver |
-| Refactor | /refactor-clean, /code-review, /verify | verification-loop | refactor-cleaner, code-reviewer |
-| Research | /plan | search-first, iterative-retrieval | — |
-| Testing | /tdd, /e2e, /test-coverage | tdd-workflow, e2e-testing | tdd-guide, e2e-runner |
-| Review | /code-review | security-review | code-reviewer, security-reviewer |
-| Documentation | /update-docs, /update-codemaps | — | doc-updater |
-| Infrastructure | /plan, /verify | docker-patterns, deployment-patterns, database-migrations | architect |
-| Design (MEDIUM-HIGH) | /plan | — | planner, architect |
-| Design (EPIC) | — | blueprint (invoke as skill) | planner, architect |
+| Nova Feature | /plan, /tdd, /code-review, /verify | tdd-workflow, verification-loop | planner, tdd-guide, code-reviewer |
+| Correção de Bug | /tdd, /build-fix, /verify | tdd-workflow | tdd-guide, build-error-resolver |
+| Refatoração | /refactor-clean, /code-review, /verify | verification-loop | refactor-cleaner, code-reviewer |
+| Pesquisa | /plan | search-first, iterative-retrieval | — |
+| Testes | /tdd, /e2e, /test-coverage | tdd-workflow, e2e-testing | tdd-guide, e2e-runner |
+| Revisão | /code-review | security-review | code-reviewer, security-reviewer |
+| Documentação | /update-docs, /update-codemaps | — | doc-updater |
+| Infraestrutura | /plan, /verify | docker-patterns, deployment-patterns, database-migrations | architect |
+| Design (MÉDIO-ALTO) | /plan | — | planner, architect |
+| Design (ÉPICO) | — | blueprint (invocar como skill) | planner, architect |
 
-#### By Tech Stack
+#### Por Stack Tecnológico
 
-| Tech Stack | Skills to Add | Agent |
+| Stack Tecnológico | Skills a Adicionar | Agent |
 |------------|--------------|-------|
 | Python / Django | django-patterns, django-tdd, django-security, django-verification, python-patterns, python-testing | python-reviewer |
 | Go | golang-patterns, golang-testing | go-reviewer, go-build-resolver |
@@ -142,146 +142,145 @@ Map intent + scope + tech stack (from Phase 0) to specific ECC components.
 | PostgreSQL | postgres-patterns, database-migrations | database-reviewer |
 | Perl | perl-patterns, perl-testing, perl-security | code-reviewer |
 | C++ | cpp-coding-standards, cpp-testing | code-reviewer |
-| Other / Unlisted | coding-standards (universal) | code-reviewer |
+| Outro / Não listado | coding-standards (universal) | code-reviewer |
 
-### Phase 4: Missing Context Detection
+### Fase 4: Detecção de Contexto Faltando
 
-Scan the prompt for missing critical information. Check each item and mark
-whether Phase 0 auto-detected it or the user must supply it:
+Verifique o Prompt quanto a informações críticas faltando. Verifique cada item e marque
+se a Fase 0 o detectou automaticamente ou se o usuário deve fornecê-lo:
 
-- [ ] **Tech stack** — Detected in Phase 0, or must user specify?
-- [ ] **Target scope** — Files, directories, or modules mentioned?
-- [ ] **Acceptance criteria** — How to know the task is done?
-- [ ] **Error handling** — Edge cases and failure modes addressed?
-- [ ] **Security requirements** — Auth, input validation, secrets?
-- [ ] **Testing expectations** — Unit, integration, E2E?
-- [ ] **Performance constraints** — Load, latency, resource limits?
-- [ ] **UI/UX requirements** — Design specs, responsive, a11y? (if frontend)
-- [ ] **Database changes** — Schema, migrations, indexes? (if data layer)
-- [ ] **Existing patterns** — Reference files or conventions to follow?
-- [ ] **Scope boundaries** — What NOT to do?
+- [ ] **Stack tecnológico** — Detectado na Fase 0, ou o usuário deve especificar?
+- [ ] **Escopo alvo** — Arquivos, diretórios ou módulos mencionados?
+- [ ] **Critérios de aceitação** — Como saber que a tarefa está concluída?
+- [ ] **Tratamento de erros** — Casos extremos e modos de falha abordados?
+- [ ] **Requisitos de segurança** — Auth, validação de entrada, segredos?
+- [ ] **Expectativas de testes** — Unitário, integração, E2E?
+- [ ] **Restrições de performance** — Carga, latência, limites de recursos?
+- [ ] **Requisitos de UI/UX** — Especificações de design, responsividade, a11y? (se Frontend)
+- [ ] **Alterações de banco de dados** — Schema, migrações, índices? (se camada de dados)
+- [ ] **Padrões existentes** — Arquivos de referência ou convenções a seguir?
+- [ ] **Limites de escopo** — O que NÃO fazer?
 
-**If 3+ critical items are missing**, ask the user up to 3 clarification
-questions before generating the optimized prompt. Then incorporate the
-answers into the optimized prompt.
+**Se 3+ itens críticos estiverem faltando**, faça ao usuário até 3 perguntas de esclarecimento
+antes de gerar o Prompt otimizado. Em seguida, incorpore as respostas no Prompt otimizado.
 
-### Phase 5: Workflow & Model Recommendation
+### Fase 5: Recomendação de Fluxo de Trabalho e Modelo
 
-Determine where this prompt sits in the development lifecycle:
+Determine onde este Prompt se encaixa no ciclo de vida de desenvolvimento:
 
 ```
-Research → Plan → Implement (TDD) → Review → Verify → Commit
+Pesquisa → Planejar → Implementar (TDD) → Revisar → Verificar → Commit
 ```
 
-For MEDIUM+ tasks, always start with /plan. For EPIC tasks, use blueprint skill.
+Para tarefas MÉDIO+, sempre comece com /plan. Para tarefas ÉPICO, use a skill blueprint.
 
-**Model recommendation** (include in output):
+**Recomendação de modelo** (incluir na saída):
 
-| Scope | Recommended Model | Rationale |
+| Escopo | Modelo Recomendado | Justificativa |
 |-------|------------------|-----------|
-| TRIVIAL-LOW | Sonnet 4.6 | Fast, cost-efficient for simple tasks |
-| MEDIUM | Sonnet 4.6 | Best coding model for standard work |
-| HIGH | Sonnet 4.6 (main) + Opus 4.6 (planning) | Opus for architecture, Sonnet for implementation |
-| EPIC | Opus 4.6 (blueprint) + Sonnet 4.6 (execution) | Deep reasoning for multi-session planning |
+| TRIVIAL-BAIXO | Sonnet 4.6 | Rápido, custo-eficiente para tarefas simples |
+| MÉDIO | Sonnet 4.6 | Melhor modelo de codificação para trabalho padrão |
+| ALTO | Sonnet 4.6 (principal) + Opus 4.6 (planejamento) | Opus para arquitetura, Sonnet para implementação |
+| ÉPICO | Opus 4.6 (blueprint) + Sonnet 4.6 (execução) | Raciocínio profundo para planejamento multi-sessão |
 
-**Multi-prompt splitting** (for HIGH/EPIC scope):
+**Divisão em múltiplos Prompts** (para escopo ALTO/ÉPICO):
 
-For tasks that exceed a single session, split into sequential prompts:
-- Prompt 1: Research + Plan (use search-first skill, then /plan)
-- Prompt 2-N: Implement one phase per prompt (each ends with /verify)
-- Final Prompt: Integration test + /code-review across all phases
-- Use /save-session and /resume-session to preserve context between sessions
+Para tarefas que excedem uma única sessão, divida em Prompts sequenciais:
+- Prompt 1: Pesquisa + Planejar (use a skill search-first, depois /plan)
+- Prompts 2-N: Implemente uma fase por Prompt (cada um termina com /verify)
+- Prompt Final: Teste de integração + /code-review em todas as fases
+- Use /save-session e /resume-session para preservar o contexto entre sessões
 
 ---
 
-## Output Format
+## Formato de Saída
 
-Present your analysis in this exact structure. Respond in the same language
-as the user's input.
+Apresente sua análise nesta estrutura exata. Responda no mesmo idioma
+da entrada do usuário.
 
-### Section 1: Prompt Diagnosis
+### Seção 1: Diagnóstico do Prompt
 
-**Strengths:** List what the original prompt does well.
+**Pontos Fortes:** Liste o que o Prompt original faz bem.
 
-**Issues:**
+**Problemas:**
 
-| Issue | Impact | Suggested Fix |
+| Problema | Impacto | Correção Sugerida |
 |-------|--------|---------------|
-| (problem) | (consequence) | (how to fix) |
+| (problema) | (consequência) | (como corrigir) |
 
-**Needs Clarification:** Numbered list of questions the user should answer.
-If Phase 0 auto-detected the answer, state it instead of asking.
+**Precisa de Esclarecimento:** Lista numerada de perguntas que o usuário deve responder.
+Se a Fase 0 detectou automaticamente a resposta, declare-a em vez de perguntar.
 
-### Section 2: Recommended ECC Components
+### Seção 2: Componentes ECC Recomendados
 
-| Type | Component | Purpose |
+| Tipo | Componente | Finalidade |
 |------|-----------|---------|
-| Command | /plan | Plan architecture before coding |
-| Skill | tdd-workflow | TDD methodology guidance |
-| Agent | code-reviewer | Post-implementation review |
-| Model | Sonnet 4.6 | Recommended for this scope |
+| Command | /plan | Planejar arquitetura antes de codificar |
+| Skill | tdd-workflow | Orientação de metodologia TDD |
+| Agent | code-reviewer | Revisão pós-implementação |
+| Modelo | Sonnet 4.6 | Recomendado para este escopo |
 
-### Section 3: Optimized Prompt — Full Version
+### Seção 3: Prompt Otimizado — Versão Completa
 
-Present the complete optimized prompt inside a single fenced code block.
-The prompt must be self-contained and ready to copy-paste. Include:
-- Clear task description with context
-- Tech stack (detected or specified)
-- /command invocations at the right workflow stages
-- Acceptance criteria
-- Verification steps
-- Scope boundaries (what NOT to do)
+Apresente o Prompt otimizado completo dentro de um único bloco de código delimitado.
+O Prompt deve ser autossuficiente e pronto para copiar e colar. Inclua:
+- Descrição clara da tarefa com contexto
+- Stack tecnológico (detectado ou especificado)
+- Invocações de /command nos estágios certos do fluxo de trabalho
+- Critérios de aceitação
+- Etapas de verificação
+- Limites de escopo (o que NÃO fazer)
 
-For items that reference blueprint, write: "Use the blueprint skill to..."
-(not `/blueprint`, since blueprint is a skill, not a command).
+Para itens que referenciam blueprint, escreva: "Use a skill blueprint para..."
+(não `/blueprint`, pois blueprint é uma skill, não um command).
 
-### Section 4: Optimized Prompt — Quick Version
+### Seção 4: Prompt Otimizado — Versão Rápida
 
-A compact version for experienced ECC users. Vary by intent type:
+Uma versão compacta para usuários experientes do ECC. Varie por tipo de intenção:
 
-| Intent | Quick Pattern |
+| Intenção | Padrão Rápido |
 |--------|--------------|
-| New Feature | `/plan [feature]. /tdd to implement. /code-review. /verify.` |
-| Bug Fix | `/tdd — write failing test for [bug]. Fix to green. /verify.` |
-| Refactor | `/refactor-clean [scope]. /code-review. /verify.` |
-| Research | `Use search-first skill for [topic]. /plan based on findings.` |
-| Testing | `/tdd [module]. /e2e for critical flows. /test-coverage.` |
-| Review | `/code-review. Then use security-reviewer agent.` |
+| Nova Feature | `/plan [feature]. /tdd para implementar. /code-review. /verify.` |
+| Correção de Bug | `/tdd — escreva teste falhando para [bug]. Corrija para verde. /verify.` |
+| Refatoração | `/refactor-clean [escopo]. /code-review. /verify.` |
+| Pesquisa | `Use a skill search-first para [tópico]. /plan baseado nas descobertas.` |
+| Testes | `/tdd [módulo]. /e2e para fluxos críticos. /test-coverage.` |
+| Revisão | `/code-review. Depois use o agent security-reviewer.` |
 | Docs | `/update-docs. /update-codemaps.` |
-| EPIC | `Use blueprint skill for "[objective]". Execute phases with /verify gates.` |
+| ÉPICO | `Use a skill blueprint para "[objetivo]". Execute fases com portões /verify.` |
 
-### Section 5: Enhancement Rationale
+### Seção 5: Justificativa das Melhorias
 
-| Enhancement | Reason |
+| Melhoria | Motivo |
 |-------------|--------|
-| (what was added) | (why it matters) |
+| (o que foi adicionado) | (por que importa) |
 
-### Footer
+### Rodapé
 
-> Not what you need? Tell me what to adjust, or make a normal task request
-> if you want execution instead of prompt optimization.
+> Não é o que você precisa? Me diga o que ajustar, ou faça uma solicitação de tarefa normal
+> se quiser execução em vez de otimização de Prompt.
 
 ---
 
-## Examples
+## Exemplos
 
-### Trigger Examples
+### Exemplos de Gatilho
 
-- "Optimize this prompt for ECC"
-- "Rewrite this prompt so Claude Code uses the right commands"
+- "Otimize este Prompt para o ECC"
+- "Reescreva este Prompt para que o Claude Code use os commands certos"
 - "帮我优化这个指令"
-- "How should I prompt ECC for this task?"
+- "Como devo criar o Prompt no ECC para esta tarefa?"
 
-### Example 1: Vague Chinese Prompt (Project Detected)
+### Exemplo 1: Prompt Vago em Chinês (Projeto Detectado)
 
-**User input:**
+**Entrada do usuário:**
 ```
 帮我写一个用户登录页面
 ```
 
-**Phase 0 detects:** `package.json` with Next.js 15, TypeScript, Tailwind CSS
+**A Fase 0 detecta:** `package.json` com Next.js 15, TypeScript, Tailwind CSS
 
-**Optimized Prompt (Full):**
+**Prompt Otimizado (Completo):**
 ```
 使用项目现有技术栈（Next.js 15 + TypeScript + Tailwind CSS）实现用户登录页面。
 
@@ -315,16 +314,16 @@ A compact version for experienced ECC users. Vary by intent type:
 - 不要修改现有的路由结构
 ```
 
-### Example 2: Moderate English Prompt
+### Exemplo 2: Prompt Moderado em Inglês
 
-**User input:**
+**Entrada do usuário:**
 ```
 Add a REST API endpoint for user profile updates with validation
 ```
 
-**Phase 0 detects:** `go.mod` with Go 1.22, Chi router
+**A Fase 0 detecta:** `go.mod` com Go 1.22, roteador Chi
 
-**Optimized Prompt (Full):**
+**Prompt Otimizado (Completo):**
 ```
 Add a REST API endpoint for user profile updates (PATCH /api/users/:id).
 
@@ -352,14 +351,14 @@ Do not:
 - Add new dependencies without checking existing ones first (use search-first skill)
 ```
 
-### Example 3: EPIC Project
+### Exemplo 3: Projeto ÉPICO
 
-**User input:**
+**Entrada do usuário:**
 ```
 Migrate our monolith to microservices
 ```
 
-**Optimized Prompt (Full):**
+**Prompt Otimizado (Completo):**
 ```
 Use the blueprint skill to plan: "Migrate monolith to microservices architecture"
 
@@ -386,13 +385,13 @@ Recommended: Opus 4.6 for blueprint planning, Sonnet 4.6 for phase execution.
 
 ---
 
-## Related Components
+## Componentes Relacionados
 
-| Component | When to Reference |
+| Componente | Quando Referenciar |
 |-----------|------------------|
-| `configure-ecc` | User hasn't set up ECC yet |
-| `skill-stocktake` | Audit which components are installed (use instead of hardcoded catalog) |
-| `search-first` | Research phase in optimized prompts |
-| `blueprint` | EPIC-scope optimized prompts (invoke as skill, not command) |
-| `strategic-compact` | Long session context management |
-| `cost-aware-llm-pipeline` | Token optimization recommendations |
+| `configure-ecc` | Usuário ainda não configurou o ECC |
+| `skill-stocktake` | Auditar quais componentes estão instalados (use em vez de catálogo fixo) |
+| `search-first` | Fase de pesquisa em Prompts otimizados |
+| `blueprint` | Prompts otimizados de escopo ÉPICO (invocar como skill, não command) |
+| `strategic-compact` | Gerenciamento de contexto de sessão longa |
+| `cost-aware-llm-pipeline` | Recomendações de otimização de Token |

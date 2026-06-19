@@ -208,7 +208,7 @@ mod tests {
 }
 ```
 
-### Parameterized Tests with rstest
+### Testes Parametrizados com rstest
 
 ```rust
 use rstest::{rstest, fixture};
@@ -222,7 +222,7 @@ fn test_string_length(#[case] input: &str, #[case] expected: usize) {
 }
 ```
 
-### Async Tests
+### Testes Async
 
 ```rust
 #[tokio::test]
@@ -233,7 +233,7 @@ async fn fetches_data_successfully() {
 }
 ```
 
-### Property-Based Tests
+### Testes Baseados em Propriedades
 
 ```rust
 use proptest::prelude::*;

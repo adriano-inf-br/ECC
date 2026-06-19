@@ -1,6 +1,6 @@
-**Language:** English | [Português (Brasil)](docs/pt-BR/README.md) | [简体中文](README.zh-CN.md) | [繁體中文](docs/zh-TW/README.md) | [日本語](docs/ja-JP/README.md) | [한국어](docs/ko-KR/README.md) | [Türkçe](docs/tr/README.md) | [Русский](docs/ru/README.md) | [Tiếng Việt](docs/vi-VN/README.md) | [ไทย](docs/th/README.md) | [Deutsch](docs/de-DE/README.md) | [Español](docs/es/README.md)
+**Idioma:** [English](README.md) | **Português (Brasil)** | [简体中文](README.zh-CN.md) | [繁體中文](docs/zh-TW/README.md) | [日本語](docs/ja-JP/README.md) | [한국어](docs/ko-KR/README.md) | [Türkçe](docs/tr/README.md) | [Русский](docs/ru/README.md) | [Tiếng Việt](docs/vi-VN/README.md) | [ไทย](docs/th/README.md) | [Deutsch](docs/de-DE/README.md) | [Español](docs/es/README.md)
 
-![ECC — the agent harness operating system](assets/hero.png)
+![ECC — o sistema operacional para harness de agentes](assets/hero.png)
 
 [![Stars](https://img.shields.io/endpoint?url=https%3A%2F%2Fapi.ecc.tools%2Fbadge%2Fstars&style=flat)](https://github.com/affaan-m/ECC/stargazers)
 [![Forks](https://img.shields.io/endpoint?url=https%3A%2F%2Fapi.ecc.tools%2Fbadge%2Fforks&style=flat)](https://github.com/affaan-m/ECC/network/members)
@@ -18,9 +18,9 @@
 ![Markdown](https://img.shields.io/badge/-Markdown-000000?logo=markdown&logoColor=white)
 
 > [!WARNING]
-> **Official sources only.** Install ECC only from verified channels: the GitHub repository [github.com/affaan-m/ECC](https://github.com/affaan-m/ECC), the npm packages [`ecc-universal`](https://www.npmjs.com/package/ecc-universal) and [`ecc-agentshield`](https://www.npmjs.com/package/ecc-agentshield), the [GitHub App](https://github.com/apps/ecc-tools), the plugin slug `ecc@ecc`, and the project website [ecc.tools](https://ecc.tools). Third-party re-uploads and unofficial mirrors are not maintained or reviewed by the project and may contain malware.
+> **Apenas fontes oficiais.** Instale o ECC somente a partir de canais verificados: o repositório do GitHub [github.com/affaan-m/ECC](https://github.com/affaan-m/ECC), os pacotes npm [`ecc-universal`](https://www.npmjs.com/package/ecc-universal) e [`ecc-agentshield`](https://www.npmjs.com/package/ecc-agentshield), o [GitHub App](https://github.com/apps/ecc-tools), o slug de plugin `ecc@ecc` e o site oficial do projeto [ecc.tools](https://ecc.tools). Reuploads de terceiros e espelhos não oficiais não são mantidos nem revisados pelo projeto e podem conter malware.
 
-**211.9K+ stars** | **32.5K+ forks** | **230+ contributors** | **12+ language ecosystems** | **Cross-harness agent workflows**
+**211.9K+ stars** | **32.5K+ forks** | **230+ contribuidores** | **12+ ecossistemas de linguagem** | **Fluxos de trabalho de agentes cross-harness**
 
 ---
 
@@ -35,13 +35,13 @@
 
 ---
 
-**The harness-native operator system for agentic work. Built from real-world multi-harness engineering workflows.**
+**O sistema operador harness-nativo para trabalho com agentes. Construído a partir de fluxos de trabalho reais de engenharia multi-harness.**
 
-Not just configs. A complete system: skills, instincts, memory optimization, continuous learning, security scanning, and research-first development. Production-ready agents, skills, hooks, rules, MCP configurations, and legacy command shims evolved over 10+ months of intensive daily use building real products.
+Não são apenas configurações. Um sistema completo: skills, instintos, otimização de memória, aprendizado contínuo, varredura de segurança e desenvolvimento research-first. Agents, skills, hooks, regras, configurações de MCP e shims de comandos legados prontos para produção, evoluídos ao longo de mais de 10 meses de uso intensivo diário construindo produtos reais.
 
-Works across **Codex**, **Claude Code**, **Cursor**, **OpenCode**, **Gemini**, **Zed**, **GitHub Copilot**, and other AI agent harnesses.
+Funciona em **Codex**, **Claude Code**, **Cursor**, **OpenCode**, **Gemini**, **Zed**, **GitHub Copilot** e outros harnesses de agentes de IA.
 
-ECC v2.0.0 adds the public Hermes operator story on top of that reusable layer: start with the [Hermes setup guide](docs/HERMES-SETUP.md), then review the [2.0.0 release notes](docs/releases/2.0.0/release-notes.md) and [cross-harness architecture](docs/architecture/cross-harness.md).
+O ECC v2.0.0 adiciona a história pública do operador Hermes sobre essa camada reutilizável: comece pelo [guia de configuração do Hermes](docs/HERMES-SETUP.md), depois revise as [notas de versão da 2.0.0](docs/releases/2.0.0/release-notes.md) e a [arquitetura cross-harness](docs/architecture/cross-harness.md).
 
 ---
 
@@ -50,215 +50,215 @@ ECC v2.0.0 adds the public Hermes operator story on top of that reusable layer: 
 <td width="25%" align="center">
   <a href="https://ecc.tools/pricing">
     <strong> ECC Pro</strong><br />
-    <sub>Private repos · GitHub App · $19/seat/mo</sub>
+    <sub>Repositórios privados · GitHub App · US$ 19/assento/mês</sub>
   </a>
 </td>
 <td width="25%" align="center">
   <a href="https://github.com/sponsors/affaan-m">
     <strong> Sponsor</strong><br />
-    <sub>Fund the OSS · From $5/mo</sub>
+    <sub>Financie o OSS · A partir de US$ 5/mês</sub>
   </a>
 </td>
 <td width="25%" align="center">
   <a href="https://github.com/affaan-m/ECC/discussions">
-    <strong>Community</strong>
+    <strong>Comunidade</strong>
     <br />
-    <sub>Discussions · Q&amp;A · Show & Tell</sub>
+    <sub>Discussões · Perguntas e respostas · Show & Tell</sub>
   </a>
 </td>
 <td width="25%" align="center">
   <a href="https://github.com/apps/ecc-tools">
     <strong> GitHub App</strong><br />
-    <sub>Install · PR audits · Free tier</sub>
+    <sub>Instalar · Auditorias de PR · Plano gratuito</sub>
   </a>
 </td>
 </tr>
 </table>
 
-<sub>**OSS stays free.** This repo is MIT-licensed forever. ECC Pro is the hosted GitHub App for private repos. <a href="https://github.com/sponsors/affaan-m">Sponsors</a> and <a href="https://ecc.tools/pricing">Pro subscribers</a> fund the work — that's why a single maintainer ships weekly across 7 harnesses.</sub>
+<sub>**O OSS continua gratuito.** Este repositório é licenciado sob MIT para sempre. O ECC Pro é o GitHub App hospedado para repositórios privados. <a href="https://github.com/sponsors/affaan-m">Sponsors</a> e <a href="https://ecc.tools/pricing">assinantes Pro</a> financiam o trabalho — é por isso que um único mantenedor entrega semanalmente em 7 harnesses.</sub>
 
 <div align="center">
 
-<sub><strong>Business sponsors</strong></sub>
+<sub><strong>Patrocinadores empresariais</strong></sub>
 
 <table>
 <tr>
 <td align="center" width="220">
   <a href="https://www.coderabbit.ai">
-    <img src="assets/images/sponsors/coderabbit.png" width="96" alt="CodeRabbit logo" /><br />
+    <img src="assets/images/sponsors/coderabbit.png" width="96" alt="Logo da CodeRabbit" /><br />
     <strong>CodeRabbit</strong>
   </a>
 </td>
 <td align="center" width="220">
   <a href="https://www.greptile.com/go/ecc">
-    <img src="assets/images/sponsors/greptile.png" width="96" alt="Greptile logo" /><br />
+    <img src="assets/images/sponsors/greptile.png" width="96" alt="Logo da Greptile" /><br />
     <strong>Greptile</strong>
   </a>
 </td>
 <td align="center" width="220">
   <a href="https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=ECC">
-    <img src="assets/images/sponsors/atlascloud.png" width="96" alt="Atlas Cloud logo" /><br />
+    <img src="assets/images/sponsors/atlascloud.png" width="96" alt="Logo da Atlas Cloud" /><br />
     <strong>Atlas Cloud</strong>
   </a>
 </td>
 </tr>
 </table>
 
-<sub><strong>Community sponsors:</strong> <a href="https://github.com/mikejmorgan-ai">Mike Morgan</a> · <a href="https://github.com/jasonwu513">@jasonwu513</a> · <a href="https://github.com/1anter">@1anter</a> · <a href="https://github.com/massimotodaro">@massimotodaro</a> · <a href="https://github.com/meadmccabe">@meadmccabe</a></sub>
+<sub><strong>Patrocinadores da comunidade:</strong> <a href="https://github.com/mikejmorgan-ai">Mike Morgan</a> · <a href="https://github.com/jasonwu513">@jasonwu513</a> · <a href="https://github.com/1anter">@1anter</a> · <a href="https://github.com/massimotodaro">@massimotodaro</a> · <a href="https://github.com/meadmccabe">@meadmccabe</a></sub>
 
-<sub><a href="https://github.com/sponsors/affaan-m"><strong>Become a Sponsor</strong></a> · <a href="SPONSORS.md">Sponsor Tiers</a> · <a href="SPONSORING.md">Sponsorship Program</a></sub>
+<sub><a href="https://github.com/sponsors/affaan-m"><strong>Torne-se um Sponsor</strong></a> · <a href="SPONSORS.md">Níveis de patrocínio</a> · <a href="SPONSORING.md">Programa de patrocínio</a></sub>
 
 </div>
 
 ---
 
-## The Guides
+## Os Guias
 
-This repo is the raw code only. The guides explain everything.
+Este repositório contém apenas o código bruto. Os guias explicam tudo.
 
 <table>
 <tr>
 <td width="50%" align="center">
 <a href="./the-shortform-guide.md">
-<img src="./assets/images/shortform/00-header.png" width="420" alt="The Shorthand Guide to ECC" /><br />
-<b>The Shorthand Guide</b>
+<img src="./assets/images/shortform/00-header.png" width="420" alt="O Guia Resumido do ECC" /><br />
+<b>O Guia Resumido</b>
 </a>
-<br /><sub>Setup, foundations, philosophy. <b>Read this first.</b> (<a href="https://x.com/affaan/status/2012378465664745795">thread</a>)</sub>
+<br /><sub>Configuração, fundamentos, filosofia. <b>Leia isto primeiro.</b> (<a href="https://x.com/affaan/status/2012378465664745795">thread</a>)</sub>
 </td>
 <td width="50%" align="center">
 <a href="./the-longform-guide.md">
-<img src="./assets/images/longform/01-header.png" width="420" alt="The Longform Guide to ECC" /><br />
-<b>The Longform Guide</b>
+<img src="./assets/images/longform/01-header.png" width="420" alt="O Guia Aprofundado do ECC" /><br />
+<b>O Guia Aprofundado</b>
 </a>
-<br /><sub>Token optimization, memory persistence, evals, parallelization. (<a href="https://x.com/affaan/status/2014040193557471352">thread</a>)</sub>
+<br /><sub>Otimização de tokens, persistência de memória, evals, paralelização. (<a href="https://x.com/affaan/status/2014040193557471352">thread</a>)</sub>
 </td>
 </tr>
 </table>
 
 <div align="center">
 <a href="./the-security-guide.md">
-<img src="./assets/images/security/security-guide-header.png" width="420" alt="The Shorthand Guide to Everything Agentic Security" /><br />
-<b>The Security Guide</b>
+<img src="./assets/images/security/security-guide-header.png" width="420" alt="O Guia Resumido de Tudo sobre Segurança de Agentes" /><br />
+<b>O Guia de Segurança</b>
 </a>
-<br /><sub>Attack vectors, sandboxing, sanitization, CVEs, AgentShield. (<a href="https://x.com/affaan/status/2033263813387223421">thread</a>)</sub>
+<br /><sub>Vetores de ataque, sandboxing, sanitização, CVEs, AgentShield. (<a href="https://x.com/affaan/status/2033263813387223421">thread</a>)</sub>
 </div>
 
-| Topic | What You'll Learn |
+| Tópico | O que você vai aprender |
 |-------|-------------------|
-| Token Optimization | Model selection, system prompt slimming, background processes |
-| Memory Persistence | Hooks that save/load context across sessions automatically |
-| Continuous Learning | Auto-extract patterns from sessions into reusable skills |
-| Verification Loops | Checkpoint vs continuous evals, grader types, pass@k metrics |
-| Parallelization | Git worktrees, cascade method, when to scale instances |
-| Subagent Orchestration | The context problem, iterative retrieval pattern |
+| Otimização de tokens | Seleção de modelo, enxugamento do system prompt, processos em segundo plano |
+| Persistência de memória | Hooks que salvam/carregam contexto entre sessões automaticamente |
+| Aprendizado contínuo | Extração automática de padrões das sessões em skills reutilizáveis |
+| Loops de verificação | Evals de checkpoint vs. contínuos, tipos de grader, métricas pass@k |
+| Paralelização | Git worktrees, método cascade, quando escalar instâncias |
+| Orquestração de subagentes | O problema de contexto, padrão de recuperação iterativa |
 
 ---
 
-## What's New
+## Novidades
 
-### v2.0.0 — The Agent Harness Operating System (Jun 2026)
+### v2.0.0 — O Sistema Operacional para Harness de Agentes (jun. 2026)
 
-Stable graduation of the 2.0 line: 261 skills, the control-pane substrate (session adapters + MCP inventory), the worktree-lifecycle service, the `orch-*` orchestrator family, and the launch of the [ECC Discord community](https://discord.gg/36yGMHGFbR). Full notes: [docs/releases/2.0.0/release-notes.md](docs/releases/2.0.0/release-notes.md).
+Graduação estável da linha 2.0: 261 skills, o substrato do painel de controle (adaptadores de sessão + inventário de MCP), o serviço de ciclo de vida de worktree, a família de orquestradores `orch-*` e o lançamento da [comunidade ECC no Discord](https://discord.gg/36yGMHGFbR). Notas completas: [docs/releases/2.0.0/release-notes.md](docs/releases/2.0.0/release-notes.md).
 
-### v2.0.0-rc.1 — Surface Refresh, Operator Workflows, and ECC 2.0 Alpha (Apr 2026)
+### v2.0.0-rc.1 — Renovação da Superfície, Fluxos de Trabalho de Operador e ECC 2.0 Alpha (abr. 2026)
 
-- **Dashboard GUI** — New Tkinter-based desktop application (`ecc_dashboard.py` or `npm run dashboard`) with dark/light theme toggle, font customization, and project logo in header and taskbar.
-- **Public surface synced to the live repo** — metadata, catalog counts, plugin manifests, and install-facing docs now match the actual OSS surface: 66 agents, 268 skills, and 84 legacy command shims.
-- **Operator and outbound workflow expansion** — `brand-voice`, `social-graph-ranker`, `connections-optimizer`, `customer-billing-ops`, `ecc-tools-cost-audit`, `google-workspace-ops`, `project-flow-ops`, and `workspace-surface-audit` round out the operator lane.
-- **Media and launch tooling** — `manim-video`, `remotion-video-creation`, and upgraded social publishing surfaces make technical explainers and launch content part of the same system.
-- **Framework and product surface growth** — `nestjs-patterns`, richer Codex/OpenCode install surfaces, and expanded cross-harness packaging keep the repo usable beyond Claude Code alone.
-- **Itô prediction-market skill pack** — `ito-market-intelligence`, `ito-basket-compare`, `ito-trade-planner`, `ito-data-atlas-agent`, `prediction-market-oracle-research`, and `prediction-market-risk-review` add public, non-advisory market/basket workflows while keeping live Itô API access gated and separate from ECC Tools billing.
-- **Optimization skill pack** — `parallel-execution-optimizer`, `benchmark-optimization-loop`, `data-throughput-accelerator`, `latency-critical-systems`, and `recursive-decision-ledger` turn repeated speed/recursion prompts into bounded benchmark, throughput, and decision-ledger workflows.
-- **ECC 2.0 alpha is in-tree** — the Rust control-plane prototype in `ecc2/` now builds locally and exposes `dashboard`, `start`, `sessions`, `status`, `stop`, `resume`, and `daemon` commands. It is usable as an alpha, not yet a general release.
-- **Operator status snapshots** — `ecc status --markdown --write status.md` turns the local state store into a portable handoff covering readiness, active sessions, skill-run health, install health, pending governance events, and linked work items from Linear/GitHub/handoffs. Use `ecc work-items upsert ...` for manual entries, `ecc work-items sync-github --repo owner/repo` for PR/issue queue state, and `ecc status --exit-code` to fail automation when readiness needs attention.
-- **Ecosystem hardening** — AgentShield, ECC Tools cost controls, billing portal work, and website refreshes continue to ship around the core plugin instead of drifting into separate silos.
+- **Interface gráfica do Dashboard** — Nova aplicação desktop baseada em Tkinter (`ecc_dashboard.py` ou `npm run dashboard`) com alternância de tema claro/escuro, personalização de fontes e o logotipo do projeto no cabeçalho e na barra de tarefas.
+- **Superfície pública sincronizada com o repositório ativo** — metadados, contagens de catálogo, manifestos de plugin e docs voltadas à instalação agora correspondem à superfície OSS real: 66 agents, 268 skills e 84 shims de comandos legados.
+- **Expansão dos fluxos de trabalho de operador e outbound** — `brand-voice`, `social-graph-ranker`, `connections-optimizer`, `customer-billing-ops`, `ecc-tools-cost-audit`, `google-workspace-ops`, `project-flow-ops` e `workspace-surface-audit` completam a trilha do operador.
+- **Ferramentas de mídia e lançamento** — `manim-video`, `remotion-video-creation` e superfícies aprimoradas de publicação social tornam explicativos técnicos e conteúdo de lançamento parte do mesmo sistema.
+- **Crescimento da superfície de frameworks e produtos** — `nestjs-patterns`, superfícies de instalação Codex/OpenCode mais ricas e empacotamento cross-harness ampliado mantêm o repositório útil além do Claude Code isoladamente.
+- **Pacote de skills do mercado de previsões Itô** — `ito-market-intelligence`, `ito-basket-compare`, `ito-trade-planner`, `ito-data-atlas-agent`, `prediction-market-oracle-research` e `prediction-market-risk-review` adicionam fluxos de trabalho públicos e não consultivos de mercado/cesta, mantendo o acesso à API ativa da Itô restrito e separado da cobrança do ECC Tools.
+- **Pacote de skills de otimização** — `parallel-execution-optimizer`, `benchmark-optimization-loop`, `data-throughput-accelerator`, `latency-critical-systems` e `recursive-decision-ledger` transformam prompts repetidos de velocidade/recursão em fluxos de trabalho limitados de benchmark, throughput e ledger de decisão.
+- **O ECC 2.0 alpha está in-tree** — o protótipo do plano de controle em Rust em `ecc2/` agora compila localmente e expõe os comandos `dashboard`, `start`, `sessions`, `status`, `stop`, `resume` e `daemon`. É utilizável como alpha, ainda não como release geral.
+- **Snapshots de status do operador** — `ecc status --markdown --write status.md` transforma o store de estado local em um handoff portátil que cobre prontidão, sessões ativas, saúde de execução de skills, saúde de instalação, eventos de governança pendentes e itens de trabalho vinculados do Linear/GitHub/handoffs. Use `ecc work-items upsert ...` para entradas manuais, `ecc work-items sync-github --repo owner/repo` para o estado da fila de PRs/issues e `ecc status --exit-code` para falhar a automação quando a prontidão exigir atenção.
+- **Endurecimento do ecossistema** — AgentShield, controles de custo do ECC Tools, trabalho no portal de cobrança e renovações do site continuam a ser entregues em torno do plugin central, em vez de se dispersarem em silos separados.
 
-### v1.9.0 — Selective Install & Language Expansion (Mar 2026)
+### v1.9.0 — Instalação Seletiva e Expansão de Linguagens (mar. 2026)
 
-- **Selective install architecture** — Manifest-driven install pipeline with `install-plan.js` and `install-apply.js` for targeted component installation. State store tracks what's installed and enables incremental updates.
-- **6 new agents** — `typescript-reviewer`, `pytorch-build-resolver`, `java-build-resolver`, `java-reviewer`, `kotlin-reviewer`, `kotlin-build-resolver` expand language coverage to 10 languages.
-- **New skills** — `pytorch-patterns` for deep learning workflows, `documentation-lookup` for API reference research, `bun-runtime` and `nextjs-turbopack` for modern JS toolchains, plus 8 operational domain skills and `mcp-server-patterns`.
-- **Session & state infrastructure** — SQLite state store with query CLI, session adapters for structured recording, skill evolution foundation for self-improving skills.
-- **Orchestration overhaul** — Harness audit scoring made deterministic, orchestration status and launcher compatibility hardened, observer loop prevention with 5-layer guard.
-- **Observer reliability** — Memory explosion fix with throttling and tail sampling, sandbox access fix, lazy-start logic, and re-entrancy guard.
-- **12 language ecosystems** — New rules for Java, PHP, Perl, Kotlin/Android/KMP, C++, and Rust join existing TypeScript, Python, Go, and common rules.
-- **Community contributions** — Korean and Chinese translations, biome hook optimization, video processing skills, operational skills, PowerShell installer, Antigravity IDE support.
-- **CI hardening** — 19 test failure fixes, catalog count enforcement, install manifest validation, and full test suite green.
+- **Arquitetura de instalação seletiva** — Pipeline de instalação orientado por manifesto com `install-plan.js` e `install-apply.js` para instalação direcionada de componentes. O store de estado rastreia o que está instalado e habilita atualizações incrementais.
+- **6 novos agents** — `typescript-reviewer`, `pytorch-build-resolver`, `java-build-resolver`, `java-reviewer`, `kotlin-reviewer`, `kotlin-build-resolver` ampliam a cobertura de linguagens para 10 linguagens.
+- **Novas skills** — `pytorch-patterns` para fluxos de trabalho de deep learning, `documentation-lookup` para pesquisa de referência de API, `bun-runtime` e `nextjs-turbopack` para toolchains JS modernas, além de 8 skills de domínio operacional e `mcp-server-patterns`.
+- **Infraestrutura de sessão e estado** — Store de estado SQLite com CLI de consulta, adaptadores de sessão para gravação estruturada, base de evolução de skills para skills que se autoaperfeiçoam.
+- **Revisão da orquestração** — Pontuação de auditoria de harness tornada determinística, status de orquestração e compatibilidade de launcher endurecidos, prevenção de loop do observador com guarda de 5 camadas.
+- **Confiabilidade do observador** — Correção de explosão de memória com throttling e amostragem de cauda, correção de acesso ao sandbox, lógica de início preguiçoso (lazy-start) e guarda de reentrância.
+- **12 ecossistemas de linguagem** — Novas regras para Java, PHP, Perl, Kotlin/Android/KMP, C++ e Rust se juntam às regras existentes de TypeScript, Python, Go e às regras comuns.
+- **Contribuições da comunidade** — Traduções para coreano e chinês, otimização do hook do biome, skills de processamento de vídeo, skills operacionais, instalador PowerShell, suporte ao Antigravity IDE.
+- **Endurecimento de CI/CD** — 19 correções de falhas de teste, aplicação da contagem de catálogo, validação do manifesto de instalação e suíte de testes completa em verde.
 
-### v1.8.0 — Harness Performance System (Mar 2026)
+### v1.8.0 — Sistema de Performance de Harness (mar. 2026)
 
-- **Harness-first release** — ECC is now explicitly framed as an agent harness performance system, not just a config pack.
-- **Hook reliability overhaul** — SessionStart root fallback, Stop-phase session summaries, and script-based hooks replacing fragile inline one-liners.
-- **Hook runtime controls** — `ECC_HOOK_PROFILE=minimal|standard|strict` and `ECC_DISABLED_HOOKS=...` for runtime gating without editing hook files.
-- **New harness commands** — `/harness-audit`, `/loop-start`, `/loop-status`, `/quality-gate`, `/model-route`.
-- **NanoClaw v2** — model routing, skill hot-load, session branch/search/export/compact/metrics.
-- **Cross-harness parity** — behavior tightened across Claude Code, Cursor, OpenCode, and Codex app/CLI.
-- **997 internal tests passing** — full suite green after hook/runtime refactor and compatibility updates.
+- **Release harness-first** — O ECC agora é explicitamente apresentado como um sistema de performance de harness de agentes, e não apenas um pacote de configurações.
+- **Revisão da confiabilidade de hooks** — Fallback de raiz no SessionStart, resumos de sessão na fase Stop e hooks baseados em scripts substituindo one-liners inline frágeis.
+- **Controles de runtime de hooks** — `ECC_HOOK_PROFILE=minimal|standard|strict` e `ECC_DISABLED_HOOKS=...` para gating em runtime sem editar os arquivos de hook.
+- **Novos comandos de harness** — `/harness-audit`, `/loop-start`, `/loop-status`, `/quality-gate`, `/model-route`.
+- **NanoClaw v2** — roteamento de modelo, hot-load de skills, branch/busca/exportação/compactação/métricas de sessão.
+- **Paridade cross-harness** — comportamento ajustado entre Claude Code, Cursor, OpenCode e Codex app/CLI.
+- **997 testes internos passando** — suíte completa em verde após a refatoração de hook/runtime e atualizações de compatibilidade.
 
-### v1.7.0 — Cross-Platform Expansion & Presentation Builder (Feb 2026)
+### v1.7.0 — Expansão Multiplataforma e Construtor de Apresentações (fev. 2026)
 
-- **Codex app + CLI support** — Direct `AGENTS.md`-based Codex support, installer targeting, and Codex docs
-- **`frontend-slides` skill** — Zero-dependency HTML presentation builder with PPTX conversion guidance and strict viewport-fit rules
-- **5 new generic business/content skills** — `article-writing`, `content-engine`, `market-research`, `investor-materials`, `investor-outreach`
-- **Broader tool coverage** — Cursor, Codex, and OpenCode support tightened so the same repo ships cleanly across all major harnesses
-- **992 internal tests** — Expanded validation and regression coverage across plugin, hooks, skills, and packaging
+- **Suporte ao Codex app + CLI** — Suporte direto ao Codex baseado em `AGENTS.md`, direcionamento do instalador e docs do Codex
+- **Skill `frontend-slides`** — Construtor de apresentações HTML sem dependências, com orientação de conversão para PPTX e regras estritas de ajuste à viewport
+- **5 novas skills genéricas de negócios/conteúdo** — `article-writing`, `content-engine`, `market-research`, `investor-materials`, `investor-outreach`
+- **Cobertura de ferramentas mais ampla** — Suporte a Cursor, Codex e OpenCode ajustado para que o mesmo repositório seja entregue de forma limpa em todos os principais harnesses
+- **992 testes internos** — Cobertura de validação e regressão expandida em plugin, hooks, skills e empacotamento
 
-### v1.6.0 — Codex CLI, AgentShield & Marketplace (Feb 2026)
+### v1.6.0 — Codex CLI, AgentShield e Marketplace (fev. 2026)
 
-- **Codex CLI support** — New `/codex-setup` command generates `codex.md` for OpenAI Codex CLI compatibility
-- **7 new skills** — `search-first`, `swift-actor-persistence`, `swift-protocol-di-testing`, `regex-vs-llm-structured-text`, `content-hash-cache-pattern`, `cost-aware-llm-pipeline`, `skill-stocktake`
-- **AgentShield integration** — `/security-scan` skill runs AgentShield directly from Claude Code; 1282 tests, 102 rules
-- **GitHub Marketplace** — ECC Tools GitHub App live at [github.com/marketplace/ecc-tools](https://github.com/marketplace/ecc-tools) with free/pro/enterprise tiers
-- **30+ community PRs merged** — Contributions from 30 contributors across 6 languages
-- **978 internal tests** — Expanded validation suite across agents, skills, commands, hooks, and rules
+- **Suporte ao Codex CLI** — O novo comando `/codex-setup` gera `codex.md` para compatibilidade com o OpenAI Codex CLI
+- **7 novas skills** — `search-first`, `swift-actor-persistence`, `swift-protocol-di-testing`, `regex-vs-llm-structured-text`, `content-hash-cache-pattern`, `cost-aware-llm-pipeline`, `skill-stocktake`
+- **Integração com AgentShield** — A skill `/security-scan` executa o AgentShield diretamente do Claude Code; 1282 testes, 102 regras
+- **GitHub Marketplace** — O ECC Tools GitHub App está no ar em [github.com/marketplace/ecc-tools](https://github.com/marketplace/ecc-tools) com níveis free/pro/enterprise
+- **30+ PRs da comunidade mesclados** — Contribuições de 30 contribuidores em 6 linguagens
+- **978 testes internos** — Suíte de validação expandida em agents, skills, comandos, hooks e regras
 
-### v1.4.1 — Bug Fix (Feb 2026)
+### v1.4.1 — Correção de Bug (fev. 2026)
 
-- **Fixed instinct import content loss** — `parse_instinct_file()` was silently dropping all content after frontmatter (Action, Evidence, Examples sections) during `/instinct-import`. ([#148](https://github.com/affaan-m/ECC/issues/148), [#161](https://github.com/affaan-m/ECC/pull/161))
+- **Corrigida a perda de conteúdo na importação de instintos** — `parse_instinct_file()` estava silenciosamente descartando todo o conteúdo após o frontmatter (seções Action, Evidence, Examples) durante `/instinct-import`. ([#148](https://github.com/affaan-m/ECC/issues/148), [#161](https://github.com/affaan-m/ECC/pull/161))
 
-### v1.4.0 — Multi-Language Rules, Installation Wizard & PM2 (Feb 2026)
+### v1.4.0 — Regras Multilíngue, Assistente de Instalação e PM2 (fev. 2026)
 
-- **Interactive installation wizard** — New `configure-ecc` skill provides guided setup with merge/overwrite detection
-- **PM2 & multi-agent orchestration** — 6 new commands (`/pm2`, `/multi-plan`, `/multi-execute`, `/multi-backend`, `/multi-frontend`, `/multi-workflow`) for managing complex multi-service workflows
-- **Multi-language rules architecture** — Rules restructured from flat files into `common/` + `typescript/` + `python/` + `golang/` directories. Install only the languages you need
-- **Chinese (zh-CN) translations** — Complete translation of all agents, commands, skills, and rules (80+ files)
-- **GitHub Sponsors support** — Sponsor the project via GitHub Sponsors
-- **Enhanced CONTRIBUTING.md** — Detailed PR templates for each contribution type
+- **Assistente interativo de instalação** — A nova skill `configure-ecc` fornece configuração guiada com detecção de merge/sobrescrita
+- **PM2 e orquestração multiagente** — 6 novos comandos (`/pm2`, `/multi-plan`, `/multi-execute`, `/multi-backend`, `/multi-frontend`, `/multi-workflow`) para gerenciar fluxos de trabalho complexos de múltiplos serviços
+- **Arquitetura de regras multilíngue** — Regras reestruturadas de arquivos planos para os diretórios `common/` + `typescript/` + `python/` + `golang/`. Instale apenas as linguagens de que você precisa
+- **Traduções para chinês (zh-CN)** — Tradução completa de todos os agents, comandos, skills e regras (80+ arquivos)
+- **Suporte a GitHub Sponsors** — Patrocine o projeto via GitHub Sponsors
+- **CONTRIBUTING.md aprimorado** — Templates detalhados de PR para cada tipo de contribuição
 
-### v1.3.0 — OpenCode Plugin Support (Feb 2026)
+### v1.3.0 — Suporte ao Plugin OpenCode (fev. 2026)
 
-- **Full OpenCode integration** — 12 agents, 24 commands, 16 skills with hook support via OpenCode's plugin system (20+ event types)
-- **3 native custom tools** — run-tests, check-coverage, security-audit
-- **LLM documentation** — `llms.txt` for comprehensive OpenCode docs
+- **Integração completa com OpenCode** — 12 agents, 24 comandos, 16 skills com suporte a hooks via sistema de plugins do OpenCode (20+ tipos de eventos)
+- **3 ferramentas personalizadas nativas** — run-tests, check-coverage, security-audit
+- **Documentação para LLM** — `llms.txt` para docs abrangentes do OpenCode
 
-### v1.2.0 — Unified Commands & Skills (Feb 2026)
+### v1.2.0 — Comandos e Skills Unificados (fev. 2026)
 
-- **Python/Django support** — Django patterns, security, TDD, and verification skills
-- **Java Spring Boot skills** — Patterns, security, TDD, and verification for Spring Boot
-- **Session management** — `/sessions` command for session history
-- **Continuous learning v2** — Instinct-based learning with confidence scoring, import/export, evolution
+- **Suporte a Python/Django** — Skills de padrões, segurança, TDD e verificação para Django
+- **Skills de Java Spring Boot** — Padrões, segurança, TDD e verificação para Spring Boot
+- **Gerenciamento de sessão** — Comando `/sessions` para histórico de sessões
+- **Aprendizado contínuo v2** — Aprendizado baseado em instintos com pontuação de confiança, importação/exportação, evolução
 
-See the full changelog in [Releases](https://github.com/affaan-m/ECC/releases).
+Veja o changelog completo em [Releases](https://github.com/affaan-m/ECC/releases).
 
 ---
 
-## Quick Start
+## Início Rápido
 
-Get up and running in under 2 minutes:
+Coloque tudo em funcionamento em menos de 2 minutos:
 
-### Pick one path only
+### Escolha apenas um caminho
 
-Most Claude Code users should use exactly one install path:
+A maioria dos usuários do Claude Code deve usar exatamente um caminho de instalação:
 
-- **Recommended default:** install the Claude Code plugin, then copy only the rule folders you actually want.
-- **Use the manual installer only if** you want finer-grained control, want to avoid the plugin path entirely, or your Claude Code build has trouble resolving the self-hosted marketplace entry.
-- **Do not stack install methods.** The most common broken setup is: `/plugin install` first, then `install.sh --profile full` or `npx ecc-install --profile full` afterward.
+- **Padrão recomendado:** instale o plugin do Claude Code e depois copie apenas as pastas de regras que você realmente quer.
+- **Use o instalador manual somente se** você quiser controle mais granular, quiser evitar totalmente o caminho do plugin ou sua build do Claude Code tiver dificuldade em resolver a entrada de marketplace auto-hospedada.
+- **Não empilhe métodos de instalação.** A configuração quebrada mais comum é: rodar `/plugin install` primeiro e, depois, `install.sh --profile full` ou `npx ecc-install --profile full`.
 
-If you already layered multiple installs and things look duplicated, skip straight to [Reset / Uninstall ECC](#reset--uninstall-ecc).
+Se você já sobrepôs várias instalações e tudo parece duplicado, pule direto para [Resetar / Desinstalar o ECC](#reset--uninstall-ecc).
 
-### Low-context / no-hooks path
+### Caminho de baixo contexto / sem hooks
 
-If hooks feel too global or you only want ECC's rules, agents, commands, and core workflow skills, skip the plugin and use the minimal manual profile:
+Se os hooks parecerem globais demais ou você quiser apenas as regras, agents, comandos e skills de fluxo de trabalho central do ECC, pule o plugin e use o perfil manual mínimo:
 
 ```bash
 ./install.sh --profile minimal --target claude
@@ -266,110 +266,110 @@ If hooks feel too global or you only want ECC's rules, agents, commands, and cor
 
 ```powershell
 .\install.ps1 --profile minimal --target claude
-# or
+# ou
 npx ecc-install --profile minimal --target claude
 ```
 
-This profile intentionally excludes `hooks-runtime`.
+Esse perfil exclui intencionalmente `hooks-runtime`.
 
-If you want the normal core profile but need hooks off, use:
+Se você quiser o perfil core normal, mas precisar dos hooks desligados, use:
 
 ```bash
 ./install.sh --profile core --without baseline:hooks --target claude
 ```
 
-Add hooks later only if you want runtime enforcement:
+Adicione os hooks depois somente se quiser aplicação em runtime:
 
 ```bash
 ./install.sh --target claude --modules hooks-runtime
 ```
 
-### Find the right components first
+### Encontre os componentes certos primeiro
 
-If you are not sure which ECC profile or component to install, ask the packaged advisor from any project:
+Se você não tem certeza de qual perfil ou componente do ECC instalar, pergunte ao consultor empacotado a partir de qualquer projeto:
 
 ```bash
 npx ecc consult "security reviews" --target claude
 ```
 
-It returns matching components, related profiles, and preview/install commands. Use the preview command before installing if you want to inspect the exact file plan.
+Ele retorna componentes correspondentes, perfis relacionados e comandos de preview/instalação. Use o comando de preview antes de instalar se quiser inspecionar o plano exato de arquivos.
 
-For production ML/MLOps workflows, keep the install opt-in and component-scoped:
+Para fluxos de trabalho de ML/MLOps em produção, mantenha a instalação opt-in e com escopo por componente:
 
 ```bash
 npx ecc consult "mlops training model deployment" --target claude
 npx ecc install --profile minimal --target claude --with capability:machine-learning
 ```
 
-### Step 1: Install the Plugin (Recommended)
+### Passo 1: Instale o Plugin (Recomendado)
 
-> NOTE: The plugin is convenient, but the OSS installer below is still the most reliable path if your Claude Code build has trouble resolving self-hosted marketplace entries.
+> NOTA: O plugin é conveniente, mas o instalador OSS abaixo ainda é o caminho mais confiável se sua build do Claude Code tiver dificuldade em resolver entradas de marketplace auto-hospedadas.
 
 ```bash
-# Add marketplace
+# Adicionar marketplace
 /plugin marketplace add https://github.com/affaan-m/ECC
 
-# Install plugin
+# Instalar plugin
 /plugin install ecc@ecc
 ```
 
-### Naming + Migration Note
+### Nota sobre Nomenclatura + Migração
 
-ECC now has three public identifiers, and they are not interchangeable:
+O ECC agora tem três identificadores públicos, e eles não são intercambiáveis:
 
-- GitHub source repo: `affaan-m/ECC`
-- Claude marketplace/plugin identifier: `ecc@ecc`
-- npm package: `ecc-universal`
+- Repositório-fonte no GitHub: `affaan-m/ECC`
+- Identificador de marketplace/plugin do Claude: `ecc@ecc`
+- Pacote npm: `ecc-universal`
 
-This is intentional. Anthropic marketplace/plugin installs are keyed by a canonical plugin identifier, so ECC uses `ecc@ecc` to keep tool names and slash-command namespaces short enough for strict Desktop/API validators. Older posts may still show the former long marketplace identifier; treat that as a legacy alias only. Separately, the npm package stayed on `ecc-universal`, so npm installs and marketplace installs intentionally use different names.
+Isso é intencional. As instalações de marketplace/plugin da Anthropic são indexadas por um identificador canônico de plugin, então o ECC usa `ecc@ecc` para manter os nomes de ferramentas e os namespaces de slash-command curtos o suficiente para validadores estritos de Desktop/API. Posts mais antigos ainda podem mostrar o antigo identificador de marketplace longo; trate-o apenas como um alias legado. Separadamente, o pacote npm permaneceu como `ecc-universal`, então instalações via npm e via marketplace usam intencionalmente nomes diferentes.
 
-### Step 2: Install Rules Only If You Need Them
+### Passo 2: Instale as Regras Apenas Se Você Precisar Delas
 
-> WARNING: **Important:** Claude Code plugins cannot distribute `rules` automatically.
+> WARNING: **Importante:** Os plugins do Claude Code não conseguem distribuir `rules` automaticamente.
 >
-> If you already installed ECC via `/plugin install`, **do not run `./install.sh --profile full`, `.\install.ps1 --profile full`, or `npx ecc-install --profile full` afterward**. The plugin already loads ECC skills, commands, and hooks. Running the full installer after a plugin install copies those same surfaces into your user directories and can create duplicate skills plus duplicate runtime behavior.
+> Se você já instalou o ECC via `/plugin install`, **não execute `./install.sh --profile full`, `.\install.ps1 --profile full` nem `npx ecc-install --profile full` depois disso**. O plugin já carrega skills, comandos e hooks do ECC. Executar o instalador completo após uma instalação de plugin copia essas mesmas superfícies para seus diretórios de usuário e pode criar skills duplicadas além de comportamento de runtime duplicado.
 >
-> For plugin installs, manually copy only the `rules/` directories you want under `~/.claude/rules/ecc/`. Start with `rules/common` plus one language or framework pack you actually use. Do not copy every rules directory unless you explicitly want all of that context in Claude.
+> Para instalações via plugin, copie manualmente apenas os diretórios de `rules/` que você quer para dentro de `~/.claude/rules/ecc/`. Comece com `rules/common` mais um pacote de linguagem ou framework que você realmente use. Não copie todos os diretórios de regras a menos que queira explicitamente todo esse contexto no Claude.
 >
-> Use the full installer only when you are doing a fully manual ECC install instead of the plugin path.
+> Use o instalador completo apenas quando estiver fazendo uma instalação totalmente manual do ECC em vez do caminho do plugin.
 >
-> If your local Claude setup was wiped or reset, that does not mean you need to repurchase ECC. Start with `node scripts/ecc.js list-installed`, then run `node scripts/ecc.js doctor` and `node scripts/ecc.js repair` before reinstalling anything. That usually restores ECC-managed files without rebuilding your setup. If the problem is account or marketplace access for ECC Tools, handle billing/account recovery separately.
+> Se sua configuração local do Claude foi apagada ou resetada, isso não significa que você precisa comprar o ECC novamente. Comece com `node scripts/ecc.js list-installed`, depois execute `node scripts/ecc.js doctor` e `node scripts/ecc.js repair` antes de reinstalar qualquer coisa. Isso normalmente restaura os arquivos gerenciados pelo ECC sem reconstruir sua configuração. Se o problema for acesso à conta ou ao marketplace para o ECC Tools, trate a recuperação de cobrança/conta separadamente.
 
 ```bash
-# Clone the repo first
+# Clone o repositório primeiro
 git clone https://github.com/affaan-m/ECC.git
 cd ECC
 
-# Install dependencies (pick your package manager)
-npm install        # or: pnpm install | yarn install | bun install
+# Instale as dependências (escolha seu gerenciador de pacotes)
+npm install        # ou: pnpm install | yarn install | bun install
 
-# Plugin install path: copy only ECC rules into an ECC-owned namespace
+# Caminho de instalação por plugin: copie apenas as regras do ECC para um namespace próprio do ECC
 mkdir -p ~/.claude/rules/ecc
 cp -R rules/common ~/.claude/rules/ecc/
 cp -R rules/typescript ~/.claude/rules/ecc/
 
-# Fully manual ECC install path (use this instead of /plugin install)
+# Caminho de instalação totalmente manual do ECC (use isto em vez de /plugin install)
 # ./install.sh --profile full
 ```
 
 ```powershell
 # Windows PowerShell
 
-# Plugin install path: copy only ECC rules into an ECC-owned namespace
+# Caminho de instalação por plugin: copie apenas as regras do ECC para um namespace próprio do ECC
 New-Item -ItemType Directory -Force -Path "$HOME/.claude/rules/ecc" | Out-Null
 Copy-Item -Recurse rules/common "$HOME/.claude/rules/ecc/"
 Copy-Item -Recurse rules/typescript "$HOME/.claude/rules/ecc/"
 
-# Fully manual ECC install path (use this instead of /plugin install)
+# Caminho de instalação totalmente manual do ECC (use isto em vez de /plugin install)
 # .\install.ps1 --profile full
 # npx ecc-install --profile full
 ```
 
-For manual install instructions see the README in the `rules/` folder. When copying rules manually, copy the whole language directory (for example `rules/common` or `rules/golang`), not the files inside it, so relative references keep working and filenames do not collide.
+Para instruções de instalação manual, veja o README na pasta `rules/`. Ao copiar regras manualmente, copie o diretório de linguagem inteiro (por exemplo `rules/common` ou `rules/golang`), e não os arquivos dentro dele, para que as referências relativas continuem funcionando e os nomes de arquivo não colidam.
 
-### Fully manual install (Fallback)
+### Instalação totalmente manual (Fallback)
 
-Use this only if you are intentionally skipping the plugin path:
+Use isto apenas se você estiver pulando intencionalmente o caminho do plugin:
 
 ```bash
 ./install.sh --profile full
@@ -377,30 +377,30 @@ Use this only if you are intentionally skipping the plugin path:
 
 ```powershell
 .\install.ps1 --profile full
-# or
+# ou
 npx ecc-install --profile full
 ```
 
-If you choose this path, stop there. Do not also run `/plugin install`.
+Se você escolher esse caminho, pare aí. Não execute também `/plugin install`.
 
 ### Reset / Uninstall ECC
 
-If ECC feels duplicated, intrusive, or broken, do not keep reinstalling it on top of itself.
+Se o ECC parecer duplicado, intrusivo ou quebrado, não fique reinstalando-o sobre si mesmo.
 
-- **Plugin path:** remove the plugin from Claude Code, then delete the specific rule folders you manually copied under `~/.claude/rules/ecc/`.
-- **Manual installer / CLI path:** from the repo root, preview removal first:
+- **Caminho do plugin:** remova o plugin do Claude Code, depois exclua as pastas de regras específicas que você copiou manualmente para `~/.claude/rules/ecc/`.
+- **Caminho do instalador manual / CLI:** a partir da raiz do repositório, faça primeiro um preview da remoção:
 
 ```bash
 node scripts/uninstall.js --dry-run
 ```
 
-Then remove ECC-managed files:
+Depois remova os arquivos gerenciados pelo ECC:
 
 ```bash
 node scripts/uninstall.js
 ```
 
-You can also use the lifecycle wrapper:
+Você também pode usar o wrapper de ciclo de vida:
 
 ```bash
 node scripts/ecc.js list-installed
@@ -409,121 +409,121 @@ node scripts/ecc.js repair
 node scripts/ecc.js uninstall --dry-run
 ```
 
-ECC only removes files recorded in its install-state. It will not delete unrelated files it did not install.
+O ECC remove apenas os arquivos registrados em seu install-state. Ele não excluirá arquivos não relacionados que não tenha instalado.
 
-If you stacked methods, clean up in this order:
+Se você empilhou métodos, faça a limpeza nesta ordem:
 
-1. Remove the Claude Code plugin install.
-2. Run the ECC uninstall command from the repo root to remove install-state-managed files.
-3. Delete any extra rule folders you copied manually and no longer want.
-4. Reinstall once, using a single path.
+1. Remova a instalação do plugin do Claude Code.
+2. Execute o comando de uninstall do ECC a partir da raiz do repositório para remover os arquivos gerenciados pelo install-state.
+3. Exclua quaisquer pastas de regras extras que você copiou manualmente e não quer mais.
+4. Reinstale uma única vez, usando um único caminho.
 
-### Step 3: Start Using
+### Passo 3: Comece a Usar
 
 ```bash
-# Skills are the primary workflow surface.
-# Existing slash-style command names still work while ECC migrates off commands/.
+# Skills são a principal superfície de fluxo de trabalho.
+# Os nomes de comandos no estilo slash existentes ainda funcionam enquanto o ECC migra para fora de commands/.
 
-# Plugin install uses the canonical namespaced form
+# A instalação por plugin usa a forma canônica com namespace
 /ecc:plan "Add user authentication"
 
-# Manual install keeps the shorter slash form:
+# A instalação manual mantém a forma slash mais curta:
 # /plan "Add user authentication"
 
-# Check available commands
+# Verifique os comandos disponíveis
 /plugin list ecc@ecc
 ```
 
-**That's it!** You now have access to 67 agents, 271 skills, and 92 legacy command shims.
+**É isso!** Agora você tem acesso a 67 agents, 271 skills e 92 shims de comandos legados.
 
-### Dashboard GUI
+### Interface Gráfica do Dashboard
 
-Launch the desktop dashboard to visually explore ECC components:
+Inicie o dashboard de desktop para explorar visualmente os componentes do ECC:
 
 ```bash
 npm run dashboard
-# or
+# ou
 python3 ./ecc_dashboard.py
 ```
 
-**Features:**
-- Tabbed interface: Agents, Skills, Commands, Rules, Settings
-- Dark/Light theme toggle
-- Font customization (family & size)
-- Project logo in header and taskbar
-- Search and filter across all components
+**Recursos:**
+- Interface em abas: Agents, Skills, Comandos, Regras, Configurações
+- Alternância de tema Claro/Escuro
+- Personalização de fontes (família e tamanho)
+- Logotipo do projeto no cabeçalho e na barra de tarefas
+- Busca e filtro em todos os componentes
 
-### Multi-model commands require additional setup
+### Comandos multimodelo exigem configuração adicional
 
-> WARNING: `multi-*` commands are **not** covered by the base plugin/rules install above.
+> WARNING: Os comandos `multi-*` **não** são cobertos pela instalação base de plugin/regras acima.
 >
-> To use `/multi-plan`, `/multi-execute`, `/multi-backend`, `/multi-frontend`, and `/multi-workflow`, you must also install the `ccg-workflow` runtime.
+> Para usar `/multi-plan`, `/multi-execute`, `/multi-backend`, `/multi-frontend` e `/multi-workflow`, você também precisa instalar o runtime `ccg-workflow`.
 >
-> Initialize it with `npx ccg-workflow`.
+> Inicialize-o com `npx ccg-workflow`.
 >
-> That runtime provides the external dependencies these commands expect, including:
+> Esse runtime fornece as dependências externas que esses comandos esperam, incluindo:
 > - `~/.claude/bin/codeagent-wrapper`
 > - `~/.claude/.ccg/prompts/*`
 >
-> Without `ccg-workflow`, these `multi-*` commands will not run correctly.
+> Sem o `ccg-workflow`, esses comandos `multi-*` não serão executados corretamente.
 
 ---
 
-## Cross-Platform Support
+## Suporte Multiplataforma
 
-This plugin now fully supports **Windows, macOS, and Linux**, alongside tight integration across major IDEs (Cursor, Zed, OpenCode, Antigravity) and CLI harnesses. All hooks and scripts have been rewritten in Node.js for maximum compatibility.
+Este plugin agora oferece suporte completo a **Windows, macOS e Linux**, junto com integração estreita com as principais IDEs (Cursor, Zed, OpenCode, Antigravity) e harnesses de CLI. Todos os hooks e scripts foram reescritos em Node.js para máxima compatibilidade.
 
-### Package Manager Detection
+### Detecção do Gerenciador de Pacotes
 
-The plugin automatically detects your preferred package manager (npm, pnpm, yarn, or bun) with the following priority:
+O plugin detecta automaticamente seu gerenciador de pacotes preferido (npm, pnpm, yarn ou bun) com a seguinte prioridade:
 
-1. **Environment variable**: `CLAUDE_PACKAGE_MANAGER`
-2. **Project config**: `.claude/package-manager.json`
-3. **package.json**: `packageManager` field
-4. **Lock file**: Detection from package-lock.json, yarn.lock, pnpm-lock.yaml, or bun.lockb
-5. **Global config**: `~/.claude/package-manager.json`
-6. **Fallback**: First available package manager
+1. **Variável de ambiente**: `CLAUDE_PACKAGE_MANAGER`
+2. **Configuração do projeto**: `.claude/package-manager.json`
+3. **package.json**: campo `packageManager`
+4. **Arquivo de lock**: Detecção a partir de package-lock.json, yarn.lock, pnpm-lock.yaml ou bun.lockb
+5. **Configuração global**: `~/.claude/package-manager.json`
+6. **Fallback**: Primeiro gerenciador de pacotes disponível
 
-To set your preferred package manager:
+Para definir seu gerenciador de pacotes preferido:
 
 ```bash
-# Via environment variable
+# Via variável de ambiente
 export CLAUDE_PACKAGE_MANAGER=pnpm
 
-# Via global config
+# Via configuração global
 node scripts/setup-package-manager.js --global pnpm
 
-# Via project config
+# Via configuração do projeto
 node scripts/setup-package-manager.js --project bun
 
-# Detect current setting
+# Detectar a configuração atual
 node scripts/setup-package-manager.js --detect
 ```
 
-Or use the `/setup-pm` command in Claude Code.
+Ou use o comando `/setup-pm` no Claude Code.
 
-### Hook Runtime Controls
+### Controles de Runtime de Hooks
 
-Use runtime flags to tune strictness or disable specific hooks temporarily:
+Use flags de runtime para ajustar a rigidez ou desabilitar hooks específicos temporariamente:
 
 ```bash
-# Hook strictness profile (default: standard)
+# Perfil de rigidez de hooks (padrão: standard)
 export ECC_HOOK_PROFILE=standard
 
-# Comma-separated hook IDs to disable
+# IDs de hooks separados por vírgula para desabilitar
 export ECC_DISABLED_HOOKS="pre:bash:tmux-reminder,post:edit:typecheck"
 
-# Cap SessionStart additional context (default: 8000 chars)
+# Limite do contexto adicional do SessionStart (padrão: 8000 caracteres)
 export ECC_SESSION_START_MAX_CHARS=4000
 
-# Disable SessionStart additional context entirely for low-context/local-model setups
+# Desabilita totalmente o contexto adicional do SessionStart para setups de baixo contexto/modelo local
 export ECC_SESSION_START_CONTEXT=off
 
-# Session-tmp retention window in days (default: 30).
-# Set to 0, off, false, disabled, never, or none to keep all sessions (disable pruning).
+# Janela de retenção de session-tmp em dias (padrão: 30).
+# Defina como 0, off, false, disabled, never ou none para manter todas as sessões (desabilitar a poda).
 export ECC_SESSION_RETENTION_DAYS=14
 
-# Keep context/scope/loop warnings but suppress API-rate cost estimates
+# Mantém os avisos de contexto/escopo/loop, mas suprime estimativas de custo por taxa de API
 export ECC_CONTEXT_MONITOR_COST_WARNINGS=off
 ```
 
@@ -534,369 +534,369 @@ Windows PowerShell:
 [Environment]::SetEnvironmentVariable('ECC_SESSION_RETENTION_DAYS', '14', 'User')
 ```
 
-### Agent data home (multi-harness isolation)
+### Diretório de dados do agente (isolamento multi-harness)
 
-Memory persistence hooks (session summaries, learned skills, session aliases, metrics) store data under a single agent data root. By default that root is `~/.claude`. When you use ECC in both Claude Code and Cursor on the same machine, set a separate root for Cursor so the two environments do not overwrite each other's session files:
+Os hooks de persistência de memória (resumos de sessão, skills aprendidas, aliases de sessão, métricas) armazenam dados sob uma única raiz de dados do agente. Por padrão, essa raiz é `~/.claude`. Quando você usa o ECC tanto no Claude Code quanto no Cursor na mesma máquina, defina uma raiz separada para o Cursor para que os dois ambientes não sobrescrevam os arquivos de sessão um do outro:
 
 ```bash
-# Cursor-only boundary (Claude Code keeps the default ~/.claude)
+# Limite só para o Cursor (o Claude Code mantém o padrão ~/.claude)
 export ECC_AGENT_DATA_HOME="$HOME/.cursor/ecc"
 ```
 
-Paths resolved under that root include:
+Os caminhos resolvidos sob essa raiz incluem:
 
-- `$ECC_AGENT_DATA_HOME/session-data/` — session summaries
-- `$ECC_AGENT_DATA_HOME/skills/learned/` — learned skills from evaluate-session
-- `$ECC_AGENT_DATA_HOME/session-aliases.json` — session aliases
-- `$ECC_AGENT_DATA_HOME/metrics/` — cost and activity metrics
+- `$ECC_AGENT_DATA_HOME/session-data/` — resumos de sessão
+- `$ECC_AGENT_DATA_HOME/skills/learned/` — skills aprendidas pelo evaluate-session
+- `$ECC_AGENT_DATA_HOME/session-aliases.json` — aliases de sessão
+- `$ECC_AGENT_DATA_HOME/metrics/` — métricas de custo e atividade
 
-See [affaan-m/ECC#2065](https://github.com/affaan-m/ECC/issues/2065).
+Veja [affaan-m/ECC#2065](https://github.com/affaan-m/ECC/issues/2065).
 
 ---
 
-## What's Inside
+## O Que Há Dentro
 
-This repo is a **Claude Code plugin** - install it directly or copy components manually.
+Este repositório é um **plugin do Claude Code** - instale-o diretamente ou copie componentes manualmente.
 
 ```
 ECC/
-|-- .claude-plugin/   # Plugin and marketplace manifests
-|   |-- plugin.json         # Plugin metadata and component paths
-|   |-- marketplace.json    # Marketplace catalog for /plugin marketplace add
+|-- .claude-plugin/   # Manifestos de plugin e marketplace
+|   |-- plugin.json         # Metadados do plugin e caminhos de componentes
+|   |-- marketplace.json    # Catálogo de marketplace para /plugin marketplace add
 |
-|-- agents/           # 67 specialized subagents for delegation
-|   |-- planner.md           # Feature implementation planning
-|   |-- architect.md         # System design decisions
-|   |-- tdd-guide.md         # Test-driven development
-|   |-- code-reviewer.md     # Quality and security review
-|   |-- security-reviewer.md # Vulnerability analysis
+|-- agents/           # 67 subagentes especializados para delegação
+|   |-- planner.md           # Planejamento de implementação de feature
+|   |-- architect.md         # Decisões de design de sistema
+|   |-- tdd-guide.md         # Desenvolvimento orientado a testes
+|   |-- code-reviewer.md     # Review de qualidade e segurança
+|   |-- security-reviewer.md # Análise de vulnerabilidades
 |   |-- build-error-resolver.md
-|   |-- e2e-runner.md        # Playwright E2E testing
-|   |-- refactor-cleaner.md  # Dead code cleanup
-|   |-- doc-updater.md       # Documentation sync
-|   |-- docs-lookup.md       # Documentation/API lookup
-|   |-- chief-of-staff.md    # Communication triage and drafts
-|   |-- loop-operator.md     # Autonomous loop execution
-|   |-- harness-optimizer.md # Harness config tuning
-|   |-- cpp-reviewer.md      # C++ code review
-|   |-- cpp-build-resolver.md # C++ build error resolution
-|   |-- fsharp-reviewer.md   # F# functional code review
-|   |-- go-reviewer.md       # Go code review
-|   |-- go-build-resolver.md # Go build error resolution
-|   |-- python-reviewer.md   # Python code review
-|   |-- database-reviewer.md # Database/Supabase review
-|   |-- typescript-reviewer.md # TypeScript/JavaScript code review
-|   |-- java-reviewer.md     # Java/Spring Boot code review
-|   |-- java-build-resolver.md # Java/Maven/Gradle build errors
-|   |-- kotlin-reviewer.md   # Kotlin/Android/KMP code review
-|   |-- kotlin-build-resolver.md # Kotlin/Gradle build errors
-|   |-- harmonyos-app-resolver.md # HarmonyOS/ArkTS app development
-|   |-- rust-reviewer.md     # Rust code review
-|   |-- rust-build-resolver.md # Rust build error resolution
-|   |-- pytorch-build-resolver.md # PyTorch/CUDA training errors
-|   |-- mle-reviewer.md      # Production ML pipeline, eval, serving, and monitoring review
+|   |-- e2e-runner.md        # Testes E2E com Playwright
+|   |-- refactor-cleaner.md  # Limpeza de código morto
+|   |-- doc-updater.md        # Sincronização de documentação
+|   |-- docs-lookup.md       # Consulta de documentação/API
+|   |-- chief-of-staff.md    # Triagem de comunicação e rascunhos
+|   |-- loop-operator.md     # Execução autônoma de loop
+|   |-- harness-optimizer.md # Ajuste de configuração de harness
+|   |-- cpp-reviewer.md      # Review de código C++
+|   |-- cpp-build-resolver.md # Resolução de erros de build em C++
+|   |-- fsharp-reviewer.md   # Review de código funcional F#
+|   |-- go-reviewer.md       # Review de código Go
+|   |-- go-build-resolver.md # Resolução de erros de build em Go
+|   |-- python-reviewer.md   # Review de código Python
+|   |-- database-reviewer.md # Review de banco de dados/Supabase
+|   |-- typescript-reviewer.md # Review de código TypeScript/JavaScript
+|   |-- java-reviewer.md     # Review de código Java/Spring Boot
+|   |-- java-build-resolver.md # Erros de build Java/Maven/Gradle
+|   |-- kotlin-reviewer.md   # Review de código Kotlin/Android/KMP
+|   |-- kotlin-build-resolver.md # Erros de build Kotlin/Gradle
+|   |-- harmonyos-app-resolver.md # Desenvolvimento de apps HarmonyOS/ArkTS
+|   |-- rust-reviewer.md     # Review de código Rust
+|   |-- rust-build-resolver.md # Resolução de erros de build em Rust
+|   |-- pytorch-build-resolver.md # Erros de treinamento PyTorch/CUDA
+|   |-- mle-reviewer.md      # Review de pipeline de ML em produção, eval, serving e monitoramento
 |
-|-- skills/           # Workflow definitions and domain knowledge
-|   |-- coding-standards/           # Language best practices
-|   |-- clickhouse-io/              # ClickHouse analytics, queries, data engineering
-|   |-- backend-patterns/           # API, database, caching patterns
-|   |-- frontend-patterns/          # React, Next.js patterns
-|   |-- frontend-slides/            # HTML slide decks and PPTX-to-web presentation workflows (NEW)
-|   |-- article-writing/            # Long-form writing in a supplied voice without generic AI tone (NEW)
-|   |-- content-engine/             # Multi-platform social content and repurposing workflows (NEW)
-|   |-- market-research/            # Source-attributed market, competitor, and investor research (NEW)
-|   |-- investor-materials/         # Pitch decks, one-pagers, memos, and financial models (NEW)
-|   |-- investor-outreach/          # Personalized fundraising outreach and follow-up (NEW)
-|   |-- continuous-learning/        # Legacy v1 Stop-hook pattern extraction
-|   |-- continuous-learning-v2/     # Instinct-based learning with confidence scoring
-|   |-- iterative-retrieval/        # Progressive context refinement for subagents
-|   |-- strategic-compact/          # Manual compaction suggestions (Longform Guide)
-|   |-- tdd-workflow/               # TDD methodology
-|   |-- security-review/            # Security checklist
-|   |-- eval-harness/               # Verification loop evaluation (Longform Guide)
-|   |-- verification-loop/          # Continuous verification (Longform Guide)
-|   |-- videodb/                   # Video and audio: ingest, search, edit, generate, stream (NEW)
-|   |-- golang-patterns/            # Go idioms and best practices
-|   |-- golang-testing/             # Go testing patterns, TDD, benchmarks
-|   |-- cpp-coding-standards/         # C++ coding standards from C++ Core Guidelines (NEW)
-|   |-- cpp-testing/                # C++ testing with GoogleTest, CMake/CTest (NEW)
-|   |-- django-patterns/            # Django patterns, models, views (NEW)
-|   |-- django-security/            # Django security best practices (NEW)
-|   |-- django-tdd/                 # Django TDD workflow (NEW)
-|   |-- django-verification/        # Django verification loops (NEW)
-|   |-- laravel-patterns/           # Laravel architecture patterns (NEW)
-|   |-- laravel-security/           # Laravel security best practices (NEW)
-|   |-- laravel-tdd/                # Laravel TDD workflow (NEW)
-|   |-- laravel-verification/       # Laravel verification loops (NEW)
-|   |-- python-patterns/            # Python idioms and best practices (NEW)
-|   |-- python-testing/             # Python testing with pytest (NEW)
-|   |-- quarkus-patterns/            # Java Quarkus patterns (NEW)
-|   |-- quarkus-security/            # Quarkus security (NEW)
-|   |-- quarkus-tdd/                 # Quarkus TDD (NEW)
-|   |-- quarkus-verification/        # Quarkus verification (NEW)
-|   |-- springboot-patterns/        # Java Spring Boot patterns (NEW)
-|   |-- springboot-security/        # Spring Boot security (NEW)
-|   |-- springboot-tdd/             # Spring Boot TDD (NEW)
-|   |-- springboot-verification/    # Spring Boot verification (NEW)
-|   |-- configure-ecc/              # Interactive installation wizard (NEW)
-|   |-- security-scan/              # AgentShield security auditor integration (NEW)
-|   |-- java-coding-standards/     # Java coding standards (NEW)
-|   |-- jpa-patterns/              # JPA/Hibernate patterns (NEW)
-|   |-- postgres-patterns/         # PostgreSQL optimization patterns (NEW)
-|   |-- nutrient-document-processing/ # Document processing with Nutrient API (NEW)
-|   |-- docs/examples/project-guidelines-template.md  # Template for project-specific skills
-|   |-- database-migrations/         # Migration patterns (Prisma, Drizzle, Django, Go) (NEW)
-|   |-- api-design/                  # REST API design, pagination, error responses (NEW)
+|-- skills/           # Definições de fluxo de trabalho e conhecimento de domínio
+|   |-- coding-standards/           # Boas práticas de linguagem
+|   |-- clickhouse-io/              # Analytics ClickHouse, queries, engenharia de dados
+|   |-- backend-patterns/           # Padrões de API, banco de dados, caching
+|   |-- frontend-patterns/          # Padrões de React, Next.js
+|   |-- frontend-slides/            # Decks de slides HTML e fluxos de PPTX-para-web (NEW)
+|   |-- article-writing/            # Escrita long-form em uma voz fornecida sem o tom genérico de IA (NEW)
+|   |-- content-engine/             # Conteúdo social multiplataforma e fluxos de reaproveitamento (NEW)
+|   |-- market-research/            # Pesquisa de mercado, concorrentes e investidores com atribuição de fontes (NEW)
+|   |-- investor-materials/         # Pitch decks, one-pagers, memos e modelos financeiros (NEW)
+|   |-- investor-outreach/          # Abordagem personalizada de captação e follow-up (NEW)
+|   |-- continuous-learning/        # Padrão legado v1 de extração via Stop-hook
+|   |-- continuous-learning-v2/     # Aprendizado baseado em instintos com pontuação de confiança
+|   |-- iterative-retrieval/        # Refinamento progressivo de contexto para subagentes
+|   |-- strategic-compact/          # Sugestões manuais de compactação (Guia Aprofundado)
+|   |-- tdd-workflow/               # Metodologia TDD
+|   |-- security-review/            # Checklist de segurança
+|   |-- eval-harness/               # Avaliação de loop de verificação (Guia Aprofundado)
+|   |-- verification-loop/          # Verificação contínua (Guia Aprofundado)
+|   |-- videodb/                   # Vídeo e áudio: ingest, busca, edição, geração, stream (NEW)
+|   |-- golang-patterns/            # Idiomas Go e boas práticas
+|   |-- golang-testing/             # Padrões de teste Go, TDD, benchmarks
+|   |-- cpp-coding-standards/         # Padrões de código C++ das C++ Core Guidelines (NEW)
+|   |-- cpp-testing/                # Testes C++ com GoogleTest, CMake/CTest (NEW)
+|   |-- django-patterns/            # Padrões Django, models, views (NEW)
+|   |-- django-security/            # Boas práticas de segurança Django (NEW)
+|   |-- django-tdd/                 # Fluxo de trabalho TDD Django (NEW)
+|   |-- django-verification/        # Loops de verificação Django (NEW)
+|   |-- laravel-patterns/           # Padrões de arquitetura Laravel (NEW)
+|   |-- laravel-security/           # Boas práticas de segurança Laravel (NEW)
+|   |-- laravel-tdd/                # Fluxo de trabalho TDD Laravel (NEW)
+|   |-- laravel-verification/       # Loops de verificação Laravel (NEW)
+|   |-- python-patterns/            # Idiomas Python e boas práticas (NEW)
+|   |-- python-testing/             # Testes Python com pytest (NEW)
+|   |-- quarkus-patterns/            # Padrões Java Quarkus (NEW)
+|   |-- quarkus-security/            # Segurança Quarkus (NEW)
+|   |-- quarkus-tdd/                 # TDD Quarkus (NEW)
+|   |-- quarkus-verification/        # Verificação Quarkus (NEW)
+|   |-- springboot-patterns/        # Padrões Java Spring Boot (NEW)
+|   |-- springboot-security/        # Segurança Spring Boot (NEW)
+|   |-- springboot-tdd/             # TDD Spring Boot (NEW)
+|   |-- springboot-verification/    # Verificação Spring Boot (NEW)
+|   |-- configure-ecc/              # Assistente interativo de instalação (NEW)
+|   |-- security-scan/              # Integração com o auditor de segurança AgentShield (NEW)
+|   |-- java-coding-standards/     # Padrões de código Java (NEW)
+|   |-- jpa-patterns/              # Padrões JPA/Hibernate (NEW)
+|   |-- postgres-patterns/         # Padrões de otimização PostgreSQL (NEW)
+|   |-- nutrient-document-processing/ # Processamento de documentos com a API Nutrient (NEW)
+|   |-- docs/examples/project-guidelines-template.md  # Template para skills específicas de projeto
+|   |-- database-migrations/         # Padrões de migração (Prisma, Drizzle, Django, Go) (NEW)
+|   |-- api-design/                  # Design de API REST, paginação, respostas de erro (NEW)
 |   |-- deployment-patterns/         # CI/CD, Docker, health checks, rollbacks (NEW)
-|   |-- docker-patterns/            # Docker Compose, networking, volumes, container security (NEW)
-|   |-- e2e-testing/                 # Playwright E2E patterns and Page Object Model (NEW)
-|   |-- content-hash-cache-pattern/  # SHA-256 content hash caching for file processing (NEW)
-|   |-- cost-aware-llm-pipeline/     # LLM cost optimization, model routing, budget tracking (NEW)
-|   |-- regex-vs-llm-structured-text/ # Decision framework: regex vs LLM for text parsing (NEW)
-|   |-- swift-actor-persistence/     # Thread-safe Swift data persistence with actors (NEW)
-|   |-- swift-protocol-di-testing/   # Protocol-based DI for testable Swift code (NEW)
-|   |-- search-first/               # Research-before-coding workflow (NEW)
-|   |-- skill-stocktake/            # Audit skills and commands for quality (NEW)
-|   |-- liquid-glass-design/         # iOS 26 Liquid Glass design system (NEW)
-|   |-- foundation-models-on-device/ # Apple on-device LLM with FoundationModels (NEW)
-|   |-- swift-concurrency-6-2/       # Swift 6.2 Approachable Concurrency (NEW)
-|   |-- mle-workflow/               # Production ML data contracts, evals, deployment, monitoring (NEW)
-|   |-- perl-patterns/             # Modern Perl 5.36+ idioms and best practices (NEW)
-|   |-- perl-security/             # Perl security patterns, taint mode, safe I/O (NEW)
-|   |-- perl-testing/              # Perl TDD with Test2::V0, prove, Devel::Cover (NEW)
-|   |-- autonomous-loops/           # Autonomous loop patterns: sequential pipelines, PR loops, DAG orchestration (NEW)
-|   |-- plankton-code-quality/      # Write-time code quality enforcement with Plankton hooks (NEW)
-|   |-- codehealth-mcp/             # Optional CodeScene Code Health MCP skill (opt-in; not enabled by default) (NEW)
+|   |-- docker-patterns/            # Docker Compose, redes, volumes, segurança de contêineres (NEW)
+|   |-- e2e-testing/                 # Padrões E2E com Playwright e Page Object Model (NEW)
+|   |-- content-hash-cache-pattern/  # Caching por hash de conteúdo SHA-256 para processamento de arquivos (NEW)
+|   |-- cost-aware-llm-pipeline/     # Otimização de custo de LLM, roteamento de modelo, rastreamento de orçamento (NEW)
+|   |-- regex-vs-llm-structured-text/ # Framework de decisão: regex vs. LLM para parsing de texto (NEW)
+|   |-- swift-actor-persistence/     # Persistência de dados Swift thread-safe com actors (NEW)
+|   |-- swift-protocol-di-testing/   # DI baseado em protocolo para código Swift testável (NEW)
+|   |-- search-first/               # Fluxo de trabalho pesquisar-antes-de-codar (NEW)
+|   |-- skill-stocktake/            # Auditoria de skills e comandos por qualidade (NEW)
+|   |-- liquid-glass-design/         # Sistema de design Liquid Glass do iOS 26 (NEW)
+|   |-- foundation-models-on-device/ # LLM on-device da Apple com FoundationModels (NEW)
+|   |-- swift-concurrency-6-2/       # Approachable Concurrency do Swift 6.2 (NEW)
+|   |-- mle-workflow/               # Contratos de dados, evals, deployment e monitoramento de ML em produção (NEW)
+|   |-- perl-patterns/             # Idiomas e boas práticas do Perl 5.36+ moderno (NEW)
+|   |-- perl-security/             # Padrões de segurança Perl, taint mode, I/O seguro (NEW)
+|   |-- perl-testing/              # TDD Perl com Test2::V0, prove, Devel::Cover (NEW)
+|   |-- autonomous-loops/           # Padrões de loop autônomo: pipelines sequenciais, loops de PR, orquestração DAG (NEW)
+|   |-- plankton-code-quality/      # Aplicação de qualidade de código em tempo de escrita com hooks Plankton (NEW)
+|   |-- codehealth-mcp/             # Skill MCP opcional do CodeScene Code Health (opt-in; não habilitada por padrão) (NEW)
 |
-|-- commands/         # Maintained slash-entry compatibility; prefer skills/
-|   |-- plan.md             # /plan - Implementation planning
-|   |-- code-review.md      # /code-review - Quality review
-|   |-- build-fix.md        # /build-fix - Fix build errors
-|   |-- refactor-clean.md   # /refactor-clean - Dead code removal
-|   |-- quality-gate.md     # /quality-gate - Verification gate
-|   |-- learn.md            # /learn - Extract patterns mid-session (Longform Guide)
-|   |-- learn-eval.md       # /learn-eval - Extract, evaluate, and save patterns (NEW)
-|   |-- checkpoint.md       # /checkpoint - Save verification state (Longform Guide)
-|   |-- setup-pm.md         # /setup-pm - Configure package manager
-|   |-- go-review.md        # /go-review - Go code review (NEW)
-|   |-- go-test.md          # /go-test - Go TDD workflow (NEW)
-|   |-- go-build.md         # /go-build - Fix Go build errors (NEW)
-|   |-- skill-create.md     # /skill-create - Generate skills from git history (NEW)
-|   |-- instinct-status.md  # /instinct-status - View learned instincts (NEW)
-|   |-- instinct-import.md  # /instinct-import - Import instincts (NEW)
-|   |-- instinct-export.md  # /instinct-export - Export instincts (NEW)
-|   |-- evolve.md           # /evolve - Cluster instincts into skills
-|   |-- prune.md            # /prune - Delete expired pending instincts (NEW)
-|   |-- pm2.md              # /pm2 - PM2 service lifecycle management (NEW)
-|   |-- multi-plan.md       # /multi-plan - Multi-agent task decomposition (NEW)
-|   |-- multi-execute.md    # /multi-execute - Orchestrated multi-agent workflows (NEW)
-|   |-- multi-backend.md    # /multi-backend - Backend multi-service orchestration (NEW)
-|   |-- multi-frontend.md   # /multi-frontend - Frontend multi-service orchestration (NEW)
-|   |-- multi-workflow.md   # /multi-workflow - General multi-service workflows (NEW)
-|   |-- sessions.md         # /sessions - Session history management
-|   |-- test-coverage.md    # /test-coverage - Test coverage analysis
-|   |-- update-docs.md      # /update-docs - Update documentation
-|   |-- update-codemaps.md  # /update-codemaps - Update codemaps
-|   |-- python-review.md    # /python-review - Python code review (NEW)
-|-- legacy-command-shims/   # Opt-in archive for retired shims such as /tdd and /eval
-|   |-- tdd.md              # /tdd - Prefer the tdd-workflow skill
-|   |-- e2e.md              # /e2e - Prefer the e2e-testing skill
-|   |-- eval.md             # /eval - Prefer the eval-harness skill
-|   |-- verify.md           # /verify - Prefer the verification-loop skill
-|   |-- orchestrate.md      # /orchestrate - Prefer dmux-workflows or multi-workflow
+|-- commands/         # Compatibilidade de entrada slash mantida; prefira skills/
+|   |-- plan.md             # /plan - Planejamento de implementação
+|   |-- code-review.md      # /code-review - Review de qualidade
+|   |-- build-fix.md        # /build-fix - Corrigir erros de build
+|   |-- refactor-clean.md   # /refactor-clean - Remoção de código morto
+|   |-- quality-gate.md     # /quality-gate - Gate de verificação
+|   |-- learn.md            # /learn - Extrair padrões no meio da sessão (Guia Aprofundado)
+|   |-- learn-eval.md       # /learn-eval - Extrair, avaliar e salvar padrões (NEW)
+|   |-- checkpoint.md       # /checkpoint - Salvar estado de verificação (Guia Aprofundado)
+|   |-- setup-pm.md         # /setup-pm - Configurar gerenciador de pacotes
+|   |-- go-review.md        # /go-review - Review de código Go (NEW)
+|   |-- go-test.md          # /go-test - Fluxo de trabalho TDD Go (NEW)
+|   |-- go-build.md         # /go-build - Corrigir erros de build Go (NEW)
+|   |-- skill-create.md     # /skill-create - Gerar skills a partir do histórico do git (NEW)
+|   |-- instinct-status.md  # /instinct-status - Ver instintos aprendidos (NEW)
+|   |-- instinct-import.md  # /instinct-import - Importar instintos (NEW)
+|   |-- instinct-export.md  # /instinct-export - Exportar instintos (NEW)
+|   |-- evolve.md           # /evolve - Agrupar instintos em skills
+|   |-- prune.md            # /prune - Excluir instintos pendentes expirados (NEW)
+|   |-- pm2.md              # /pm2 - Gerenciamento do ciclo de vida de serviços PM2 (NEW)
+|   |-- multi-plan.md       # /multi-plan - Decomposição de tarefas multiagente (NEW)
+|   |-- multi-execute.md    # /multi-execute - Fluxos de trabalho multiagente orquestrados (NEW)
+|   |-- multi-backend.md    # /multi-backend - Orquestração de múltiplos serviços de backend (NEW)
+|   |-- multi-frontend.md   # /multi-frontend - Orquestração de múltiplos serviços de frontend (NEW)
+|   |-- multi-workflow.md   # /multi-workflow - Fluxos de trabalho gerais de múltiplos serviços (NEW)
+|   |-- sessions.md         # /sessions - Gerenciamento de histórico de sessões
+|   |-- test-coverage.md    # /test-coverage - Análise de cobertura de testes
+|   |-- update-docs.md      # /update-docs - Atualizar documentação
+|   |-- update-codemaps.md  # /update-codemaps - Atualizar codemaps
+|   |-- python-review.md    # /python-review - Review de código Python (NEW)
+|-- legacy-command-shims/   # Arquivo opt-in para shims aposentados como /tdd e /eval
+|   |-- tdd.md              # /tdd - Prefira a skill tdd-workflow
+|   |-- e2e.md              # /e2e - Prefira a skill e2e-testing
+|   |-- eval.md             # /eval - Prefira a skill eval-harness
+|   |-- verify.md           # /verify - Prefira a skill verification-loop
+|   |-- orchestrate.md      # /orchestrate - Prefira dmux-workflows ou multi-workflow
 |
-|-- rules/            # Always-follow guidelines (copy to ~/.claude/rules/ecc/)
-|   |-- README.md            # Structure overview and installation guide
-|   |-- common/              # Language-agnostic principles
-|   |   |-- coding-style.md    # Immutability, file organization
-|   |   |-- git-workflow.md    # Commit format, PR process
-|   |   |-- testing.md         # TDD, 80% coverage requirement
-|   |   |-- performance.md     # Model selection, context management
-|   |   |-- patterns.md        # Design patterns, skeleton projects
-|   |   |-- hooks.md           # Hook architecture, TodoWrite
-|   |   |-- agents.md          # When to delegate to subagents
-|   |   |-- security.md        # Mandatory security checks
-|   |-- typescript/          # TypeScript/JavaScript specific
-|   |-- python/              # Python specific
-|   |-- golang/              # Go specific
-|   |-- swift/               # Swift specific
-|   |-- php/                 # PHP specific (NEW)
-|   |-- arkts/               # HarmonyOS / ArkTS specific
+|-- rules/            # Diretrizes always-follow (copie para ~/.claude/rules/ecc/)
+|   |-- README.md            # Visão geral da estrutura e guia de instalação
+|   |-- common/              # Princípios agnósticos de linguagem
+|   |   |-- coding-style.md    # Imutabilidade, organização de arquivos
+|   |   |-- git-workflow.md    # Formato de commit, processo de PR
+|   |   |-- testing.md         # TDD, requisito de 80% de cobertura
+|   |   |-- performance.md     # Seleção de modelo, gerenciamento de contexto
+|   |   |-- patterns.md        # Design patterns, projetos skeleton
+|   |   |-- hooks.md           # Arquitetura de hooks, TodoWrite
+|   |   |-- agents.md          # Quando delegar para subagentes
+|   |   |-- security.md        # Verificações de segurança obrigatórias
+|   |-- typescript/          # Específico de TypeScript/JavaScript
+|   |-- python/              # Específico de Python
+|   |-- golang/              # Específico de Go
+|   |-- swift/               # Específico de Swift
+|   |-- php/                 # Específico de PHP (NEW)
+|   |-- arkts/               # Específico de HarmonyOS / ArkTS
 |
-|-- hooks/            # Trigger-based automations
-|   |-- README.md                 # Hook documentation, recipes, and customization guide
-|   |-- hooks.json                # All hooks config (PreToolUse, PostToolUse, Stop, etc.)
-|   |-- memory-persistence/       # Session lifecycle hooks (Longform Guide)
-|   |-- strategic-compact/        # Compaction suggestions (Longform Guide)
+|-- hooks/            # Automações baseadas em triggers
+|   |-- README.md                 # Documentação de hooks, receitas e guia de personalização
+|   |-- hooks.json                # Configuração de todos os hooks (PreToolUse, PostToolUse, Stop, etc.)
+|   |-- memory-persistence/       # Hooks de ciclo de vida de sessão (Guia Aprofundado)
+|   |-- strategic-compact/        # Sugestões de compactação (Guia Aprofundado)
 |
-|-- scripts/          # Cross-platform Node.js scripts (NEW)
-|   |-- lib/                     # Shared utilities
-|   |   |-- utils.js             # Cross-platform file/path/system utilities
-|   |   |-- package-manager.js   # Package manager detection and selection
-|   |-- hooks/                   # Hook implementations
-|   |   |-- session-start.js     # Load context on session start
-|   |   |-- session-end.js       # Save state on session end
-|   |   |-- pre-compact.js       # Pre-compaction state saving
-|   |   |-- suggest-compact.js   # Strategic compaction suggestions
-|   |   |-- evaluate-session.js  # Extract patterns from sessions
-|   |-- setup-package-manager.js # Interactive PM setup
+|-- scripts/          # Scripts Node.js multiplataforma (NEW)
+|   |-- lib/                     # Utilitários compartilhados
+|   |   |-- utils.js             # Utilitários multiplataforma de arquivo/caminho/sistema
+|   |   |-- package-manager.js   # Detecção e seleção de gerenciador de pacotes
+|   |-- hooks/                   # Implementações de hooks
+|   |   |-- session-start.js     # Carregar contexto no início da sessão
+|   |   |-- session-end.js       # Salvar estado no fim da sessão
+|   |   |-- pre-compact.js       # Salvamento de estado pré-compactação
+|   |   |-- suggest-compact.js   # Sugestões estratégicas de compactação
+|   |   |-- evaluate-session.js  # Extrair padrões das sessões
+|   |-- setup-package-manager.js # Configuração interativa do PM
 |
-|-- tests/            # Test suite (NEW)
-|   |-- lib/                     # Library tests
-|   |-- hooks/                   # Hook tests
-|   |-- run-all.js               # Run all tests
+|-- tests/            # Suíte de testes (NEW)
+|   |-- lib/                     # Testes de biblioteca
+|   |-- hooks/                   # Testes de hooks
+|   |-- run-all.js               # Executar todos os testes
 |
-|-- contexts/         # Dynamic system prompt injection contexts (Longform Guide)
-|   |-- dev.md              # Development mode context
-|   |-- review.md           # Code review mode context
-|   |-- research.md         # Research/exploration mode context
+|-- contexts/         # Contextos de injeção dinâmica de system prompt (Guia Aprofundado)
+|   |-- dev.md              # Contexto de modo de desenvolvimento
+|   |-- review.md           # Contexto de modo de code review
+|   |-- research.md         # Contexto de modo de pesquisa/exploração
 |
-|-- examples/         # Example configurations and sessions
-|   |-- CLAUDE.md             # Example project-level config
-|   |-- user-CLAUDE.md        # Example user-level config
-|   |-- saas-nextjs-CLAUDE.md   # Real-world SaaS (Next.js + Supabase + Stripe)
-|   |-- go-microservice-CLAUDE.md # Real-world Go microservice (gRPC + PostgreSQL)
-|   |-- django-api-CLAUDE.md      # Real-world Django REST API (DRF + Celery)
-|   |-- laravel-api-CLAUDE.md     # Real-world Laravel API (PostgreSQL + Redis) (NEW)
-|   |-- rust-api-CLAUDE.md        # Real-world Rust API (Axum + SQLx + PostgreSQL) (NEW)
+|-- examples/         # Configurações e sessões de exemplo
+|   |-- CLAUDE.md             # Exemplo de configuração no nível do projeto
+|   |-- user-CLAUDE.md        # Exemplo de configuração no nível do usuário
+|   |-- saas-nextjs-CLAUDE.md   # SaaS real (Next.js + Supabase + Stripe)
+|   |-- go-microservice-CLAUDE.md # Microsserviço Go real (gRPC + PostgreSQL)
+|   |-- django-api-CLAUDE.md      # API REST Django real (DRF + Celery)
+|   |-- laravel-api-CLAUDE.md     # API Laravel real (PostgreSQL + Redis) (NEW)
+|   |-- rust-api-CLAUDE.md        # API Rust real (Axum + SQLx + PostgreSQL) (NEW)
 |
-|-- mcp-configs/      # MCP server configurations
+|-- mcp-configs/      # Configurações de servidor MCP
 |   |-- mcp-servers.json    # GitHub, Supabase, Vercel, Railway, etc.
 |
-|-- ecc_dashboard.py  # Desktop GUI dashboard (Tkinter)
+|-- ecc_dashboard.py  # Dashboard com interface gráfica de desktop (Tkinter)
 |
-|-- assets/           # Assets for dashboard
+|-- assets/           # Assets para o dashboard
 |   |-- images/
 |       |-- ecc-logo.png
 |
-|-- marketplace.json  # Self-hosted marketplace config (for /plugin marketplace add)
+|-- marketplace.json  # Configuração de marketplace auto-hospedado (para /plugin marketplace add)
 ```
 
 ---
 
-## Ecosystem Tools
+## Ferramentas do Ecossistema
 
 ### Skill Creator
 
-Two ways to generate Claude Code skills from your repository:
+Duas formas de gerar skills do Claude Code a partir do seu repositório:
 
-#### Option A: Local Analysis (Built-in)
+#### Opção A: Análise Local (Embutida)
 
-Use the `/skill-create` command for local analysis without external services:
+Use o comando `/skill-create` para análise local sem serviços externos:
 
 ```bash
-/skill-create                    # Analyze current repo
-/skill-create --instincts        # Also generate instincts for continuous-learning-v2
+/skill-create                    # Analisar o repositório atual
+/skill-create --instincts        # Também gerar instintos para o continuous-learning-v2
 ```
 
-This analyzes your git history locally and generates SKILL.md files.
+Isso analisa o histórico do seu git localmente e gera arquivos SKILL.md.
 
-#### Option B: GitHub App (Advanced)
+#### Opção B: GitHub App (Avançado)
 
-For advanced features (10k+ commits, auto-PRs, team sharing):
+Para recursos avançados (10k+ commits, PRs automáticos, compartilhamento em equipe):
 
-[Install ECC Tools GitHub App](https://github.com/apps/ecc-tools) | [ecc.tools](https://ecc.tools)
+[Instalar o ECC Tools GitHub App](https://github.com/apps/ecc-tools) | [ecc.tools](https://ecc.tools)
 
 ```bash
-# Comment on any issue:
+# Comente em qualquer issue:
 /ecc-tools analyze
 
-# Or run against a repo from the hosted app
+# Ou execute contra um repositório a partir do app hospedado
 ```
 
-Both options create:
-- **SKILL.md files** - Ready-to-use skills for the active harness
-- **Instinct collections** - For continuous-learning-v2
-- **Pattern extraction** - Learns from your commit history
+Ambas as opções criam:
+- **Arquivos SKILL.md** - Skills prontas para uso no harness ativo
+- **Coleções de instintos** - Para o continuous-learning-v2
+- **Extração de padrões** - Aprende com o seu histórico de commits
 
-### AgentShield — Security Auditor
+### AgentShield — Auditor de Segurança
 
-> Built at the Claude Code Hackathon (Cerebral Valley x Anthropic, Feb 2026). 1282 tests, 98% coverage, 102 static analysis rules.
+> Construído no Claude Code Hackathon (Cerebral Valley x Anthropic, fev. 2026). 1282 testes, 98% de cobertura, 102 regras de análise estática.
 
-Scan your Claude Code configuration for vulnerabilities, misconfigurations, and injection risks.
+Faça a varredura da sua configuração do Claude Code em busca de vulnerabilidades, configurações incorretas e riscos de injeção.
 
 ```bash
-# Quick scan (no install needed)
+# Varredura rápida (sem necessidade de instalação)
 npx ecc-agentshield scan
 
-# Auto-fix safe issues
+# Corrigir automaticamente problemas seguros
 npx ecc-agentshield scan --fix
 
-# Deep analysis with three Opus 4.6 agents
+# Análise profunda com três agentes Opus 4.6
 npx ecc-agentshield scan --opus --stream
 
-# Generate secure config from scratch
+# Gerar uma configuração segura do zero
 npx ecc-agentshield init
 ```
 
-**What it scans:** CLAUDE.md, settings.json, MCP configs, hooks, agent definitions, and skills across 5 categories — secrets detection (14 patterns), permission auditing, hook injection analysis, MCP server risk profiling, and agent config review.
+**O que ele varre:** CLAUDE.md, settings.json, configurações de MCP, hooks, definições de agents e skills em 5 categorias — detecção de segredos (14 padrões), auditoria de permissões, análise de injeção em hooks, perfilamento de risco de servidores MCP e review de configuração de agents.
 
-**The `--opus` flag** runs three Claude Opus 4.6 agents in a red-team/blue-team/auditor pipeline. The attacker finds exploit chains, the defender evaluates protections, and the auditor synthesizes both into a prioritized risk assessment. Adversarial reasoning, not just pattern matching.
+**A flag `--opus`** executa três agentes Claude Opus 4.6 em um pipeline de red-team/blue-team/auditor. O atacante encontra cadeias de exploração, o defensor avalia as proteções e o auditor sintetiza ambos em uma avaliação de risco priorizada. Raciocínio adversarial, não apenas correspondência de padrões.
 
-**Output formats:** Terminal (color-graded A-F), JSON (CI pipelines), Markdown, HTML. Exit code 2 on critical findings for build gates.
+**Formatos de saída:** Terminal (graduado por cores de A a F), JSON (pipelines de CI/CD), Markdown, HTML. Código de saída 2 em achados críticos para gates de build.
 
-Use `/security-scan` in Claude Code to run it, or add to CI with the [GitHub Action](https://github.com/affaan-m/agentshield).
+Use `/security-scan` no Claude Code para executá-lo, ou adicione ao CI/CD com a [GitHub Action](https://github.com/affaan-m/agentshield).
 
 [GitHub](https://github.com/affaan-m/agentshield) | [npm](https://www.npmjs.com/package/ecc-agentshield)
 
-### Continuous Learning v2
+### Aprendizado Contínuo v2
 
-The instinct-based learning system automatically learns your patterns:
+O sistema de aprendizado baseado em instintos aprende automaticamente os seus padrões:
 
 ```bash
-/instinct-status        # Show learned instincts with confidence
-/instinct-import <file> # Import instincts from others
-/instinct-export        # Export your instincts for sharing
-/evolve                 # Cluster related instincts into skills
+/instinct-status        # Mostrar instintos aprendidos com confiança
+/instinct-import <file> # Importar instintos de outras pessoas
+/instinct-export        # Exportar seus instintos para compartilhar
+/evolve                 # Agrupar instintos relacionados em skills
 ```
 
-See `skills/continuous-learning-v2/` for full documentation.
-Keep `continuous-learning/` only when you explicitly want the legacy v1 Stop-hook learned-skill flow.
+Veja `skills/continuous-learning-v2/` para a documentação completa.
+Mantenha `continuous-learning/` apenas quando você quiser explicitamente o fluxo legado v1 de skill aprendida via Stop-hook.
 
 ---
 
-## Requirements
+## Requisitos
 
-### Claude Code CLI Version
+### Versão da CLI do Claude Code
 
-**Minimum version: v2.1.0 or later**
+**Versão mínima: v2.1.0 ou posterior**
 
-This plugin requires Claude Code CLI v2.1.0+ due to changes in how the plugin system handles hooks.
+Este plugin requer a CLI do Claude Code v2.1.0+ devido a mudanças na forma como o sistema de plugins lida com hooks.
 
-Check your version:
+Verifique sua versão:
 ```bash
 claude --version
 ```
 
-### Important: Hooks Auto-Loading Behavior
+### Importante: Comportamento de Carregamento Automático de Hooks
 
-> WARNING: **For Contributors:** Do NOT add a `"hooks"` field to `.claude-plugin/plugin.json`. This is enforced by a regression test.
+> WARNING: **Para Contribuidores:** NÃO adicione um campo `"hooks"` ao `.claude-plugin/plugin.json`. Isso é aplicado por um teste de regressão.
 
-Claude Code v2.1+ **automatically loads** `hooks/hooks.json` from any installed plugin by convention. Explicitly declaring it in `plugin.json` causes a duplicate detection error:
+O Claude Code v2.1+ **carrega automaticamente** `hooks/hooks.json` de qualquer plugin instalado por convenção. Declará-lo explicitamente no `plugin.json` causa um erro de detecção de duplicata:
 
 ```
 Duplicate hooks file detected: ./hooks/hooks.json resolves to already-loaded file
 ```
 
-**History:** This has caused repeated fix/revert cycles in this repo ([#29](https://github.com/affaan-m/ECC/issues/29), [#52](https://github.com/affaan-m/ECC/issues/52), [#103](https://github.com/affaan-m/ECC/issues/103)). The behavior changed between Claude Code versions, leading to confusion. We now have a regression test to prevent this from being reintroduced.
+**Histórico:** Isso causou ciclos repetidos de correção/reversão neste repositório ([#29](https://github.com/affaan-m/ECC/issues/29), [#52](https://github.com/affaan-m/ECC/issues/52), [#103](https://github.com/affaan-m/ECC/issues/103)). O comportamento mudou entre versões do Claude Code, levando à confusão. Agora temos um teste de regressão para impedir que isso seja reintroduzido.
 
 ---
 
-## Installation
+## Instalação
 
-### Option 1: Install as Plugin (Recommended)
+### Opção 1: Instalar como Plugin (Recomendado)
 
-The easiest way to use this repo - install as a Claude Code plugin:
+A forma mais fácil de usar este repositório - instalar como um plugin do Claude Code:
 
 ```bash
-# Add this repo as a marketplace
+# Adicionar este repositório como um marketplace
 /plugin marketplace add https://github.com/affaan-m/ECC
 
-# Install the plugin
+# Instalar o plugin
 /plugin install ecc@ecc
 ```
 
-Or add directly to your `~/.claude/settings.json`:
+Ou adicione diretamente ao seu `~/.claude/settings.json`:
 
 ```json
 {
@@ -914,78 +914,78 @@ Or add directly to your `~/.claude/settings.json`:
 }
 ```
 
-This gives you instant access to all commands, agents, skills, and hooks.
+Isso lhe dá acesso instantâneo a todos os comandos, agents, skills e hooks.
 
-> **Note:** The Claude Code plugin system does not support distributing `rules` via plugins ([upstream limitation](https://code.claude.com/docs/en/plugins-reference)). You need to install rules manually:
+> **Nota:** O sistema de plugins do Claude Code não oferece suporte à distribuição de `rules` via plugins ([limitação upstream](https://code.claude.com/docs/en/plugins-reference)). Você precisa instalar as regras manualmente:
 >
 > ```bash
-> # Clone the repo first
+> # Clone o repositório primeiro
 > git clone https://github.com/affaan-m/ECC.git
 > cd ECC
 >
-> # Option A: User-level rules (applies to all projects)
+> # Opção A: Regras no nível do usuário (aplica-se a todos os projetos)
 > mkdir -p ~/.claude/rules/ecc
 > cp -r rules/common ~/.claude/rules/ecc/
-> cp -r rules/typescript ~/.claude/rules/ecc/   # pick your stack
+> cp -r rules/typescript ~/.claude/rules/ecc/   # escolha sua stack
 > cp -r rules/python ~/.claude/rules/ecc/
 > cp -r rules/golang ~/.claude/rules/ecc/
 > cp -r rules/php ~/.claude/rules/ecc/
 >
-> # Option B: Project-level rules (applies to current project only)
+> # Opção B: Regras no nível do projeto (aplica-se apenas ao projeto atual)
 > mkdir -p .claude/rules/ecc
 > cp -r rules/common .claude/rules/ecc/
-> cp -r rules/typescript .claude/rules/ecc/     # pick your stack
+> cp -r rules/typescript .claude/rules/ecc/     # escolha sua stack
 > ```
 
 ---
 
-### Option 2: Manual Installation
+### Opção 2: Instalação Manual
 
-If you prefer manual control over what's installed:
+Se você prefere controle manual sobre o que é instalado:
 
 ```bash
-# Clone the repo
+# Clone o repositório
 git clone https://github.com/affaan-m/ECC.git
 cd ECC
 
-# Copy agents to your Claude config
+# Copie os agents para sua configuração do Claude
 cp agents/*.md ~/.claude/agents/
 
-# Copy rules directories (common + language-specific)
+# Copie os diretórios de regras (common + específicos de linguagem)
 mkdir -p ~/.claude/rules/ecc
 cp -r rules/common ~/.claude/rules/ecc/
-cp -r rules/typescript ~/.claude/rules/ecc/   # pick your stack
+cp -r rules/typescript ~/.claude/rules/ecc/   # escolha sua stack
 cp -r rules/python ~/.claude/rules/ecc/
 cp -r rules/golang ~/.claude/rules/ecc/
 cp -r rules/php ~/.claude/rules/ecc/
 cp -r rules/arkts ~/.claude/rules/ecc/
 
-# Copy skills first (primary workflow surface)
-# Recommended (new users): core/general skills only
+# Copie as skills primeiro (principal superfície de fluxo de trabalho)
+# Recomendado (novos usuários): apenas skills core/gerais
 mkdir -p ~/.claude/skills
 cp -r .agents/skills/* ~/.claude/skills/
 cp -r skills/search-first ~/.claude/skills/
-# Claude Code loads skills only from direct children of ~/.claude/skills.
-# Do not nest manual installs under ~/.claude/skills/ecc/.
+# O Claude Code carrega skills apenas a partir de filhos diretos de ~/.claude/skills.
+# Não aninhe instalações manuais sob ~/.claude/skills/ecc/.
 
-# Optional: add niche/framework-specific skills only when needed
+# Opcional: adicione skills de nicho/específicas de framework apenas quando necessário
 # for s in django-patterns django-tdd laravel-patterns springboot-patterns quarkus-patterns; do
 # cp -r skills/$s ~/.claude/skills/
 # done
 
-# Optional: keep maintained slash-command compatibility during migration
+# Opcional: mantenha a compatibilidade de slash-command mantida durante a migração
 mkdir -p ~/.claude/commands
 cp commands/*.md ~/.claude/commands/
 
-# Retired shims live in legacy-command-shims/commands/.
-# Copy individual files from there only if you still need old names such as /tdd.
+# Shims aposentados vivem em legacy-command-shims/commands/.
+# Copie arquivos individuais de lá apenas se você ainda precisar de nomes antigos como /tdd.
 ```
 
-#### Install hooks
+#### Instalar hooks
 
-Do not copy the raw repo `hooks/hooks.json` into `~/.claude/settings.json` or `~/.claude/hooks/hooks.json`. That file is plugin/repo-oriented and is meant to be installed through the ECC installer or loaded as a plugin, so raw copying is not a supported manual install path.
+Não copie o `hooks/hooks.json` bruto do repositório para `~/.claude/settings.json` ou `~/.claude/hooks/hooks.json`. Esse arquivo é orientado a plugin/repositório e deve ser instalado por meio do instalador do ECC ou carregado como plugin, então a cópia bruta não é um caminho de instalação manual suportado.
 
-Use the installer to install only the Claude hook runtime so command paths are rewritten correctly:
+Use o instalador para instalar apenas o runtime de hooks do Claude, para que os caminhos de comando sejam reescritos corretamente:
 
 ```bash
 # macOS / Linux
@@ -997,39 +997,39 @@ bash ./install.sh --target claude --modules hooks-runtime
 pwsh -File .\install.ps1 --target claude --modules hooks-runtime
 ```
 
-That writes resolved hooks to `~/.claude/hooks/hooks.json` and leaves any existing `~/.claude/settings.json` untouched.
+Isso grava os hooks resolvidos em `~/.claude/hooks/hooks.json` e deixa qualquer `~/.claude/settings.json` existente intocado.
 
-If you installed ECC via `/plugin install`, do not copy those hooks into `settings.json`. Claude Code v2.1+ already auto-loads plugin `hooks/hooks.json`, and duplicating them in `settings.json` causes duplicate execution and cross-platform hook conflicts.
+Se você instalou o ECC via `/plugin install`, não copie esses hooks para o `settings.json`. O Claude Code v2.1+ já carrega automaticamente o `hooks/hooks.json` do plugin, e duplicá-los no `settings.json` causa execução duplicada e conflitos de hook multiplataforma.
 
-Windows note: the Claude config directory is `%USERPROFILE%\\.claude`, not `~/claude`.
+Nota Windows: o diretório de configuração do Claude é `%USERPROFILE%\\.claude`, não `~/claude`.
 
-#### Configure MCPs
+#### Configurar MCPs
 
-Claude plugin installs intentionally do not auto-enable ECC's bundled MCP server definitions. This avoids overlong plugin MCP tool names on strict third-party gateways while keeping manual MCP setup available.
+As instalações de plugin do Claude intencionalmente não habilitam automaticamente as definições de servidor MCP empacotadas pelo ECC. Isso evita nomes de ferramentas MCP de plugin excessivamente longos em gateways de terceiros estritos, mantendo a configuração manual de MCP disponível.
 
-Use Claude Code's `/mcp` command or CLI-managed MCP setup for live Claude Code server changes. Use `/mcp` for Claude Code runtime disables; Claude Code persists those choices in `~/.claude.json`.
+Use o comando `/mcp` do Claude Code ou a configuração de MCP gerenciada pela CLI para mudanças ao vivo de servidor no Claude Code. Use `/mcp` para desabilitações em runtime no Claude Code; o Claude Code persiste essas escolhas em `~/.claude.json`.
 
-For repo-local MCP access, copy desired MCP server definitions from `mcp-configs/mcp-servers.json` into a project-scoped `.mcp.json`.
+Para acesso a MCP local no repositório, copie as definições de servidor MCP desejadas de `mcp-configs/mcp-servers.json` para um `.mcp.json` com escopo de projeto.
 
-ECC ships exactly one default connector (`chrome-devtools`); everything else is a skill wrapping a CLI/REST API or an opt-in catalog entry. The rule and the June 2026 audit that retired the previous six defaults live in [docs/MCP-CONNECTOR-POLICY.md](docs/MCP-CONNECTOR-POLICY.md).
+O ECC entrega exatamente um conector padrão (`chrome-devtools`); todo o resto é uma skill envolvendo uma CLI/REST API ou uma entrada de catálogo opt-in. A regra e a auditoria de junho de 2026 que aposentou os seis padrões anteriores vivem em [docs/MCP-CONNECTOR-POLICY.md](docs/MCP-CONNECTOR-POLICY.md).
 
-If you already run your own copies of ECC-bundled MCPs, set:
+Se você já executa suas próprias cópias dos MCPs empacotados pelo ECC, defina:
 
 ```bash
 export ECC_DISABLED_MCPS="chrome-devtools"
 ```
 
-ECC-managed install and Codex sync flows will skip or remove those bundled servers instead of re-adding duplicates. `ECC_DISABLED_MCPS` is an ECC install/sync filter, not a live Claude Code toggle.
+Os fluxos de instalação e sincronização com o Codex gerenciados pelo ECC vão pular ou remover esses servidores empacotados em vez de readicionar duplicatas. `ECC_DISABLED_MCPS` é um filtro de instalação/sincronização do ECC, não um toggle ao vivo do Claude Code.
 
-**Important:** Replace `YOUR_*_HERE` placeholders with your actual API keys.
+**Importante:** Substitua os placeholders `YOUR_*_HERE` pelas suas chaves de API reais.
 
 ---
 
-## Key Concepts
+## Conceitos-Chave
 
 ### Agents
 
-Subagents handle delegated tasks with limited scope. Example:
+Subagentes lidam com tarefas delegadas com escopo limitado. Exemplo:
 
 ```markdown
 ---
@@ -1044,7 +1044,7 @@ You are a senior code reviewer...
 
 ### Skills
 
-Skills are the primary workflow surface. They can be invoked directly, suggested automatically, and reused by agents. ECC still ships maintained `commands/` during migration, while retired short-name shims live under `legacy-command-shims/` for explicit opt-in only. New workflow development should land in `skills/` first.
+Skills são a principal superfície de fluxo de trabalho. Elas podem ser invocadas diretamente, sugeridas automaticamente e reutilizadas por agents. O ECC ainda entrega `commands/` mantidos durante a migração, enquanto shims de nome curto aposentados vivem em `legacy-command-shims/` apenas para opt-in explícito. O desenvolvimento de novos fluxos de trabalho deve aterrissar primeiro em `skills/`.
 
 ```markdown
 # TDD Workflow
@@ -1058,7 +1058,7 @@ Skills are the primary workflow surface. They can be invoked directly, suggested
 
 ### Hooks
 
-Hooks fire on tool events. Example - warn about console.log:
+Hooks disparam em eventos de ferramenta. Exemplo - avisar sobre console.log:
 
 ```json
 {
@@ -1070,104 +1070,104 @@ Hooks fire on tool events. Example - warn about console.log:
 }
 ```
 
-### Rules
+### Regras
 
-Rules are always-follow guidelines, organized into `common/` (language-agnostic) + language-specific directories:
+Regras são diretrizes always-follow, organizadas em `common/` (agnóstico de linguagem) + diretórios específicos de linguagem:
 
 ```
 rules/
-  common/          # Universal principles (always install)
-  typescript/      # TS/JS specific patterns and tools
-  python/          # Python specific patterns and tools
-  golang/          # Go specific patterns and tools
-  swift/           # Swift specific patterns and tools
-  php/             # PHP specific patterns and tools
-  arkts/           # HarmonyOS / ArkTS patterns and constraints
+  common/          # Princípios universais (sempre instalar)
+  typescript/      # Padrões e ferramentas específicas de TS/JS
+  python/          # Padrões e ferramentas específicas de Python
+  golang/          # Padrões e ferramentas específicas de Go
+  swift/           # Padrões e ferramentas específicas de Swift
+  php/             # Padrões e ferramentas específicas de PHP
+  arkts/           # Padrões e restrições de HarmonyOS / ArkTS
 ```
 
-See [`rules/README.md`](rules/README.md) for installation and structure details.
+Veja [`rules/README.md`](rules/README.md) para detalhes de instalação e estrutura.
 
 ---
 
-## Which Agent Should I Use?
+## Qual Agent Devo Usar?
 
-Not sure where to start? Use this quick reference. Skills are the canonical workflow surface; maintained slash entries stay available for command-first workflows.
+Sem saber por onde começar? Use esta referência rápida. Skills são a superfície canônica de fluxo de trabalho; as entradas slash mantidas continuam disponíveis para fluxos de trabalho command-first.
 
-| I want to... | Use this surface | Agent used |
+| Eu quero... | Use esta superfície | Agent usado |
 |--------------|-----------------|------------|
-| Plan a new feature | `/ecc:plan "Add auth"` | planner |
-| Design system architecture | `/ecc:plan` + architect agent | architect |
-| Write code with tests first | `tdd-workflow` skill | tdd-guide |
-| Review code I just wrote | `/code-review` | code-reviewer |
-| Fix a failing build | `/build-fix` | build-error-resolver |
-| Run end-to-end tests | `e2e-testing` skill | e2e-runner |
-| Find security vulnerabilities | `/security-scan` | security-reviewer |
-| Remove dead code | `/refactor-clean` | refactor-cleaner |
-| Update documentation | `/update-docs` | doc-updater |
-| Review Go code | `/go-review` | go-reviewer |
-| Review Python code | `/python-review` | python-reviewer |
-| Review F# code | *(invoke `fsharp-reviewer` directly)* | fsharp-reviewer |
-| Review TypeScript/JavaScript code | *(invoke `typescript-reviewer` directly)* | typescript-reviewer |
-| Develop HarmonyOS apps | *(invoke `harmonyos-app-resolver` directly)* | harmonyos-app-resolver |
-| Audit database queries | *(auto-delegated)* | database-reviewer |
-| Review production ML changes | `mle-workflow` skill + `mle-reviewer` agent | mle-reviewer |
+| Planejar uma nova feature | `/ecc:plan "Add auth"` | planner |
+| Projetar a arquitetura do sistema | `/ecc:plan` + agent architect | architect |
+| Escrever código com testes primeiro | skill `tdd-workflow` | tdd-guide |
+| Revisar código que acabei de escrever | `/code-review` | code-reviewer |
+| Corrigir um build com falha | `/build-fix` | build-error-resolver |
+| Executar testes end-to-end | skill `e2e-testing` | e2e-runner |
+| Encontrar vulnerabilidades de segurança | `/security-scan` | security-reviewer |
+| Remover código morto | `/refactor-clean` | refactor-cleaner |
+| Atualizar documentação | `/update-docs` | doc-updater |
+| Revisar código Go | `/go-review` | go-reviewer |
+| Revisar código Python | `/python-review` | python-reviewer |
+| Revisar código F# | *(invoque `fsharp-reviewer` diretamente)* | fsharp-reviewer |
+| Revisar código TypeScript/JavaScript | *(invoque `typescript-reviewer` diretamente)* | typescript-reviewer |
+| Desenvolver apps HarmonyOS | *(invoque `harmonyos-app-resolver` diretamente)* | harmonyos-app-resolver |
+| Auditar queries de banco de dados | *(delegado automaticamente)* | database-reviewer |
+| Revisar mudanças de ML em produção | skill `mle-workflow` + agent `mle-reviewer` | mle-reviewer |
 
-### Common Workflows
+### Fluxos de Trabalho Comuns
 
-Slash forms below are shown where they remain part of the maintained command surface. Retired short-name shims such as `/tdd` and `/eval` live in `legacy-command-shims/` for explicit opt-in only.
+As formas slash abaixo são mostradas onde permanecem parte da superfície de comandos mantida. Shims de nome curto aposentados como `/tdd` e `/eval` vivem em `legacy-command-shims/` apenas para opt-in explícito.
 
-**Starting a new feature:**
+**Iniciando uma nova feature:**
 ```
 /ecc:plan "Add user authentication with OAuth"
-                                              → planner creates implementation blueprint
-tdd-workflow skill                            → tdd-guide enforces write-tests-first
-/code-review                                  → code-reviewer checks your work
+                                              → o planner cria o blueprint de implementação
+tdd-workflow skill                            → o tdd-guide impõe escrever-testes-primeiro
+/code-review                                  → o code-reviewer verifica seu trabalho
 ```
 
-**Fixing a bug:**
+**Corrigindo um bug:**
 ```
-tdd-workflow skill                            → tdd-guide: write a failing test that reproduces it
-                                              → implement the fix, verify test passes
-/code-review                                  → code-reviewer: catch regressions
+tdd-workflow skill                            → tdd-guide: escreva um teste que falha e o reproduz
+                                              → implemente a correção, verifique se o teste passa
+/code-review                                  → code-reviewer: capturar regressões
 ```
 
-**Preparing for production:**
+**Preparando para produção:**
 ```
-/security-scan                                → security-reviewer: OWASP Top 10 audit
-e2e-testing skill                             → e2e-runner: critical user flow tests
-/test-coverage                                → verify 80%+ coverage
+/security-scan                                → security-reviewer: auditoria OWASP Top 10
+e2e-testing skill                             → e2e-runner: testes de fluxo crítico de usuário
+/test-coverage                                → verificar 80%+ de cobertura
 ```
 
 ---
 
-## FAQ
+## Perguntas Frequentes
 
 <details>
-<summary><b>How do I check which agents/commands are installed?</b></summary>
+<summary><b>Como verifico quais agents/comandos estão instalados?</b></summary>
 
 ```bash
 /plugin list ecc@ecc
 ```
 
-This shows all available agents, commands, and skills from the plugin.
+Isso mostra todos os agents, comandos e skills disponíveis a partir do plugin.
 </details>
 
 <details>
-<summary><b>My hooks aren't working / I see "Duplicate hooks file" errors</b></summary>
+<summary><b>Meus hooks não estão funcionando / Vejo erros de "Duplicate hooks file"</b></summary>
 
-This is the most common issue. **Do NOT add a `"hooks"` field to `.claude-plugin/plugin.json`.** Claude Code v2.1+ automatically loads `hooks/hooks.json` from installed plugins. Explicitly declaring it causes duplicate detection errors. See [#29](https://github.com/affaan-m/ECC/issues/29), [#52](https://github.com/affaan-m/ECC/issues/52), [#103](https://github.com/affaan-m/ECC/issues/103).
+Esse é o problema mais comum. **NÃO adicione um campo `"hooks"` ao `.claude-plugin/plugin.json`.** O Claude Code v2.1+ carrega automaticamente `hooks/hooks.json` de plugins instalados. Declará-lo explicitamente causa erros de detecção de duplicata. Veja [#29](https://github.com/affaan-m/ECC/issues/29), [#52](https://github.com/affaan-m/ECC/issues/52), [#103](https://github.com/affaan-m/ECC/issues/103).
 </details>
 
 <details>
-<summary><b>Can I use ECC with Claude Code on a custom API endpoint or model gateway?</b></summary>
+<summary><b>Posso usar o ECC com o Claude Code em um endpoint de API personalizado ou gateway de modelos?</b></summary>
 
-Yes. ECC does not hardcode Anthropic-hosted transport settings. It runs locally through Claude Code's normal CLI/plugin surface, so it works with:
+Sim. O ECC não fixa configurações de transporte hospedadas pela Anthropic. Ele roda localmente através da superfície normal de CLI/plugin do Claude Code, então funciona com:
 
-- Anthropic-hosted Claude Code
-- Official Claude Code gateway setups using `ANTHROPIC_BASE_URL` and `ANTHROPIC_AUTH_TOKEN`
-- Compatible custom endpoints that speak the Anthropic API Claude Code expects
+- Claude Code hospedado pela Anthropic
+- Configurações oficiais de gateway do Claude Code usando `ANTHROPIC_BASE_URL` e `ANTHROPIC_AUTH_TOKEN`
+- Endpoints personalizados compatíveis que falam a Anthropic API que o Claude Code espera
 
-Minimal example:
+Exemplo mínimo:
 
 ```bash
 export ANTHROPIC_BASE_URL=https://your-gateway.example.com
@@ -1175,79 +1175,79 @@ export ANTHROPIC_AUTH_TOKEN=your-token
 claude
 ```
 
-If your gateway remaps model names, configure that in Claude Code rather than in ECC. ECC's hooks, skills, commands, and rules are model-provider agnostic once the `claude` CLI is already working.
+Se o seu gateway remapeia nomes de modelos, configure isso no Claude Code em vez de no ECC. Os hooks, skills, comandos e regras do ECC são agnósticos de provedor de modelo uma vez que a CLI `claude` já esteja funcionando.
 
-Official references:
-- [Claude Code LLM gateway docs](https://docs.anthropic.com/en/docs/claude-code/llm-gateway)
-- [Claude Code model configuration docs](https://docs.anthropic.com/en/docs/claude-code/model-config)
+Referências oficiais:
+- [Docs do LLM gateway do Claude Code](https://docs.anthropic.com/en/docs/claude-code/llm-gateway)
+- [Docs de configuração de modelo do Claude Code](https://docs.anthropic.com/en/docs/claude-code/model-config)
 
 </details>
 
 <details>
-<summary><b>My context window is shrinking / Claude is running out of context</b></summary>
+<summary><b>Minha janela de contexto está encolhendo / o Claude está ficando sem contexto</b></summary>
 
-Too many MCP servers eat your context. Each MCP tool description consumes tokens from your 200k window, potentially reducing it to ~70k. SessionStart context is capped at 8000 characters by default; lower it with `ECC_SESSION_START_MAX_CHARS=4000` or disable it with `ECC_SESSION_START_CONTEXT=off` for local-model or low-context setups.
+Servidores MCP em excesso consomem seu contexto. Cada descrição de ferramenta MCP consome tokens da sua janela de 200k, potencialmente reduzindo-a para ~70k. O contexto do SessionStart é limitado a 8000 caracteres por padrão; reduza-o com `ECC_SESSION_START_MAX_CHARS=4000` ou desabilite-o com `ECC_SESSION_START_CONTEXT=off` para setups de modelo local ou baixo contexto.
 
-**Fix:** Disable unused MCPs from Claude Code with `/mcp`. Claude Code writes those runtime choices to `~/.claude.json`; `.claude/settings.json` and `.claude/settings.local.json` are not reliable toggles for already-loaded MCP servers.
+**Correção:** Desabilite MCPs não usados do Claude Code com `/mcp`. O Claude Code grava essas escolhas de runtime em `~/.claude.json`; `.claude/settings.json` e `.claude/settings.local.json` não são toggles confiáveis para servidores MCP já carregados.
 
-Keep under 10 MCPs enabled and under 80 tools active.
+Mantenha menos de 10 MCPs habilitados e menos de 80 ferramentas ativas.
 </details>
 
 <details>
-<summary><b>Can I use only some components (e.g., just agents)?</b></summary>
+<summary><b>Posso usar apenas alguns componentes (por exemplo, só agents)?</b></summary>
 
-Yes. Use Option 2 (manual installation) and copy only what you need:
+Sim. Use a Opção 2 (instalação manual) e copie apenas o que você precisa:
 
 ```bash
-# Just agents
+# Apenas agents
 cp agents/*.md ~/.claude/agents/
 
-# Just rules
+# Apenas regras
 mkdir -p ~/.claude/rules/ecc/
 cp -r rules/common ~/.claude/rules/ecc/
 ```
 
-Each component is fully independent.
+Cada componente é totalmente independente.
 </details>
 
 <details>
-<summary><b>Does this work with Cursor / OpenCode / Codex / Antigravity / GitHub Copilot?</b></summary>
+<summary><b>Isso funciona com Cursor / OpenCode / Codex / Antigravity / GitHub Copilot?</b></summary>
 
-Yes. ECC is cross-platform:
-- **Cursor**: Pre-translated configs in `.cursor/`. See [Cursor IDE Support](#cursor-ide-support).
-- **Gemini CLI**: Experimental project-local support via `.gemini/GEMINI.md` and shared installer plumbing.
-- **OpenCode**: Full plugin support in `.opencode/`. See [OpenCode Support](#opencode-support).
-- **Codex**: First-class support for both macOS app and CLI, with adapter drift guards and SessionStart fallback. See PR [#257](https://github.com/affaan-m/ECC/pull/257).
-- **GitHub Copilot (VS Code)**: Instruction and prompt layer via `.github/copilot-instructions.md`, `.vscode/settings.json`, and `.github/prompts/`. See [GitHub Copilot Support](#github-copilot-support).
-- **Antigravity**: Tightly integrated setup for workflows, skills, and flattened rules in `.agent/`. See [Antigravity Guide](docs/ANTIGRAVITY-GUIDE.md).
-- **JoyCode / CodeBuddy**: Project-local selective install adapters for commands, agents, skills, and flattened rules. See [JoyCode Adapter Guide](docs/JOYCODE-GUIDE.md).
-- **Qwen CLI**: Home-directory selective install adapter for commands, agents, skills, rules, and Qwen config. See [Qwen CLI Adapter Guide](docs/QWEN-GUIDE.md).
-- **Zed**: Project-local selective install adapter for `.zed/settings.json`, flattened rules, commands, agents, and skills.
-- **Non-native harnesses**: Manual fallback path for Grok and similar interfaces. See [Manual Adaptation Guide](docs/MANUAL-ADAPTATION-GUIDE.md).
-- **Claude Code**: Native — this is the primary target.
+Sim. O ECC é multiplataforma:
+- **Cursor**: Configurações pré-traduzidas em `.cursor/`. Veja [Suporte ao Cursor IDE](#cursor-ide-support).
+- **Gemini CLI**: Suporte experimental local ao projeto via `.gemini/GEMINI.md` e plumbing compartilhado do instalador.
+- **OpenCode**: Suporte completo a plugin em `.opencode/`. Veja [Suporte ao OpenCode](#opencode-support).
+- **Codex**: Suporte de primeira classe tanto para o app de macOS quanto para a CLI, com guardas de drift de adaptador e fallback de SessionStart. Veja o PR [#257](https://github.com/affaan-m/ECC/pull/257).
+- **GitHub Copilot (VS Code)**: Camada de instruções e prompts via `.github/copilot-instructions.md`, `.vscode/settings.json` e `.github/prompts/`. Veja [Suporte ao GitHub Copilot](#github-copilot-support).
+- **Antigravity**: Configuração fortemente integrada para fluxos de trabalho, skills e regras achatadas em `.agent/`. Veja [Guia do Antigravity](docs/ANTIGRAVITY-GUIDE.md).
+- **JoyCode / CodeBuddy**: Adaptadores de instalação seletiva local ao projeto para comandos, agents, skills e regras achatadas. Veja [Guia do Adaptador JoyCode](docs/JOYCODE-GUIDE.md).
+- **Qwen CLI**: Adaptador de instalação seletiva no diretório home para comandos, agents, skills, regras e configuração do Qwen. Veja [Guia do Adaptador Qwen CLI](docs/QWEN-GUIDE.md).
+- **Zed**: Adaptador de instalação seletiva local ao projeto para `.zed/settings.json`, regras achatadas, comandos, agents e skills.
+- **Harnesses não nativos**: Caminho de fallback manual para Grok e interfaces similares. Veja [Guia de Adaptação Manual](docs/MANUAL-ADAPTATION-GUIDE.md).
+- **Claude Code**: Nativo — este é o alvo principal.
 </details>
 
 <details>
-<summary><b>How do I contribute a new skill or agent?</b></summary>
+<summary><b>Como contribuo com uma nova skill ou agent?</b></summary>
 
-See [CONTRIBUTING.md](CONTRIBUTING.md). The short version:
-1. Fork the repo
-2. Create your skill in `skills/your-skill-name/SKILL.md` (with YAML frontmatter)
-3. Or create an agent in `agents/your-agent.md`
-4. Submit a PR with a clear description of what it does and when to use it
+Veja [CONTRIBUTING.md](CONTRIBUTING.md). A versão curta:
+1. Faça um fork do repositório
+2. Crie sua skill em `skills/your-skill-name/SKILL.md` (com frontmatter YAML)
+3. Ou crie um agent em `agents/your-agent.md`
+4. Envie um PR com uma descrição clara do que ele faz e de quando usá-lo
 </details>
 
 ---
 
-## Running Tests
+## Executando os Testes
 
-The plugin includes a comprehensive test suite:
+O plugin inclui uma suíte de testes abrangente:
 
 ```bash
-# Run all tests
+# Executar todos os testes
 node tests/run-all.js
 
-# Run individual test files
+# Executar arquivos de teste individuais
 node tests/lib/utils.test.js
 node tests/lib/package-manager.test.js
 node tests/hooks/hooks.test.js
@@ -1255,33 +1255,33 @@ node tests/hooks/hooks.test.js
 
 ---
 
-## Contributing
+## Contribuindo
 
-**Contributions are welcome and encouraged.**
+**Contribuições são bem-vindas e incentivadas.**
 
-This repo is meant to be a community resource. If you have:
-- Useful agents or skills
-- Clever hooks
-- Better MCP configurations
-- Improved rules
+Este repositório busca ser um recurso comunitário. Se você tiver:
+- Agents ou skills úteis
+- Hooks engenhosos
+- Configurações de MCP melhores
+- Regras aprimoradas
 
-Please contribute! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+Por favor, contribua! Veja [CONTRIBUTING.md](CONTRIBUTING.md) para as diretrizes.
 
-### Ideas for Contributions
+### Ideias de Contribuições
 
-- Language-specific skills (Rust, C#, Kotlin, Java) — Go, Python, Perl, Swift, TypeScript, and HarmonyOS/ArkTS already included
-- Framework-specific configs (Rails, FastAPI) — Django, NestJS, Spring Boot, and Laravel already included
-- DevOps agents (Kubernetes, Terraform, AWS, Docker)
-- Testing strategies (different frameworks, visual regression)
-- Domain-specific knowledge (ML, data engineering, mobile)
+- Skills específicas de linguagem (Rust, C#, Kotlin, Java) — Go, Python, Perl, Swift, TypeScript e HarmonyOS/ArkTS já incluídos
+- Configurações específicas de framework (Rails, FastAPI) — Django, NestJS, Spring Boot e Laravel já incluídos
+- Agents de DevOps (Kubernetes, Terraform, AWS, Docker)
+- Estratégias de teste (frameworks diferentes, regressão visual)
+- Conhecimento específico de domínio (ML, engenharia de dados, mobile)
 
 ---
 
-## Cursor IDE Support
+## Suporte ao Cursor IDE
 
-ECC provides Cursor IDE support with hooks, rules, agents, skills, commands, and MCP configs adapted for Cursor's project layout.
+O ECC oferece suporte ao Cursor IDE com hooks, regras, agents, skills, comandos e configurações de MCP adaptados ao layout de projeto do Cursor.
 
-### Quick Start (Cursor)
+### Início Rápido (Cursor)
 
 ```bash
 # macOS/Linux
@@ -1295,62 +1295,62 @@ ECC provides Cursor IDE support with hooks, rules, agents, skills, commands, and
 .\install.ps1 --target cursor python golang swift php
 ```
 
-### What's Included
+### O Que Está Incluído
 
-| Component | Count | Details |
+| Componente | Quantidade | Detalhes |
 |-----------|-------|---------|
-| Hook Events | 15 | sessionStart, beforeShellExecution, afterFileEdit, beforeMCPExecution, beforeSubmitPrompt, and 10 more |
-| Hook Scripts | 16 | Thin Node.js scripts delegating to `scripts/hooks/` via shared adapter |
-| Rules | 34 | 9 common (alwaysApply) + 25 language-specific (TypeScript, Python, Go, Swift, PHP) |
-| Agents | 48 | `.cursor/agents/ecc-*.md` when installed; prefixed to avoid collisions with user or marketplace agents |
-| Skills | Shared + Bundled | `.cursor/skills/` for translated additions |
-| Commands | Shared | `.cursor/commands/` if installed |
-| MCP Config | Shared | `.cursor/mcp.json` if installed |
+| Eventos de Hook | 15 | sessionStart, beforeShellExecution, afterFileEdit, beforeMCPExecution, beforeSubmitPrompt e mais 10 |
+| Scripts de Hook | 16 | Scripts Node.js finos que delegam para `scripts/hooks/` via adaptador compartilhado |
+| Regras | 34 | 9 comuns (alwaysApply) + 25 específicas de linguagem (TypeScript, Python, Go, Swift, PHP) |
+| Agents | 48 | `.cursor/agents/ecc-*.md` quando instalados; prefixados para evitar colisões com agents de usuário ou de marketplace |
+| Skills | Compartilhadas + Empacotadas | `.cursor/skills/` para adições traduzidas |
+| Comandos | Compartilhados | `.cursor/commands/` se instalados |
+| Config de MCP | Compartilhada | `.cursor/mcp.json` se instalada |
 
-### Cursor Loading Notes
+### Notas de Carregamento do Cursor
 
-ECC does not install root `AGENTS.md` into `.cursor/`. Cursor treats nested `AGENTS.md` files as directory context, so copying ECC's repo identity into a host project would pollute that project.
+O ECC não instala um `AGENTS.md` raiz dentro de `.cursor/`. O Cursor trata arquivos `AGENTS.md` aninhados como contexto de diretório, então copiar a identidade de repositório do ECC para um projeto hospedeiro poluiria esse projeto.
 
-Cursor-native loading behavior can vary by Cursor build. ECC installs agents as `.cursor/agents/ecc-*.md`; if your Cursor build does not expose project agents, those files still work as explicit reference definitions instead of hidden global prompt context.
+O comportamento de carregamento nativo do Cursor pode variar conforme a build do Cursor. O ECC instala agents como `.cursor/agents/ecc-*.md`; se sua build do Cursor não expor agents de projeto, esses arquivos ainda funcionam como definições de referência explícitas, em vez de contexto de prompt global oculto.
 
-### Memory and data isolation (Cursor + Claude Code)
+### Isolamento de memória e dados (Cursor + Claude Code)
 
-ECC memory hooks reuse the same `scripts/hooks/*.js` as Claude Code. For Cursor, ECC tries to keep memory **out of `~/.claude` automatically**:
+Os hooks de memória do ECC reutilizam os mesmos `scripts/hooks/*.js` do Claude Code. Para o Cursor, o ECC tenta manter a memória **fora de `~/.claude` automaticamente**:
 
-1. **Cursor `sessionStart` hook** (installed to `.cursor/hooks.json` on `--target cursor`) injects `ECC_AGENT_DATA_HOME` for the whole composer session.
-2. **Hook runtime default** — when `CURSOR_VERSION` or `CURSOR_PROJECT_DIR` is present, hooks default to `~/.cursor/ecc` if the env var is unset.
-3. **Project config** — `.cursor/ecc-agent-data.json` documents and overrides the path (`agentDataHome`).
-4. **Always-on rule** — `.cursor/rules/ecc-agent-data-home.mdc` reminds the agent where memory lives.
+1. **Hook `sessionStart` do Cursor** (instalado em `.cursor/hooks.json` com `--target cursor`) injeta `ECC_AGENT_DATA_HOME` para toda a sessão do composer.
+2. **Padrão de runtime de hooks** — quando `CURSOR_VERSION` ou `CURSOR_PROJECT_DIR` está presente, os hooks usam `~/.cursor/ecc` por padrão se a variável de ambiente não estiver definida.
+3. **Configuração do projeto** — `.cursor/ecc-agent-data.json` documenta e sobrescreve o caminho (`agentDataHome`).
+4. **Regra always-on** — `.cursor/rules/ecc-agent-data-home.mdc` lembra o agente de onde a memória reside.
 
-You can still override explicitly:
+Você ainda pode sobrescrever explicitamente:
 
 ```bash
 export ECC_AGENT_DATA_HOME="$HOME/.cursor/ecc"
 ```
 
-To **share** memory with Claude Code on purpose, set `ECC_AGENT_DATA_HOME=~/.claude` in the shell or in `.cursor/ecc-agent-data.json`.
+Para **compartilhar** a memória com o Claude Code de propósito, defina `ECC_AGENT_DATA_HOME=~/.claude` no shell ou em `.cursor/ecc-agent-data.json`.
 
-Continuous learning v2 instincts remain separate under `CLV2_HOMUNCULUS_DIR` (default `~/.local/share/ecc-homunculus`).
+Os instintos do aprendizado contínuo v2 permanecem separados sob `CLV2_HOMUNCULUS_DIR` (padrão `~/.local/share/ecc-homunculus`).
 
-### Hook Architecture (DRY Adapter Pattern)
+### Arquitetura de Hooks (Padrão de Adaptador DRY)
 
-Cursor has **more hook events than Claude Code** (20 vs 8). The `.cursor/hooks/adapter.js` module transforms Cursor's stdin JSON to Claude Code's format, allowing existing `scripts/hooks/*.js` to be reused without duplication.
+O Cursor tem **mais eventos de hook do que o Claude Code** (20 vs. 8). O módulo `.cursor/hooks/adapter.js` transforma o JSON de stdin do Cursor no formato do Claude Code, permitindo que os `scripts/hooks/*.js` existentes sejam reutilizados sem duplicação.
 
 ```
 Cursor stdin JSON → adapter.js → transforms → scripts/hooks/*.js
                                               (shared with Claude Code)
 ```
 
-Key hooks:
-- **beforeShellExecution** — Blocks dev servers outside tmux (exit 2), git push review
-- **afterFileEdit** — Auto-format + TypeScript check + console.log warning
-- **beforeSubmitPrompt** — Detects secrets (sk-, ghp_, AKIA patterns) in prompts
-- **beforeTabFileRead** — Blocks Tab from reading .env, .key, .pem files (exit 2)
-- **beforeMCPExecution / afterMCPExecution** — MCP audit logging
+Hooks principais:
+- **beforeShellExecution** — Bloqueia servidores de dev fora do tmux (exit 2), review de git push
+- **afterFileEdit** — Auto-formatação + verificação TypeScript + aviso de console.log
+- **beforeSubmitPrompt** — Detecta segredos (padrões sk-, ghp_, AKIA) nos prompts
+- **beforeTabFileRead** — Bloqueia o Tab de ler arquivos .env, .key, .pem (exit 2)
+- **beforeMCPExecution / afterMCPExecution** — Logging de auditoria de MCP
 
-### Rules Format
+### Formato das Regras
 
-Cursor rules use YAML frontmatter with `description`, `globs`, and `alwaysApply`:
+As regras do Cursor usam frontmatter YAML com `description`, `globs` e `alwaysApply`:
 
 ```yaml
 ---
@@ -1362,40 +1362,40 @@ alwaysApply: false
 
 ---
 
-## Codex macOS App + CLI Support
+## Suporte ao Codex App de macOS + CLI
 
-ECC provides **first-class Codex support** for both the macOS app and CLI, with a reference configuration, Codex-specific AGENTS.md supplement, and shared skills.
+O ECC oferece **suporte de primeira classe ao Codex** tanto para o app de macOS quanto para a CLI, com uma configuração de referência, um suplemento AGENTS.md específico do Codex e skills compartilhadas.
 
-### Quick Start (Codex App + CLI)
+### Início Rápido (Codex App + CLI)
 
 ```bash
-# Run Codex CLI in the repo — AGENTS.md and .codex/ are auto-detected
+# Rode o Codex CLI no repositório — AGENTS.md e .codex/ são detectados automaticamente
 codex
 
-# Automatic setup: sync ECC assets (AGENTS.md, skills, MCP servers) into ~/.codex
+# Configuração automática: sincronize os assets do ECC (AGENTS.md, skills, servidores MCP) para ~/.codex
 npm install && bash scripts/sync-ecc-to-codex.sh
-# or: pnpm install && bash scripts/sync-ecc-to-codex.sh
-# or: yarn install && bash scripts/sync-ecc-to-codex.sh
-# or: bun install && bash scripts/sync-ecc-to-codex.sh
+# ou: pnpm install && bash scripts/sync-ecc-to-codex.sh
+# ou: yarn install && bash scripts/sync-ecc-to-codex.sh
+# ou: bun install && bash scripts/sync-ecc-to-codex.sh
 
-# Or manually: copy the reference config to your home directory
+# Ou manualmente: copie a configuração de referência para o seu diretório home
 cp .codex/config.toml ~/.codex/config.toml
 ```
 
-The sync script safely merges ECC MCP servers into your existing `~/.codex/config.toml` using an **add-only** strategy — it never removes or modifies your existing servers. Run with `--dry-run` to preview changes, or `--update-mcp` to force-refresh ECC servers to the latest recommended config.
+O script de sincronização mescla com segurança os servidores MCP do ECC ao seu `~/.codex/config.toml` existente usando uma estratégia **add-only** — ele nunca remove ou modifica seus servidores existentes. Execute com `--dry-run` para visualizar as mudanças, ou `--update-mcp` para forçar a atualização dos servidores ECC para a configuração recomendada mais recente.
 
-For Context7, ECC uses the canonical Codex section name `[mcp_servers.context7]` while still launching the `@upstash/context7-mcp` package. If you already have a legacy `[mcp_servers.context7-mcp]` entry, `--update-mcp` migrates it to the canonical section name.
+Para o Context7, o ECC usa o nome canônico de seção do Codex `[mcp_servers.context7]` enquanto ainda inicia o pacote `@upstash/context7-mcp`. Se você já tiver uma entrada legada `[mcp_servers.context7-mcp]`, `--update-mcp` a migra para o nome de seção canônico.
 
-Codex macOS app:
-- Open this repository as your workspace.
-- The root `AGENTS.md` is auto-detected.
-- `.codex/config.toml` and `.codex/agents/*.toml` work best when kept project-local.
-- The reference `.codex/config.toml` intentionally does not pin `model` or `model_provider`, so Codex uses its own current default unless you override it.
-- Optional: copy `.codex/config.toml` to `~/.codex/config.toml` for global defaults; keep the multi-agent role files project-local unless you also copy `.codex/agents/`.
+Codex app de macOS:
+- Abra este repositório como seu workspace.
+- O `AGENTS.md` raiz é detectado automaticamente.
+- `.codex/config.toml` e `.codex/agents/*.toml` funcionam melhor quando mantidos local ao projeto.
+- O `.codex/config.toml` de referência intencionalmente não fixa `model` ou `model_provider`, então o Codex usa seu próprio padrão atual a menos que você o sobrescreva.
+- Opcional: copie `.codex/config.toml` para `~/.codex/config.toml` para padrões globais; mantenha os arquivos de papel multiagente local ao projeto a menos que você também copie `.codex/agents/`.
 
-### Codex Plugin Marketplace (experimental)
+### Marketplace de Plugin do Codex (experimental)
 
-The repo also exposes a Codex repo-scoped marketplace (`.agents/plugins/marketplace.json`) whose entry points at the `plugins/ecc/` plugin folder — Codex does not discover plugins whose local marketplace `source.path` is the repository root (`./`), so the entry must target a concrete plugin subdirectory:
+O repositório também expõe um marketplace do Codex com escopo de repositório (`.agents/plugins/marketplace.json`) cuja entrada aponta para a pasta de plugin `plugins/ecc/` — o Codex não descobre plugins cujo `source.path` de marketplace local seja a raiz do repositório (`./`), então a entrada precisa apontar para um subdiretório de plugin concreto:
 
 ```bash
 codex plugin marketplace add affaan-m/ECC
@@ -1403,91 +1403,91 @@ codex plugin list
 node scripts/codex/check-plugin-cache.js
 ```
 
-`codex plugin list` only confirms marketplace registration. Run
-`node scripts/codex/check-plugin-cache.js` after install to verify that the
-installed cache can resolve the manifest's skills, MCP config, and assets.
+`codex plugin list` apenas confirma o registro no marketplace. Execute
+`node scripts/codex/check-plugin-cache.js` após a instalação para verificar se o
+cache instalado consegue resolver as skills, a config de MCP e os assets do manifesto.
 
-**Plugin mode is currently fragile on Codex.** Marketplace discovery and install work with this layout, but runtime skill loading from local/repo marketplaces is still unreliable upstream ([openai/codex#26037](https://github.com/openai/codex/issues/26037)): Codex copies only the plugin folder into its install cache, so plugins that reference shared repo content may not expose skills in a fresh session. If the cache health check reports missing manifest references, treat the plugin path as discovery-only and prefer the manual sync flow above (`scripts/sync-ecc-to-codex.sh`), which is the supported Codex route. See [#2128](https://github.com/affaan-m/ECC/issues/2128) for the full investigation.
+**O modo de plugin é atualmente frágil no Codex.** A descoberta e a instalação via marketplace funcionam com este layout, mas o carregamento de skills em runtime a partir de marketplaces locais/de repositório ainda é não confiável upstream ([openai/codex#26037](https://github.com/openai/codex/issues/26037)): o Codex copia apenas a pasta de plugin para o seu cache de instalação, então plugins que referenciam conteúdo compartilhado do repositório podem não expor skills em uma sessão nova. Se a verificação de saúde do cache reportar referências de manifesto ausentes, trate o caminho de plugin como apenas-para-descoberta e prefira o fluxo de sincronização manual acima (`scripts/sync-ecc-to-codex.sh`), que é a rota suportada do Codex. Veja [#2128](https://github.com/affaan-m/ECC/issues/2128) para a investigação completa.
 
-### What's Included
+### O Que Está Incluído
 
-| Component | Count | Details |
+| Componente | Quantidade | Detalhes |
 |-----------|-------|---------|
-| Config | 1 | `.codex/config.toml` — top-level approvals/sandbox/web_search, MCP servers, notifications, profiles |
-| AGENTS.md | 2 | Root (universal) + `.codex/AGENTS.md` (Codex-specific supplement) |
-| Skills | 32 | `.agents/skills/` — SKILL.md + agents/openai.yaml per skill |
-| MCP Servers | 6 | GitHub, Context7, Exa, Memory, Playwright, Sequential Thinking (7 with Supabase via `--update-mcp` sync) |
-| Profiles | 2 | `strict` (read-only sandbox) and `yolo` (full auto-approve) |
-| Agent Roles | 3 | `.codex/agents/` — explorer, reviewer, docs-researcher |
+| Config | 1 | `.codex/config.toml` — approvals/sandbox/web_search de nível superior, servidores MCP, notificações, perfis |
+| AGENTS.md | 2 | Raiz (universal) + `.codex/AGENTS.md` (suplemento específico do Codex) |
+| Skills | 32 | `.agents/skills/` — SKILL.md + agents/openai.yaml por skill |
+| Servidores MCP | 6 | GitHub, Context7, Exa, Memory, Playwright, Sequential Thinking (7 com Supabase via sincronização `--update-mcp`) |
+| Perfis | 2 | `strict` (sandbox somente leitura) e `yolo` (auto-aprovação total) |
+| Papéis de Agent | 3 | `.codex/agents/` — explorer, reviewer, docs-researcher |
 
 ### Skills
 
-Skills at `.agents/skills/` are auto-loaded by Codex:
+As skills em `.agents/skills/` são carregadas automaticamente pelo Codex:
 
-Canonical Anthropic skills such as `claude-api`, `frontend-design`, and `skill-creator` are intentionally not re-bundled here. Install those from [`anthropics/skills`](https://github.com/anthropics/skills) when you want the official versions.
+Skills canônicas da Anthropic como `claude-api`, `frontend-design` e `skill-creator` intencionalmente não são reempacotadas aqui. Instale-as a partir de [`anthropics/skills`](https://github.com/anthropics/skills) quando você quiser as versões oficiais.
 
-| Skill | Description |
+| Skill | Descrição |
 |-------|-------------|
-| agent-introspection-debugging | Debug agent behavior, routing, and prompt boundaries |
-| agent-sort | Sort agent catalogs and assignment surfaces |
-| api-design | REST API design patterns |
-| article-writing | Long-form writing from notes and voice references |
-| backend-patterns | API design, database, caching |
-| brand-voice | Source-derived writing style profiles from real content |
-| bun-runtime | Bun as runtime, package manager, bundler, and test runner |
-| coding-standards | Universal coding standards |
-| codehealth-mcp | Optional — Code Health MCP (opt-in server + token); structural review and commit/PR gates |
-| content-engine | Platform-native social content and repurposing |
-| crosspost | Multi-platform content distribution across X, LinkedIn, Threads |
-| deep-research | Multi-source research with synthesis and source attribution |
-| dmux-workflows | Multi-agent orchestration using tmux pane manager |
-| documentation-lookup | Up-to-date library and framework docs via Context7 MCP |
-| e2e-testing | Playwright E2E tests |
-| eval-harness | Eval-driven development |
-| everything-claude-code | Development conventions and patterns for the project |
-| exa-search | Neural search via Exa MCP for web, code, company research |
-| fal-ai-media | Unified media generation for images, video, and audio |
-| frontend-patterns | React/Next.js patterns |
-| frontend-slides | HTML presentations, PPTX conversion, visual style exploration |
-| investor-materials | Decks, memos, models, and one-pagers |
-| investor-outreach | Personalized outreach, follow-ups, and intro blurbs |
-| market-research | Source-attributed market and competitor research |
-| mcp-server-patterns | Build MCP servers with Node/TypeScript SDK |
-| nextjs-turbopack | Next.js 16+ and Turbopack incremental bundling |
-| product-capability | Translate product goals into scoped capability maps |
-| security-review | Comprehensive security checklist |
-| strategic-compact | Context management |
-| tdd-workflow | Test-driven development with 80%+ coverage |
-| verification-loop | Build, test, lint, typecheck, security |
-| video-editing | AI-assisted video editing workflows with FFmpeg and Remotion |
-| x-api | X/Twitter API integration for posting and analytics |
+| agent-introspection-debugging | Depurar comportamento de agent, roteamento e limites de prompt |
+| agent-sort | Ordenar catálogos de agents e superfícies de atribuição |
+| api-design | Padrões de design de API REST |
+| article-writing | Escrita long-form a partir de notas e referências de voz |
+| backend-patterns | Design de API, banco de dados, caching |
+| brand-voice | Perfis de estilo de escrita derivados de conteúdo real |
+| bun-runtime | Bun como runtime, gerenciador de pacotes, bundler e test runner |
+| coding-standards | Padrões de código universais |
+| codehealth-mcp | Opcional — Code Health MCP (servidor opt-in + token); review estrutural e gates de commit/PR |
+| content-engine | Conteúdo social nativo de plataforma e reaproveitamento |
+| crosspost | Distribuição de conteúdo multiplataforma em X, LinkedIn, Threads |
+| deep-research | Pesquisa multifonte com síntese e atribuição de fontes |
+| dmux-workflows | Orquestração multiagente usando o gerenciador de painéis tmux |
+| documentation-lookup | Docs atualizadas de bibliotecas e frameworks via Context7 MCP |
+| e2e-testing | Testes E2E com Playwright |
+| eval-harness | Desenvolvimento orientado a evals |
+| everything-claude-code | Convenções e padrões de desenvolvimento do projeto |
+| exa-search | Busca neural via Exa MCP para pesquisa de web, código e empresas |
+| fal-ai-media | Geração unificada de mídia para imagens, vídeo e áudio |
+| frontend-patterns | Padrões de React/Next.js |
+| frontend-slides | Apresentações HTML, conversão de PPTX, exploração de estilo visual |
+| investor-materials | Decks, memos, modelos e one-pagers |
+| investor-outreach | Abordagem personalizada, follow-ups e blurbs de introdução |
+| market-research | Pesquisa de mercado e concorrentes com atribuição de fontes |
+| mcp-server-patterns | Construir servidores MCP com o SDK Node/TypeScript |
+| nextjs-turbopack | Next.js 16+ e bundling incremental do Turbopack |
+| product-capability | Traduzir metas de produto em mapas de capacidade com escopo |
+| security-review | Checklist de segurança abrangente |
+| strategic-compact | Gerenciamento de contexto |
+| tdd-workflow | Desenvolvimento orientado a testes com 80%+ de cobertura |
+| verification-loop | Build, teste, lint, typecheck, segurança |
+| video-editing | Fluxos de trabalho de edição de vídeo assistida por IA com FFmpeg e Remotion |
+| x-api | Integração com a API do X/Twitter para postagem e analytics |
 
-### Key Limitation
+### Limitação Principal
 
-Codex does **not yet provide Claude-style hook execution parity**. ECC enforcement there is instruction-based via `AGENTS.md`, optional `model_instructions_file` overrides, and sandbox/approval settings.
+O Codex **ainda não oferece paridade de execução de hooks no estilo Claude**. A aplicação do ECC lá é baseada em instruções via `AGENTS.md`, sobrescritas opcionais de `model_instructions_file` e configurações de sandbox/aprovação.
 
-### Multi-Agent Support
+### Suporte Multiagente
 
-Current Codex builds support stable multi-agent workflows.
+As builds atuais do Codex suportam fluxos de trabalho multiagente estáveis.
 
-- Enable `features.multi_agent = true` in `.codex/config.toml`
-- Define roles under `[agents.<name>]`
-- Point each role at a file under `.codex/agents/`
-- Use `/agent` in the CLI to inspect or steer child agents
+- Habilite `features.multi_agent = true` em `.codex/config.toml`
+- Defina papéis sob `[agents.<name>]`
+- Aponte cada papel para um arquivo sob `.codex/agents/`
+- Use `/agent` na CLI para inspecionar ou direcionar agents filhos
 
-ECC ships three sample role configs:
+O ECC entrega três configurações de papel de exemplo:
 
-| Role | Purpose |
+| Papel | Propósito |
 |------|---------|
-| `explorer` | Read-only codebase evidence gathering before edits |
-| `reviewer` | Correctness, security, and missing-test review |
-| `docs_researcher` | Documentation and API verification before release/docs changes |
+| `explorer` | Coleta de evidências do codebase somente leitura antes de edições |
+| `reviewer` | Review de correção, segurança e testes ausentes |
+| `docs_researcher` | Verificação de documentação e API antes de mudanças de release/docs |
 
 ---
 
-## Zed Support
+## Suporte ao Zed
 
-ECC provides Zed project support through a conservative `.zed` adapter for project-local settings, flattened rules, agents, commands, and skills.
+O ECC oferece suporte a projetos Zed por meio de um adaptador `.zed` conservador para configurações local ao projeto, regras achatadas, agents, comandos e skills.
 
 ```bash
 ./install.sh --profile minimal --target zed
@@ -1497,43 +1497,43 @@ ECC provides Zed project support through a conservative `.zed` adapter for proje
 .\install.ps1 --profile minimal --target zed
 ```
 
-The adapter writes ECC-managed files under `.zed/` and keeps BYOK/OpenRouter credentials out of the repo. Configure Zed account or API keys through Zed's own settings UI or your local user settings.
+O adaptador grava arquivos gerenciados pelo ECC sob `.zed/` e mantém as credenciais BYOK/OpenRouter fora do repositório. Configure a conta do Zed ou as chaves de API através da própria UI de configurações do Zed ou das suas configurações de usuário locais.
 
 ---
 
-## OpenCode Support
+## Suporte ao OpenCode
 
-ECC provides **full OpenCode support** including plugins and hooks.
+O ECC oferece **suporte completo ao OpenCode** incluindo plugins e hooks.
 
-### Quick Start
+### Início Rápido
 
 ```bash
-# Install OpenCode
+# Instalar o OpenCode
 npm install -g opencode
 
-# Run in the repository root
+# Rodar na raiz do repositório
 opencode
 ```
 
-The configuration is automatically detected from `.opencode/opencode.json`.
+A configuração é detectada automaticamente a partir de `.opencode/opencode.json`.
 
-### Feature Parity
+### Paridade de Recursos
 
-| Feature | Claude Code         | OpenCode | Status |
+| Recurso | Claude Code         | OpenCode | Status |
 |---------|---------------------|----------|--------|
-| Agents | PASS: 67 agents     | PASS: 12 agents | **Claude Code leads** |
-| Commands | PASS: 92 commands   | PASS: 35 commands | **Claude Code leads** |
-| Skills | PASS: 271 skills    | PASS: 37 skills | **Claude Code leads** |
-| Hooks | PASS: 8 event types | PASS: 11 events | **OpenCode has more!** |
-| Rules | PASS: 29 rules      | PASS: 13 instructions | **Claude Code leads** |
-| MCP Servers | PASS: 14 servers    | PASS: Full | **Full parity** |
-| Custom Tools | PASS: Via hooks     | PASS: 6 native tools | **OpenCode is better** |
+| Agents | PASS: 67 agents     | PASS: 12 agents | **Claude Code lidera** |
+| Comandos | PASS: 92 commands   | PASS: 35 commands | **Claude Code lidera** |
+| Skills | PASS: 271 skills    | PASS: 37 skills | **Claude Code lidera** |
+| Hooks | PASS: 8 event types | PASS: 11 events | **OpenCode tem mais!** |
+| Regras | PASS: 29 rules      | PASS: 13 instructions | **Claude Code lidera** |
+| Servidores MCP | PASS: 14 servers    | PASS: Full | **Paridade total** |
+| Ferramentas Personalizadas | PASS: Via hooks     | PASS: 6 native tools | **OpenCode é melhor** |
 
-### Hook Support via Plugins
+### Suporte a Hooks via Plugins
 
-OpenCode's plugin system is MORE sophisticated than Claude Code with 20+ event types:
+O sistema de plugins do OpenCode é MAIS sofisticado que o do Claude Code, com 20+ tipos de eventos:
 
-| Claude Code Hook | OpenCode Plugin Event |
+| Hook do Claude Code | Evento de Plugin do OpenCode |
 |-----------------|----------------------|
 | PreToolUse | `tool.execute.before` |
 | PostToolUse | `tool.execute.after` |
@@ -1541,184 +1541,184 @@ OpenCode's plugin system is MORE sophisticated than Claude Code with 20+ event t
 | SessionStart | `session.created` |
 | SessionEnd | `session.deleted` |
 
-**Additional OpenCode events**: `file.edited`, `file.watcher.updated`, `message.updated`, `lsp.client.diagnostics`, `tui.toast.show`, and more.
+**Eventos adicionais do OpenCode**: `file.edited`, `file.watcher.updated`, `message.updated`, `lsp.client.diagnostics`, `tui.toast.show` e mais.
 
-### Maintained Slash Entries
+### Entradas Slash Mantidas
 
-| Command | Description |
+| Comando | Descrição |
 |---------|-------------|
-| `/plan` | Create implementation plan |
-| `/code-review` | Review code changes |
-| `/build-fix` | Fix build errors |
-| `/refactor-clean` | Remove dead code |
-| `/learn` | Extract patterns from session |
-| `/checkpoint` | Save verification state |
-| `/quality-gate` | Run the maintained verification gate |
-| `/update-docs` | Update documentation |
-| `/update-codemaps` | Update codemaps |
-| `/test-coverage` | Analyze coverage |
-| `/go-review` | Go code review |
-| `/go-test` | Go TDD workflow |
-| `/go-build` | Fix Go build errors |
-| `/python-review` | Python code review (PEP 8, type hints, security) |
-| `/multi-plan` | Multi-model collaborative planning |
-| `/multi-execute` | Multi-model collaborative execution |
-| `/multi-backend` | Backend-focused multi-model workflow |
-| `/multi-frontend` | Frontend-focused multi-model workflow |
-| `/multi-workflow` | Full multi-model development workflow |
-| `/pm2` | Auto-generate PM2 service commands |
-| `/sessions` | Manage session history |
-| `/skill-create` | Generate skills from git |
-| `/instinct-status` | View learned instincts |
-| `/instinct-import` | Import instincts |
-| `/instinct-export` | Export instincts |
-| `/evolve` | Cluster instincts into skills |
-| `/promote` | Promote project instincts to global scope |
-| `/projects` | List known projects and instinct stats |
-| `/prune` | Delete expired pending instincts (30d TTL) |
-| `/learn-eval` | Extract and evaluate patterns before saving |
-| `/setup-pm` | Configure package manager |
-| `/harness-audit` | Audit harness reliability, eval readiness, and risk posture |
-| `/loop-start` | Start controlled agentic loop execution pattern |
-| `/loop-status` | Inspect active loop status and checkpoints |
-| `/quality-gate` | Run quality gate checks for paths or entire repo |
-| `/model-route` | Route tasks to models by complexity and budget |
+| `/plan` | Criar plano de implementação |
+| `/code-review` | Revisar mudanças de código |
+| `/build-fix` | Corrigir erros de build |
+| `/refactor-clean` | Remover código morto |
+| `/learn` | Extrair padrões da sessão |
+| `/checkpoint` | Salvar estado de verificação |
+| `/quality-gate` | Executar o gate de verificação mantido |
+| `/update-docs` | Atualizar documentação |
+| `/update-codemaps` | Atualizar codemaps |
+| `/test-coverage` | Analisar cobertura |
+| `/go-review` | Review de código Go |
+| `/go-test` | Fluxo de trabalho TDD Go |
+| `/go-build` | Corrigir erros de build Go |
+| `/python-review` | Review de código Python (PEP 8, type hints, segurança) |
+| `/multi-plan` | Planejamento colaborativo multimodelo |
+| `/multi-execute` | Execução colaborativa multimodelo |
+| `/multi-backend` | Fluxo de trabalho multimodelo focado em backend |
+| `/multi-frontend` | Fluxo de trabalho multimodelo focado em frontend |
+| `/multi-workflow` | Fluxo de trabalho completo de desenvolvimento multimodelo |
+| `/pm2` | Gerar automaticamente comandos de serviço PM2 |
+| `/sessions` | Gerenciar histórico de sessões |
+| `/skill-create` | Gerar skills a partir do git |
+| `/instinct-status` | Ver instintos aprendidos |
+| `/instinct-import` | Importar instintos |
+| `/instinct-export` | Exportar instintos |
+| `/evolve` | Agrupar instintos em skills |
+| `/promote` | Promover instintos de projeto para escopo global |
+| `/projects` | Listar projetos conhecidos e estatísticas de instintos |
+| `/prune` | Excluir instintos pendentes expirados (TTL de 30d) |
+| `/learn-eval` | Extrair e avaliar padrões antes de salvar |
+| `/setup-pm` | Configurar gerenciador de pacotes |
+| `/harness-audit` | Auditar confiabilidade do harness, prontidão de evals e postura de risco |
+| `/loop-start` | Iniciar padrão controlado de execução de loop de agente |
+| `/loop-status` | Inspecionar status de loop ativo e checkpoints |
+| `/quality-gate` | Executar verificações de quality gate para caminhos ou o repositório inteiro |
+| `/model-route` | Rotear tarefas para modelos por complexidade e orçamento |
 
-### Plugin Installation
+### Instalação do Plugin
 
-**Option 1: Use directly**
+**Opção 1: Usar diretamente**
 ```bash
 cd ECC
 opencode
 ```
 
-**Option 2: Install as npm package**
+**Opção 2: Instalar como pacote npm**
 ```bash
 npm install ecc-universal
 ```
 
-Then add to your `opencode.json`:
+Depois adicione ao seu `opencode.json`:
 ```json
 {
   "plugin": ["ecc-universal"]
 }
 ```
 
-That npm plugin entry enables ECC's published OpenCode plugin module (hooks/events and plugin tools).
-It does **not** automatically add ECC's full command/agent/instruction catalog to your project config.
+Essa entrada de plugin npm habilita o módulo de plugin OpenCode publicado pelo ECC (hooks/eventos e ferramentas de plugin).
+Ela **não** adiciona automaticamente o catálogo completo de comandos/agents/instruções do ECC à configuração do seu projeto.
 
-For the full ECC OpenCode setup, either:
-- run OpenCode inside this repository, or
-- copy the bundled `.opencode/` config assets into your project and wire the `instructions`, `agent`, and `command` entries in `opencode.json`
+Para a configuração completa do ECC no OpenCode, faça uma das seguintes:
+- rode o OpenCode dentro deste repositório, ou
+- copie os assets de configuração empacotados em `.opencode/` para o seu projeto e conecte as entradas `instructions`, `agent` e `command` em `opencode.json`
 
-### Documentation
+### Documentação
 
-- **Migration Guide**: `.opencode/MIGRATION.md`
-- **OpenCode Plugin README**: `.opencode/README.md`
-- **Consolidated Rules**: `.opencode/instructions/INSTRUCTIONS.md`
-- **LLM Documentation**: `llms.txt` (complete OpenCode docs for LLMs)
+- **Guia de Migração**: `.opencode/MIGRATION.md`
+- **README do Plugin OpenCode**: `.opencode/README.md`
+- **Regras Consolidadas**: `.opencode/instructions/INSTRUCTIONS.md`
+- **Documentação para LLM**: `llms.txt` (docs completas do OpenCode para LLMs)
 
 ---
 
-## GitHub Copilot Support
+## Suporte ao GitHub Copilot
 
-ECC provides **GitHub Copilot support** for VS Code via Copilot Chat's native instruction and prompt file system — no extra tooling required.
+O ECC oferece **suporte ao GitHub Copilot** para VS Code via o sistema nativo de arquivos de instrução e prompt do Copilot Chat — sem ferramentas extras necessárias.
 
-### What's Included
+### O Que Está Incluído
 
-| Component | File | Purpose |
+| Componente | Arquivo | Propósito |
 |-----------|------|---------|
-| Core instructions | `.github/copilot-instructions.md` | Always-loaded rules: coding style, security, testing, git workflow |
-| VS Code settings | `.vscode/settings.json` | Per-task instruction files for code gen, test gen, and commit messages |
-| Plan prompt | `.github/prompts/plan.prompt.md` | Phased implementation planning |
-| TDD prompt | `.github/prompts/tdd.prompt.md` | Red-Green-Improve cycle |
-| Security review prompt | `.github/prompts/security-review.prompt.md` | Deep OWASP-aligned security analysis |
-| Build fix prompt | `.github/prompts/build-fix.prompt.md` | Systematic build and CI error resolution |
-| Refactor prompt | `.github/prompts/refactor.prompt.md` | Dead code cleanup and simplification |
+| Instruções core | `.github/copilot-instructions.md` | Regras sempre carregadas: estilo de código, segurança, testes, git workflow |
+| Configurações do VS Code | `.vscode/settings.json` | Arquivos de instrução por tarefa para geração de código, geração de testes e mensagens de commit |
+| Prompt de plano | `.github/prompts/plan.prompt.md` | Planejamento de implementação em fases |
+| Prompt de TDD | `.github/prompts/tdd.prompt.md` | Ciclo Red-Green-Improve |
+| Prompt de review de segurança | `.github/prompts/security-review.prompt.md` | Análise de segurança profunda alinhada ao OWASP |
+| Prompt de correção de build | `.github/prompts/build-fix.prompt.md` | Resolução sistemática de erros de build e CI/CD |
+| Prompt de refatoração | `.github/prompts/refactor.prompt.md` | Limpeza de código morto e simplificação |
 
-### Quick Start (GitHub Copilot)
+### Início Rápido (GitHub Copilot)
 
-The files are already in place — open any repo that contains this project and GitHub Copilot Chat will automatically pick up `.github/copilot-instructions.md`.
-The committed `.vscode/settings.json` enables `chat.promptFiles` so VS Code can load the reusable prompts from `.github/prompts/`.
+Os arquivos já estão no lugar — abra qualquer repositório que contenha este projeto e o GitHub Copilot Chat vai pegar automaticamente o `.github/copilot-instructions.md`.
+O `.vscode/settings.json` commitado habilita `chat.promptFiles` para que o VS Code possa carregar os prompts reutilizáveis de `.github/prompts/`.
 
-To use the workflow prompts in Copilot Chat:
-1. Open the Copilot Chat panel in VS Code.
-2. Click the **paperclip / attach** icon and select **Prompt...**, or type `/` and choose a prompt.
-3. Select the prompt (e.g. `plan`, `tdd`, `security-review`).
+Para usar os prompts de fluxo de trabalho no Copilot Chat:
+1. Abra o painel do Copilot Chat no VS Code.
+2. Clique no ícone de **clipe de papel / anexar** e selecione **Prompt...**, ou digite `/` e escolha um prompt.
+3. Selecione o prompt (por exemplo, `plan`, `tdd`, `security-review`).
 
-### How It Works
+### Como Funciona
 
-GitHub Copilot in VS Code reads two types of files automatically:
+O GitHub Copilot no VS Code lê dois tipos de arquivo automaticamente:
 
-- **`.github/copilot-instructions.md`** — repository-level instructions, always injected into every Copilot Chat request. Contains ECC's core coding standards, security checklist, testing requirements, and git workflow.
-- **`.github/prompts/*.prompt.md`** — reusable prompt files users invoke on demand. Each prompt walks Copilot through a specific ECC workflow such as planning, TDD, security review, build-fix, or refactor.
+- **`.github/copilot-instructions.md`** — instruções no nível do repositório, sempre injetadas em cada requisição do Copilot Chat. Contém os padrões de código core do ECC, checklist de segurança, requisitos de teste e git workflow.
+- **`.github/prompts/*.prompt.md`** — arquivos de prompt reutilizáveis que os usuários invocam sob demanda. Cada prompt guia o Copilot por um fluxo de trabalho específico do ECC como planejamento, TDD, review de segurança, correção de build ou refatoração.
 
-The **`.vscode/settings.json`** adds per-task instruction overlays so Copilot receives the right context for code generation, test generation, and commit message drafting.
+O **`.vscode/settings.json`** adiciona overlays de instrução por tarefa para que o Copilot receba o contexto certo para geração de código, geração de testes e elaboração de mensagens de commit.
 
-### Feature Coverage
+### Cobertura de Recursos
 
-| ECC Feature | Copilot equivalent |
+| Recurso do ECC | Equivalente no Copilot |
 |-------------|-------------------|
-| Coding standards | Always-on via `copilot-instructions.md` |
-| Security checklist | Always-on + `security-review` prompt |
-| Testing / TDD | Always-on + `tdd` prompt |
-| Implementation planning | `plan` prompt |
-| Code review | External PR review via CodeRabbit + Greptile |
-| Build error resolution | `build-fix` prompt |
-| Refactoring | `refactor` prompt |
-| Commit message format | Per-task instruction in `settings.json` |
-| Hooks / automation | Not supported (Copilot has no hook system) |
-| Agents / delegation | Not supported (Copilot has no subagent API) |
+| Padrões de código | Sempre ativo via `copilot-instructions.md` |
+| Checklist de segurança | Sempre ativo + prompt `security-review` |
+| Testes / TDD | Sempre ativo + prompt `tdd` |
+| Planejamento de implementação | Prompt `plan` |
+| Code review | Review externo de PR via CodeRabbit + Greptile |
+| Resolução de erros de build | Prompt `build-fix` |
+| Refatoração | Prompt `refactor` |
+| Formato de mensagem de commit | Instrução por tarefa em `settings.json` |
+| Hooks / automação | Não suportado (o Copilot não tem sistema de hooks) |
+| Agents / delegação | Não suportado (o Copilot não tem API de subagentes) |
 
-### Limitations
+### Limitações
 
-GitHub Copilot does not have a hook system or a subagent API, so ECC's hook automations (auto-format, TypeScript check, session persistence, dev-server guard) and agent delegation are unavailable. The instruction and prompt layer still brings the full ECC coding philosophy — standards, security, TDD, and workflow — into every Copilot Chat session.
+O GitHub Copilot não tem um sistema de hooks nem uma API de subagentes, então as automações de hook do ECC (auto-formatação, verificação TypeScript, persistência de sessão, guarda de servidor de dev) e a delegação de agents não estão disponíveis. A camada de instruções e prompts ainda traz toda a filosofia de código do ECC — padrões, segurança, TDD e fluxo de trabalho — para cada sessão do Copilot Chat.
 
 ---
 
-## Cross-Tool Feature Parity
+## Paridade de Recursos Cross-Tool
 
-ECC is the **first plugin to maximize every major AI coding tool**. Here's how each harness compares:
+O ECC é o **primeiro plugin a maximizar cada grande ferramenta de codificação com IA**. Veja como cada harness se compara:
 
-| Feature | Claude Code           | Cursor IDE | Codex CLI | OpenCode | GitHub Copilot |
+| Recurso | Claude Code           | Cursor IDE | Codex CLI | OpenCode | GitHub Copilot |
 |---------|-----------------------|------------|-----------|----------|----------------|
-| **Agents** | 67                    | Shared (AGENTS.md) | Shared (AGENTS.md) | 12 | N/A |
-| **Commands** | 92                    | Shared | Instruction-based | 35 | 5 prompts |
-| **Skills** | 271                   | Shared | 10 (native format) | 37 | Via instructions |
-| **Hook Events** | 8 types               | 15 types | None yet | 11 types | None |
-| **Hook Scripts** | 20+ scripts           | 16 scripts (DRY adapter) | N/A | Plugin hooks | N/A |
-| **Rules** | 34 (common + lang)    | 34 (YAML frontmatter) | Instruction-based | 13 instructions | 1 always-on file |
-| **Custom Tools** | Via hooks             | Via hooks | N/A | 6 native tools | N/A |
-| **MCP Servers** | 14                    | Shared (mcp.json) | 7 (auto-merged via TOML parser) | Full | N/A |
-| **Config Format** | settings.json         | hooks.json + rules/ | config.toml | opencode.json | copilot-instructions.md + settings.json |
-| **Context File** | CLAUDE.md + AGENTS.md | AGENTS.md | AGENTS.md | AGENTS.md | copilot-instructions.md |
-| **Secret Detection** | Hook-based            | beforeSubmitPrompt hook | Sandbox-based | Hook-based | Instruction-based |
-| **Auto-Format** | PostToolUse hook      | afterFileEdit hook | N/A | file.edited hook | N/A |
-| **Version** | Plugin | Plugin | Reference config | 2.0.0 | Instruction layer |
+| **Agents** | 67                    | Compartilhado (AGENTS.md) | Compartilhado (AGENTS.md) | 12 | N/A |
+| **Comandos** | 92                    | Compartilhado | Baseado em instruções | 35 | 5 prompts |
+| **Skills** | 271                   | Compartilhado | 10 (formato nativo) | 37 | Via instruções |
+| **Eventos de Hook** | 8 tipos               | 15 tipos | Ainda nenhum | 11 tipos | Nenhum |
+| **Scripts de Hook** | 20+ scripts           | 16 scripts (adaptador DRY) | N/A | Hooks de plugin | N/A |
+| **Regras** | 34 (common + lang)    | 34 (frontmatter YAML) | Baseado em instruções | 13 instruções | 1 arquivo sempre ativo |
+| **Ferramentas Personalizadas** | Via hooks             | Via hooks | N/A | 6 ferramentas nativas | N/A |
+| **Servidores MCP** | 14                    | Compartilhado (mcp.json) | 7 (auto-mesclados via parser TOML) | Full | N/A |
+| **Formato de Config** | settings.json         | hooks.json + rules/ | config.toml | opencode.json | copilot-instructions.md + settings.json |
+| **Arquivo de Contexto** | CLAUDE.md + AGENTS.md | AGENTS.md | AGENTS.md | AGENTS.md | copilot-instructions.md |
+| **Detecção de Segredos** | Baseada em hooks            | hook beforeSubmitPrompt | Baseada em sandbox | Baseada em hooks | Baseada em instruções |
+| **Auto-Formatação** | hook PostToolUse      | hook afterFileEdit | N/A | hook file.edited | N/A |
+| **Versão** | Plugin | Plugin | Config de referência | 2.0.0 | Camada de instruções |
 
-**Key architectural decisions:**
-- **AGENTS.md** at root is the universal cross-tool file (read by Claude Code, Cursor, Codex, and OpenCode — GitHub Copilot uses `.github/copilot-instructions.md` instead)
-- **DRY adapter pattern** lets Cursor reuse Claude Code's hook scripts without duplication
-- **Skills format** (SKILL.md with YAML frontmatter) works across Claude Code, Codex, and OpenCode
-- Codex's lack of hooks is compensated by `AGENTS.md`, optional `model_instructions_file` overrides, and sandbox permissions
-
----
-
-## Background
-
-I've been using Claude Code since the experimental rollout. Won the Anthropic x Forum Ventures hackathon in Sep 2025 with [@DRodriguezFX](https://x.com/DRodriguezFX) — built [zenith.chat](https://zenith.chat) entirely using Claude Code.
-
-These configs are battle-tested across multiple production applications.
+**Decisões arquiteturais principais:**
+- **AGENTS.md** na raiz é o arquivo universal cross-tool (lido por Claude Code, Cursor, Codex e OpenCode — o GitHub Copilot usa `.github/copilot-instructions.md` em vez disso)
+- **Padrão de adaptador DRY** permite que o Cursor reutilize os scripts de hook do Claude Code sem duplicação
+- **Formato de skills** (SKILL.md com frontmatter YAML) funciona em Claude Code, Codex e OpenCode
+- A ausência de hooks no Codex é compensada por `AGENTS.md`, sobrescritas opcionais de `model_instructions_file` e permissões de sandbox
 
 ---
 
-## Token Optimization
+## Histórico
 
-Claude Code usage can be expensive if you don't manage token consumption. These settings significantly reduce costs without sacrificing quality.
+Uso o Claude Code desde o rollout experimental. Venci o hackathon Anthropic x Forum Ventures em set. de 2025 com [@DRodriguezFX](https://x.com/DRodriguezFX) — construí o [zenith.chat](https://zenith.chat) inteiramente usando o Claude Code.
 
-### Recommended Settings
+Essas configurações são battle-tested em múltiplas aplicações de produção.
 
-Add to `~/.claude/settings.json`:
+---
+
+## Otimização de Tokens
+
+O uso do Claude Code pode ser caro se você não gerenciar o consumo de tokens. Essas configurações reduzem significativamente os custos sem sacrificar a qualidade.
+
+### Configurações Recomendadas
+
+Adicione ao `~/.claude/settings.json`:
 
 ```json
 {
@@ -1730,65 +1730,65 @@ Add to `~/.claude/settings.json`:
 }
 ```
 
-| Setting | Default | Recommended | Impact |
+| Configuração | Padrão | Recomendado | Impacto |
 |---------|---------|-------------|--------|
-| `model` | opus | **sonnet** | ~60% cost reduction; handles 80%+ of coding tasks |
-| `MAX_THINKING_TOKENS` | 31,999 | **10,000** | ~70% reduction in hidden thinking cost per request |
-| `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE` | 95 | **50** | Compacts earlier — better quality in long sessions |
-| `ECC_CONTEXT_MONITOR_COST_WARNINGS` | on | **off for subscription users** | Suppresses agent-facing API-rate estimate warnings while keeping context/scope/loop warnings |
+| `model` | opus | **sonnet** | ~60% de redução de custo; lida com 80%+ das tarefas de codificação |
+| `MAX_THINKING_TOKENS` | 31,999 | **10,000** | ~70% de redução no custo oculto de thinking por requisição |
+| `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE` | 95 | **50** | Compacta mais cedo — melhor qualidade em sessões longas |
+| `ECC_CONTEXT_MONITOR_COST_WARNINGS` | on | **off para usuários de assinatura** | Suprime avisos de estimativa por taxa de API voltados ao agente, mantendo os avisos de contexto/escopo/loop |
 
-Switch to Opus only when you need deep architectural reasoning:
+Mude para Opus apenas quando precisar de raciocínio arquitetural profundo:
 ```
 /model opus
 ```
 
-### Daily Workflow Commands
+### Comandos do Fluxo de Trabalho Diário
 
-| Command | When to Use |
+| Comando | Quando Usar |
 |---------|-------------|
-| `/model sonnet` | Default for most tasks |
-| `/model opus` | Complex architecture, debugging, deep reasoning |
-| `/clear` | Between unrelated tasks (free, instant reset) |
-| `/compact` | At logical task breakpoints (research done, milestone complete) |
-| `/cost` | Monitor token spending during session |
+| `/model sonnet` | Padrão para a maioria das tarefas |
+| `/model opus` | Arquitetura complexa, debugging, raciocínio profundo |
+| `/clear` | Entre tarefas não relacionadas (gratuito, reset instantâneo) |
+| `/compact` | Em pontos de quebra lógica da tarefa (pesquisa concluída, marco completo) |
+| `/cost` | Monitorar gasto de tokens durante a sessão |
 
-If you use a Claude subscription and the context monitor's API-rate estimates are not useful, set `ECC_CONTEXT_MONITOR_COST_WARNINGS=off`. This only suppresses the agent-facing cost warnings; it does not disable context exhaustion, scope, or loop warnings.
+Se você usa uma assinatura do Claude e as estimativas por taxa de API do monitor de contexto não são úteis, defina `ECC_CONTEXT_MONITOR_COST_WARNINGS=off`. Isso suprime apenas os avisos de custo voltados ao agente; não desabilita avisos de esgotamento de contexto, escopo ou loop.
 
-### Strategic Compaction
+### Compactação Estratégica
 
-The `strategic-compact` skill (included in this plugin) suggests `/compact` at logical breakpoints instead of relying on auto-compaction at 95% context. See `skills/strategic-compact/SKILL.md` for the full decision guide.
+A skill `strategic-compact` (incluída neste plugin) sugere `/compact` em pontos de quebra lógica em vez de depender da auto-compactação em 95% de contexto. Veja `skills/strategic-compact/SKILL.md` para o guia completo de decisão.
 
-**When to compact:**
-- After research/exploration, before implementation
-- After completing a milestone, before starting the next
-- After debugging, before continuing feature work
-- After a failed approach, before trying a new one
+**Quando compactar:**
+- Após pesquisa/exploração, antes da implementação
+- Após completar um marco, antes de começar o próximo
+- Após debugging, antes de continuar o trabalho de feature
+- Após uma abordagem que falhou, antes de tentar uma nova
 
-**When NOT to compact:**
-- Mid-implementation (you'll lose variable names, file paths, partial state)
+**Quando NÃO compactar:**
+- No meio da implementação (você perderá nomes de variáveis, caminhos de arquivo, estado parcial)
 
-### Context Window Management
+### Gerenciamento da Janela de Contexto
 
-**Critical:** Don't enable all MCPs at once. Each MCP tool description consumes tokens from your 200k window, potentially reducing it to ~70k.
+**Crítico:** Não habilite todos os MCPs de uma vez. Cada descrição de ferramenta MCP consome tokens da sua janela de 200k, potencialmente reduzindo-a para ~70k.
 
-- Keep under 10 MCPs enabled per project
-- Keep under 80 tools active
-- Use `/mcp` to disable unused Claude Code MCP servers; those runtime choices persist in `~/.claude.json`
-- Use `ECC_DISABLED_MCPS` only to filter ECC-generated MCP configs during install/sync flows
+- Mantenha menos de 10 MCPs habilitados por projeto
+- Mantenha menos de 80 ferramentas ativas
+- Use `/mcp` para desabilitar servidores MCP do Claude Code não usados; essas escolhas de runtime persistem em `~/.claude.json`
+- Use `ECC_DISABLED_MCPS` apenas para filtrar as configs de MCP geradas pelo ECC durante os fluxos de instalação/sincronização
 
-### Agent Teams Cost Warning
+### Aviso de Custo de Agent Teams
 
-Agent Teams spawns multiple context windows. Each teammate consumes tokens independently. Only use for tasks where parallelism provides clear value (multi-module work, parallel reviews). For simple sequential tasks, subagents are more token-efficient.
+Agent Teams cria múltiplas janelas de contexto. Cada teammate consome tokens independentemente. Use apenas para tarefas em que o paralelismo fornece valor claro (trabalho multimódulo, reviews paralelos). Para tarefas sequenciais simples, subagentes são mais eficientes em tokens.
 
 ---
 
-## WARNING: Important Notes
+## WARNING: Notas Importantes
 
-### Token Optimization
+### Otimização de Tokens
 
-Hitting daily limits? See the **[Token Optimization Guide](docs/token-optimization.md)** for recommended settings and workflow tips.
+Batendo nos limites diários? Veja o **[Guia de Otimização de Tokens](docs/token-optimization.md)** para configurações recomendadas e dicas de fluxo de trabalho.
 
-Quick wins:
+Ganhos rápidos:
 
 ```json
 // ~/.claude/settings.json
@@ -1802,48 +1802,48 @@ Quick wins:
 }
 ```
 
-Use `/clear` between unrelated tasks, `/compact` at logical breakpoints, and `/cost` to monitor spending.
+Use `/clear` entre tarefas não relacionadas, `/compact` em pontos de quebra lógica e `/cost` para monitorar o gasto.
 
-### Customization
+### Personalização
 
-These configs work for my workflow. You should:
-1. Start with what resonates
-2. Modify for your stack
-3. Remove what you don't use
-4. Add your own patterns
+Essas configurações funcionam para o meu fluxo de trabalho. Você deve:
+1. Começar com o que ressoa
+2. Modificar para a sua stack
+3. Remover o que você não usa
+4. Adicionar seus próprios padrões
 
 ---
 
-## Security
+## Segurança
 
-ECC takes supply-chain and agent safety seriously.
+O ECC leva a segurança de supply-chain e de agentes a sério.
 
-- **Official sources only.** Install ECC only from the verified channels listed in the banner at the top of this README — the [GitHub repo](https://github.com/affaan-m/ECC), the `ecc-universal` / `ecc-agentshield` npm packages, the [GitHub App](https://github.com/apps/ecc-tools), the plugin slug `ecc@ecc`, and [ecc.tools](https://ecc.tools). Third-party re-uploads and mirrors are unreviewed and may ship malware.
-- **Report a vulnerability.** Use the private process in [SECURITY.md](SECURITY.md) (GitHub private vulnerability reporting). Please do not open public issues for security reports.
-- **Built-in guardrails.** GateGuard gates destructive shell commands (including `rm`, force/path `git checkout`, and destructive `find -exec`) before they run; the supply-chain IOC scanner runs in CI; and [AgentShield](#agentshield--security-auditor) audits your own agent, hook, MCP, permission, and secret surfaces (`/security-scan`).
-- **Deep dive.** See the [Security Guide](./the-security-guide.md).
+- **Apenas fontes oficiais.** Instale o ECC somente a partir dos canais verificados listados no banner no topo deste README — o [repositório do GitHub](https://github.com/affaan-m/ECC), os pacotes npm `ecc-universal` / `ecc-agentshield`, o [GitHub App](https://github.com/apps/ecc-tools), o slug de plugin `ecc@ecc` e [ecc.tools](https://ecc.tools). Reuploads e espelhos de terceiros não são revisados e podem distribuir malware.
+- **Reporte uma vulnerabilidade.** Use o processo privado em [SECURITY.md](SECURITY.md) (relato privado de vulnerabilidades do GitHub). Por favor, não abra issues públicas para relatos de segurança.
+- **Guardrails embutidos.** O GateGuard bloqueia comandos de shell destrutivos (incluindo `rm`, `git checkout` com force/path e `find -exec` destrutivo) antes de serem executados; o scanner de IOC de supply-chain roda no CI/CD; e o [AgentShield](#agentshield--security-auditor) audita suas próprias superfícies de agent, hook, MCP, permissão e segredos (`/security-scan`).
+- **Aprofundamento.** Veja o [Guia de Segurança](./the-security-guide.md).
 
 ---
 
 ## Sponsors
 
-Featured sponsors are at the top of this README — full list and tiers in [SPONSORS.md](SPONSORS.md). [Become a sponsor](https://github.com/sponsors/affaan-m).
+Os sponsors em destaque estão no topo deste README — lista completa e níveis em [SPONSORS.md](SPONSORS.md). [Torne-se um sponsor](https://github.com/sponsors/affaan-m).
 
 ---
 
 ## Links
 
-- **Shorthand Guide (Start Here):** [The Shorthand Guide to ECC](https://x.com/affaan/status/2012378465664745795)
-- **Longform Guide (Advanced):** [The Longform Guide to ECC](https://x.com/affaan/status/2014040193557471352)
-- **Security Guide:** [Security Guide](./the-security-guide.md) | [Thread](https://x.com/affaan/status/2033263813387223421)
-- **Follow:** [@affaan](https://x.com/affaan)
+- **Guia Resumido (Comece Aqui):** [O Guia Resumido do ECC](https://x.com/affaan/status/2012378465664745795)
+- **Guia Aprofundado (Avançado):** [O Guia Aprofundado do ECC](https://x.com/affaan/status/2014040193557471352)
+- **Guia de Segurança:** [Guia de Segurança](./the-security-guide.md) | [Thread](https://x.com/affaan/status/2033263813387223421)
+- **Siga:** [@affaan](https://x.com/affaan)
 
 ---
 
-## License
+## Licença
 
-MIT - Use freely, modify as needed, contribute back if you can.
+MIT - Use livremente, modifique conforme necessário, contribua de volta se puder.
 
 ---
 
-**Star this repo if it helps. Read both guides. Build something great.**
+**Dê uma star neste repositório se ele ajudar. Leia os dois guias. Construa algo grandioso.**

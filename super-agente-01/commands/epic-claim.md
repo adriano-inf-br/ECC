@@ -1,5 +1,5 @@
 ---
-description: Claim an epic issue, stamp coordination state, and sync local ownership.
+description: Reivindica uma issue épica, registra o estado de coordenação e sincroniza a propriedade local.
 ---
 
 # /epic-claim

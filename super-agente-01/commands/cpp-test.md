@@ -1,5 +1,5 @@
 ---
-description: Enforce TDD workflow for C++. Write GoogleTest tests first, then implement. Verify coverage with gcov/lcov.
+description: Aplica o fluxo de trabalho de TDD para C++. Escreva primeiro os testes com GoogleTest, depois implemente. Verifique a cobertura com gcov/lcov.
 ---
 
 # Comando TDD C++

@@ -1,5 +1,5 @@
 ---
-description: Navigate ECC's current agents, skills, commands, hooks, install profiles, and docs from the live repository surface.
+description: Navegue pelos agents, skills, comandos, hooks, perfis de instalação e docs atuais do ECC a partir da superfície ativa do repositório.
 ---
 
 # /ecc-guide

@@ -1,51 +1,51 @@
-# Agent Orchestration
+# Orquestração de Agents
 
-## Available Agents
+## Agents Disponíveis
 
-Located in `~/.claude/agents/`:
+Localizados em `~/.claude/agents/`:
 
-| Agent | Purpose | When to Use |
+| Agent | Propósito | Quando Usar |
 |-------|---------|-------------|
-| planner | Implementation planning | Complex features, refactoring |
-| architect | System design | Architectural decisions |
-| tdd-guide | Test-driven development | New features, bug fixes |
-| code-reviewer | Code review | After writing code |
-| security-reviewer | Security analysis | Before commits |
-| build-error-resolver | Fix build errors | When build fails |
-| e2e-runner | E2E testing | Critical user flows |
-| refactor-cleaner | Dead code cleanup | Code maintenance |
-| doc-updater | Documentation | Updating docs |
-| rust-reviewer | Rust code review | Rust projects |
-| harmonyos-app-resolver | HarmonyOS app development | HarmonyOS/ArkTS projects |
+| planner | Planejamento de implementação | Features complexas, refatoração |
+| architect | Design de sistema | Decisões arquiteturais |
+| tdd-guide | Desenvolvimento orientado a testes | Novas features, correções de bug |
+| code-reviewer | Revisão de código | Após escrever código |
+| security-reviewer | Análise de segurança | Antes de commits |
+| build-error-resolver | Corrigir erros de build | Quando o build falha |
+| e2e-runner | Testes E2E | Fluxos de usuário críticos |
+| refactor-cleaner | Limpeza de código morto | Manutenção de código |
+| doc-updater | Documentação | Atualização de docs |
+| rust-reviewer | Revisão de código Rust | Projetos Rust |
+| harmonyos-app-resolver | Desenvolvimento de apps HarmonyOS | Projetos HarmonyOS/ArkTS |
 
-## Immediate Agent Usage
+## Uso Imediato de Agents
 
-No user prompt needed:
-1. Complex feature requests - Use **planner** agent
-2. Code just written/modified - Use **code-reviewer** agent
-3. Bug fix or new feature - Use **tdd-guide** agent
-4. Architectural decision - Use **architect** agent
+Sem necessidade de prompt do usuário:
+1. Solicitações de features complexas - Use o agent **planner**
+2. Código recém-escrito/modificado - Use o agent **code-reviewer**
+3. Correção de bug ou nova feature - Use o agent **tdd-guide**
+4. Decisão arquitetural - Use o agent **architect**
 
-## Parallel Task Execution
+## Execução Paralela de Tasks
 
-ALWAYS use parallel Task execution for independent operations:
+SEMPRE use execução paralela de Task para operações independentes:
 
 ```markdown
-# GOOD: Parallel execution
-Launch 3 agents in parallel:
-1. Agent 1: Security analysis of auth module
-2. Agent 2: Performance review of cache system
-3. Agent 3: Type checking of utilities
+# BOM: Execução paralela
+Inicie 3 agents em paralelo:
+1. Agent 1: Análise de segurança do módulo de auth
+2. Agent 2: Revisão de desempenho do sistema de cache
+3. Agent 3: Verificação de tipos dos utilitários
 
-# BAD: Sequential when unnecessary
-First agent 1, then agent 2, then agent 3
+# RUIM: Sequencial quando desnecessário
+Primeiro o agent 1, depois o agent 2, depois o agent 3
 ```
 
-## Multi-Perspective Analysis
+## Análise Multiperspectiva
 
-For complex problems, use split role sub-agents:
-- Factual reviewer
-- Senior engineer
-- Security expert
-- Consistency reviewer
-- Redundancy checker
+Para problemas complexos, use sub-agents com papéis divididos:
+- Revisor factual
+- Engenheiro sênior
+- Especialista em segurança
+- Revisor de consistência
+- Verificador de redundância

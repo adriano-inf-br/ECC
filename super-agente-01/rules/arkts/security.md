@@ -4,15 +4,15 @@ paths:
   - "**/*.ts"
   - "**/module.json5"
 ---
-# HarmonyOS / ArkTS Security
+# Segurança no HarmonyOS / ArkTS
 
 > This file extends [common/security.md](../common/security.md) with HarmonyOS-specific security practices.
 
-## Permission Management
+## Gerenciamento de Permissões
 
-### Declare Permissions in module.json5
+### Declarar Permissões em module.json5
 
-All system API calls requiring permissions must be declared:
+Todas as chamadas de API do sistema que exigem permissões devem ser declaradas:
 
 ```json5
 {
@@ -31,16 +31,16 @@ All system API calls requiring permissions must be declared:
 }
 ```
 
-### Permission Checklist
+### Checklist de Permissões
 
-Before calling system APIs, verify:
+Antes de chamar APIs do sistema, verifique:
 
-- [ ] Permission declared in `module.json5`
-- [ ] Permission reason string defined in resources (for user-facing permissions)
-- [ ] Runtime permission request implemented for sensitive permissions (camera, location, etc.)
-- [ ] Permission check before API call with graceful fallback on denial
+- [ ] Permissão declarada em `module.json5`
+- [ ] String de motivo da permissão definida nos recursos (para permissões visíveis ao usuário)
+- [ ] Requisição de permissão em tempo de execução implementada para permissões sensíveis (câmera, localização, etc.)
+- [ ] Verificação de permissão antes da chamada de API com fallback gracioso em caso de negação
 
-### Runtime Permission Request
+### Requisição de Permissão em Tempo de Execução
 
 ```typescript
 import { abilityAccessCtrl, bundleManager, Permissions } from '@kit.AbilityKit';
@@ -62,22 +62,22 @@ async function checkAndRequestPermission(permission: Permissions): Promise<boole
 }
 ```
 
-## Secret Management
+## Gerenciamento de Segredos
 
-- **NEVER** hardcode API keys, tokens, or passwords in `.ets`/`.ts` source files
-- Use HarmonyOS Preferences API for non-sensitive configuration
-- Use HarmonyOS Keystore for sensitive credentials
-- Environment-specific configs should be managed via build profiles
+- **NUNCA** hardcode chaves de API, tokens ou senhas em arquivos-fonte `.ets`/`.ts`
+- Use a API Preferences do HarmonyOS para configuração não sensível
+- Use o Keystore do HarmonyOS para credenciais sensíveis
+- Configurações específicas de ambiente devem ser gerenciadas via build profiles
 
 ```typescript
-// BAD: hardcoded secret
+// RUIM: segredo hardcoded
 const API_KEY: string = 'sk-xxxxxxxxxxxx';
 
-// GOOD: from build profile config (non-sensitive)
+// BOM: a partir da configuração do build profile (não sensível)
 import { BuildProfile } from 'BuildProfile';
 const endpoint = BuildProfile.API_ENDPOINT;
 
-// GOOD: use HUKS to encrypt/decrypt data without exposing key material
+// BOM: use HUKS para criptografar/descriptografar dados sem expor o material da chave
 import { huks } from '@kit.UniversalKeystoreKit';
 async function decryptWithKeystore(alias: string, nonce: Uint8Array, aad: Uint8Array, cipherData: Uint8Array): Promise<Uint8Array> {
   const options: huks.HuksOptions = {
@@ -97,14 +97,14 @@ async function decryptWithKeystore(alias: string, nonce: Uint8Array, aad: Uint8A
 }
 ```
 
-## Input Validation
+## Validação de Entrada
 
-- Validate all user input before processing
-- Sanitize data before displaying in UI to prevent injection
-- Validate deep link parameters before navigation
+- Valide toda entrada do usuário antes de processar
+- Sanitize os dados antes de exibi-los na UI para prevenir injeção
+- Valide os parâmetros de deep link antes da navegação
 
 ```typescript
-// Validate before navigation
+// Validar antes da navegação
 function handleDeepLink(uri: string): void {
   const allowedPaths: string[] = ['detail', 'settings', 'profile'];
   const parsed = new URL(uri);
@@ -119,23 +119,23 @@ function handleDeepLink(uri: string): void {
 }
 ```
 
-## Network Security
+## Segurança de Rede
 
-- Always use HTTPS for network requests
-- Validate server certificates
-- Implement request timeout and retry policies
-- Never log sensitive data (tokens, user credentials) in network request/response logs
+- Sempre use HTTPS para requisições de rede
+- Valide os certificados do servidor
+- Implemente políticas de timeout e retentativa de requisições
+- Nunca registre dados sensíveis (tokens, credenciais do usuário) nos logs de requisição/resposta de rede
 
-## Data Storage Security
+## Segurança de Armazenamento de Dados
 
-- Use encrypted preferences for sensitive local data
-- Clear sensitive data from memory when no longer needed
-- Implement proper data lifecycle management
-- Consider data classification (public, internal, confidential) when choosing storage mechanisms
+- Use preferences criptografadas para dados locais sensíveis
+- Limpe os dados sensíveis da memória quando não forem mais necessários
+- Implemente o gerenciamento adequado do ciclo de vida dos dados
+- Considere a classificação dos dados (público, interno, confidencial) ao escolher os mecanismos de armazenamento
 
-## Dependency Security
+## Segurança de Dependências
 
-- Only use dependencies from trusted sources (official ohpm registry)
-- Verify dependency versions in `oh-package.json5`
-- Regularly check for known vulnerabilities in third-party libraries
-- Pin dependency versions to avoid unexpected updates
+- Use apenas dependências de fontes confiáveis (registro oficial ohpm)
+- Verifique as versões das dependências em `oh-package.json5`
+- Verifique regularmente vulnerabilidades conhecidas em bibliotecas de terceiros
+- Fixe as versões das dependências para evitar atualizações inesperadas

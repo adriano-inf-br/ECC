@@ -1,90 +1,90 @@
-# Coding Style
+# Estilo de Código
 
-## Immutability (CRITICAL)
+## Imutabilidade (CRÍTICO)
 
-ALWAYS create new objects, NEVER mutate existing ones:
+SEMPRE crie novos objetos, NUNCA mute os existentes:
 
 ```
-// Pseudocode
-WRONG:  modify(original, field, value) → changes original in-place
-CORRECT: update(original, field, value) → returns new copy with change
+// Pseudocódigo
+ERRADO:  modify(original, field, value) → altera original no lugar
+CORRETO: update(original, field, value) → retorna nova cópia com a mudança
 ```
 
-Rationale: Immutable data prevents hidden side effects, makes debugging easier, and enables safe concurrency.
+Justificativa: Dados imutáveis evitam efeitos colaterais ocultos, facilitam a depuração e permitem concorrência segura.
 
-## Core Principles
+## Princípios Centrais
 
 ### KISS (Keep It Simple)
 
-- Prefer the simplest solution that actually works
-- Avoid premature optimization
-- Optimize for clarity over cleverness
+- Prefira a solução mais simples que realmente funcione
+- Evite otimização prematura
+- Otimize pela clareza em vez de esperteza
 
 ### DRY (Don't Repeat Yourself)
 
-- Extract repeated logic into shared functions or utilities
-- Avoid copy-paste implementation drift
-- Introduce abstractions when repetition is real, not speculative
+- Extraia lógica repetida em funções ou utilitários compartilhados
+- Evite a divergência de implementações por copiar e colar
+- Introduza abstrações quando a repetição for real, não especulativa
 
 ### YAGNI (You Aren't Gonna Need It)
 
-- Do not build features or abstractions before they are needed
-- Avoid speculative generality
-- Start simple, then refactor when the pressure is real
+- Não construa features ou abstrações antes que sejam necessárias
+- Evite generalidade especulativa
+- Comece simples, depois refatore quando a pressão for real
 
-## File Organization
+## Organização de Arquivos
 
-MANY SMALL FILES > FEW LARGE FILES:
-- High cohesion, low coupling
-- 200-400 lines typical, 800 max
-- Extract utilities from large modules
-- Organize by feature/domain, not by type
+MUITOS ARQUIVOS PEQUENOS > POUCOS ARQUIVOS GRANDES:
+- Alta coesão, baixo acoplamento
+- 200-400 linhas típicas, 800 no máximo
+- Extraia utilitários de módulos grandes
+- Organize por feature/domínio, não por tipo
 
-## Error Handling
+## Tratamento de Erros
 
-ALWAYS handle errors comprehensively:
-- Handle errors explicitly at every level
-- Provide user-friendly error messages in UI-facing code
-- Log detailed error context on the server side
-- Never silently swallow errors
+SEMPRE trate erros de forma abrangente:
+- Trate erros explicitamente em todos os níveis
+- Forneça mensagens de erro amigáveis em código voltado à UI
+- Registre o contexto detalhado do erro no lado do servidor
+- Nunca engula erros silenciosamente
 
-## Input Validation
+## Validação de Entrada
 
-ALWAYS validate at system boundaries:
-- Validate all user input before processing
-- Use schema-based validation where available
-- Fail fast with clear error messages
-- Never trust external data (API responses, user input, file content)
+SEMPRE valide nas fronteiras do sistema:
+- Valide toda entrada do usuário antes de processar
+- Use validação baseada em schema onde disponível
+- Falhe rápido com mensagens de erro claras
+- Nunca confie em dados externos (respostas de API, entrada do usuário, conteúdo de arquivo)
 
-## Naming Conventions
+## Convenções de Nomenclatura
 
-- Variables and functions: `camelCase` with descriptive names
-- Booleans: prefer `is`, `has`, `should`, or `can` prefixes
-- Interfaces, types, and components: `PascalCase`
-- Constants: `UPPER_SNAKE_CASE`
-- Custom hooks: `camelCase` with a `use` prefix
+- Variáveis e funções: `camelCase` com nomes descritivos
+- Booleanos: prefira os prefixos `is`, `has`, `should` ou `can`
+- Interfaces, tipos e componentes: `PascalCase`
+- Constantes: `UPPER_SNAKE_CASE`
+- Hooks customizados: `camelCase` com um prefixo `use`
 
-## Code Smells to Avoid
+## Code Smells a Evitar
 
-### Deep Nesting
+### Aninhamento Profundo
 
-Prefer early returns over nested conditionals once the logic starts stacking.
+Prefira early returns em vez de condicionais aninhados quando a lógica começar a se empilhar.
 
-### Magic Numbers
+### Números Mágicos
 
-Use named constants for meaningful thresholds, delays, and limits.
+Use constantes nomeadas para limiares, atrasos e limites significativos.
 
-### Long Functions
+### Funções Longas
 
-Split large functions into focused pieces with clear responsibilities.
+Divida funções grandes em partes focadas com responsabilidades claras.
 
-## Code Quality Checklist
+## Checklist de Qualidade de Código
 
-Before marking work complete:
-- [ ] Code is readable and well-named
-- [ ] Functions are small (<50 lines)
-- [ ] Files are focused (<800 lines)
-- [ ] No deep nesting (>4 levels)
-- [ ] Proper error handling
-- [ ] No hardcoded values (use constants or config)
-- [ ] No mutation (immutable patterns used)
+Antes de marcar o trabalho como concluído:
+- [ ] Código é legível e bem nomeado
+- [ ] Funções são pequenas (<50 linhas)
+- [ ] Arquivos são focados (<800 linhas)
+- [ ] Sem aninhamento profundo (>4 níveis)
+- [ ] Tratamento de erros adequado
+- [ ] Sem valores hardcoded (use constantes ou config)
+- [ ] Sem mutação (padrões imutáveis usados)

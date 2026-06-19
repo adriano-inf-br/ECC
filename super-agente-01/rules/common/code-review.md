@@ -1,124 +1,124 @@
-# Code Review Standards
+# Padrões de Revisão de Código
 
-## Purpose
+## Propósito
 
-Code review ensures quality, security, and maintainability before code is merged. This rule defines when and how to conduct code reviews.
+A revisão de código garante qualidade, segurança e manutenibilidade antes que o código seja mesclado. Esta regra define quando e como conduzir revisões de código.
 
-## When to Review
+## Quando Revisar
 
-**MANDATORY review triggers:**
+**Gatilhos OBRIGATÓRIOS de revisão:**
 
-- After writing or modifying code
-- Before any commit to shared branches
-- When security-sensitive code is changed (auth, payments, user data)
-- When architectural changes are made
-- Before merging pull requests
+- Após escrever ou modificar código
+- Antes de qualquer commit em branches compartilhadas
+- Quando código sensível à segurança é alterado (auth, pagamentos, dados do usuário)
+- Quando mudanças arquiteturais são feitas
+- Antes de mesclar pull requests
 
-**Pre-Review Requirements:**
+**Requisitos pré-revisão:**
 
-Before requesting review, ensure:
+Antes de solicitar revisão, garanta:
 
-- All automated checks (CI/CD) are passing
-- Merge conflicts are resolved
-- Branch is up to date with target branch
+- Todas as verificações automatizadas (CI/CD) estão passando
+- Conflitos de merge resolvidos
+- Branch está atualizada com a branch de destino
 
-## Review Checklist
+## Checklist de Revisão
 
-Before marking code complete:
+Antes de marcar o código como concluído:
 
-- [ ] Code is readable and well-named
-- [ ] Functions are focused (<50 lines)
-- [ ] Files are cohesive (<800 lines)
-- [ ] No deep nesting (>4 levels)
-- [ ] Errors are handled explicitly
-- [ ] No hardcoded secrets or credentials
-- [ ] No console.log or debug statements
-- [ ] Tests exist for new functionality
-- [ ] Test coverage meets 80% minimum
+- [ ] Código é legível e bem nomeado
+- [ ] Funções são focadas (<50 linhas)
+- [ ] Arquivos são coesos (<800 linhas)
+- [ ] Sem aninhamento profundo (>4 níveis)
+- [ ] Erros são tratados explicitamente
+- [ ] Sem segredos ou credenciais hardcoded
+- [ ] Sem console.log ou instruções de debug
+- [ ] Testes existem para a nova funcionalidade
+- [ ] Cobertura de testes atende ao mínimo de 80%
 
-## Security Review Triggers
+## Gatilhos de Revisão de Segurança
 
-**STOP and use security-reviewer agent when:**
+**PARE e use o agent security-reviewer quando houver:**
 
-- Authentication or authorization code
-- User input handling
-- Database queries
-- File system operations
-- External API calls
-- Cryptographic operations
-- Payment or financial code
+- Código de autenticação ou autorização
+- Tratamento de entrada do usuário
+- Queries de banco de dados
+- Operações de sistema de arquivos
+- Chamadas de API externa
+- Operações criptográficas
+- Código de pagamento ou financeiro
 
-## Review Severity Levels
+## Níveis de Severidade da Revisão
 
-| Level | Meaning | Action |
+| Nível | Significado | Ação |
 |-------|---------|--------|
-| CRITICAL | Security vulnerability or data loss risk | **BLOCK** - Must fix before merge |
-| HIGH | Bug or significant quality issue | **WARN** - Should fix before merge |
-| MEDIUM | Maintainability concern | **INFO** - Consider fixing |
-| LOW | Style or minor suggestion | **NOTE** - Optional |
+| CRITICAL | Vulnerabilidade de segurança ou risco de perda de dados | **BLOQUEAR** - Deve corrigir antes de mesclar |
+| HIGH | Bug ou problema significativo de qualidade | **AVISAR** - Deve corrigir antes de mesclar |
+| MEDIUM | Preocupação de manutenibilidade | **INFO** - Considere corrigir |
+| LOW | Estilo ou sugestão menor | **NOTA** - Opcional |
 
-## Agent Usage
+## Uso de Agents
 
-Use these agents for code review:
+Use estes agents para revisão de código:
 
-| Agent | Purpose |
+| Agent | Propósito |
 |-------|---------|
-| **code-reviewer** | General code quality, patterns, best practices |
-| **security-reviewer** | Security vulnerabilities, OWASP Top 10 |
-| **typescript-reviewer** | TypeScript/JavaScript specific issues |
-| **python-reviewer** | Python specific issues |
-| **go-reviewer** | Go specific issues |
-| **rust-reviewer** | Rust specific issues |
+| **code-reviewer** | Qualidade geral de código, padrões, melhores práticas |
+| **security-reviewer** | Vulnerabilidades de segurança, OWASP Top 10 |
+| **typescript-reviewer** | Problemas específicos de TypeScript/JavaScript |
+| **python-reviewer** | Problemas específicos de Python |
+| **go-reviewer** | Problemas específicos de Go |
+| **rust-reviewer** | Problemas específicos de Rust |
 
-## Review Workflow
+## Fluxo de Trabalho de Revisão
 
 ```
-1. Run git diff to understand changes
-2. Check security checklist first
-3. Review code quality checklist
-4. Run relevant tests
-5. Verify coverage >= 80%
-6. Use appropriate agent for detailed review
+1. Execute git diff para entender as mudanças
+2. Verifique primeiro o checklist de segurança
+3. Revise o checklist de qualidade de código
+4. Execute os testes relevantes
+5. Verifique cobertura >= 80%
+6. Use o agent apropriado para revisão detalhada
 ```
 
-## Common Issues to Catch
+## Problemas Comuns a Detectar
 
-### Security
+### Segurança
 
-- Hardcoded credentials (API keys, passwords, tokens)
-- SQL injection (string concatenation in queries)
-- XSS vulnerabilities (unescaped user input)
-- Path traversal (unsanitized file paths)
-- CSRF protection missing
-- Authentication bypasses
+- Credenciais hardcoded (chaves de API, senhas, tokens)
+- Injeção SQL (concatenação de strings em queries)
+- Vulnerabilidades de XSS (entrada do usuário não escapada)
+- Path traversal (caminhos de arquivo não sanitizados)
+- Proteção CSRF ausente
+- Bypasses de autenticação
 
-### Code Quality
+### Qualidade de Código
 
-- Large functions (>50 lines) - split into smaller
-- Large files (>800 lines) - extract modules
-- Deep nesting (>4 levels) - use early returns
-- Missing error handling - handle explicitly
-- Mutation patterns - prefer immutable operations
-- Missing tests - add test coverage
+- Funções grandes (>50 linhas) - divida em menores
+- Arquivos grandes (>800 linhas) - extraia módulos
+- Aninhamento profundo (>4 níveis) - use early returns
+- Tratamento de erros ausente - trate explicitamente
+- Padrões de mutação - prefira operações imutáveis
+- Testes ausentes - adicione cobertura de testes
 
-### Performance
+### Desempenho
 
-- N+1 queries - use JOINs or batching
-- Missing pagination - add LIMIT to queries
-- Unbounded queries - add constraints
-- Missing caching - cache expensive operations
+- Queries N+1 - use JOINs ou batching
+- Paginação ausente - adicione LIMIT às queries
+- Queries sem limites - adicione restrições
+- Cache ausente - faça cache de operações custosas
 
-## Approval Criteria
+## Critérios de Aprovação
 
-- **Approve**: No CRITICAL or HIGH issues
-- **Warning**: Only HIGH issues (merge with caution)
-- **Block**: CRITICAL issues found
+- **Aprovar**: Sem problemas CRITICAL ou HIGH
+- **Aviso**: Apenas problemas HIGH (mesclar com cautela)
+- **Bloquear**: Problemas CRITICAL encontrados
 
-## Integration with Other Rules
+## Integração com Outras Regras
 
-This rule works with:
+Esta regra funciona com:
 
-- [testing.md](testing.md) - Test coverage requirements
-- [security.md](security.md) - Security checklist
-- [git-workflow.md](git-workflow.md) - Commit standards
-- [agents.md](agents.md) - Agent delegation
+- [testing.md](testing.md) - Requisitos de cobertura de testes
+- [security.md](security.md) - Checklist de segurança
+- [git-workflow.md](git-workflow.md) - Padrões de commit
+- [agents.md](agents.md) - Delegação a agents

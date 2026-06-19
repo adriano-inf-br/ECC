@@ -6,41 +6,41 @@ paths:
   - "**/*.gemspec"
   - "**/config.ru"
 ---
-# Ruby Coding Style
+# Estilo de Código Ruby
 
-> This file extends [common/coding-style.md](../common/coding-style.md) with Ruby and Rails specific content.
+> Este arquivo estende [common/coding-style.md](../common/coding-style.md) com conteúdo específico de Ruby e Rails.
 
-## Standards
+## Padrões
 
-- Target **Ruby 3.3+** for new Rails work unless the project already pins an older supported runtime.
-- Enable **YJIT** in production only after measuring boot time, memory, and request/job throughput.
-- Add `# frozen_string_literal: true` to new Ruby files when the project uses that convention.
-- Prefer clear Ruby over clever metaprogramming; isolate DSL-heavy code behind narrow, tested boundaries.
+- Tenha como alvo o **Ruby 3.3+** para novos trabalhos com Rails, a menos que o projeto já fixe um runtime suportado mais antigo.
+- Habilite o **YJIT** em produção somente após medir tempo de boot, memória e throughput de requisições/jobs.
+- Adicione `# frozen_string_literal: true` a novos arquivos Ruby quando o projeto usa essa convenção.
+- Prefira Ruby claro a metaprogramação esperta; isole código pesado em DSL atrás de fronteiras estreitas e testadas.
 
-## Formatting And Linting
+## Formatação e Linting
 
-- Use the project's checked-in RuboCop config. For Rails 8+ apps, start from `rubocop-rails-omakase` and customize only where the codebase has a real convention.
-- Keep formatter/linter commands behind binstubs or scripts so CI and local runs match:
+- Use a configuração do RuboCop versionada no projeto. Para apps Rails 8+, comece a partir de `rubocop-rails-omakase` e customize apenas onde a base de código tem uma convenção real.
+- Mantenha os comandos de formatter/linter atrás de binstubs ou scripts para que o CI e as execuções locais coincidam:
 
 ```bash
 bundle exec rubocop
 bundle exec rubocop -A
 ```
 
-- Do not silence cops inline unless the exception is narrow, documented, and harder to express cleanly in code.
+- Não silencie cops inline a menos que a exceção seja estreita, documentada e mais difícil de expressar de forma limpa no código.
 
-## Rails Style
+## Estilo Rails
 
-- Follow Rails naming and directory conventions before adding custom structure.
-- Keep controllers transport-focused: authentication, authorization, parameter handling, response shape.
-- Put reusable domain behavior in models, concerns, service objects, query objects, or form objects based on actual complexity, not as default ceremony.
-- Prefer `bin/rails`, `bin/rake`, and checked-in binstubs over globally installed commands.
+- Siga as convenções de nomenclatura e diretório do Rails antes de adicionar estrutura customizada.
+- Mantenha os controllers focados em transporte: autenticação, autorização, tratamento de parâmetros, formato da resposta.
+- Coloque comportamento de domínio reutilizável em models, concerns, service objects, query objects ou form objects com base na complexidade real, não como cerimônia padrão.
+- Prefira `bin/rails`, `bin/rake` e binstubs versionados em vez de comandos instalados globalmente.
 
-## Error Handling
+## Tratamento de Erros
 
-- Rescue specific exceptions. Avoid broad `rescue StandardError` blocks unless they re-raise or preserve enough context for operators.
-- Use `ActiveSupport::Notifications` or the app's logger for operational events; do not leave `puts`, `pp`, or `debugger` in committed application code.
+- Faça rescue de exceções específicas. Evite blocos amplos de `rescue StandardError`, a menos que eles relancem ou preservem contexto suficiente para os operadores.
+- Use `ActiveSupport::Notifications` ou o logger da aplicação para eventos operacionais; não deixe `puts`, `pp` ou `debugger` em código de aplicação commitado.
 
-## Reference
+## Referência
 
-See skill: `backend-patterns` for broader service/repository layering guidance.
+Veja a skill: `backend-patterns` para orientação mais ampla de camadas de service/repository.

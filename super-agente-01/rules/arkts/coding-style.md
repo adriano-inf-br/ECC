@@ -6,122 +6,122 @@ paths:
   - "**/oh-package.json5"
   - "**/build-profile.json5"
 ---
-# HarmonyOS / ArkTS Coding Style
+# Estilo de Código HarmonyOS / ArkTS
 
 > This file extends [common/coding-style.md](../common/coding-style.md) with HarmonyOS and ArkTS-specific content.
 
-## ArkTS Language Constraints
+## Restrições da Linguagem ArkTS
 
-ArkTS is a strict, statically-typed subset of TypeScript. Violating these constraints causes **compilation failures**.
+ArkTS é um subconjunto estrito e de tipagem estática do TypeScript. Violar essas restrições causa **falhas de compilação**.
 
-### Type System
+### Sistema de Tipos
 
-- No `any` or `unknown` types - always use explicit types
-- No index access types - use type names directly
-- No conditional type aliases or `infer` keyword
-- No intersection types - use inheritance
-- No mapped types - use classes and regular idioms
-- No `typeof` for type annotations - use explicit type declarations
-- No `as const` assertions - use explicit type annotations
-- No structural typing - use inheritance, interfaces, or type aliases
-- No TypeScript utility types except `Partial`, `Required`, `Readonly`, `Record`
-- For `Record<K, V>`, index expression type is `V | undefined`
-- Omit type annotations in `catch` clauses (ArkTS does not support `any`/`unknown`)
+- Sem tipos `any` ou `unknown` - sempre use tipos explícitos
+- Sem tipos de acesso por índice - use os nomes dos tipos diretamente
+- Sem aliases de tipo condicionais ou a palavra-chave `infer`
+- Sem tipos de interseção - use herança
+- Sem mapped types - use classes e idiomas regulares
+- Sem `typeof` para anotações de tipo - use declarações de tipo explícitas
+- Sem asserções `as const` - use anotações de tipo explícitas
+- Sem tipagem estrutural - use herança, interfaces ou aliases de tipo
+- Sem utility types do TypeScript, exceto `Partial`, `Required`, `Readonly`, `Record`
+- Para `Record<K, V>`, o tipo da expressão de índice é `V | undefined`
+- Omita anotações de tipo em cláusulas `catch` (ArkTS não suporta `any`/`unknown`)
 
-### Functions & Classes
+### Funções & Classes
 
-- No function expressions - use arrow functions
-- No nested functions - use lambdas
-- No generator functions - use `async`/`await` for multitasking
-- No `Function.apply`, `Function.call`, `Function.bind` - follow traditional OOP for `this`
-- No constructor type expressions - use lambdas
-- No constructor signatures in interfaces or object types - use methods or classes
-- No declaring class fields in constructors - declare in class body
-- No `this` in standalone functions or static methods - only in instance methods
-- No `new.target`
-- No definite assignment assertions (`let v!: T`) - use initialized declarations
-- No class literals - introduce named class types
-- No using classes as objects (assigning to variables) - class declarations introduce types, not values
-- Only one static block per class - merge all static statements
+- Sem function expressions - use arrow functions
+- Sem funções aninhadas - use lambdas
+- Sem generator functions - use `async`/`await` para multitarefa
+- Sem `Function.apply`, `Function.call`, `Function.bind` - siga OOP tradicional para `this`
+- Sem expressões de tipo de construtor - use lambdas
+- Sem assinaturas de construtor em interfaces ou object types - use métodos ou classes
+- Sem declarar campos de classe em construtores - declare no corpo da classe
+- Sem `this` em funções autônomas ou métodos estáticos - apenas em métodos de instância
+- Sem `new.target`
+- Sem definite assignment assertions (`let v!: T`) - use declarações inicializadas
+- Sem class literals - introduza tipos de classe nomeados
+- Sem usar classes como objetos (atribuindo a variáveis) - declarações de classe introduzem tipos, não valores
+- Apenas um bloco estático por classe - mescle todas as instruções estáticas
 
-### Object & Property Access
+### Acesso a Objetos & Propriedades
 
-- No dynamic field declaration or `obj["field"]` access - use `obj.field` syntax
-- No `delete` operator - use nullable type with `null` to mark absence
-- No prototype assignment - use classes and interfaces
-- No `in` operator - use `instanceof`
-- No reassigning object methods - use wrapper functions or inheritance
-- No `Symbol()` API (except `Symbol.iterator`)
-- No `globalThis` or global scope - use explicit module exports/imports
-- No namespaces as objects - use classes or modules
-- No statements inside namespaces - use functions
+- Sem declaração dinâmica de campo ou acesso `obj["field"]` - use a sintaxe `obj.field`
+- Sem o operador `delete` - use um tipo anulável com `null` para marcar ausência
+- Sem atribuição de prototype - use classes e interfaces
+- Sem o operador `in` - use `instanceof`
+- Sem reatribuir métodos de objeto - use funções wrapper ou herança
+- Sem a API `Symbol()` (exceto `Symbol.iterator`)
+- Sem `globalThis` ou escopo global - use exports/imports explícitos de módulo
+- Sem namespaces como objetos - use classes ou módulos
+- Sem instruções dentro de namespaces - use funções
 
-### Destructuring & Spread
+### Desestruturação & Spread
 
-- No destructuring assignments or variable declarations - use intermediate objects and field-by-field access
-- No destructuring parameter declarations - pass parameters directly, assign local names manually
-- Spread operator only for expanding arrays (or array-derived classes) into rest parameters or array literals
+- Sem atribuições por desestruturação ou declarações de variáveis - use objetos intermediários e acesso campo a campo
+- Sem declarações de parâmetros por desestruturação - passe os parâmetros diretamente, atribua nomes locais manualmente
+- Operador spread apenas para expandir arrays (ou classes derivadas de array) em rest parameters ou literais de array
 
-### Modules & Imports
+### Módulos & Imports
 
-- No `require()` - use regular `import` syntax
-- No `export = ...` - use normal export/import
-- No import assertions - imports are compile-time in ArkTS
-- No UMD modules
-- No wildcards in module names
-- All `import` statements must appear before all other statements
-- TypeScript codebases must not depend on ArkTS codebases via import (reverse is supported)
+- Sem `require()` - use a sintaxe regular de `import`
+- Sem `export = ...` - use export/import normal
+- Sem import assertions - imports são em tempo de compilação no ArkTS
+- Sem módulos UMD
+- Sem curingas em nomes de módulo
+- Todas as instruções `import` devem aparecer antes de todas as outras instruções
+- Codebases TypeScript não devem depender de codebases ArkTS via import (o inverso é suportado)
 
-### Other Restrictions
+### Outras Restrições
 
-- No `var` - use `let`
-- No `for...in` loops - use regular `for` loops for arrays
-- No `with` statements
-- No JSX expressions
-- No `#` private identifiers - use `private` keyword
-- No declaration merging (classes, interfaces, enums) - keep definitions compact
-- No index signatures - use arrays
-- Comma operator only in `for` loops
-- Unary operators `+`, `-`, `~` only for numeric types (no implicit string conversion)
-- Enum members: only same-type compile-time expressions for explicit initializers
-- Function return type inference is limited - specify return types explicitly when calling functions with omitted return types
+- Sem `var` - use `let`
+- Sem loops `for...in` - use loops `for` regulares para arrays
+- Sem instruções `with`
+- Sem expressões JSX
+- Sem identificadores privados com `#` - use a palavra-chave `private`
+- Sem declaration merging (classes, interfaces, enums) - mantenha as definições compactas
+- Sem index signatures - use arrays
+- Operador vírgula apenas em loops `for`
+- Operadores unários `+`, `-`, `~` apenas para tipos numéricos (sem conversão implícita de string)
+- Membros de enum: apenas expressões de tempo de compilação do mesmo tipo para inicializadores explícitos
+- A inferência de tipo de retorno de função é limitada - especifique tipos de retorno explicitamente ao chamar funções com tipos de retorno omitidos
 
 ### Object Literals
 
-- Supported only when compiler can infer the corresponding class or interface
-- NOT supported for: `any`/`Object`/`object` types, classes/interfaces with methods, classes with parameterized constructors, classes with `readonly` fields
+- Suportados apenas quando o compilador consegue inferir a classe ou interface correspondente
+- NÃO suportados para: tipos `any`/`Object`/`object`, classes/interfaces com métodos, classes com construtores parametrizados, classes com campos `readonly`
 
-## Naming Conventions
+## Convenções de Nomenclatura
 
-- Variables / functions: `camelCase` (e.g., `getUserInfo`, `goodsList`)
-- Classes / interfaces: `PascalCase` (e.g., `UserViewModel`, `IGoodsModel`)
-- Constants: `UPPER_SNAKE_CASE` (e.g., `MAX_PAGE_SIZE`, `COLOR_PRIMARY`)
-- File names: `PascalCase` for components (e.g., `HomePage.ets`), `camelCase` for utilities
+- Variáveis / funções: `camelCase` (ex.: `getUserInfo`, `goodsList`)
+- Classes / interfaces: `PascalCase` (ex.: `UserViewModel`, `IGoodsModel`)
+- Constantes: `UPPER_SNAKE_CASE` (ex.: `MAX_PAGE_SIZE`, `COLOR_PRIMARY`)
+- Nomes de arquivo: `PascalCase` para componentes (ex.: `HomePage.ets`), `camelCase` para utilitários
 
-## Formatting
+## Formatação
 
-- Prefer double quotes for strings
-- Semicolons at end of statements
-- Never use `var` - prefer `const`, then `let`
-- All methods, parameters, return values must have complete type annotations
+- Prefira aspas duplas para strings
+- Ponto e vírgula no final das instruções
+- Nunca use `var` - prefira `const`, depois `let`
+- Todos os métodos, parâmetros e valores de retorno devem ter anotações de tipo completas
 
-## File Organization
+## Organização de Arquivos
 
-- Component files (`.ets`): one `@ComponentV2` per file
-- ViewModel files: one ViewModel class per file
-- Model files: related data models may share a file
-- Keep files under 400 lines; extract helpers for files approaching 800 lines
+- Arquivos de componente (`.ets`): um `@ComponentV2` por arquivo
+- Arquivos de ViewModel: uma classe ViewModel por arquivo
+- Arquivos de Model: modelos de dados relacionados podem compartilhar um arquivo
+- Mantenha os arquivos abaixo de 400 linhas; extraia helpers para arquivos que se aproximam de 800 linhas
 
-## Comments
+## Comentários
 
-- File header: `@file` (file purpose) + `@author` (developer), if the project already uses file headers
-- Public methods: JSDoc with `@param`, `@returns`; add `@example` for complex methods
-- Match the project's existing documentation language; use English unless the repository has already standardized on Chinese comments
+- Cabeçalho de arquivo: `@file` (propósito do arquivo) + `@author` (desenvolvedor), se o projeto já usa cabeçalhos de arquivo
+- Métodos públicos: JSDoc com `@param`, `@returns`; adicione `@example` para métodos complexos
+- Corresponda ao idioma de documentação existente do projeto; use inglês a menos que o repositório já tenha padronizado comentários em chinês
 
-## Error Handling
+## Tratamento de Erros
 
 ```typescript
-// Use try/catch with proper error handling
+// Use try/catch com tratamento de erros adequado
 try {
   const result = await riskyOperation()
   return result
@@ -131,18 +131,18 @@ try {
 }
 ```
 
-## Immutability
+## Imutabilidade
 
-Follow the common immutability principles - create new objects instead of mutating:
+Siga os princípios comuns de imutabilidade - crie novos objetos em vez de mutar:
 
 ```typescript
-// BAD: mutation
+// RUIM: mutação
 function updateUser(user: UserModel, name: string): UserModel {
-  user.name = name  // direct mutation
+  user.name = name  // mutação direta
   return user
 }
 
-// GOOD: immutable - create new instance
+// BOM: imutável - cria uma nova instância
 function updateUser(user: UserModel, name: string): UserModel {
   const updated = new UserModel()
   updated.id = user.id

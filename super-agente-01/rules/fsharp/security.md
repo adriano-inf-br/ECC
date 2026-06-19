@@ -5,32 +5,32 @@ paths:
   - "**/*.fsproj"
   - "**/appsettings*.json"
 ---
-# F# Security
+# Segurança F#
 
-> This file extends [common/security.md](../common/security.md) with F#-specific content.
+> Este arquivo estende [common/security.md](../common/security.md) com conteúdo específico de F#.
 
-## Secret Management
+## Gerenciamento de Segredos
 
-- Never hardcode API keys, tokens, or connection strings in source code
-- Use environment variables, user secrets for local development, and a secret manager in production
-- Keep `appsettings.*.json` free of real credentials
+- Nunca embuta chaves de API, tokens ou strings de conexão diretamente no código-fonte
+- Use variáveis de ambiente, user secrets para desenvolvimento local e um gerenciador de segredos em produção
+- Mantenha os arquivos `appsettings.*.json` livres de credenciais reais
 
 ```fsharp
-// BAD
+// RUIM
 let apiKey = "sk-live-123"
 
-// GOOD
+// BOM
 let apiKey =
     configuration["OpenAI:ApiKey"]
     |> Option.ofObj
     |> Option.defaultWith (fun () -> failwith "OpenAI:ApiKey is not configured.")
 ```
 
-## SQL Injection Prevention
+## Prevenção de Injeção SQL
 
-- Always use parameterized queries with ADO.NET, Dapper, or EF Core
-- Never concatenate user input into SQL strings
-- Validate sort fields and filter operators before using dynamic query composition
+- Sempre use consultas parametrizadas com ADO.NET, Dapper ou EF Core
+- Nunca concatene entrada do usuário em strings SQL
+- Valide campos de ordenação e operadores de filtro antes de usar composição dinâmica de consultas
 
 ```fsharp
 let findByCustomer (connection: IDbConnection) customerId =
@@ -40,11 +40,11 @@ let findByCustomer (connection: IDbConnection) customerId =
     }
 ```
 
-## Input Validation
+## Validação de Entrada
 
-- Validate inputs at the application boundary using types
-- Use single-case discriminated unions for validated values
-- Reject invalid input before it enters domain logic
+- Valide as entradas na fronteira da aplicação usando tipos
+- Use single-case discriminated unions para valores validados
+- Rejeite entrada inválida antes que ela entre na lógica de domínio
 
 ```fsharp
 type ValidatedEmail = private ValidatedEmail of string
@@ -59,18 +59,18 @@ module ValidatedEmail =
     let value (ValidatedEmail v) = v
 ```
 
-## Authentication and Authorization
+## Autenticação e Autorização
 
-- Prefer framework auth handlers instead of custom token parsing
-- Enforce authorization policies at endpoint or handler boundaries
-- Never log raw tokens, passwords, or PII
+- Prefira handlers de autenticação do framework em vez de parsing customizado de tokens
+- Imponha políticas de autorização nas fronteiras de endpoint ou handler
+- Nunca registre tokens crus, senhas ou PII (dados pessoais identificáveis) em log
 
-## Error Handling
+## Tratamento de Erros
 
-- Return safe client-facing messages
-- Log detailed exceptions with structured context server-side
-- Do not expose stack traces, SQL text, or filesystem paths in API responses
+- Retorne mensagens seguras voltadas ao cliente
+- Registre exceções detalhadas com contexto estruturado no lado do servidor
+- Não exponha stack traces, texto SQL ou caminhos de sistema de arquivos em respostas de API
 
-## References
+## Referências
 
-See skill: `security-review` for broader application security review checklists.
+Veja a skill: `security-review` para checklists mais amplos de revisão de segurança de aplicações.

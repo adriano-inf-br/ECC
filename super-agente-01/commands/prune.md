@@ -1,28 +1,28 @@
 ---
 name: prune
-description: Delete pending instincts older than 30 days that were never promoted
+description: Exclui instintos pendentes com mais de 30 dias que nunca foram promovidos
 command: true
 ---
 
 # Prune Pending Instincts
 
-Remove expired pending instincts that were auto-generated but never reviewed or promoted.
+Remove instintos pendentes expirados que foram gerados automaticamente, mas nunca revisados ou promovidos.
 
-## Implementation
+## Implementação
 
-Run the instinct CLI using the plugin root path:
+Rode o CLI de instintos usando o caminho da raiz do plugin:
 
 ```bash
 python3 "${CLAUDE_PLUGIN_ROOT}/skills/continuous-learning-v2/scripts/instinct-cli.py" prune
 ```
 
-Or if `CLAUDE_PLUGIN_ROOT` is not set (manual installation):
+Ou, se `CLAUDE_PLUGIN_ROOT` não estiver definido (instalação manual):
 
 ```bash
 python3 ~/.claude/skills/continuous-learning-v2/scripts/instinct-cli.py prune
 ```
 
-## Usage
+## Uso
 
 ```
 /prune                    # Delete instincts older than 30 days

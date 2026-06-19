@@ -1,197 +1,197 @@
 ---
-description: "Interactive PRD generator - problem-first, hypothesis-driven product spec with back-and-forth questioning"
-argument-hint: "[feature/product idea] (blank = start with questions)"
+description: "Gerador interativo de PRD - especificação de produto focada no problema, orientada a hipóteses, com perguntas e respostas de ida e volta"
+argument-hint: "[ideia de funcionalidade/produto] (vazio = começar com perguntas)"
 ---
 
-# Product Requirements Document Generator
+# Gerador de Product Requirements Document
 
-> Adapted from PRPs-agentic-eng by Wirasm. Part of the PRP workflow series.
+> Adaptado de PRPs-agentic-eng por Wirasm. Parte da série de fluxo de trabalho PRP.
 
-**Input**: $ARGUMENTS
-
----
-
-## Your Role
-
-You are a sharp product manager who:
-- Starts with PROBLEMS, not solutions
-- Demands evidence before building
-- Thinks in hypotheses, not specs
-- Asks clarifying questions before assuming
-- Acknowledges uncertainty honestly
-
-**Anti-pattern**: Don't fill sections with fluff. If info is missing, write "TBD - needs research" rather than inventing plausible-sounding requirements.
+**Entrada**: $ARGUMENTS
 
 ---
 
-## Process Overview
+## Seu Papel
+
+Você é um product manager perspicaz que:
+- Começa pelos PROBLEMAS, não pelas soluções
+- Exige evidências antes de construir
+- Pensa em hipóteses, não em specs
+- Faz perguntas de esclarecimento antes de assumir
+- Reconhece a incerteza com honestidade
+
+**Anti-padrão**: Não preencha seções com encheção. Se faltar informação, escreva "TBD - needs research" em vez de inventar requisitos de aparência plausível.
+
+---
+
+## Visão Geral do Processo
 
 ```
 QUESTION SET 1 → GROUNDING → QUESTION SET 2 → RESEARCH → QUESTION SET 3 → GENERATE
 ```
 
-Each question set builds on previous answers. Grounding phases validate assumptions.
+Cada conjunto de perguntas se baseia nas respostas anteriores. As fases de fundamentação (grounding) validam as suposições.
 
 ---
 
-## Phase 1: INITIATE - Core Problem
+## Fase 1: INITIATE - Problema Central
 
-**If no input provided**, ask:
+**Se nenhuma entrada for fornecida**, pergunte:
 
-> **What do you want to build?**
-> Describe the product, feature, or capability in a few sentences.
+> **O que você quer construir?**
+> Descreva o produto, funcionalidade ou capacidade em algumas frases.
 
-**If input provided**, confirm understanding by restating:
+**Se a entrada for fornecida**, confirme o entendimento reformulando:
 
-> I understand you want to build: {restated understanding}
-> Is this correct, or should I adjust my understanding?
+> Eu entendi que você quer construir: {restated understanding}
+> Isso está correto, ou devo ajustar meu entendimento?
 
-**GATE**: Wait for user response before proceeding.
-
----
-
-## Phase 2: FOUNDATION - Problem Discovery
-
-Ask these questions (present all at once, user can answer together):
-
-> **Foundation Questions:**
->
-> 1. **Who** has this problem? Be specific - not just "users" but what type of person/role?
->
-> 2. **What** problem are they facing? Describe the observable pain, not the assumed need.
->
-> 3. **Why** can't they solve it today? What alternatives exist and why do they fail?
->
-> 4. **Why now?** What changed that makes this worth building?
->
-> 5. **How** will you know if you solved it? What would success look like?
-
-**GATE**: Wait for user responses before proceeding.
+**GATE**: Espere a resposta do usuário antes de prosseguir.
 
 ---
 
-## Phase 3: GROUNDING - Market & Context Research
+## Fase 2: FOUNDATION - Descoberta do Problema
 
-After foundation answers, conduct research:
+Faça estas perguntas (apresente todas de uma vez; o usuário pode respondê-las juntas):
 
-**Research market context:**
+> **Perguntas de Fundamentação:**
+>
+> 1. **Quem** tem esse problema? Seja específico - não apenas "usuários", mas que tipo de pessoa/papel?
+>
+> 2. **Qual** problema eles enfrentam? Descreva a dor observável, não a necessidade presumida.
+>
+> 3. **Por que** não conseguem resolvê-lo hoje? Que alternativas existem e por que falham?
+>
+> 4. **Por que agora?** O que mudou que torna isso digno de ser construído?
+>
+> 5. **Como** você saberá se resolveu? Como seria o sucesso?
 
-1. Find similar products/features in the market
-2. Identify how competitors solve this problem
-3. Note common patterns and anti-patterns
-4. Check for recent trends or changes in this space
+**GATE**: Espere as respostas do usuário antes de prosseguir.
 
-Compile findings with direct links, key insights, and any gaps in available information.
+---
 
-**If a codebase exists, explore it in parallel:**
+## Fase 3: GROUNDING - Pesquisa de Mercado e Contexto
 
-1. Find existing functionality relevant to the product/feature idea
-2. Identify patterns that could be leveraged
-3. Note technical constraints or opportunities
+Após as respostas de fundamentação, conduza a pesquisa:
 
-Record file locations, code patterns, and conventions observed.
+**Pesquisar o contexto de mercado:**
 
-**Summarize findings to user:**
+1. Encontre produtos/funcionalidades similares no mercado
+2. Identifique como os concorrentes resolvem esse problema
+3. Anote padrões e anti-padrões comuns
+4. Verifique tendências ou mudanças recentes nesse espaço
 
-> **What I found:**
+Compile os achados com links diretos, insights principais e quaisquer lacunas nas informações disponíveis.
+
+**Se existir um codebase, explore-o em paralelo:**
+
+1. Encontre a funcionalidade existente relevante para a ideia de produto/funcionalidade
+2. Identifique padrões que poderiam ser aproveitados
+3. Anote restrições ou oportunidades técnicas
+
+Registre localizações de arquivos, padrões de código e convenções observadas.
+
+**Resuma os achados ao usuário:**
+
+> **O que eu encontrei:**
 > - {Market insight 1}
 > - {Competitor approach}
 > - {Relevant pattern from codebase, if applicable}
 >
-> Does this change or refine your thinking?
+> Isso muda ou refina o seu pensamento?
 
-**GATE**: Brief pause for user input (can be "continue" or adjustments).
-
----
-
-## Phase 4: DEEP DIVE - Vision & Users
-
-Based on foundation + research, ask:
-
-> **Vision & Users:**
->
-> 1. **Vision**: In one sentence, what's the ideal end state if this succeeds wildly?
->
-> 2. **Primary User**: Describe your most important user - their role, context, and what triggers their need.
->
-> 3. **Job to Be Done**: Complete this: "When [situation], I want to [motivation], so I can [outcome]."
->
-> 4. **Non-Users**: Who is explicitly NOT the target? Who should we ignore?
->
-> 5. **Constraints**: What limitations exist? (time, budget, technical, regulatory)
-
-**GATE**: Wait for user responses before proceeding.
+**GATE**: Breve pausa para a entrada do usuário (pode ser "continuar" ou ajustes).
 
 ---
 
-## Phase 5: GROUNDING - Technical Feasibility
+## Fase 4: DEEP DIVE - Visão e Usuários
 
-**If a codebase exists, perform two parallel investigations:**
+Com base na fundamentação + pesquisa, pergunte:
 
-Investigation 1 — Explore feasibility:
-1. Identify existing infrastructure that can be leveraged
-2. Find similar patterns already implemented
-3. Map integration points and dependencies
-4. Locate relevant configuration and type definitions
-
-Record file locations, code patterns, and conventions observed.
-
-Investigation 2 — Analyze constraints:
-1. Trace how existing related features are implemented end-to-end
-2. Map data flow through potential integration points
-3. Identify architectural patterns and boundaries
-4. Estimate complexity based on similar features
-
-Document what exists with precise file:line references. No suggestions.
-
-**If no codebase, research technical approaches:**
-
-1. Find technical approaches others have used
-2. Identify common implementation patterns
-3. Note known technical challenges and pitfalls
-
-Compile findings with citations and gap analysis.
-
-**Summarize to user:**
-
-> **Technical Context:**
-> - Feasibility: {HIGH/MEDIUM/LOW} because {reason}
-> - Can leverage: {existing patterns/infrastructure}
-> - Key technical risk: {main concern}
+> **Visão e Usuários:**
 >
-> Any technical constraints I should know about?
+> 1. **Visão**: Em uma frase, qual é o estado final ideal se isso tiver um sucesso estrondoso?
+>
+> 2. **Usuário Primário**: Descreva seu usuário mais importante - seu papel, contexto e o que dispara sua necessidade.
+>
+> 3. **Job to Be Done**: Complete isto: "When [situation], I want to [motivation], so I can [outcome]."
+>
+> 4. **Não-Usuários**: Quem explicitamente NÃO é o alvo? Quem devemos ignorar?
+>
+> 5. **Restrições**: Que limitações existem? (tempo, orçamento, técnicas, regulatórias)
 
-**GATE**: Brief pause for user input.
+**GATE**: Espere as respostas do usuário antes de prosseguir.
 
 ---
 
-## Phase 6: DECISIONS - Scope & Approach
+## Fase 5: GROUNDING - Viabilidade Técnica
 
-Ask final clarifying questions:
+**Se existir um codebase, realize duas investigações em paralelo:**
 
-> **Scope & Approach:**
->
-> 1. **MVP Definition**: What's the absolute minimum to test if this works?
->
-> 2. **Must Have vs Nice to Have**: What 2-3 things MUST be in v1? What can wait?
->
-> 3. **Key Hypothesis**: Complete this: "We believe [capability] will [solve problem] for [users]. We'll know we're right when [measurable outcome]."
->
-> 4. **Out of Scope**: What are you explicitly NOT building (even if users ask)?
->
-> 5. **Open Questions**: What uncertainties could change the approach?
+Investigação 1 — Explorar a viabilidade:
+1. Identifique a infraestrutura existente que pode ser aproveitada
+2. Encontre padrões similares já implementados
+3. Mapeie pontos de integração e dependências
+4. Localize configurações e definições de tipo relevantes
 
-**GATE**: Wait for user responses before generating.
+Registre localizações de arquivos, padrões de código e convenções observadas.
+
+Investigação 2 — Analisar as restrições:
+1. Rastreie como funcionalidades relacionadas existentes são implementadas de ponta a ponta
+2. Mapeie o fluxo de dados pelos pontos de integração potenciais
+3. Identifique padrões e limites arquiteturais
+4. Estime a complexidade com base em funcionalidades similares
+
+Documente o que existe com referências precisas de file:line. Sem sugestões.
+
+**Se não houver codebase, pesquise abordagens técnicas:**
+
+1. Encontre abordagens técnicas que outros usaram
+2. Identifique padrões comuns de implementação
+3. Anote desafios e armadilhas técnicas conhecidas
+
+Compile os achados com citações e análise de lacunas.
+
+**Resuma ao usuário:**
+
+> **Contexto Técnico:**
+> - Viabilidade: {HIGH/MEDIUM/LOW} porque {reason}
+> - Pode aproveitar: {existing patterns/infrastructure}
+> - Principal risco técnico: {main concern}
+>
+> Há alguma restrição técnica que eu deva conhecer?
+
+**GATE**: Breve pausa para a entrada do usuário.
 
 ---
 
-## Phase 7: GENERATE - Write PRD
+## Fase 6: DECISIONS - Escopo e Abordagem
 
-**Output path**: `.claude/PRPs/prds/{kebab-case-name}.prd.md`
+Faça as perguntas finais de esclarecimento:
 
-Create directory if needed: `mkdir -p .claude/PRPs/prds`
+> **Escopo e Abordagem:**
+>
+> 1. **Definição de MVP**: Qual é o mínimo absoluto para testar se isso funciona?
+>
+> 2. **Must Have vs Nice to Have**: Quais 2-3 coisas DEVEM estar na v1? O que pode esperar?
+>
+> 3. **Hipótese Principal**: Complete isto: "We believe [capability] will [solve problem] for [users]. We'll know we're right when [measurable outcome]."
+>
+> 4. **Fora de Escopo**: O que você explicitamente NÃO vai construir (mesmo que os usuários peçam)?
+>
+> 5. **Questões em Aberto**: Que incertezas poderiam mudar a abordagem?
 
-### PRD Template
+**GATE**: Espere as respostas do usuário antes de gerar.
+
+---
+
+## Fase 7: GENERATE - Escrever o PRD
+
+**Caminho de saída**: `.claude/PRPs/prds/{kebab-case-name}.prd.md`
+
+Crie o diretório se necessário: `mkdir -p .claude/PRPs/prds`
+
+### Template de PRD
 
 ```markdown
 # {Product/Feature Name}
@@ -349,9 +349,9 @@ When {situation}, I want to {motivation}, so I can {outcome}.
 
 ---
 
-## Phase 8: OUTPUT - Summary
+## Fase 8: OUTPUT - Resumo
 
-After generating, report:
+Após gerar, reporte:
 
 ```markdown
 ## PRD Created
@@ -396,7 +396,7 @@ This will automatically select the next pending phase and create an implementati
 
 ---
 
-## Question Flow Summary
+## Resumo do Fluxo de Perguntas
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -430,18 +430,18 @@ This will automatically select the next pending phase and create an implementati
 
 ---
 
-## Integration with ECC
+## Integração com o ECC
 
-After PRD generation:
-- Use `/prp-plan` to create implementation plans from PRD phases
-- Use `/plan` for simpler planning without PRD structure
-- Use `/save-session` to preserve PRD context across sessions
+Após a geração do PRD:
+- Use `/prp-plan` para criar planos de implementação a partir das fases do PRD
+- Use `/plan` para um planejamento mais simples sem a estrutura de PRD
+- Use `/save-session` para preservar o contexto do PRD entre sessões
 
-## Success Criteria
+## Critérios de Sucesso
 
-- **PROBLEM_VALIDATED**: Problem is specific and evidenced (or marked as assumption)
-- **USER_DEFINED**: Primary user is concrete, not generic
-- **HYPOTHESIS_CLEAR**: Testable hypothesis with measurable outcome
-- **SCOPE_BOUNDED**: Clear must-haves and explicit out-of-scope
-- **QUESTIONS_ACKNOWLEDGED**: Uncertainties are listed, not hidden
-- **ACTIONABLE**: A skeptic could understand why this is worth building
+- **PROBLEM_VALIDATED**: O problema é específico e evidenciado (ou marcado como suposição)
+- **USER_DEFINED**: O usuário primário é concreto, não genérico
+- **HYPOTHESIS_CLEAR**: Hipótese testável com resultado mensurável
+- **SCOPE_BOUNDED**: Must-haves claros e fora-de-escopo explícito
+- **QUESTIONS_ACKNOWLEDGED**: As incertezas são listadas, não escondidas
+- **ACTIONABLE**: Um cético conseguiria entender por que vale a pena construir isto

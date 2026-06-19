@@ -1,29 +1,29 @@
 ---
-description: Fix Rust build errors, borrow checker issues, and dependency problems incrementally. Invokes the rust-build-resolver agent for minimal, surgical fixes.
+description: Corrige erros de build do Rust, problemas do borrow checker e problemas de dependência de forma incremental. Invoca o agent rust-build-resolver para correções mínimas e cirúrgicas.
 ---
 
-# Rust Build and Fix
+# Build e Correção do Rust
 
-This command invokes the **rust-build-resolver** agent to incrementally fix Rust build errors with minimal changes.
+Este comando invoca o agent **rust-build-resolver** para corrigir incrementalmente erros de build do Rust com alterações mínimas.
 
-## What This Command Does
+## O Que Este Comando Faz
 
-1. **Run Diagnostics**: Execute `cargo check`, `cargo clippy`, `cargo fmt --check`
-2. **Parse Errors**: Identify error codes and affected files
-3. **Fix Incrementally**: One error at a time
-4. **Verify Each Fix**: Re-run `cargo check` after each change
-5. **Report Summary**: Show what was fixed and what remains
+1. **Executar Diagnósticos**: Roda `cargo check`, `cargo clippy`, `cargo fmt --check`
+2. **Analisar os Erros**: Identifica os códigos de erro e os arquivos afetados
+3. **Corrigir Incrementalmente**: Um erro por vez
+4. **Verificar Cada Correção**: Reexecuta `cargo check` após cada alteração
+5. **Reportar o Resumo**: Mostra o que foi corrigido e o que resta
 
-## When to Use
+## Quando Usar
 
-Use `/rust-build` when:
-- `cargo build` or `cargo check` fails with errors
-- `cargo clippy` reports warnings
-- Borrow checker or lifetime errors block compilation
-- Cargo dependency resolution fails
-- After pulling changes that break the build
+Use `/rust-build` quando:
+- `cargo build` ou `cargo check` falhar com erros
+- `cargo clippy` reportar warnings
+- Erros do borrow checker ou de lifetime bloquearem a compilação
+- A resolução de dependências do Cargo falhar
+- Após puxar alterações que quebram o build
 
-## Diagnostic Commands Run
+## Comandos de Diagnóstico Executados
 
 ```bash
 # Primary build check
@@ -42,7 +42,7 @@ cargo tree --duplicates
 if command -v cargo-audit >/dev/null; then cargo audit; else echo "cargo-audit not installed"; fi
 ```
 
-## Example Session
+## Exemplo de Sessão
 
 ````text
 User: /rust-build
@@ -147,41 +147,41 @@ test result: ok. 6 passed; 0 failed; 0 ignored
 Build Status: SUCCESS
 ````
 
-## Common Errors Fixed
+## Erros Comuns Corrigidos
 
-| Error | Typical Fix |
+| Erro | Correção Típica |
 |-------|-------------|
-| `cannot borrow as mutable` | Restructure to end immutable borrow first; clone only if justified |
-| `does not live long enough` | Use owned type or add lifetime annotation |
-| `cannot move out of` | Restructure to take ownership; clone only as last resort |
-| `mismatched types` | Add `.into()`, `as`, or explicit conversion |
-| `trait X not implemented` | Add `#[derive(Trait)]` or implement manually |
-| `unresolved import` | Add to Cargo.toml or fix `use` path |
-| `cannot find value` | Add import or fix path |
+| `cannot borrow as mutable` | Reestruture para encerrar o borrow imutável primeiro; clone apenas se justificado |
+| `does not live long enough` | Use um tipo owned ou adicione anotação de lifetime |
+| `cannot move out of` | Reestruture para tomar posse (ownership); clone apenas como último recurso |
+| `mismatched types` | Adicione `.into()`, `as` ou uma conversão explícita |
+| `trait X not implemented` | Adicione `#[derive(Trait)]` ou implemente manualmente |
+| `unresolved import` | Adicione ao Cargo.toml ou corrija o caminho do `use` |
+| `cannot find value` | Adicione o import ou corrija o caminho |
 
-## Fix Strategy
+## Estratégia de Correção
 
-1. **Build errors first** - Code must compile
-2. **Clippy warnings second** - Fix suspicious constructs
-3. **Formatting third** - `cargo fmt` compliance
-4. **One fix at a time** - Verify each change
-5. **Minimal changes** - Don't refactor, just fix
+1. **Erros de build primeiro** - O código precisa compilar
+2. **Warnings do clippy em segundo** - Corrija construções suspeitas
+3. **Formatação em terceiro** - Conformidade com `cargo fmt`
+4. **Uma correção por vez** - Verifique cada alteração
+5. **Alterações mínimas** - Não refatore, apenas corrija
 
-## Stop Conditions
+## Condições de Parada
 
-The agent will stop and report if:
-- Same error persists after 3 attempts
-- Fix introduces more errors
-- Requires architectural changes
-- Borrow checker error requires redesigning data ownership
+O agent vai parar e reportar se:
+- O mesmo erro persistir após 3 tentativas
+- A correção introduzir mais erros
+- Exigir alterações arquiteturais
+- Um erro do borrow checker exigir redesenhar a posse (ownership) dos dados
 
-## Related Commands
+## Comandos Relacionados
 
-- `/rust-test` - Run tests after build succeeds
-- `/rust-review` - Review code quality
-- `verification-loop` skill - Full verification loop
+- `/rust-test` - Execute os testes após o build ter sucesso
+- `/rust-review` - Revise a qualidade do código
+- skill `verification-loop` - Laço completo de verificação
 
-## Related
+## Relacionados
 
 - Agent: `agents/rust-build-resolver.md`
 - Skill: `skills/rust-patterns/`

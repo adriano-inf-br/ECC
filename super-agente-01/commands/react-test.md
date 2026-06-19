@@ -206,35 +206,35 @@ act(() => result.current.increment());
 expect(result.current.count).toBe(1);
 ```
 
-### Accessibility
+### Acessibilidade
 
 ```tsx
 import { axe } from "vitest-axe";
 expect(await axe(container)).toHaveNoViolations();
 ```
 
-## Coverage Targets
+## Metas de Cobertura
 
-| Layer | Target |
+| Camada | Meta |
 |---|---|
-| Pure utilities | >=90% |
-| Custom hooks | >=85% |
-| Presentational components | >=80% |
-| Container components | >=70% |
-| Pages | E2E covered separately |
+| Utilitários puros | >=90% |
+| Hooks customizados | >=85% |
+| Componentes de apresentação | >=80% |
+| Componentes container | >=70% |
+| Páginas | Cobertas separadamente por E2E |
 
-Configure in `vitest.config.ts` / `jest.config.js` to enforce thresholds in CI.
+Configure em `vitest.config.ts` / `jest.config.js` para impor os limiares no CI.
 
-## Anti-Patterns to Avoid
+## Antipadrões a Evitar
 
-- `container.querySelector(...)` — bypasses accessibility queries
-- Asserting on render count
-- Mocking `react` itself (`jest.mock("react", ...)`)
-- Mocking child components by default (mock only when child has heavy side effects)
-- Ignoring `act()` warnings — they signal real bugs
-- Snapshot tests of rendered components (brittle, rubber-stamped) — use Playwright/Cypress visual diff instead
+- `container.querySelector(...)` — contorna as queries de acessibilidade
+- Fazer asserção sobre a contagem de renderizações
+- Mockar o próprio `react` (`jest.mock("react", ...)`)
+- Mockar componentes filhos por padrão (mocke apenas quando o filho tem efeitos colaterais pesados)
+- Ignorar avisos de `act()` — eles sinalizam bugs reais
+- Testes de snapshot de componentes renderizados (frágeis, aprovados sem critério) — use diff visual do Playwright/Cypress no lugar
 
-## Test Commands
+## Comandos de Teste
 
 ```bash
 # Vitest
@@ -252,14 +252,14 @@ jest path/to/file.test.tsx
 CI=true vitest run --coverage
 ```
 
-## Related Commands
+## Comandos Relacionados
 
-- `/react-build` — fix build errors before running tests
-- `/react-review` — review after implementation
-- `verification-loop` skill — full verification loop
+- `/react-build` — corrija erros de build antes de rodar os testes
+- `/react-review` — revise após a implementação
+- skill `verification-loop` — laço completo de verificação
 
-## Related
+## Relacionados
 
 - Skills: `skills/react-testing/`, `skills/tdd-workflow/`, `skills/accessibility/`, `skills/e2e-testing/`
 - Rules: `rules/react/testing.md`
-- Agents: `react-reviewer` (reviews test quality), `tdd-guide` (enforces TDD process)
+- Agents: `react-reviewer` (revisa a qualidade dos testes), `tdd-guide` (impõe o processo de TDD)

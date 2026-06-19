@@ -1,26 +1,26 @@
 ---
-description: Sync documentation from source-of-truth files such as scripts, schemas, routes, and exports.
+description: Sincroniza a documentação a partir de arquivos fonte da verdade, como scripts, schemas, rotas e exports.
 ---
 
 # Update Documentation
 
-Sync documentation with the codebase, generating from source-of-truth files.
+Sincronize a documentação com o código, gerando a partir de arquivos fonte da verdade.
 
-## Step 1: Identify Sources of Truth
+## Passo 1: Identifique as fontes da verdade
 
-| Source | Generates |
+| Fonte | Gera |
 |--------|-----------|
-| `package.json` scripts | Available commands reference |
-| `.env.example` | Environment variable documentation |
-| `openapi.yaml` / route files | API endpoint reference |
-| Source code exports | Public API documentation |
-| `Dockerfile` / `docker-compose.yml` | Infrastructure setup docs |
+| scripts do `package.json` | Referência de comandos disponíveis |
+| `.env.example` | Documentação de variáveis de ambiente |
+| `openapi.yaml` / arquivos de rota | Referência de endpoints de API |
+| exports do código-fonte | Documentação da API pública |
+| `Dockerfile` / `docker-compose.yml` | Docs de configuração de infraestrutura |
 
-## Step 2: Generate Script Reference
+## Passo 2: Gere a referência de scripts
 
-1. Read `package.json` (or `Makefile`, `Cargo.toml`, `pyproject.toml`)
-2. Extract all scripts/commands with their descriptions
-3. Generate a reference table:
+1. Leia o `package.json` (ou `Makefile`, `Cargo.toml`, `pyproject.toml`)
+2. Extraia todos os scripts/comandos com suas descrições
+3. Gere uma tabela de referência:
 
 ```markdown
 | Command | Description |
@@ -30,12 +30,12 @@ Sync documentation with the codebase, generating from source-of-truth files.
 | `npm test` | Run test suite with coverage |
 ```
 
-## Step 3: Generate Environment Documentation
+## Passo 3: Gere a documentação de ambiente
 
-1. Read `.env.example` (or `.env.template`, `.env.sample`)
-2. Extract all variables with their purposes
-3. Categorize as required vs optional
-4. Document expected format and valid values
+1. Leia o `.env.example` (ou `.env.template`, `.env.sample`)
+2. Extraia todas as variáveis com suas finalidades
+3. Categorize como obrigatórias vs opcionais
+4. Documente o formato esperado e os valores válidos
 
 ```markdown
 | Variable | Required | Description | Example |
@@ -44,31 +44,31 @@ Sync documentation with the codebase, generating from source-of-truth files.
 | `LOG_LEVEL` | No | Logging verbosity (default: info) | `debug`, `info`, `warn`, `error` |
 ```
 
-## Step 4: Update Contributing Guide
+## Passo 4: Atualize o guia de contribuição
 
-Generate or update `docs/CONTRIBUTING.md` with:
-- Development environment setup (prerequisites, install steps)
-- Available scripts and their purposes
-- Testing procedures (how to run, how to write new tests)
-- Code style enforcement (linter, formatter, pre-commit hooks)
-- PR submission checklist
+Gere ou atualize o `docs/CONTRIBUTING.md` com:
+- Configuração do ambiente de desenvolvimento (pré-requisitos, passos de instalação)
+- Scripts disponíveis e suas finalidades
+- Procedimentos de teste (como executar, como escrever novos testes)
+- Aplicação de estilo de código (linter, formatter, hooks de pre-commit)
+- Checklist de submissão de PR
 
-## Step 5: Update Runbook
+## Passo 5: Atualize o runbook
 
-Generate or update `docs/RUNBOOK.md` with:
-- Deployment procedures (step-by-step)
-- Health check endpoints and monitoring
-- Common issues and their fixes
-- Rollback procedures
-- Alerting and escalation paths
+Gere ou atualize o `docs/RUNBOOK.md` com:
+- Procedimentos de deploy (passo a passo)
+- Endpoints de health check e monitoramento
+- Problemas comuns e suas correções
+- Procedimentos de rollback
+- Caminhos de alerta e escalonamento
 
-## Step 6: Staleness Check
+## Passo 6: Verificação de obsolescência
 
-1. Find documentation files not modified in 90+ days
-2. Cross-reference with recent source code changes
-3. Flag potentially outdated docs for manual review
+1. Encontre arquivos de documentação não modificados há 90+ dias
+2. Faça referência cruzada com mudanças recentes do código-fonte
+3. Sinalize docs potencialmente desatualizadas para revisão manual
 
-## Step 7: Show Summary
+## Passo 7: Mostre o resumo
 
 ```
 Documentation Update
@@ -80,9 +80,9 @@ Skipped:  docs/API.md (no changes detected)
 ──────────────────────────────
 ```
 
-## Rules
+## Regras
 
-- **Single source of truth**: Always generate from code, never manually edit generated sections
-- **Preserve manual sections**: Only update generated sections; leave hand-written prose intact
-- **Mark generated content**: Use `<!-- AUTO-GENERATED -->` markers around generated sections
-- **Don't create docs unprompted**: Only create new doc files if the command explicitly requests it
+- **Fonte única da verdade**: sempre gere a partir do código, nunca edite manualmente as seções geradas
+- **Preserve as seções manuais**: atualize apenas as seções geradas; deixe a prosa escrita à mão intacta
+- **Marque o conteúdo gerado**: use marcadores `<!-- AUTO-GENERATED -->` ao redor das seções geradas
+- **Não crie docs sem solicitação**: crie novos arquivos de doc apenas se o comando solicitar explicitamente

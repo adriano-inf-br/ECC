@@ -1,36 +1,36 @@
 ---
-description: Start a managed autonomous loop pattern with safety defaults and explicit stop conditions.
+description: Inicia um padrão de loop autônomo gerenciado com padrões de segurança e condições de parada explícitas.
 ---
 
-# Loop Start Command
+# Comando Loop Start
 
-Start a managed autonomous loop pattern with safety defaults.
+Inicia um padrão de loop autônomo gerenciado com padrões de segurança.
 
-## Usage
+## Uso
 
 `/loop-start [pattern] [--mode safe|fast]`
 
 - `pattern`: `sequential`, `continuous-pr`, `rfc-dag`, `infinite`
 - `--mode`:
-  - `safe` (default): strict quality gates and checkpoints
-  - `fast`: reduced gates for speed
+  - `safe` (padrão): quality gates e checkpoints rigorosos
+  - `fast`: gates reduzidos para ganhar velocidade
 
-## Flow
+## Fluxo
 
-1. Confirm repository state and branch strategy.
-2. Select loop pattern and model tier strategy.
-3. Enable required hooks/profile for the chosen mode.
-4. Create loop plan and write runbook under `.claude/plans/`.
-5. Print commands to start and monitor the loop.
+1. Confirmar o estado do repositório e a estratégia de branch.
+2. Selecionar o padrão de loop e a estratégia de tier de modelo.
+3. Habilitar os hooks/perfil necessários para o modo escolhido.
+4. Criar o plano do loop e escrever o runbook em `.claude/plans/`.
+5. Imprimir os comandos para iniciar e monitorar o loop.
 
-## Required Safety Checks
+## Verificações de Segurança Obrigatórias
 
-- Verify tests pass before first loop iteration.
-- Ensure `ECC_HOOK_PROFILE` is not disabled globally.
-- Ensure loop has explicit stop condition.
+- Verificar se os testes passam antes da primeira iteração do loop.
+- Garantir que `ECC_HOOK_PROFILE` não esteja desabilitado globalmente.
+- Garantir que o loop tenha uma condição de parada explícita.
 
-## Arguments
+## Argumentos
 
 $ARGUMENTS:
-- `<pattern>` optional (`sequential|continuous-pr|rfc-dag|infinite`)
-- `--mode safe|fast` optional
+- `<pattern>` opcional (`sequential|continuous-pr|rfc-dag|infinite`)
+- `--mode safe|fast` opcional

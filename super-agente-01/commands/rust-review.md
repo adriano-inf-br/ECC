@@ -1,55 +1,55 @@
 ---
-description: Comprehensive Rust code review for ownership, lifetimes, error handling, unsafe usage, and idiomatic patterns. Invokes the rust-reviewer agent.
+description: Revisão abrangente de código Rust para ownership, lifetimes, tratamento de erros, uso de unsafe e padrões idiomáticos. Invoca o agent rust-reviewer.
 ---
 
-# Rust Code Review
+# Revisão de Código Rust
 
-This command invokes the **rust-reviewer** agent for comprehensive Rust-specific code review.
+Este comando invoca o agent **rust-reviewer** para uma revisão abrangente de código específica de Rust.
 
-## What This Command Does
+## O Que Este Comando Faz
 
-1. **Verify Automated Checks**: Run `cargo check`, `cargo clippy -- -D warnings`, `cargo fmt --check`, and `cargo test` — stop if any fail
-2. **Identify Rust Changes**: Find modified `.rs` files via `git diff HEAD~1` (or `git diff main...HEAD` for PRs)
-3. **Run Security Audit**: Execute `cargo audit` if available
-4. **Security Scan**: Check for unsafe usage, command injection, hardcoded secrets
-5. **Ownership Review**: Analyze unnecessary clones, lifetime issues, borrowing patterns
-6. **Generate Report**: Categorize issues by severity
+1. **Verificar as Checagens Automatizadas**: Roda `cargo check`, `cargo clippy -- -D warnings`, `cargo fmt --check` e `cargo test` — pare se algum falhar
+2. **Identificar Alterações Rust**: Encontra arquivos `.rs` modificados via `git diff HEAD~1` (ou `git diff main...HEAD` para PRs)
+3. **Executar Auditoria de Segurança**: Roda `cargo audit` se disponível
+4. **Varredura de Segurança**: Verifica uso de unsafe, injeção de comando, segredos hardcoded
+5. **Revisão de Ownership**: Analisa clones desnecessários, problemas de lifetime, padrões de borrowing
+6. **Gerar Relatório**: Categoriza os problemas por severidade
 
-## When to Use
+## Quando Usar
 
-Use `/rust-review` when:
-- After writing or modifying Rust code
-- Before committing Rust changes
-- Reviewing pull requests with Rust code
-- Onboarding to a new Rust codebase
-- Learning idiomatic Rust patterns
+Use `/rust-review` quando:
+- Após escrever ou modificar código Rust
+- Antes de fazer commit de alterações em Rust
+- Ao revisar pull requests com código Rust
+- Ao se integrar a uma nova base de código Rust
+- Ao aprender padrões idiomáticos de Rust
 
-## Review Categories
+## Categorias de Revisão
 
-### CRITICAL (Must Fix)
-- Unchecked `unwrap()`/`expect()` in production code paths
-- `unsafe` without `// SAFETY:` comment documenting invariants
-- SQL injection via string interpolation in queries
-- Command injection via unvalidated input in `std::process::Command`
-- Hardcoded credentials
+### CRITICAL (Deve Corrigir)
+- `unwrap()`/`expect()` sem verificação em caminhos de código de produção
+- `unsafe` sem comentário `// SAFETY:` documentando os invariantes
+- Injeção de SQL via interpolação de string em queries
+- Injeção de comando via entrada não validada em `std::process::Command`
+- Credenciais hardcoded
 - Use-after-free via raw pointers
 
-### HIGH (Should Fix)
-- Unnecessary `.clone()` to satisfy borrow checker
-- `String` parameter where `&str` or `impl AsRef<str>` suffices
-- Blocking in async context (`std::thread::sleep`, `std::fs`)
-- Missing `Send`/`Sync` bounds on shared types
-- Wildcard `_ =>` match on business-critical enums
-- Large functions (>50 lines)
+### HIGH (Deveria Corrigir)
+- `.clone()` desnecessário para satisfazer o borrow checker
+- Parâmetro `String` onde `&str` ou `impl AsRef<str>` é suficiente
+- Bloqueio em contexto async (`std::thread::sleep`, `std::fs`)
+- Bounds `Send`/`Sync` faltando em tipos compartilhados
+- Match com curinga `_ =>` em enums críticos para o negócio
+- Funções grandes (>50 linhas)
 
-### MEDIUM (Consider)
-- Unnecessary allocation in hot paths
-- Missing `with_capacity` when size is known
-- Suppressed clippy warnings without justification
-- Public API without `///` documentation
-- Consider `#[must_use]` on non-`must_use` return types where ignoring values is likely a bug
+### MEDIUM (Considerar)
+- Alocação desnecessária em caminhos quentes (hot paths)
+- Falta de `with_capacity` quando o tamanho é conhecido
+- Warnings do clippy suprimidos sem justificativa
+- API pública sem documentação `///`
+- Considere `#[must_use]` em tipos de retorno não-`must_use` onde ignorar os valores provavelmente é um bug
 
-## Automated Checks Run
+## Verificações Automatizadas Executadas
 
 ```bash
 # Build gate (must pass before review)
@@ -68,7 +68,7 @@ cargo test
 if command -v cargo-audit >/dev/null; then cargo audit; else echo "cargo-audit not installed"; fi
 ```
 
-## Example Usage
+## Exemplo de Uso
 
 ````text
 User: /rust-review
@@ -121,22 +121,22 @@ use_user(&user, result);
 Recommendation: Block merge until CRITICAL issue is fixed
 ````
 
-## Approval Criteria
+## Critérios de Aprovação
 
-| Status | Condition |
+| Status | Condição |
 |--------|-----------|
-| Approve | No CRITICAL or HIGH issues |
-| Warning | Only MEDIUM issues (merge with caution) |
-| Block | CRITICAL or HIGH issues found |
+| Approve | Nenhum problema CRITICAL ou HIGH |
+| Warning | Apenas problemas MEDIUM (mesclar com cautela) |
+| Block | Problemas CRITICAL ou HIGH encontrados |
 
-## Integration with Other Commands
+## Integração com Outros Comandos
 
-- Use `/rust-test` first to ensure tests pass
-- Use `/rust-build` if build errors occur
-- Use `/rust-review` before committing
-- Use `/code-review` for non-Rust-specific concerns
+- Use `/rust-test` primeiro para garantir que os testes passem
+- Use `/rust-build` se ocorrerem erros de build
+- Use `/rust-review` antes de fazer commit
+- Use `/code-review` para questões não específicas de Rust
 
-## Related
+## Relacionados
 
 - Agent: `agents/rust-reviewer.md`
 - Skills: `skills/rust-patterns/`, `skills/rust-testing/`

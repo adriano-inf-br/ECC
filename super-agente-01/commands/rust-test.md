@@ -1,30 +1,30 @@
 ---
-description: Enforce TDD workflow for Rust. Write tests first, then implement. Verify 80%+ coverage with cargo-llvm-cov.
+description: Imponha o fluxo de trabalho de TDD para Rust. Escreva os testes primeiro, depois implemente. Verifique 80%+ de cobertura com cargo-llvm-cov.
 ---
 
-# Rust TDD Command
+# Comando TDD do Rust
 
-This command enforces test-driven development methodology for Rust code using `#[test]`, rstest, proptest, and mockall.
+Este comando impõe a metodologia de desenvolvimento orientado a testes para código Rust usando `#[test]`, rstest, proptest e mockall.
 
-## What This Command Does
+## O Que Este Comando Faz
 
-1. **Define Types/Traits**: Scaffold function signatures with `todo!()`
-2. **Write Tests**: Create comprehensive test module (RED)
-3. **Run Tests**: Verify tests fail for the right reason
-4. **Implement Code**: Write minimal code to pass (GREEN)
-5. **Refactor**: Improve while keeping tests green
-6. **Check Coverage**: Ensure 80%+ coverage with cargo-llvm-cov
+1. **Definir Tipos/Traits**: Esboça as assinaturas das funções com `todo!()`
+2. **Escrever os Testes**: Cria um módulo de testes abrangente (RED)
+3. **Executar os Testes**: Verifica se os testes falham pelo motivo certo
+4. **Implementar o Código**: Escreve código mínimo para passar (GREEN)
+5. **Refatorar**: Melhora mantendo os testes verdes
+6. **Verificar a Cobertura**: Garante 80%+ de cobertura com cargo-llvm-cov
 
-## When to Use
+## Quando Usar
 
-Use `/rust-test` when:
-- Implementing new Rust functions, methods, or traits
-- Adding test coverage to existing Rust code
-- Fixing bugs (write failing test first)
-- Building critical business logic
-- Learning TDD workflow in Rust
+Use `/rust-test` quando:
+- Implementar novas funções, métodos ou traits em Rust
+- Adicionar cobertura de testes a código Rust existente
+- Corrigir bugs (escreva primeiro um teste que falha)
+- Construir lógica de negócio crítica
+- Aprender o fluxo de trabalho de TDD em Rust
 
-## TDD Cycle
+## Ciclo de TDD
 
 ```
 RED     -> Write failing test first
@@ -33,7 +33,7 @@ REFACTOR -> Improve code, tests stay green
 REPEAT  -> Next test case
 ```
 
-## Example Session
+## Exemplo de Sessão
 
 ````text
 User: /rust-test I need a function to validate user registration
@@ -185,9 +185,9 @@ Coverage: 100%
 ## TDD Complete!
 ````
 
-## Test Patterns
+## Padrões de Teste
 
-### Unit Tests
+### Testes Unitários
 
 ```rust
 #[cfg(test)]

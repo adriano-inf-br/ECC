@@ -363,15 +363,15 @@ export function getUserMessage(code: string): string {
 }
 ```
 
-## Error Handling Checklist
+## Checklist de Tratamento de Erros
 
-Before merging any code that touches error handling:
+Antes de fazer merge de qualquer código que envolva tratamento de erros:
 
-- [ ] Every `catch` block handles, re-throws, or logs — no silent swallowing
-- [ ] API errors follow the standard envelope `{ error: { code, message } }`
-- [ ] User-facing messages contain no stack traces or internal details
-- [ ] Full error context is logged server-side
-- [ ] Custom error classes extend a base `AppError` with a `code` field
-- [ ] Async functions surface errors to callers — no fire-and-forget without fallback
-- [ ] Retry logic only retries retriable errors (not 4xx client errors)
-- [ ] React components are wrapped in `ErrorBoundary` for rendering errors
+- [ ] Todo bloco `catch` trata, relança ou registra — sem supressão silenciosa
+- [ ] Erros de API seguem o envelope padrão `{ error: { code, message } }`
+- [ ] Mensagens voltadas ao usuário não contêm stack traces nem detalhes internos
+- [ ] O contexto completo do erro é registrado no servidor
+- [ ] Classes de erro personalizadas estendem uma base `AppError` com um campo `code`
+- [ ] Funções assíncronas expõem erros aos chamadores — sem fire-and-forget sem fallback
+- [ ] A lógica de retry só refaz erros retriáveis (não erros de cliente 4xx)
+- [ ] Componentes React são envolvidos em `ErrorBoundary` para erros de renderização

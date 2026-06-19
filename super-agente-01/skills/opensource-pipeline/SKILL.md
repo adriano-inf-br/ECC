@@ -126,18 +126,18 @@ Agent(
   description="Package {PROJECT} for open-source",
   subagent_type="opensource-packager",
   prompt="""
-Generate open-source packaging for project.
+Gere o empacotamento open-source para o projeto.
 
-Project: {STAGING_PATH}
-License: {chosen_license}
-Project name: {PROJECT_NAME}
-Description: {description}
-GitHub repo: {github_repo}
+Projeto: {STAGING_PATH}
+Licença: {chosen_license}
+Nome do projeto: {PROJECT_NAME}
+Descrição: {description}
+Repositório no GitHub: {github_repo}
 
-Generate:
-1. CLAUDE.md (commands, architecture, key files)
-2. setup.sh (one-command bootstrap, make executable)
-3. README.md (or enhance existing)
+Gere:
+1. CLAUDE.md (comandos, arquitetura, arquivos-chave)
+2. setup.sh (bootstrap em um comando, torne-o executável)
+3. README.md (ou aprimore o existente)
 4. LICENSE
 5. CONTRIBUTING.md
 6. .github/ISSUE_TEMPLATE/ (bug_report.md, feature_request.md)
@@ -145,33 +145,33 @@ Generate:
 )
 ```
 
-#### Step 6: Final Review
+#### Step 6: Revisão Final
 
-Present to user:
+Apresente ao usuário:
 ```
-Open-Source Fork Ready: {PROJECT_NAME}
+Fork Open-Source Pronto: {PROJECT_NAME}
 
-Location: {STAGING_PATH}
-License: {license}
-Files generated:
+Localização: {STAGING_PATH}
+Licença: {license}
+Arquivos gerados:
   - CLAUDE.md
-  - setup.sh (executable)
+  - setup.sh (executável)
   - README.md
   - LICENSE
   - CONTRIBUTING.md
-  - .env.example ({N} variables)
+  - .env.example ({N} variáveis)
 
-Sanitization: {sanitization_verdict}
+Sanitização: {sanitization_verdict}
 
-Next steps:
-  1. Review: cd {STAGING_PATH}
-  2. Create repo: gh repo create {github_org}/{github_repo} --public
+Próximos passos:
+  1. Revise: cd {STAGING_PATH}
+  2. Crie o repositório: gh repo create {github_org}/{github_repo} --public
   3. Push: git remote add origin ... && git push -u origin main
 
-Proceed with GitHub creation? (yes/no/review first)
+Prosseguir com a criação no GitHub? (sim/não/revisar primeiro)
 ```
 
-#### Step 7: GitHub Publish (on user approval)
+#### Step 7: Publicar no GitHub (mediante aprovação do usuário)
 
 ```bash
 cd "{STAGING_PATH}"

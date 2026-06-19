@@ -1,39 +1,39 @@
 ---
 name: dart-flutter-patterns
-description: Production-ready Dart and Flutter patterns covering null safety, immutable state, async composition, widget architecture, popular state management frameworks (BLoC, Riverpod, Provider), GoRouter navigation, Dio networking, Freezed code generation, and clean architecture.
+description: Padrões prontos para produção de Dart e Flutter cobrindo null safety, estado imutável, composição assíncrona, arquitetura de widgets, frameworks populares de gerenciamento de estado (BLoC, Riverpod, Provider), navegação com GoRouter, networking com Dio, geração de código com Freezed e clean architecture.
 metadata:
   origin: ECC
 ---
 
 # Dart/Flutter Patterns
 
-## When to Use
+## Quando Usar
 
-Use this skill when:
-- Starting a new Flutter feature and need idiomatic patterns for state management, navigation, or data access
-- Reviewing or writing Dart code and need guidance on null safety, sealed types, or async composition
-- Setting up a new Flutter project and choosing between BLoC, Riverpod, or Provider
-- Implementing secure HTTP clients, WebView integration, or local storage
-- Writing tests for Flutter widgets, Cubits, or Riverpod providers
-- Wiring up GoRouter with authentication guards
+Use esta skill quando:
+- Iniciar um novo recurso Flutter e precisar de padrões idiomáticos para gerenciamento de estado, navegação ou acesso a dados
+- Revisar ou escrever código Dart e precisar de orientação sobre null safety, tipos selados (sealed) ou composição assíncrona
+- Configurar um novo projeto Flutter e escolher entre BLoC, Riverpod ou Provider
+- Implementar clientes HTTP seguros, integração com WebView ou armazenamento local
+- Escrever testes para widgets do Flutter, Cubits ou providers do Riverpod
+- Conectar o GoRouter com guardas de autenticação
 
-## How It Works
+## Como Funciona
 
-This skill provides copy-paste-ready Dart/Flutter code patterns organized by concern:
-1. **Null safety** — avoid `!`, prefer `?.`/`??`/pattern matching
-2. **Immutable state** — sealed classes, `freezed`, `copyWith`
-3. **Async composition** — concurrent `Future.wait`, safe `BuildContext` after `await`
-4. **Widget architecture** — extract to classes (not methods), `const` propagation, scoped rebuilds
-5. **State management** — BLoC/Cubit events, Riverpod notifiers and derived providers
-6. **Navigation** — GoRouter with reactive auth guards via `refreshListenable`
-7. **Networking** — Dio with interceptors, token refresh with one-time retry guard
-8. **Error handling** — global capture, `ErrorWidget.builder`, crashlytics wiring
-9. **Testing** — unit (BLoC test), widget (ProviderScope overrides), fakes over mocks
+Esta skill fornece padrões de código Dart/Flutter prontos para copiar e colar, organizados por preocupação:
+1. **Null safety** — evite `!`, prefira `?.`/`??`/pattern matching
+2. **Estado imutável** — sealed classes, `freezed`, `copyWith`
+3. **Composição assíncrona** — `Future.wait` concorrente, `BuildContext` seguro após `await`
+4. **Arquitetura de widgets** — extraia para classes (não métodos), propagação de `const`, rebuilds com escopo
+5. **Gerenciamento de estado** — eventos do BLoC/Cubit, notifiers e providers derivados do Riverpod
+6. **Navegação** — GoRouter com guardas de autenticação reativas via `refreshListenable`
+7. **Networking** — Dio com interceptors, refresh de token com guarda de retry única
+8. **Tratamento de erros** — captura global, `ErrorWidget.builder`, integração com crashlytics
+9. **Testes** — unitário (BLoC test), widget (overrides de ProviderScope), fakes em vez de mocks
 
-## Examples
+## Exemplos
 
 ```dart
-// Sealed state — prevents impossible states
+// Estado selado — previne estados impossíveis
 sealed class AsyncState<T> {}
 final class Loading<T> extends AsyncState<T> {}
 final class Success<T> extends AsyncState<T> { final T data; const Success(this.data); }

@@ -1,34 +1,34 @@
 ---
 name: jira-integration
-description: Use this skill when retrieving Jira tickets, analyzing requirements, updating ticket status, adding comments, or transitioning issues. Provides Jira API patterns via MCP or direct REST calls.
+description: Use esta skill ao recuperar tickets do Jira, analisar requisitos, atualizar o status de tickets, adicionar comentários ou fazer a transição de issues. Fornece padrões da API do Jira via MCP ou chamadas REST diretas.
 metadata:
   origin: ECC
 ---
 
 # Jira Integration Skill
 
-Retrieve, analyze, and update Jira tickets directly from your AI coding workflow. Supports both **MCP-based** (recommended) and **direct REST API** approaches.
+Recupere, analise e atualize tickets do Jira diretamente a partir do seu fluxo de trabalho de codificação com IA. Suporta tanto a abordagem **baseada em MCP** (recomendada) quanto a de **API REST direta**.
 
-## When to Activate
+## Quando ativar
 
-- Fetching a Jira ticket to understand requirements
-- Extracting testable acceptance criteria from a ticket
-- Adding progress comments to a Jira issue
-- Transitioning a ticket status (To Do → In Progress → Done)
-- Linking merge requests or branches to a Jira issue
-- Searching for issues by JQL query
+- Buscar um ticket do Jira para entender requisitos
+- Extrair critérios de aceitação testáveis de um ticket
+- Adicionar comentários de progresso a uma issue do Jira
+- Fazer a transição do status de um ticket (To Do → In Progress → Done)
+- Vincular merge requests ou branches a uma issue do Jira
+- Pesquisar issues por consulta JQL
 
-## Prerequisites
+## Pré-requisitos
 
-### Option A: MCP Server (Recommended)
+### Opção A: Servidor MCP (recomendada)
 
-Install the `mcp-atlassian` MCP server. This exposes Jira tools directly to your AI agent.
+Instale o servidor MCP `mcp-atlassian`. Ele expõe as ferramentas do Jira diretamente ao seu agent de IA.
 
-**Requirements:**
+**Requisitos:**
 - Python 3.10+
-- `uvx` (from `uv`), installed via your package manager or the official `uv` installation documentation
+- `uvx` (do `uv`), instalado via seu gerenciador de pacotes ou pela documentação oficial de instalação do `uv`
 
-**Add to your MCP config** (e.g., `~/.claude.json` → `mcpServers`):
+**Adicione à sua configuração de MCP** (ex.: `~/.claude.json` → `mcpServers`):
 
 ```json
 {
@@ -45,28 +45,28 @@ Install the `mcp-atlassian` MCP server. This exposes Jira tools directly to your
 }
 ```
 
-> **Security:** Never hardcode secrets. Prefer setting `JIRA_URL`, `JIRA_EMAIL`, and `JIRA_API_TOKEN` in your system environment (or a secrets manager). Only use the MCP `env` block for local, uncommitted config files.
+> **Segurança:** Nunca insira segredos diretamente no código. Prefira definir `JIRA_URL`, `JIRA_EMAIL` e `JIRA_API_TOKEN` no ambiente do seu sistema (ou em um gerenciador de segredos). Use o bloco `env` do MCP apenas para arquivos de configuração locais não versionados.
 
-**To get a Jira API token:**
-1. Go to <https://id.atlassian.com/manage-profile/security/api-tokens>
-2. Click **Create API token**
-3. Copy the token — store it in your environment, never in source code
+**Para obter um token de API do Jira:**
+1. Acesse <https://id.atlassian.com/manage-profile/security/api-tokens>
+2. Clique em **Create API token**
+3. Copie o token — armazene-o no seu ambiente, nunca no código-fonte
 
-### Option B: Direct REST API
+### Opção B: API REST direta
 
-If MCP is not available, use the Jira REST API v3 directly via `curl` or a helper script.
+Se o MCP não estiver disponível, use diretamente a API REST v3 do Jira via `curl` ou um script auxiliar.
 
-**Required environment variables:**
+**Variáveis de ambiente necessárias:**
 
-| Variable | Description |
+| Variável | Descrição |
 |----------|-------------|
-| `JIRA_URL` | Your Jira instance URL (e.g., `https://yourorg.atlassian.net`) |
-| `JIRA_EMAIL` | Your Atlassian account email |
-| `JIRA_API_TOKEN` | API token from id.atlassian.com |
+| `JIRA_URL` | A URL da sua instância do Jira (ex.: `https://yourorg.atlassian.net`) |
+| `JIRA_EMAIL` | O e-mail da sua conta Atlassian |
+| `JIRA_API_TOKEN` | Token de API de id.atlassian.com |
 
-Store these in your shell environment, secrets manager, or an untracked local env file. Do not commit them to the repo.
+Armazene-as no ambiente do seu shell, em um gerenciador de segredos ou em um arquivo de ambiente local não versionado. Não as faça commit no repositório.
 
-For direct `curl` examples, keep credentials out of command-line arguments by passing the Jira user config on stdin:
+Para exemplos diretos com `curl`, mantenha as credenciais fora dos argumentos de linha de comando passando a configuração de usuário do Jira via stdin:
 
 ```bash
 jira_curl() {
@@ -75,27 +75,27 @@ jira_curl() {
 }
 ```
 
-## MCP Tools Reference
+## Referência de ferramentas MCP
 
-When the `mcp-atlassian` MCP server is configured, these tools are available:
+Quando o servidor MCP `mcp-atlassian` está configurado, estas ferramentas ficam disponíveis:
 
-| Tool | Purpose | Example |
+| Ferramenta | Finalidade | Exemplo |
 |------|---------|---------|
-| `jira_search` | JQL queries | `project = PROJ AND status = "In Progress"` |
-| `jira_get_issue` | Fetch full issue details by key | `PROJ-1234` |
-| `jira_create_issue` | Create issues (Task, Bug, Story, Epic) | New bug report |
-| `jira_update_issue` | Update fields (summary, description, assignee) | Change assignee |
-| `jira_transition_issue` | Change status | Move to "In Review" |
-| `jira_add_comment` | Add comments | Progress update |
-| `jira_get_sprint_issues` | List issues in a sprint | Active sprint review |
-| `jira_create_issue_link` | Link issues (Blocks, Relates to) | Dependency tracking |
-| `jira_get_issue_development_info` | See linked PRs, branches, commits | Dev context |
+| `jira_search` | Consultas JQL | `project = PROJ AND status = "In Progress"` |
+| `jira_get_issue` | Buscar os detalhes completos de uma issue pela chave | `PROJ-1234` |
+| `jira_create_issue` | Criar issues (Task, Bug, Story, Epic) | Novo relato de bug |
+| `jira_update_issue` | Atualizar campos (summary, description, assignee) | Alterar o responsável |
+| `jira_transition_issue` | Alterar o status | Mover para "In Review" |
+| `jira_add_comment` | Adicionar comentários | Atualização de progresso |
+| `jira_get_sprint_issues` | Listar issues de uma sprint | Revisão da sprint ativa |
+| `jira_create_issue_link` | Vincular issues (Blocks, Relates to) | Rastreamento de dependências |
+| `jira_get_issue_development_info` | Ver PRs, branches e commits vinculados | Contexto de desenvolvimento |
 
-> **Tip:** Always call `jira_get_transitions` before transitioning — transition IDs vary per project workflow.
+> **Dica:** Sempre chame `jira_get_transitions` antes de fazer uma transição — os IDs de transição variam conforme o fluxo de trabalho de cada projeto.
 
-## Direct REST API Reference
+## Referência da API REST direta
 
-### Fetch a Ticket
+### Buscar um ticket
 
 ```bash
 jira_curl \
@@ -112,7 +112,7 @@ jira_curl \
   }'
 ```
 
-### Fetch Comments
+### Buscar comentários
 
 ```bash
 jira_curl \
@@ -124,7 +124,7 @@ jira_curl \
   }'
 ```
 
-### Add a Comment
+### Adicionar um comentário
 
 ```bash
 jira_curl -X POST \
@@ -142,21 +142,21 @@ jira_curl -X POST \
   "$JIRA_URL/rest/api/3/issue/PROJ-1234/comment"
 ```
 
-### Transition a Ticket
+### Fazer a transição de um ticket
 
 ```bash
-# 1. Get available transitions
+# 1. Obter as transições disponíveis
 jira_curl \
   "$JIRA_URL/rest/api/3/issue/PROJ-1234/transitions" | jq '.transitions[] | {id, name: .name}'
 
-# 2. Execute transition (replace TRANSITION_ID)
+# 2. Executar a transição (substitua TRANSITION_ID)
 jira_curl -X POST \
   -H "Content-Type: application/json" \
   -d '{"transition": {"id": "TRANSITION_ID"}}' \
   "$JIRA_URL/rest/api/3/issue/PROJ-1234/transitions"
 ```
 
-### Search with JQL
+### Pesquisar com JQL
 
 ```bash
 jira_curl -G \
@@ -164,34 +164,34 @@ jira_curl -G \
   "$JIRA_URL/rest/api/3/search"
 ```
 
-## Analyzing a Ticket
+## Analisando um ticket
 
-When retrieving a ticket for development or test automation, extract:
+Ao recuperar um ticket para desenvolvimento ou automação de testes, extraia:
 
-### 1. Testable Requirements
-- **Functional requirements** — What the feature does
-- **Acceptance criteria** — Conditions that must be met
-- **Testable behaviors** — Specific actions and expected outcomes
-- **User roles** — Who uses this feature and their permissions
-- **Data requirements** — What data is needed
-- **Integration points** — APIs, services, or systems involved
+### 1. Requisitos testáveis
+- **Requisitos funcionais** — O que a funcionalidade faz
+- **Critérios de aceitação** — Condições que devem ser atendidas
+- **Comportamentos testáveis** — Ações específicas e resultados esperados
+- **Papéis de usuário** — Quem usa esta funcionalidade e suas permissões
+- **Requisitos de dados** — Quais dados são necessários
+- **Pontos de integração** — APIs, serviços ou sistemas envolvidos
 
-### 2. Test Types Needed
-- **Unit tests** — Individual functions and utilities
-- **Integration tests** — API endpoints and service interactions
-- **E2E tests** — User-facing UI flows
-- **API tests** — Endpoint contracts and error handling
+### 2. Tipos de teste necessários
+- **Testes unitários** — Funções e utilitários individuais
+- **Testes de integração** — Endpoints de API e interações entre serviços
+- **Testes E2E** — Fluxos de UI voltados ao usuário
+- **Testes de API** — Contratos de endpoints e tratamento de erros
 
-### 3. Edge Cases & Error Scenarios
-- Invalid inputs (empty, too long, special characters)
-- Unauthorized access
-- Network failures or timeouts
-- Concurrent users or race conditions
-- Boundary conditions
-- Missing or null data
-- State transitions (back navigation, refresh, etc.)
+### 3. Casos de borda e cenários de erro
+- Entradas inválidas (vazias, longas demais, caracteres especiais)
+- Acesso não autorizado
+- Falhas de rede ou timeouts
+- Usuários concorrentes ou condições de corrida
+- Condições de limite (boundary)
+- Dados ausentes ou nulos
+- Transições de estado (navegação para trás, refresh, etc.)
 
-### 4. Structured Analysis Output
+### 4. Saída de análise estruturada
 
 ```
 Ticket: PROJ-1234
@@ -222,28 +222,28 @@ Dependencies:
 - [dependency 2]
 ```
 
-## Updating Tickets
+## Atualizando tickets
 
-### When to Update
+### Quando atualizar
 
-| Workflow Step | Jira Update |
+| Etapa do fluxo de trabalho | Atualização no Jira |
 |---|---|
-| Start work | Transition to "In Progress" |
-| Tests written | Comment with test coverage summary |
-| Branch created | Comment with branch name |
-| PR/MR created | Comment with link, link issue |
-| Tests passing | Comment with results summary |
-| PR/MR merged | Transition to "Done" or "In Review" |
+| Iniciar o trabalho | Transição para "In Progress" |
+| Testes escritos | Comentário com resumo da cobertura de testes |
+| Branch criada | Comentário com o nome da branch |
+| PR/MR criado | Comentário com o link, vincular a issue |
+| Testes passando | Comentário com resumo dos resultados |
+| PR/MR mesclado | Transição para "Done" ou "In Review" |
 
-### Comment Templates
+### Modelos de comentário
 
-**Starting Work:**
+**Iniciando o trabalho:**
 ```
 Starting implementation for this ticket.
 Branch: feat/PROJ-1234-feature-name
 ```
 
-**Tests Implemented:**
+**Testes implementados:**
 ```
 Automated tests implemented:
 
@@ -257,7 +257,7 @@ Integration Tests:
 All tests passing locally. Coverage: XX%
 ```
 
-**PR Created:**
+**PR criado:**
 ```
 Pull request created:
 [PR Title](https://github.com/org/repo/pull/XXX)
@@ -265,7 +265,7 @@ Pull request created:
 Ready for review.
 ```
 
-**Work Complete:**
+**Trabalho concluído:**
 ```
 Implementation complete.
 
@@ -274,30 +274,30 @@ Test results: All passing (X/Y)
 Coverage: XX%
 ```
 
-## Security Guidelines
+## Diretrizes de segurança
 
-- **Never hardcode** Jira API tokens in source code or skill files
-- **Always use** environment variables or a secrets manager
-- **Add `.env`** to `.gitignore` in every project
-- **Rotate tokens** immediately if exposed in git history
-- **Use least-privilege** API tokens scoped to required projects
-- **Validate** that credentials are set before making API calls — fail fast with a clear message
+- **Nunca insira diretamente no código** tokens de API do Jira em código-fonte ou arquivos de skill
+- **Sempre use** variáveis de ambiente ou um gerenciador de segredos
+- **Adicione `.env`** ao `.gitignore` em todos os projetos
+- **Rotacione os tokens** imediatamente se forem expostos no histórico do git
+- **Use tokens de API com privilégio mínimo**, com escopo restrito aos projetos necessários
+- **Valide** que as credenciais estão definidas antes de fazer chamadas de API — falhe rápido com uma mensagem clara
 
-## Troubleshooting
+## Resolução de problemas
 
-| Error | Cause | Fix |
+| Erro | Causa | Correção |
 |---|---|---|
-| `401 Unauthorized` | Invalid or expired API token | Regenerate at id.atlassian.com |
-| `403 Forbidden` | Token lacks project permissions | Check token scopes and project access |
-| `404 Not Found` | Wrong ticket key or base URL | Verify `JIRA_URL` and ticket key |
-| `spawn uvx ENOENT` | IDE cannot find `uvx` on PATH | Use full path (e.g., `~/.local/bin/uvx`) or set PATH in `~/.zprofile` |
-| Connection timeout | Network/VPN issue | Check VPN connection and firewall rules |
+| `401 Unauthorized` | Token de API inválido ou expirado | Regere em id.atlassian.com |
+| `403 Forbidden` | Token sem permissões no projeto | Verifique os escopos do token e o acesso ao projeto |
+| `404 Not Found` | Chave de ticket ou URL base incorreta | Verifique `JIRA_URL` e a chave do ticket |
+| `spawn uvx ENOENT` | A IDE não encontra `uvx` no PATH | Use o caminho completo (ex.: `~/.local/bin/uvx`) ou defina o PATH em `~/.zprofile` |
+| Connection timeout | Problema de rede/VPN | Verifique a conexão de VPN e as regras de firewall |
 
-## Best Practices
+## Boas práticas
 
-- Update Jira as you go, not all at once at the end
-- Keep comments concise but informative
-- Link rather than copy — point to PRs, test reports, and dashboards
-- Use @mentions if you need input from others
-- Check linked issues to understand full feature scope before starting
-- If acceptance criteria are vague, ask for clarification before writing code
+- Atualize o Jira conforme avança, não tudo de uma vez no final
+- Mantenha os comentários concisos, mas informativos
+- Vincule em vez de copiar — aponte para PRs, relatórios de teste e dashboards
+- Use @menções se precisar de input de outras pessoas
+- Verifique as issues vinculadas para entender o escopo completo da funcionalidade antes de começar
+- Se os critérios de aceitação estiverem vagos, peça esclarecimentos antes de escrever código

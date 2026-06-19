@@ -1,59 +1,59 @@
 ---
 name: ito-market-intelligence
-description: Research prediction-market events, venues, underliers, liquidity, and news context for Itô basket workflows. Use for read-only market intelligence, API-gated Itô exploration, and source-grounded prediction-market briefings without investment advice or live trading.
+description: Pesquisa eventos de mercados de previsão, venues, underliers, liquidez e contexto de notícias para fluxos de trabalho de cestas (baskets) da Itô. Use para inteligência de mercado somente leitura, exploração da Itô restrita por API e briefings de mercados de previsão fundamentados em fontes, sem aconselhamento de investimento ou trading ao vivo.
 metadata:
   origin: ECC
 ---
 
 # Itô Market Intelligence
 
-Use this skill when a user wants prediction-market context, event discovery,
-venue comparison, basket theme exploration, or an Itô API-backed market brief.
+Use esta skill quando o usuário quiser contexto de mercados de previsão, descoberta de eventos,
+comparação de venues, exploração de temas de cesta ou um brief de mercado apoiado pela API da Itô.
 
-This is a public teaser skill. It can work with public sources by default. Any
-Itô-backed data call requires explicit API access through `ITO_API_KEY`.
+Esta é uma skill de teaser pública. Ela pode trabalhar com fontes públicas por padrão. Qualquer
+chamada de dados apoiada pela Itô requer acesso explícito à API por meio de `ITO_API_KEY`.
 
 ## Guardrails
 
-- Do not provide investment, legal, tax, or trading advice.
-- Do not place, cancel, route, or simulate live orders.
-- Do not infer the user's financial situation unless they provide it.
-- Treat Polymarket, Kalshi, Itô, X, Exa, GitHub, and web data as source inputs,
-  not as truth by themselves.
-- Separate facts, market-implied signals, and your interpretation.
+- Não forneça aconselhamento de investimento, jurídico, tributário ou de trading.
+- Não coloque, cancele, roteie nem simule ordens ao vivo.
+- Não infira a situação financeira do usuário, a menos que ele a forneça.
+- Trate dados da Polymarket, Kalshi, Itô, X, Exa, GitHub e da web como entradas de fonte,
+  e não como verdade por si só.
+- Separe fatos, sinais implícitos do mercado e sua interpretação.
 
-## Workflow
+## Fluxo de Trabalho
 
-1. Clarify the market theme, venue, geography, and time horizon.
-2. Gather public market data from venue docs/APIs or source-grounded research.
-3. If `ITO_API_KEY` is present and the user explicitly asks for Itô data, call
-   only read endpoints and state that access is gated.
-4. Normalize event, underlier, liquidity, fee, resolution, and data-latency
-   differences across venues.
-5. Produce a decision brief:
-   - market/event summary
-   - available venues and underliers
-   - liquidity and data-quality caveats
-   - relevant news/source context
-   - open questions before any user action
+1. Esclareça o tema do mercado, o venue, a geografia e o horizonte de tempo.
+2. Reúna dados públicos de mercado a partir de docs/APIs de venue ou pesquisa fundamentada em fontes.
+3. Se `ITO_API_KEY` estiver presente e o usuário pedir explicitamente dados da Itô, chame
+   apenas endpoints de leitura e declare que o acesso é restrito.
+4. Normalize diferenças de evento, underlier, liquidez, taxa, resolução e latência de dados
+   entre os venues.
+5. Produza um brief de decisão:
+   - resumo do mercado/evento
+   - venues e underliers disponíveis
+   - ressalvas de liquidez e qualidade de dados
+   - contexto relevante de notícias/fontes
+   - perguntas em aberto antes de qualquer ação do usuário
 
-## Useful Skill Chains
+## Cadeias de Skills Úteis
 
-- Use `deep-research` or `exa-search` for source discovery.
-- Use `x-api` for public social signal discovery when X access is configured.
-- Use `market-research` for market sizing, competitors, or business use cases.
-- Use `prediction-market-risk-review` before any workflow touches user capital,
-  portfolio data, or execution-capable credentials.
+- Use `deep-research` ou `exa-search` para descoberta de fontes.
+- Use `x-api` para descoberta de sinal social público quando o acesso ao X estiver configurado.
+- Use `market-research` para dimensionamento de mercado, concorrentes ou casos de uso de negócio.
+- Use `prediction-market-risk-review` antes que qualquer fluxo de trabalho toque o capital do usuário,
+  dados de portfólio ou credenciais capazes de executar.
 
-## Output Contract
+## Contrato de Saída
 
-Default to a compact brief with source links and a clear caveat:
+Por padrão, produza um brief compacto com links de fonte e uma ressalva clara:
 
 ```text
 This is market intelligence, not investment or trading advice.
 ```
 
-If access is missing, say:
+Se o acesso estiver faltando, diga:
 
 ```text
 Itô live basket/API data requires gated access. Request an ITO_API_KEY before

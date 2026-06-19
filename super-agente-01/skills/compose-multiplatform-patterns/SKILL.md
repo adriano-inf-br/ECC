@@ -1,27 +1,27 @@
 ---
 name: compose-multiplatform-patterns
-description: Compose Multiplatform and Jetpack Compose patterns for KMP projects — state management, navigation, theming, performance, and platform-specific UI.
+description: Padrões de Compose Multiplatform e Jetpack Compose para projetos KMP — gerenciamento de estado, navegação, theming, performance e UI específica de plataforma.
 metadata:
   origin: ECC
 ---
 
 # Compose Multiplatform Patterns
 
-Patterns for building shared UI across Android, iOS, Desktop, and Web using Compose Multiplatform and Jetpack Compose. Covers state management, navigation, theming, and performance.
+Padrões para construir UI compartilhada entre Android, iOS, Desktop e Web usando Compose Multiplatform e Jetpack Compose. Cobre gerenciamento de estado, navegação, theming e performance.
 
 ## When to Activate
 
-- Building Compose UI (Jetpack Compose or Compose Multiplatform)
-- Managing UI state with ViewModels and Compose state
-- Implementing navigation in KMP or Android projects
-- Designing reusable composables and design systems
-- Optimizing recomposition and rendering performance
+- Construir UI Compose (Jetpack Compose ou Compose Multiplatform)
+- Gerenciar estado de UI com ViewModels e estado do Compose
+- Implementar navegação em projetos KMP ou Android
+- Projetar composables reutilizáveis e design systems
+- Otimizar a performance de recomposição e renderização
 
-## State Management
+## Gerenciamento de Estado
 
-### ViewModel + Single State Object
+### ViewModel + Objeto de Estado Único
 
-Use a single data class for screen state. Expose it as `StateFlow` and collect in Compose:
+Use uma única data class para o estado da tela. Exponha-a como `StateFlow` e colete no Compose:
 
 ```kotlin
 data class ItemListState(

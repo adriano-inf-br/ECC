@@ -235,7 +235,7 @@ fun `search updates item list`() = runTest {
 }
 ```
 
-### Testing with TestDispatcher
+### Testando com TestDispatcher
 
 ```kotlin
 @Test
@@ -254,7 +254,7 @@ fun `parallel load completes correctly`() = runTest {
 }
 ```
 
-### Faking Flows
+### Criando Fakes de Flows
 
 ```kotlin
 class FakeItemRepository : ItemRepository {

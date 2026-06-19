@@ -148,28 +148,28 @@ else:
         print("Verify behavior before saving startup config.")
 ```
 
-Saving the config is a separate approval step. In production, include a rollback
-snippet and capture before/after evidence in the change record.
+Salvar a config é uma etapa de aprovação separada. Em produção, inclua um trecho
+de rollback e capture evidências antes/depois no registro da mudança.
 
-## Review Checklist
+## Checklist de Revisão
 
-- Does the script identify an explicit inventory source?
-- Are credentials absent from source, logs, and exception messages?
-- Are `conn_timeout`, `auth_timeout`, and command `read_timeout` set?
-- Are failures reported per device without stopping the whole batch?
-- Does the script avoid broad scans and unbounded concurrency?
-- Are config changes behind a dry-run or explicit operator flag?
-- Is `save_config()` separate from the initial push and tied to verification?
+- O script identifica uma fonte de inventário explícita?
+- As credenciais estão ausentes do código-fonte, logs e mensagens de exceção?
+- `conn_timeout`, `auth_timeout` e o `read_timeout` do comando estão definidos?
+- As falhas são reportadas por dispositivo sem parar o lote inteiro?
+- O script evita varreduras amplas e concorrência ilimitada?
+- As mudanças de config estão atrás de um dry-run ou de uma flag explícita do operador?
+- O `save_config()` está separado do push inicial e atrelado à verificação?
 
-## Anti-Patterns
+## Anti-Padrões
 
-- Hardcoding passwords, enable secrets, or private keys in source.
-- Sending config commands as the default code path.
-- Running automation against a CIDR range instead of a reviewed inventory.
-- Logging full running configs to shared systems without sanitization.
-- Treating parser success as proof that the device state is correct.
+- Embutir senhas, enable secrets ou chaves privadas no código-fonte.
+- Enviar comandos de config como caminho de código padrão.
+- Rodar automação contra uma faixa CIDR em vez de um inventário revisado.
+- Registrar running configs completas em sistemas compartilhados sem sanitização.
+- Tratar o sucesso do parser como prova de que o estado do dispositivo está correto.
 
-## See Also
+## Veja Também
 
 - Skill: `cisco-ios-patterns`
 - Skill: `network-config-validation`

@@ -1,60 +1,59 @@
 ---
 name: accessibility
-description: Design, implement, and audit inclusive digital products using WCAG 2.2 Level AA
-  standards. Use this skill to generate semantic ARIA for Web and accessibility traits for Web and Native platforms (iOS/Android).
+description: Projete, implemente e audite produtos digitais inclusivos usando os padrões WCAG 2.2 Nível AA. Use esta skill para gerar ARIA semântico para Web e traits de acessibilidade para plataformas Web e Native (iOS/Android).
 metadata:
   origin: ECC
 ---
 
-# Accessibility (WCAG 2.2)
+# Acessibilidade (WCAG 2.2)
 
-This skill ensures that digital interfaces are Perceivable, Operable, Understandable, and Robust (POUR) for all users, including those using screen readers, switch controls, or keyboard navigation. It focuses on the technical implementation of WCAG 2.2 success criteria.
+Esta skill garante que interfaces digitais sejam Perceptíveis, Operáveis, Compreensíveis e Robustas (POUR) para todos os usuários, incluindo aqueles que usam leitores de tela, controles por switch ou navegação por teclado. Ela foca na implementação técnica dos critérios de sucesso da WCAG 2.2.
 
 ## When to Use
 
-- Defining UI component specifications for Web, iOS, or Android.
-- Auditing existing code for accessibility barriers or compliance gaps.
-- Implementing new WCAG 2.2 standards like Target Size (Minimum) and Focus Appearance.
-- Mapping high-level design requirements to technical attributes (ARIA roles, traits, hints).
+- Definir especificações de componentes de UI para Web, iOS ou Android.
+- Auditar código existente em busca de barreiras de acessibilidade ou lacunas de conformidade.
+- Implementar novos padrões da WCAG 2.2 como Target Size (Minimum) e Focus Appearance.
+- Mapear requisitos de design de alto nível para atributos técnicos (papéis ARIA, traits, hints).
 
-## Core Concepts
+## Conceitos Centrais
 
-- **POUR Principles**: The foundation of WCAG (Perceivable, Operable, Understandable, Robust).
-- **Semantic Mapping**: Using native elements over generic containers to provide built-in accessibility.
-- **Accessibility Tree**: The representation of the UI that assistive technologies actually "read."
-- **Focus Management**: Controlling the order and visibility of the keyboard/screen reader cursor.
-- **Labeling & Hints**: Providing context through `aria-label`, `accessibilityLabel`, and `contentDescription`.
+- **Princípios POUR**: A base da WCAG (Perceptível, Operável, Compreensível, Robusto).
+- **Mapeamento Semântico**: Usar elementos nativos em vez de contêineres genéricos para fornecer acessibilidade embutida.
+- **Árvore de Acessibilidade**: A representação da UI que as tecnologias assistivas de fato "leem".
+- **Gerenciamento de Foco**: Controlar a ordem e a visibilidade do cursor de teclado/leitor de tela.
+- **Rotulagem e Hints**: Fornecer contexto por meio de `aria-label`, `accessibilityLabel` e `contentDescription`.
 
 ## How It Works
 
-### Step 1: Identify the Component Role
+### Passo 1: Identificar o Papel do Componente
 
-Determine the functional purpose (e.g., Is this a button, a link, or a tab?). Use the most semantic native element available before resorting to custom roles.
+Determine o propósito funcional (ex.: Isto é um botão, um link ou uma aba?). Use o elemento nativo mais semântico disponível antes de recorrer a papéis customizados.
 
-### Step 2: Define Perceivable Attributes
+### Passo 2: Definir Atributos Perceptíveis
 
-- Ensure text contrast meets **4.5:1** (normal) or **3:1** (large/UI).
-- Add text alternatives for non-text content (images, icons).
-- Implement responsive reflow (up to 400% zoom without loss of function).
+- Garanta que o contraste de texto atinja **4.5:1** (normal) ou **3:1** (grande/UI).
+- Adicione alternativas de texto para conteúdo não textual (imagens, ícones).
+- Implemente reflow responsivo (até 400% de zoom sem perda de função).
 
-### Step 3: Implement Operable Controls
+### Passo 3: Implementar Controles Operáveis
 
-- Ensure a minimum **24x24 CSS pixel** target size (WCAG 2.2 SC 2.5.8).
-- Verify all interactive elements are reachable via keyboard and have a visible focus indicator (SC 2.4.11).
-- Provide single-pointer alternatives for dragging movements.
+- Garanta um tamanho de alvo mínimo de **24x24 pixels CSS** (WCAG 2.2 SC 2.5.8).
+- Verifique se todos os elementos interativos são alcançáveis via teclado e têm um indicador de foco visível (SC 2.4.11).
+- Forneça alternativas de ponteiro único para movimentos de arrastar.
 
-### Step 4: Ensure Understandable Logic
+### Passo 4: Garantir Lógica Compreensível
 
-- Use consistent navigation patterns.
-- Provide descriptive error messages and suggestions for correction (SC 3.3.3).
-- Implement "Redundant Entry" (SC 3.3.7) to prevent asking for the same data twice.
+- Use padrões de navegação consistentes.
+- Forneça mensagens de erro descritivas e sugestões de correção (SC 3.3.3).
+- Implemente "Redundant Entry" (SC 3.3.7) para evitar pedir o mesmo dado duas vezes.
 
-### Step 5: Verify Robust Compatibility
+### Passo 5: Verificar Compatibilidade Robusta
 
-- Use correct `Name, Role, Value` patterns.
-- Implement `aria-live` or live regions for dynamic status updates.
+- Use padrões corretos de `Name, Role, Value`.
+- Implemente `aria-live` ou regiões dinâmicas (live regions) para atualizações de status em tempo real.
 
-## Accessibility Architecture Diagram
+## Diagrama de Arquitetura de Acessibilidade
 
 ```mermaid
 flowchart TD
@@ -68,18 +67,18 @@ flowchart TD
   Compose --> AT
 ```
 
-## Cross-Platform Mapping
+## Mapeamento Multiplataforma
 
-| Feature            | Web (HTML/ARIA)          | iOS (SwiftUI)                        | Android (Compose)                                           |
+| Recurso            | Web (HTML/ARIA)          | iOS (SwiftUI)                        | Android (Compose)                                           |
 | :----------------- | :----------------------- | :----------------------------------- | :---------------------------------------------------------- |
-| **Primary Label**  | `aria-label` / `<label>` | `.accessibilityLabel()`              | `contentDescription`                                        |
-| **Secondary Hint** | `aria-describedby`       | `.accessibilityHint()`               | `Modifier.semantics { stateDescription = ... }`             |
-| **Action Role**    | `role="button"`          | `.accessibilityAddTraits(.isButton)` | `Modifier.semantics { role = Role.Button }`                 |
-| **Live Updates**   | `aria-live="polite"`     | `.accessibilityLiveRegion(.polite)`  | `Modifier.semantics { liveRegion = LiveRegionMode.Polite }` |
+| **Rótulo Primário**  | `aria-label` / `<label>` | `.accessibilityLabel()`              | `contentDescription`                                        |
+| **Hint Secundário** | `aria-describedby`       | `.accessibilityHint()`               | `Modifier.semantics { stateDescription = ... }`             |
+| **Papel de Ação**    | `role="button"`          | `.accessibilityAddTraits(.isButton)` | `Modifier.semantics { role = Role.Button }`                 |
+| **Atualizações em Tempo Real**   | `aria-live="polite"`     | `.accessibilityLiveRegion(.polite)`  | `Modifier.semantics { liveRegion = LiveRegionMode.Polite }` |
 
 ## Examples
 
-### Web: Accessible Search
+### Web: Busca Acessível
 
 ```html
 <form role="search">
@@ -91,7 +90,7 @@ flowchart TD
 </form>
 ```
 
-### iOS: Accessible Action Button
+### iOS: Botão de Ação Acessível
 
 ```swift
 Button(action: deleteItem) {
@@ -102,7 +101,7 @@ Button(action: deleteItem) {
 .accessibilityAddTraits(.isButton)
 ```
 
-### Android: Accessible Toggle
+### Android: Toggle Acessível
 
 ```kotlin
 Switch(
@@ -114,24 +113,24 @@ Switch(
 )
 ```
 
-## Anti-Patterns to Avoid
+## Anti-Padrões a Evitar
 
-- **Div-Buttons**: Using a `<div>` or `<span>` for a click event without adding a role and keyboard support.
-- **Color-Only Meaning**: Indicating an error or status _only_ with a color change (e.g., turning a border red).
-- **Uncontained Modal Focus**: Modals that don't trap focus, allowing keyboard users to navigate background content while the modal is open. Focus must be contained _and_ escapable via the `Escape` key or an explicit close button (WCAG SC 2.1.2).
-- **Redundant Alt Text**: Using "Image of..." or "Picture of..." in alt text (screen readers already announce the role "Image").
+- **Div-Buttons**: Usar um `<div>` ou `<span>` para um evento de clique sem adicionar um papel e suporte a teclado.
+- **Significado Apenas por Cor**: Indicar um erro ou status _apenas_ com uma mudança de cor (ex.: deixar uma borda vermelha).
+- **Foco de Modal Não Contido**: Modais que não retêm o foco, permitindo que usuários de teclado naveguem pelo conteúdo de fundo enquanto o modal está aberto. O foco deve ser contido _e_ escapável via tecla `Escape` ou um botão de fechar explícito (WCAG SC 2.1.2).
+- **Alt Text Redundante**: Usar "Image of..." ou "Picture of..." no alt text (leitores de tela já anunciam o papel "Image").
 
-## Best Practices Checklist
+## Checklist de Boas Práticas
 
-- [ ] Interactive elements meet the **24x24px** (Web) or **44x44pt** (Native) target size.
-- [ ] Focus indicators are clearly visible and high-contrast.
-- [ ] Modals **contain focus** while open, and release it cleanly on close (`Escape` key or close button).
-- [ ] Dropdowns and menus restore focus to the trigger element on close.
-- [ ] Forms provide text-based error suggestions.
-- [ ] All icon-only buttons have a descriptive text label.
-- [ ] Content reflows properly when text is scaled.
+- [ ] Elementos interativos atingem o tamanho de alvo de **24x24px** (Web) ou **44x44pt** (Native).
+- [ ] Indicadores de foco são claramente visíveis e de alto contraste.
+- [ ] Modais **contêm o foco** enquanto abertos e o liberam de forma limpa ao fechar (tecla `Escape` ou botão de fechar).
+- [ ] Dropdowns e menus restauram o foco ao elemento de gatilho ao fechar.
+- [ ] Formulários fornecem sugestões de erro baseadas em texto.
+- [ ] Todos os botões somente de ícone têm um rótulo de texto descritivo.
+- [ ] O conteúdo refluído (reflow) corretamente quando o texto é escalonado.
 
-## References
+## Referências
 
 - [WCAG 2.2 Guidelines](https://www.w3.org/TR/WCAG22/)
 - [WAI-ARIA Authoring Practices](https://www.w3.org/TR/wai-aria-practices/)
@@ -139,7 +138,7 @@ Switch(
 - [iOS Human Interface Guidelines - Accessibility](https://developer.apple.com/design/human-interface-guidelines/accessibility)
 - [Android Accessibility Developer Guide](https://developer.android.com/guide/topics/ui/accessibility)
 
-## Related Skills
+## Skills Relacionadas
 
 - `frontend-patterns`
 - `design-system`

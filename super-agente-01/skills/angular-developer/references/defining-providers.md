@@ -1,14 +1,14 @@
-# Defining Dependency Providers
+# Definindo Provedores de Dependência
 
-Angular offers automatic and manual ways to provide dependencies to its Dependency Injection (DI) system.
+O Angular oferece maneiras automáticas e manuais de fornecer dependências ao seu sistema de Injeção de Dependência (DI).
 
-## Automatic Provision
+## Provisão Automática
 
-The most common way to provide a service is using `providedIn: 'root'` on an `@Injectable()`.
+A maneira mais comum de fornecer um serviço é usar `providedIn: 'root'` em um `@Injectable()`.
 
 ### InjectionToken
 
-Use `InjectionToken` for non-class dependencies (configuration objects, functions, primitives). An `InjectionToken` can also be automatically provided.
+Use `InjectionToken` para dependências que não são classes (objetos de configuração, funções, primitivos). Um `InjectionToken` também pode ser fornecido automaticamente.
 
 ```ts
 import {InjectionToken} from '@angular/core';
@@ -23,47 +23,47 @@ export const APP_CONFIG = new InjectionToken<AppConfig>('app.config', {
 });
 ```
 
-## Manual Provision
+## Provisão Manual
 
-You use the `providers` array when a service lacks `providedIn`, when you want a new instance for a specific component, or when configuring runtime values.
+Você usa o array `providers` quando um serviço não tem `providedIn`, quando deseja uma nova instância para um componente específico ou ao configurar valores de tempo de execução.
 
 ```ts
 @Component({
   providers: [
-    // Shorthand for { provide: LocalService, useClass: LocalService }
+    // Atalho para { provide: LocalService, useClass: LocalService }
     LocalService,
 
-    // useClass: Swap implementations
+    // useClass: troca implementações
     {provide: Logger, useClass: BetterLogger},
 
-    // useValue: Provide static values
+    // useValue: fornece valores estáticos
     {provide: API_URL_TOKEN, useValue: 'https://api.example.com'},
 
-    // useFactory: Generate value dynamically
+    // useFactory: gera o valor dinamicamente
     {
       provide: ApiClient,
       useFactory: (http = inject(HttpClient)) => new ApiClient(http),
     },
 
-    // useExisting: Create an alias
+    // useExisting: cria um alias
     {provide: OldLogger, useExisting: NewLogger},
 
-    // multi: Provide multiple values for the same token as an array
+    // multi: fornece múltiplos valores para o mesmo token como um array
     {provide: INTERCEPTOR_TOKEN, useClass: AuthInterceptor, multi: true},
   ],
 })
 export class Example {}
 ```
 
-## Scopes of Providers
+## Escopos de Provedores
 
-- **Application Bootstrap**: Global singletons. Use for HTTP clients, logging, or app-wide config.
-- **Component/Directive**: Isolated instances. Use for component-specific state or forms. Services are destroyed when the component is destroyed.
-- **Route**: Feature-specific services loaded only with specific routes.
+- **Bootstrap da Aplicação**: singletons globais. Use para clientes HTTP, logging ou configuração de toda a aplicação.
+- **Componente/Diretiva**: instâncias isoladas. Use para estado específico de componente ou formulários. Os serviços são destruídos quando o componente é destruído.
+- **Rota**: serviços específicos de funcionalidade carregados apenas com rotas específicas.
 
-## Library Pattern: `provide*` functions
+## Padrão de Biblioteca: funções `provide*`
 
-Library authors should export functions that return provider arrays to encapsulate configuration:
+Autores de bibliotecas devem exportar funções que retornam arrays de provedores para encapsular a configuração:
 
 ```ts
 export function provideAnalytics(config: AnalyticsConfig): Provider[] {

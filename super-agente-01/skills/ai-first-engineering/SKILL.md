@@ -1,52 +1,52 @@
 ---
 name: ai-first-engineering
-description: Engineering operating model for teams where AI agents generate a large share of implementation output.
+description: Modelo operacional de engenharia para equipes em que agents de IA geram uma grande parcela da produção de implementação.
 metadata:
   origin: ECC
 ---
 
-# AI-First Engineering
+# Engenharia AI-First
 
-Use this skill when designing process, reviews, and architecture for teams shipping with AI-assisted code generation.
+Use esta skill ao projetar processo, revisões e arquitetura para equipes que entregam com geração de código assistida por IA.
 
-## Process Shifts
+## Mudanças no Processo
 
-1. Planning quality matters more than typing speed.
-2. Eval coverage matters more than anecdotal confidence.
-3. Review focus shifts from syntax to system behavior.
+1. A qualidade do planejamento importa mais do que a velocidade de digitação.
+2. A cobertura de avaliações (evals) importa mais do que a confiança anedótica.
+3. O foco da revisão muda da sintaxe para o comportamento do sistema.
 
-## Architecture Requirements
+## Requisitos de Arquitetura
 
-Prefer architectures that are agent-friendly:
-- explicit boundaries
-- stable contracts
-- typed interfaces
-- deterministic tests
+Prefira arquiteturas amigáveis a agents:
+- limites explícitos
+- contratos estáveis
+- interfaces tipadas
+- testes determinísticos
 
-Avoid implicit behavior spread across hidden conventions.
+Evite comportamento implícito espalhado por convenções ocultas.
 
-## Code Review in AI-First Teams
+## Revisão de Código em Equipes AI-First
 
-Review for:
-- behavior regressions
-- security assumptions
-- data integrity
-- failure handling
-- rollout safety
+Revise procurando:
+- regressões de comportamento
+- premissas de segurança
+- integridade de dados
+- tratamento de falhas
+- segurança de rollout
 
-Minimize time spent on style issues already covered by automation.
+Minimize o tempo gasto em questões de estilo já cobertas por automação.
 
-## Hiring and Evaluation Signals
+## Sinais de Contratação e Avaliação
 
-Strong AI-first engineers:
-- decompose ambiguous work cleanly
-- define measurable acceptance criteria
-- produce high-signal prompts and evals
-- enforce risk controls under delivery pressure
+Engenheiros AI-first fortes:
+- decompõem trabalho ambíguo com clareza
+- definem critérios de aceitação mensuráveis
+- produzem prompts e evals de alto sinal
+- aplicam controles de risco sob pressão de entrega
 
-## Testing Standard
+## Padrão de Testes
 
-Raise testing bar for generated code:
-- required regression coverage for touched domains
-- explicit edge-case assertions
-- integration checks for interface boundaries
+Eleve o nível de testes para código gerado:
+- cobertura de regressão obrigatória para os domínios tocados
+- asserções explícitas de casos extremos
+- verificações de integração para os limites das interfaces

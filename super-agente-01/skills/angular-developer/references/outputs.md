@@ -1,10 +1,10 @@
-# Outputs (Custom Events)
+# Outputs (Eventos Personalizados)
 
-Outputs allow a child component to emit custom events that a parent component can listen to. Angular recommends using the new `output()` function for modern applications.
+Outputs permitem que um componente filho emita eventos personalizados que um componente pai pode escutar. O Angular recomenda usar a nova função `output()` para aplicações modernas.
 
-## Function-based outputs
+## Outputs baseados em função
 
-Declare outputs using the `output()` function. This returns an `OutputEmitterRef`.
+Declare outputs usando a função `output()`. Isso retorna um `OutputEmitterRef`.
 
 ```ts
 import {Component, output} from '@angular/core';
@@ -14,10 +14,10 @@ import {Component, output} from '@angular/core';
   template: `<button (click)="changeValue(50)">Set to 50</button>`,
 })
 export class CustomSlider {
-  // Output without event data
+  // Output sem dados de evento
   panelClosed = output<void>();
 
-  // Output with event data (number)
+  // Output com dados de evento (number)
   valueChanged = output<number>();
 
   changeValue(newValue: number) {
@@ -26,30 +26,30 @@ export class CustomSlider {
 }
 ```
 
-### Usage in Template
+### Uso no Template
 
-Bind to the output event using parentheses `()`. If the event emits data, access it using the special `$event` variable.
+Vincule ao evento de output usando parênteses `()`. Se o evento emitir dados, acesse-os usando a variável especial `$event`.
 
 ```html
 <custom-slider (panelClosed)="savePanelState()" (valueChanged)="logValue($event)" />
 ```
 
-## Configuration Options
+## Opções de Configuração
 
-The `output` function accepts a config object to specify an alias.
+A função `output` aceita um objeto de configuração para especificar um alias.
 
 ```ts
 @Component({...})
 export class CustomSlider {
-  // The event is named 'valueChanged' in the template,
-  // but accessed as 'changed' in the component class.
+  // O evento é chamado 'valueChanged' no template,
+  // mas acessado como 'changed' na classe do componente.
   changed = output<number>({ alias: 'valueChanged' });
 }
 ```
 
-## Programmatic Subscription
+## Inscrição Programática
 
-When creating components dynamically, you can subscribe to outputs programmatically:
+Ao criar componentes dinamicamente, você pode se inscrever em outputs de forma programática:
 
 ```ts
 const componentRef = viewContainerRef.createComponent(CustomSlider);
@@ -58,13 +58,13 @@ const subscription = componentRef.instance.valueChanged.subscribe((val) => {
   console.log('Value changed:', val);
 });
 
-// Clean up manually if needed (Angular cleans up destroyed components automatically)
+// Faça a limpeza manualmente se necessário (o Angular limpa componentes destruídos automaticamente)
 subscription.unsubscribe();
 ```
 
-## Decorator-based Outputs (@Output)
+## Outputs baseados em Decorator (@Output)
 
-The legacy API uses the `@Output()` decorator with an `EventEmitter`. It remains supported but is not recommended for new code.
+A API legada usa o decorator `@Output()` com um `EventEmitter`. Continua suportada, mas não é recomendada para código novo.
 
 ```ts
 import { Component, Output, EventEmitter } from '@angular/core';
@@ -73,14 +73,14 @@ import { Component, Output, EventEmitter } from '@angular/core';
 export class LegacyExample {
   @Output() valueChanged = new EventEmitter<number>();
 
-  // With alias
+  // Com alias
   @Output('customEventName') changed = new EventEmitter<void>();
 }
 ```
 
-## Best Practices
+## Boas Práticas
 
-- **Prefer `output()`**: Use the function-based `output()` instead of `@Output()` and `EventEmitter`.
-- **Naming**: Use `camelCase` for output names. Avoid prefixing with `on` (e.g., use `valueChanged` instead of `onValueChanged`).
-- **No DOM Bubbling**: Angular custom events do not bubble up the DOM tree like native events.
-- **Avoid Collisions**: Do not choose names that collide with native DOM events (like `click` or `submit`).
+- **Prefira `output()`**: Use o `output()` baseado em função em vez de `@Output()` e `EventEmitter`.
+- **Nomenclatura**: Use `camelCase` para nomes de output. Evite prefixar com `on` (por exemplo, use `valueChanged` em vez de `onValueChanged`).
+- **Sem Propagação no DOM**: Eventos personalizados do Angular não propagam (bubble) pela árvore do DOM como eventos nativos.
+- **Evite Colisões**: Não escolha nomes que colidam com eventos nativos do DOM (como `click` ou `submit`).

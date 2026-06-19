@@ -148,9 +148,9 @@ Ready to continue. What would you like to do?
 
 ---
 
-## Notes
+## Notas
 
-- Never modify the session file when loading it — it's a read-only historical record
-- The briefing format is fixed — do not skip sections even if they are empty
-- "What Not To Retry" must always be shown, even if it just says "None" — it's too important to miss
-- After resuming, the user may want to run `/save-session` again at the end of the new session to create a new dated file
+- Nunca modifique o arquivo de sessão ao carregá-lo — é um registro histórico somente leitura
+- O formato do briefing é fixo — não pule seções, mesmo que estejam vazias
+- "What Not To Retry" deve sempre ser exibido, mesmo que apenas diga "None" — é importante demais para ser omitido
+- Após retomar, o usuário pode querer executar `/save-session` novamente ao fim da nova sessão para criar um novo arquivo datado

@@ -112,7 +112,7 @@ $ ./gradlew build
 # Build successful!
 ```
 
-## Final Verification
+## Verificação Final
 
 ```bash
 $ ./gradlew detekt

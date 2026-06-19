@@ -37,7 +37,7 @@ clang-tidy src/*.cpp -- -std=c++17
 cppcheck --enable=all src/
 ```
 
-## Example Session
+## Exemplo de Sessão
 
 ```text
 User: /cpp-build

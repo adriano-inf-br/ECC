@@ -1,22 +1,22 @@
 ---
-description: Manage Claude Code session history, aliases, and session metadata.
+description: Gerencia o histórico de sessões, aliases e metadados de sessão do Claude Code.
 ---
 
 # Sessions Command
 
-Manage Claude Code session history - list, load, alias, and edit sessions stored in `~/.claude/session-data/` with legacy reads from `~/.claude/sessions/`.
+Gerencie o histórico de sessões do Claude Code - liste, carregue, crie aliases e edite sessões armazenadas em `~/.claude/session-data/` com leituras legadas de `~/.claude/sessions/`.
 
-## Usage
+## Uso
 
 `/sessions [list|load|alias|info|help] [options]`
 
-## Actions
+## Ações
 
-### List Sessions
+### Listar sessões
 
-Display all sessions with metadata, filtering, and pagination.
+Exibe todas as sessões com metadados, filtragem e paginação.
 
-Use `/sessions info` when you need operator-surface context for a swarm: branch, worktree path, and session recency.
+Use `/sessions info` quando precisar de contexto de superfície de operador para um swarm: branch, caminho do worktree e recência da sessão.
 
 ```bash
 /sessions                              # List all sessions (default)

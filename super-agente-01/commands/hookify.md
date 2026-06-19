@@ -2,37 +2,37 @@
 description: Create hooks to prevent unwanted behaviors from conversation analysis or explicit instructions
 ---
 
-Create hook rules to prevent unwanted Claude Code behaviors by analyzing conversation patterns or explicit user instructions.
+Crie regras de hook para prevenir comportamentos indesejados do Claude Code analisando padrões de conversa ou instruções explícitas do usuário.
 
-## Usage
+## Uso
 
 `/hookify [description of behavior to prevent]`
 
-If no arguments are provided, analyze the current conversation to find behaviors worth preventing.
+Se nenhum argumento for fornecido, analise a conversa atual para encontrar comportamentos que valem a pena prevenir.
 
-## Workflow
+## Fluxo de Trabalho
 
-### Step 1: Gather Behavior Info
+### Passo 1: Reunir Informações de Comportamento
 
-- With arguments: parse the user's description of the unwanted behavior
-- Without arguments: use the `conversation-analyzer` agent to find:
-  - explicit corrections
-  - frustrated reactions to repeated mistakes
-  - reverted changes
-  - repeated similar issues
+- Com argumentos: faça o parse da descrição do usuário sobre o comportamento indesejado
+- Sem argumentos: use o agent `conversation-analyzer` para encontrar:
+  - correções explícitas
+  - reações de frustração a erros repetidos
+  - mudanças revertidas
+  - problemas semelhantes repetidos
 
-### Step 2: Present Findings
+### Passo 2: Apresentar as Descobertas
 
-Show the user:
+Mostre ao usuário:
 
-- behavior description
-- proposed event type
-- proposed pattern or matcher
-- proposed action
+- descrição do comportamento
+- tipo de evento proposto
+- padrão ou matcher proposto
+- ação proposta
 
-### Step 3: Generate Rule Files
+### Passo 3: Gerar os Arquivos de Regra
 
-For each approved rule, create a file at `.claude/hookify.{name}.local.md`:
+Para cada regra aprovada, crie um arquivo em `.claude/hookify.{name}.local.md`:
 
 ```yaml
 ---
@@ -45,6 +45,6 @@ pattern: "regex pattern"
 Message shown when rule triggers.
 ```
 
-### Step 4: Confirm
+### Passo 4: Confirmar
 
-Report created rules and how to manage them with `/hookify-list` and `/hookify-configure`.
+Reporte as regras criadas e como gerenciá-las com `/hookify-list` e `/hookify-configure`.

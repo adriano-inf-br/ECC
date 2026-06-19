@@ -38,8 +38,8 @@ são traduzidos.
 | 0 | Cópia-base funcional + fundação (glossário, progresso) | — | ✅ Concluída |
 | 1 | Docs de topo (README, CLAUDE, AGENTS, CONTRIBUTING, guias...) | ~17 | ✅ Concluída |
 | 2 | `agents/` (descrições e prosa) | 67 | ✅ Concluída |
-| 3 | `commands/` | 92 | 🔄 Em andamento |
-| 4 | `rules/` | 114 | ⬜ Pendente |
+| 3 | `commands/` | 92 | ✅ Concluída |
+| 4 | `rules/` | 114 | 🔄 Em andamento |
 | 5 | `skills/` | 441 | ⬜ Pendente |
 | 6 | `docs/` (restante em inglês) | ~900 | ⬜ Pendente |
 | 7 | `scripts/`, `tests/`, `src/` (comentários/strings) | ~400 | ⬜ Pendente |

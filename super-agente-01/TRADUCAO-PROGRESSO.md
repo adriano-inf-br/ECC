@@ -40,8 +40,8 @@ são traduzidos.
 | 2 | `agents/` (descrições e prosa) | 67 | ✅ Concluída |
 | 3 | `commands/` | 92 | ✅ Concluída |
 | 4 | `rules/` | 114 | ✅ Concluída |
-| 5 | `skills/` (384 .md) | 384 | 🔄 Em andamento |
-| 6 | `docs/` (restante em inglês) | ~900 | ⬜ Pendente |
+| 5 | `skills/` (384 .md) | 384 | ✅ Concluída |
+| 6 | `docs/` (restante em inglês) | ~900 | 🔄 Em andamento |
 | 7 | `scripts/`, `tests/`, `src/` (comentários/strings) | ~400 | ⬜ Pendente |
 | 8 | Demais (`examples/`, `contexts/`, configs com prosa) | restante | ⬜ Pendente |
 
@@ -64,3 +64,6 @@ são traduzidos.
 
 - **Sessão 1 (2026-06-19):** Fases 0, 1 e 2 concluídas (cópia-base, docs de topo,
   `agents/`). Fase 3 (`commands/`) iniciada.
+- **Sessão 2 (2026-06-19):** Fases 3, 4 e 5 concluídas (`commands/`, `rules/`,
+  `skills/`). Todos os 271 SKILL.md + 14 arquivos de referência em skills/
+  traduzidos. Fase 6 (`docs/`) iniciada.

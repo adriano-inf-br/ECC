@@ -59,18 +59,18 @@ Adicione um cabeçalho de frescor a cada codemap:
 <!-- Generated: 2026-02-11 | Files scanned: 142 | Token estimate: ~800 -->
 ```
 
-## Step 5: Save Analysis Report
+## Passo 5: Salve o relatório de análise
 
-Write a summary to `.reports/codemap-diff.txt`:
-- Files added/removed/modified since last scan
-- New dependencies detected
-- Architecture changes (new routes, new services, etc.)
-- Staleness warnings for docs not updated in 90+ days
+Escreva um resumo em `.reports/codemap-diff.txt`:
+- Arquivos adicionados/removidos/modificados desde o último escaneamento
+- Novas dependências detectadas
+- Mudanças de arquitetura (novas rotas, novos serviços, etc.)
+- Avisos de obsolescência para docs não atualizadas há 90+ dias
 
-## Tips
+## Dicas
 
-- Focus on **high-level structure**, not implementation details
-- Prefer **file paths and function signatures** over full code blocks
-- Keep each codemap under **1000 tokens** for efficient context loading
-- Use ASCII diagrams for data flow instead of verbose descriptions
-- Run after major feature additions or refactoring sessions
+- Foque na **estrutura de alto nível**, não em detalhes de implementação
+- Prefira **caminhos de arquivo e assinaturas de função** em vez de blocos de código completos
+- Mantenha cada codemap abaixo de **1000 tokens** para carregamento eficiente de contexto
+- Use diagramas ASCII para fluxo de dados em vez de descrições verbosas
+- Execute após grandes adições de funcionalidades ou sessões de refatoração

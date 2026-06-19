@@ -175,20 +175,20 @@ $ vitest run --coverage src/components/SearchInput.test.tsx
 ## TDD Complete!
 ````
 
-## Test Patterns
+## Padrões de Teste
 
-### Behavior, not implementation
+### Comportamento, não implementação
 
-Use `getByRole`, `getByLabelText`, `getByText`. Avoid `container.querySelector` and asserting on component state.
+Use `getByRole`, `getByLabelText`, `getByText`. Evite `container.querySelector` e fazer asserções sobre o estado do componente.
 
-### `userEvent.setup()` per test
+### `userEvent.setup()` por teste
 
 ```tsx
 const user = userEvent.setup();
 await user.click(screen.getByRole("button", { name: /save/i }));
 ```
 
-### MSW for network
+### MSW para rede
 
 ```tsx
 beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
@@ -198,7 +198,7 @@ afterAll(() => server.close());
 server.use(http.post("/api/users", () => HttpResponse.json({ id: "1" }, { status: 201 })));
 ```
 
-### Custom hooks
+### Hooks customizados
 
 ```tsx
 const { result } = renderHook(() => useCounter(0));

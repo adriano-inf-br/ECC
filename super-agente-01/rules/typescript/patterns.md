@@ -5,11 +5,11 @@ paths:
   - "**/*.js"
   - "**/*.jsx"
 ---
-# TypeScript/JavaScript Patterns
+# Padrões TypeScript/JavaScript
 
-> This file extends [common/patterns.md](../common/patterns.md) with TypeScript/JavaScript specific content.
+> Este arquivo estende [common/patterns.md](../common/patterns.md) com conteúdo específico de TypeScript/JavaScript.
 
-## API Response Format
+## Formato de Resposta de API
 
 ```typescript
 interface ApiResponse<T> {
@@ -24,7 +24,7 @@ interface ApiResponse<T> {
 }
 ```
 
-## Custom Hooks Pattern
+## Padrão de Custom Hooks
 
 ```typescript
 export function useDebounce<T>(value: T, delay: number): T {
@@ -39,7 +39,7 @@ export function useDebounce<T>(value: T, delay: number): T {
 }
 ```
 
-## Repository Pattern
+## Padrão Repositório
 
 ```typescript
 interface Repository<T> {

@@ -6,45 +6,45 @@ paths:
   - "**/app/**/*.ts"
   - "**/pages/**/*.ts"
 ---
-# React Security
+# Segurança React
 
-> This file extends [typescript/security.md](../typescript/security.md) and [common/security.md](../common/security.md) with React specific content.
+> Este arquivo estende [typescript/security.md](../typescript/security.md) e [common/security.md](../common/security.md) com conteúdo específico de React.
 
 ## XSS via `dangerouslySetInnerHTML`
 
-CRITICAL. The prop name is deliberately scary — treat every usage as a code review halt.
+CRÍTICO. O nome da prop é deliberadamente assustador — trate todo uso como uma parada obrigatória na revisão de código.
 
 ```tsx
-// CRITICAL: unsanitized user input
+// CRÍTICO: entrada do usuário não sanitizada
 <div dangerouslySetInnerHTML={{ __html: userBio }} />
 
-// CORRECT options:
-// 1. Render as text
+// Opções CORRETAS:
+// 1. Renderize como texto
 <div>{userBio}</div>
 
-// 2. Render parsed markdown via a library that sanitizes
+// 2. Renderize markdown parseado por uma biblioteca que sanitiza
 <ReactMarkdown>{userBio}</ReactMarkdown>
 
-// 3. If raw HTML is required, sanitize first with DOMPurify
+// 3. Se HTML bruto for necessário, sanitize primeiro com DOMPurify
 import DOMPurify from "isomorphic-dompurify";
 <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(userBio) }} />
 ```
 
-Audit checklist for every `dangerouslySetInnerHTML` call:
+Checklist de auditoria para toda chamada de `dangerouslySetInnerHTML`:
 
-- Is the input always under our control? Document the source.
-- If user-derived: is it sanitized at the **same call site**? (Sanitization at the API boundary is acceptable only if every consumer is verified.)
-- Is the sanitizer config allowlisting tags, not denylisting?
+- A entrada está sempre sob nosso controle? Documente a origem.
+- Se derivada do usuário: ela é sanitizada no **mesmo local da chamada**? (Sanitização na fronteira da API só é aceitável se todo consumidor for verificado.)
+- O sanitizador está configurado com allowlist de tags, e não com denylist?
 
-## Unsafe URL Schemes
+## Esquemas de URL Inseguros
 
-`javascript:` and `data:` URLs in `href`, `src`, and `xlink:href` execute arbitrary code.
+URLs `javascript:` e `data:` em `href`, `src` e `xlink:href` executam código arbitrário.
 
 ```tsx
-// CRITICAL: javascript: URL injection
-<a href={user.website}>Visit</a>   // if user.website = "javascript:alert(1)"
+// CRÍTICO: injeção de URL javascript:
+<a href={user.website}>Visit</a>   // se user.website = "javascript:alert(1)"
 
-// CORRECT: validate scheme
+// CORRETO: valide o esquema
 function safeUrl(url: string): string | undefined {
   try {
     const parsed = new URL(url);
@@ -57,25 +57,25 @@ function safeUrl(url: string): string | undefined {
 <a href={safeUrl(user.website)}>Visit</a>
 ```
 
-React warns about `javascript:` URLs in `href` in development mode, but does not block them at runtime. `data:` URLs and other schemes also slip through. Always validate.
+O React avisa sobre URLs `javascript:` em `href` no modo de desenvolvimento, mas não as bloqueia em tempo de execução. URLs `data:` e outros esquemas também passam despercebidos. Valide sempre.
 
-## `target="_blank"` Without `rel`
+## `target="_blank"` Sem `rel`
 
-`<a target="_blank">` without `rel="noopener noreferrer"` lets the target page access `window.opener` and run navigation hijacks.
+`<a target="_blank">` sem `rel="noopener noreferrer"` permite que a página de destino acesse `window.opener` e execute sequestros de navegação.
 
 ```tsx
-// WRONG
+// ERRADO
 <a href={externalUrl} target="_blank">External</a>
 
-// CORRECT
+// CORRETO
 <a href={externalUrl} target="_blank" rel="noopener noreferrer">External</a>
 ```
 
-Modern browsers default to `noopener` when `target="_blank"`, but do not rely on browser defaults — be explicit.
+Navegadores modernos usam `noopener` por padrão quando há `target="_blank"`, mas não dependa dos padrões do navegador — seja explícito.
 
-## Server Action Input Validation
+## Validação de Entrada de Server Action
 
-Server Actions (`"use server"`) run with the same trust level as a public API endpoint. Validate every input.
+Server Actions (`"use server"`) rodam com o mesmo nível de confiança de um endpoint público de API. Valide toda entrada.
 
 ```tsx
 "use server";
@@ -96,38 +96,38 @@ export async function updateUser(_state: unknown, formData: FormData) {
 }
 ```
 
-- Authenticate inside the action — do not trust the client-side route gate
-- Authorize: confirm the current user has permission for the specific record they are mutating
-- Rate limit sensitive actions
+- Autentique dentro da action — não confie no portão de rota do lado do cliente
+- Autorize: confirme que o usuário atual tem permissão para o registro específico que está mutando
+- Aplique rate limit em actions sensíveis
 
-## Secret Exposure via Env Vars
+## Exposição de Segredos via Variáveis de Ambiente
 
-Prefixed env vars are bundled into the client. Treat them as public.
+Variáveis de ambiente com prefixo são incluídas no bundle do cliente. Trate-as como públicas.
 
-| Framework | Public prefix | Private |
+| Framework | Prefixo público | Privado |
 |---|---|---|
-| Next.js | `NEXT_PUBLIC_*` | All others |
-| Vite | `VITE_*` | `.env` server-side only |
-| Create React App | `REACT_APP_*`, plus `NODE_ENV` and `PUBLIC_URL` | All others (anything without the `REACT_APP_` prefix is server-side only) |
-| Remix | `process.env` access in `loader`/`action` only | Same |
+| Next.js | `NEXT_PUBLIC_*` | Todos os demais |
+| Vite | `VITE_*` | `.env` apenas no lado do servidor |
+| Create React App | `REACT_APP_*`, além de `NODE_ENV` e `PUBLIC_URL` | Todos os demais (qualquer coisa sem o prefixo `REACT_APP_` é apenas do lado do servidor) |
+| Remix | acesso a `process.env` apenas em `loader`/`action` | Igual |
 
 ```ts
-// CRITICAL: secret leaked to client bundle
+// CRÍTICO: segredo vazado para o bundle do cliente
 const apiKey = process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY;
 ```
 
-Audit on every PR that touches env vars: would this string in the public bundle be a problem?
+Audite em todo PR que toca variáveis de ambiente: essa string no bundle público seria um problema?
 
-## Authentication / Authorization
+## Autenticação / Autorização
 
-- Never store sessions in `localStorage` — accessible to any XSS. Use httpOnly secure cookies.
-- Never trust client-set state to gate sensitive UI. Render-gating in JSX prevents display, not access — the API must enforce.
-- CSRF: cookie-based auth requires CSRF tokens or `SameSite=Strict`/`Lax` cookies
-- Use double-submit cookies or origin verification for form actions when not using framework defaults
+- Nunca armazene sessões no `localStorage` — acessível a qualquer XSS. Use cookies httpOnly secure.
+- Nunca confie em estado definido pelo cliente para controlar acesso a UI sensível. O controle de renderização no JSX impede a exibição, não o acesso — a API deve impor.
+- CSRF: autenticação baseada em cookie requer tokens CSRF ou cookies `SameSite=Strict`/`Lax`
+- Use cookies de dupla submissão ou verificação de origem para form actions quando não usar os padrões do framework
 
 ## Content Security Policy (CSP)
 
-Configure server-side. The minimum acceptable CSP for a React app:
+Configure no lado do servidor. A CSP mínima aceitável para uma aplicação React:
 
 ```
 default-src 'self';
@@ -138,43 +138,43 @@ connect-src 'self' https://api.example.com;
 frame-ancestors 'none';
 ```
 
-- Avoid `unsafe-inline` and `unsafe-eval` in `script-src`
-- For SSR with inline scripts (Next.js streaming, hydration data), use per-request nonces — both Next.js and Remix support nonce injection
-- `style-src 'unsafe-inline'` is often unavoidable for CSS-in-JS libraries — document the tradeoff
+- Evite `unsafe-inline` e `unsafe-eval` em `script-src`
+- Para SSR com scripts inline (streaming do Next.js, dados de hidratação), use nonces por requisição — tanto o Next.js quanto o Remix suportam injeção de nonce
+- `style-src 'unsafe-inline'` é frequentemente inevitável para bibliotecas de CSS-in-JS — documente o tradeoff
 
 ## Prototype Pollution via Object Spread
 
 ```tsx
-// WRONG: untrusted JSON spread directly into state
+// ERRADO: JSON não confiável espalhado diretamente no estado
 const update = await req.json();
-setState({ ...state, ...update });    // attacker controls __proto__
+setState({ ...state, ...update });    // o atacante controla __proto__
 
-// CORRECT: parse with a schema, or guard keys
+// CORRETO: parse com um schema, ou proteja as chaves
 const Allowed = z.object({ name: z.string(), email: z.string().email() });
 const parsed = Allowed.parse(await req.json());
 setState({ ...state, ...parsed });
 ```
 
-## SSR Template Injection
+## Injeção de Template em SSR
 
-When using `renderToString` or `renderToPipeableStream`:
+Ao usar `renderToString` ou `renderToPipeableStream`:
 
-- All values rendered inside JSX are escaped by React — safe
-- Values passed to `dangerouslySetInnerHTML` are NOT escaped — same rules as client
-- Manually constructed HTML wrappers around the React output must be escaped or sanitized — never concatenate user input into the surrounding HTML template
+- Todos os valores renderizados dentro do JSX são escapados pelo React — seguros
+- Valores passados para `dangerouslySetInnerHTML` NÃO são escapados — mesmas regras do cliente
+- Wrappers de HTML construídos manualmente em torno da saída do React devem ser escapados ou sanitizados — nunca concatene entrada do usuário no template HTML circundante
 
-## Third-Party Components
+## Componentes de Terceiros
 
-- Audit `npm audit` before adding any UI library
-- Check that the library does not internally use `dangerouslySetInnerHTML` on its input (e.g., rich text editors)
-- Pin versions, review changelogs before major upgrades
-- Be wary of components that accept HTML strings as props
+- Audite com `npm audit` antes de adicionar qualquer biblioteca de UI
+- Verifique se a biblioteca não usa internamente `dangerouslySetInnerHTML` na sua entrada (ex.: editores de rich text)
+- Fixe versões, revise changelogs antes de atualizações major
+- Desconfie de componentes que aceitam strings HTML como props
 
-## Source Map Exposure in Production
+## Exposição de Source Map em Produção
 
-Production builds should ship without source maps, or with sourcemaps uploaded to an error tracker (Sentry) and stripped from the public bundle. Public source maps leak internal logic and file structure.
+Builds de produção devem ser entregues sem source maps, ou com sourcemaps enviados a um rastreador de erros (Sentry) e removidos do bundle público. Source maps públicos vazam lógica interna e estrutura de arquivos.
 
-## Agent Support
+## Suporte de Agents
 
-- Use `security-reviewer` agent for comprehensive security audits across the codebase
-- Use `react-reviewer` agent for React-specific patterns and the above rules in active code review
+- Use o agent `security-reviewer` para auditorias de segurança abrangentes em toda a base de código
+- Use o agent `react-reviewer` para padrões específicos de React e as regras acima em revisão de código ativa

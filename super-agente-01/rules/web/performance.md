@@ -1,10 +1,10 @@
-> This file extends [common/performance.md](../common/performance.md) with web-specific performance content.
+> Este arquivo estende [common/performance.md](../common/performance.md) com conteúdo de performance específico de web.
 
-# Web Performance Rules
+# Regras de Performance Web
 
-## Core Web Vitals Targets
+## Metas de Core Web Vitals
 
-| Metric | Target |
+| Métrica | Meta |
 |--------|--------|
 | LCP | < 2.5s |
 | INP | < 200ms |
@@ -12,53 +12,53 @@
 | FCP | < 1.5s |
 | TBT | < 200ms |
 
-## Bundle Budget
+## Orçamento de Bundle
 
-| Page Type | JS Budget (gzipped) | CSS Budget |
+| Tipo de Página | Orçamento de JS (gzipped) | Orçamento de CSS |
 |-----------|---------------------|------------|
 | Landing page | < 150kb | < 30kb |
-| App page | < 300kb | < 50kb |
+| Página de app | < 300kb | < 50kb |
 | Microsite | < 80kb | < 15kb |
 
-## Loading Strategy
+## Estratégia de Carregamento
 
-1. Inline critical above-the-fold CSS where justified
-2. Preload the hero image and primary font only
-3. Defer non-critical CSS or JS
-4. Dynamically import heavy libraries
+1. Inline do CSS crítico acima da dobra quando justificado
+2. Preload apenas da imagem hero e da fonte primária
+3. Defer do CSS ou JS não crítico
+4. Import dinâmico de bibliotecas pesadas
 
 ```js
 const gsapModule = await import('gsap');
 const { ScrollTrigger } = await import('gsap/ScrollTrigger');
 ```
 
-## Image Optimization
+## Otimização de Imagens
 
-- Explicit `width` and `height`
-- `loading="eager"` plus `fetchpriority="high"` for hero media only
-- `loading="lazy"` for below-the-fold assets
-- Prefer AVIF or WebP with fallbacks
-- Never ship source images far beyond rendered size
+- `width` e `height` explícitos
+- `loading="eager"` mais `fetchpriority="high"` apenas para mídia hero
+- `loading="lazy"` para assets abaixo da dobra
+- Prefira AVIF ou WebP com fallbacks
+- Nunca entregue imagens-fonte muito maiores do que o tamanho renderizado
 
-## Font Loading
+## Carregamento de Fontes
 
-- Max two font families unless there is a clear exception
+- No máximo duas famílias de fontes, salvo uma exceção clara
 - `font-display: swap`
-- Subset where possible
-- Preload only the truly critical weight/style
+- Faça subset quando possível
+- Faça preload apenas do peso/estilo realmente crítico
 
-## Animation Performance
+## Performance de Animação
 
-- Animate compositor-friendly properties only
-- Use `will-change` narrowly and remove it when done
-- Prefer CSS for simple transitions
-- Use `requestAnimationFrame` or established animation libraries for JS motion
-- Avoid scroll handler churn; use IntersectionObserver or well-behaved libraries
+- Anime apenas propriedades amigáveis ao compositor
+- Use `will-change` de forma restrita e remova-o quando terminar
+- Prefira CSS para transições simples
+- Use `requestAnimationFrame` ou bibliotecas de animação consagradas para movimento em JS
+- Evite o excesso de handlers de scroll; use IntersectionObserver ou bibliotecas bem comportadas
 
-## Performance Checklist
+## Checklist de Performance
 
-- [ ] All images have explicit dimensions
-- [ ] No accidental render-blocking resources
-- [ ] No layout shifts from dynamic content
-- [ ] Motion stays on compositor-friendly properties
-- [ ] Third-party scripts load async/defer and only when needed
+- [ ] Todas as imagens têm dimensões explícitas
+- [ ] Nenhum recurso acidental que bloqueia a renderização
+- [ ] Nenhum layout shift de conteúdo dinâmico
+- [ ] O movimento permanece em propriedades amigáveis ao compositor
+- [ ] Scripts de terceiros carregam com async/defer e apenas quando necessário

@@ -3,13 +3,13 @@ paths:
   - "**/*.swift"
   - "**/Package.swift"
 ---
-# Swift Testing
+# Testes em Swift
 
-> This file extends [common/testing.md](../common/testing.md) with Swift specific content.
+> Este arquivo estende [common/testing.md](../common/testing.md) com conteúdo específico de Swift.
 
 ## Framework
 
-Use **Swift Testing** (`import Testing`) for new tests. Use `@Test` and `#expect`:
+Use **Swift Testing** (`import Testing`) para novos testes. Use `@Test` e `#expect`:
 
 ```swift
 @Test("User creation validates email")
@@ -20,11 +20,11 @@ func userCreationValidatesEmail() throws {
 }
 ```
 
-## Test Isolation
+## Isolamento de Testes
 
-Each test gets a fresh instance — set up in `init`, tear down in `deinit`. No shared mutable state between tests.
+Cada teste recebe uma instância nova — configure em `init`, finalize em `deinit`. Sem estado mutável compartilhado entre testes.
 
-## Parameterized Tests
+## Testes Parametrizados
 
 ```swift
 @Test("Validates formats", arguments: ["json", "xml", "csv"])
@@ -34,12 +34,12 @@ func validatesFormat(format: String) throws {
 }
 ```
 
-## Coverage
+## Cobertura
 
 ```bash
 swift test --enable-code-coverage
 ```
 
-## Reference
+## Referência
 
-See skill: `swift-protocol-di-testing` for protocol-based dependency injection and mock patterns with Swift Testing.
+Veja a skill: `swift-protocol-di-testing` para injeção de dependência baseada em protocolo e padrões de mock com Swift Testing.

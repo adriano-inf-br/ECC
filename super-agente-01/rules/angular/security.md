@@ -5,60 +5,60 @@ paths:
   - "**/*.service.ts"
   - "**/*.interceptor.ts"
 ---
-# Angular Security
+# Segurança no Angular
 
 > This file extends [common/security.md](../common/security.md) with Angular specific content.
 
-## XSS Prevention
+## Prevenção de XSS
 
-Angular auto-sanitizes bound values. Never bypass the sanitizer on user-controlled input.
+O Angular sanitiza automaticamente os valores vinculados. Nunca contorne o sanitizer para entrada controlada pelo usuário.
 
 ```typescript
-// WRONG: Bypasses sanitization — XSS risk
+// ERRADO: Contorna a sanitização — risco de XSS
 this.safeHtml = this.sanitizer.bypassSecurityTrustHtml(userInput);
 
-// CORRECT: Sanitize explicitly before trusting
+// CORRETO: Sanitize explicitamente antes de confiar
 this.safeHtml = this.sanitizer.sanitize(SecurityContext.HTML, userInput);
 ```
 
-- Never use `bypassSecurityTrust*` methods without a documented, reviewed reason
-- Avoid `[innerHTML]` with untrusted content — use `innerText` or a sanitizing pipe
-- Never bind `[href]` to user input — Angular does not block `javascript:` URLs in all contexts
-- Never construct template strings from user data
+- Nunca use métodos `bypassSecurityTrust*` sem um motivo documentado e revisado
+- Evite `[innerHTML]` com conteúdo não confiável — use `innerText` ou um pipe de sanitização
+- Nunca vincule `[href]` à entrada do usuário — o Angular não bloqueia URLs `javascript:` em todos os contextos
+- Nunca construa template strings a partir de dados do usuário
 
-## HTTP Security
+## Segurança em HTTP
 
-Use `HttpClient` exclusively — never raw `fetch()` or `XHR` unless no alternative exists.
+Use `HttpClient` exclusivamente — nunca `fetch()` ou `XHR` puros, a menos que não exista alternativa.
 
 ```typescript
-// WRONG: Bypasses interceptors (auth headers, error handling, logging)
+// ERRADO: Contorna os interceptors (headers de auth, tratamento de erros, logging)
 const res = await fetch('/api/users');
 
-// CORRECT
+// CORRETO
 users$ = this.http.get<User[]>('/api/users');
 ```
 
-- Attach auth tokens via interceptors — never hardcode in individual service calls
-- Type and validate API responses — treat external data as `unknown` at the boundary
-- Never log HTTP responses that may contain tokens, PII, or credentials
+- Anexe tokens de autenticação via interceptors — nunca hardcode em chamadas de serviço individuais
+- Tipifique e valide as respostas da API — trate dados externos como `unknown` na fronteira
+- Nunca registre respostas HTTP que possam conter tokens, PII ou credenciais
 
-## Secret Management
+## Gerenciamento de Segredos
 
 ```typescript
-// WRONG: Hardcoded secret in source
+// ERRADO: Segredo hardcoded no código-fonte
 const apiKey = 'sk-live-xxxx';
 
-// CORRECT: Injected via environment
+// CORRETO: Injetado via environment
 import { environment } from '../environments/environment';
 const apiKey = environment.apiKey;
 ```
 
-- Treat `environment.ts` as a config shape — never store real secrets in source-controlled environment files
-- Inject production secrets via CI/CD (environment variables, secret managers)
+- Trate `environment.ts` como um formato de configuração — nunca armazene segredos reais em arquivos de environment versionados
+- Injete segredos de produção via CI/CD (variáveis de ambiente, gerenciadores de segredos)
 
 ## Route Guards
 
-Every authenticated or role-restricted route must have a guard. Never rely on hiding UI elements alone.
+Toda rota autenticada ou restrita por papel deve ter um guard. Nunca confie apenas em ocultar elementos de UI.
 
 ```typescript
 {
@@ -68,20 +68,20 @@ Every authenticated or role-restricted route must have a guard. Never rely on hi
 }
 ```
 
-Use `canMatch` for sensitive routes — it prevents the route module from loading at all for unauthorized users.
+Use `canMatch` para rotas sensíveis — ele impede que o módulo da rota seja carregado por completo para usuários não autorizados.
 
-## SSR Security
+## Segurança em SSR
 
-When using Angular SSR:
+Ao usar Angular SSR:
 
-- Never expose server-side environment variables to the client via `TransferState` unless they are intentionally public
-- Sanitize all inputs before server-side rendering — DOM-based XSS can occur server-side too
-- Avoid `window`, `document`, `localStorage` on the server — gate with `isPlatformBrowser` or inject via `DOCUMENT` token
+- Nunca exponha variáveis de ambiente do lado do servidor ao cliente via `TransferState`, a menos que sejam intencionalmente públicas
+- Sanitize todas as entradas antes da renderização do lado do servidor — XSS baseado em DOM também pode ocorrer no servidor
+- Evite `window`, `document`, `localStorage` no servidor — proteja com `isPlatformBrowser` ou injete via token `DOCUMENT`
 
 ## Content Security Policy
 
-Configure CSP headers server-side. Avoid `unsafe-inline` in `script-src`. When using SSR with inline scripts, use nonces via Angular's CSP support.
+Configure os headers de CSP do lado do servidor. Evite `unsafe-inline` em `script-src`. Ao usar SSR com scripts inline, use nonces via o suporte a CSP do Angular.
 
-## Agent Support
+## Suporte de Agent
 
-- Use **security-reviewer** skill for comprehensive security audits
+- Use a skill **security-reviewer** para auditorias de segurança abrangentes

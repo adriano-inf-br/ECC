@@ -3,18 +3,18 @@ paths:
   - "**/*.kt"
   - "**/*.kts"
 ---
-# Kotlin Testing
+# Testes em Kotlin
 
-> This file extends [common/testing.md](../common/testing.md) with Kotlin and Android/KMP-specific content.
+> Este arquivo estende [common/testing.md](../common/testing.md) com conteúdo específico de Kotlin e Android/KMP.
 
-## Test Framework
+## Framework de Testes
 
-- **kotlin.test** for multiplatform (KMP) — `@Test`, `assertEquals`, `assertTrue`
-- **JUnit 4/5** for Android-specific tests
-- **Turbine** for testing Flows and StateFlow
-- **kotlinx-coroutines-test** for coroutine testing (`runTest`, `TestDispatcher`)
+- **kotlin.test** para multiplataforma (KMP) — `@Test`, `assertEquals`, `assertTrue`
+- **JUnit 4/5** para testes específicos de Android
+- **Turbine** para testar Flows e StateFlow
+- **kotlinx-coroutines-test** para testes de coroutines (`runTest`, `TestDispatcher`)
 
-## ViewModel Testing with Turbine
+## Testando ViewModel com Turbine
 
 ```kotlin
 @Test
@@ -24,17 +24,17 @@ fun `loading state emitted then data`() = runTest {
     val viewModel = ItemListViewModel(GetItemsUseCase(repo))
 
     viewModel.state.test {
-        assertEquals(ItemListState(), awaitItem())     // initial state
+        assertEquals(ItemListState(), awaitItem())     // estado inicial
         viewModel.onEvent(ItemListEvent.Load)
-        assertTrue(awaitItem().isLoading)               // loading
-        assertEquals(listOf(testItem), awaitItem().items) // loaded
+        assertTrue(awaitItem().isLoading)               // carregando
+        assertEquals(listOf(testItem), awaitItem().items) // carregado
     }
 }
 ```
 
-## Fakes Over Mocks
+## Fakes em Vez de Mocks
 
-Prefer hand-written fakes over mocking frameworks:
+Prefira fakes escritos à mão a frameworks de mock:
 
 ```kotlin
 class FakeItemRepository : ItemRepository {
@@ -52,7 +52,7 @@ class FakeItemRepository : ItemRepository {
 }
 ```
 
-## Coroutine Testing
+## Testes de Coroutines
 
 ```kotlin
 @Test
@@ -65,7 +65,7 @@ fun `parallel operations complete`() = runTest {
 }
 ```
 
-Use `runTest` — it auto-advances virtual time and provides `TestScope`.
+Use `runTest` — ele avança automaticamente o tempo virtual e fornece `TestScope`.
 
 ## Ktor MockEngine
 
@@ -85,10 +85,10 @@ val client = HttpClient(mockEngine) {
 }
 ```
 
-## Room/SQLDelight Testing
+## Testando Room/SQLDelight
 
-- Room: Use `Room.inMemoryDatabaseBuilder()` for in-memory testing
-- SQLDelight: Use `JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY)` for JVM tests
+- Room: Use `Room.inMemoryDatabaseBuilder()` para testes em memória
+- SQLDelight: Use `JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY)` para testes na JVM
 
 ```kotlin
 @Test
@@ -103,9 +103,9 @@ fun `insert and query items`() = runTest {
 }
 ```
 
-## Test Naming
+## Nomenclatura de Testes
 
-Use backtick-quoted descriptive names:
+Use nomes descritivos entre crases (backticks):
 
 ```kotlin
 @Test
@@ -115,14 +115,14 @@ fun `search with empty query returns all items`() = runTest { }
 fun `delete item emits updated list without deleted item`() = runTest { }
 ```
 
-## Test Organization
+## Organização dos Testes
 
 ```
 src/
-├── commonTest/kotlin/     # Shared tests (ViewModel, UseCase, Repository)
-├── androidUnitTest/kotlin/ # Android unit tests (JUnit)
-├── androidInstrumentedTest/kotlin/  # Instrumented tests (Room, UI)
-└── iosTest/kotlin/        # iOS-specific tests
+├── commonTest/kotlin/     # Testes compartilhados (ViewModel, UseCase, Repository)
+├── androidUnitTest/kotlin/ # Testes unitários de Android (JUnit)
+├── androidInstrumentedTest/kotlin/  # Testes instrumentados (Room, UI)
+└── iosTest/kotlin/        # Testes específicos de iOS
 ```
 
-Minimum test coverage: ViewModel + UseCase for every feature.
+Cobertura mínima de testes: ViewModel + UseCase para cada funcionalidade.

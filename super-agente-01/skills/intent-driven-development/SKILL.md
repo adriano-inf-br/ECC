@@ -20,7 +20,7 @@ ao trabalho e ao seu risco.
 Não ative para edições triviais, correções diretas de uma linha, sessões de depuração ativa,
 solicitações de revisão de código, ou solicitações de implementação cujas condições de aceitação já estejam claras.
 
-## How It Works
+## Como Funciona
 
 1. **Inspecione o contexto primeiro** — lê o repositório, docs, schemas e infraestrutura de testes em busca de fatos técnicos antes de fazer qualquer pergunta, ao mesmo tempo em que trata as restrições de produto/negócio como algo que só o usuário ou um artefato de produto pode fornecer
 2. **Escolha a profundidade** — seleciona Captura Rápida (3-7 critérios, risco baixo/moderado) ou Briefing de Aceitação Completo (mudanças de segurança, dados, migração, entre sistemas) com base no perfil de risco

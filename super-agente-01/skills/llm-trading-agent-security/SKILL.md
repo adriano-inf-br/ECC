@@ -10,18 +10,18 @@ version: "1.0.0"
 
 Agentes de trading autônomos têm um modelo de ameaça mais severo do que aplicações de LLM normais: uma injection ou um caminho de ferramenta ruim pode se converter diretamente em perda de ativos.
 
-## When to Use
+## Quando Usar
 
 - Construir um agente de IA que assina e envia transações
 - Auditar um bot de trading ou um assistente de execução on-chain
 - Projetar o gerenciamento de chaves de carteira para um agente
 - Dar a um LLM acesso a colocação de ordens, swaps ou operações de tesouraria
 
-## How It Works
+## Como Funciona
 
 Empilhe as defesas. Nenhuma verificação isolada é suficiente. Trate higiene de prompt, política de gasto, simulação, limites de execução e isolamento de carteira como controles independentes.
 
-## Examples
+## Exemplos
 
 ### Trate prompt injection como um ataque financeiro
 

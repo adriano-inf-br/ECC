@@ -9,7 +9,7 @@ metadata:
 
 Padrões para código Java (17+) legível e de fácil manutenção em serviços Spring Boot e Quarkus.
 
-## When to Use
+## Quando Usar
 
 - Escrever ou revisar código Java em projetos Spring Boot ou Quarkus
 - Aplicar convenções de nomenclatura, imutabilidade ou tratamento de exceções
@@ -18,7 +18,7 @@ Padrões para código Java (17+) legível e de fácil manutenção em serviços 
 - Estruturar pacotes e a organização do projeto
 - **[QUARKUS]**: Trabalhar com escopos de CDI, entidades Panache ou pipelines reativos
 
-## How It Works
+## Como Funciona
 
 ### Detecção de framework
 
@@ -36,7 +36,7 @@ Antes de aplicar os padrões, determine o framework a partir do arquivo de build
 - Nomenclatura e estrutura de pacotes consistentes
 - **[QUARKUS]**: Favoreça o processamento em tempo de build em vez de tempo de execução; evite reflexão em tempo de execução sempre que possível
 
-## Examples
+## Exemplos
 
 As seções abaixo mostram exemplos concretos de Spring Boot, Quarkus e Java
 compartilhado para nomenclatura, imutabilidade, injeção de dependências, código

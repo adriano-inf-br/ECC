@@ -17,7 +17,7 @@ Evita o desvio de estilo de código por IA em projetos legados ao varrer a base 
 - O usuário está preocupado com código gerado por IA "desviando" das convenções existentes do projeto
 - O usuário quer extrair e codificar as regras de codificação implícitas do projeto
 
-## When to Use
+## Quando Usar
 
 Use esta skill quando precisar preservar o estilo de um projeto legado e evitar o desvio de estilo gerado por IA. Veja **Quando Ativar** acima para as condições de gatilho.
 
@@ -105,7 +105,7 @@ Pergunte ao usuário a força de imposição (use `AskUserQuestion`):
 
 Quando `.ai-style-rules.md` está no contexto (carregado via CLAUDE.md), toda tarefa de escrita de código deve abrir com uma **declaração de conformidade** na cadeia de raciocínio, nomeando o exemplo seguido e os DONTs evitados.
 
-## How It Works
+## Como Funciona
 
 Esta skill detecta automaticamente se é uma execução inicial ou incremental pela presença de `.ai-style-rules.md`:
 

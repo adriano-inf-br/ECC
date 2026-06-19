@@ -14,7 +14,7 @@ Todos os exemplos de configuração mostram setups comuns. Revise cada comando �
 regras de forwarding do iptables e as permissões dos arquivos de chave — antes de aplicá-los ao seu
 sistema, e faça as alterações em uma janela de manutenção.
 
-## When to Use
+## Quando Usar
 
 - Configurar um servidor WireGuard em um Raspberry Pi, host Linux, pfSense ou roteador
 - Gerar pares de chaves WireGuard e escrever arquivos de configuração de peers

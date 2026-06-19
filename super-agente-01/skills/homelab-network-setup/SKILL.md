@@ -1,74 +1,74 @@
 ---
 name: homelab-network-setup
-description: Practical home and homelab network planning for gateways, switches, access points, IP ranges, DHCP reservations, DNS, cabling, and common beginner mistakes.
+description: Planejamento prático de rede doméstica e homelab para gateways, switches, pontos de acesso, intervalos de IP, reservas DHCP, DNS, cabeamento e erros comuns de iniciantes.
 metadata:
   origin: community
 ---
 
-# Homelab Network Setup
+# Configuração de Rede em Homelab
 
-Use this skill to design a home or small-lab network that can grow without
-needing a full rebuild.
+Use esta skill para projetar uma rede doméstica ou de pequeno laboratório que possa crescer sem
+precisar de uma reconstrução completa.
 
-## When to Use
+## Quando Usar
 
-- Planning a new home network or redesigning an ISP-router-only setup.
-- Choosing gateway, switch, and access point roles.
-- Designing IP ranges, DHCP scopes, static reservations, and DNS.
-- Preparing for future VLANs, Pi-hole, NAS, lab servers, or VPN access.
-- Troubleshooting a new network that has double NAT, unstable Wi-Fi, or changing
-  server addresses.
+- Planejando uma nova rede doméstica ou redesenhando uma configuração somente com roteador do ISP.
+- Escolhendo papéis de gateway, switch e ponto de acesso.
+- Projetando intervalos de IP, escopos DHCP, reservas estáticas e DNS.
+- Preparando-se para futuras VLANs, Pi-hole, NAS, servidores de laboratório ou acesso VPN.
+- Solucionando problemas em uma nova rede com NAT duplo, Wi-Fi instável ou endereços de
+  servidor em mudança.
 
-## How It Works
+## Como Funciona
 
-Start by separating device roles:
+Comece separando os papéis dos dispositivos:
 
 ```text
 Internet
   |
-Modem or ONT
+Modem ou ONT
   |
-Gateway or router      NAT, firewall, DHCP, DNS, inter-VLAN routing
+Gateway ou roteador      NAT, firewall, DHCP, DNS, roteamento inter-VLAN
   |
-Managed switch         wired clients, AP uplinks, optional VLAN trunks
+Switch gerenciado        clientes com fio, uplinks de AP, trunks VLAN opcionais
   |
-Access points          Wi-Fi only; ideally wired backhaul
-Servers and NAS        stable addresses, DNS names, monitoring
-Clients and IoT        DHCP pools, isolated later if VLANs are available
+Pontos de acesso         somente Wi-Fi; preferencialmente backhaul com fio
+Servidores e NAS         endereços estáveis, nomes DNS, monitoramento
+Clientes e IoT           pools DHCP, isolados depois se VLANs disponíveis
 ```
 
-Pick a gateway that matches the operator, not just the feature checklist:
+Escolha um gateway que corresponda ao operador, não apenas à lista de funcionalidades:
 
-| Option | Best fit | Notes |
+| Opção | Melhor para | Notas |
 | --- | --- | --- |
-| ISP router | Basic internet only | Limited control and often poor VLAN support |
-| UniFi gateway | Managed home network | Good UI, ecosystem lock-in |
-| OPNsense or pfSense | Flexible homelab | Strong VLAN, firewall, VPN, and DNS control |
-| MikroTik | Advanced network users | Powerful, but easy to misconfigure |
-| Linux router | Tinkerers | Document rollback before using as primary gateway |
+| Roteador do ISP | Somente internet básica | Controle limitado e geralmente suporte VLAN ruim |
+| Gateway UniFi | Rede doméstica gerenciada | Boa UI, lock-in de ecossistema |
+| OPNsense ou pfSense | Homelab flexível | Forte controle de VLAN, firewall, VPN e DNS |
+| MikroTik | Usuários avançados de rede | Poderoso, mas fácil de configurar erroneamente |
+| Roteador Linux | Entusiastas | Documente o rollback antes de usar como gateway principal |
 
-## IP Plan
+## Plano de IP
 
-Avoid the most common default, `192.168.1.0/24`, when you expect to use VPNs.
-It often conflicts with hotels, offices, and ISP routers.
+Evite o padrão mais comum, `192.168.1.0/24`, quando espera usar VPNs.
+Frequentemente conflita com hotéis, escritórios e roteadores de ISP.
 
 ```text
-Example small homelab plan:
+Exemplo de plano para pequeno homelab:
 
-192.168.10.0/24  trusted clients
-192.168.20.0/24  IoT and media devices
-192.168.30.0/24  servers and NAS
-192.168.40.0/24  guest Wi-Fi
-192.168.99.0/24  network management
+192.168.10.0/24  clientes confiáveis
+192.168.20.0/24  dispositivos IoT e de mídia
+192.168.30.0/24  servidores e NAS
+192.168.40.0/24  Wi-Fi guest
+192.168.99.0/24  gerenciamento de rede
 
-Gateway convention: .1
-Infrastructure reservations: .2 through .49
-Dynamic DHCP pool: .50 through .240
-Spare room: .241 through .254
+Convenção do gateway: .1
+Reservas de infraestrutura: .2 a .49
+Pool DHCP dinâmico: .50 a .240
+Espaço de sobra: .241 a .254
 ```
 
-Use `home.arpa` for local names. It is reserved for home networks and avoids the
-leakage/conflict problems of ad hoc names like `home.lan`.
+Use `home.arpa` para nomes locais. É reservado para redes domésticas e evita os
+problemas de vazamento/conflito de nomes ad hoc como `home.lan`.
 
 ```text
 nas.home.arpa
@@ -77,54 +77,54 @@ gateway.home.arpa
 switch-01.home.arpa
 ```
 
-## DHCP And DNS
+## DHCP e DNS
 
-- Use DHCP reservations for anything you SSH into, bookmark, monitor, or expose
-  as a service.
-- Hand out the gateway as DNS until a local resolver is intentionally deployed.
-- If using Pi-hole or another DNS filter, give it a reservation first, then point
-  DHCP DNS options at that address.
-- Keep a small static/reserved range per subnet so replacements do not collide
-  with dynamic leases.
+- Use reservas DHCP para qualquer coisa em que você faça SSH, marque como favorito, monitore ou exponha
+  como serviço.
+- Distribua o gateway como DNS até que um resolvedor local seja implantado intencionalmente.
+- Se usar Pi-hole ou outro filtro DNS, dê-lhe uma reserva primeiro, depois aponte
+  as opções DHCP DNS para esse endereço.
+- Mantenha um pequeno intervalo estático/reservado por sub-rede para que substituições não colidam
+  com leases dinâmicos.
 
-## Cabling And Wi-Fi
+## Cabeamento e Wi-Fi
 
-- Prefer wired AP backhaul over mesh when you can run Ethernet.
-- Use a PoE switch for APs and cameras if the budget allows it.
-- Label both ends of each cable and keep a simple port map.
-- Put the gateway, switch, DNS server, and NAS on UPS power if outages are common.
+- Prefira backhaul de AP com fio em vez de mesh quando puder instalar Ethernet.
+- Use um switch PoE para APs e câmeras se o orçamento permitir.
+- Rotule ambas as pontas de cada cabo e mantenha um mapa de portas simples.
+- Coloque o gateway, switch, servidor DNS e NAS em energia UPS se quedas de energia forem comuns.
 
-## Examples
+## Exemplos
 
-### Beginner Upgrade
+### Atualização para Iniciantes
 
-Goal: Keep the ISP router but stabilize a small lab.
+Objetivo: Manter o roteador do ISP mas estabilizar um pequeno laboratório.
 
-1. Set DHCP reservations for NAS, Pi, and any SSH hosts.
-2. Move local names to `home.arpa`.
-3. Disable duplicate DHCP servers on secondary routers or APs.
-4. Wire the main AP instead of relying on wireless backhaul.
+1. Configure reservas DHCP para NAS, Pi e quaisquer hosts SSH.
+2. Mova nomes locais para `home.arpa`.
+3. Desative servidores DHCP duplicados em roteadores secundários ou APs.
+4. Conecte o AP principal com fio em vez de depender de backhaul sem fio.
 
-### VLAN-Ready Plan
+### Plano VLAN-Ready
 
-Goal: Prepare for future segmentation without enabling it immediately.
+Objetivo: Preparar para segmentação futura sem habilitá-la imediatamente.
 
-1. Choose non-overlapping /24 ranges for trusted, IoT, servers, guest, and
-   management.
-2. Reserve .1 for the gateway and .2-.49 for infrastructure on every subnet.
-3. Buy a gateway and switch that support VLANs and inter-VLAN firewall rules.
-4. Document which SSIDs and switch ports will eventually map to each network.
+1. Escolha intervalos /24 sem sobreposição para confiável, IoT, servidores, guest e
+   gerenciamento.
+2. Reserve .1 para o gateway e .2-.49 para infraestrutura em cada sub-rede.
+3. Compre um gateway e switch que suportem VLANs e regras de firewall inter-VLAN.
+4. Documente quais SSIDs e portas de switch eventualmente mapearão para cada rede.
 
-## Anti-Patterns
+## Anti-Padrões
 
-- Double NAT without a reason or documentation.
-- Using `192.168.1.0/24` when VPN access is planned.
-- Dynamic addresses for NAS, Pi-hole, Home Assistant, or other service hosts.
-- Consumer routers repurposed as APs while their DHCP servers are still enabled.
-- Flat networks with cameras, smart plugs, laptops, and servers all sharing the
-  same trust boundary.
+- NAT duplo sem motivo ou documentação.
+- Usar `192.168.1.0/24` quando acesso VPN está planejado.
+- Endereços dinâmicos para NAS, Pi-hole, Home Assistant ou outros hosts de serviço.
+- Roteadores de consumidor reutilizados como APs enquanto seus servidores DHCP ainda estão habilitados.
+- Redes planas com câmeras, plugues inteligentes, laptops e servidores todos compartilhando a
+  mesma fronteira de confiança.
 
-## See Also
+## Veja Também
 
 - Skill: `network-interface-health`
 - Skill: `network-config-validation`

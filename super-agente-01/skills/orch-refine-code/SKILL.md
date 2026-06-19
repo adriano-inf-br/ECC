@@ -1,44 +1,43 @@
 ---
 name: orch-refine-code
-description: Orchestrate a behavior-preserving refactor — confirm tests are green, restructure without changing behavior, keep tests green, review, and gated commit. Use when the structure should improve but behavior must not change.
+description: Orquestre um refactor que preserve o comportamento — confirme que os testes estão verdes, reestruture sem alterar o comportamento, mantenha os testes verdes, revise e faça commit com gate. Use quando a estrutura deve melhorar mas o comportamento não deve mudar.
 metadata:
   origin: ECC
 ---
 
 # orch-refine-code
 
-Actor · action · target: **orch · refine · code**. Thin wrapper over the shared
-engine in [`orch-pipeline`](../orch-pipeline/SKILL.md).
+Ator · ação · alvo: **orch · refine · code**. Wrapper fino sobre o motor compartilhado em [`orch-pipeline`](../orch-pipeline/SKILL.md).
 
-## When to Use
+## Quando Usar
 
-- Same behavior, **better structure**: extract modules, remove duplication, kill
-  dead code, reduce nesting, rename for clarity.
-- Distinguish from siblings: if behavior is meant to change at all, this is the
-  wrong skill (`orch-change-feature` / `orch-fix-defect`).
+- Mesmo comportamento, **estrutura melhor**: extrair módulos, remover duplicação, eliminar
+  código morto, reduzir aninhamento, renomear para maior clareza.
+- Distinga das skills irmãs: se o comportamento deve mudar de alguma forma, esta é a
+  skill errada (`orch-change-feature` / `orch-fix-defect`).
 
-## Operation settings
+## Configurações de operação
 
-- **Default size floor:** standard — restructures touch multiple files.
-- **Phase mask:** 0 → 2 (plan the restructure) → 4 (keep green) → 5 → 6. No new
-  behavior tests are written — the existing suite is the safety net.
-- **First move (phase 4):** confirm the relevant tests exist and are **green
-  before** touching code; if coverage is thin, add characterization tests first.
-  Then restructure in small steps, re-running tests after each.
+- **Piso de tamanho padrão:** standard — reestruturações tocam múltiplos arquivos.
+- **Máscara de fases:** 0 → 2 (planejar a reestruturação) → 4 (manter verde) → 5 → 6. Nenhum
+  novo teste de comportamento é escrito — a suite existente é a rede de segurança.
+- **Primeiro movimento (fase 4):** confirme que os testes relevantes existem e estão **verdes
+  antes** de tocar o código; se a cobertura estiver baixa, adicione testes de caracterização primeiro.
+  Depois reestruture em pequenos passos, reexecutando os testes após cada um.
 
-## How It Works
+## Como Funciona
 
-1. Run the `orch-pipeline` engine with the settings above.
-2. For dead-code / duplication sweeps, delegate to the `refactor-cleaner` agent
-   (it runs knip / depcheck / ts-prune and removes safely).
-3. Stop at **Gate 1** (restructure plan) and **Gate 2** (pre-commit).
-4. Commit as `refactor:` — the diff must be behavior-neutral.
+1. Execute o motor `orch-pipeline` com as configurações acima.
+2. Para varreduras de código morto / duplicação, delegar ao agent `refactor-cleaner`
+   (ele executa knip / depcheck / ts-prune e remove com segurança).
+3. Pare no **Gate 1** (plano de reestruturação) e no **Gate 2** (pré-commit).
+4. Faça commit como `refactor:` — o diff deve ser neutro em comportamento.
 
-## Example
+## Exemplo
 
 ```
-orch-refine-code: extract the NWS HTTP client out of poller.py
-→ confirm tests green → plan extraction  [GATE 1: approve]
-→ move in small steps, tests green throughout → code-review
-→ commit refactor:  [GATE 2: confirm]
+orch-refine-code: extrair o cliente HTTP NWS de poller.py
+→ confirmar testes verdes → planejar extração  [GATE 1: aprovar]
+→ mover em pequenos passos, testes verdes durante todo o processo → code-review
+→ commit refactor:  [GATE 2: confirmar]
 ```

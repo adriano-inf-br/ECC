@@ -1,32 +1,32 @@
 ---
-description: Run a generator/evaluator build loop for implementation tasks with bounded iterations and scoring.
+description: Executa um loop de build gerador/avaliador para tarefas de implementação com iterações limitadas e pontuação.
 ---
 
-Parse the following from $ARGUMENTS:
-1. `brief` — the user's one-line description of what to build
-2. `--max-iterations N` — (optional, default 15) maximum generator-evaluator cycles
-3. `--pass-threshold N` — (optional, default 7.0) weighted score to pass
-4. `--skip-planner` — (optional) skip planner, assume spec.md already exists
-5. `--eval-mode MODE` — (optional, default "playwright") one of: playwright, screenshot, code-only
+Extraia o seguinte de $ARGUMENTS:
+1. `brief` — a descrição em uma linha do usuário sobre o que construir
+2. `--max-iterations N` — (opcional, padrão 15) máximo de ciclos gerador-avaliador
+3. `--pass-threshold N` — (opcional, padrão 7.0) pontuação ponderada para aprovar
+4. `--skip-planner` — (opcional) pula o planner, assume que spec.md já existe
+5. `--eval-mode MODE` — (opcional, padrão "playwright") um de: playwright, screenshot, code-only
 
-## GAN-Style Harness Build
+## Build de Harness no Estilo GAN
 
-This command orchestrates a three-agent build loop inspired by Anthropic's March 2026 harness design paper.
+Este comando orquestra um loop de build de três agents inspirado no artigo de design de harness da Anthropic de março de 2026.
 
-### Phase 0: Setup
-1. Create `gan-harness/` directory in project root
-2. Create subdirectories: `gan-harness/feedback/`, `gan-harness/screenshots/`
-3. Initialize git if not already initialized
-4. Log start time and configuration
+### Fase 0: Setup
+1. Criar o diretório `gan-harness/` na raiz do projeto
+2. Criar subdiretórios: `gan-harness/feedback/`, `gan-harness/screenshots/`
+3. Inicializar o git se ainda não estiver inicializado
+4. Registrar o horário de início e a configuração
 
-### Phase 1: Planning (Planner Agent)
-Unless `--skip-planner` is set:
-1. Launch the `gan-planner` agent via Task tool with the user's brief
-2. Wait for it to produce `gan-harness/spec.md` and `gan-harness/eval-rubric.md`
-3. Display the spec summary to the user
-4. Proceed to Phase 2
+### Fase 1: Planejamento (Agent Planner)
+A menos que `--skip-planner` esteja definido:
+1. Lançar o agent `gan-planner` via Task tool com o brief do usuário
+2. Aguardar até que ele produza `gan-harness/spec.md` e `gan-harness/eval-rubric.md`
+3. Exibir o resumo da spec para o usuário
+4. Prosseguir para a Fase 2
 
-### Phase 2: Generator-Evaluator Loop
+### Fase 2: Loop Gerador-Avaliador
 ```
 iteration = 1
 while iteration <= max_iterations:
@@ -65,14 +65,14 @@ while iteration <= max_iterations:
     iteration += 1
 ```
 
-### Phase 3: Summary
-1. Read all feedback files
-2. Display final scores and iteration history
-3. Show score progression: `iteration 1: 4.2 → iteration 2: 5.8 → ... → iteration N: 7.5`
-4. List any remaining issues from the final evaluation
-5. Report total time and estimated cost
+### Fase 3: Resumo
+1. Ler todos os arquivos de feedback
+2. Exibir as pontuações finais e o histórico de iterações
+3. Mostrar a progressão de pontuação: `iteration 1: 4.2 → iteration 2: 5.8 → ... → iteration N: 7.5`
+4. Listar quaisquer questões restantes da avaliação final
+5. Reportar o tempo total e o custo estimado
 
-### Output
+### Saída
 
 ```markdown
 ## GAN Harness Build Report
@@ -100,4 +100,4 @@ while iteration <= max_iterations:
 - gan-harness/build-report.md
 ```
 
-Write the full report to `gan-harness/build-report.md`.
+Escreva o relatório completo em `gan-harness/build-report.md`.

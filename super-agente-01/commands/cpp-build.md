@@ -4,26 +4,26 @@ description: Fix C++ build errors, CMake issues, and linker problems incremental
 
 # C++ Build and Fix
 
-This command invokes the **cpp-build-resolver** agent to incrementally fix C++ build errors with minimal changes.
+Este comando invoca o agent **cpp-build-resolver** para corrigir incrementalmente erros de build C++ com mudanças mínimas.
 
-## What This Command Does
+## O Que Este Comando Faz
 
-1. **Run Diagnostics**: Execute `cmake --build`, `clang-tidy`, `cppcheck`
-2. **Parse Errors**: Group by file and sort by severity
-3. **Fix Incrementally**: One error at a time
-4. **Verify Each Fix**: Re-run build after each change
-5. **Report Summary**: Show what was fixed and what remains
+1. **Executa Diagnósticos**: Executa `cmake --build`, `clang-tidy`, `cppcheck`
+2. **Analisa Erros**: Agrupa por arquivo e ordena por severidade
+3. **Corrige Incrementalmente**: Um erro por vez
+4. **Verifica Cada Correção**: Reexecuta o build após cada mudança
+5. **Reporta o Resumo**: Mostra o que foi corrigido e o que resta
 
-## When to Use
+## Quando Usar
 
-Use `/cpp-build` when:
-- `cmake --build build` fails with errors
-- Linker errors (undefined references, multiple definitions)
-- Template instantiation failures
-- Include/dependency issues
-- After pulling changes that break the build
+Use `/cpp-build` quando:
+- `cmake --build build` falha com erros
+- Erros de linker (referências indefinidas, definições múltiplas)
+- Falhas de instanciação de template
+- Problemas de include/dependência
+- Após puxar mudanças que quebram o build
 
-## Diagnostic Commands Run
+## Comandos de Diagnóstico Executados
 
 ```bash
 # CMake configure

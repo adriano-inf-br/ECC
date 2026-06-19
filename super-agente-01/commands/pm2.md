@@ -1,26 +1,26 @@
 ---
-description: Analyze a project and generate PM2 service commands for detected frontend, backend, or database services.
+description: Analisa um projeto e gera comandos de serviço PM2 para serviços de frontend, backend ou banco de dados detectados.
 ---
 
 # PM2 Init
 
-Auto-analyze project and generate PM2 service commands.
+Analisa automaticamente o projeto e gera comandos de serviço PM2.
 
-**Command**: `$ARGUMENTS`
-
----
-
-## Workflow
-
-1. Check PM2 (install via `npm install -g pm2` if missing)
-2. Scan project to identify services (frontend/backend/database)
-3. Generate config files and individual command files
+**Comando**: `$ARGUMENTS`
 
 ---
 
-## Service Detection
+## Fluxo de trabalho
 
-| Type | Detection | Default Port |
+1. Verificar o PM2 (instalar via `npm install -g pm2` se ausente)
+2. Escanear o projeto para identificar serviços (frontend/backend/banco de dados)
+3. Gerar arquivos de configuração e arquivos de comando individuais
+
+---
+
+## Detecção de Serviços
+
+| Tipo | Detecção | Porta Padrão |
 |------|-----------|--------------|
 | Vite | vite.config.* | 5173 |
 | Next.js | next.config.* | 3000 |
@@ -30,11 +30,11 @@ Auto-analyze project and generate PM2 service commands.
 | FastAPI/Flask | requirements.txt / pyproject.toml | 8000 |
 | Go | go.mod / main.go | 8080 |
 
-**Port Detection Priority**: User specified > .env > config file > scripts args > default port
+**Prioridade de Detecção de Porta**: Especificada pelo usuário > .env > arquivo de config > argumentos de scripts > porta padrão
 
 ---
 
-## Generated Files
+## Arquivos Gerados
 
 ```
 project/
@@ -57,11 +57,11 @@ project/
 
 ---
 
-## Windows Configuration (IMPORTANT)
+## Configuração no Windows (IMPORTANTE)
 
 ### ecosystem.config.cjs
 
-**Must use `.cjs` extension**
+**Deve usar a extensão `.cjs`**
 
 ```javascript
 module.exports = {
@@ -87,7 +87,7 @@ module.exports = {
 }
 ```
 
-**Framework script paths:**
+**Caminhos de script por framework:**
 
 | Framework | script | args |
 |-----------|--------|------|
@@ -96,7 +96,7 @@ module.exports = {
 | Nuxt | `node_modules/nuxt/bin/nuxt.mjs` | `dev --port {port}` |
 | Express | `src/index.js` or `server.js` | - |
 
-### Python Wrapper Script (start.cjs)
+### Script Wrapper de Python (start.cjs)
 
 ```javascript
 const { spawn } = require('child_process');
@@ -108,7 +108,7 @@ proc.on('close', (code) => process.exit(code));
 
 ---
 
-## Command File Templates (Minimal Content)
+## Templates de Arquivo de Comando (Conteúdo Mínimo)
 
 ### pm2-all.md (Start all + monit)
 ````markdown
@@ -174,13 +174,13 @@ cd "{PROJECT_ROOT}" && pm2 status
 ```
 ````
 
-### PowerShell Scripts (pm2-logs-{port}.ps1)
+### Scripts PowerShell (pm2-logs-{port}.ps1)
 ```powershell
 Set-Location "{PROJECT_ROOT}"
 pm2 logs {name}
 ```
 
-### PowerShell Scripts (pm2-monit.ps1)
+### Scripts PowerShell (pm2-monit.ps1)
 ```powershell
 Set-Location "{PROJECT_ROOT}"
 pm2 monit
@@ -188,34 +188,34 @@ pm2 monit
 
 ---
 
-## Key Rules
+## Regras Principais
 
-1. **Config file**: `ecosystem.config.cjs` (not .js)
-2. **Node.js**: Specify bin path directly + interpreter
-3. **Python**: Node.js wrapper script + `windowsHide: true`
-4. **Open new window**: `start wt.exe -d "{path}" pwsh -NoExit -c "command"`
-5. **Minimal content**: Each command file has only 1-2 lines description + bash block
-6. **Direct execution**: No AI parsing needed, just run the bash command
-
----
-
-## Execute
-
-Based on `$ARGUMENTS`, execute init:
-
-1. Scan project for services
-2. Generate `ecosystem.config.cjs`
-3. Generate `{backend}/start.cjs` for Python services (if applicable)
-4. Generate command files in `.claude/commands/`
-5. Generate script files in `.claude/scripts/`
-6. **Update project CLAUDE.md** with PM2 info (see below)
-7. **Display completion summary** with terminal commands
+1. **Arquivo de config**: `ecosystem.config.cjs` (não .js)
+2. **Node.js**: Especificar o caminho do bin diretamente + interpreter
+3. **Python**: Script wrapper Node.js + `windowsHide: true`
+4. **Abrir nova janela**: `start wt.exe -d "{path}" pwsh -NoExit -c "command"`
+5. **Conteúdo mínimo**: Cada arquivo de comando tem apenas 1-2 linhas de descrição + bloco bash
+6. **Execução direta**: Sem necessidade de parsing por IA, basta rodar o comando bash
 
 ---
 
-## Post-Init: Update CLAUDE.md
+## Executar
 
-After generating files, append PM2 section to project's `CLAUDE.md` (create if not exists):
+Com base em `$ARGUMENTS`, execute o init:
+
+1. Escanear o projeto em busca de serviços
+2. Gerar `ecosystem.config.cjs`
+3. Gerar `{backend}/start.cjs` para serviços Python (se aplicável)
+4. Gerar arquivos de comando em `.claude/commands/`
+5. Gerar arquivos de script em `.claude/scripts/`
+6. **Atualizar o CLAUDE.md do projeto** com informações do PM2 (veja abaixo)
+7. **Exibir o resumo de conclusão** com os comandos de terminal
+
+---
+
+## Pós-Init: Atualizar CLAUDE.md
+
+Após gerar os arquivos, acrescente a seção PM2 ao `CLAUDE.md` do projeto (crie se não existir):
 
 ````markdown
 ## PM2 Services
@@ -236,16 +236,16 @@ pm2 resurrect                    # Restore saved list
 ```
 ````
 
-**Rules for CLAUDE.md update:**
-- If PM2 section exists, replace it
-- If not exists, append to end
-- Keep content minimal and essential
+**Regras para a atualização do CLAUDE.md:**
+- Se a seção PM2 existir, substitua-a
+- Se não existir, acrescente ao final
+- Mantenha o conteúdo mínimo e essencial
 
 ---
 
-## Post-Init: Display Summary
+## Pós-Init: Exibir Resumo
 
-After all files generated, output:
+Após todos os arquivos serem gerados, produza:
 
 ```
 ## PM2 Init Complete

@@ -1,20 +1,20 @@
 ---
-description: Load the most recent session file from ~/.claude/session-data/ and resume work with full context from where the last session ended.
+description: Carrega o arquivo de sessão mais recente de ~/.claude/session-data/ e retoma o trabalho com contexto completo de onde a última sessão terminou.
 ---
 
-# Resume Session Command
+# Comando Resume Session
 
-Load the last saved session state and orient fully before doing any work.
-This command is the counterpart to `/save-session`.
+Carregue o último estado de sessão salvo e oriente-se totalmente antes de fazer qualquer trabalho.
+Este comando é a contraparte de `/save-session`.
 
-## When to Use
+## Quando Usar
 
-- Starting a new session to continue work from a previous day
-- After starting a fresh session due to context limits
-- When handing off a session file from another source (just provide the file path)
-- Any time you have a session file and want Claude to fully absorb it before proceeding
+- Ao iniciar uma nova sessão para continuar o trabalho de um dia anterior
+- Após iniciar uma sessão nova devido a limites de contexto
+- Ao receber um arquivo de sessão de outra fonte (basta fornecer o caminho do arquivo)
+- Sempre que você tiver um arquivo de sessão e quiser que o Claude o absorva completamente antes de prosseguir
 
-## Usage
+## Uso
 
 ```
 /resume-session                                                      # loads most recent file in ~/.claude/session-data/
@@ -23,37 +23,37 @@ This command is the counterpart to `/save-session`.
 /resume-session ~/.claude/sessions/2024-01-15-session.tmp               # loads a specific legacy-format file
 ```
 
-## Process
+## Processo
 
-### Step 1: Find the session file
+### Etapa 1: Encontrar o arquivo de sessão
 
-If no argument provided:
+Se nenhum argumento for fornecido:
 
-1. Check `~/.claude/session-data/`
-2. Pick the most recently modified `*-session.tmp` file
-3. If the folder does not exist or has no matching files, tell the user:
+1. Verifique `~/.claude/session-data/`
+2. Escolha o arquivo `*-session.tmp` modificado mais recentemente
+3. Se a pasta não existir ou não houver arquivos correspondentes, informe o usuário:
    ```
    No session files found in ~/.claude/session-data/
    Run /save-session at the end of a session to create one.
    ```
-   Then stop.
+   Em seguida, pare.
 
-If an argument is provided:
+Se um argumento for fornecido:
 
-- If it looks like a date (`YYYY-MM-DD`), search `~/.claude/session-data/` first, then the legacy
-  `~/.claude/sessions/`, for files matching `YYYY-MM-DD-session.tmp` (legacy format) or
-  `YYYY-MM-DD-<shortid>-session.tmp` (current format)
-  and load the most recently modified variant for that date
-- If it looks like a file path, read that file directly
-- If not found, report clearly and stop
+- Se parecer uma data (`YYYY-MM-DD`), procure primeiro em `~/.claude/session-data/`, depois no legado
+  `~/.claude/sessions/`, por arquivos que correspondam a `YYYY-MM-DD-session.tmp` (formato legado) ou
+  `YYYY-MM-DD-<shortid>-session.tmp` (formato atual)
+  e carregue a variante modificada mais recentemente para essa data
+- Se parecer um caminho de arquivo, leia esse arquivo diretamente
+- Se não for encontrado, reporte com clareza e pare
 
-### Step 2: Read the entire session file
+### Etapa 2: Ler o arquivo de sessão inteiro
 
-Read the complete file. Do not summarize yet.
+Leia o arquivo completo. Ainda não resuma.
 
-### Step 3: Confirm understanding
+### Etapa 3: Confirmar o entendimento
 
-Respond with a structured briefing in this exact format:
+Responda com um briefing estruturado exatamente neste formato:
 
 ```
 SESSION LOADED: [actual resolved path to the file]
@@ -83,36 +83,36 @@ NEXT STEP:
 Ready to continue. What would you like to do?
 ```
 
-### Step 4: Wait for the user
+### Etapa 4: Aguardar o usuário
 
-Do NOT start working automatically. Do NOT touch any files. Wait for the user to say what to do next.
+NÃO comece a trabalhar automaticamente. NÃO toque em nenhum arquivo. Aguarde o usuário dizer o que fazer em seguida.
 
-If the next step is clearly defined in the session file and the user says "continue" or "yes" or similar — proceed with that exact next step.
+Se o próximo passo estiver claramente definido no arquivo de sessão e o usuário disser "continue", "sim" ou similar — prossiga exatamente com esse próximo passo.
 
-If no next step is defined — ask the user where to start, and optionally suggest an approach from the "What Has NOT Been Tried Yet" section.
-
----
-
-## Edge Cases
-
-**Multiple sessions for the same date** (`2024-01-15-session.tmp`, `2024-01-15-abc123de-session.tmp`):
-Load the most recently modified matching file for that date, regardless of whether it uses the legacy no-id format or the current short-id format.
-
-**Session file references files that no longer exist:**
-Note this during the briefing — "WARNING: `path/to/file.ts` referenced in session but not found on disk."
-
-**Session file is from more than 7 days ago:**
-Note the gap — "WARNING: This session is from N days ago (threshold: 7 days). Things may have changed." — then proceed normally.
-
-**User provides a file path directly (e.g., forwarded from a teammate):**
-Read it and follow the same briefing process — the format is the same regardless of source.
-
-**Session file is empty or malformed:**
-Report: "Session file found but appears empty or unreadable. You may need to create a new one with /save-session."
+Se nenhum próximo passo estiver definido — pergunte ao usuário por onde começar e, opcionalmente, sugira uma abordagem da seção "What Has NOT Been Tried Yet".
 
 ---
 
-## Example Output
+## Casos Especiais
+
+**Múltiplas sessões para a mesma data** (`2024-01-15-session.tmp`, `2024-01-15-abc123de-session.tmp`):
+Carregue o arquivo correspondente modificado mais recentemente para essa data, independentemente de usar o formato legado sem id ou o formato atual de id curto.
+
+**O arquivo de sessão referencia arquivos que não existem mais:**
+Anote isso durante o briefing — "WARNING: `path/to/file.ts` referenced in session but not found on disk."
+
+**O arquivo de sessão é de mais de 7 dias atrás:**
+Anote a defasagem — "WARNING: This session is from N days ago (threshold: 7 days). Things may have changed." — e então prossiga normalmente.
+
+**O usuário fornece um caminho de arquivo diretamente (ex.: encaminhado por um colega de equipe):**
+Leia-o e siga o mesmo processo de briefing — o formato é o mesmo independentemente da fonte.
+
+**O arquivo de sessão está vazio ou malformado:**
+Reporte: "Session file found but appears empty or unreadable. You may need to create a new one with /save-session."
+
+---
+
+## Exemplo de Saída
 
 ```
 SESSION LOADED: /Users/you/.claude/session-data/2024-01-15-abc123de-session.tmp

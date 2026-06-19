@@ -1,29 +1,29 @@
 ---
-description: Fix Kotlin/Gradle build errors, compiler warnings, and dependency issues incrementally. Invokes the kotlin-build-resolver agent for minimal, surgical fixes.
+description: Corrige erros de build do Kotlin/Gradle, avisos do compilador e problemas de dependência de forma incremental. Invoca o agent kotlin-build-resolver para correções mínimas e cirúrgicas.
 ---
 
-# Kotlin Build and Fix
+# Build e Correção do Kotlin
 
-This command invokes the **kotlin-build-resolver** agent to incrementally fix Kotlin build errors with minimal changes.
+Este comando invoca o agent **kotlin-build-resolver** para corrigir incrementalmente erros de build do Kotlin com mudanças mínimas.
 
-## What This Command Does
+## O Que Este Comando Faz
 
-1. **Run Diagnostics**: Execute `./gradlew build`, `detekt`, `ktlintCheck`
-2. **Parse Errors**: Group by file and sort by severity
-3. **Fix Incrementally**: One error at a time
-4. **Verify Each Fix**: Re-run build after each change
-5. **Report Summary**: Show what was fixed and what remains
+1. **Executar Diagnósticos**: Executa `./gradlew build`, `detekt`, `ktlintCheck`
+2. **Fazer Parsing dos Erros**: Agrupa por arquivo e ordena por severidade
+3. **Corrigir Incrementalmente**: Um erro por vez
+4. **Verificar Cada Correção**: Reexecuta o build após cada mudança
+5. **Relatar Resumo**: Mostra o que foi corrigido e o que resta
 
-## When to Use
+## Quando Usar
 
-Use `/kotlin-build` when:
-- `./gradlew build` fails with errors
-- Kotlin compiler reports errors
-- `./gradlew detekt` reports violations
-- Gradle dependency resolution fails
-- After pulling changes that break the build
+Use `/kotlin-build` quando:
+- `./gradlew build` falha com erros
+- O compilador do Kotlin reporta erros
+- `./gradlew detekt` reporta violações
+- A resolução de dependências do Gradle falha
+- Depois de fazer pull de mudanças que quebram o build
 
-## Diagnostic Commands Run
+## Comandos de Diagnóstico Executados
 
 ```bash
 # Primary build check
@@ -40,15 +40,15 @@ Use `/kotlin-build` when:
 ./gradlew build --refresh-dependencies
 ```
 
-## Example Session
+## Sessão de Exemplo
 
 ````text
 User: /kotlin-build
 
 Agent:
-# Kotlin Build Resolution
+# Resolução de Build do Kotlin
 
-## Initial Diagnostics
+## Diagnósticos Iniciais
 
 ```bash
 $ ./gradlew build
@@ -57,13 +57,13 @@ e: src/main/kotlin/com/example/routes/UserRoutes.kt:42:9 Type mismatch: inferred
 e: src/main/kotlin/com/example/routes/UserRoutes.kt:58:5 'when' expression must be exhaustive
 ```
 
-Errors found: 3
+Erros encontrados: 3
 
-## Fix 1: Unresolved Reference
+## Correção 1: Referência Não Resolvida
 
-File: src/main/kotlin/com/example/service/UserService.kt:25
-Error: Unresolved reference: UserRepository
-Cause: Missing import
+Arquivo: src/main/kotlin/com/example/service/UserService.kt:25
+Erro: Unresolved reference: UserRepository
+Causa: Import ausente
 
 ```kotlin
 // Added import
@@ -75,10 +75,10 @@ $ ./gradlew build
 # 2 errors remaining
 ```
 
-## Fix 2: Type Mismatch
+## Correção 2: Incompatibilidade de Tipo
 
-File: src/main/kotlin/com/example/routes/UserRoutes.kt:42
-Error: Type mismatch: inferred type is String but Int was expected
+Arquivo: src/main/kotlin/com/example/routes/UserRoutes.kt:42
+Erro: Type mismatch: inferred type is String but Int was expected
 
 ```kotlin
 // Changed
@@ -93,10 +93,10 @@ $ ./gradlew build
 # 1 error remaining
 ```
 
-## Fix 3: Non-Exhaustive When
+## Correção 3: When Não Exaustivo
 
-File: src/main/kotlin/com/example/routes/UserRoutes.kt:58
-Error: 'when' expression must be exhaustive
+Arquivo: src/main/kotlin/com/example/routes/UserRoutes.kt:58
+Erro: 'when' expression must be exhaustive
 
 ```kotlin
 // Added missing branch

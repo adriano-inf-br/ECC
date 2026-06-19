@@ -1,29 +1,29 @@
 ---
-description: Run Flutter/Dart tests, report failures, and incrementally fix test issues. Covers unit, widget, golden, and integration tests.
+description: Executa testes Flutter/Dart, reporta falhas e corrige problemas de teste incrementalmente. Cobre testes unitários, de widget, golden e de integração.
 ---
 
 # Flutter Test
 
-This command runs the Flutter test suite and reports results. When failures occur, it diagnoses and fixes issues incrementally.
+Este comando executa a suíte de testes Flutter e reporta os resultados. Quando ocorrem falhas, diagnostica e corrige os problemas incrementalmente.
 
-## What This Command Does
+## O Que Este Comando Faz
 
-1. **Run Tests**: Execute `flutter test` (or scope to changed files)
-2. **Parse Failures**: Identify failing tests by type and cause
-3. **Fix Incrementally**: One failure at a time where possible
-4. **Verify**: Re-run after each fix
-5. **Report**: Show coverage summary and remaining failures
+1. **Executar Testes**: Executa `flutter test` (ou restringe aos arquivos alterados)
+2. **Analisar Falhas**: Identifica os testes que falham por tipo e causa
+3. **Corrigir Incrementalmente**: Uma falha por vez quando possível
+4. **Verificar**: Reexecuta após cada correção
+5. **Reportar**: Mostra o resumo de cobertura e as falhas restantes
 
-## When to Use
+## Quando Usar
 
-Use `/flutter-test` when:
-- After implementing a feature to verify nothing broke
-- After running `/flutter-build` to ensure tests pass
-- To check test coverage on new code
-- When a specific test file is failing
-- Before submitting a PR
+Use `/flutter-test` quando:
+- Após implementar uma funcionalidade para verificar que nada quebrou
+- Após executar `/flutter-build` para garantir que os testes passam
+- Para verificar a cobertura de testes em código novo
+- Quando um arquivo de teste específico está falhando
+- Antes de submeter um PR
 
-## Commands Run
+## Comandos Executados
 
 ```bash
 # Run all tests
@@ -45,7 +45,7 @@ flutter test integration_test/ 2>&1
 flutter test --update-goldens 2>&1
 ```
 
-## Example Session
+## Exemplo de Sessão
 
 ````text
 User: /flutter-test
@@ -118,25 +118,25 @@ Coverage: 84.2% (target: 80%)
 Test Status: PASS ✓
 ````
 
-## Common Test Failures
+## Falhas de Teste Comuns
 
-| Failure | Typical Fix |
+| Falha | Correção Típica |
 |---------|-------------|
-| `Expected: <X> Actual: <Y>` | Update assertion or fix implementation |
-| `Widget not found` | Fix finder selector or update test after widget rename |
-| `Golden file not found` | Run `flutter test --update-goldens` to generate |
-| `Golden mismatch` | Inspect diff; run `--update-goldens` if change was intentional |
-| `MissingPluginException` | Mock platform channel in test setup |
-| `LateInitializationError` | Initialize `late` fields in `setUp()` |
-| `pumpAndSettle timed out` | Replace with explicit `pump(Duration)` calls |
+| `Expected: <X> Actual: <Y>` | Atualizar a assertion ou corrigir a implementação |
+| `Widget not found` | Corrigir o seletor do finder ou atualizar o teste após renomear o widget |
+| `Golden file not found` | Executar `flutter test --update-goldens` para gerar |
+| `Golden mismatch` | Inspecionar o diff; executar `--update-goldens` se a mudança foi intencional |
+| `MissingPluginException` | Fazer mock do platform channel no setup do teste |
+| `LateInitializationError` | Inicializar campos `late` em `setUp()` |
+| `pumpAndSettle timed out` | Substituir por chamadas explícitas de `pump(Duration)` |
 
-## Related Commands
+## Comandos Relacionados
 
-- `/flutter-build` — Fix build errors before running tests
-- `/flutter-review` — Review code after tests pass
-- `tdd-workflow` skill — Test-driven development workflow
+- `/flutter-build` — Corrige erros de build antes de executar os testes
+- `/flutter-review` — Revisa o código após os testes passarem
+- skill `tdd-workflow` — Fluxo de trabalho de desenvolvimento orientado a testes
 
-## Related
+## Relacionados
 
 - Agent: `agents/flutter-reviewer.md`
 - Agent: `agents/dart-build-resolver.md`

@@ -2,69 +2,69 @@
 description: Fix Gradle build errors for Android and KMP projects
 ---
 
-# Gradle Build Fix
+# Correção de Build Gradle
 
-Incrementally fix Gradle build and compilation errors for Android and Kotlin Multiplatform projects.
+Corrige incrementalmente erros de build e compilação do Gradle para projetos Android e Kotlin Multiplatform.
 
-## Step 1: Detect Build Configuration
+## Passo 1: Detectar a Configuração de Build
 
-Identify the project type and run the appropriate build:
+Identifique o tipo de projeto e execute o build apropriado:
 
-| Indicator | Build Command |
+| Indicador | Comando de Build |
 |-----------|---------------|
 | `build.gradle.kts` + `composeApp/` (KMP) | `./gradlew composeApp:compileKotlinMetadata 2>&1` |
 | `build.gradle.kts` + `app/` (Android) | `./gradlew app:compileDebugKotlin 2>&1` |
-| `settings.gradle.kts` with modules | `./gradlew assemble 2>&1` |
-| Detekt configured | `./gradlew detekt 2>&1` |
+| `settings.gradle.kts` com módulos | `./gradlew assemble 2>&1` |
+| Detekt configurado | `./gradlew detekt 2>&1` |
 
-Also check `gradle.properties` and `local.properties` for configuration.
+Verifique também `gradle.properties` e `local.properties` para configuração.
 
-## Step 2: Parse and Group Errors
+## Passo 2: Fazer o Parse e Agrupar os Erros
 
-1. Run the build command and capture output
-2. Separate Kotlin compilation errors from Gradle configuration errors
-3. Group by module and file path
-4. Sort: configuration errors first, then compilation errors by dependency order
+1. Execute o comando de build e capture a saída
+2. Separe os erros de compilação de Kotlin dos erros de configuração do Gradle
+3. Agrupe por módulo e caminho de arquivo
+4. Ordene: erros de configuração primeiro, depois erros de compilação por ordem de dependência
 
-## Step 3: Fix Loop
+## Passo 3: Loop de Correção
 
-For each error:
+Para cada erro:
 
-1. **Read the file** — Full context around the error line
-2. **Diagnose** — Common categories:
-   - Missing import or unresolved reference
-   - Type mismatch or incompatible types
-   - Missing dependency in `build.gradle.kts`
-   - Expect/actual mismatch (KMP)
-   - Compose compiler error
-3. **Fix minimally** — Smallest change that resolves the error
-4. **Re-run build** — Verify fix and check for new errors
-5. **Continue** — Move to next error
+1. **Ler o arquivo** — Contexto completo ao redor da linha do erro
+2. **Diagnosticar** — Categorias comuns:
+   - Import ausente ou referência não resolvida
+   - Incompatibilidade de tipos ou tipos incompatíveis
+   - Dependência ausente em `build.gradle.kts`
+   - Incompatibilidade expect/actual (KMP)
+   - Erro do compilador Compose
+3. **Corrigir minimamente** — A menor mudança que resolve o erro
+4. **Reexecutar o build** — Verificar a correção e checar novos erros
+5. **Continuar** — Passar para o próximo erro
 
-## Step 4: Guardrails
+## Passo 4: Guardrails
 
-Stop and ask the user if:
-- Fix introduces more errors than it resolves
-- Same error persists after 3 attempts
-- Error requires adding new dependencies or changing module structure
-- Gradle sync itself fails (configuration-phase error)
-- Error is in generated code (Room, SQLDelight, KSP)
+Pare e pergunte ao usuário se:
+- A correção introduzir mais erros do que resolve
+- O mesmo erro persistir após 3 tentativas
+- O erro exigir adicionar novas dependências ou mudar a estrutura de módulos
+- O próprio sync do Gradle falhar (erro de fase de configuração)
+- O erro estiver em código gerado (Room, SQLDelight, KSP)
 
-## Step 5: Summary
+## Passo 5: Resumo
 
-Report:
-- Errors fixed (module, file, description)
-- Errors remaining
-- New errors introduced (should be zero)
-- Suggested next steps
+Reporte:
+- Erros corrigidos (módulo, arquivo, descrição)
+- Erros restantes
+- Novos erros introduzidos (deveria ser zero)
+- Próximos passos sugeridos
 
-## Common Gradle/KMP Fixes
+## Correções Comuns de Gradle/KMP
 
-| Error | Fix |
+| Erro | Correção |
 |-------|-----|
-| Unresolved reference in `commonMain` | Check if the dependency is in `commonMain.dependencies {}` |
-| Expect declaration without actual | Add `actual` implementation in each platform source set |
-| Compose compiler version mismatch | Align Kotlin and Compose compiler versions in `libs.versions.toml` |
-| Duplicate class | Check for conflicting dependencies with `./gradlew dependencies` |
-| KSP error | Run `./gradlew kspCommonMainKotlinMetadata` to regenerate |
-| Configuration cache issue | Check for non-serializable task inputs |
+| Referência não resolvida em `commonMain` | Verifique se a dependência está em `commonMain.dependencies {}` |
+| Declaração expect sem actual | Adicione a implementação `actual` em cada source set de plataforma |
+| Incompatibilidade de versão do compilador Compose | Alinhe as versões dos compiladores Kotlin e Compose em `libs.versions.toml` |
+| Classe duplicada | Verifique dependências conflitantes com `./gradlew dependencies` |
+| Erro de KSP | Execute `./gradlew kspCommonMainKotlinMetadata` para regenerar |
+| Problema de cache de configuração | Verifique entradas de task não serializáveis |

@@ -33,74 +33,74 @@ Interaja com tickets do Jira diretamente do seu fluxo de trabalho — busque tic
 
 ```
 Ticket: PROJ-1234
-Summary: [title]
+Resumo: [título]
 Status: [status]
-Priority: [priority]
-Type: [Story/Bug/Task]
+Prioridade: [prioridade]
+Tipo: [Story/Bug/Task]
 
-Requirements:
-1. [extracted requirement]
-2. [extracted requirement]
+Requisitos:
+1. [requisito extraído]
+2. [requisito extraído]
 
-Acceptance Criteria:
-- [ ] [criterion from ticket]
+Critérios de Aceitação:
+- [ ] [critério do ticket]
 
-Test Scenarios:
-- Happy Path: [description]
-- Error Case: [description]
-- Edge Case: [description]
+Cenários de Teste:
+- Caminho Feliz: [descrição]
+- Caso de Erro: [descrição]
+- Caso Limite: [descrição]
 
-Dependencies:
-- [linked issues, APIs, services]
+Dependências:
+- [issues vinculadas, APIs, serviços]
 
-Recommended Next Steps:
-- /plan to create implementation plan
-- `tdd-workflow` skill to implement with tests first
+Próximos Passos Recomendados:
+- /plan para criar um plano de implementação
+- skill `tdd-workflow` para implementar com testes primeiro
 ```
 
 ### `/jira comment <TICKET-KEY>`
 
-1. Summarize current session progress (what was built, tested, committed)
-2. Format as a structured comment
-3. Post to the Jira ticket
+1. Resumir o progresso da sessão atual (o que foi construído, testado, commitado)
+2. Formatar como um comentário estruturado
+3. Publicar no ticket do Jira
 
 ### `/jira transition <TICKET-KEY>`
 
-1. Fetch available transitions for the ticket
-2. Show options to user
-3. Execute the selected transition
+1. Buscar as transições disponíveis para o ticket
+2. Mostrar as opções ao usuário
+3. Executar a transição selecionada
 
 ### `/jira search <JQL>`
 
-1. Execute the JQL query against Jira
-2. Return a summary table of matching issues
+1. Executar a consulta JQL no Jira
+2. Retornar uma tabela-resumo das issues correspondentes
 
-## Prerequisites
+## Pré-requisitos
 
-This command requires Jira credentials. Choose one:
+Este comando requer credenciais do Jira. Escolha uma:
 
-**Option A — MCP Server (recommended):**
-Add `jira` to your `mcpServers` config (see `mcp-configs/mcp-servers.json` for the template).
+**Opção A — Servidor MCP (recomendado):**
+Adicione `jira` à sua configuração `mcpServers` (veja `mcp-configs/mcp-servers.json` para o template).
 
-**Option B — Environment variables:**
+**Opção B — Variáveis de ambiente:**
 ```bash
 export JIRA_URL="https://yourorg.atlassian.net"
 export JIRA_EMAIL="your.email@example.com"
 export JIRA_API_TOKEN="your-api-token"
 ```
 
-If credentials are missing, stop and direct the user to set them up.
+Se as credenciais estiverem ausentes, pare e oriente o usuário a configurá-las.
 
-## Integration with Other Commands
+## Integração com Outros Comandos
 
-After analyzing a ticket:
-- Use `/plan` to create an implementation plan from the requirements
-- Use the `tdd-workflow` skill to implement with test-driven development
-- Use `/code-review` after implementation
-- Use `/jira comment` to post progress back to the ticket
-- Use `/jira transition` to move the ticket when work is complete
+Após analisar um ticket:
+- Use `/plan` para criar um plano de implementação a partir dos requisitos
+- Use a skill `tdd-workflow` para implementar com desenvolvimento orientado a testes
+- Use `/code-review` após a implementação
+- Use `/jira comment` para publicar o progresso de volta no ticket
+- Use `/jira transition` para mover o ticket quando o trabalho estiver concluído
 
-## Related
+## Relacionados
 
 - **Skill:** `skills/jira-integration/`
-- **MCP config:** `mcp-configs/mcp-servers.json` → `jira`
+- **Config de MCP:** `mcp-configs/mcp-servers.json` → `jira`

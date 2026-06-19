@@ -3,145 +3,145 @@ description: Code review — local uncommitted changes or GitHub PR (pass PR num
 argument-hint: [pr-number | pr-url | blank for local review]
 ---
 
-# Code Review
+# Revisão de código
 
-> PR review mode adapted from PRPs-agentic-eng by Wirasm. Part of the PRP workflow series.
+> Modo de revisão de PR adaptado de PRPs-agentic-eng por Wirasm. Parte da série de fluxos de trabalho PRP.
 
-**Input**: $ARGUMENTS
-
----
-
-## Mode Selection
-
-If `$ARGUMENTS` contains a PR number, PR URL, or `--pr`:
-→ Jump to **PR Review Mode** below.
-
-Otherwise:
-→ Use **Local Review Mode**.
+**Entrada**: $ARGUMENTS
 
 ---
 
-## Local Review Mode
+## Seleção de Modo
 
-Comprehensive security and quality review of uncommitted changes.
+Se `$ARGUMENTS` contiver um número de PR, URL de PR ou `--pr`:
+→ Vá para o **Modo de Revisão de PR** abaixo.
 
-### Phase 1 — GATHER
+Caso contrário:
+→ Use o **Modo de Revisão Local**.
+
+---
+
+## Modo de Revisão Local
+
+Revisão abrangente de segurança e qualidade das mudanças não commitadas.
+
+### Fase 1 — GATHER
 
 ```bash
 git diff --name-only HEAD
 ```
 
-If no changed files, stop: "Nothing to review."
+Se não houver arquivos alterados, pare: "Nothing to review."
 
-### Phase 2 — REVIEW
+### Fase 2 — REVIEW
 
-Read each changed file in full. Check for:
+Leia cada arquivo alterado por completo. Verifique:
 
-**Security Issues (CRITICAL):**
-- Hardcoded credentials, API keys, tokens
-- SQL injection vulnerabilities
-- XSS vulnerabilities
-- Missing input validation
-- Insecure dependencies
-- Path traversal risks
+**Problemas de Segurança (CRITICAL):**
+- Credenciais, chaves de API, tokens hardcoded
+- Vulnerabilidades de injeção de SQL
+- Vulnerabilidades de XSS
+- Validação de entrada ausente
+- Dependências inseguras
+- Riscos de path traversal
 
-**Code Quality (HIGH):**
-- Functions > 50 lines
-- Files > 800 lines
-- Nesting depth > 4 levels
-- Missing error handling
-- console.log statements
-- TODO/FIXME comments
-- Missing JSDoc for public APIs
+**Qualidade de Código (HIGH):**
+- Funções > 50 linhas
+- Arquivos > 800 linhas
+- Profundidade de aninhamento > 4 níveis
+- Tratamento de erros ausente
+- Instruções console.log
+- Comentários TODO/FIXME
+- JSDoc ausente para APIs públicas
 
-**Best Practices (MEDIUM):**
-- Mutation patterns (use immutable instead)
-- Emoji usage in code/comments
-- Missing tests for new code
-- Accessibility issues (a11y)
+**Boas Práticas (MEDIUM):**
+- Padrões de mutação (use imutável no lugar)
+- Uso de emoji em código/comentários
+- Testes ausentes para código novo
+- Problemas de acessibilidade (a11y)
 
-### Phase 3 — REPORT
+### Fase 3 — REPORT
 
-Generate report with:
-- Severity: CRITICAL, HIGH, MEDIUM, LOW
-- File location and line numbers
-- Issue description
-- Suggested fix
+Gere um relatório com:
+- Severidade: CRITICAL, HIGH, MEDIUM, LOW
+- Localização do arquivo e números de linha
+- Descrição do problema
+- Correção sugerida
 
-Block commit if CRITICAL or HIGH issues found.
-Never approve code with security vulnerabilities.
+Bloqueie o commit se forem encontrados problemas CRITICAL ou HIGH.
+Nunca aprove código com vulnerabilidades de segurança.
 
 ---
 
-## PR Review Mode
+## Modo de Revisão de PR
 
-Comprehensive GitHub PR review — fetches diff, reads full files, runs validation, posts review.
+Revisão abrangente de PR no GitHub — busca o diff, lê os arquivos completos, executa a validação e publica a revisão.
 
-### Phase 1 — FETCH
+### Fase 1 — FETCH
 
-Parse input to determine PR:
+Analise a entrada para determinar o PR:
 
-| Input | Action |
+| Entrada | Ação |
 |---|---|
-| Number (e.g. `42`) | Use as PR number |
-| URL (`github.com/.../pull/42`) | Extract PR number |
-| Branch name | Find PR via `gh pr list --head <branch>` |
+| Número (ex.: `42`) | Use como número do PR |
+| URL (`github.com/.../pull/42`) | Extraia o número do PR |
+| Nome do branch | Encontre o PR via `gh pr list --head <branch>` |
 
 ```bash
 gh pr view <NUMBER> --json number,title,body,author,baseRefName,headRefName,changedFiles,additions,deletions
 gh pr diff <NUMBER>
 ```
 
-If PR not found, stop with error. Store PR metadata for later phases.
+Se o PR não for encontrado, pare com erro. Armazene os metadados do PR para as fases seguintes.
 
-### Phase 2 — CONTEXT
+### Fase 2 — CONTEXT
 
-Build review context:
+Construa o contexto da revisão:
 
-1. **Project rules** — Read `CLAUDE.md`, `.claude/docs/`, and any contributing guidelines
-2. **Planning artifacts** — Check `.claude/prds/`, `.claude/plans/`, `.claude/reviews/`, and legacy `.claude/PRPs/{prds,plans,reports,reviews}/` for context related to this PR
-3. **PR intent** — Parse PR description for goals, linked issues, test plans
-4. **Changed files** — List all modified files and categorize by type (source, test, config, docs)
+1. **Regras do projeto** — Leia `CLAUDE.md`, `.claude/docs/` e quaisquer diretrizes de contribuição
+2. **Artefatos de planejamento** — Verifique `.claude/prds/`, `.claude/plans/`, `.claude/reviews/` e os legados `.claude/PRPs/{prds,plans,reports,reviews}/` em busca de contexto relacionado a este PR
+3. **Intenção do PR** — Analise a descrição do PR em busca de objetivos, issues vinculadas, planos de teste
+4. **Arquivos alterados** — Liste todos os arquivos modificados e categorize por tipo (fonte, teste, config, docs)
 
-### Phase 3 — REVIEW
+### Fase 3 — REVIEW
 
-Read each changed file **in full** (not just the diff hunks — you need surrounding context).
+Leia cada arquivo alterado **por completo** (não apenas os hunks do diff — você precisa do contexto ao redor).
 
-For PR reviews, fetch the full file contents at the PR head revision:
+Para revisões de PR, busque o conteúdo completo dos arquivos na revisão head do PR:
 ```bash
 gh pr diff <NUMBER> --name-only | while IFS= read -r file; do
   gh api "repos/{owner}/{repo}/contents/$file?ref=<head-branch>" --jq '.content' | base64 -d
 done
 ```
 
-Apply the review checklist across 7 categories:
+Aplique o checklist de revisão em 7 categorias:
 
-| Category | What to Check |
+| Categoria | O Que Verificar |
 |---|---|
-| **Correctness** | Logic errors, off-by-ones, null handling, edge cases, race conditions |
-| **Type Safety** | Type mismatches, unsafe casts, `any` usage, missing generics |
-| **Pattern Compliance** | Matches project conventions (naming, file structure, error handling, imports) |
-| **Security** | Injection, auth gaps, secret exposure, SSRF, path traversal, XSS |
-| **Performance** | N+1 queries, missing indexes, unbounded loops, memory leaks, large payloads |
-| **Completeness** | Missing tests, missing error handling, incomplete migrations, missing docs |
-| **Maintainability** | Dead code, magic numbers, deep nesting, unclear naming, missing types |
+| **Correctness** | Erros de lógica, off-by-one, tratamento de null, casos extremos, condições de corrida |
+| **Type Safety** | Incompatibilidades de tipo, casts inseguros, uso de `any`, generics ausentes |
+| **Pattern Compliance** | Aderência às convenções do projeto (nomenclatura, estrutura de arquivos, tratamento de erros, imports) |
+| **Security** | Injeção, falhas de autenticação, exposição de segredos, SSRF, path traversal, XSS |
+| **Performance** | Queries N+1, índices ausentes, loops ilimitados, vazamentos de memória, payloads grandes |
+| **Completeness** | Testes ausentes, tratamento de erros ausente, migrações incompletas, docs ausentes |
+| **Maintainability** | Código morto, números mágicos, aninhamento profundo, nomenclatura obscura, tipos ausentes |
 
-Assign severity to each finding:
+Atribua severidade a cada achado:
 
-| Severity | Meaning | Action |
+| Severidade | Significado | Ação |
 |---|---|---|
-| **CRITICAL** | Security vulnerability or data loss risk | Must fix before merge |
-| **HIGH** | Bug or logic error likely to cause issues | Should fix before merge |
-| **MEDIUM** | Code quality issue or missing best practice | Fix recommended |
-| **LOW** | Style nit or minor suggestion | Optional |
+| **CRITICAL** | Vulnerabilidade de segurança ou risco de perda de dados | Deve ser corrigido antes do merge |
+| **HIGH** | Bug ou erro de lógica provável de causar problemas | Deveria ser corrigido antes do merge |
+| **MEDIUM** | Problema de qualidade de código ou boa prática ausente | Correção recomendada |
+| **LOW** | Detalhe de estilo ou sugestão menor | Opcional |
 
-### Phase 4 — VALIDATE
+### Fase 4 — VALIDATE
 
-Run available validation commands:
+Execute os comandos de validação disponíveis:
 
-Detect the project type from config files (`package.json`, `Cargo.toml`, `go.mod`, `pyproject.toml`, etc.), then run the appropriate commands:
+Detecte o tipo de projeto a partir dos arquivos de config (`package.json`, `Cargo.toml`, `go.mod`, `pyproject.toml`, etc.), depois execute os comandos apropriados:
 
-**Node.js / TypeScript** (has `package.json`):
+**Node.js / TypeScript** (tem `package.json`):
 ```bash
 npm run typecheck 2>/dev/null || npx tsc --noEmit 2>/dev/null  # Type check
 npm run lint                                                    # Lint
@@ -149,46 +149,46 @@ npm test                                                        # Tests
 npm run build                                                   # Build
 ```
 
-**Rust** (has `Cargo.toml`):
+**Rust** (tem `Cargo.toml`):
 ```bash
 cargo clippy -- -D warnings  # Lint
 cargo test                   # Tests
 cargo build                  # Build
 ```
 
-**Go** (has `go.mod`):
+**Go** (tem `go.mod`):
 ```bash
 go vet ./...    # Lint
 go test ./...   # Tests
 go build ./...  # Build
 ```
 
-**Python** (has `pyproject.toml` / `setup.py`):
+**Python** (tem `pyproject.toml` / `setup.py`):
 ```bash
 pytest  # Tests
 ```
 
-Run only the commands that apply to the detected project type. Record pass/fail for each.
+Execute apenas os comandos que se aplicam ao tipo de projeto detectado. Registre passou/falhou para cada um.
 
-### Phase 5 — DECIDE
+### Fase 5 — DECIDE
 
-Form recommendation based on findings:
+Forme a recomendação com base nos achados:
 
-| Condition | Decision |
+| Condição | Decisão |
 |---|---|
-| Zero CRITICAL/HIGH issues, validation passes | **APPROVE** |
-| Only MEDIUM/LOW issues, validation passes | **APPROVE** with comments |
-| Any HIGH issues or validation failures | **REQUEST CHANGES** |
-| Any CRITICAL issues | **BLOCK** — must fix before merge |
+| Zero problemas CRITICAL/HIGH, validação passa | **APPROVE** |
+| Apenas problemas MEDIUM/LOW, validação passa | **APPROVE** com comentários |
+| Qualquer problema HIGH ou falhas de validação | **REQUEST CHANGES** |
+| Qualquer problema CRITICAL | **BLOCK** — deve ser corrigido antes do merge |
 
-Special cases:
-- Draft PR → Always use **COMMENT** (not approve/block)
-- Only docs/config changes → Lighter review, focus on correctness
-- Explicit `--approve` or `--request-changes` flag → Override decision (but still report all findings)
+Casos especiais:
+- PR em rascunho (draft) → Sempre use **COMMENT** (não approve/block)
+- Apenas mudanças de docs/config → Revisão mais leve, foco na correção
+- Flag explícita `--approve` ou `--request-changes` → Sobrepõe a decisão (mas ainda reporte todos os achados)
 
-### Phase 6 — REPORT
+### Fase 6 — REPORT
 
-Create review artifact at `.claude/reviews/pr-<NUMBER>-review.md` unless the repo already uses legacy `.claude/PRPs/reviews/` for this workstream:
+Crie o artefato de revisão em `.claude/reviews/pr-<NUMBER>-review.md`, a menos que o repositório já use o legado `.claude/PRPs/reviews/` para este fluxo de trabalho:
 
 ```markdown
 # PR Review: #<NUMBER> — <TITLE>
@@ -228,9 +228,9 @@ Create review artifact at `.claude/reviews/pr-<NUMBER>-review.md` unless the rep
 <list of files with change type: Added/Modified/Deleted>
 ```
 
-### Phase 7 — PUBLISH
+### Fase 7 — PUBLISH
 
-Post the review to GitHub:
+Publique a revisão no GitHub:
 
 ```bash
 # If APPROVE
@@ -243,7 +243,7 @@ gh pr review <NUMBER> --request-changes --body "<summary with required fixes>"
 gh pr review <NUMBER> --comment --body "<summary>"
 ```
 
-For inline comments on specific lines, use the GitHub review comments API:
+Para comentários inline em linhas específicas, use a API de comentários de revisão do GitHub:
 ```bash
 gh api "repos/{owner}/{repo}/pulls/<NUMBER>/comments" \
   -f body="<comment>" \
@@ -253,7 +253,7 @@ gh api "repos/{owner}/{repo}/pulls/<NUMBER>/comments" \
   -f commit_id="$(gh pr view <NUMBER> --json headRefOid --jq .headRefOid)"
 ```
 
-Alternatively, post a single review with multiple inline comments at once:
+Como alternativa, publique uma única revisão com vários comentários inline de uma só vez:
 ```bash
 gh api "repos/{owner}/{repo}/pulls/<NUMBER>/reviews" \
   -f event="COMMENT" \
@@ -261,9 +261,9 @@ gh api "repos/{owner}/{repo}/pulls/<NUMBER>/reviews" \
   --input comments.json  # [{"path": "file", "line": N, "body": "comment"}, ...]
 ```
 
-### Phase 8 — OUTPUT
+### Fase 8 — OUTPUT
 
-Report to user:
+Reporte ao usuário:
 
 ```
 PR #<NUMBER>: <TITLE>
@@ -282,8 +282,8 @@ Next steps:
 
 ---
 
-## Edge Cases
+## Casos Especiais
 
-- **No `gh` CLI**: Fall back to local-only review (read the diff, skip GitHub publish). Warn user.
-- **Diverged branches**: Suggest `git fetch origin && git rebase origin/<base>` before review.
-- **Large PRs (>50 files)**: Warn about review scope. Focus on source changes first, then tests, then config/docs.
+- **Sem o CLI `gh`**: Recorra à revisão apenas local (leia o diff, pule a publicação no GitHub). Avise o usuário.
+- **Branches divergentes**: Sugira `git fetch origin && git rebase origin/<base>` antes da revisão.
+- **PRs grandes (>50 arquivos)**: Avise sobre o escopo da revisão. Foque primeiro nas mudanças de fonte, depois nos testes, depois em config/docs.

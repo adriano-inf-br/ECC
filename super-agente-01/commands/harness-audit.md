@@ -2,31 +2,31 @@
 description: Run a deterministic repository harness audit and return a prioritized scorecard.
 ---
 
-# Harness Audit Command
+# Comando de Auditoria de Harness
 
-Run a deterministic repository harness audit and return a prioritized scorecard.
+Executa uma auditoria determinística do harness do repositório e retorna um scorecard priorizado.
 
-## Usage
+## Uso
 
 `/harness-audit [scope] [--format text|json] [--root path]`
 
-- `scope` (optional): `repo` (default), `hooks`, `skills`, `commands`, `agents`
-- `--format`: output style (`text` default, `json` for automation)
-- `--root`: audit a specific path instead of the current working directory
+- `scope` (opcional): `repo` (padrão), `hooks`, `skills`, `commands`, `agents`
+- `--format`: estilo de saída (`text` padrão, `json` para automação)
+- `--root`: audita um caminho específico em vez do diretório de trabalho atual
 
-## Deterministic Engine
+## Engine Determinístico
 
-Always run:
+Sempre execute:
 
 ```bash
 node scripts/harness-audit.js <scope> --format <text|json> [--root <path>]
 ```
 
-This script is the source of truth for scoring and checks. Do not invent additional dimensions or ad-hoc points.
+Este script é a fonte da verdade para pontuação e verificações. Não invente dimensões adicionais nem pontos ad-hoc.
 
-Rubric version: `2026-05-19`.
+Versão da rubrica: `2026-05-19`.
 
-The script computes up to 12 fixed categories (`0-10` normalized each). The first seven are always applicable; GitHub Integration is always applicable; deploy-target categories are applicable only when a matching marker is detected.
+O script calcula até 12 categorias fixas (`0-10` normalizado cada). As primeiras sete são sempre aplicáveis; GitHub Integration é sempre aplicável; categorias de deploy-target são aplicáveis apenas quando um marcador correspondente é detectado.
 
 1. Tool Coverage
 2. Context Efficiency
@@ -36,33 +36,33 @@ The script computes up to 12 fixed categories (`0-10` normalized each). The firs
 6. Security Guardrails
 7. Cost Efficiency
 8. GitHub Integration
-9. Vercel Integration *(when `vercel.json` or `.vercel/` is present)*
-10. Netlify Integration *(when `netlify.toml` or `.netlify/` is present)*
-11. Cloudflare Integration *(when `wrangler.toml` or `wrangler.jsonc` is present)*
-12. Fly Integration *(when `fly.toml` is present)*
+9. Vercel Integration *(quando `vercel.json` ou `.vercel/` está presente)*
+10. Netlify Integration *(quando `netlify.toml` ou `.netlify/` está presente)*
+11. Cloudflare Integration *(quando `wrangler.toml` ou `wrangler.jsonc` está presente)*
+12. Fly Integration *(quando `fly.toml` está presente)*
 
-Scores are derived from explicit file/rule checks and are reproducible for the same commit.
-The script audits the current working directory by default and auto-detects whether the target is the ECC repo itself or a consumer project using ECC.
+As pontuações derivam de verificações explícitas de arquivo/regra e são reproduzíveis para o mesmo commit.
+O script audita o diretório de trabalho atual por padrão e detecta automaticamente se o alvo é o próprio repositório ECC ou um projeto consumidor que usa o ECC.
 
-## Output Contract
+## Contrato de Saída
 
-Return:
+Retorne:
 
-1. `overall_score` out of `max_score`. `max_score` depends on which categories are applicable to the target; never assume a fixed total.
-2. `applicable_categories[]` and `category_count` describing which categories contributed.
-3. Category scores and concrete findings.
-4. Failed checks with exact file paths.
-5. Top 3 actions from the deterministic output (`top_actions`).
-6. Suggested ECC skills to apply next.
+1. `overall_score` de um total de `max_score`. `max_score` depende de quais categorias são aplicáveis ao alvo; nunca assuma um total fixo.
+2. `applicable_categories[]` e `category_count` descrevendo quais categorias contribuíram.
+3. Pontuações de categoria e descobertas concretas.
+4. Verificações falhas com caminhos de arquivo exatos.
+5. As 3 principais ações da saída determinística (`top_actions`).
+6. Skills do ECC sugeridas para aplicar em seguida.
 
 ## Checklist
 
-- Use script output directly; do not rescore manually.
-- If `--format json` is requested, return the script JSON unchanged.
-- If text is requested, summarize failing checks and top actions.
-- Include exact file paths from `checks[]` and `top_actions[]`.
+- Use a saída do script diretamente; não repontue manualmente.
+- Se `--format json` for solicitado, retorne o JSON do script inalterado.
+- Se text for solicitado, resuma as verificações falhas e as principais ações.
+- Inclua os caminhos de arquivo exatos de `checks[]` e `top_actions[]`.
 
-## Example Result
+## Exemplo de Resultado
 
 ```text
 Harness Audit (repo, repo): 71/80
@@ -77,8 +77,8 @@ Top 3 Actions:
 3) [Eval Coverage] Increase automated test coverage across scripts/hooks/lib. (tests/)
 ```
 
-## Arguments
+## Argumentos
 
 $ARGUMENTS:
-- `repo|hooks|skills|commands|agents` (optional scope)
-- `--format text|json` (optional output format)
+- `repo|hooks|skills|commands|agents` (escopo opcional)
+- `--format text|json` (formato de saída opcional)

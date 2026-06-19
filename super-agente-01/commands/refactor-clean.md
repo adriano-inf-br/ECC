@@ -1,68 +1,68 @@
 ---
-description: Safely identify and remove dead code with verification after each change.
+description: Identifique e remova código morto com segurança, com verificação após cada alteração.
 ---
 
 # Refactor Clean
 
-Safely identify and remove dead code with test verification at every step.
+Identifique e remova código morto com segurança, com verificação por testes em cada etapa.
 
-## Step 1: Detect Dead Code
+## Etapa 1: Detectar Código Morto
 
-Run analysis tools based on project type:
+Execute ferramentas de análise conforme o tipo de projeto:
 
-| Tool | What It Finds | Command |
+| Ferramenta | O Que Encontra | Comando |
 |------|--------------|---------|
-| knip | Unused exports, files, dependencies | `npx knip` |
-| depcheck | Unused npm dependencies | `npx depcheck` |
-| ts-prune | Unused TypeScript exports | `npx ts-prune` |
-| vulture | Unused Python code | `vulture src/` |
-| deadcode | Unused Go code | `deadcode ./...` |
-| cargo-udeps | Unused Rust dependencies | `cargo +nightly udeps` |
+| knip | Exports, arquivos e dependências não utilizados | `npx knip` |
+| depcheck | Dependências npm não utilizadas | `npx depcheck` |
+| ts-prune | Exports TypeScript não utilizados | `npx ts-prune` |
+| vulture | Código Python não utilizado | `vulture src/` |
+| deadcode | Código Go não utilizado | `deadcode ./...` |
+| cargo-udeps | Dependências Rust não utilizadas | `cargo +nightly udeps` |
 
-If no tool is available, use Grep to find exports with zero imports:
+Se nenhuma ferramenta estiver disponível, use Grep para encontrar exports com zero imports:
 ```
 # Find exports, then check if they're imported anywhere
 ```
 
-## Step 2: Categorize Findings
+## Etapa 2: Categorizar as Descobertas
 
-Sort findings into safety tiers:
+Classifique as descobertas em níveis de segurança:
 
-| Tier | Examples | Action |
+| Nível | Exemplos | Ação |
 |------|----------|--------|
-| **SAFE** | Unused utilities, test helpers, internal functions | Delete with confidence |
-| **CAUTION** | Components, API routes, middleware | Verify no dynamic imports or external consumers |
-| **DANGER** | Config files, entry points, type definitions | Investigate before touching |
+| **SAFE** | Utilitários, helpers de teste e funções internas não utilizados | Apague com confiança |
+| **CAUTION** | Componentes, rotas de API, middleware | Verifique se não há imports dinâmicos ou consumidores externos |
+| **DANGER** | Arquivos de configuração, pontos de entrada, definições de tipo | Investigue antes de tocar |
 
-## Step 3: Safe Deletion Loop
+## Etapa 3: Laço de Remoção Segura
 
-For each SAFE item:
+Para cada item SAFE:
 
-1. **Run full test suite** — Establish baseline (all green)
-2. **Delete the dead code** — Use Edit tool for surgical removal
-3. **Re-run test suite** — Verify nothing broke
-4. **If tests fail** — Immediately revert with `git checkout -- <file>` and skip this item
-5. **If tests pass** — Move to next item
+1. **Execute a suíte de testes completa** — Estabeleça uma linha de base (tudo verde)
+2. **Apague o código morto** — Use a tool Edit para remoção cirúrgica
+3. **Reexecute a suíte de testes** — Verifique se nada quebrou
+4. **Se os testes falharem** — Reverta imediatamente com `git checkout -- <file>` e pule este item
+5. **Se os testes passarem** — Vá para o próximo item
 
-## Step 4: Handle CAUTION Items
+## Etapa 4: Tratar Itens CAUTION
 
-Before deleting CAUTION items:
-- Search for dynamic imports: `import()`, `require()`, `__import__`
-- Search for string references: route names, component names in configs
-- Check if exported from a public package API
-- Verify no external consumers (check dependents if published)
+Antes de apagar itens CAUTION:
+- Procure por imports dinâmicos: `import()`, `require()`, `__import__`
+- Procure por referências em string: nomes de rota, nomes de componente em configurações
+- Verifique se está sendo exportado por uma API pública de pacote
+- Verifique se não há consumidores externos (cheque os dependentes, se publicado)
 
-## Step 5: Consolidate Duplicates
+## Etapa 5: Consolidar Duplicatas
 
-After removing dead code, look for:
-- Near-duplicate functions (>80% similar) — merge into one
-- Redundant type definitions — consolidate
-- Wrapper functions that add no value — inline them
-- Re-exports that serve no purpose — remove indirection
+Após remover o código morto, procure por:
+- Funções quase duplicadas (>80% semelhantes) — mescle em uma só
+- Definições de tipo redundantes — consolide
+- Funções wrapper que não agregam valor — torne-as inline
+- Reexports que não servem a nenhum propósito — remova a indireção
 
-## Step 6: Summary
+## Etapa 6: Resumo
 
-Report results:
+Reporte os resultados:
 
 ```
 Dead Code Cleanup
@@ -76,9 +76,9 @@ Saved:     ~450 lines removed
 All tests passing PASS:
 ```
 
-## Rules
+## Regras
 
-- **Never delete without running tests first**
-- **One deletion at a time** — Atomic changes make rollback easy
-- **Skip if uncertain** — Better to keep dead code than break production
-- **Don't refactor while cleaning** — Separate concerns (clean first, refactor later)
+- **Nunca apague sem rodar os testes primeiro**
+- **Uma remoção por vez** — Alterações atômicas facilitam o rollback
+- **Pule se estiver incerto** — Melhor manter código morto do que quebrar a produção
+- **Não refatore enquanto limpa** — Separe as preocupações (limpe primeiro, refatore depois)

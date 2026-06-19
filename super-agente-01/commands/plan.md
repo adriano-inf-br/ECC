@@ -1,70 +1,70 @@
 ---
-description: Restate requirements, assess risks, and create step-by-step implementation plan. WAIT for user CONFIRM before touching any code.
-argument-hint: "[feature description | path/to/*.prd.md]"
+description: Reformula requisitos, avalia riscos e cria um plano de implementação passo a passo. ESPERE a CONFIRMAÇÃO do usuário antes de tocar em qualquer código.
+argument-hint: "[descrição da funcionalidade | path/to/*.prd.md]"
 ---
 
-# Plan Command
+# Comando Plan
 
-This command creates a comprehensive implementation plan before writing any code. It accepts either free-form requirements or a PRD markdown file.
+Este comando cria um plano de implementação abrangente antes de escrever qualquer código. Ele aceita requisitos em texto livre ou um arquivo markdown de PRD.
 
-Run inline by default. Do not call the Task tool or any subagent by default. This keeps `/plan` usable from plugin installs that ship commands without agent files.
+Por padrão, roda inline. Não chame a tool Task nem nenhum subagent por padrão. Isso mantém o `/plan` utilizável a partir de instalações de plugin que entregam comandos sem arquivos de agent.
 
-## What This Command Does
+## O Que Este Comando Faz
 
-1. **Restate Requirements** - Clarify what needs to be built
-2. **Identify Risks** - Surface potential issues and blockers
-3. **Create Step Plan** - Break down implementation into phases
-4. **Wait for Confirmation** - MUST receive user approval before proceeding
+1. **Reformula Requisitos** - Esclarece o que precisa ser construído
+2. **Identifica Riscos** - Expõe possíveis problemas e bloqueadores
+3. **Cria Plano em Etapas** - Divide a implementação em fases
+4. **Espera Confirmação** - DEVE receber a aprovação do usuário antes de prosseguir
 
-## When to Use
+## Quando Usar
 
-Use `/plan` when:
-- Starting a new feature
-- Making significant architectural changes
-- Working on complex refactoring
-- Multiple files/components will be affected
-- Requirements are unclear or ambiguous
+Use `/plan` quando:
+- Iniciar uma nova funcionalidade
+- Fazer mudanças arquiteturais significativas
+- Trabalhar em refatorações complexas
+- Múltiplos arquivos/componentes forem afetados
+- Os requisitos forem pouco claros ou ambíguos
 
-## How It Works
+## Como Funciona
 
-The assistant will:
+O assistente vai:
 
-1. **Analyze the request** and restate requirements in clear terms
-2. **Ground the plan** in relevant codebase patterns when the repo is available
-3. **Break down into phases** with specific, actionable steps
-4. **Identify dependencies** between components
-5. **Assess risks** and potential blockers
-6. **Estimate complexity** (High/Medium/Low)
-7. **Present the plan** and WAIT for your explicit confirmation
+1. **Analisar a solicitação** e reformular os requisitos em termos claros
+2. **Fundamentar o plano** em padrões relevantes do codebase quando o repositório estiver disponível
+3. **Dividir em fases** com etapas específicas e acionáveis
+4. **Identificar dependências** entre componentes
+5. **Avaliar riscos** e potenciais bloqueadores
+6. **Estimar complexidade** (Alta/Média/Baixa)
+7. **Apresentar o plano** e ESPERAR sua confirmação explícita
 
-## Input Modes
+## Modos de Entrada
 
-| Input | Mode | Behavior |
+| Entrada | Modo | Comportamento |
 |---|---|---|
-| `path/to/name.prd.md` | PRD artifact mode | Read the PRD, pick the next pending delivery milestone or implementation phase, and write `.claude/plans/{name}.plan.md` |
-| Any other markdown path | Reference mode | Read the file as context and produce an inline plan |
-| Free-form text | Conversational mode | Produce an inline plan |
-| Empty input | Clarification mode | Ask what should be planned |
+| `path/to/name.prd.md` | Modo artefato PRD | Lê o PRD, escolhe o próximo marco de entrega pendente ou fase de implementação, e escreve `.claude/plans/{name}.plan.md` |
+| Qualquer outro caminho markdown | Modo referência | Lê o arquivo como contexto e produz um plano inline |
+| Texto livre | Modo conversacional | Produz um plano inline |
+| Entrada vazia | Modo de esclarecimento | Pergunta o que deve ser planejado |
 
-In PRD artifact mode, create `.claude/plans/` if needed. If the PRD contains a `Delivery Milestones` table, update only the selected row from `pending` to `in-progress` and set its `Plan` cell to the generated plan path. If the PRD uses the legacy `.claude/PRPs/prds/` format with `Implementation Phases`, read it without migrating paths.
+No modo artefato PRD, crie `.claude/plans/` se necessário. Se o PRD contiver uma tabela `Delivery Milestones`, atualize apenas a linha selecionada de `pending` para `in-progress` e defina sua célula `Plan` para o caminho do plano gerado. Se o PRD usar o formato legado `.claude/PRPs/prds/` com `Implementation Phases`, leia-o sem migrar os caminhos.
 
-## Pattern Grounding
+## Fundamentação em Padrões
 
-Before writing the plan, search the codebase for conventions the implementation should mirror. Capture the top example for each relevant category with file references:
+Antes de escrever o plano, busque no codebase as convenções que a implementação deve espelhar. Capture o melhor exemplo para cada categoria relevante com referências de arquivo:
 
-| Category | What to capture |
+| Categoria | O que capturar |
 |---|---|
-| Naming | File, function, type, command, or script naming in the affected area |
-| Error handling | How failures are raised, returned, logged, or handled gracefully |
-| Logging | Levels, format, and what gets logged |
-| Data access | Repository, service, query, or filesystem patterns |
-| Tests | Test file location, framework, fixtures, and assertion style |
+| Nomenclatura | Nomenclatura de arquivo, função, tipo, comando ou script na área afetada |
+| Tratamento de erros | Como falhas são levantadas, retornadas, logadas ou tratadas com elegância |
+| Logging | Níveis, formato e o que é logado |
+| Acesso a dados | Padrões de repositório, serviço, query ou sistema de arquivos |
+| Testes | Localização dos arquivos de teste, framework, fixtures e estilo de asserção |
 
-If no similar code exists, state that explicitly. Do not invent a pattern.
+Se não existir código similar, declare isso explicitamente. Não invente um padrão.
 
-## PRD Artifact Output
+## Saída de Artefato PRD
 
-When called with a `.prd.md` file, write the plan to `.claude/plans/{kebab-case-name}.plan.md` using this structure:
+Quando chamado com um arquivo `.prd.md`, escreva o plano em `.claude/plans/{kebab-case-name}.plan.md` usando esta estrutura:
 
 ````markdown
 # Plan: {Feature Name}
@@ -109,9 +109,9 @@ When called with a `.prd.md` file, write the plan to `.claude/plans/{kebab-case-
 - [ ] Patterns mirrored, not reinvented
 ````
 
-After writing the artifact, report its path and WAIT for confirmation before writing code.
+Depois de escrever o artefato, reporte seu caminho e ESPERE a confirmação antes de escrever código.
 
-## Example Usage
+## Exemplo de Uso
 
 ```
 User: /plan I need to add real-time notifications when markets resolve
@@ -169,32 +169,32 @@ Assistant:
 **WAITING FOR CONFIRMATION**: Proceed with this plan? (yes/no/modify)
 ```
 
-## Important Notes
+## Notas Importantes
 
-**CRITICAL**: This command will **NOT** write any code until you explicitly confirm the plan with "yes" or "proceed" or similar affirmative response.
+**CRÍTICO**: Este comando **NÃO** escreverá nenhum código até você confirmar explicitamente o plano com "yes", "proceed" ou resposta afirmativa similar.
 
-If you want changes, respond with:
+Se quiser mudanças, responda com:
 - "modify: [your changes]"
 - "different approach: [alternative]"
 - "skip phase 2 and do phase 3 first"
 
-## Integration with Other Commands
+## Integração com Outros Comandos
 
-After planning:
-- Use the `tdd-workflow` skill to implement with test-driven development
-- Use `/build-fix` if build errors occur
-- Use `/code-review` to review completed implementation
-- Use `/pr` or `/prp-pr` to open a pull request
+Após o planejamento:
+- Use a skill `tdd-workflow` para implementar com desenvolvimento orientado a testes
+- Use `/build-fix` se ocorrerem erros de build
+- Use `/code-review` para revisar a implementação concluída
+- Use `/pr` ou `/prp-pr` para abrir um pull request
 
-> **Need requirements first?** Use `/plan-prd` for a lean PRD at `.claude/prds/{name}.prd.md`.
+> **Precisa dos requisitos primeiro?** Use `/plan-prd` para um PRD enxuto em `.claude/prds/{name}.prd.md`.
 >
-> **Need the legacy PRP flow?** Use `/prp-plan` for deep PRP planning with `.claude/PRPs/` artifacts. Use `/prp-implement` to execute those plans with rigorous validation loops.
+> **Precisa do fluxo PRP legado?** Use `/prp-plan` para planejamento PRP profundo com artefatos em `.claude/PRPs/`. Use `/prp-implement` para executar esses planos com loops de validação rigorosos.
 
-## Optional Planner Agent
+## Agent Planner Opcional
 
-ECC also provides a `planner` agent for manual installs that include agent files. Use it only when the local runtime already exposes that subagent and the user explicitly asks you to delegate planning.
+O ECC também fornece um agent `planner` para instalações manuais que incluem arquivos de agent. Use-o apenas quando o runtime local já expuser esse subagent e o usuário pedir explicitamente que você delegue o planejamento.
 
-If the `planner` subagent is unavailable, continue planning inline instead of surfacing an "Agent type 'planner' not found" error.
+Se o subagent `planner` estiver indisponível, continue planejando inline em vez de exibir um erro "Agent type 'planner' not found".
 
-For manual installs, the source file lives at:
+Para instalações manuais, o arquivo-fonte fica em:
 `agents/planner.md`

@@ -1,59 +1,59 @@
 ---
-description: Save current session state to a dated file in ~/.claude/session-data/ so work can be resumed in a future session with full context.
+description: Salva o estado da sessão atual em um arquivo datado em ~/.claude/session-data/ para que o trabalho possa ser retomado em uma sessão futura com contexto completo.
 ---
 
 # Save Session Command
 
-Capture everything that happened in this session — what was built, what worked, what failed, what's left — and write it to a dated file so the next session can pick up exactly where this one left off.
+Capture tudo o que aconteceu nesta sessão — o que foi construído, o que funcionou, o que falhou, o que resta — e escreva em um arquivo datado para que a próxima sessão possa retomar exatamente de onde esta parou.
 
-## When to Use
+## Quando usar
 
-- End of a work session before closing Claude Code
-- Before hitting context limits (run this first, then start a fresh session)
-- After solving a complex problem you want to remember
-- Any time you need to hand off context to a future session
+- Fim de uma sessão de trabalho antes de fechar o Claude Code
+- Antes de atingir os limites de contexto (execute isto primeiro, depois inicie uma sessão nova)
+- Após resolver um problema complexo que você quer lembrar
+- Sempre que precisar passar contexto para uma sessão futura
 
-## Process
+## Processo
 
-### Step 1: Gather context
+### Passo 1: Reúna o contexto
 
-Before writing the file, collect:
+Antes de escrever o arquivo, colete:
 
-- Read all files modified during this session (use git diff or recall from conversation)
-- Review what was discussed, attempted, and decided
-- Note any errors encountered and how they were resolved (or not)
-- Check current test/build status if relevant
+- Leia todos os arquivos modificados durante esta sessão (use git diff ou recupere da conversa)
+- Revise o que foi discutido, tentado e decidido
+- Anote quaisquer erros encontrados e como foram resolvidos (ou não)
+- Verifique o status atual de testes/build se relevante
 
-### Step 2: Create the sessions folder if it doesn't exist
+### Passo 2: Crie a pasta de sessões se ela não existir
 
-Create the canonical sessions folder in the user's Claude home directory:
+Crie a pasta canônica de sessões no diretório home do Claude do usuário:
 
 ```bash
 mkdir -p ~/.claude/session-data
 ```
 
-### Step 3: Write the session file
+### Passo 3: Escreva o arquivo de sessão
 
-Create `~/.claude/session-data/YYYY-MM-DD-<short-id>-session.tmp`, using today's actual date and a short-id that satisfies the rules enforced by `SESSION_FILENAME_REGEX` in `session-manager.js`:
+Crie `~/.claude/session-data/YYYY-MM-DD-<short-id>-session.tmp`, usando a data real de hoje e um short-id que satisfaça as regras impostas por `SESSION_FILENAME_REGEX` em `session-manager.js`:
 
-- Compatibility characters: letters `a-z` / `A-Z`, digits `0-9`, hyphens `-`, underscores `_`
-- Compatibility minimum length: 1 character
-- Recommended style for new files: lowercase letters, digits, and hyphens with 8+ characters to avoid collisions
+- Caracteres compatíveis: letras `a-z` / `A-Z`, dígitos `0-9`, hífens `-`, underscores `_`
+- Comprimento mínimo de compatibilidade: 1 caractere
+- Estilo recomendado para novos arquivos: letras minúsculas, dígitos e hífens com 8+ caracteres para evitar colisões
 
-Valid examples: `abc123de`, `a1b2c3d4`, `frontend-worktree-1`, `ChezMoi_2`
-Avoid for new files: `A`, `test_id1`, `ABC123de`
+Exemplos válidos: `abc123de`, `a1b2c3d4`, `frontend-worktree-1`, `ChezMoi_2`
+Evite para novos arquivos: `A`, `test_id1`, `ABC123de`
 
-Full valid filename example: `2024-01-15-abc123de-session.tmp`
+Exemplo completo de nome de arquivo válido: `2024-01-15-abc123de-session.tmp`
 
-The legacy filename `YYYY-MM-DD-session.tmp` is still valid, but new session files should prefer the short-id form to avoid same-day collisions.
+O nome de arquivo legado `YYYY-MM-DD-session.tmp` ainda é válido, mas novos arquivos de sessão devem preferir o formato com short-id para evitar colisões no mesmo dia.
 
-### Step 4: Populate the file with all sections below
+### Passo 4: Preencha o arquivo com todas as seções abaixo
 
-Write every section honestly. Do not skip sections — write "Nothing yet" or "N/A" if a section genuinely has no content. An incomplete file is worse than an honest empty section.
+Escreva cada seção honestamente. Não pule seções — escreva "Nothing yet" ou "N/A" se uma seção genuinamente não tiver conteúdo. Um arquivo incompleto é pior do que uma seção honestamente vazia.
 
-### Step 5: Show the file to the user
+### Passo 5: Mostre o arquivo ao usuário
 
-After writing, display the full contents and ask:
+Após escrever, exiba o conteúdo completo e pergunte:
 
 ```
 Session saved to [actual resolved path to the session file]
@@ -61,11 +61,11 @@ Session saved to [actual resolved path to the session file]
 Does this look accurate? Anything to correct or add before we close?
 ```
 
-Wait for confirmation. Make edits if requested.
+Aguarde a confirmação. Faça edições se solicitado.
 
 ---
 
-## Session File Format
+## Formato do arquivo de sessão
 
 ```markdown
 # Session: YYYY-MM-DD
@@ -181,7 +181,7 @@ required, services that need to be running, etc. Skip if standard setup.]
 
 ---
 
-## Example Output
+## Exemplo de saída
 
 ```markdown
 # Session: 2024-01-15
@@ -265,11 +265,11 @@ Then test with Postman — the response should include a `Set-Cookie` header.
 
 ---
 
-## Notes
+## Notas
 
-- Each session gets its own file — never append to a previous session's file
-- The "What Did NOT Work" section is the most critical — future sessions will blindly retry failed approaches without it
-- If the user asks to save mid-session (not just at the end), save what's known so far and mark in-progress items clearly
-- The file is meant to be read by Claude at the start of the next session via `/resume-session`
-- Use the canonical global session store: `~/.claude/session-data/`
-- Prefer the short-id filename form (`YYYY-MM-DD-<short-id>-session.tmp`) for any new session file
+- Cada sessão recebe seu próprio arquivo — nunca anexe ao arquivo de uma sessão anterior
+- A seção "What Did NOT Work" é a mais crítica — sessões futuras vão cegamente repetir abordagens que falharam sem ela
+- Se o usuário pedir para salvar no meio da sessão (não apenas no final), salve o que se sabe até o momento e marque claramente os itens em andamento
+- O arquivo se destina a ser lido pelo Claude no início da próxima sessão via `/resume-session`
+- Use o armazenamento global canônico de sessões: `~/.claude/session-data/`
+- Prefira o formato de nome de arquivo com short-id (`YYYY-MM-DD-<short-id>-session.tmp`) para qualquer novo arquivo de sessão

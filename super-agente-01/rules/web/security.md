@@ -1,14 +1,14 @@
-> This file extends [common/security.md](../common/security.md) with web-specific security content.
+> Este arquivo estende [common/security.md](../common/security.md) com conteúdo de segurança específico de web.
 
-# Web Security Rules
+# Regras de Segurança Web
 
 ## Content Security Policy
 
-Always configure a production CSP.
+Sempre configure uma CSP de produção.
 
-### Nonce-Based CSP
+### CSP Baseada em Nonce
 
-Use a per-request nonce for scripts instead of `'unsafe-inline'`.
+Use um nonce por requisição para scripts em vez de `'unsafe-inline'`.
 
 ```text
 Content-Security-Policy:
@@ -23,23 +23,23 @@ Content-Security-Policy:
   base-uri 'self';
 ```
 
-Adjust origins to the project. Do not cargo-cult this block unchanged.
+Ajuste as origens ao projeto. Não copie este bloco sem alterá-lo (cargo-cult).
 
-## XSS Prevention
+## Prevenção de XSS
 
-- Never inject unsanitized HTML
-- Avoid `innerHTML` / `dangerouslySetInnerHTML` unless sanitized first
-- Escape dynamic template values
-- Sanitize user HTML with a vetted local sanitizer when absolutely necessary
+- Nunca injete HTML não sanitizado
+- Evite `innerHTML` / `dangerouslySetInnerHTML` a menos que sanitizado primeiro
+- Faça escape de valores dinâmicos de template
+- Sanitize HTML do usuário com um sanitizador local confiável quando absolutamente necessário
 
-## Third-Party Scripts
+## Scripts de Terceiros
 
-- Load asynchronously
-- Use SRI when serving from a CDN
-- Audit quarterly
-- Prefer self-hosting for critical dependencies when practical
+- Carregue de forma assíncrona
+- Use SRI ao servir a partir de uma CDN
+- Audite trimestralmente
+- Prefira auto-hospedagem para dependências críticas quando viável
 
-## HTTPS and Headers
+## HTTPS e Headers
 
 ```text
 Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
@@ -49,9 +49,9 @@ Referrer-Policy: strict-origin-when-cross-origin
 Permissions-Policy: camera=(), microphone=(), geolocation=()
 ```
 
-## Forms
+## Formulários
 
-- CSRF protection on state-changing forms
-- Rate limiting on submission endpoints
-- Validate client and server side
-- Prefer honeypots or light anti-abuse controls over heavy-handed CAPTCHA defaults
+- Proteção CSRF em formulários que alteram estado
+- Rate limiting nos endpoints de submissão
+- Valide no lado do cliente e do servidor
+- Prefira honeypots ou controles leves anti-abuso em vez de defaults pesados de CAPTCHA

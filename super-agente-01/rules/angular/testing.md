@@ -3,22 +3,22 @@ paths:
   - "**/*.spec.ts"
   - "**/*.test.ts"
 ---
-# Angular Testing
+# Testes no Angular
 
 > This file extends [common/testing.md](../common/testing.md) with Angular specific content.
 
 ## Test Runner
 
-Use the test runner configured by the project. Check `angular.json` and `package.json`; Angular projects commonly use Vitest, Jest, or Jasmine + Karma.
+Use o test runner configurado pelo projeto. Verifique `angular.json` e `package.json`; projetos Angular comumente usam Vitest, Jest ou Jasmine + Karma.
 
 ```bash
-ng test               # watch mode
-ng test --no-watch    # CI mode
+ng test               # modo watch
+ng test --no-watch    # modo CI
 ```
 
-## TestBed Setup
+## Configuração do TestBed
 
-For standalone components, import the component directly. Call `compileComponents()` for components with external templates.
+Para componentes standalone, importe o componente diretamente. Chame `compileComponents()` para componentes com templates externos.
 
 ```typescript
 describe('UserCardComponent', () => {
@@ -36,7 +36,7 @@ describe('UserCardComponent', () => {
 
 ## Signal Inputs
 
-Set signal-based inputs via `fixture.componentRef.setInput()`:
+Defina inputs baseados em signal via `fixture.componentRef.setInput()`:
 
 ```typescript
 fixture.componentRef.setInput('user', mockUser);
@@ -45,7 +45,7 @@ fixture.detectChanges();
 
 ## Component Harnesses
 
-Prefer Angular CDK component harnesses over direct DOM queries for UI interaction. Harnesses are more resilient to markup changes.
+Prefira component harnesses do Angular CDK em vez de queries diretas ao DOM para interação com a UI. Os harnesses são mais resilientes a mudanças de marcação.
 
 ```typescript
 import { HarnessLoader } from '@angular/cdk/testing';
@@ -65,9 +65,9 @@ it('triggers save on button click', async () => {
 });
 ```
 
-## Router Testing
+## Testes de Roteamento
 
-Use `RouterTestingHarness` for components that depend on the router:
+Use `RouterTestingHarness` para componentes que dependem do router:
 
 ```typescript
 import { RouterTestingHarness } from '@angular/router/testing';
@@ -79,9 +79,9 @@ it('renders user on navigation', async () => {
 });
 ```
 
-## Async Testing
+## Testes Assíncronos
 
-Use `fakeAsync` + `tick` for controlled async. Use `waitForAsync` for real async with `fixture.whenStable()`.
+Use `fakeAsync` + `tick` para assíncrono controlado. Use `waitForAsync` para assíncrono real com `fixture.whenStable()`.
 
 ```typescript
 it('loads user after delay', fakeAsync(() => {
@@ -96,7 +96,7 @@ it('loads user after delay', fakeAsync(() => {
 }));
 ```
 
-## HTTP Testing
+## Testes de HTTP
 
 ```typescript
 import { provideHttpClientTesting } from '@angular/common/http/testing';
@@ -112,9 +112,9 @@ beforeEach(() => {
 afterEach(() => httpMock.verify());
 ```
 
-## Service Testing
+## Testes de Serviço
 
-Inject services directly without a component fixture:
+Injete os serviços diretamente, sem um component fixture:
 
 ```typescript
 describe('UserService', () => {
@@ -129,16 +129,16 @@ describe('UserService', () => {
 });
 ```
 
-## What to Test
+## O Que Testar
 
-- **Services**: All public methods, error paths, HTTP interactions
-- **Components**: Input/output bindings, rendered output for key states, user interactions via harnesses
-- **Pipes**: Pure transformation — plain unit tests, no TestBed needed
-- **Guards/Resolvers**: Return values for allowed and denied states using `RouterTestingHarness`
+- **Serviços**: Todos os métodos públicos, caminhos de erro, interações HTTP
+- **Componentes**: Bindings de input/output, saída renderizada para estados-chave, interações do usuário via harnesses
+- **Pipes**: Transformação pura — testes unitários simples, sem necessidade de TestBed
+- **Guards/Resolvers**: Valores de retorno para estados permitidos e negados usando `RouterTestingHarness`
 
-## E2E Testing
+## Testes E2E
 
-Use the project's configured E2E framework, such as Cypress or Playwright, for critical user flows.
+Use o framework E2E configurado do projeto, como Cypress ou Playwright, para fluxos de usuário críticos.
 
 ```typescript
 describe('Login flow', () => {
@@ -152,13 +152,13 @@ describe('Login flow', () => {
 });
 ```
 
-- Add `data-cy` attributes to interactive elements for stable selectors
-- Do not rely on CSS classes or text content for selectors in E2E tests
+- Adicione atributos `data-cy` a elementos interativos para seletores estáveis
+- Não dependa de classes CSS ou conteúdo de texto para seletores em testes E2E
 
-## Coverage
+## Cobertura
 
-Target ≥80% for services and pipes. Components: test behaviour, not implementation details.
+Mire ≥80% para serviços e pipes. Componentes: teste comportamento, não detalhes de implementação.
 
-## Skill Reference
+## Referência de Skill
 
-See skill: `angular-developer` for comprehensive testing patterns, harness usage, and async best practices.
+Veja a skill: `angular-developer` para padrões de teste abrangentes, uso de harnesses e melhores práticas de assíncrono.

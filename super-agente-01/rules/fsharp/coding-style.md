@@ -3,22 +3,22 @@ paths:
   - "**/*.fs"
   - "**/*.fsx"
 ---
-# F# Coding Style
+# Estilo de Código F#
 
-> This file extends [common/coding-style.md](../common/coding-style.md) with F#-specific content.
+> Este arquivo estende [common/coding-style.md](../common/coding-style.md) com conteúdo específico de F#.
 
-## Standards
+## Padrões
 
-- Follow standard F# conventions and leverage the type system for correctness
-- Prefer immutability by default; use `mutable` only when justified by performance
-- Keep modules focused and cohesive
+- Siga as convenções padrão de F# e aproveite o sistema de tipos para garantir a corretude
+- Prefira imutabilidade por padrão; use `mutable` apenas quando justificado por desempenho
+- Mantenha os módulos focados e coesos
 
-## Types and Models
+## Tipos e Modelos
 
-- Prefer discriminated unions for domain modeling over class hierarchies
-- Use records for data with named fields
-- Use single-case unions for type-safe wrappers around primitives
-- Avoid classes unless interop or mutable state requires them
+- Prefira discriminated unions para modelagem de domínio em vez de hierarquias de classes
+- Use records para dados com campos nomeados
+- Use single-case unions para wrappers type-safe ao redor de primitivos
+- Evite classes a menos que interoperabilidade ou estado mutável as exijam
 
 ```fsharp
 type EmailAddress = EmailAddress of string
@@ -36,23 +36,23 @@ type Order =
       Items: OrderItem list }
 ```
 
-## Immutability
+## Imutabilidade
 
-- Records are immutable by default; use `with` expressions for updates
-- Prefer `list`, `map`, `set` over mutable collections
-- Avoid `ref` cells and mutable fields in domain logic
+- Records são imutáveis por padrão; use expressões `with` para atualizações
+- Prefira `list`, `map`, `set` em vez de coleções mutáveis
+- Evite células `ref` e campos mutáveis na lógica de domínio
 
 ```fsharp
 let rename (profile: UserProfile) newName =
     { profile with Name = newName }
 ```
 
-## Function Style
+## Estilo de Função
 
-- Prefer small, composable functions over large methods
-- Use the pipe operator `|>` to build readable data pipelines
-- Prefer pattern matching over if/else chains
-- Use `Option` instead of null; use `Result` for operations that can fail
+- Prefira funções pequenas e componíveis em vez de métodos grandes
+- Use o operador pipe `|>` para construir pipelines de dados legíveis
+- Prefira correspondência de padrões em vez de cadeias if/else
+- Use `Option` em vez de null; use `Result` para operações que podem falhar
 
 ```fsharp
 let processOrder order =
@@ -63,12 +63,12 @@ let processOrder order =
     |> Result.mapError OrderError
 ```
 
-## Async and Error Handling
+## Async e Tratamento de Erros
 
-- Use `task { }` for interop with .NET async APIs
-- Use `async { }` for F#-native async workflows
-- Propagate `CancellationToken` through public async APIs
-- Prefer `Result` and railway-oriented programming over exceptions for expected failures
+- Use `task { }` para interoperabilidade com APIs assíncronas do .NET
+- Use `async { }` para workflows assíncronos nativos do F#
+- Propague o `CancellationToken` através das APIs assíncronas públicas
+- Prefira `Result` e programação orientada a trilhos (railway-oriented) em vez de exceções para falhas esperadas
 
 ```fsharp
 let loadOrderAsync (orderId: Guid) (ct: CancellationToken) =
@@ -81,20 +81,20 @@ let loadOrderAsync (orderId: Guid) (ct: CancellationToken) =
     }
 ```
 
-## Formatting
+## Formatação
 
-- Use `fantomas` for automatic formatting
-- Prefer significant whitespace; avoid unnecessary parentheses
-- Remove unused `open` declarations
+- Use `fantomas` para formatação automática
+- Prefira espaço em branco significativo; evite parênteses desnecessários
+- Remova declarações `open` não utilizadas
 
-### Open Declaration Order
+### Ordem das Declarações Open
 
-Group `open` statements into four sections separated by a blank line, each section sorted lexically within itself:
+Agrupe as declarações `open` em quatro seções separadas por uma linha em branco, cada seção ordenada lexicamente dentro de si:
 
 1. `System.*`
 2. `Microsoft.*`
-3. Third-party namespaces
-4. First-party / project namespaces
+3. Namespaces de terceiros
+4. Namespaces próprios / do projeto
 
 ```fsharp
 open System

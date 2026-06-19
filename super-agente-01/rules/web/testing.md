@@ -1,40 +1,40 @@
-> This file extends [common/testing.md](../common/testing.md) with web-specific testing content.
+> Este arquivo estende [common/testing.md](../common/testing.md) com conteúdo de testes específico de web.
 
-# Web Testing Rules
+# Regras de Testes Web
 
-## Priority Order
+## Ordem de Prioridade
 
-### 1. Visual Regression
+### 1. Regressão Visual
 
-- Screenshot key breakpoints: 320, 768, 1024, 1440
-- Test hero sections, scrollytelling sections, and meaningful states
-- Use Playwright screenshots for visual-heavy work
-- If both themes exist, test both
+- Faça screenshots dos breakpoints principais: 320, 768, 1024, 1440
+- Teste seções hero, seções de scrollytelling e estados significativos
+- Use screenshots do Playwright para trabalho com forte componente visual
+- Se ambos os temas existem, teste os dois
 
-### 2. Accessibility
+### 2. Acessibilidade
 
-- Run automated accessibility checks
-- Test keyboard navigation
-- Verify reduced-motion behavior
-- Verify color contrast
+- Execute verificações automatizadas de acessibilidade
+- Teste a navegação por teclado
+- Verifique o comportamento de reduced-motion
+- Verifique o contraste de cores
 
 ### 3. Performance
 
-- Run Lighthouse or equivalent against meaningful pages
-- Keep CWV targets from [performance.md](performance.md)
+- Execute o Lighthouse ou equivalente contra páginas significativas
+- Mantenha as metas de CWV de [performance.md](performance.md)
 
 ### 4. Cross-Browser
 
-- Minimum: Chrome, Firefox, Safari
-- Test scrolling, motion, and fallback behavior
+- Mínimo: Chrome, Firefox, Safari
+- Teste scroll, movimento e comportamento de fallback
 
-### 5. Responsive
+### 5. Responsivo
 
-- Test 320, 375, 768, 1024, 1440, 1920
-- Verify no overflow
-- Verify touch interactions
+- Teste 320, 375, 768, 1024, 1440, 1920
+- Verifique que não há overflow
+- Verifique interações de toque
 
-## E2E Shape
+## Forma do E2E
 
 ```ts
 import { test, expect } from '@playwright/test';
@@ -45,11 +45,11 @@ test('landing hero loads', async ({ page }) => {
 });
 ```
 
-- Avoid flaky timeout-based assertions
-- Prefer deterministic waits
+- Evite asserções instáveis baseadas em timeout
+- Prefira esperas determinísticas
 
-## Unit Tests
+## Testes Unitários
 
-- Test utilities, data transforms, and custom hooks
-- For highly visual components, visual regression often carries more signal than brittle markup assertions
-- Visual regression supplements coverage targets; it does not replace them
+- Teste utilitários, transformações de dados e custom hooks
+- Para componentes muito visuais, a regressão visual costuma carregar mais sinal do que asserções frágeis de marcação
+- A regressão visual complementa as metas de cobertura; ela não as substitui

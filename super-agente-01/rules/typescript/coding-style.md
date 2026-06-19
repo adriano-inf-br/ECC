@@ -5,27 +5,27 @@ paths:
   - "**/*.js"
   - "**/*.jsx"
 ---
-# TypeScript/JavaScript Coding Style
+# Estilo de Código TypeScript/JavaScript
 
-> This file extends [common/coding-style.md](../common/coding-style.md) with TypeScript/JavaScript specific content.
+> Este arquivo estende [common/coding-style.md](../common/coding-style.md) com conteúdo específico de TypeScript/JavaScript.
 
-## Types and Interfaces
+## Tipos e Interfaces
 
-Use types to make public APIs, shared models, and component props explicit, readable, and reusable.
+Use tipos para tornar APIs públicas, modelos compartilhados e props de componentes explícitos, legíveis e reutilizáveis.
 
-### Public APIs
+### APIs Públicas
 
-- Add parameter and return types to exported functions, shared utilities, and public class methods
-- Let TypeScript infer obvious local variable types
-- Extract repeated inline object shapes into named types or interfaces
+- Adicione tipos de parâmetro e de retorno a funções exportadas, utilitários compartilhados e métodos públicos de classe
+- Deixe o TypeScript inferir tipos óbvios de variáveis locais
+- Extraia formatos de objeto inline repetidos para tipos ou interfaces nomeados
 
 ```typescript
-// WRONG: Exported function without explicit types
+// ERRADO: Função exportada sem tipos explícitos
 export function formatUser(user) {
   return `${user.firstName} ${user.lastName}`
 }
 
-// CORRECT: Explicit types on public APIs
+// CORRETO: Tipos explícitos em APIs públicas
 interface User {
   firstName: string
   lastName: string
@@ -36,11 +36,11 @@ export function formatUser(user: User): string {
 }
 ```
 
-### Interfaces vs. Type Aliases
+### Interfaces vs. Aliases de Tipo
 
-- Use `interface` for object shapes that may be extended or implemented
-- Use `type` for unions, intersections, tuples, mapped types, and utility types
-- Prefer string literal unions over `enum` unless an `enum` is required for interoperability
+- Use `interface` para formatos de objeto que podem ser estendidos ou implementados
+- Use `type` para uniões, interseções, tuplas, mapped types e utility types
+- Prefira uniões de literais de string em vez de `enum`, a menos que um `enum` seja exigido para interoperabilidade
 
 ```typescript
 interface User {
@@ -54,19 +54,19 @@ type UserWithRole = User & {
 }
 ```
 
-### Avoid `any`
+### Evite `any`
 
-- Avoid `any` in application code
-- Use `unknown` for external or untrusted input, then narrow it safely
-- Use generics when a value's type depends on the caller
+- Evite `any` no código da aplicação
+- Use `unknown` para entrada externa ou não confiável, depois faça a narrowing dela com segurança
+- Use generics quando o tipo de um valor depende de quem chama
 
 ```typescript
-// WRONG: any removes type safety
+// ERRADO: any remove a segurança de tipos
 function getErrorMessage(error: any) {
   return error.message
 }
 
-// CORRECT: unknown forces safe narrowing
+// CORRETO: unknown força a narrowing segura
 function getErrorMessage(error: unknown): string {
   if (error instanceof Error) {
     return error.message
@@ -76,11 +76,11 @@ function getErrorMessage(error: unknown): string {
 }
 ```
 
-### React Props
+### Props do React
 
-- Define component props with a named `interface` or `type`
-- Type callback props explicitly
-- Do not use `React.FC` unless there is a specific reason to do so
+- Defina props de componentes com uma `interface` ou `type` nomeado
+- Tipe props de callback explicitamente
+- Não use `React.FC` a menos que haja um motivo específico para isso
 
 ```typescript
 interface User {
@@ -98,10 +98,10 @@ function UserCard({ user, onSelect }: UserCardProps) {
 }
 ```
 
-### JavaScript Files
+### Arquivos JavaScript
 
-- In `.js` and `.jsx` files, use JSDoc when types improve clarity and a TypeScript migration is not practical
-- Keep JSDoc aligned with runtime behavior
+- Em arquivos `.js` e `.jsx`, use JSDoc quando os tipos melhoram a clareza e uma migração para TypeScript não é prática
+- Mantenha o JSDoc alinhado com o comportamento em tempo de execução
 
 ```javascript
 /**
@@ -113,9 +113,9 @@ export function formatUser(user) {
 }
 ```
 
-## Immutability
+## Imutabilidade
 
-Use spread operator for immutable updates:
+Use o operador spread para atualizações imutáveis:
 
 ```typescript
 interface User {
@@ -123,13 +123,13 @@ interface User {
   name: string
 }
 
-// WRONG: Mutation
+// ERRADO: Mutação
 function updateUser(user: User, name: string): User {
-  user.name = name // MUTATION!
+  user.name = name // MUTAÇÃO!
   return user
 }
 
-// CORRECT: Immutability
+// CORRETO: Imutabilidade
 function updateUser(user: Readonly<User>, name: string): User {
   return {
     ...user,
@@ -138,9 +138,9 @@ function updateUser(user: Readonly<User>, name: string): User {
 }
 ```
 
-## Error Handling
+## Tratamento de Erros
 
-Use async/await with try-catch and narrow unknown errors safely:
+Use async/await com try-catch e faça a narrowing de erros unknown com segurança:
 
 ```typescript
 interface User {
@@ -160,7 +160,7 @@ function getErrorMessage(error: unknown): string {
 
 const logger = {
   error: (message: string, error: unknown) => {
-    // Replace with your production logger (for example, pino or winston).
+    // Substitua pelo seu logger de produção (por exemplo, pino ou winston).
   }
 }
 
@@ -175,9 +175,9 @@ async function loadUser(userId: string): Promise<User> {
 }
 ```
 
-## Input Validation
+## Validação de Entrada
 
-Use Zod for schema-based validation and infer types from the schema:
+Use Zod para validação baseada em schema e infira tipos a partir do schema:
 
 ```typescript
 import { z } from 'zod'
@@ -194,6 +194,6 @@ const validated: UserInput = userSchema.parse(input)
 
 ## Console.log
 
-- No `console.log` statements in production code
-- Use proper logging libraries instead
-- See hooks for automatic detection
+- Sem instruções `console.log` em código de produção
+- Use bibliotecas de logging adequadas em vez disso
+- Veja os hooks para detecção automática

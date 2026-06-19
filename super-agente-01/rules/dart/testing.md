@@ -4,30 +4,30 @@ paths:
   - "**/pubspec.yaml"
   - "**/analysis_options.yaml"
 ---
-# Dart/Flutter Testing
+# Testes Dart/Flutter
 
-> This file extends [common/testing.md](../common/testing.md) with Dart and Flutter-specific content.
+> Este arquivo estende [common/testing.md](../common/testing.md) com conteúdo específico de Dart e Flutter.
 
-## Test Framework
+## Framework de Testes
 
-- **flutter_test** / **dart:test** — built-in test runner
-- **mockito** (with `@GenerateMocks`) or **mocktail** (no codegen) for mocking
-- **bloc_test** for BLoC/Cubit unit tests
-- **fake_async** for controlling time in unit tests
-- **integration_test** for end-to-end device tests
+- **flutter_test** / **dart:test** — test runner embutido
+- **mockito** (com `@GenerateMocks`) ou **mocktail** (sem geração de código) para mocking
+- **bloc_test** para testes unitários de BLoC/Cubit
+- **fake_async** para controlar o tempo em testes unitários
+- **integration_test** para testes end-to-end em dispositivo
 
-## Test Types
+## Tipos de Teste
 
-| Type | Tool | Location | When to Write |
+| Tipo | Ferramenta | Localização | Quando Escrever |
 |------|------|----------|---------------|
-| Unit | `dart:test` | `test/unit/` | All domain logic, state managers, repositories |
-| Widget | `flutter_test` | `test/widget/` | All widgets with meaningful behavior |
-| Golden | `flutter_test` | `test/golden/` | Design-critical UI components |
-| Integration | `integration_test` | `integration_test/` | Critical user flows on real device/emulator |
+| Unitário | `dart:test` | `test/unit/` | Toda lógica de domínio, gerenciadores de estado, repositórios |
+| Widget | `flutter_test` | `test/widget/` | Todos os widgets com comportamento significativo |
+| Golden | `flutter_test` | `test/golden/` | Componentes de UI críticos ao design |
+| Integração | `integration_test` | `integration_test/` | Fluxos de usuário críticos em dispositivo/emulador real |
 
-## Unit Tests: State Managers
+## Testes Unitários: Gerenciadores de Estado
 
-### BLoC with `bloc_test`
+### BLoC com `bloc_test`
 
 ```dart
 group('CartBloc', () {
@@ -58,7 +58,7 @@ group('CartBloc', () {
 });
 ```
 
-### Riverpod with `ProviderContainer`
+### Riverpod com `ProviderContainer`
 
 ```dart
 test('usersProvider loads users from repository', () async {
@@ -72,7 +72,7 @@ test('usersProvider loads users from repository', () async {
 });
 ```
 
-## Widget Tests
+## Testes de Widget
 
 ```dart
 testWidgets('CartPage shows item count badge', (tester) async {
@@ -103,9 +103,9 @@ testWidgets('shows empty state when cart is empty', (tester) async {
 });
 ```
 
-## Fakes Over Mocks
+## Fakes em vez de Mocks
 
-Prefer hand-written fakes for complex dependencies:
+Prefira fakes escritos à mão para dependências complexas:
 
 ```dart
 class FakeUserRepository implements UserRepository {
@@ -141,10 +141,10 @@ class FakeUserRepository implements UserRepository {
 }
 ```
 
-## Async Testing
+## Testes Assíncronos
 
 ```dart
-// Use fake_async for controlling timers and Futures
+// Use fake_async para controlar timers e Futures
 test('debounce triggers after 300ms', () {
   fakeAsync((async) {
     final debouncer = Debouncer(delay: const Duration(milliseconds: 300));
@@ -159,7 +159,7 @@ test('debounce triggers after 300ms', () {
 });
 ```
 
-## Golden Tests
+## Testes Golden
 
 ```dart
 testWidgets('UserCard golden test', (tester) async {
@@ -174,11 +174,11 @@ testWidgets('UserCard golden test', (tester) async {
 });
 ```
 
-Run `flutter test --update-goldens` when intentional visual changes are made.
+Execute `flutter test --update-goldens` quando mudanças visuais intencionais forem feitas.
 
-## Test Naming
+## Nomenclatura de Testes
 
-Use descriptive, behavior-focused names:
+Use nomes descritivos, focados em comportamento:
 
 ```dart
 test('returns null when user does not exist', () { ... });
@@ -186,7 +186,7 @@ test('throws NotFoundException when id is empty string', () { ... });
 testWidgets('disables submit button while form is invalid', (tester) async { ... });
 ```
 
-## Test Organization
+## Organização dos Testes
 
 ```
 test/
@@ -207,9 +207,9 @@ integration_test/
     └── checkout_flow_test.dart
 ```
 
-## Coverage
+## Cobertura
 
-- Target 80%+ line coverage for business logic (domain + state managers)
-- All state transitions must have tests: loading → success, loading → error, retry
-- Run `flutter test --coverage` and inspect `lcov.info` with a coverage reporter
-- Coverage failures should block CI when below threshold
+- Mire em 80%+ de cobertura de linhas para a lógica de negócio (domínio + gerenciadores de estado)
+- Todas as transições de estado devem ter testes: loading → success, loading → error, retry
+- Execute `flutter test --coverage` e inspecione `lcov.info` com um relatório de cobertura
+- Falhas de cobertura devem bloquear a CI quando abaixo do limiar

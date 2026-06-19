@@ -8,40 +8,40 @@ paths:
   - "**/middleware/**"
 ---
 
-# Nuxt Coding Style
+# Estilo de Código Nuxt
 
-> This file extends [common/coding-style.md](../common/coding-style.md) with Nuxt specific content.
+> Este arquivo estende [common/coding-style.md](../common/coding-style.md) com conteúdo específico de Nuxt.
 
-## Directory layout
+## Layout de diretórios
 
-- Default `srcDir` is `app/`. Framework files live at `app/pages/`, `app/layouts/`, `app/middleware/`, `app/plugins/`, `app/app.config.ts`. `nuxt.config.ts` and `server/` stay at project root.
-- Some projects override `srcDir` to `src/` for a Feature-Sliced Design layout, remapping `dir.pages` (for example to `src/app/routes`), `dir.layouts`, and the `@`/`~` aliases. Always check `nuxt.config.ts` before assuming a path.
+- O `srcDir` padrão é `app/`. Os arquivos do framework ficam em `app/pages/`, `app/layouts/`, `app/middleware/`, `app/plugins/`, `app/app.config.ts`. `nuxt.config.ts` e `server/` permanecem na raiz do projeto.
+- Alguns projetos sobrescrevem o `srcDir` para `src/` para um layout de Feature-Sliced Design, remapeando `dir.pages` (por exemplo para `src/app/routes`), `dir.layouts` e os aliases `@`/`~`. Sempre verifique o `nuxt.config.ts` antes de presumir um caminho.
 
-## Auto-imports discipline
+## Disciplina de auto-imports
 
-- Composables in `app/composables/` and `server/utils/` auto-import. Do NOT manually import Nuxt composables (`useFetch`, `useState`, `navigateTo`) or `defineStore` / `storeToRefs`.
-- Do NOT add a standalone `vue-router` dep (Nuxt bundles v5) or hand-mount `createApp` / `createPinia` / `createRouter`. The framework wires these.
+- Composables em `app/composables/` e `server/utils/` são auto-importados. NÃO importe manualmente composables do Nuxt (`useFetch`, `useState`, `navigateTo`) nem `defineStore` / `storeToRefs`.
+- NÃO adicione uma dependência avulsa de `vue-router` (o Nuxt já inclui a v5) nem monte manualmente `createApp` / `createPinia` / `createRouter`. O framework conecta tudo isso.
 
-## Compiler macros
+## Macros do compilador
 
-- `definePageMeta` is a compile-time macro. Static values only, no reactive data and no side-effect calls inside it.
-- Augment typed `PageMeta` via `declare module '#app'` rather than casting.
+- `definePageMeta` é uma macro de tempo de compilação. Apenas valores estáticos, sem dados reativos e sem chamadas com efeitos colaterais dentro dela.
+- Estenda o `PageMeta` tipado via `declare module '#app'` em vez de fazer cast.
 
-## Config file separation
+## Separação de arquivos de configuração
 
-Three distinct files, do not conflate.
+Três arquivos distintos, não os confunda.
 
-- `nuxt.config.ts` = build-time only (`routeRules`, `modules`, `nitro`, `ssr` flag). Not reactive.
-- `runtimeConfig` (inside nuxt.config) = per-env runtime values, env-overridable via `NUXT_*`. Root keys are server-only, `public` keys are client-visible.
-- `app/app.config.ts` = public build-fixed reactive settings (theme tokens, feature flags). No env override. NEVER secrets.
+- `nuxt.config.ts` = somente tempo de build (`routeRules`, `modules`, `nitro`, flag `ssr`). Não reativo.
+- `runtimeConfig` (dentro de nuxt.config) = valores de runtime por ambiente, sobrescritíveis por env via `NUXT_*`. As chaves raiz são exclusivas do servidor; as chaves `public` são visíveis no cliente.
+- `app/app.config.ts` = configurações reativas públicas fixadas no build (tokens de tema, feature flags). Sem sobrescrita por env. NUNCA segredos.
 
-## Head and meta
+## Head e meta
 
-- `app.head` in `nuxt.config.ts` takes static values only.
-- Reactive meta goes through `useHead` / `useSeoMeta` in component setup, never via `app.head`.
+- `app.head` em `nuxt.config.ts` recebe apenas valores estáticos.
+- Meta reativa passa por `useHead` / `useSeoMeta` no setup do componente, nunca via `app.head`.
 
-## Reference
+## Referência
 
-- ECC skills: `nuxt4-patterns`, `vite-patterns`, `frontend-patterns`.
-- [Nuxt directory structure](https://nuxt.com/docs/guide/directory-structure/app)
-- [Nuxt configuration](https://nuxt.com/docs/api/nuxt-config)
+- Skills do ECC: `nuxt4-patterns`, `vite-patterns`, `frontend-patterns`.
+- [Estrutura de diretórios do Nuxt](https://nuxt.com/docs/guide/directory-structure/app)
+- [Configuração do Nuxt](https://nuxt.com/docs/api/nuxt-config)

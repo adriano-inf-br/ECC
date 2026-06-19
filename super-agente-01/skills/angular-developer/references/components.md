@@ -1,10 +1,10 @@
-# Components
+# Componentes
 
-Angular components are the fundamental building blocks of an application. Each component consists of a TypeScript class with behaviors, an HTML template, and a CSS selector.
+Componentes Angular são os blocos de construção fundamentais de uma aplicação. Cada componente consiste em uma classe TypeScript com comportamentos, um template HTML e um selector CSS.
 
-## Component Definition
+## Definição de Componente
 
-Use the `@Component` decorator to define a component's metadata.
+Use o decorator `@Component` para definir os metadados de um componente.
 
 ```ts
 @Component({
@@ -26,18 +26,18 @@ export class Profile {
 }
 ```
 
-## Metadata Options
+## Opções de Metadados
 
-- `selector`: The CSS selector that identifies this component in templates.
-- `template`: Inline HTML template (preferred for small templates).
-- `templateUrl`: Path to an external HTML file.
-- `styles`: Inline CSS styles.
-- `styleUrl` / `styleUrls`: Path(s) to external CSS file(s).
-- `imports`: Lists the components, directives, or pipes used in this component's template.
+- `selector`: O selector CSS que identifica este componente nos templates.
+- `template`: Template HTML inline (preferido para templates pequenos).
+- `templateUrl`: Caminho para um arquivo HTML externo.
+- `styles`: Estilos CSS inline.
+- `styleUrl` / `styleUrls`: Caminho(s) para arquivo(s) CSS externo(s).
+- `imports`: Lista os componentes, diretivas ou pipes usados no template deste componente.
 
-## Using Components
+## Usando Componentes
 
-To use a component, add it to the `imports` array of the consuming component and use its selector in the template.
+Para usar um componente, adicione-o ao array `imports` do componente consumidor e use seu selector no template.
 
 ```ts
 @Component({
@@ -48,13 +48,13 @@ To use a component, add it to the `imports` array of the consuming component and
 export class App {}
 ```
 
-## Template Control Flow
+## Controle de Fluxo no Template
 
-Angular uses built-in blocks for conditional rendering and loops.
+O Angular usa blocos embutidos para renderização condicional e loops.
 
-### Conditional Rendering (`@if`)
+### Renderização Condicional (`@if`)
 
-Use `@if` to conditionally show content. You can include `@else if` and `@else` blocks.
+Use `@if` para mostrar conteúdo condicionalmente. Você pode incluir blocos `@else if` e `@else`.
 
 ```html
 @if (user.isAdmin) {
@@ -66,7 +66,7 @@ Use `@if` to conditionally show content. You can include `@else if` and `@else` 
 }
 ```
 
-**Result aliasing**: Save the result of the expression for reuse.
+**Aliasing de resultado**: Salve o resultado da expressão para reutilização.
 
 ```html
 @if (user.settings(); as settings) {
@@ -76,7 +76,7 @@ Use `@if` to conditionally show content. You can include `@else if` and `@else` 
 
 ### Loops (`@for`)
 
-The `@for` block iterates over collections. The `track` expression is **required** for performance and DOM reuse.
+O bloco `@for` itera sobre coleções. A expressão `track` é **obrigatória** para desempenho e reutilização do DOM.
 
 ```html
 <ul>
@@ -88,11 +88,11 @@ The `@for` block iterates over collections. The `track` expression is **required
 </ul>
 ```
 
-**Implicit Variables**: `$index`, `$count`, `$first`, `$last`, `$even`, `$odd`.
+**Variáveis Implícitas**: `$index`, `$count`, `$first`, `$last`, `$even`, `$odd`.
 
-### Switching Content (`@switch`)
+### Alternando Conteúdo (`@switch`)
 
-The `@switch` block renders content based on a value. It uses strict equality (`===`) and has **no fallthrough**.
+O bloco `@switch` renderiza conteúdo com base em um valor. Ele usa igualdade estrita (`===`) e **não tem fallthrough**.
 
 ```html
 @switch (status()) { @case ('loading') { <app-spinner /> } @case ('error') { <app-error-msg /> }
@@ -101,17 +101,17 @@ The `@switch` block renders content based on a value. It uses strict equality (`
 } }
 ```
 
-**Exhaustive Type Checking**: Use `@default never;` to ensure all cases of a union type are handled.
+**Verificação Exaustiva de Tipos**: Use `@default never;` para garantir que todos os casos de um union type sejam tratados.
 
 ```html
-@switch (state) { @case ('on') { ... } @case ('off') { ... } @default never; // Errors if a new
-state like 'standby' is added }
+@switch (state) { @case ('on') { ... } @case ('off') { ... } @default never; // Erro se um novo
+estado como 'standby' for adicionado }
 ```
 
-## Core Concepts
+## Conceitos Centrais
 
-- **Host Element**: The DOM element that matches the component's selector.
-- **View**: The DOM rendered by the component's template inside the host element.
-- **Standalone**: By default, components are standalone (since Angular 19, `standalone: true` is default). For older versions, `standalone: true` must be explicit or the component must be part of an `NgModule`.
-- **Component Tree**: Angular applications are structured as a tree of components, where each component can host child components.
-- **Component Naming**: Do not add suffixes the `Component` suffix for Component classes (e.g., AppComponent) unless the project has been configured to use that naming configuration.
+- **Elemento Host**: O elemento do DOM que corresponde ao selector do componente.
+- **View**: O DOM renderizado pelo template do componente dentro do elemento host.
+- **Standalone**: Por padrão, os componentes são standalone (desde o Angular 19, `standalone: true` é o padrão). Para versões mais antigas, `standalone: true` deve ser explícito ou o componente deve fazer parte de um `NgModule`.
+- **Árvore de Componentes**: Aplicações Angular são estruturadas como uma árvore de componentes, onde cada componente pode hospedar componentes filhos.
+- **Nomenclatura de Componentes**: Não adicione o sufixo `Component` às classes de Componente (ex.: AppComponent), a menos que o projeto tenha sido configurado para usar essa configuração de nomenclatura.

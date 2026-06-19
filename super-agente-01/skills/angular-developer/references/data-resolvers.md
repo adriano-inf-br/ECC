@@ -1,10 +1,10 @@
 # Data Resolvers
 
-Data resolvers fetch data before a route activates, ensuring components have the necessary data upon rendering.
+Data resolvers buscam dados antes de uma rota ser ativada, garantindo que os componentes tenham os dados necessários ao renderizar.
 
-## Creating a Resolver
+## Criando um Resolver
 
-Implement the `ResolveFn` type.
+Implemente o tipo `ResolveFn`.
 
 ```ts
 export const userResolver: ResolveFn<User> = (route, state) => {
@@ -14,9 +14,9 @@ export const userResolver: ResolveFn<User> = (route, state) => {
 };
 ```
 
-## Configuring the Route
+## Configurando a Rota
 
-Add the resolver under the `resolve` key.
+Adicione o resolver sob a chave `resolve`.
 
 ```ts
 {
@@ -28,9 +28,9 @@ Add the resolver under the `resolve` key.
 }
 ```
 
-## Accessing Resolved Data
+## Acessando os Dados Resolvidos
 
-### 1. Via `ActivatedRoute` (Traditional)
+### 1. Via `ActivatedRoute` (Tradicional)
 
 ```ts
 private route = inject(ActivatedRoute);
@@ -38,9 +38,9 @@ data = toSignal(this.route.data);
 user = computed(() => this.data().user);
 ```
 
-### 2. Via Component Inputs (Modern)
+### 2. Via Inputs do Componente (Moderno)
 
-Enable `withComponentInputBinding()` in `provideRouter` to pass resolved data directly to `@Input` or `input()`.
+Habilite `withComponentInputBinding()` em `provideRouter` para passar os dados resolvidos diretamente para `@Input` ou `input()`.
 
 ```ts
 // app.config.ts
@@ -50,12 +50,12 @@ provideRouter(routes, withComponentInputBinding());
 user = input.required<User>();
 ```
 
-## Error Handling
+## Tratamento de Erros
 
-Navigation is blocked if a resolver fails.
+A navegação é bloqueada se um resolver falhar.
 
-- Use `withNavigationErrorHandler` for global handling.
-- Use `catchError` within the resolver to return a `RedirectCommand` or fallback data.
+- Use `withNavigationErrorHandler` para tratamento global.
+- Use `catchError` dentro do resolver para retornar um `RedirectCommand` ou dados de fallback.
 
 ```ts
 return userService
@@ -63,7 +63,7 @@ return userService
   .pipe(catchError(() => of(new RedirectCommand(router.parseUrl('/error')))));
 ```
 
-## Best Practices
+## Boas Práticas
 
-- **Keep it lightweight**: Fetch only critical data.
-- **Provide feedback**: Listen to router events to show a global loading bar during navigation, as the UI stays on the old page until the resolver finishes.
+- **Mantenha leve**: Busque apenas dados críticos.
+- **Forneça feedback**: Escute os eventos do router para mostrar uma barra de carregamento global durante a navegação, já que a UI permanece na página antiga até o resolver terminar.

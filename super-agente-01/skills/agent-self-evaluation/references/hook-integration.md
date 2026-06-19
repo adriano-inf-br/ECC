@@ -1,6 +1,6 @@
-# Hook Integration for Session-Stop Self-Evaluation
+# Integração de Hook para Autoavaliação ao Encerrar a Sessão
 
-Add this hook to `hooks/hooks.json` to remind the agent to self-evaluate at the end of every session (the hook echoes a reminder; it does not run the evaluator automatically):
+Adicione este hook a `hooks/hooks.json` para lembrar o agent de se autoavaliar ao final de cada sessão (o hook ecoa um lembrete; ele não roda o avaliador automaticamente):
 
 ```json
 {
@@ -20,21 +20,21 @@ Add this hook to `hooks/hooks.json` to remind the agent to self-evaluate at the 
 }
 ```
 
-`Stop` events do not require a `matcher` field (it is optional for `Stop`, `Notification`, `UserPromptSubmit`, and `SubagentStop` per `scripts/ci/validate-hooks.js`). If omitted, the hook object only needs `hooks` and metadata such as `description`.
+Eventos `Stop` não exigem um campo `matcher` (ele é opcional para `Stop`, `Notification`, `UserPromptSubmit` e `SubagentStop` conforme `scripts/ci/validate-hooks.js`). Se omitido, o objeto de hook só precisa de `hooks` e metadados como `description`.
 
-## Integration with the Python Evaluator
+## Integração com o Avaliador Python
 
-The `scripts/evaluate.py` script can be used as a standalone tool:
+O script `scripts/evaluate.py` pode ser usado como uma ferramenta autônoma:
 
 ```bash
-# Pipe agent output directly
+# Encaminhe a saída do agent diretamente
 echo "Your agent response here" | python3 skills/agent-self-evaluation/scripts/evaluate.py
 
-# From files
+# A partir de arquivos
 python3 skills/agent-self-evaluation/scripts/evaluate.py --task task.txt --output response.txt
 ```
 
-To integrate it into hooks, capture the last agent output to a file first, then run the evaluator. For lightweight reminders after shell-based verification, use a simple supported matcher string:
+Para integrá-lo a hooks, capture a última saída do agent em um arquivo primeiro, então rode o avaliador. Para lembretes leves após verificação baseada em shell, use uma string de matcher simples suportada:
 
 ```json
 {
@@ -55,10 +55,10 @@ To integrate it into hooks, capture the last agent output to a file first, then 
 }
 ```
 
-This avoids documenting unsupported command-expression matcher syntax. If your harness supports command-level matcher expressions, prefer a word-boundary regex such as `\b(pytest|npm test|go test)\b` rather than a broad `test` substring.
+Isso evita documentar a sintaxe não suportada de matcher por expressão de comando. Se o seu harness suporta expressões de matcher em nível de comando, prefira um regex com limite de palavra como `\b(pytest|npm test|go test)\b` em vez de uma substring ampla `test`.
 
-These hooks are opt-in. Add them to your local `hooks/hooks.json` if you want automated evaluation prompts.
+Estes hooks são opt-in. Adicione-os ao seu `hooks/hooks.json` local se você quiser prompts de avaliação automatizados.
 
-## Manual Usage (Recommended)
+## Uso Manual (Recomendado)
 
-The most reliable approach is manual invocation — the agent runs self-evaluation as part of its workflow when the `agent-self-evaluation` skill is active, without requiring hook configuration. The skill's "When to Activate" section already covers trigger conditions (multi-file changes, debugging sessions, design documents).
+A abordagem mais confiável é a invocação manual — o agent roda a autoavaliação como parte do seu fluxo de trabalho quando a skill `agent-self-evaluation` está ativa, sem exigir configuração de hook. A seção "When to Activate" da skill já cobre as condições de gatilho (mudanças multi-arquivo, sessões de depuração, documentos de design).

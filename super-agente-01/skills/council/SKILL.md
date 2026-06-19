@@ -1,204 +1,204 @@
 ---
 name: council
-description: Convene a four-voice council for ambiguous decisions, tradeoffs, and go/no-go calls. Use when multiple valid paths exist and you need structured disagreement before choosing.
+description: Convoque um conselho de quatro vozes para decisões ambíguas, trade-offs e chamadas de go/no-go. Use quando existirem múltiplos caminhos válidos e você precisar de discordância estruturada antes de escolher.
 metadata:
   origin: ECC
 ---
 
 # Council
 
-Convene four advisors for ambiguous decisions:
-- the in-context Claude voice
-- a Skeptic subagent
-- a Pragmatist subagent
-- a Critic subagent
+Convoque quatro conselheiros para decisões ambíguas:
+- a voz do Claude em contexto
+- um subagent Cético (Skeptic)
+- um subagent Pragmático (Pragmatist)
+- um subagent Crítico (Critic)
 
-This is for **decision-making under ambiguity**, not code review, implementation planning, or architecture design.
+Isto é para **tomada de decisão sob ambiguidade**, não para revisão de código, planejamento de implementação ou design de arquitetura.
 
-## When to Use
+## Quando Usar
 
-Use council when:
-- a decision has multiple credible paths and no obvious winner
-- you need explicit tradeoff surfacing
-- the user asks for second opinions, dissent, or multiple perspectives
-- conversational anchoring is a real risk
-- a go / no-go call would benefit from adversarial challenge
+Use o council quando:
+- uma decisão tem múltiplos caminhos credíveis e nenhum vencedor óbvio
+- você precisa expor trade-offs explicitamente
+- o usuário pede segundas opiniões, dissidência ou múltiplas perspectivas
+- a ancoragem conversacional é um risco real
+- uma chamada de go / no-go se beneficiaria de um desafio adversarial
 
-Examples:
+Exemplos:
 - monorepo vs polyrepo
-- ship now vs hold for polish
-- feature flag vs full rollout
-- simplify scope vs keep strategic breadth
+- lançar agora vs aguardar polimento
+- feature flag vs rollout completo
+- simplificar o escopo vs manter a amplitude estratégica
 
-## When NOT to Use
+## Quando NÃO Usar
 
-| Instead of council | Use |
+| Em vez do council | Use |
 | --- | --- |
-| Verifying whether output is correct | `santa-method` |
-| Breaking a feature into implementation steps | `planner` |
-| Designing system architecture | `architect` |
-| Reviewing code for bugs or security | `code-reviewer` or `santa-method` |
-| Straight factual questions | just answer directly |
-| Obvious execution tasks | just do the task |
+| Verificar se a saída está correta | `santa-method` |
+| Quebrar um recurso em passos de implementação | `planner` |
+| Projetar a arquitetura do sistema | `architect` |
+| Revisar código em busca de bugs ou segurança | `code-reviewer` ou `santa-method` |
+| Perguntas factuais diretas | apenas responda diretamente |
+| Tarefas óbvias de execução | apenas faça a tarefa |
 
-## Roles
+## Papéis
 
-| Voice | Lens |
+| Voz | Lente |
 | --- | --- |
-| Architect | correctness, maintainability, long-term implications |
-| Skeptic | premise challenge, simplification, assumption breaking |
-| Pragmatist | shipping speed, user impact, operational reality |
-| Critic | edge cases, downside risk, failure modes |
+| Architect | correção, manutenibilidade, implicações de longo prazo |
+| Skeptic | desafio de premissa, simplificação, quebra de pressupostos |
+| Pragmatist | velocidade de entrega, impacto no usuário, realidade operacional |
+| Critic | casos extremos, risco de downside, modos de falha |
 
-The three external voices should be launched as fresh subagents with **only the question and relevant context**, not the full ongoing conversation. That is the anti-anchoring mechanism.
+As três vozes externas devem ser lançadas como subagents novos com **apenas a pergunta e o contexto relevante**, não a conversa em andamento completa. Esse é o mecanismo anti-ancoragem.
 
-## Workflow
+## Fluxo de Trabalho
 
-### 1. Extract the real question
+### 1. Extraia a pergunta real
 
-Reduce the decision to one explicit prompt:
-- what are we deciding?
-- what constraints matter?
-- what counts as success?
+Reduza a decisão a um único prompt explícito:
+- o que estamos decidindo?
+- quais restrições importam?
+- o que conta como sucesso?
 
-If the question is vague, ask one clarifying question before convening the council.
+Se a pergunta for vaga, faça uma pergunta esclarecedora antes de convocar o council.
 
-### 2. Gather only the necessary context
+### 2. Reúna apenas o contexto necessário
 
-If the decision is codebase-specific:
-- collect the relevant files, snippets, issue text, or metrics
-- keep it compact
-- include only the context needed to make the decision
+Se a decisão for específica do código:
+- colete os arquivos, trechos, texto de issue ou métricas relevantes
+- mantenha compacto
+- inclua apenas o contexto necessário para tomar a decisão
 
-If the decision is strategic/general:
-- skip repo snippets unless they materially change the answer
+Se a decisão for estratégica/geral:
+- pule trechos do repo a menos que mudem materialmente a resposta
 
-### 3. Form the Architect position first
+### 3. Forme primeiro a posição do Architect
 
-Before reading other voices, write down:
-- your initial position
-- the three strongest reasons for it
-- the main risk in your preferred path
+Antes de ler as outras vozes, anote:
+- sua posição inicial
+- as três razões mais fortes a favor dela
+- o principal risco no seu caminho preferido
 
-Do this first so the synthesis does not simply mirror the external voices.
+Faça isso primeiro para que a síntese não apenas espelhe as vozes externas.
 
-### 4. Launch three independent voices in parallel
+### 4. Lance três vozes independentes em paralelo
 
-Each subagent gets:
-- the decision question
-- compact context if needed
-- a strict role
-- no unnecessary conversation history
+Cada subagent recebe:
+- a pergunta de decisão
+- contexto compacto se necessário
+- um papel estrito
+- nenhum histórico desnecessário de conversa
 
-Prompt shape:
+Formato do prompt:
 
 ```text
-You are the [ROLE] on a four-voice decision council.
+Você é o [ROLE] em um conselho de decisão de quatro vozes.
 
-Question:
-[decision question]
+Pergunta:
+[pergunta de decisão]
 
-Context:
-[only the relevant snippets or constraints]
+Contexto:
+[apenas os trechos ou restrições relevantes]
 
-Respond with:
-1. Position — 1-2 sentences
-2. Reasoning — 3 concise bullets
-3. Risk — biggest risk in your recommendation
-4. Surprise — one thing the other voices may miss
+Responda com:
+1. Posição — 1-2 frases
+2. Raciocínio — 3 bullets concisos
+3. Risco — o maior risco da sua recomendação
+4. Surpresa — uma coisa que as outras vozes podem deixar passar
 
-Be direct. No hedging. Keep it under 300 words.
+Seja direto. Sem rodeios. Mantenha abaixo de 300 palavras.
 ```
 
-Role emphasis:
-- Skeptic: challenge framing, question assumptions, propose the simplest credible alternative
-- Pragmatist: optimize for speed, simplicity, and real-world execution
-- Critic: surface downside risk, edge cases, and reasons the plan could fail
+Ênfase de papel:
+- Skeptic: desafie o enquadramento, questione pressupostos, proponha a alternativa credível mais simples
+- Pragmatist: otimize para velocidade, simplicidade e execução no mundo real
+- Critic: exponha risco de downside, casos extremos e razões pelas quais o plano pode falhar
 
-### 5. Synthesize with bias guardrails
+### 5. Sintetize com proteções contra viés
 
-You are both a participant and the synthesizer, so use these rules:
-- do not dismiss an external view without explaining why
-- if an external voice changed your recommendation, say so explicitly
-- always include the strongest dissent, even if you reject it
-- if two voices align against your initial position, treat that as a real signal
-- keep the raw positions visible before the verdict
+Você é simultaneamente participante e sintetizador, então use estas regras:
+- não descarte uma visão externa sem explicar o porquê
+- se uma voz externa mudou sua recomendação, diga isso explicitamente
+- sempre inclua a dissidência mais forte, mesmo que você a rejeite
+- se duas vozes se alinham contra sua posição inicial, trate isso como um sinal real
+- mantenha as posições brutas visíveis antes do veredito
 
-### 6. Present a compact verdict
+### 6. Apresente um veredito compacto
 
-Use this output shape:
+Use este formato de saída:
 
 ```markdown
-## Council: [short decision title]
+## Council: [título curto da decisão]
 
-**Architect:** [1-2 sentence position]
-[1 line on why]
+**Architect:** [posição em 1-2 frases]
+[1 linha sobre o porquê]
 
-**Skeptic:** [1-2 sentence position]
-[1 line on why]
+**Skeptic:** [posição em 1-2 frases]
+[1 linha sobre o porquê]
 
-**Pragmatist:** [1-2 sentence position]
-[1 line on why]
+**Pragmatist:** [posição em 1-2 frases]
+[1 linha sobre o porquê]
 
-**Critic:** [1-2 sentence position]
-[1 line on why]
+**Critic:** [posição em 1-2 frases]
+[1 linha sobre o porquê]
 
-### Verdict
-- **Consensus:** [where they align]
-- **Strongest dissent:** [most important disagreement]
-- **Premise check:** [did the Skeptic challenge the question itself?]
-- **Recommendation:** [the synthesized path]
+### Veredito
+- **Consenso:** [onde se alinham]
+- **Dissidência mais forte:** [a discordância mais importante]
+- **Checagem de premissa:** [o Skeptic desafiou a própria pergunta?]
+- **Recomendação:** [o caminho sintetizado]
 ```
 
-Keep it scannable on a phone screen.
+Mantenha legível na tela de um celular.
 
-## Persistence Rule
+## Regra de Persistência
 
-Do **not** write ad-hoc notes to `~/.claude/notes` or other shadow paths from this skill.
+**Não** escreva notas ad-hoc em `~/.claude/notes` ou outros caminhos paralelos a partir desta skill.
 
-If the council materially changes the recommendation:
-- use `knowledge-ops` to store the lesson in the right durable location
-- or use `/save-session` if the outcome belongs in session memory
-- or update the relevant GitHub / Linear issue directly if the decision changes active execution truth
+Se o council mudar materialmente a recomendação:
+- use `knowledge-ops` para armazenar a lição no local durável correto
+- ou use `/save-session` se o resultado pertence à memória de sessão
+- ou atualize diretamente a issue relevante no GitHub / Linear se a decisão muda a verdade de execução ativa
 
-Only persist a decision when it changes something real.
+Só persista uma decisão quando ela mudar algo real.
 
-## Multi-Round Follow-up
+## Acompanhamento Multi-Rodada
 
-Default is one round.
+O padrão é uma rodada.
 
-If the user wants another round:
-- keep the new question focused
-- include the previous verdict only if it is necessary
-- keep the Skeptic as clean as possible to preserve anti-anchoring value
+Se o usuário quiser outra rodada:
+- mantenha a nova pergunta focada
+- inclua o veredito anterior apenas se for necessário
+- mantenha o Skeptic o mais limpo possível para preservar o valor anti-ancoragem
 
-## Anti-Patterns
+## Anti-Padrões
 
-- using council for code review
-- using council when the task is just implementation work
-- feeding the subagents the entire conversation transcript
-- hiding disagreement in the final verdict
-- persisting every decision as a note regardless of importance
+- usar o council para revisão de código
+- usar o council quando a tarefa é apenas trabalho de implementação
+- alimentar os subagents com toda a transcrição da conversa
+- esconder discordância no veredito final
+- persistir toda decisão como uma nota independentemente da importância
 
-## Related Skills
+## Skills Relacionadas
 
-- `santa-method` — adversarial verification
-- `knowledge-ops` — persist durable decision deltas correctly
-- `search-first` — gather external reference material before the council if needed
-- `architecture-decision-records` — formalize the outcome when the decision becomes long-lived system policy
+- `santa-method` — verificação adversarial
+- `knowledge-ops` — persista deltas de decisão duráveis corretamente
+- `search-first` — reúna material de referência externo antes do council, se necessário
+- `architecture-decision-records` — formalize o resultado quando a decisão se torna política de sistema de longa duração
 
-## Example
+## Exemplo
 
-Question:
+Pergunta:
 
 ```text
-Should we ship ECC 2.0 as alpha now, or hold until the control-plane UI is more complete?
+Devemos lançar o ECC 2.0 como alpha agora, ou aguardar até que a UI do plano de controle esteja mais completa?
 ```
 
-Likely council shape:
-- Architect pushes for structural integrity and avoiding a confused surface
-- Skeptic questions whether the UI is actually the gating factor
-- Pragmatist asks what can be shipped now without harming trust
-- Critic focuses on support burden, expectation debt, and rollout confusion
+Provável formato do council:
+- Architect defende a integridade estrutural e evitar uma superfície confusa
+- Skeptic questiona se a UI é realmente o fator limitante
+- Pragmatist pergunta o que pode ser lançado agora sem prejudicar a confiança
+- Critic foca na carga de suporte, na dívida de expectativa e na confusão do rollout
 
-The value is not unanimity. The value is making the disagreement legible before choosing.
+O valor não é a unanimidade. O valor é tornar a discordância legível antes de escolher.

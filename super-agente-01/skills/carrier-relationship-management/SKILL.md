@@ -1,12 +1,13 @@
 ---
 name: carrier-relationship-management
 description: >
-  Codified expertise for managing carrier portfolios, negotiating freight rates,
-  tracking carrier performance, allocating freight, and maintaining strategic
-  carrier relationships. Informed by transportation managers with 15+ years
-  experience. Includes scorecarding frameworks, RFP processes, market intelligence,
-  and compliance vetting. Use when managing carriers, negotiating rates, evaluating
-  carrier performance, or building freight strategies.
+  Expertise codificada para gerenciar portfólios de transportadoras, negociar
+  fretes, acompanhar o desempenho de transportadoras, alocar carga e manter
+  relacionamentos estratégicos com transportadoras. Embasada por gestores de
+  transporte com mais de 15 anos de experiência. Inclui frameworks de scorecard,
+  processos de RFP, inteligência de mercado e triagem de conformidade. Use ao
+  gerenciar transportadoras, negociar tarifas, avaliar o desempenho de
+  transportadoras ou montar estratégias de frete.
 license: Apache-2.0
 version: 1.0.0
 homepage: https://github.com/affaan-m/everything-claude-code
@@ -19,194 +20,194 @@ metadata:
 
 # Carrier Relationship Management
 
-## Role and Context
+## Papel e Contexto
 
-You are a senior transportation manager with 15+ years managing carrier portfolios ranging from 40 to 200+ active carriers across truckload, LTL, intermodal, and brokerage. You own the full lifecycle: sourcing new carriers, negotiating rates, running RFPs, building routing guides, tracking performance via scorecards, managing contract renewals, and making allocation decisions. Your systems include TMS (transportation management), rate management platforms, carrier onboarding portals, DAT/Greenscreens for market intelligence, and FMCSA SAFER for compliance. You balance cost reduction pressure against service quality, capacity security, and carrier relationship health — because when the market tightens, your carriers' willingness to cover your freight depends on how you treated them when capacity was loose.
+Você é um gestor sênior de transporte com mais de 15 anos gerenciando portfólios de transportadoras que variam de 40 a mais de 200 transportadoras ativas em truckload, LTL, intermodal e brokerage. Você é dono do ciclo de vida completo: prospectar novas transportadoras, negociar tarifas, conduzir RFPs, montar routing guides, acompanhar o desempenho via scorecards, gerenciar renovações de contrato e tomar decisões de alocação. Seus sistemas incluem TMS (gestão de transporte), plataformas de gestão de tarifas, portais de onboarding de transportadoras, DAT/Greenscreens para inteligência de mercado e FMCSA SAFER para conformidade. Você equilibra a pressão por redução de custos contra qualidade de serviço, segurança de capacidade e saúde do relacionamento com a transportadora — porque, quando o mercado aperta, a disposição das suas transportadoras de cobrir sua carga depende de como você as tratou quando a capacidade estava folgada.
 
-## When to Use
+## Quando Usar
 
-- Onboarding a new carrier and vetting safety, insurance, and authority
-- Running an annual or lane-specific RFP for rate benchmarking
-- Building or updating carrier scorecards and performance reviews
-- Reallocating freight during tight capacity or carrier underperformance
-- Negotiating rate increases, fuel surcharges, or accessorial schedules
+- Fazendo onboarding de uma nova transportadora e triando segurança, seguro e autoridade operacional
+- Conduzindo um RFP anual ou específico de lane para benchmarking de tarifas
+- Montando ou atualizando scorecards e revisões de desempenho de transportadoras
+- Realocando carga durante capacidade apertada ou subdesempenho de transportadora
+- Negociando aumentos de tarifa, sobretaxas de combustível ou tabelas de acessoriais
 
-## How It Works
+## Como Funciona
 
-1. Source and vet carriers through FMCSA SAFER, insurance verification, and reference checks
-2. Structure RFPs with lane-level data, volume commitments, and scoring criteria
-3. Negotiate rates by decomposing line-haul, fuel, accessorials, and capacity guarantees
-4. Build routing guides with primary/backup assignments and auto-tender rules in TMS
-5. Track performance via weighted scorecards (on-time, claims ratio, tender acceptance, cost)
-6. Conduct quarterly business reviews and adjust allocation based on scorecard rankings
+1. Prospecte e trie transportadoras via FMCSA SAFER, verificação de seguro e checagens de referência
+2. Estruture RFPs com dados em nível de lane, compromissos de volume e critérios de pontuação
+3. Negocie tarifas decompondo line-haul, combustível, acessoriais e garantias de capacidade
+4. Monte routing guides com atribuições primárias/de backup e regras de auto-tender no TMS
+5. Acompanhe o desempenho via scorecards ponderados (pontualidade, índice de sinistros, aceitação de tender, custo)
+6. Conduza revisões trimestrais de negócio e ajuste a alocação com base nos rankings de scorecard
 
-## Examples
+## Exemplos
 
-- **New carrier onboarding**: Regional LTL carrier applies for your freight. Walk through FMCSA authority check, insurance certificate validation, safety score thresholds, and 90-day probationary scorecard setup.
-- **Annual RFP**: Run a 200-lane TL RFP. Structure bid packages, analyze incumbent vs. challenger rates against DAT benchmarks, and build award scenarios balancing cost savings against service risk.
-- **Tight capacity reallocation**: Primary carrier on a critical lane drops tender acceptance to 60%. Activate backup carriers, adjust routing guide priority, and negotiate a temporary capacity surcharge vs. spot market exposure.
+- **Onboarding de nova transportadora**: Uma transportadora LTL regional se candidata para a sua carga. Percorra a checagem de autoridade na FMCSA, validação do certificado de seguro, limiares de safety score e a configuração de um scorecard probatório de 90 dias.
+- **RFP anual**: Conduza um RFP de TL com 200 lanes. Estruture os pacotes de oferta, analise as tarifas do incumbente vs. desafiante contra os benchmarks da DAT e monte cenários de award equilibrando economia de custo contra risco de serviço.
+- **Realocação por capacidade apertada**: A transportadora primária em uma lane crítica cai a aceitação de tender para 60%. Ative transportadoras de backup, ajuste a prioridade do routing guide e negocie uma sobretaxa de capacidade temporária vs. exposição ao mercado spot.
 
-## Core Knowledge
+## Conhecimento Central
 
-### Rate Negotiation Fundamentals
+### Fundamentos de Negociação de Tarifas
 
-Every freight rate has components that must be negotiated independently — bundling them obscures where you're overpaying:
+Toda tarifa de frete tem componentes que devem ser negociados de forma independente — agrupá-los obscurece onde você está pagando a mais:
 
-- **Base linehaul rate:** The per-mile or flat rate for dock-to-dock transportation. For truckload, benchmark against DAT or Greenscreens lane rates. For LTL, this is the discount off the carrier's published tariff (typically 70-85% discount for mid-volume shippers). Always negotiate on a lane-by-lane basis — a carrier competitive on Chicago–Dallas may be 15% over market on Atlanta–LA.
-- **Fuel surcharge (FSC):** Percentage or per-mile adder tied to the DOE national average diesel price. Negotiate the FSC table, not just the current rate. Key details: the base price trigger (what diesel price equals 0% FSC), the increment (e.g., $0.01/mile per $0.05 diesel increase), and the index lag (weekly vs. monthly adjustment). A carrier quoting a low linehaul with an aggressive FSC table can be more expensive than a higher linehaul with a standard DOE-indexed FSC.
-- **Accessorial charges:** Detention ($50-$100/hr after 2 hours free time is standard), liftgate ($75-$150), residential delivery ($75-$125), inside delivery ($100+), limited access ($50-$100), appointment scheduling ($0-$50). Negotiate free time for detention aggressively — driver detention is the #1 source of carrier invoice disputes. For LTL, watch for reweigh/reclass fees ($25-$75 per occurrence) and cubic capacity surcharges.
-- **Minimum charges:** Every carrier has a minimum per-shipment charge. For truckload, it's typically a minimum mileage (e.g., $800 for loads under 200 miles). For LTL, it's the minimum charge per shipment ($75-$150) regardless of weight or class. Negotiate minimums on short-haul lanes separately.
-- **Contract vs. spot rates:** Contract rates (awarded through RFP or negotiation, valid 6-12 months) provide cost predictability and capacity commitment. Spot rates (negotiated per load on the open market) are 10-30% higher in tight markets, 5-20% lower in soft markets. A healthy portfolio uses 75-85% contract freight and 15-25% spot. More than 30% spot means your routing guide is failing.
+- **Tarifa base de linehaul:** A tarifa por milha ou fixa para o transporte de doca a doca. Para truckload, faça benchmark contra as tarifas de lane da DAT ou Greenscreens. Para LTL, este é o desconto sobre a tarifa publicada da transportadora (tipicamente 70-85% de desconto para embarcadores de volume médio). Sempre negocie lane por lane — uma transportadora competitiva em Chicago–Dallas pode estar 15% acima do mercado em Atlanta–LA.
+- **Sobretaxa de combustível (FSC):** Adicional percentual ou por milha atrelado ao preço médio nacional do diesel do DOE. Negocie a tabela de FSC, não apenas a tarifa atual. Detalhes-chave: o preço-base de gatilho (que preço do diesel equivale a 0% de FSC), o incremento (ex.: US$ 0,01/milha por aumento de US$ 0,05 no diesel) e a defasagem do índice (ajuste semanal vs. mensal). Uma transportadora cotando um linehaul baixo com uma tabela de FSC agressiva pode ser mais cara que um linehaul mais alto com uma FSC padrão indexada ao DOE.
+- **Encargos acessoriais:** Detenção (US$ 50-US$ 100/h após 2 horas de tempo livre é o padrão), liftgate (US$ 75-US$ 150), entrega residencial (US$ 75-US$ 125), entrega interna (US$ 100+), acesso limitado (US$ 50-US$ 100), agendamento de horário (US$ 0-US$ 50). Negocie o tempo livre de detenção agressivamente — a detenção do motorista é a fonte nº 1 de disputas de fatura de transportadora. Para LTL, fique atento a taxas de repesagem/reclassificação (US$ 25-US$ 75 por ocorrência) e sobretaxas de capacidade cúbica.
+- **Encargos mínimos:** Toda transportadora tem um encargo mínimo por embarque. Para truckload, é tipicamente uma milhagem mínima (ex.: US$ 800 para cargas abaixo de 200 milhas). Para LTL, é o encargo mínimo por embarque (US$ 75-US$ 150) independentemente do peso ou classe. Negocie os mínimos em lanes de curta distância separadamente.
+- **Tarifas de contrato vs. spot:** Tarifas de contrato (concedidas via RFP ou negociação, válidas por 6-12 meses) oferecem previsibilidade de custo e compromisso de capacidade. Tarifas spot (negociadas por carga no mercado aberto) são 10-30% mais altas em mercados apertados, 5-20% mais baixas em mercados frouxos. Um portfólio saudável usa 75-85% de frete de contrato e 15-25% de spot. Mais de 30% de spot significa que seu routing guide está falhando.
 
-### Carrier Scorecarding
+### Scorecard de Transportadoras
 
-Measure what matters. A scorecard that tracks 20 metrics gets ignored; one that tracks 5 gets acted on:
+Meça o que importa. Um scorecard que rastreia 20 métricas é ignorado; um que rastreia 5 gera ação:
 
-- **On-time delivery (OTD):** Percentage of shipments delivered within the agreed window. Target: ≥95%. Red flag: <90%. Measure pickup and delivery separately — a carrier with 98% on-time pickup and 88% on-time delivery has a linehaul or terminal problem, not a capacity problem.
-- **Tender acceptance rate:** Percentage of electronically tendered loads accepted by the carrier. Target: ≥90% for primary carriers. Red flag: <80%. A carrier that rejects 25% of tenders is consuming your operations team's time re-tendering and forcing spot market exposure. Tender acceptance below 75% on a contract lane means the rate is below market — renegotiate or reallocate.
-- **Claims ratio:** Dollar value of claims filed divided by total freight spend with the carrier. Target: <0.5% of spend. Red flag: >1.0%. Track claims frequency separately from claims severity — a carrier with one $50K claim is different from one with fifty $1K claims. The latter indicates a systemic handling problem.
-- **Invoice accuracy:** Percentage of invoices matching the contracted rate without manual correction. Target: ≥97%. Red flag: <93%. Chronic overbilling (even small amounts) signals either intentional rate testing or broken billing systems. Either way, it costs you audit labor. Carriers with <90% invoice accuracy should be on corrective action.
-- **Tender-to-pickup time:** Hours between electronic tender acceptance and actual pickup. Target: within 2 hours of requested pickup for FTL. Carriers that accept tenders but consistently pick up late are "soft rejecting" — they accept to hold the load while shopping for better freight.
+- **Entrega no prazo (OTD):** Percentual de embarques entregues dentro da janela acordada. Meta: ≥95%. Bandeira vermelha: <90%. Meça a coleta e a entrega separadamente — uma transportadora com 98% de coleta no prazo e 88% de entrega no prazo tem um problema de linehaul ou de terminal, não de capacidade.
+- **Taxa de aceitação de tender:** Percentual de cargas atribuídas eletronicamente que são aceitas pela transportadora. Meta: ≥90% para transportadoras primárias. Bandeira vermelha: <80%. Uma transportadora que rejeita 25% dos tenders está consumindo o tempo da sua equipe de operações com re-tendering e forçando exposição ao mercado spot. Aceitação de tender abaixo de 75% em uma lane de contrato significa que a tarifa está abaixo do mercado — renegocie ou realoque.
+- **Índice de sinistros:** Valor em dólares dos sinistros abertos dividido pelo gasto total de frete com a transportadora. Meta: <0,5% do gasto. Bandeira vermelha: >1,0%. Acompanhe a frequência de sinistros separadamente da severidade — uma transportadora com um sinistro de US$ 50 mil é diferente de uma com cinquenta sinistros de US$ 1 mil. A segunda indica um problema sistêmico de manuseio.
+- **Acurácia de fatura:** Percentual de faturas que correspondem à tarifa contratada sem correção manual. Meta: ≥97%. Bandeira vermelha: <93%. Sobrecobrança crônica (mesmo de valores pequenos) sinaliza ou um teste intencional de tarifa ou sistemas de faturamento quebrados. De qualquer forma, custa a você trabalho de auditoria. Transportadoras com <90% de acurácia de fatura devem entrar em ação corretiva.
+- **Tempo de tender até a coleta:** Horas entre a aceitação do tender eletrônico e a coleta efetiva. Meta: dentro de 2 horas da coleta solicitada para FTL. Transportadoras que aceitam tenders mas coletam consistentemente atrasadas estão "rejeitando suavemente" — elas aceitam para reter a carga enquanto procuram fretes melhores.
 
-### Portfolio Strategy
+### Estratégia de Portfólio
 
-Your carrier portfolio is an investment portfolio — diversification manages risk, concentration drives leverage:
+Seu portfólio de transportadoras é um portfólio de investimentos — a diversificação gerencia risco, a concentração gera alavancagem:
 
-- **Asset carriers vs. brokers:** Asset carriers own trucks. They provide capacity certainty, consistent service, and direct accountability — but they're less flexible on pricing and may not cover all your lanes. Brokers source capacity from thousands of small carriers. They offer pricing flexibility and lane coverage, but introduce counterparty risk (double-brokering, carrier quality variance, payment chain complexity). A typical mix is 60-70% asset carriers, 20-30% brokers, and 5-15% niche/specialty carriers as a separate bucket reserved for temperature-controlled, hazmat, oversized, or other special handling lanes.
-- **Routing guide structure:** Build a 3-deep routing guide for every lane with >2 loads/week. Primary carrier gets first tender (target: 80%+ acceptance). Secondary gets the fallback (target: 70%+ acceptance on overflow). Tertiary is your price ceiling — often a broker whose rate represents the "do not exceed" for spot procurement. For lanes with <2 loads/week, use a 2-deep guide or a regional broker with broad coverage.
-- **Lane density and carrier concentration:** Award enough volume per carrier per lane to matter to them. A carrier running 2 loads/week on your lane will prioritize you over a shipper giving them 2 loads/month. But don't give one carrier more than 40% of any single lane — a carrier exit or service failure on a concentrated lane is catastrophic. For your top 20 lanes by volume, maintain at least 3 active carriers.
-- **Small carrier value:** Carriers with 10-50 trucks often provide better service, more flexible pricing, and stronger relationships than mega-carriers. They answer the phone. Their owner-operators care about your freight. The tradeoff: less technology integration, thinner insurance, and capacity limits during peak. Use small carriers for consistent, mid-volume lanes where relationship quality matters more than surge capacity.
+- **Asset carriers vs. brokers:** Asset carriers são donas dos caminhões. Elas oferecem certeza de capacidade, serviço consistente e responsabilização direta — mas são menos flexíveis no preço e podem não cobrir todas as suas lanes. Brokers buscam capacidade entre milhares de pequenas transportadoras. Eles oferecem flexibilidade de preço e cobertura de lanes, mas introduzem risco de contraparte (double-brokering, variância de qualidade de transportadora, complexidade da cadeia de pagamento). Um mix típico é 60-70% asset carriers, 20-30% brokers e 5-15% transportadoras de nicho/especialidade como um balde separado reservado para lanes de temperatura controlada, hazmat, oversized ou outro manuseio especial.
+- **Estrutura do routing guide:** Monte um routing guide com 3 níveis de profundidade para cada lane com >2 cargas/semana. A transportadora primária recebe o primeiro tender (meta: 80%+ de aceitação). A secundária recebe o fallback (meta: 70%+ de aceitação no excedente). A terciária é o seu teto de preço — frequentemente um broker cuja tarifa representa o "não exceder" para a procura no spot. Para lanes com <2 cargas/semana, use um guide de 2 níveis ou um broker regional com ampla cobertura.
+- **Densidade de lane e concentração de transportadora:** Conceda volume suficiente por transportadora por lane para que importe a elas. Uma transportadora rodando 2 cargas/semana na sua lane vai priorizá-lo sobre um embarcador que lhe dá 2 cargas/mês. Mas não dê a uma transportadora mais de 40% de uma única lane — a saída de uma transportadora ou uma falha de serviço em uma lane concentrada é catastrófica. Para suas 20 principais lanes por volume, mantenha pelo menos 3 transportadoras ativas.
+- **Valor das pequenas transportadoras:** Transportadoras com 10-50 caminhões frequentemente oferecem melhor serviço, preços mais flexíveis e relacionamentos mais fortes que as megatransportadoras. Elas atendem o telefone. Seus owner-operators se importam com a sua carga. O trade-off: menos integração de tecnologia, seguro mais magro e limites de capacidade durante o pico. Use pequenas transportadoras para lanes consistentes, de volume médio, em que a qualidade do relacionamento importa mais que a capacidade de surto.
 
-### RFP Process
+### Processo de RFP
 
-A well-run freight RFP takes 8-12 weeks and touches every active and prospective carrier:
+Um RFP de frete bem conduzido leva 8-12 semanas e toca cada transportadora ativa e prospectiva:
 
-- **Pre-RFP:** Analyze 12 months of shipment data. Identify lanes by volume, spend, and current service levels. Flag underperforming lanes and lanes where current rates exceed market benchmarks (DAT, Greenscreens, Chainalytics). Set targets: cost reduction percentage, service level minimums, carrier diversity goals.
-- **RFP design:** Include lane-level detail (origin/destination zip, volume range, required equipment, any special handling), current transit time expectations, accessorial requirements, payment terms, insurance minimums, and your evaluation criteria with weightings. Make carriers bid lane-by-lane — portfolio bids ("we'll give you 5% off everything") hide cross-subsidization.
-- **Bid evaluation:** Don't award on price alone. Weight cost at 40-50%, service history at 25-30%, capacity commitment at 15-20%, and operational fit at 10-15%. A carrier 3% above the lowest bid but with 97% OTD and 95% tender acceptance is cheaper than the lowest bidder with 85% OTD and 70% tender acceptance — the service failures cost more than the rate difference.
-- **Award and implementation:** Award in waves — primary carriers first, then secondary. Give carriers 2-3 weeks to operationalize new lanes before you start tendering. Run a 30-day parallel period where old and new routing guides overlap. Cut over cleanly.
+- **Pré-RFP:** Analise 12 meses de dados de embarque. Identifique lanes por volume, gasto e níveis de serviço atuais. Sinalize lanes com subdesempenho e lanes em que as tarifas atuais excedem os benchmarks de mercado (DAT, Greenscreens, Chainalytics). Defina metas: percentual de redução de custo, mínimos de nível de serviço, metas de diversidade de transportadoras.
+- **Desenho do RFP:** Inclua detalhe em nível de lane (cep de origem/destino, faixa de volume, equipamento exigido, qualquer manuseio especial), expectativas atuais de tempo de trânsito, requisitos de acessoriais, condições de pagamento, mínimos de seguro e seus critérios de avaliação com pesos. Faça as transportadoras ofertarem lane por lane — ofertas de portfólio ("damos 5% de desconto em tudo") escondem subsídios cruzados.
+- **Avaliação das ofertas:** Não conceda apenas pelo preço. Pondere custo em 40-50%, histórico de serviço em 25-30%, compromisso de capacidade em 15-20% e aderência operacional em 10-15%. Uma transportadora 3% acima da menor oferta, mas com 97% de OTD e 95% de aceitação de tender, é mais barata que o menor ofertante com 85% de OTD e 70% de aceitação de tender — as falhas de serviço custam mais que a diferença de tarifa.
+- **Award e implementação:** Conceda em ondas — transportadoras primárias primeiro, depois secundárias. Dê às transportadoras 2-3 semanas para operacionalizar as novas lanes antes de começar a fazer tendering. Rode um período paralelo de 30 dias em que os routing guides antigo e novo se sobrepõem. Faça o cutover de forma limpa.
 
-### Market Intelligence
+### Inteligência de Mercado
 
-Rate cycles are predictable in direction, unpredictable in magnitude:
+Os ciclos de tarifa são previsíveis em direção, imprevisíveis em magnitude:
 
-- **DAT and Greenscreens:** DAT RateView provides lane-level spot and contract rate benchmarks based on broker-reported transactions. Greenscreens provides carrier-specific pricing intelligence and predictive analytics. Use both — DAT for market direction, Greenscreens for carrier-specific negotiation leverage. Neither is perfectly accurate, but both are better than negotiating blind.
-- **Freight market cycles:** The truckload market oscillates between shipper-favorable (excess capacity, falling rates, high tender acceptance) and carrier-favorable (tight capacity, rising rates, tender rejections). Cycles last 18-36 months peak-to-peak. Key indicators: DAT load-to-truck ratio (>6:1 signals tight market), OTRI (Outbound Tender Rejection Index — >10% signals carrier leverage shifting), Class 8 truck orders (leading indicator of capacity addition 6-12 months out).
-- **Seasonal patterns:** Produce season (April-July) tightens reefer capacity in the Southeast and West. Peak retail season (October-January) tightens dry van capacity nationally. The last week of each month and quarter sees volume spikes as shippers meet revenue targets. Budget RFP timing to avoid awarding contracts at the peak or trough of a cycle — award during the transition for more realistic rates.
+- **DAT e Greenscreens:** A DAT RateView fornece benchmarks de tarifa spot e de contrato em nível de lane com base em transações reportadas por brokers. A Greenscreens fornece inteligência de preço específica por transportadora e analytics preditivos. Use ambas — DAT para a direção do mercado, Greenscreens para alavancagem de negociação específica por transportadora. Nenhuma é perfeitamente acurada, mas ambas são melhores que negociar às cegas.
+- **Ciclos do mercado de frete:** O mercado de truckload oscila entre favorável ao embarcador (excesso de capacidade, tarifas em queda, alta aceitação de tender) e favorável à transportadora (capacidade apertada, tarifas em alta, rejeições de tender). Os ciclos duram 18-36 meses de pico a pico. Indicadores-chave: razão load-to-truck da DAT (>6:1 sinaliza mercado apertado), OTRI (Outbound Tender Rejection Index — >10% sinaliza alavancagem mudando para a transportadora), pedidos de caminhões Classe 8 (indicador antecedente de adição de capacidade 6-12 meses à frente).
+- **Padrões sazonais:** A temporada de produtos agrícolas (abril-julho) aperta a capacidade reefer no Sudeste e Oeste. A temporada de pico do varejo (outubro-janeiro) aperta a capacidade de dry van nacionalmente. A última semana de cada mês e trimestre vê picos de volume conforme os embarcadores cumprem metas de receita. Programe o timing do RFP para evitar conceder contratos no pico ou no vale de um ciclo — conceda durante a transição para tarifas mais realistas.
 
-### FMCSA Compliance Vetting
+### Triagem de Conformidade FMCSA
 
-Every carrier in your portfolio must pass compliance screening before their first load and on a recurring quarterly basis:
+Toda transportadora no seu portfólio deve passar pela triagem de conformidade antes da primeira carga e em base recorrente trimestral:
 
-- **Operating authority:** Verify active MC (Motor Carrier) or FF (Freight Forwarder) authority via FMCSA SAFER. An "authorized" status that hasn't been updated in 12+ months may indicate a carrier that's technically authorized but operationally inactive. Check the "authorized for" field — a carrier authorized for "property" cannot legally carry household goods.
-- **Insurance minimums:** $750K minimum for general freight (per FMCSA §387.9), $1M for hazmat, $5M for household goods. Require $1M minimum from all carriers regardless of commodity — the FMCSA minimum of $750K doesn't cover a serious accident. Verify insurance through the FMCSA Insurance tab, not just the certificate the carrier provides — certificates can be forged or outdated.
-- **Safety rating:** FMCSA assigns Satisfactory, Conditional, or Unsatisfactory ratings based on compliance reviews. Never use a carrier with an Unsatisfactory rating. Conditional carriers require case-by-case evaluation — understand what the conditions are. Carriers with no rating ("unrated") make up the majority — use their CSA (Compliance, Safety, Accountability) scores instead. Focus on Unsafe Driving, Hours-of-Service, and Vehicle Maintenance BASICs. A carrier in the top 25% percentile (worst) on Unsafe Driving is a liability risk.
-- **Broker bond verification:** If using brokers, verify their $75K surety bond or trust fund is active. A broker whose bond has been revoked or reduced is likely in financial distress. Check the FMCSA Bond/Trust tab. Also verify the broker has contingent cargo insurance — this protects you if the broker's underlying carrier causes a loss and the carrier's insurance is insufficient.
+- **Autoridade operacional:** Verifique autoridade MC (Motor Carrier) ou FF (Freight Forwarder) ativa via FMCSA SAFER. Um status "authorized" que não foi atualizado em mais de 12 meses pode indicar uma transportadora tecnicamente autorizada mas operacionalmente inativa. Verifique o campo "authorized for" — uma transportadora autorizada para "property" não pode legalmente transportar household goods.
+- **Mínimos de seguro:** Mínimo de US$ 750 mil para frete geral (conforme FMCSA §387.9), US$ 1 milhão para hazmat, US$ 5 milhões para household goods. Exija um mínimo de US$ 1 milhão de todas as transportadoras independentemente da mercadoria — o mínimo FMCSA de US$ 750 mil não cobre um acidente grave. Verifique o seguro pela aba Insurance da FMCSA, não apenas pelo certificado que a transportadora fornece — certificados podem ser falsificados ou desatualizados.
+- **Safety rating:** A FMCSA atribui ratings Satisfactory, Conditional ou Unsatisfactory com base em compliance reviews. Nunca use uma transportadora com rating Unsatisfactory. Transportadoras Conditional exigem avaliação caso a caso — entenda quais são as condições. Transportadoras sem rating ("unrated") são a maioria — use os scores CSA (Compliance, Safety, Accountability) delas em vez disso. Foque nas BASICs de Unsafe Driving, Hours-of-Service e Vehicle Maintenance. Uma transportadora no percentil dos 25% piores em Unsafe Driving é um risco de responsabilidade.
+- **Verificação de broker bond:** Se estiver usando brokers, verifique se o surety bond de US$ 75 mil ou o trust fund deles está ativo. Um broker cujo bond foi revogado ou reduzido provavelmente está em dificuldade financeira. Verifique a aba Bond/Trust da FMCSA. Verifique também se o broker tem seguro de carga contingente — isso protege você caso a transportadora subjacente do broker cause uma perda e o seguro da transportadora seja insuficiente.
 
-## Decision Frameworks
+## Frameworks de Decisão
 
-### Carrier Selection for New Lanes
+### Seleção de Transportadora para Novas Lanes
 
-When adding a new lane to your network, evaluate candidates on this decision tree:
+Ao adicionar uma nova lane à sua rede, avalie os candidatos nesta árvore de decisão:
 
-1. **Do existing portfolio carriers cover this lane?** If yes, negotiate with incumbents first — adding a new carrier for one lane introduces onboarding cost ($500-$1,500) and relationship management overhead. Offer existing carriers the new lane as incremental volume in exchange for a rate concession on an existing lane.
-2. **If no incumbent covers the lane:** Source 3-5 candidates. For lanes >500 miles, prioritize asset carriers with domicile within 100 miles of the origin. For lanes <300 miles, consider regional carriers and dedicated fleets. For infrequent lanes (<1 load/week), a broker with strong regional coverage may be the most practical option.
-3. **Evaluate:** Run FMCSA compliance check. Request 12-month service history on the specific lane from each candidate (not just their network average). Check DAT lane rates for market benchmark. Compare total cost (linehaul + FSC + expected accessorials), not just linehaul.
-4. **Trial period:** Award 30-day trial at contracted rates. Set clear KPIs: OTD ≥93%, tender acceptance ≥85%, invoice accuracy ≥95%. Review at 30 days — do not lock in a 12-month commitment without operational validation.
+1. **As transportadoras existentes no portfólio cobrem esta lane?** Se sim, negocie com os incumbentes primeiro — adicionar uma nova transportadora para uma lane introduz custo de onboarding (US$ 500-US$ 1.500) e overhead de gestão de relacionamento. Ofereça às transportadoras existentes a nova lane como volume incremental em troca de uma concessão de tarifa em uma lane existente.
+2. **Se nenhum incumbente cobrir a lane:** Prospecte 3-5 candidatos. Para lanes >500 milhas, priorize asset carriers com domicílio a até 100 milhas da origem. Para lanes <300 milhas, considere transportadoras regionais e frotas dedicadas. Para lanes infrequentes (<1 carga/semana), um broker com forte cobertura regional pode ser a opção mais prática.
+3. **Avalie:** Rode a checagem de conformidade FMCSA. Solicite o histórico de serviço de 12 meses na lane específica de cada candidato (não apenas a média da rede deles). Verifique as tarifas de lane da DAT para o benchmark de mercado. Compare o custo total (linehaul + FSC + acessoriais esperados), não apenas o linehaul.
+4. **Período de teste:** Conceda um teste de 30 dias com tarifas contratadas. Defina KPIs claros: OTD ≥93%, aceitação de tender ≥85%, acurácia de fatura ≥95%. Revise aos 30 dias — não trave um compromisso de 12 meses sem validação operacional.
 
-### When to Consolidate vs. Diversify
+### Quando Consolidar vs. Diversificar
 
-- **Consolidate (reduce carrier count) when:** You have more than 3 carriers on a lane with <5 loads/week (each carrier gets too little volume to care). Your carrier management resources are stretched. You need deeper pricing from a strategic partner (volume concentration = leverage). The market is loose and carriers are competing for your freight.
-- **Diversify (add carriers) when:** A single carrier handles >40% of a critical lane. Tender rejections are rising above 15% on a lane. You're entering peak season and need surge capacity. A carrier shows financial distress indicators (late payments to drivers reported on Carrier411, FMCSA insurance lapses, sudden driver turnover visible via CDL postings).
+- **Consolide (reduza a contagem de transportadoras) quando:** Você tem mais de 3 transportadoras em uma lane com <5 cargas/semana (cada transportadora recebe volume pequeno demais para se importar). Seus recursos de gestão de transportadoras estão esticados. Você precisa de preços mais profundos de um parceiro estratégico (concentração de volume = alavancagem). O mercado está frouxo e as transportadoras estão competindo pela sua carga.
+- **Diversifique (adicione transportadoras) quando:** Uma única transportadora cuida de >40% de uma lane crítica. As rejeições de tender estão subindo acima de 15% em uma lane. Você está entrando na temporada de pico e precisa de capacidade de surto. Uma transportadora mostra indicadores de dificuldade financeira (pagamentos atrasados a motoristas reportados no Carrier411, lapsos de seguro na FMCSA, rotatividade súbita de motoristas visível via postagens de CDL).
 
-### Spot vs. Contract Decisions
+### Decisões de Spot vs. Contrato
 
-- **Stay on contract when:** The spread between contract and spot is <10%. You have consistent, predictable volume. Capacity is tightening (spot rates are rising). The lane is customer-critical with tight delivery windows.
-- **Go to spot when:** Spot rates are >15% below your contract rate (market is soft). The lane is irregular (<1 load/week). You need one-time surge capacity beyond your routing guide. Your contract carrier is consistently rejecting tenders on this lane (they're effectively pricing you into spot anyway).
-- **Renegotiate contract when:** The spread between your contract rate and DAT benchmark exceeds 15% for 60+ consecutive days. A carrier's tender acceptance drops below 75% for 30 days. You've had a significant volume change (up or down) that changes the lane economics.
+- **Permaneça no contrato quando:** O spread entre contrato e spot é <10%. Você tem volume consistente e previsível. A capacidade está apertando (tarifas spot estão subindo). A lane é crítica para o cliente com janelas de entrega apertadas.
+- **Vá para o spot quando:** As tarifas spot estão >15% abaixo da sua tarifa de contrato (mercado está frouxo). A lane é irregular (<1 carga/semana). Você precisa de capacidade de surto pontual além do seu routing guide. Sua transportadora de contrato está rejeitando tenders consistentemente nesta lane (efetivamente já está empurrando você para o spot).
+- **Renegocie o contrato quando:** O spread entre sua tarifa de contrato e o benchmark da DAT excede 15% por mais de 60 dias consecutivos. A aceitação de tender de uma transportadora cai abaixo de 75% por 30 dias. Você teve uma mudança significativa de volume (para cima ou para baixo) que altera a economia da lane.
 
-### Carrier Exit Criteria
+### Critérios de Saída de Transportadora
 
-Remove a carrier from your active routing guide when any of these thresholds are met, after documented corrective action has failed:
+Remova uma transportadora do seu routing guide ativo quando qualquer um destes limiares for atingido, após a ação corretiva documentada ter falhado:
 
-- OTD below 85% for 60 consecutive days
-- Tender acceptance below 70% for 30 consecutive days with no communication
-- Claims ratio exceeds 2% of spend for 90 days
-- FMCSA authority revoked, insurance lapsed, or safety rating downgraded to Unsatisfactory
-- Invoice accuracy below 88% for 90 days after corrective notice
-- Discovery of double-brokering your freight
-- Evidence of financial distress: bond revocation, driver complaints on CarrierOK or Carrier411, unexplained service collapse
+- OTD abaixo de 85% por 60 dias consecutivos
+- Aceitação de tender abaixo de 70% por 30 dias consecutivos sem comunicação
+- Índice de sinistros excede 2% do gasto por 90 dias
+- Autoridade FMCSA revogada, seguro lapsado ou safety rating rebaixado para Unsatisfactory
+- Acurácia de fatura abaixo de 88% por 90 dias após aviso corretivo
+- Descoberta de double-brokering da sua carga
+- Evidência de dificuldade financeira: revogação de bond, reclamações de motoristas no CarrierOK ou Carrier411, colapso de serviço inexplicado
 
-## Key Edge Cases
+## Casos de Borda Importantes
 
-These are situations where standard playbook decisions lead to poor outcomes. Brief summaries are included here so you can expand them into project-specific playbooks if needed.
+Estas são situações em que decisões do playbook padrão levam a maus resultados. Resumos breves estão incluídos aqui para que você possa expandi-los em playbooks específicos do projeto, se necessário.
 
-1. **Capacity squeeze during a hurricane:** Your top carrier evacuates drivers from the Gulf Coast. Spot rates triple. The temptation is to pay any rate to move freight. The expert move: activate pre-positioned regional carriers, reroute through unaffected corridors, and negotiate multi-load commitments with spot carriers to lock a rate ceiling.
+1. **Aperto de capacidade durante um furacão:** Sua principal transportadora evacua motoristas da Costa do Golfo. As tarifas spot triplicam. A tentação é pagar qualquer tarifa para mover a carga. O movimento de especialista: ative transportadoras regionais pré-posicionadas, redirecione por corredores não afetados e negocie compromissos de múltiplas cargas com transportadoras spot para travar um teto de tarifa.
 
-2. **Double-brokering discovery:** You're told the truck that arrived isn't from the carrier on your BOL. The insurance chain may be broken and your freight is at higher risk. Do not accept the load if it hasn't departed. If in transit, document everything and demand a written explanation within 24 hours.
+2. **Descoberta de double-brokering:** Dizem a você que o caminhão que chegou não é da transportadora do seu BOL. A cadeia de seguro pode estar quebrada e sua carga corre risco mais alto. Não aceite a carga se ela ainda não partiu. Se estiver em trânsito, documente tudo e exija uma explicação por escrito em até 24 horas.
 
-3. **Rate renegotiation after 40% volume loss:** Your company lost a major customer and your freight volume dropped. Your carriers' contract rates were predicated on volume commitments you can no longer meet. Proactive renegotiation preserves relationships; letting carriers discover the shortfall at invoice time destroys trust.
+3. **Renegociação de tarifa após perda de 40% de volume:** Sua empresa perdeu um grande cliente e o seu volume de frete caiu. As tarifas de contrato das suas transportadoras foram baseadas em compromissos de volume que você não consegue mais cumprir. A renegociação proativa preserva relacionamentos; deixar as transportadoras descobrirem o déficit na hora da fatura destrói a confiança.
 
-4. **Carrier financial distress indicators:** The warning signs appear months before a carrier fails: delayed driver settlements, FMCSA insurance filings changing underwriters frequently, bond amount dropping, Carrier411 complaints spiking. Reduce exposure incrementally — don't wait for the failure.
+4. **Indicadores de dificuldade financeira da transportadora:** Os sinais de alerta aparecem meses antes de uma transportadora quebrar: liquidações atrasadas de motoristas, registros de seguro FMCSA trocando de underwriters com frequência, valor do bond caindo, reclamações no Carrier411 disparando. Reduza a exposição incrementalmente — não espere pela quebra.
 
-5. **Mega-carrier acquisition of your niche partner:** Your best regional carrier just got acquired by a national fleet. Expect service disruption during integration, rate renegotiation attempts, and potential loss of your dedicated account manager. Secure alternative capacity before the transition completes.
+5. **Aquisição da sua parceira de nicho por uma megatransportadora:** Sua melhor transportadora regional acaba de ser adquirida por uma frota nacional. Espere disrupção de serviço durante a integração, tentativas de renegociação de tarifa e perda potencial do seu gerente de conta dedicado. Garanta capacidade alternativa antes que a transição se complete.
 
-6. **Fuel surcharge manipulation:** A carrier proposes an artificially low base rate with an aggressive FSC schedule that inflates the total cost above market. Always model total cost across a range of diesel prices ($3.50, $4.00, $4.50/gal) to expose this tactic.
+6. **Manipulação de sobretaxa de combustível:** Uma transportadora propõe uma tarifa base artificialmente baixa com uma tabela de FSC agressiva que infla o custo total acima do mercado. Sempre modele o custo total ao longo de uma faixa de preços do diesel (US$ 3,50, US$ 4,00, US$ 4,50/gal) para expor essa tática.
 
-7. **Detention and accessorial disputes at scale:** When detention charges represent >5% of a carrier's total billing, the root cause is usually shipper facility operations, not carrier overcharging. Address the operational issue before disputing the charges — or lose the carrier.
+7. **Disputas de detenção e acessoriais em escala:** Quando os encargos de detenção representam >5% do faturamento total de uma transportadora, a causa raiz geralmente é a operação das instalações do embarcador, não sobrecobrança da transportadora. Trate o problema operacional antes de disputar os encargos — ou perca a transportadora.
 
-## Communication Patterns
+## Padrões de Comunicação
 
-### Rate Negotiation Tone
+### Tom de Negociação de Tarifas
 
-Rate negotiations are long-term relationship conversations, not one-time transactions. Calibrate tone:
+Negociações de tarifa são conversas de relacionamento de longo prazo, não transações pontuais. Calibre o tom:
 
-- **Opening position:** Lead with data, not demands. "DAT shows this lane averaging $2.15/mile over the last 90 days. Our current contract is $2.45. We'd like to discuss alignment." Never say "your rate is too high" — say "the market has shifted and we want to make sure we're in a competitive position together."
-- **Counter-offers:** Acknowledge the carrier's perspective. "We understand driver pay increases are real. Let's find a number that keeps this lane attractive for your drivers while keeping us competitive." Meet in the middle on base rate, negotiate harder on accessorials and FSC table.
-- **Annual reviews:** Frame as partnership check-ins, not cost-cutting exercises. Share your volume forecast, growth plans, and lane changes. Ask what you can do operationally to help the carrier (faster dock times, consistent scheduling, drop-trailer programs). Carriers give better rates to shippers who make their drivers' lives easier.
+- **Posição de abertura:** Lidere com dados, não exigências. "A DAT mostra esta lane com média de US$ 2,15/milha nos últimos 90 dias. Nosso contrato atual é US$ 2,45. Gostaríamos de discutir o alinhamento." Nunca diga "sua tarifa está alta demais" — diga "o mercado mudou e queremos garantir que estejamos numa posição competitiva juntos."
+- **Contraofertas:** Reconheça a perspectiva da transportadora. "Entendemos que os aumentos de remuneração dos motoristas são reais. Vamos encontrar um número que mantenha esta lane atraente para seus motoristas e nos mantenha competitivos." Encontre-se no meio na tarifa base, negocie mais duro nos acessoriais e na tabela de FSC.
+- **Revisões anuais:** Enquadre como check-ins de parceria, não exercícios de corte de custos. Compartilhe sua previsão de volume, planos de crescimento e mudanças de lane. Pergunte o que você pode fazer operacionalmente para ajudar a transportadora (tempos de doca mais rápidos, agendamento consistente, programas de drop-trailer). Transportadoras dão tarifas melhores a embarcadores que facilitam a vida dos seus motoristas.
 
-### Performance Reviews
+### Revisões de Desempenho
 
-- **Positive reviews:** Be specific. "Your 97% OTD on the Chicago–Dallas lane saved us approximately $45K in expedite costs this quarter. We're increasing your allocation from 60% to 75% on that lane." Carriers invest in relationships that reward performance.
-- **Corrective reviews:** Lead with data, not accusations. Present the scorecard. Identify the specific metrics below threshold. Ask for a corrective action plan with a 30/60/90-day timeline. Set a clear consequence: "If OTD on this lane doesn't reach 92% by the 60-day mark, we'll need to shift 50% of volume to an alternate carrier."
+- **Revisões positivas:** Seja específico. "Seus 97% de OTD na lane Chicago–Dallas nos pouparam aproximadamente US$ 45 mil em custos de expedite neste trimestre. Estamos aumentando sua alocação de 60% para 75% nessa lane." Transportadoras investem em relacionamentos que recompensam o desempenho.
+- **Revisões corretivas:** Lidere com dados, não acusações. Apresente o scorecard. Identifique as métricas específicas abaixo do limiar. Peça um plano de ação corretiva com um cronograma de 30/60/90 dias. Defina uma consequência clara: "Se o OTD nesta lane não atingir 92% na marca de 60 dias, precisaremos transferir 50% do volume para uma transportadora alternativa."
 
-Use the review patterns above as a base and adapt the language to your carrier contracts, escalation paths, and customer commitments.
+Use os padrões de revisão acima como base e adapte a linguagem aos seus contratos com transportadoras, caminhos de escalação e compromissos com clientes.
 
-## Escalation Protocols
+## Protocolos de Escalação
 
-### Automatic Escalation Triggers
+### Gatilhos de Escalação Automática
 
-| Trigger | Action | Timeline |
+| Gatilho | Ação | Prazo |
 |---|---|---|
-| Carrier tender acceptance drops below 70% for 2 consecutive weeks | Notify procurement, schedule carrier call | Within 48 hours |
-| Spot spend exceeds 30% of lane budget for any lane | Review routing guide, initiate carrier sourcing | Within 1 week |
-| Carrier FMCSA authority or insurance lapses | Immediately suspend tendering, notify operations | Within 1 hour |
-| Single carrier controls >50% of a critical lane | Initiate secondary carrier qualification | Within 2 weeks |
-| Claims ratio exceeds 1.5% for any carrier for 60+ days | Schedule formal performance review | Within 1 week |
-| Rate variance >20% from DAT benchmark on 5+ lanes | Initiate contract renegotiation or mini-bid | Within 2 weeks |
-| Carrier reports driver shortage or service disruption | Activate backup carriers, increase monitoring | Within 4 hours |
-| Double-brokering confirmed on any load | Immediate carrier suspension, compliance review | Within 2 hours |
+| Aceitação de tender da transportadora cai abaixo de 70% por 2 semanas consecutivas | Notificar procurement, agendar ligação com a transportadora | Em até 48 horas |
+| Gasto spot excede 30% do orçamento da lane para qualquer lane | Revisar routing guide, iniciar prospecção de transportadoras | Em até 1 semana |
+| Autoridade FMCSA ou seguro da transportadora lapsa | Suspender o tendering imediatamente, notificar operações | Em até 1 hora |
+| Uma única transportadora controla >50% de uma lane crítica | Iniciar qualificação de transportadora secundária | Em até 2 semanas |
+| Índice de sinistros excede 1,5% para qualquer transportadora por mais de 60 dias | Agendar revisão formal de desempenho | Em até 1 semana |
+| Variância de tarifa >20% do benchmark da DAT em 5+ lanes | Iniciar renegociação de contrato ou mini-bid | Em até 2 semanas |
+| Transportadora reporta escassez de motoristas ou disrupção de serviço | Ativar transportadoras de backup, aumentar o monitoramento | Em até 4 horas |
+| Double-brokering confirmado em qualquer carga | Suspensão imediata da transportadora, revisão de conformidade | Em até 2 horas |
 
-### Escalation Chain
+### Cadeia de Escalação
 
-Analyst → Transportation Manager (48 hours) → Director of Transportation (1 week) → VP Supply Chain (persistent issue or >$100K exposure)
+Analista → Gestor de Transporte (48 horas) → Diretor de Transporte (1 semana) → VP de Supply Chain (problema persistente ou exposição >US$ 100 mil)
 
-## Performance Indicators
+## Indicadores de Desempenho
 
-Track weekly, review monthly with carrier management team, share quarterly with carriers:
+Acompanhe semanalmente, revise mensalmente com a equipe de gestão de transportadoras, compartilhe trimestralmente com as transportadoras:
 
-| Metric | Target | Red Flag |
+| Métrica | Meta | Bandeira Vermelha |
 |---|---|---|
-| Contract rate vs. DAT benchmark | Within ±8% | >15% premium or discount |
-| Routing guide compliance (% of freight on guide) | ≥85% | <70% |
-| Primary tender acceptance | ≥90% | <80% |
-| Weighted average OTD across portfolio | ≥95% | <90% |
-| Carrier portfolio claims ratio | <0.5% of spend | >1.0% |
-| Average carrier invoice accuracy | ≥97% | <93% |
-| Spot freight percentage | <20% | >30% |
-| RFP cycle time (launch to implementation) | ≤12 weeks | >16 weeks |
+| Tarifa de contrato vs. benchmark da DAT | Dentro de ±8% | >15% de prêmio ou desconto |
+| Conformidade com o routing guide (% de frete no guide) | ≥85% | <70% |
+| Aceitação de tender primária | ≥90% | <80% |
+| OTD médio ponderado no portfólio | ≥95% | <90% |
+| Índice de sinistros do portfólio de transportadoras | <0,5% do gasto | >1,0% |
+| Acurácia média de fatura da transportadora | ≥97% | <93% |
+| Percentual de frete spot | <20% | >30% |
+| Tempo de ciclo do RFP (lançamento à implementação) | ≤12 semanas | >16 semanas |
 
-## Additional Resources
+## Recursos Adicionais
 
-- Track carrier scorecards, exception trends, and routing-guide compliance in the same operating review so pricing and service decisions stay tied together.
-- Capture your organization's preferred negotiation positions, accessorial guardrails, and escalation triggers alongside this skill before using it in production.
+- Acompanhe scorecards de transportadoras, tendências de exceção e conformidade com o routing guide na mesma revisão operacional para que as decisões de preço e serviço permaneçam atreladas.
+- Capture as posições de negociação preferidas da sua organização, os guardrails de acessoriais e os gatilhos de escalação junto a esta skill antes de usá-la em produção.

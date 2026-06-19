@@ -71,27 +71,27 @@ console.log("by model:");[...m.entries()].sort((a,b)=>b[1]-a[1]).forEach(([k,v])
 '
 ```
 
-For a session drilldown or CSV export, iterate the same `latest` set (or the raw
-rows for CSV) and print the fields you need.
+Para um detalhamento por sessão ou exportação CSV, itere o mesmo conjunto `latest` (ou as linhas
+brutas para CSV) e imprima os campos de que você precisa.
 
-## Reporting Guidance
+## Orientações de Relatório
 
-When presenting cost data, include today's spend vs yesterday, total across all
-sessions, a by-model breakdown, and session count. Format sub-dollar amounts
-with four decimals, larger amounts with two.
+Ao apresentar dados de custo, inclua o gasto de hoje vs ontem, o total de todas as
+sessões, um detalhamento por modelo e a contagem de sessões. Formate valores abaixo de um dólar
+com quatro casas decimais, e valores maiores com duas.
 
-## Anti-Patterns
+## Anti-Padrões
 
-- Do not sum every row — they are cumulative per session; reduce to the latest
-  row per `session_id` first.
-- Do not estimate costs from raw token counts when `estimated_cost_usd` is present.
-- Do not assume the log exists without checking.
-- Do not hard-code current model pricing in user-facing answers.
-- Do not recommend installing unreviewed hooks or plugins that execute arbitrary code.
+- Não some todas as linhas — elas são cumulativas por sessão; reduza primeiro à
+  linha mais recente por `session_id`.
+- Não estime custos a partir de contagens brutas de tokens quando `estimated_cost_usd` estiver presente.
+- Não presuma que o log existe sem verificar.
+- Não codifique embutido o preço atual dos modelos em respostas voltadas ao usuário.
+- Não recomende instalar hooks ou plugins não revisados que executem código arbitrário.
 
-## Related
+## Relacionados
 
-- `/cost-report` - Command-form report over the same metrics log.
-- `cost-aware-llm-pipeline` - Model-routing and budget-design patterns.
-- `token-budget-advisor` - Context and token-budget planning.
-- `strategic-compact` - Context compaction to reduce repeated token spend.
+- `/cost-report` - Relatório em forma de comando sobre o mesmo log de métricas.
+- `cost-aware-llm-pipeline` - Padrões de roteamento de modelo e design de orçamento.
+- `token-budget-advisor` - Planejamento de contexto e orçamento de tokens.
+- `strategic-compact` - Compactação de contexto para reduzir gasto repetido de tokens.

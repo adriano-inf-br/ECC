@@ -1,37 +1,37 @@
 ---
 name: clickhouse-io
-description: ClickHouse database patterns, query optimization, analytics, and data engineering best practices for high-performance analytical workloads.
+description: Padrões de banco de dados ClickHouse, otimização de consultas, analytics e boas práticas de engenharia de dados para cargas analíticas de alto desempenho.
 metadata:
   origin: ECC
 ---
 
 # ClickHouse Analytics Patterns
 
-ClickHouse-specific patterns for high-performance analytics and data engineering.
+Padrões específicos do ClickHouse para analytics e engenharia de dados de alto desempenho.
 
 ## When to Activate
 
-- Designing ClickHouse table schemas (MergeTree engine selection)
-- Writing analytical queries (aggregations, window functions, joins)
-- Optimizing query performance (partition pruning, projections, materialized views)
-- Ingesting large volumes of data (batch inserts, Kafka integration)
-- Migrating from PostgreSQL/MySQL to ClickHouse for analytics
-- Implementing real-time dashboards or time-series analytics
+- Projetar schemas de tabelas ClickHouse (seleção do engine MergeTree)
+- Escrever consultas analíticas (agregações, window functions, joins)
+- Otimizar o desempenho de consultas (partition pruning, projections, materialized views)
+- Ingerir grandes volumes de dados (inserts em lote, integração com Kafka)
+- Migrar de PostgreSQL/MySQL para ClickHouse para analytics
+- Implementar dashboards em tempo real ou analytics de séries temporais
 
-## Overview
+## Visão Geral
 
-ClickHouse is a column-oriented database management system (DBMS) for online analytical processing (OLAP). It's optimized for fast analytical queries on large datasets.
+O ClickHouse é um sistema de gerenciamento de banco de dados (DBMS) orientado a colunas para processamento analítico online (OLAP). Ele é otimizado para consultas analíticas rápidas em grandes conjuntos de dados.
 
-**Key Features:**
-- Column-oriented storage
-- Data compression
-- Parallel query execution
-- Distributed queries
-- Real-time analytics
+**Principais Recursos:**
+- Armazenamento orientado a colunas
+- Compressão de dados
+- Execução de consultas em paralelo
+- Consultas distribuídas
+- Analytics em tempo real
 
-## Table Design Patterns
+## Padrões de Design de Tabelas
 
-### MergeTree Engine (Most Common)
+### Engine MergeTree (Mais Comum)
 
 ```sql
 CREATE TABLE markets_analytics (
@@ -49,10 +49,10 @@ ORDER BY (date, market_id)
 SETTINGS index_granularity = 8192;
 ```
 
-### ReplacingMergeTree (Deduplication)
+### ReplacingMergeTree (Deduplicação)
 
 ```sql
--- For data that may have duplicates (e.g., from multiple sources)
+-- Para dados que podem ter duplicatas (ex.: de múltiplas fontes)
 CREATE TABLE user_events (
     event_id String,
     user_id String,
@@ -65,10 +65,10 @@ ORDER BY (user_id, event_id, timestamp)
 PRIMARY KEY (user_id, event_id);
 ```
 
-### AggregatingMergeTree (Pre-aggregation)
+### AggregatingMergeTree (Pré-agregação)
 
 ```sql
--- For maintaining aggregated metrics
+-- Para manter métricas agregadas
 CREATE TABLE market_stats_hourly (
     hour DateTime,
     market_id String,
@@ -79,7 +79,7 @@ CREATE TABLE market_stats_hourly (
 PARTITION BY toYYYYMM(hour)
 ORDER BY (hour, market_id);
 
--- Query aggregated data
+-- Consultar dados agregados
 SELECT
     hour,
     market_id,
@@ -92,12 +92,12 @@ GROUP BY hour, market_id
 ORDER BY hour DESC;
 ```
 
-## Query Optimization Patterns
+## Padrões de Otimização de Consultas
 
-### Efficient Filtering
+### Filtragem Eficiente
 
 ```sql
--- PASS: GOOD: Use indexed columns first
+-- PASS: BOM: Use colunas indexadas primeiro
 SELECT *
 FROM markets_analytics
 WHERE date >= '2025-01-01'
@@ -106,7 +106,7 @@ WHERE date >= '2025-01-01'
 ORDER BY date DESC
 LIMIT 100;
 
--- FAIL: BAD: Filter on non-indexed columns first
+-- FAIL: RUIM: Filtrar primeiro por colunas não indexadas
 SELECT *
 FROM markets_analytics
 WHERE volume > 1000
@@ -114,10 +114,10 @@ WHERE volume > 1000
   AND date >= '2025-01-01';
 ```
 
-### Aggregations
+### Agregações
 
 ```sql
--- PASS: GOOD: Use ClickHouse-specific aggregation functions
+-- PASS: BOM: Use funções de agregação específicas do ClickHouse
 SELECT
     toStartOfDay(created_at) AS day,
     market_id,
@@ -130,7 +130,7 @@ WHERE created_at >= today() - INTERVAL 7 DAY
 GROUP BY day, market_id
 ORDER BY day DESC, total_volume DESC;
 
--- PASS: Use quantile for percentiles (more efficient than percentile)
+-- PASS: Use quantile para percentis (mais eficiente que percentile)
 SELECT
     quantile(0.50)(trade_size) AS median,
     quantile(0.95)(trade_size) AS p95,
@@ -142,7 +142,7 @@ WHERE created_at >= now() - INTERVAL 1 HOUR;
 ### Window Functions
 
 ```sql
--- Calculate running totals
+-- Calcular totais acumulados
 SELECT
     date,
     market_id,
@@ -157,9 +157,9 @@ WHERE date >= today() - INTERVAL 30 DAY
 ORDER BY market_id, date;
 ```
 
-## Data Insertion Patterns
+## Padrões de Inserção de Dados
 
-### Bulk Insert (Recommended)
+### Bulk Insert (Recomendado)
 
 ```typescript
 import { ClickHouse } from 'clickhouse'
@@ -173,7 +173,7 @@ const clickhouse = new ClickHouse({
   }
 })
 
-// PASS: Batch insert (efficient)
+// PASS: Insert em lote (eficiente)
 async function bulkInsertTrades(trades: Trade[]) {
   const values = trades.map(trade => `(
     '${trade.id}',
@@ -189,9 +189,9 @@ async function bulkInsertTrades(trades: Trade[]) {
   `).toPromise()
 }
 
-// FAIL: Individual inserts (slow)
+// FAIL: Inserts individuais (lento)
 async function insertTrade(trade: Trade) {
-  // Don't do this in a loop!
+  // Não faça isso em um loop!
   await clickhouse.query(`
     INSERT INTO trades VALUES ('${trade.id}', ...)
   `).toPromise()
@@ -201,7 +201,7 @@ async function insertTrade(trade: Trade) {
 ### Streaming Insert
 
 ```typescript
-// For continuous data ingestion
+// Para ingestão contínua de dados
 import { createWriteStream } from 'fs'
 import { pipeline } from 'stream/promises'
 
@@ -218,10 +218,10 @@ async function streamInserts() {
 
 ## Materialized Views
 
-### Real-time Aggregations
+### Agregações em Tempo Real
 
 ```sql
--- Create materialized view for hourly stats
+-- Criar materialized view para estatísticas por hora
 CREATE MATERIALIZED VIEW market_stats_hourly_mv
 TO market_stats_hourly
 AS SELECT
@@ -233,7 +233,7 @@ AS SELECT
 FROM trades
 GROUP BY hour, market_id;
 
--- Query the materialized view
+-- Consultar a materialized view
 SELECT
     hour,
     market_id,
@@ -245,12 +245,12 @@ WHERE hour >= now() - INTERVAL 24 HOUR
 GROUP BY hour, market_id;
 ```
 
-## Performance Monitoring
+## Monitoramento de Performance
 
-### Query Performance
+### Performance de Consultas
 
 ```sql
--- Check slow queries
+-- Verificar consultas lentas
 SELECT
     query_id,
     user,

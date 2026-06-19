@@ -1,71 +1,71 @@
-# Evaluation Criteria — Detailed Scoring Guide
+# Critérios de Avaliação — Guia Detalhado de Pontuação
 
-This reference provides concrete scoring anchors for each axis. Use it when you're unsure whether a gap merits a 4 vs a 3, or a 2 vs a 1.
+Esta referência fornece âncoras concretas de pontuação para cada eixo. Use-a quando estiver em dúvida se uma lacuna merece um 4 vs um 3, ou um 2 vs um 1.
 
-## Accuracy
+## Precisão
 
-| Score | Anchor | Example |
+| Pontuação | Âncora | Exemplo |
 |---|---|---|
-| 5 | All facts verified against tool output, docs, or authoritative sources. No errors. | Configured retry via httpx transport — confirmed in httpx docs. All method names verified with grep against codebase. |
-| 4 | One minor inaccuracy that doesn't affect correctness. | Correct library, wrong default value for one parameter (claimed 0.5s, docs say 1.0s). |
-| 3 | One significant factual error, or 3+ minor inaccuracies. | Used `urllib3.Retry` in an httpx codebase. Works in this one case but wrong library. |
-| 2 | Multiple significant errors. Output would fail if followed. | Claimed "add this to package.json" but project uses pyproject.toml. Two other config claims also wrong. |
-| 1 | Fundamentally incorrect. Output contradicts itself or known facts. | Code has syntax errors. API endpoint doesn't exist. Claims a function signature that grep disproves. |
+| 5 | Todos os fatos verificados contra saída de tool, docs ou fontes autoritativas. Sem erros. | Retry configurado via transport httpx — confirmado nas docs do httpx. Todos os nomes de método verificados com grep contra a base de código. |
+| 4 | Uma imprecisão menor que não afeta a corretude. | Biblioteca correta, valor padrão errado para um parâmetro (afirmou 0.5s, as docs dizem 1.0s). |
+| 3 | Um erro factual significativo, ou 3+ imprecisões menores. | Usou `urllib3.Retry` em uma base de código httpx. Funciona neste caso, mas é a biblioteca errada. |
+| 2 | Múltiplos erros significativos. A saída falharia se seguida. | Afirmou "adicione isto ao package.json" mas o projeto usa pyproject.toml. Duas outras afirmações de config também erradas. |
+| 1 | Fundamentalmente incorreto. A saída se contradiz ou contradiz fatos conhecidos. | O código tem erros de sintaxe. O endpoint de API não existe. Afirma uma assinatura de função que o grep refuta. |
 
-## Completeness
+## Completude
 
-| Score | Anchor | Example |
+| Pontuação | Âncora | Exemplo |
 |---|---|---|
-| 5 | All explicit and implicit requirements covered. Edge cases handled. Error paths addressed. | User said "add retry to all HTTP requests." GET, POST, PUT, DELETE all covered. Timeout, 429, 5xx all handled. |
-| 4 | All explicit requirements covered. One implicit requirement missed. | All HTTP methods covered. Forgot to handle connection timeouts (not mentioned but expected). |
-| 3 | One explicit requirement missed, or 2+ implicit gaps. | User said "add logging too." Retry logic added but no logging. |
-| 2 | Multiple explicit requirements missed. Output is a partial solution. | Asked for retry + circuit breaker. Only retry implemented. |
-| 1 | Misses the core request. Delivers something adjacent to what was asked. | Asked for retry logic. Wrote a health check endpoint instead. |
+| 5 | Todos os requisitos explícitos e implícitos cobertos. Edge cases tratados. Caminhos de erro endereçados. | O usuário disse "adicione retry a todas as requisições HTTP." GET, POST, PUT, DELETE todos cobertos. Timeout, 429, 5xx todos tratados. |
+| 4 | Todos os requisitos explícitos cobertos. Um requisito implícito perdido. | Todos os métodos HTTP cobertos. Esqueceu de tratar timeouts de conexão (não mencionado mas esperado). |
+| 3 | Um requisito explícito perdido, ou 2+ lacunas implícitas. | O usuário disse "adicione logging também." Lógica de retry adicionada mas sem logging. |
+| 2 | Múltiplos requisitos explícitos perdidos. A saída é uma solução parcial. | Pediu retry + circuit breaker. Apenas retry implementado. |
+| 1 | Erra o pedido central. Entrega algo adjacente ao que foi pedido. | Pediu lógica de retry. Escreveu um endpoint de health check em vez disso. |
 
-## Clarity
+## Clareza
 
-| Score | Anchor | Example |
+| Pontuação | Âncora | Exemplo |
 |---|---|---|
-| 5 | Perfectly structured. Jargon explained or avoided. Visual hierarchy helps scanning. No ambiguity. | README with clear sections, code blocks, and a 10-second summary at top. |
-| 4 | Generally clear. One section could be better organized or one term undefined. | Good structure but `exponential backoff` used without explanation — assumes the reader knows it. |
-| 3 | Understandable after re-reading. Multiple organizational issues or undefined terms. | The explanation circles the point before getting to it. Several terms used before defined. |
-| 2 | Confusing in places. Reader would need to ask follow-up questions. | Code works but the PR description doesn't explain why retry was needed or what it fixes. |
-| 1 | Unintelligible or contradictory. Reader cannot determine what was done or why. | Output is a wall of text with no structure. Conclusions contradict earlier statements. |
+| 5 | Perfeitamente estruturado. Jargão explicado ou evitado. A hierarquia visual ajuda a escanear. Sem ambiguidade. | README com seções claras, blocos de código e um resumo de 10 segundos no topo. |
+| 4 | Geralmente claro. Uma seção poderia ser melhor organizada ou um termo está indefinido. | Boa estrutura mas `exponential backoff` usado sem explicação — assume que o leitor o conhece. |
+| 3 | Compreensível após reler. Múltiplos problemas de organização ou termos indefinidos. | A explicação rodeia o ponto antes de chegar a ele. Vários termos usados antes de definidos. |
+| 2 | Confuso em alguns pontos. O leitor precisaria fazer perguntas de acompanhamento. | O código funciona mas a descrição do PR não explica por que o retry era necessário ou o que ele corrige. |
+| 1 | Ininteligível ou contraditório. O leitor não consegue determinar o que foi feito ou por quê. | A saída é uma parede de texto sem estrutura. As conclusões contradizem afirmações anteriores. |
 
-## Actionability
+## Acionabilidade
 
-| Score | Anchor | Example |
+| Pontuação | Âncora | Exemplo |
 |---|---|---|
-| 5 | Single action required. Verification path included. No implicit steps. | "Merge this PR. Tests pass: `42 passed`. Deploy with `./deploy.sh`." |
-| 4 | Single action required but verification path is implied, not explicit. | "Merge this PR." (Tests exist but weren't cited. User has to check themselves.) |
-| 3 | Multiple actions required, or one action with unclear next step. | "Review and merge. Then update the config." (Which config? Where? No link or path.) |
-| 2 | User must figure out how to use the output. Missing critical instructions. | Code written but no test file, no run instructions, no PR created. User has to assemble everything. |
-| 1 | Output cannot be acted on without significant rework or clarification. | "Here's a design idea." (No code, no file, no PR. User has to start from scratch.) |
+| 5 | Ação única necessária. Caminho de verificação incluído. Sem passos implícitos. | "Faça merge deste PR. Os testes passam: `42 passed`. Faça deploy com `./deploy.sh`." |
+| 4 | Ação única necessária mas o caminho de verificação é implícito, não explícito. | "Faça merge deste PR." (Os testes existem mas não foram citados. O usuário tem de verificar por conta própria.) |
+| 3 | Múltiplas ações necessárias, ou uma ação com próximo passo pouco claro. | "Revise e faça merge. Depois atualize a config." (Qual config? Onde? Sem link ou caminho.) |
+| 2 | O usuário precisa descobrir como usar a saída. Faltam instruções críticas. | Código escrito mas sem arquivo de teste, sem instruções de execução, sem PR criado. O usuário tem de montar tudo. |
+| 1 | A saída não pode ser executada sem retrabalho ou esclarecimento significativo. | "Aqui está uma ideia de design." (Sem código, sem arquivo, sem PR. O usuário tem de começar do zero.) |
 
-## Conciseness
+## Concisão
 
-| Score | Anchor | Example |
+| Pontuação | Âncora | Exemplo |
 |---|---|---|
-| 5 | Every sentence earns its place. No redundancy. Information density is high. | 30 lines that say what 60 lines would. No repeated points. No filler. |
-| 4 | Minor redundancy. One paragraph could be tightened. | Good overall but repeats the motivation in both the PR description and code comments. |
-| 3 | Noticeable redundancy. 20%+ of content could be removed without loss. | Explains the same concept three times (in summary, body, and conclusion). Verbose examples. |
-| 2 | Significantly bloated. 40%+ of content is filler or repetition. | 200 lines for a task that needed 60. Restates the user's question. Includes irrelevant background. |
-| 1 | Noise-to-signal ratio is inverted. More filler than substance. | 500-line response to a 2-line question. Most of it is boilerplate, repetition, or irrelevant context. |
+| 5 | Cada frase merece seu lugar. Sem redundância. A densidade de informação é alta. | 30 linhas que dizem o que 60 linhas diriam. Sem pontos repetidos. Sem preenchimento. |
+| 4 | Redundância menor. Um parágrafo poderia ser apertado. | Bom no geral mas repete a motivação tanto na descrição do PR quanto nos comentários do código. |
+| 3 | Redundância perceptível. 20%+ do conteúdo poderia ser removido sem perda. | Explica o mesmo conceito três vezes (no resumo, no corpo e na conclusão). Exemplos prolixos. |
+| 2 | Significativamente inchado. 40%+ do conteúdo é preenchimento ou repetição. | 200 linhas para uma tarefa que precisava de 60. Repete a pergunta do usuário. Inclui contexto irrelevante. |
+| 1 | A razão ruído-sinal está invertida. Mais preenchimento que substância. | Resposta de 500 linhas para uma pergunta de 2 linhas. A maior parte é boilerplate, repetição ou contexto irrelevante. |
 
 ## Edge Cases
 
-### When the user gave unclear instructions
+### Quando o usuário deu instruções pouco claras
 
-If the user's request was ambiguous, do NOT penalize completeness for not reading minds. Instead, note in the evaluation: "User's request was ambiguous about [scope]. I chose interpretation [chosen interpretation]. If they meant [alternative interpretation], this score would drop to [score]."
+Se o pedido do usuário foi ambíguo, NÃO penalize a completude por não ler mentes. Em vez disso, anote na avaliação: "O pedido do usuário foi ambíguo quanto a [escopo]. Escolhi a interpretação [interpretação escolhida]. Se eles quisessem dizer [interpretação alternativa], esta pontuação cairia para [pontuação]."
 
-### When the task is inherently simple
+### Quando a tarefa é inerentemente simples
 
-A 3-line bug fix can legitimately score 5/5/5/5/5. The rubric scales with complexity — a simple task done perfectly IS a 5.0. Don't invent gaps to justify lower scores.
+Uma correção de bug de 3 linhas pode legitimamente pontuar 5/5/5/5/5. A rubrica escala com a complexidade — uma tarefa simples feita perfeitamente É um 5.0. Não invente lacunas para justificar pontuações mais baixas.
 
-### When you caught your own error mid-task
+### Quando você capturou seu próprio erro no meio da tarefa
 
-If you made an error, caught it, and fixed it before delivering — that's a 5 on Accuracy for the final output. The evaluation is about what the user received, not your internal process. Note the self-correction as evidence of thoroughness, not as a penalty.
+Se você cometeu um erro, o capturou e o corrigiu antes de entregar — isso é um 5 em Precisão para a saída final. A avaliação é sobre o que o usuário recebeu, não sobre seu processo interno. Anote a autocorreção como evidência de minúcia, não como penalidade.
 
-### When the tool output contradicts your claim
+### Quando a saída de tool contradiz sua afirmação
 
-If you claimed "tests pass" but the terminal output shows a failure — that's an automatic Accuracy ≤ 2. Tool output is ground truth. Claims without verification are the most common source of low accuracy scores.
+Se você afirmou "os testes passam" mas a saída do terminal mostra uma falha — isso é um Precisão ≤ 2 automático. A saída de tool é a verdade fundamental. Afirmações sem verificação são a fonte mais comum de pontuações de precisão baixas.

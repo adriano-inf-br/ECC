@@ -1,10 +1,10 @@
-# Define Routes
+# Definir Rotas
 
-Routes are objects that define which component should render for a specific URL path.
+Rotas são objetos que definem qual componente deve renderizar para um caminho de URL específico.
 
-## Basic Configuration
+## Configuração Básica
 
-Define routes in a `Routes` array and provide them using `provideRouter` in your `appConfig`.
+Defina as rotas em um array `Routes` e forneça-as usando `provideRouter` no seu `appConfig`.
 
 ```ts
 // app.routes.ts
@@ -19,41 +19,41 @@ export const appConfig: ApplicationConfig = {
 };
 ```
 
-## URL Paths
+## Caminhos de URL
 
-- **Static**: Matches an exact string (e.g., `'admin'`).
-- **Route Parameters**: Dynamic segments prefixed with a colon (e.g., `'user/:id'`).
-- **Wildcard**: Matches any URL using `**`. Useful for "Not Found" pages. **Always place at the end of the array.**
+- **Estático**: Corresponde a uma string exata (ex.: `'admin'`).
+- **Parâmetros de Rota**: Segmentos dinâmicos prefixados com dois-pontos (ex.: `'user/:id'`).
+- **Wildcard**: Corresponde a qualquer URL usando `**`. Útil para páginas "Não Encontrado". **Sempre coloque no final do array.**
 
-## Matching Strategy
+## Estratégia de Correspondência
 
-Angular uses a **first-match wins** strategy. Specific routes must come before less specific ones.
+O Angular usa uma estratégia de **primeira correspondência vence**. Rotas específicas devem vir antes das menos específicas.
 
-## Redirects
+## Redirecionamentos
 
-Use `redirectTo` to point one path to another.
+Use `redirectTo` para apontar um caminho para outro.
 
 ```ts
 { path: 'articles', redirectTo: '/blog' },
 { path: 'blog', component: Blog },
 ```
 
-## Page Titles
+## Títulos de Página
 
-Associate titles with routes for accessibility. Titles can be static or dynamic (via `ResolveFn` or a custom `TitleStrategy`).
+Associe títulos às rotas para acessibilidade. Os títulos podem ser estáticos ou dinâmicos (via `ResolveFn` ou um `TitleStrategy` customizado).
 
 ```ts
 { path: 'home', component: Home, title: 'Home Page' }
 ```
 
-## Route Data and Providers
+## Dados e Providers de Rota
 
-- **Static Data**: Attach metadata using the `data` property.
-- **Route Providers**: Scope dependencies to a specific route and its children using the `providers` array.
+- **Dados Estáticos**: Anexe metadados usando a propriedade `data`.
+- **Providers de Rota**: Escope dependências a uma rota específica e seus filhos usando o array `providers`.
 
-## Nested (Child) Routes
+## Rotas Aninhadas (Filhas)
 
-Define sub-views using the `children` property. Parent components must include a `<router-outlet />`.
+Defina subvisões usando a propriedade `children`. Os componentes pais devem incluir um `<router-outlet />`.
 
 ```ts
 {

@@ -1,126 +1,126 @@
 ---
 name: workspace-surface-audit
-description: Audit the active repo, MCP servers, plugins, connectors, env surfaces, and harness setup, then recommend the highest-value ECC-native skills, hooks, agents, and operator workflows. Use when the user wants help setting up Claude Code or understanding what capabilities are actually available in their environment.
+description: Audita o repositório ativo, servidores MCP, plugins, conectores, superfícies de ambiente e configuração do harness, então recomenda as skills, hooks, agents e fluxos de trabalho operacionais nativos do ECC de maior valor. Use quando o usuário quiser ajuda para configurar o Claude Code ou entender quais capacidades estão realmente disponíveis no seu ambiente.
 metadata:
   origin: ECC
 ---
 
-# Workspace Surface Audit
+# Auditoria de Superfície do Workspace
 
-Read-only audit skill for answering the question "what can this workspace and machine actually do right now, and what should we add or enable next?"
+Skill de auditoria somente leitura para responder à pergunta "o que este workspace e esta máquina podem realmente fazer agora, e o que devemos adicionar ou habilitar a seguir?"
 
-This is the ECC-native answer to setup-audit plugins. It does not modify files unless the user explicitly asks for follow-up implementation.
+Esta é a resposta nativa do ECC para plugins de auditoria de configuração. Ela não modifica arquivos a menos que o usuário peça explicitamente uma implementação de acompanhamento.
 
-## When to Use
+## Quando Usar
 
-- User says "set up Claude Code", "recommend automations", "what plugins or MCPs should I use?", or "what am I missing?"
-- Auditing a machine or repo before installing more skills, hooks, or connectors
-- Comparing official marketplace plugins against ECC-native coverage
-- Reviewing `.env`, `.mcp.json`, plugin settings, or connected-app surfaces to find missing workflow layers
-- Deciding whether a capability should be a skill, hook, agent, MCP, or external connector
+- O usuário diz "configurar o Claude Code", "recomendar automações", "quais plugins ou MCPs devo usar?" ou "o que estou perdendo?"
+- Auditando uma máquina ou repositório antes de instalar mais skills, hooks ou conectores
+- Comparando plugins oficiais do marketplace com a cobertura nativa do ECC
+- Revisando `.env`, `.mcp.json`, configurações de plugins ou superfícies de apps conectados para encontrar camadas de fluxo de trabalho ausentes
+- Decidindo se uma capacidade deve ser uma skill, hook, agent, MCP ou conector externo
 
-## Non-Negotiable Rules
+## Regras Inegociáveis
 
-- Never print secret values. Surface only provider names, capability names, file paths, and whether a key or config exists.
-- Prefer ECC-native workflows over generic "install another plugin" advice when ECC can reasonably own the surface.
-- Treat external plugins as benchmarks and inspiration, not authoritative product boundaries.
-- Separate three things clearly:
-  - already available now
-  - available but not wrapped well in ECC
-  - not available and would require a new integration
+- Nunca imprima valores de segredos. Exponha apenas nomes de provedores, nomes de capacidades, caminhos de arquivos e se uma chave ou configuração existe.
+- Prefira fluxos de trabalho nativos do ECC em vez de conselhos genéricos de "instale mais um plugin" quando o ECC puder razoavelmente cobrir a superfície.
+- Trate plugins externos como referências e inspiração, não como fronteiras de produto autoritativas.
+- Separe claramente três coisas:
+  - já disponível agora
+  - disponível, mas não bem encapsulado no ECC
+  - não disponível e requereria uma nova integração
 
-## Audit Inputs
+## Entradas da Auditoria
 
-Inspect only the files and settings needed to answer the question well:
+Inspecione apenas os arquivos e configurações necessários para responder bem à pergunta:
 
-1. Repo surface
-   - `package.json`, lockfiles, language markers, framework config, `README.md`
+1. Superfície do repositório
+   - `package.json`, lockfiles, marcadores de linguagem, configuração de framework, `README.md`
    - `.mcp.json`, `.lsp.json`, `.claude/settings*.json`, `.codex/*`
-   - `AGENTS.md`, `CLAUDE.md`, install manifests, hook configs
-2. Environment surface
-   - `.env*` files in the active repo and obvious adjacent ECC workspaces
-   - Surface only key names such as `STRIPE_API_KEY`, `TWILIO_AUTH_TOKEN`, `FAL_KEY`
-3. Connected tool surface
-   - Installed plugins, enabled connectors, MCP servers, LSPs, and app integrations
-4. ECC surface
-   - Existing skills, commands, hooks, agents, and install modules that already cover the need
+   - `AGENTS.md`, `CLAUDE.md`, manifestos de instalação, configurações de hook
+2. Superfície de ambiente
+   - Arquivos `.env*` no repositório ativo e workspaces ECC adjacentes óbvios
+   - Exponha apenas nomes de chaves como `STRIPE_API_KEY`, `TWILIO_AUTH_TOKEN`, `FAL_KEY`
+3. Superfície de ferramentas conectadas
+   - Plugins instalados, conectores habilitados, servidores MCP, LSPs e integrações de apps
+4. Superfície ECC
+   - Skills, comandos, hooks, agents e módulos de instalação existentes que já cobrem a necessidade
 
-## Audit Process
+## Processo de Auditoria
 
-### Phase 1: Inventory What Exists
+### Fase 1: Inventário do que Existe
 
-Produce a compact inventory:
+Produza um inventário compacto:
 
-- active harness targets
-- installed plugins and connected apps
-- configured MCP servers
-- configured LSP servers
-- env-backed services implied by key names
-- existing ECC skills already relevant to the workspace
+- alvos de harness ativos
+- plugins instalados e apps conectados
+- servidores MCP configurados
+- servidores LSP configurados
+- serviços respaldados por variáveis de ambiente implícitos nos nomes das chaves
+- skills ECC existentes já relevantes para o workspace
 
-If a surface exists only as a primitive, call that out. Example:
+Se uma superfície existe apenas como primitivo, indique isso. Exemplo:
 
-- "Stripe is available via connected app, but ECC lacks a billing-operator skill"
-- "Google Drive is connected, but there is no ECC-native Google Workspace operator workflow"
+- "Stripe está disponível via app conectado, mas o ECC não possui uma skill de operador de faturamento"
+- "Google Drive está conectado, mas não há um fluxo de trabalho de operador do Google Workspace nativo no ECC"
 
-### Phase 2: Benchmark Against Official and Installed Surfaces
+### Fase 2: Benchmark com Superfícies Oficiais e Instaladas
 
-Compare the workspace against:
+Compare o workspace com:
 
-- official Claude plugins that overlap with setup, review, docs, design, or workflow quality
-- locally installed plugins in Claude or Codex
-- the user's currently connected app surfaces
+- plugins oficiais do Claude que se sobrepõem a configuração, revisão, documentação, design ou qualidade de fluxo de trabalho
+- plugins instalados localmente no Claude ou Codex
+- as superfícies de apps conectados atualmente pelo usuário
 
-Do not just list names. For each comparison, answer:
+Não apenas liste nomes. Para cada comparação, responda:
 
-1. what they actually do
-2. whether ECC already has parity
-3. whether ECC only has primitives
-4. whether ECC is missing the workflow entirely
+1. o que eles realmente fazem
+2. se o ECC já tem paridade
+3. se o ECC possui apenas primitivos
+4. se o ECC está completamente sem o fluxo de trabalho
 
-### Phase 3: Turn Gaps Into ECC Decisions
+### Fase 3: Transforme Lacunas em Decisões ECC
 
-For every real gap, recommend the correct ECC-native shape:
+Para cada lacuna real, recomende a forma nativa ECC correta:
 
-| Gap Type | Preferred ECC Shape |
+| Tipo de Lacuna | Forma ECC Preferida |
 |----------|---------------------|
-| Repeatable operator workflow | Skill |
-| Automatic enforcement or side-effect | Hook |
-| Specialized delegated role | Agent |
-| External tool bridge | MCP server or connector |
-| Install/bootstrap guidance | Setup or audit skill |
+| Fluxo de trabalho de operador repetível | Skill |
+| Aplicação automática ou efeito colateral | Hook |
+| Papel delegado especializado | Agent |
+| Ponte para ferramenta externa | Servidor MCP ou conector |
+| Orientação de instalação/bootstrap | Skill de configuração ou auditoria |
 
-Default to user-facing skills that orchestrate existing tools when the need is operational rather than infrastructural.
+Use como padrão skills voltadas ao usuário que orquestram ferramentas existentes quando a necessidade é operacional em vez de infraestrutural.
 
-## Output Format
+## Saída
 
-Return five sections in this order:
+Retorne cinco seções nesta ordem:
 
-1. **Current surface**
-   - what is already usable right now
-2. **Parity**
-   - where ECC already matches or exceeds the benchmark
-3. **Primitive-only gaps**
-   - tools exist, but ECC lacks a clean operator skill
-4. **Missing integrations**
-   - capability not available yet
-5. **Top 3-5 next moves**
-   - concrete ECC-native additions, ordered by impact
+1. **Superfície atual**
+   - o que já é utilizável agora
+2. **Paridade**
+   - onde o ECC já iguala ou supera o benchmark
+3. **Lacunas somente com primitivos**
+   - ferramentas existem, mas o ECC não possui uma skill de operador limpa
+4. **Integrações ausentes**
+   - capacidade ainda não disponível
+5. **3-5 próximas ações principais**
+   - adições nativas ECC concretas, ordenadas por impacto
 
-## Recommendation Rules
+## Regras de Recomendação
 
-- Recommend at most 1-2 highest-value ideas per category.
-- Favor skills with obvious user intent and business value:
-  - setup audit
-  - billing/customer ops
-  - issue/program ops
-  - Google Workspace ops
-  - deployment/ops control
-- If a connector is company-specific, recommend it only when it is genuinely available or clearly useful to the user's workflow.
-- If ECC already has a strong primitive, propose a wrapper skill instead of inventing a brand-new subsystem.
+- Recomende no máximo 1-2 ideias de maior valor por categoria.
+- Favoreça skills com intenção óbvia do usuário e valor de negócio:
+  - auditoria de configuração
+  - operações de faturamento/clientes
+  - operações de issues/programa
+  - operações do Google Workspace
+  - controle de implantação/ops
+- Se um conector for específico da empresa, recomende-o apenas quando estiver genuinamente disponível ou claramente útil para o fluxo de trabalho do usuário.
+- Se o ECC já possui um primitivo forte, proponha uma skill wrapper em vez de inventar um subsistema completamente novo.
 
-## Good Outcomes
+## Bons Resultados
 
-- The user can immediately see what is connected, what is missing, and what ECC should own next.
-- Recommendations are specific enough to implement in the repo without another discovery pass.
-- The final answer is organized around workflows, not API brands.
+- O usuário pode imediatamente ver o que está conectado, o que está faltando e o que o ECC deve assumir a seguir.
+- As recomendações são específicas o suficiente para serem implementadas no repositório sem outra passagem de descoberta.
+- A resposta final é organizada em torno de fluxos de trabalho, não de marcas de API.

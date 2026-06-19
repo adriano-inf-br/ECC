@@ -16,7 +16,7 @@ Um bom tour é uma narrativa para um leitor específico:
 
 Crie apenas arquivos JSON `.tour`. Não modifique o código-fonte como parte desta skill.
 
-## When to Use
+## Quando Usar
 
 Use esta skill quando:
 - o usuário pede um code tour, tour de onboarding, walkthrough de arquitetura ou tour de PR
@@ -31,7 +31,7 @@ Exemplos:
 - tour de RCA mostrando o caminho da falha
 - tour de revisão de segurança das fronteiras de confiança e verificações-chave
 
-## When NOT to Use
+## Quando NÃO Usar
 
 | Em vez de code-tour | Use |
 | --- | --- |
@@ -40,7 +40,7 @@ Exemplos:
 | A tarefa é implementação ou refatoração | faça o trabalho de implementação |
 | A tarefa é onboarding amplo do código sem um artefato de tour | `codebase-onboarding` |
 
-## Fluxo de trabalho
+## Fluxo de Trabalho
 
 ### 1. Descobrir
 
@@ -52,7 +52,7 @@ Explore o repositório antes de escrever qualquer coisa:
 
 Não comece a escrever passos antes de entender o formato do código.
 
-### 2. Inferir o leitor
+### 2. Inferir o Leitor
 
 Decida a persona e a profundidade a partir do pedido.
 
@@ -67,7 +67,7 @@ Decida a persona e a profundidade a partir do pedido.
 | "explain how this feature works" | `feature-explainer` | 7-11 passos |
 | "debug this path" | `bug-fixer` | 7-11 passos |
 
-### 3. Ler e verificar âncoras
+### 3. Ler e Verificar Âncoras
 
 Todo caminho de arquivo e âncora de linha deve ser real:
 - confirme que o arquivo existe
@@ -102,7 +102,7 @@ Antes de finalizar:
 Use com moderação, geralmente apenas para um passo de encerramento:
 
 ```json
-{ "title": "Next Steps", "description": "You can now trace the request path end to end." }
+{ "title": "Próximos Passos", "description": "Você agora consegue rastrear o caminho da requisição de ponta a ponta." }
 ```
 
 Não faça o primeiro passo ser somente conteúdo.
@@ -112,7 +112,7 @@ Não faça o primeiro passo ser somente conteúdo.
 Use para orientar o leitor sobre um módulo:
 
 ```json
-{ "directory": "src/services", "title": "Service Layer", "description": "The core orchestration logic lives here." }
+{ "directory": "src/services", "title": "Camada de Serviço", "description": "A lógica central de orquestração fica aqui." }
 ```
 
 ### File + line
@@ -120,7 +120,7 @@ Use para orientar o leitor sobre um módulo:
 Este é o tipo de passo padrão:
 
 ```json
-{ "file": "src/auth/middleware.ts", "line": 42, "title": "Auth Gate", "description": "Every protected request passes here first." }
+{ "file": "src/auth/middleware.ts", "line": 42, "title": "Portão de Autenticação", "description": "Toda requisição protegida passa por aqui primeiro." }
 ```
 
 ### Selection
@@ -134,8 +134,8 @@ Use quando um bloco de código importa mais do que o arquivo inteiro:
     "start": { "line": 15, "character": 0 },
     "end": { "line": 34, "character": 0 }
   },
-  "title": "Request Pipeline",
-  "description": "This block wires validation, auth, and downstream execution."
+  "title": "Pipeline de Requisição",
+  "description": "Este bloco conecta validação, autenticação e execução downstream."
 }
 ```
 
@@ -144,7 +144,7 @@ Use quando um bloco de código importa mais do que o arquivo inteiro:
 Use quando as linhas exatas podem mudar de posição:
 
 ```json
-{ "file": "src/app.ts", "pattern": "export default class App", "title": "Application Entry" }
+{ "file": "src/app.ts", "pattern": "export default class App", "title": "Ponto de Entrada da Aplicação" }
 ```
 
 ### URI
@@ -152,7 +152,7 @@ Use quando as linhas exatas podem mudar de posição:
 Use para PRs, issues ou docs quando for útil:
 
 ```json
-{ "uri": "https://github.com/org/repo/pull/456", "title": "The PR" }
+{ "uri": "https://github.com/org/repo/pull/456", "title": "O PR" }
 ```
 
 ## Regra de Escrita: SMIG
@@ -176,34 +176,34 @@ Use este arco, a menos que a tarefa claramente exija algo diferente:
 
 O tour deve parecer um caminho, não um inventário.
 
-## Example
+## Exemplo
 
 ```json
 {
   "$schema": "https://aka.ms/codetour-schema",
-  "title": "API Service Tour",
+  "title": "Tour do Serviço de API",
   "description": "Walkthrough do caminho de requisição do serviço de pagamentos.",
   "ref": "main",
   "steps": [
     {
       "directory": "src",
-      "title": "Source Root",
+      "title": "Raiz do Código-Fonte",
       "description": "Todo o código de runtime do serviço começa aqui."
     },
     {
       "file": "src/server.ts",
       "line": 12,
-      "title": "Entry Point",
+      "title": "Ponto de Entrada",
       "description": "O servidor inicializa aqui e conecta o middleware antes de qualquer rota ser alcançada."
     },
     {
       "file": "src/routes/payments.ts",
       "line": 8,
-      "title": "Payment Routes",
+      "title": "Rotas de Pagamento",
       "description": "Toda requisição de pagamentos entra por este router antes de chegar à lógica do serviço."
     },
     {
-      "title": "Next Steps",
+      "title": "Próximos Passos",
       "description": "Você agora consegue seguir qualquer requisição de pagamento de ponta a ponta com as âncoras principais no lugar."
     }
   ]
@@ -221,7 +221,7 @@ O tour deve parecer um caminho, não um inventário.
 | O primeiro passo é somente conteúdo | Ancore o primeiro passo em um arquivo ou diretório real |
 | Persona incompatível | Escreva para o leitor real, não para um engenheiro genérico |
 
-## Best Practices
+## Boas Práticas
 
 - mantenha a contagem de passos proporcional ao tamanho do repositório e à profundidade da persona
 - use passos de diretório para orientação, passos de arquivo para substância
@@ -229,7 +229,7 @@ O tour deve parecer um caminho, não um inventário.
 - para monorepos, restrinja o escopo aos pacotes relevantes em vez de percorrer tudo
 - encerre com o que o leitor agora consegue fazer, não com uma recapitulação
 
-## Related Skills
+## Skills Relacionadas
 
 - `codebase-onboarding`
 - `coding-standards`

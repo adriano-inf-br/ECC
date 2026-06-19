@@ -1,83 +1,83 @@
 ---
 name: design-system
-description: Use this skill to generate or audit design systems, check visual consistency, and review PRs that touch styling.
+description: Use esta skill para gerar ou auditar design systems, verificar consistência visual e revisar PRs que alteram estilos.
 metadata:
   origin: ECC
 ---
 
-# Design System — Generate & Audit Visual Systems
+# Design System — Gerar e Auditar Sistemas Visuais
 
-## When to Use
+## Quando Usar
 
-- Starting a new project that needs a design system
-- Auditing an existing codebase for visual consistency
-- Before a redesign — understand what you have
-- When the UI looks "off" but you can't pinpoint why
-- Reviewing PRs that touch styling
+- Iniciando um novo projeto que precisa de um design system
+- Auditando um código existente para consistência visual
+- Antes de um redesign — entenda o que você tem
+- Quando a UI parece "estranha" mas você não consegue identificar o porquê
+- Revisando PRs que alteram estilos
 
-## How It Works
+## Como Funciona
 
-### Mode 1: Generate Design System
+### Modo 1: Gerar Design System
 
-Analyzes your codebase and generates a cohesive design system:
-
-```
-1. Scan CSS/Tailwind/styled-components for existing patterns
-2. Extract: colors, typography, spacing, border-radius, shadows, breakpoints
-3. Research 3 competitor sites for inspiration (via browser MCP)
-4. Propose a design token set (JSON + CSS custom properties)
-5. Generate DESIGN.md with rationale for each decision
-6. Create an interactive HTML preview page (self-contained, no deps)
-```
-
-Output: `DESIGN.md` + `design-tokens.json` + `design-preview.html`
-
-### Mode 2: Visual Audit
-
-Scores your UI across 10 dimensions (0-10 each):
+Analisa seu código e gera um design system coeso:
 
 ```
-1. Color consistency — are you using your palette or random hex values?
-2. Typography hierarchy — clear h1 > h2 > h3 > body > caption?
-3. Spacing rhythm — consistent scale (4px/8px/16px) or arbitrary?
-4. Component consistency — do similar elements look similar?
-5. Responsive behavior — fluid or broken at breakpoints?
-6. Dark mode — complete or half-done?
-7. Animation — purposeful or gratuitous?
-8. Accessibility — contrast ratios, focus states, touch targets
-9. Information density — cluttered or clean?
-10. Polish — hover states, transitions, loading states, empty states
+1. Escaneia CSS/Tailwind/styled-components em busca de padrões existentes
+2. Extrai: cores, tipografia, espaçamento, border-radius, sombras, breakpoints
+3. Pesquisa 3 sites concorrentes para inspiração (via browser MCP)
+4. Propõe um conjunto de design tokens (JSON + propriedades customizadas CSS)
+5. Gera DESIGN.md com a justificativa para cada decisão
+6. Cria uma página HTML interativa de preview (auto-contida, sem dependências)
 ```
 
-Each dimension gets a score, specific examples, and a fix with exact file:line.
+Saída: `DESIGN.md` + `design-tokens.json` + `design-preview.html`
 
-### Mode 3: AI Slop Detection
+### Modo 2: Auditoria Visual
 
-Identifies generic AI-generated design patterns:
+Pontua sua UI em 10 dimensões (0-10 cada):
 
 ```
-- Gratuitous gradients on everything
-- Purple-to-blue defaults
-- "Glass morphism" cards with no purpose
-- Rounded corners on things that shouldn't be rounded
-- Excessive animations on scroll
-- Generic hero with centered text over stock gradient
-- Sans-serif font stack with no personality
+1. Consistência de cores — você está usando sua paleta ou valores hex aleatórios?
+2. Hierarquia tipográfica — h1 > h2 > h3 > body > caption está claro?
+3. Ritmo de espaçamento — escala consistente (4px/8px/16px) ou arbitrária?
+4. Consistência de componentes — elementos similares parecem similares?
+5. Comportamento responsivo — fluido ou quebrado nos breakpoints?
+6. Dark mode — completo ou pela metade?
+7. Animação — proposital ou gratuita?
+8. Acessibilidade — taxas de contraste, estados de foco, alvos de toque
+9. Densidade de informação — congestionado ou limpo?
+10. Polimento — estados de hover, transições, estados de carregamento, estados vazios
 ```
 
-## Examples
+Cada dimensão recebe uma pontuação, exemplos específicos e uma correção com arquivo:linha exatos.
 
-**Generate for a SaaS app:**
+### Modo 3: Detecção de AI Slop
+
+Identifica padrões de design genéricos gerados por IA:
+
+```
+- Gradientes gratuitos em tudo
+- Padrões padrão de roxo para azul
+- Cards com "glass morphism" sem propósito
+- Cantos arredondados em coisas que não deveriam ser arredondadas
+- Animações excessivas no scroll
+- Hero genérico com texto centralizado sobre gradiente de stock
+- Stack de fontes sans-serif sem personalidade
+```
+
+## Exemplos
+
+**Gerar para um app SaaS:**
 ```
 /design-system generate --style minimal --palette earth-tones
 ```
 
-**Audit existing UI:**
+**Auditar UI existente:**
 ```
 /design-system audit --url http://localhost:3000 --pages / /pricing /docs
 ```
 
-**Check for AI slop:**
+**Verificar AI slop:**
 ```
 /design-system slop-check
 ```

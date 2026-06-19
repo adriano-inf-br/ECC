@@ -1,52 +1,52 @@
 ---
 name: healthcare-cdss-patterns
-description: Clinical Decision Support System (CDSS) development patterns. Drug interaction checking, dose validation, clinical scoring (NEWS2, qSOFA), alert severity classification, and integration into EMR workflows.
+description: Padrões de desenvolvimento de Sistema de Suporte à Decisão Clínica (CDSS). Verificação de interações medicamentosas, validação de doses, pontuação clínica (NEWS2, qSOFA), classificação de severidade de alertas e integração em fluxos de trabalho de EMR.
 metadata:
   origin: Health1 Super Speciality Hospitals — contributed by Dr. Keyur Patel
 version: "1.0.0"
 ---
 
-# Healthcare CDSS Development Patterns
+# Padrões de Desenvolvimento de CDSS em Saúde
 
-Patterns for building Clinical Decision Support Systems that integrate into EMR workflows. CDSS modules are patient safety critical — zero tolerance for false negatives.
+Padrões para construir Sistemas de Suporte à Decisão Clínica que se integram a fluxos de trabalho de EMR. Módulos de CDSS são críticos para a segurança do paciente — tolerância zero para falsos negativos.
 
-## When to Use
+## Quando Usar
 
-- Implementing drug interaction checking
-- Building dose validation engines
-- Implementing clinical scoring systems (NEWS2, qSOFA, APACHE, GCS)
-- Designing alert systems for abnormal clinical values
-- Building medication order entry with safety checks
-- Integrating lab result interpretation with clinical context
+- Implementando verificação de interações medicamentosas
+- Construindo engines de validação de doses
+- Implementando sistemas de pontuação clínica (NEWS2, qSOFA, APACHE, GCS)
+- Projetando sistemas de alerta para valores clínicos anormais
+- Construindo entrada de pedidos de medicação com verificações de segurança
+- Integrando interpretação de resultados laboratoriais com contexto clínico
 
-## How It Works
+## Como Funciona
 
-The CDSS engine is a **pure function library with zero side effects**. Input clinical data, output alerts. This makes it fully testable.
+O engine de CDSS é uma **biblioteca de funções puras sem efeitos colaterais**. Insira dados clínicos, receba alertas. Isso o torna totalmente testável.
 
-Three primary modules:
+Três módulos primários:
 
-1. **`checkInteractions(newDrug, currentMeds, allergies)`** — Checks a new drug against current medications and known allergies. Returns severity-sorted `InteractionAlert[]`. Uses `DrugInteractionPair` data model.
-2. **`validateDose(drug, dose, route, weight, age, renalFunction)`** — Validates a prescribed dose against weight-based, age-adjusted, and renal-adjusted rules. Returns `DoseValidationResult`.
-3. **`calculateNEWS2(vitals)`** — National Early Warning Score 2 from `NEWS2Input`. Returns `NEWS2Result` with total score, risk level, and escalation guidance.
+1. **`checkInteractions(newDrug, currentMeds, allergies)`** — Verifica um novo medicamento contra os medicamentos atuais e alergias conhecidas. Retorna `InteractionAlert[]` ordenados por severidade. Usa o modelo de dados `DrugInteractionPair`.
+2. **`validateDose(drug, dose, route, weight, age, renalFunction)`** — Valida uma dose prescrita de acordo com regras baseadas em peso, ajustadas por idade e ajustadas para função renal. Retorna `DoseValidationResult`.
+3. **`calculateNEWS2(vitals)`** — National Early Warning Score 2 a partir de `NEWS2Input`. Retorna `NEWS2Result` com pontuação total, nível de risco e orientação de escalada.
 
 ```
-EMR UI
-  ↓ (user enters data)
-CDSS Engine (pure functions, no side effects)
-  ├── Drug Interaction Checker
-  ├── Dose Validator
-  ├── Clinical Scoring (NEWS2, qSOFA, etc.)
-  └── Alert Classifier
-  ↓ (returns alerts)
-EMR UI (displays alerts inline, blocks if critical)
+UI do EMR
+  ↓ (usuário insere dados)
+Engine CDSS (funções puras, sem efeitos colaterais)
+  ├── Verificador de Interações Medicamentosas
+  ├── Validador de Doses
+  ├── Pontuação Clínica (NEWS2, qSOFA, etc.)
+  └── Classificador de Alertas
+  ↓ (retorna alertas)
+UI do EMR (exibe alertas inline, bloqueia se crítico)
 ```
 
-### Drug Interaction Checking
+### Verificação de Interações Medicamentosas
 
 ```typescript
 interface DrugInteractionPair {
-  drugA: string;           // generic name
-  drugB: string;           // generic name
+  drugA: string;           // nome genérico
+  drugB: string;           // nome genérico
   severity: 'critical' | 'major' | 'minor';
   mechanism: string;
   clinicalEffect: string;
@@ -78,9 +78,9 @@ function checkInteractions(
 }
 ```
 
-Interaction pairs must be **bidirectional**: if Drug A interacts with Drug B, then Drug B interacts with Drug A.
+Os pares de interação devem ser **bidirecionais**: se o Medicamento A interage com o Medicamento B, então o Medicamento B interage com o Medicamento A.
 
-### Dose Validation
+### Validação de Doses
 
 ```typescript
 interface DoseValidationResult {
@@ -102,7 +102,7 @@ function validateDose(
   if (!rules) return { valid: true, message: 'No validation rules available', suggestedRange: null, factors: [] };
   const factors: string[] = [];
 
-  // SAFETY: if rules require weight but weight missing, BLOCK (not pass)
+  // SEGURANÇA: se as regras exigem peso mas o peso está ausente, BLOQUEIE (não passe)
   if (rules.weightBased) {
     if (!patientWeight || patientWeight <= 0) {
       return { valid: false, message: `Weight required for ${drug} (mg/kg drug)`,
@@ -116,7 +116,7 @@ function validateDose(
     }
   }
 
-  // Age-based adjustment (when rules define age brackets and age is provided)
+  // Ajuste por idade (quando as regras definem faixas etárias e a idade é fornecida)
   if (rules.ageAdjusted && patientAge !== undefined) {
     factors.push('age');
     const ageMax = rules.getAgeAdjustedMax(patientAge);
@@ -126,7 +126,7 @@ function validateDose(
     }
   }
 
-  // Renal adjustment (when rules define eGFR brackets and eGFR is provided)
+  // Ajuste renal (quando as regras definem faixas de eGFR e o eGFR é fornecido)
   if (rules.renalAdjusted && renalFunction !== undefined) {
     factors.push('renal');
     const renalMax = rules.getRenalAdjustedMax(renalFunction);
@@ -136,7 +136,7 @@ function validateDose(
     }
   }
 
-  // Absolute max
+  // Máximo absoluto
   if (dose > rules.absoluteMax) {
     return { valid: false, message: `Exceeds absolute max ${rules.absoluteMax}${rules.unit}`,
       suggestedRange: { min: rules.typicalMin, max: rules.absoluteMax, unit: rules.unit },
@@ -147,7 +147,7 @@ function validateDose(
 }
 ```
 
-### Clinical Scoring: NEWS2
+### Pontuação Clínica: NEWS2
 
 ```typescript
 interface NEWS2Input {
@@ -163,19 +163,19 @@ interface NEWS2Result {
 }
 ```
 
-Scoring tables must match the Royal College of Physicians specification exactly.
+As tabelas de pontuação devem corresponder exatamente à especificação do Royal College of Physicians.
 
-### Alert Severity and UI Behavior
+### Severidade do Alerta e Comportamento da UI
 
-| Severity | UI Behavior | Clinician Action Required |
-|----------|-------------|--------------------------|
-| Critical | Block action. Non-dismissable modal. Red. | Must document override reason to proceed |
-| Major | Warning banner inline. Orange. | Must acknowledge before proceeding |
-| Minor | Info note inline. Yellow. | Awareness only, no action required |
+| Severidade | Comportamento da UI | Ação Requerida do Clínico |
+|------------|---------------------|--------------------------|
+| Crítico | Bloqueia ação. Modal não descartável. Vermelho. | Deve documentar motivo de substituição para continuar |
+| Maior | Banner de aviso inline. Laranja. | Deve confirmar ciência antes de continuar |
+| Menor | Nota informativa inline. Amarelo. | Apenas consciência, sem ação necessária |
 
-Critical alerts must NEVER be auto-dismissed or implemented as toast notifications. Override reasons must be stored in the audit trail.
+Alertas críticos NUNCA devem ser autodescartados ou implementados como notificações toast. Os motivos de substituição devem ser armazenados na trilha de auditoria.
 
-### Testing CDSS (Zero Tolerance for False Negatives)
+### Testando CDSS (Tolerância Zero para Falsos Negativos)
 
 ```typescript
 describe('CDSS — Patient Safety', () => {
@@ -201,20 +201,20 @@ describe('CDSS — Patient Safety', () => {
 });
 ```
 
-Pass criteria: 100%. A single missed interaction is a patient safety event.
+Critério de aprovação: 100%. Uma única interação não detectada é um evento de segurança do paciente.
 
-### Anti-Patterns
+### Anti-Padrões
 
-- Making CDSS checks optional or skippable without documented reason
-- Implementing interaction checks as toast notifications
-- Using `any` types for drug or clinical data
-- Hardcoding interaction pairs instead of using a maintainable data structure
-- Silently catching errors in CDSS engine (must surface failures loudly)
-- Skipping weight-based validation when weight is not available (must block, not pass)
+- Tornar as verificações de CDSS opcionais ou ignoráveis sem motivo documentado
+- Implementar verificações de interação como notificações toast
+- Usar tipos `any` para dados de medicamentos ou dados clínicos
+- Hardcodar pares de interação em vez de usar uma estrutura de dados manutenível
+- Capturar silenciosamente erros no engine de CDSS (falhas devem ser expostas de forma barulhenta)
+- Pular a validação baseada em peso quando o peso não está disponível (deve bloquear, não passar)
 
-## Examples
+## Exemplos
 
-### Example 1: Drug Interaction Check
+### Exemplo 1: Verificação de Interação Medicamentosa
 
 ```typescript
 const alerts = checkInteractions('warfarin', ['aspirin', 'metformin'], ['penicillin']);
@@ -222,7 +222,7 @@ const alerts = checkInteractions('warfarin', ['aspirin', 'metformin'], ['penicil
 //    message: 'Increased bleeding risk', recommendation: 'Avoid combination' }]
 ```
 
-### Example 2: Dose Validation
+### Exemplo 2: Validação de Dose
 
 ```typescript
 const ok = validateDose('paracetamol', 1000, 'oral', 70, 45);
@@ -235,7 +235,7 @@ const noWeight = validateDose('gentamicin', 300, 'iv');
 // { valid: false, factors: ['weight_missing'] }
 ```
 
-### Example 3: NEWS2 Scoring
+### Exemplo 3: Pontuação NEWS2
 
 ```typescript
 const result = calculateNEWS2({

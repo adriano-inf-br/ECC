@@ -1,27 +1,27 @@
-# tinystruct Testing Patterns
+# Padrões de Testes no tinystruct
 
-## When to Use
+## Quando Usar
 
-Use these patterns when writing unit tests for your applications with **JUnit 5**. Essential for verifying action logic, routing registration, and HTTP mode behavior.
+Use estes padrões ao escrever testes unitários para suas aplicações com **JUnit 5**. Essencial para verificar a lógica de actions, registro de rotas e comportamento no modo HTTP.
 
-## How It Works
+## Como Funciona
 
-### Unit Testing Applications
-ActionRegistry is a singleton. To test an application:
-1. Instantiate the application.
-2. Provide a `Settings` object (triggers `init()` and annotation processing).
-3. Use `app.invoke(path, args)` to test logic directly.
+### Testes Unitários de Aplicações
+O `ActionRegistry` é um singleton. Para testar uma aplicação:
+1. Instancie a aplicação.
+2. Forneça um objeto `Settings` (aciona `init()` e o processamento de anotações).
+3. Use `app.invoke(path, args)` para testar a lógica diretamente.
 
-### HTTP Integration Testing
-For tests involving the built-in HTTP server:
-1. Start `HttpServer` in a background thread.
-2. Use `ApplicationManager.call("start", context, Action.Mode.CLI)` to boot.
-3. Wait for the port to be open using a `Socket`.
-4. Use `URLRequest` and `HTTPHandler` to perform actual requests.
+### Testes de Integração HTTP
+Para testes que envolvem o servidor HTTP embutido:
+1. Inicie o `HttpServer` em uma thread em segundo plano.
+2. Use `ApplicationManager.call("start", context, Action.Mode.CLI)` para inicializar.
+3. Aguarde a porta ficar disponível usando um `Socket`.
+4. Use `URLRequest` e `HTTPHandler` para realizar requisições reais.
 
-## Examples
+## Exemplos
 
-### Unit Test
+### Teste Unitário
 ```java
 import org.junit.jupiter.api.*;
 import org.tinystruct.system.Settings;
@@ -33,7 +33,7 @@ class MyAppTest {
     void setUp() {
         app = new MyApp();
         app.setConfiguration(new Settings());
-        app.init(); // triggers @Action annotation processing and registers all actions
+        app.init(); // aciona o processamento da anotação @Action e registra todas as actions
     }
 
     @Test
@@ -50,7 +50,7 @@ class MyAppTest {
 }
 ```
 
-### ActionRegistry Match Testing
+### Teste de Correspondência no ActionRegistry
 ```java
 @Test
 void testRouting() {
@@ -60,13 +60,13 @@ void testRouting() {
 }
 ```
 
-### HTTP Integration Pattern
-Reference: `src/test/java/org/tinystruct/system/HttpServerHttpModeTest.java`
+### Padrão de Integração HTTP
+Referência: `src/test/java/org/tinystruct/system/HttpServerHttpModeTest.java`
 
 ```java
-// Pattern:
-// 1. Start server in thread
-// 2. Poll for port availability
-// 3. Send HTTP request via HTTPHandler
-// 4. Assert response body/status
+// Padrão:
+// 1. Inicia o servidor em uma thread
+// 2. Verifica a disponibilidade da porta
+// 3. Envia requisição HTTP via HTTPHandler
+// 4. Verifica o corpo/status da resposta
 ```

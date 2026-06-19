@@ -1,39 +1,39 @@
-# RTStream Guide
+# Guia do RTStream
 
-## Overview
+## Visão Geral
 
-RTStream enables real-time ingestion of live video streams (RTSP/RTMP) and desktop capture sessions. Once connected, you can record, index, search, and export content from live sources.
+O RTStream permite a ingestão em tempo real de streams de vídeo ao vivo (RTSP/RTMP) e sessões de captura de desktop. Uma vez conectado, você pode gravar, indexar, pesquisar e exportar conteúdo de fontes ao vivo.
 
-For code-level details (SDK methods, parameters, examples), see [rtstream-reference.md](rtstream-reference.md).
+Para detalhes em nível de código (métodos do SDK, parâmetros, exemplos), consulte [rtstream-reference.md](rtstream-reference.md).
 
-## Use Cases
+## Casos de Uso
 
-- **Security & Monitoring**: Connect RTSP cameras, detect events, trigger alerts
-- **Live Broadcasts**: Ingest RTMP streams, index in real-time, enable instant search
-- **Meeting Recording**: Capture desktop screen and audio, transcribe live, export recordings
-- **Event Processing**: Monitor live feeds, run AI analysis, respond to detected content
+- **Segurança e Monitoramento**: Conecte câmeras RTSP, detecte eventos, acione alertas
+- **Transmissões ao Vivo**: Ingira streams RTMP, indexe em tempo real, habilite pesquisa instantânea
+- **Gravação de Reuniões**: Capture tela e áudio do desktop, transcreva ao vivo, exporte gravações
+- **Processamento de Eventos**: Monitore feeds ao vivo, execute análises de IA, responda ao conteúdo detectado
 
-## Quick Start
+## Início Rápido
 
-1. **Connect to a live stream** (RTSP/RTMP URL) or get RTStream from a capture session
+1. **Conecte-se a um stream ao vivo** (URL RTSP/RTMP) ou obtenha um RTStream de uma sessão de captura
 
-2. **Start ingestion** to begin recording the live content
+2. **Inicie a ingestão** para começar a gravar o conteúdo ao vivo
 
-3. **Start AI pipelines** for real-time indexing (audio, visual, transcription)
+3. **Inicie pipelines de IA** para indexação em tempo real (áudio, visual, transcrição)
 
-4. **Monitor events** via WebSocket for live AI results and alerts
+4. **Monitore eventos** via WebSocket para resultados de IA ao vivo e alertas
 
-5. **Stop ingestion** when done
+5. **Pare a ingestão** quando terminar
 
-6. **Export to video** for permanent storage and further processing
+6. **Exporte para vídeo** para armazenamento permanente e processamento adicional
 
-7. **Search the recording** to find specific moments
+7. **Pesquise a gravação** para encontrar momentos específicos
 
-## RTStream Sources
+## Fontes do RTStream
 
-### From RTSP/RTMP Streams
+### De Streams RTSP/RTMP
 
-Connect directly to a live video source:
+Conecte-se diretamente a uma fonte de vídeo ao vivo:
 
 ```python
 rtstream = coll.connect_rtstream(
@@ -42,9 +42,9 @@ rtstream = coll.connect_rtstream(
 )
 ```
 
-### From Capture Sessions
+### De Sessões de Captura
 
-Get RTStreams from desktop capture (mic, screen, system audio):
+Obtenha RTStreams a partir de capturas de desktop (microfone, tela, áudio do sistema):
 
 ```python
 session = conn.get_capture_session(session_id)
@@ -54,12 +54,12 @@ displays = session.get_rtstream("screen")
 system_audios = session.get_rtstream("system_audio")
 ```
 
-For capture session workflow, see [capture.md](capture.md).
+Para o fluxo de trabalho de sessão de captura, consulte [capture.md](capture.md).
 
 ---
 
 ## Scripts
 
-| Script | Description |
+| Script | Descrição |
 |--------|-------------|
-| `scripts/ws_listener.py` | WebSocket event listener for real-time AI results |
+| `scripts/ws_listener.py` | Listener de eventos WebSocket para resultados de IA em tempo real |

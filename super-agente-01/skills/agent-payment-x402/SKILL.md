@@ -9,7 +9,7 @@ metadata:
 
 Permita que agents de IA façam pagamentos controlados por política com controles de gastos embutidos. Usa o protocolo de pagamento HTTP x402 e tools MCP para que agents possam pagar por serviços externos, APIs ou outros agents sem risco custodial.
 
-## When to Use
+## Quando Usar
 
 Use quando: seu agent precisa pagar por uma chamada de API, comprar um serviço, acertar contas com outro agent, impor limites de gasto por tarefa ou gerenciar uma carteira não custodial. Combina naturalmente com as skills cost-aware-llm-pipeline e security-review.
 
@@ -32,7 +32,7 @@ Escolha o caminho de integração com base em se seu agent está comprando acess
 - `agentwallet-sdk`: use a documentação do pacote para confirmar a cobertura de rede atual antes de produção. Base Sepolia é o padrão de desenvolvimento mais seguro; a Base mainnet é o caminho de produção apontado pela skill original.
 - OKX Payments / X Layer: a documentação atual de vendedor mira a X Layer (`eip155:196`) e a liquidação em USDT0. Busque a documentação atual do SDK antes de gerar código de produção, porque pacotes de pagamento e o comportamento do facilitador podem mudar rapidamente.
 
-## How It Works
+## Como Funciona
 
 ### Protocolo x402
 O x402 estende o HTTP 402 (Payment Required) em um fluxo negociável por máquina. Quando um servidor retorna `402`, a tool de pagamento do agent negocia o preço, verifica o orçamento, assina uma transação e tenta novamente apenas dentro da fronteira de política e confirmação definida pelo orquestrador.
@@ -99,7 +99,7 @@ Para fluxos de API do lado vendedor, busque o guia mais recente específico da l
 
 Não copie exemplos de documentações mais antigas sem verificar o repositório OKX atual. A orientação atual da OKX usa `okx-agent-payments-protocol` como o dispatcher, e a documentação de vendedor Java agora está disponível.
 
-## Examples
+## Exemplos
 
 ### Imposição de orçamento em um cliente MCP
 

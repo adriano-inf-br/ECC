@@ -1,61 +1,61 @@
 ---
 name: healthcare-eval-harness
-description: Patient safety evaluation harness for healthcare application deployments. Automated test suites for CDSS accuracy, PHI exposure, clinical workflow integrity, and integration compliance. Blocks deployments on safety failures.
+description: Harness de avaliação de segurança do paciente para implantações de aplicações de saúde. Suítes de testes automatizados para precisão de CDSS, exposição de PHI, integridade de fluxo de trabalho clínico e conformidade de integração. Bloqueia implantações em caso de falhas de segurança.
 metadata:
   origin: Health1 Super Speciality Hospitals — contributed by Dr. Keyur Patel
 version: "1.0.0"
 ---
 
-# Healthcare Eval Harness — Patient Safety Verification
+# Healthcare Eval Harness — Verificação de Segurança do Paciente
 
-Automated verification system for healthcare application deployments. A single CRITICAL failure blocks deployment. Patient safety is non-negotiable.
+Sistema de verificação automatizada para implantações de aplicações de saúde. Uma única falha CRÍTICA bloqueia a implantação. A segurança do paciente não é negociável.
 
-> **Note:** Examples use Jest as the reference test runner. Adapt commands for your framework (Vitest, pytest, PHPUnit, etc.) — the test categories and pass thresholds are framework-agnostic.
+> **Nota:** Os exemplos usam Jest como framework de referência para testes. Adapte os comandos para o seu framework (Vitest, pytest, PHPUnit, etc.) — as categorias de teste e os limites de aprovação são agnósticos ao framework.
 
-## When to Use
+## Quando Usar
 
-- Before any deployment of EMR/EHR applications
-- After modifying CDSS logic (drug interactions, dose validation, scoring)
-- After changing database schemas that touch patient data
-- After modifying authentication or access control
-- During CI/CD pipeline configuration for healthcare apps
-- After resolving merge conflicts in clinical modules
+- Antes de qualquer implantação de aplicações EMR/EHR
+- Após modificar a lógica de CDSS (interações medicamentosas, validação de doses, pontuação)
+- Após alterar esquemas de banco de dados que tocam dados de pacientes
+- Após modificar autenticação ou controle de acesso
+- Durante a configuração do pipeline CI/CD para aplicações de saúde
+- Após resolver conflitos de merge em módulos clínicos
 
-## How It Works
+## Como Funciona
 
-The eval harness runs five test categories in order. The first three (CDSS Accuracy, PHI Exposure, Data Integrity) are CRITICAL gates requiring 100% pass rate — a single failure blocks deployment. The remaining two (Clinical Workflow, Integration) are HIGH gates requiring 95%+ pass rate.
+O eval harness executa cinco categorias de teste em ordem. As três primeiras (Precisão do CDSS, Exposição de PHI, Integridade de Dados) são portões CRÍTICOS exigindo 100% de aprovação — uma única falha bloqueia a implantação. As duas restantes (Fluxo de Trabalho Clínico, Integração) são portões ALTOS exigindo 95%+ de aprovação.
 
-Each category maps to a Jest test path pattern. The CI pipeline runs CRITICAL gates with `--bail` (stop on first failure) and enforces coverage thresholds with `--coverage --coverageThreshold`.
+Cada categoria mapeia para um padrão de caminho de teste do Jest. O pipeline de CI executa os portões CRÍTICOS com `--bail` (para na primeira falha) e aplica limites de cobertura com `--coverage --coverageThreshold`.
 
-### Eval Categories
+### Categorias de Avaliação
 
-**1. CDSS Accuracy (CRITICAL — 100% required)**
+**1. Precisão do CDSS (CRÍTICO — 100% exigido)**
 
-Tests all clinical decision support logic: drug interaction pairs (both directions), dose validation rules, clinical scoring vs published specs, no false negatives, no silent failures.
+Testa toda a lógica de suporte à decisão clínica: pares de interações medicamentosas (ambas as direções), regras de validação de doses, pontuação clínica vs. especificações publicadas, sem falsos negativos, sem falhas silenciosas.
 
 ```bash
 npx jest --testPathPattern='tests/cdss' --bail --ci --coverage
 ```
 
-**2. PHI Exposure (CRITICAL — 100% required)**
+**2. Exposição de PHI (CRÍTICO — 100% exigido)**
 
-Tests for protected health information leaks: API error responses, console output, URL parameters, browser storage, cross-facility isolation, unauthenticated access, service role key absence.
+Testa vazamentos de informações de saúde protegidas: respostas de erro da API, saída do console, parâmetros de URL, armazenamento do navegador, isolamento entre instalações, acesso não autenticado, ausência da chave service role.
 
 ```bash
 npx jest --testPathPattern='tests/security/phi' --bail --ci
 ```
 
-**3. Data Integrity (CRITICAL — 100% required)**
+**3. Integridade de Dados (CRÍTICO — 100% exigido)**
 
-Tests clinical data safety: locked encounters, audit trail entries, cascade delete protection, concurrent edit handling, no orphaned records.
+Testa a segurança dos dados clínicos: consultas bloqueadas, entradas de trilha de auditoria, proteção contra exclusão em cascata, tratamento de edições concorrentes, sem registros órfãos.
 
 ```bash
 npx jest --testPathPattern='tests/data-integrity' --bail --ci
 ```
 
-**4. Clinical Workflow (HIGH — 95%+ required)**
+**4. Fluxo de Trabalho Clínico (ALTO — 95%+ exigido)**
 
-Tests end-to-end flows: encounter lifecycle, template rendering, medication sets, drug/diagnosis search, prescription PDF, red flag alerts.
+Testa fluxos de ponta a ponta: ciclo de vida de consultas, renderização de templates, conjuntos de medicamentos, busca de medicamentos/diagnósticos, PDF de prescrição, alertas de sinais de alerta.
 
 ```bash
 tmp_json=$(mktemp)
@@ -70,9 +70,9 @@ rate=$(echo "scale=2; $passed * 100 / $total" | bc)
 echo "Clinical pass rate: ${rate}% ($passed/$total)"
 ```
 
-**5. Integration Compliance (HIGH — 95%+ required)**
+**5. Conformidade de Integração (ALTO — 95%+ exigido)**
 
-Tests external systems: HL7 message parsing (v2.x), FHIR validation, lab result mapping, malformed message handling.
+Testa sistemas externos: análise de mensagens HL7 (v2.x), validação FHIR, mapeamento de resultados laboratoriais, tratamento de mensagens malformadas.
 
 ```bash
 tmp_json=$(mktemp)
@@ -87,17 +87,17 @@ rate=$(echo "scale=2; $passed * 100 / $total" | bc)
 echo "Integration pass rate: ${rate}% ($passed/$total)"
 ```
 
-### Pass/Fail Matrix
+### Matriz de Aprovação/Reprovação
 
-| Category | Threshold | On Failure |
-|----------|-----------|------------|
-| CDSS Accuracy | 100% | **BLOCK deployment** |
-| PHI Exposure | 100% | **BLOCK deployment** |
-| Data Integrity | 100% | **BLOCK deployment** |
-| Clinical Workflow | 95%+ | WARN, allow with review |
-| Integration | 95%+ | WARN, allow with review |
+| Categoria | Limite | Em Caso de Falha |
+|-----------|--------|------------------|
+| Precisão do CDSS | 100% | **BLOQUEAR implantação** |
+| Exposição de PHI | 100% | **BLOQUEAR implantação** |
+| Integridade de Dados | 100% | **BLOQUEAR implantação** |
+| Fluxo de Trabalho Clínico | 95%+ | AVISAR, permitir com revisão |
+| Integração | 95%+ | AVISAR, permitir com revisão |
 
-### CI/CD Integration
+### Integração com CI/CD
 
 ```yaml
 name: Healthcare Safety Gate
@@ -113,7 +113,7 @@ jobs:
           node-version: '20'
       - run: npm ci
 
-      # CRITICAL gates — 100% required, bail on first failure
+      # Portões CRÍTICOS — 100% exigido, para na primeira falha
       - name: CDSS Accuracy
         run: npx jest --testPathPattern='tests/cdss' --bail --ci --coverage --coverageThreshold='{"global":{"branches":80,"functions":80,"lines":80}}'
 
@@ -123,8 +123,8 @@ jobs:
       - name: Data Integrity
         run: npx jest --testPathPattern='tests/data-integrity' --bail --ci
 
-      # HIGH gates — 95%+ required, custom threshold check
-      # HIGH gates — 95%+ required
+      # Portões ALTOS — 95%+ exigido, verificação de limite personalizado
+      # Portões ALTOS — 95%+ exigido
       - name: Clinical Workflows
         run: |
           TMP_JSON=$(mktemp)
@@ -156,18 +156,18 @@ jobs:
           fi
 ```
 
-### Anti-Patterns
+### Anti-Padrões
 
-- Skipping CDSS tests "because they passed last time"
-- Setting CRITICAL thresholds below 100%
-- Using `--no-bail` on CRITICAL test suites
-- Mocking the CDSS engine in integration tests (must test real logic)
-- Allowing deployments when safety gate is red
-- Running tests without `--coverage` on CDSS suites
+- Pular testes de CDSS "porque passaram na última vez"
+- Definir limites CRÍTICOS abaixo de 100%
+- Usar `--no-bail` em suítes de testes CRÍTICOS
+- Mockar o engine de CDSS em testes de integração (deve testar a lógica real)
+- Permitir implantações quando o portão de segurança está vermelho
+- Executar testes sem `--coverage` em suítes de CDSS
 
-## Examples
+## Exemplos
 
-### Example 1: Run All Critical Gates Locally
+### Exemplo 1: Executar Todos os Portões Críticos Localmente
 
 ```bash
 npx jest --testPathPattern='tests/cdss' --bail --ci --coverage && \
@@ -175,7 +175,7 @@ npx jest --testPathPattern='tests/security/phi' --bail --ci && \
 npx jest --testPathPattern='tests/data-integrity' --bail --ci
 ```
 
-### Example 2: Check HIGH Gate Pass Rate
+### Exemplo 2: Verificar Taxa de Aprovação do Portão ALTO
 
 ```bash
 tmp_json=$(mktemp)
@@ -185,24 +185,24 @@ jq '{
   total: (.numTotalTests // 0),
   rate: (if (.numTotalTests // 0) == 0 then 0 else ((.numPassedTests // 0) / (.numTotalTests // 1) * 100) end)
 }' "$tmp_json"
-# Expected: { "passed": 21, "total": 22, "rate": 95.45 }
+# Esperado: { "passed": 21, "total": 22, "rate": 95.45 }
 ```
 
-### Example 3: Eval Report
+### Exemplo 3: Relatório de Avaliação
 
 ```
 ## Healthcare Eval: 2026-03-27 [commit abc1234]
 
-### Patient Safety: PASS
+### Segurança do Paciente: APROVADO
 
-| Category | Tests | Pass | Fail | Status |
-|----------|-------|------|------|--------|
-| CDSS Accuracy | 39 | 39 | 0 | PASS |
-| PHI Exposure | 8 | 8 | 0 | PASS |
-| Data Integrity | 12 | 12 | 0 | PASS |
-| Clinical Workflow | 22 | 21 | 1 | 95.5% PASS |
-| Integration | 6 | 6 | 0 | PASS |
+| Categoria | Testes | Aprovados | Reprovados | Status |
+|-----------|--------|-----------|------------|--------|
+| Precisão CDSS | 39 | 39 | 0 | APROVADO |
+| Exposição PHI | 8 | 8 | 0 | APROVADO |
+| Integridade de Dados | 12 | 12 | 0 | APROVADO |
+| Fluxo de Trabalho Clínico | 22 | 21 | 1 | 95,5% APROVADO |
+| Integração | 6 | 6 | 0 | APROVADO |
 
-### Coverage: 84% (target: 80%+)
-### Verdict: SAFE TO DEPLOY
+### Cobertura: 84% (meta: 80%+)
+### Veredicto: SEGURO PARA IMPLANTAR
 ```

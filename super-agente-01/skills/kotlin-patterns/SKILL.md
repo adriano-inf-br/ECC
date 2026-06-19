@@ -1,29 +1,29 @@
 ---
 name: kotlin-patterns
-description: Idiomatic Kotlin patterns, best practices, and conventions for building robust, efficient, and maintainable Kotlin applications with coroutines, null safety, and DSL builders.
+description: Padrões idiomáticos de Kotlin, boas práticas e convenções para construir aplicações Kotlin robustas, eficientes e de fácil manutenção com corrotinas, segurança de null e builders DSL.
 metadata:
   origin: ECC
 ---
 
-# Kotlin Development Patterns
+# Padrões de Desenvolvimento Kotlin
 
-Idiomatic Kotlin patterns and best practices for building robust, efficient, and maintainable applications.
+Padrões idiomáticos de Kotlin e boas práticas para construir aplicações robustas, eficientes e de fácil manutenção.
 
-## When to Use
+## Quando Usar
 
-- Writing new Kotlin code
-- Reviewing Kotlin code
-- Refactoring existing Kotlin code
-- Designing Kotlin modules or libraries
-- Configuring Gradle Kotlin DSL builds
+- Escrever novo código Kotlin
+- Revisar código Kotlin
+- Refatorar código Kotlin existente
+- Projetar módulos ou bibliotecas Kotlin
+- Configurar builds com Gradle Kotlin DSL
 
-## How It Works
+## Como Funciona
 
-This skill enforces idiomatic Kotlin conventions across seven key areas: null safety using the type system and safe-call operators, immutability via `val` and `copy()` on data classes, sealed classes and interfaces for exhaustive type hierarchies, structured concurrency with coroutines and `Flow`, extension functions for adding behaviour without inheritance, type-safe DSL builders using `@DslMarker` and lambda receivers, and Gradle Kotlin DSL for build configuration.
+Esta skill aplica convenções idiomáticas de Kotlin em sete áreas principais: segurança de null usando o sistema de tipos e operadores de chamada segura, imutabilidade via `val` e `copy()` em data classes, sealed classes e interfaces para hierarquias de tipos exaustivas, concorrência estruturada com corrotinas e `Flow`, funções de extensão para adicionar comportamento sem herança, builders DSL type-safe usando `@DslMarker` e receivers lambda, e Gradle Kotlin DSL para configuração de build.
 
-## Examples
+## Exemplos
 
-**Null safety with Elvis operator:**
+**Segurança de null com operador Elvis:**
 ```kotlin
 fun getUserEmail(userId: String): String {
     val user = userRepository.findById(userId)
@@ -31,7 +31,7 @@ fun getUserEmail(userId: String): String {
 }
 ```
 
-**Sealed class for exhaustive results:**
+**Sealed class para resultados exaustivos:**
 ```kotlin
 sealed class Result<out T> {
     data class Success<T>(val data: T) : Result<T>()
@@ -40,7 +40,7 @@ sealed class Result<out T> {
 }
 ```
 
-**Structured concurrency with async/await:**
+**Concorrência estruturada com async/await:**
 ```kotlin
 suspend fun fetchUserWithPosts(userId: String): UserProfile =
     coroutineScope {
@@ -50,63 +50,63 @@ suspend fun fetchUserWithPosts(userId: String): UserProfile =
     }
 ```
 
-## Core Principles
+## Princípios Fundamentais
 
-### 1. Null Safety
+### 1. Segurança de Null
 
-Kotlin's type system distinguishes nullable and non-nullable types. Leverage it fully.
+O sistema de tipos do Kotlin distingue tipos anuláveis e não anuláveis. Use-o ao máximo.
 
 ```kotlin
-// Good: Use non-nullable types by default
+// Bom: use tipos não anuláveis por padrão
 fun getUser(id: String): User {
     return userRepository.findById(id)
         ?: throw UserNotFoundException("User $id not found")
 }
 
-// Good: Safe calls and Elvis operator
+// Bom: chamadas seguras e operador Elvis
 fun getUserEmail(userId: String): String {
     val user = userRepository.findById(userId)
     return user?.email ?: "unknown@example.com"
 }
 
-// Bad: Force-unwrapping nullable types
+// Ruim: forçar desempacotamento de tipos anuláveis
 fun getUserEmail(userId: String): String {
     val user = userRepository.findById(userId)
-    return user!!.email // Throws NPE if null
+    return user!!.email // Lança NPE se nulo
 }
 ```
 
-### 2. Immutability by Default
+### 2. Imutabilidade por Padrão
 
-Prefer `val` over `var`, immutable collections over mutable ones.
+Prefira `val` em vez de `var`, coleções imutáveis em vez de mutáveis.
 
 ```kotlin
-// Good: Immutable data
+// Bom: dados imutáveis
 data class User(
     val id: String,
     val name: String,
     val email: String,
 )
 
-// Good: Transform with copy()
+// Bom: transforme com copy()
 fun updateEmail(user: User, newEmail: String): User =
     user.copy(email = newEmail)
 
-// Good: Immutable collections
+// Bom: coleções imutáveis
 val users: List<User> = listOf(user1, user2)
 val filtered = users.filter { it.email.isNotBlank() }
 
-// Bad: Mutable state
-var currentUser: User? = null // Avoid mutable global state
-val mutableUsers = mutableListOf<User>() // Avoid unless truly needed
+// Ruim: estado mutável
+var currentUser: User? = null // Evite estado global mutável
+val mutableUsers = mutableListOf<User>() // Evite a menos que realmente necessário
 ```
 
-### 3. Expression Bodies and Single-Expression Functions
+### 3. Corpos de Expressão e Funções de Expressão Única
 
-Use expression bodies for concise, readable functions.
+Use corpos de expressão para funções concisas e legíveis.
 
 ```kotlin
-// Good: Expression body
+// Bom: corpo de expressão
 fun isAdult(age: Int): Boolean = age >= 18
 
 fun formatFullName(first: String, last: String): String =
@@ -115,7 +115,7 @@ fun formatFullName(first: String, last: String): String =
 fun User.displayName(): String =
     name.ifBlank { email.substringBefore('@') }
 
-// Good: When as expression
+// Bom: when como expressão
 fun statusMessage(code: Int): String = when (code) {
     200 -> "OK"
     404 -> "Not Found"
@@ -123,25 +123,25 @@ fun statusMessage(code: Int): String = when (code) {
     else -> "Unknown status: $code"
 }
 
-// Bad: Unnecessary block body
+// Ruim: corpo de bloco desnecessário
 fun isAdult(age: Int): Boolean {
     return age >= 18
 }
 ```
 
-### 4. Data Classes for Value Objects
+### 4. Data Classes para Objetos de Valor
 
-Use data classes for types that primarily hold data.
+Use data classes para tipos que primariamente armazenam dados.
 
 ```kotlin
-// Good: Data class with copy, equals, hashCode, toString
+// Bom: data class com copy, equals, hashCode, toString
 data class CreateUserRequest(
     val name: String,
     val email: String,
     val role: Role = Role.USER,
 )
 
-// Good: Value class for type safety (zero overhead at runtime)
+// Bom: value class para segurança de tipos (overhead zero em tempo de execução)
 @JvmInline
 value class UserId(val value: String) {
     init {
@@ -159,12 +159,12 @@ value class Email(val value: String) {
 fun getUser(id: UserId): User = userRepository.findById(id)
 ```
 
-## Sealed Classes and Interfaces
+## Sealed Classes e Interfaces
 
-### Modeling Restricted Hierarchies
+### Modelando Hierarquias Restritas
 
 ```kotlin
-// Good: Sealed class for exhaustive when
+// Bom: sealed class para when exaustivo
 sealed class Result<out T> {
     data class Success<T>(val data: T) : Result<T>()
     data class Failure(val error: AppError) : Result<Nothing>()
@@ -184,7 +184,7 @@ fun <T> Result<T>.getOrThrow(): T = when (this) {
 }
 ```
 
-### Sealed Interfaces for API Responses
+### Sealed Interfaces para Respostas de API
 
 ```kotlin
 sealed interface ApiError {
@@ -210,30 +210,30 @@ fun ApiError.toStatusCode(): Int = when (this) {
 }
 ```
 
-## Scope Functions
+## Funções de Escopo
 
-### When to Use Each
+### Quando Usar Cada Uma
 
 ```kotlin
-// let: Transform nullable or scoped result
+// let: transformar resultado anulável ou com escopo
 val length: Int? = name?.let { it.trim().length }
 
-// apply: Configure an object (returns the object)
+// apply: configurar um objeto (retorna o objeto)
 val user = User().apply {
     name = "Alice"
     email = "alice@example.com"
 }
 
-// also: Side effects (returns the object)
+// also: efeitos colaterais (retorna o objeto)
 val user = createUser(request).also { logger.info("Created user: ${it.id}") }
 
-// run: Execute a block with receiver (returns result)
+// run: executar um bloco com receiver (retorna resultado)
 val result = connection.run {
     prepareStatement(sql)
     executeQuery()
 }
 
-// with: Non-extension form of run
+// with: forma não-extensão de run
 val csv = with(StringBuilder()) {
     appendLine("name,email")
     users.forEach { appendLine("${it.name},${it.email}") }
@@ -241,29 +241,29 @@ val csv = with(StringBuilder()) {
 }
 ```
 
-### Anti-Patterns
+### Anti-Padrões
 
 ```kotlin
-// Bad: Nesting scope functions
+// Ruim: aninhamento de funções de escopo
 user?.let { u ->
     u.address?.let { addr ->
         addr.city?.let { city ->
-            println(city) // Hard to read
+            println(city) // Difícil de ler
         }
     }
 }
 
-// Good: Chain safe calls instead
+// Bom: encadeie chamadas seguras em vez disso
 val city = user?.address?.city
 city?.let { println(it) }
 ```
 
-## Extension Functions
+## Funções de Extensão
 
-### Adding Functionality Without Inheritance
+### Adicionando Funcionalidade Sem Herança
 
 ```kotlin
-// Good: Domain-specific extensions
+// Bom: extensões específicas de domínio
 fun String.toSlug(): String =
     lowercase()
         .replace(Regex("[^a-z0-9\\s-]"), "")
@@ -273,12 +273,12 @@ fun String.toSlug(): String =
 fun Instant.toLocalDate(zone: ZoneId = ZoneId.systemDefault()): LocalDate =
     atZone(zone).toLocalDate()
 
-// Good: Collection extensions
+// Bom: extensões de coleção
 fun <T> List<T>.second(): T = this[1]
 
 fun <T> List<T>.secondOrNull(): T? = getOrNull(1)
 
-// Good: Scoped extensions (not polluting global namespace)
+// Bom: extensões com escopo (sem poluir o namespace global)
 class UserService {
     private fun User.isActive(): Boolean =
         status == Status.ACTIVE && lastLogin.isAfter(Instant.now().minus(30, ChronoUnit.DAYS))
@@ -287,12 +287,12 @@ class UserService {
 }
 ```
 
-## Coroutines
+## Corrotinas
 
-### Structured Concurrency
+### Concorrência Estruturada
 
 ```kotlin
-// Good: Structured concurrency with coroutineScope
+// Bom: concorrência estruturada com coroutineScope
 suspend fun fetchUserWithPosts(userId: String): UserProfile =
     coroutineScope {
         val userDeferred = async { userService.getUser(userId) }
@@ -304,7 +304,7 @@ suspend fun fetchUserWithPosts(userId: String): UserProfile =
         )
     }
 
-// Good: supervisorScope when children can fail independently
+// Bom: supervisorScope quando filhos podem falhar independentemente
 suspend fun fetchDashboard(userId: String): Dashboard =
     supervisorScope {
         val user = async { userService.getUser(userId) }
@@ -331,10 +331,10 @@ suspend fun fetchDashboard(userId: String): Dashboard =
     }
 ```
 
-### Flow for Reactive Streams
+### Flow para Streams Reativos
 
 ```kotlin
-// Good: Cold flow with proper error handling
+// Bom: cold flow com tratamento correto de erros
 fun observeUsers(): Flow<List<User>> = flow {
     while (currentCoroutineContext().isActive) {
         val users = userRepository.findAll()
@@ -346,7 +346,7 @@ fun observeUsers(): Flow<List<User>> = flow {
     emit(emptyList())
 }
 
-// Good: Flow operators
+// Bom: operadores Flow
 fun searchUsers(query: Flow<String>): Flow<List<User>> =
     query
         .debounce(300.milliseconds)
@@ -356,46 +356,46 @@ fun searchUsers(query: Flow<String>): Flow<List<User>> =
         .catch { emit(emptyList()) }
 ```
 
-### Cancellation and Cleanup
+### Cancelamento e Limpeza
 
 ```kotlin
-// Good: Respect cancellation
+// Bom: respeite o cancelamento
 suspend fun processItems(items: List<Item>) {
     items.forEach { item ->
-        ensureActive() // Check cancellation before expensive work
+        ensureActive() // Verifique o cancelamento antes de trabalho pesado
         processItem(item)
     }
 }
 
-// Good: Cleanup with try/finally
+// Bom: limpeza com try/finally
 suspend fun acquireAndProcess() {
     val resource = acquireResource()
     try {
         resource.process()
     } finally {
         withContext(NonCancellable) {
-            resource.release() // Always release, even on cancellation
+            resource.release() // Sempre libere, mesmo em cancelamento
         }
     }
 }
 ```
 
-## Delegation
+## Delegação
 
-### Property Delegation
+### Delegação de Propriedade
 
 ```kotlin
-// Lazy initialization
+// Inicialização lazy
 val expensiveData: List<User> by lazy {
     userRepository.findAll()
 }
 
-// Observable property
+// Propriedade observável
 var name: String by Delegates.observable("initial") { _, old, new ->
     logger.info("Name changed from '$old' to '$new'")
 }
 
-// Map-backed properties
+// Propriedades com backup em Map
 class Config(private val map: Map<String, Any?>) {
     val host: String by map
     val port: Int by map
@@ -405,15 +405,15 @@ class Config(private val map: Map<String, Any?>) {
 val config = Config(mapOf("host" to "localhost", "port" to 8080, "debug" to true))
 ```
 
-### Interface Delegation
+### Delegação de Interface
 
 ```kotlin
-// Good: Delegate interface implementation
+// Bom: delegue implementação de interface
 class LoggingUserRepository(
     private val delegate: UserRepository,
     private val logger: Logger,
 ) : UserRepository by delegate {
-    // Only override what you need to add logging to
+    // Sobrescreva apenas o que precisa de logging
     override suspend fun findById(id: String): User? {
         logger.info("Finding user by id: $id")
         return delegate.findById(id).also {
@@ -423,12 +423,12 @@ class LoggingUserRepository(
 }
 ```
 
-## DSL Builders
+## Builders DSL
 
-### Type-Safe Builders
+### Builders Type-Safe
 
 ```kotlin
-// Good: DSL with @DslMarker
+// Bom: DSL com @DslMarker
 @DslMarker
 annotation class HtmlDsl
 
@@ -449,7 +449,7 @@ class HTML {
 
 fun html(init: HTML.() -> Unit): HTML = HTML().apply(init)
 
-// Usage
+// Uso
 val page = html {
     head { title("My Page") }
     body {
@@ -459,7 +459,7 @@ val page = html {
 }
 ```
 
-### Configuration DSL
+### DSL de Configuração
 
 ```kotlin
 data class ServerConfig(
@@ -492,7 +492,7 @@ class ServerConfigBuilder {
 fun serverConfig(init: ServerConfigBuilder.() -> Unit): ServerConfig =
     ServerConfigBuilder().apply(init).build()
 
-// Usage
+// Uso
 val config = serverConfig {
     host = "0.0.0.0"
     port = 443
@@ -501,10 +501,10 @@ val config = serverConfig {
 }
 ```
 
-## Sequences for Lazy Evaluation
+## Sequences para Avaliação Lazy
 
 ```kotlin
-// Good: Use sequences for large collections with multiple operations
+// Bom: use sequences para coleções grandes com múltiplas operações
 val result = users.asSequence()
     .filter { it.isActive }
     .map { it.email }
@@ -512,7 +512,7 @@ val result = users.asSequence()
     .take(10)
     .toList()
 
-// Good: Generate infinite sequences
+// Bom: gere sequences infinitas
 val fibonacci: Sequence<Long> = sequence {
     var a = 0L
     var b = 1L
@@ -529,10 +529,10 @@ val first20 = fibonacci.take(20).toList()
 
 ## Gradle Kotlin DSL
 
-### build.gradle.kts Configuration
+### Configuração do build.gradle.kts
 
 ```kotlin
-// Check for latest versions: https://kotlinlang.org/docs/releases.html
+// Verifique as versões mais recentes: https://kotlinlang.org/docs/releases.html
 plugins {
     kotlin("jvm") version "2.3.10"
     kotlin("plugin.serialization") version "2.3.10"
@@ -564,10 +564,10 @@ dependencies {
     // Koin
     implementation("io.insert-koin:koin-ktor:4.2.0")
 
-    // Coroutines
+    // Corrotinas
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
 
-    // Testing
+    // Testes
     testImplementation("io.kotest:kotest-runner-junit5:6.1.4")
     testImplementation("io.kotest:kotest-assertions-core:6.1.4")
     testImplementation("io.kotest:kotest-property:6.1.4")
@@ -586,12 +586,12 @@ detekt {
 }
 ```
 
-## Error Handling Patterns
+## Padrões de Tratamento de Erros
 
-### Result Type for Domain Operations
+### Tipo Result para Operações de Domínio
 
 ```kotlin
-// Good: Use Kotlin's Result or a custom sealed class
+// Bom: use o Result do Kotlin ou uma sealed class customizada
 suspend fun createUser(request: CreateUserRequest): Result<User> = runCatching {
     require(request.name.isNotBlank()) { "Name cannot be blank" }
     require('@' in request.email) { "Invalid email format" }
@@ -605,7 +605,7 @@ suspend fun createUser(request: CreateUserRequest): Result<User> = runCatching {
     user
 }
 
-// Good: Chain results
+// Bom: encadeie resultados
 val displayName = createUser(request)
     .map { it.name }
     .getOrElse { "Unknown" }
@@ -614,7 +614,7 @@ val displayName = createUser(request)
 ### require, check, error
 
 ```kotlin
-// Good: Preconditions with clear messages
+// Bom: pré-condições com mensagens claras
 fun withdraw(account: Account, amount: Money): Account {
     require(amount.value > 0) { "Amount must be positive: $amount" }
     check(account.balance >= amount) { "Insufficient balance: ${account.balance} < $amount" }
@@ -623,90 +623,90 @@ fun withdraw(account: Account, amount: Money): Account {
 }
 ```
 
-## Collection Operations
+## Operações em Coleções
 
-### Idiomatic Collection Processing
+### Processamento Idiomático de Coleções
 
 ```kotlin
-// Good: Chained operations
+// Bom: operações encadeadas
 val activeAdminEmails: List<String> = users
     .filter { it.role == Role.ADMIN && it.isActive }
     .sortedBy { it.name }
     .map { it.email }
 
-// Good: Grouping and aggregation
+// Bom: agrupamento e agregação
 val usersByRole: Map<Role, List<User>> = users.groupBy { it.role }
 
 val oldestByRole: Map<Role, User?> = users.groupBy { it.role }
     .mapValues { (_, users) -> users.minByOrNull { it.createdAt } }
 
-// Good: Associate for map creation
+// Bom: associate para criação de maps
 val usersById: Map<UserId, User> = users.associateBy { it.id }
 
-// Good: Partition for splitting
+// Bom: partition para divisão
 val (active, inactive) = users.partition { it.isActive }
 ```
 
-## Quick Reference: Kotlin Idioms
+## Referência Rápida: Idiomas Kotlin
 
-| Idiom | Description |
+| Idioma | Descrição |
 |-------|-------------|
-| `val` over `var` | Prefer immutable variables |
-| `data class` | For value objects with equals/hashCode/copy |
-| `sealed class/interface` | For restricted type hierarchies |
-| `value class` | For type-safe wrappers with zero overhead |
-| Expression `when` | Exhaustive pattern matching |
-| Safe call `?.` | Null-safe member access |
-| Elvis `?:` | Default value for nullables |
-| `let`/`apply`/`also`/`run`/`with` | Scope functions for clean code |
-| Extension functions | Add behavior without inheritance |
-| `copy()` | Immutable updates on data classes |
-| `require`/`check` | Precondition assertions |
-| Coroutine `async`/`await` | Structured concurrent execution |
-| `Flow` | Cold reactive streams |
-| `sequence` | Lazy evaluation |
-| Delegation `by` | Reuse implementation without inheritance |
+| `val` em vez de `var` | Prefira variáveis imutáveis |
+| `data class` | Para objetos de valor com equals/hashCode/copy |
+| `sealed class/interface` | Para hierarquias de tipos restritas |
+| `value class` | Para wrappers type-safe com overhead zero |
+| `when` como expressão | Pattern matching exaustivo |
+| Chamada segura `?.` | Acesso a membro null-safe |
+| Elvis `?:` | Valor padrão para anuláveis |
+| `let`/`apply`/`also`/`run`/`with` | Funções de escopo para código limpo |
+| Funções de extensão | Adicione comportamento sem herança |
+| `copy()` | Atualizações imutáveis em data classes |
+| `require`/`check` | Asserções de pré-condição |
+| Corrotina `async`/`await` | Execução concorrente estruturada |
+| `Flow` | Streams reativos cold |
+| `sequence` | Avaliação lazy |
+| Delegação `by` | Reutilize implementação sem herança |
 
-## Anti-Patterns to Avoid
+## Anti-Padrões a Evitar
 
 ```kotlin
-// Bad: Force-unwrapping nullable types
+// Ruim: forçar desempacotamento de tipos anuláveis
 val name = user!!.name
 
-// Bad: Platform type leakage from Java
-fun getLength(s: String) = s.length // Safe
-fun getLength(s: String?) = s?.length ?: 0 // Handle nulls from Java
+// Ruim: vazamento de tipo de plataforma do Java
+fun getLength(s: String) = s.length // Seguro
+fun getLength(s: String?) = s?.length ?: 0 // Trate nulls do Java
 
-// Bad: Mutable data classes
+// Ruim: data classes mutáveis
 data class MutableUser(var name: String, var email: String)
 
-// Bad: Using exceptions for control flow
+// Ruim: usar exceções para controle de fluxo
 try {
     val user = findUser(id)
 } catch (e: NotFoundException) {
-    // Don't use exceptions for expected cases
+    // Não use exceções para casos esperados
 }
 
-// Good: Use nullable return or Result
+// Bom: use retorno anulável ou Result
 val user: User? = findUserOrNull(id)
 
-// Bad: Ignoring coroutine scope
-GlobalScope.launch { /* Avoid GlobalScope */ }
+// Ruim: ignorar o escopo de corrotina
+GlobalScope.launch { /* Evite GlobalScope */ }
 
-// Good: Use structured concurrency
+// Bom: use concorrência estruturada
 coroutineScope {
-    launch { /* Properly scoped */ }
+    launch { /* Escopo correto */ }
 }
 
-// Bad: Deeply nested scope functions
+// Ruim: funções de escopo profundamente aninhadas
 user?.let { u ->
     u.address?.let { a ->
         a.city?.let { c -> process(c) }
     }
 }
 
-// Good: Direct null-safe chain
+// Bom: encadeamento direto null-safe
 user?.address?.city?.let { process(it) }
 ```
 
-**Remember**: Kotlin code should be concise but readable. Leverage the type system for safety, prefer immutability, and use coroutines for concurrency. When in doubt, let the compiler help you.
+**Lembre-se**: O código Kotlin deve ser conciso mas legível. Aproveite o sistema de tipos para segurança, prefira imutabilidade e use corrotinas para concorrência. Em caso de dúvida, deixe o compilador ajudá-lo.

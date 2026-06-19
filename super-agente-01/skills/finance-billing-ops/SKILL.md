@@ -1,128 +1,128 @@
 ---
 name: finance-billing-ops
-description: Evidence-first revenue, pricing, refunds, team-billing, and billing-model truth workflow for ECC. Use when the user wants a sales snapshot, pricing comparison, duplicate-charge diagnosis, or code-backed billing reality instead of generic payments advice.
+description: Fluxo de trabalho baseado em evidências para receita, precificação, reembolsos, faturamento de equipes e verdade do modelo de cobrança no ECC. Use quando o usuário quiser um snapshot de vendas, comparação de preços, diagnóstico de cobrança duplicada ou realidade de cobrança sustentada por código em vez de conselhos genéricos sobre pagamentos.
 metadata:
   origin: ECC
 ---
 
 # Finance Billing Ops
 
-Use this when the user wants to understand money, pricing, refunds, team-seat logic, or whether the product actually behaves the way the website and sales copy imply.
+Use esta skill quando o usuário quiser entender dinheiro, precificação, reembolsos, lógica de assentos por equipe, ou se o produto realmente se comporta da forma que o site e o copy de vendas implicam.
 
-This is broader than `customer-billing-ops`. That skill is for customer remediation. This skill is for operator truth: revenue state, pricing decisions, team billing, and code-backed billing behavior.
+Esta skill é mais ampla do que `customer-billing-ops`. Aquela skill é para remediação de clientes. Esta skill é para a verdade do operador: estado de receita, decisões de precificação, faturamento de equipes e comportamento de cobrança sustentado por código.
 
-## Skill Stack
+## Stack de Skills
 
-Pull these ECC-native skills into the workflow when relevant:
+Incorpore estas skills nativas do ECC no fluxo de trabalho quando relevante:
 
-- `customer-billing-ops` for customer-specific remediation and follow-up
-- `research-ops` when competitor pricing or current market evidence matters
-- `market-research` when the answer should end in a pricing recommendation
-- `github-ops` when the billing truth depends on code, backlog, or release state in sibling repos
-- `verification-loop` when the answer depends on proving checkout, seat handling, or entitlement behavior
+- `customer-billing-ops` para remediação específica de clientes e acompanhamento
+- `research-ops` quando a precificação de concorrentes ou evidências atuais de mercado importam
+- `market-research` quando a resposta deve terminar em uma recomendação de precificação
+- `github-ops` quando a verdade de cobrança depende de código, backlog ou estado de release em repositórios irmãos
+- `verification-loop` quando a resposta depende de provar o comportamento de checkout, tratamento de assentos ou direitos
 
-## When to Use
+## Quando Usar
 
-- user asks for Stripe sales, refunds, MRR, or recent customer activity
-- user asks whether team billing, per-seat billing, or quota stacking is real in code
-- user wants competitor pricing comparisons or pricing-model benchmarks
-- the question mixes revenue facts with product implementation truth
+- usuário pede vendas no Stripe, reembolsos, MRR ou atividade recente de clientes
+- usuário pergunta se o faturamento por equipe, por assento ou empilhamento de quota é real no código
+- usuário quer comparações de preços de concorrentes ou benchmarks de modelo de precificação
+- a pergunta mistura fatos de receita com verdade de implementação do produto
 
-## Guardrails
+## Restrições
 
-- distinguish live data from saved snapshots
-- separate:
-  - revenue fact
-  - customer impact
-  - code-backed product truth
-  - recommendation
-- do not say "per seat" unless the actual entitlement path enforces it
-- do not assume duplicate subscriptions imply duplicate value
+- distinga dados ao vivo de snapshots salvos
+- separe:
+  - fato de receita
+  - impacto no cliente
+  - verdade do produto sustentada por código
+  - recomendação
+- não diga "por assento" a menos que o caminho de direito real o imponha
+- não assuma que assinaturas duplicadas implicam valor duplicado
 
-## Workflow
+## Fluxo de Trabalho
 
-### 1. Start from the freshest billing evidence
+### 1. Comece pela evidência de cobrança mais recente
 
-Prefer live billing data. If the data is not live, state the snapshot timestamp explicitly.
+Prefira dados de cobrança ao vivo. Se os dados não forem ao vivo, declare o timestamp do snapshot explicitamente.
 
-Normalize the picture:
+Normalize o quadro:
 
-- paid sales
-- active subscriptions
-- failed or incomplete checkouts
-- refunds
-- disputes
-- duplicate subscriptions
+- vendas pagas
+- assinaturas ativas
+- checkouts com falha ou incompletos
+- reembolsos
+- disputas
+- assinaturas duplicadas
 
-### 2. Separate customer incidents from product truth
+### 2. Separe incidentes de clientes da verdade do produto
 
-If the question is customer-specific, classify first:
+Se a pergunta for específica do cliente, classifique primeiro:
 
-- duplicate checkout
-- real team intent
-- broken self-serve controls
-- unmet product value
-- failed payment or incomplete setup
+- checkout duplicado
+- intenção real de equipe
+- controles de autoatendimento quebrados
+- valor do produto não atendido
+- pagamento com falha ou configuração incompleta
 
-Then separate that from the broader product question:
+Depois separe isso da pergunta mais ampla do produto:
 
-- does team billing really exist?
-- are seats actually counted?
-- does checkout quantity change entitlement?
-- does the site overstate current behavior?
+- o faturamento por equipe realmente existe?
+- os assentos são realmente contados?
+- a quantidade no checkout altera o direito?
+- o site superestima o comportamento atual?
 
-### 3. Inspect code-backed billing behavior
+### 3. Inspecione o comportamento de cobrança sustentado por código
 
-If the answer depends on implementation truth, inspect the code path:
+Se a resposta depender da verdade de implementação, inspecione o caminho do código:
 
 - checkout
-- pricing page
-- entitlement calculation
-- seat or quota handling
-- installation vs user usage logic
-- billing portal or self-serve management support
+- página de precificação
+- cálculo de direito
+- tratamento de assento ou quota
+- lógica de instalação vs. uso do usuário
+- suporte ao portal de cobrança ou gerenciamento de autoatendimento
 
-### 4. End with a decision and product gap
+### 4. Termine com uma decisão e lacuna do produto
 
-Report:
+Reporte:
 
-- sales snapshot
-- issue diagnosis
-- product truth
-- recommended operator action
-- product or backlog gap
+- snapshot de vendas
+- diagnóstico do problema
+- verdade do produto
+- ação recomendada pelo operador
+- lacuna do produto ou backlog
 
-## Output Format
+## Formato de Saída
 
 ```text
 SNAPSHOT
 - timestamp
-- revenue / subscriptions / anomalies
+- receita / assinaturas / anomalias
 
-CUSTOMER IMPACT
-- who is affected
-- what happened
+IMPACTO NO CLIENTE
+- quem é afetado
+- o que aconteceu
 
-PRODUCT TRUTH
-- what the code actually does
-- what the website or sales copy claims
+VERDADE DO PRODUTO
+- o que o código realmente faz
+- o que o site ou copy de vendas afirma
 
-DECISION
-- refund / preserve / convert / no-op
+DECISÃO
+- reembolsar / manter / converter / nenhuma ação
 
-PRODUCT GAP
-- exact follow-up item to build or fix
+LACUNA DO PRODUTO
+- item de acompanhamento exato a construir ou corrigir
 ```
 
-## Pitfalls
+## Armadilhas
 
-- do not conflate failed attempts with net revenue
-- do not infer team billing from marketing language alone
-- do not compare competitor pricing from memory when current evidence is available
-- do not jump from diagnosis straight to refund without classifying the issue
+- não confunda tentativas com falha com receita líquida
+- não infira faturamento por equipe apenas de linguagem de marketing
+- não compare preços de concorrentes de memória quando evidências atuais estão disponíveis
+- não pule do diagnóstico direto para o reembolso sem classificar o problema
 
-## Verification
+## Verificação
 
-- the answer includes a live-data statement or snapshot timestamp
-- product-truth claims are code-backed
-- customer-impact and broader pricing/product conclusions are separated cleanly
+- a resposta inclui uma declaração de dados ao vivo ou timestamp de snapshot
+- afirmações de verdade do produto são sustentadas por código
+- impacto no cliente e conclusões mais amplas de precificação/produto são separados claramente

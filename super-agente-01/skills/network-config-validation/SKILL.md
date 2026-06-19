@@ -146,7 +146,7 @@ def check_vty_blocks(config: str) -> list[str]:
     return issues
 ```
 
-## Security Hygiene Checks
+## Verificações de Higiene de Segurança
 
 ```python
 SECURITY_PATTERNS = [
@@ -181,31 +181,28 @@ def check_missing_hygiene(config: str) -> list[str]:
     ]
 ```
 
-## Examples
+## Exemplos
 
-### Change-Window Preflight
+### Pré-checagem de Janela de Mudança
 
-1. Run dangerous-command checks on the exact snippet to be pasted.
-2. Run duplicate IP and subnet overlap checks against the full candidate config.
-3. Confirm every referenced ACL, route-map, and prefix-list exists.
-4. Confirm rollback commands and out-of-band access before any management-plane
-   change.
+1. Execute as verificações de comandos perigosos no trecho exato a ser colado.
+2. Execute as verificações de IP duplicado e sobreposição de sub-rede na config candidata completa.
+3. Confirme que cada ACL, route-map e prefix-list referenciado existe.
+4. Confirme comandos de rollback e acesso fora de banda antes de qualquer mudança no management-plane.
 
-### Automation Preflight
+### Pré-checagem de Automação
 
-Use validation as a blocking gate before Netmiko, NAPALM, Ansible, or vendor API
-automation pushes a generated config. Fail closed on dangerous commands and
-credentials. Warn on best-practice gaps that are outside the change scope.
+Use a validação como uma porta de bloqueio antes que Netmiko, NAPALM, Ansible ou automação via API do fornecedor empurre uma config gerada. Falhe de forma segura em comandos perigosos e credenciais. Avise sobre lacunas de boas práticas que estão fora do escopo da mudança.
 
-## Anti-Patterns
+## Anti-Padrões
 
-- Treating regex validation as a device parser.
-- Applying generated config without a dry-run diff.
-- Recommending SNMPv2 community strings as a monitoring requirement.
-- Checking VTY blocks with regex that can accidentally span unrelated sections.
-- Testing firewall behavior by disabling ACLs instead of reading counters/logs.
+- Tratar validação por regex como um parser de dispositivo.
+- Aplicar config gerada sem um diff de dry-run.
+- Recomendar strings de comunidade SNMPv2 como requisito de monitoramento.
+- Verificar blocos VTY com regex que pode acidentalmente abranger seções não relacionadas.
+- Testar comportamento de firewall desabilitando ACLs em vez de ler contadores/logs.
 
-## See Also
+## Veja Também
 
 - Agent: `network-config-reviewer`
 - Agent: `network-troubleshooter`

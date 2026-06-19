@@ -1,90 +1,90 @@
-# tinystruct Architecture and Configuration
+# Arquitetura e Configuração do tinystruct
 
-## When to Use
+## Quando Usar
 
-Choose **tinystruct** when you need a lightweight, high-performance Java framework that treats CLI and HTTP as equal citizens. Ideal for microservices, CLI utilities, and data-driven applications with a small footprint and zero-dependency JSON handling.
+Escolha o **tinystruct** quando precisar de um framework Java leve e de alto desempenho que trata CLI e HTTP como cidadãos de igual importância. Ideal para microsserviços, utilitários CLI e aplicações orientadas a dados com footprint reduzido e tratamento JSON sem dependências externas.
 
-## How It Works
+## Como Funciona
 
-### Core Architecture
+### Arquitetura Central
 
-The framework operates on a singleton `ActionRegistry` that maps URL patterns (or command strings) to `Action` objects. When a request arrives, the system resolves the path and invokes the corresponding method handle.
+O framework opera sobre um `ActionRegistry` singleton que mapeia padrões de URL (ou strings de comando) para objetos `Action`. Quando uma requisição chega, o sistema resolve o caminho e invoca o method handle correspondente.
 
-#### Key Abstractions
+#### Abstrações Principais
 
-| Class/Interface | Role |
+| Classe/Interface | Papel |
 |---|---|
-| `AbstractApplication` | Base class for all tinystruct applications. Extend this. |
-| `@Action` annotation | Maps a method to a URI path (web) or command name (CLI). The single routing primitive. |
-| `ActionRegistry` | Singleton that maps URL patterns to `Action` objects via regex. Never instantiate directly. |
-| `Action` | Wraps a `MethodHandle` + regex pattern + priority + `Mode` for dispatch. |
-| `Context` | Per-request state store. Access via `getContext()`. Holds CLI args and HTTP request/response. |
-| `Dispatcher` | CLI entry point (`bin/dispatcher`). Reads `--import` to load applications. |
-| `HttpServer` | Built-in HTTP server. Start with `bin/dispatcher start --import org.tinystruct.system.HttpServer`. |
+| `AbstractApplication` | Classe base para todas as aplicações tinystruct. Estenda esta. |
+| Anotação `@Action` | Mapeia um método a um caminho de URI (web) ou nome de comando (CLI). O primitivo único de roteamento. |
+| `ActionRegistry` | Singleton que mapeia padrões de URL para objetos `Action` via regex. Nunca instancie diretamente. |
+| `Action` | Encapsula um `MethodHandle` + padrão regex + prioridade + `Mode` para despacho. |
+| `Context` | Armazenamento de estado por requisição. Acesse via `getContext()`. Contém args CLI e request/response HTTP. |
+| `Dispatcher` | Ponto de entrada CLI (`bin/dispatcher`). Lê `--import` para carregar aplicações. |
+| `HttpServer` | Servidor HTTP embutido. Inicie com `bin/dispatcher start --import org.tinystruct.system.HttpServer`. |
 
-### Package Map
+### Mapa de Pacotes
 
 ```
 org.tinystruct/
-├── AbstractApplication.java      ← extend this
+├── AbstractApplication.java      ← estenda esta
 ├── Application.java              ← interface
-├── ApplicationException.java     ← checked exception
-├── ApplicationRuntimeException.java ← unchecked exception
+├── ApplicationException.java     ← exceção verificada
+├── ApplicationRuntimeException.java ← exceção não verificada
 ├── application/
-│   ├── Action.java               ← runtime action wrapper
-│   ├── ActionRegistry.java       ← singleton route registry
-│   └── Context.java              ← request context
+│   ├── Action.java               ← wrapper de action em tempo de execução
+│   ├── ActionRegistry.java       ← registro de rotas singleton
+│   └── Context.java              ← contexto da requisição
 ├── system/
-│   ├── annotation/Action.java    ← @Action annotation + Mode enum
-│   ├── Dispatcher.java           ← CLI dispatcher
-│   ├── HttpServer.java           ← built-in HTTP server
-│   ├── EventDispatcher.java      ← event bus
-│   └── Settings.java             ← reads application.properties
+│   ├── annotation/Action.java    ← anotação @Action + enum Mode
+│   ├── Dispatcher.java           ← dispatcher CLI
+│   ├── HttpServer.java           ← servidor HTTP embutido
+│   ├── EventDispatcher.java      ← barramento de eventos
+│   └── Settings.java             ← lê application.properties
 ├── data/
-│   ├── component/Builder.java    ← JSON object (use instead of Gson/Jackson)
-│   ├── component/Builders.java   ← JSON array
-│   ├── component/AbstractData.java ← base POJO for DB persistence
-│   ├── component/Condition.java  ← fluent SQL query builder
-│   ├── component/FieldType.java  ← SQL-to-Java type mappings
-│   ├── Mapping.java              ← reads .map.xml metadata
-│   ├── DatabaseOperator.java     ← low-level JDBC wrapper
-│   └── FileEntity.java           ← file upload representation
+│   ├── component/Builder.java    ← objeto JSON (use ao invés de Gson/Jackson)
+│   ├── component/Builders.java   ← array JSON
+│   ├── component/AbstractData.java ← POJO base para persistência no banco
+│   ├── component/Condition.java  ← construtor de consultas SQL fluente
+│   ├── component/FieldType.java  ← mapeamentos de tipo SQL para Java
+│   ├── Mapping.java              ← lê metadados de .map.xml
+│   ├── DatabaseOperator.java     ← wrapper JDBC de baixo nível
+│   └── FileEntity.java           ← representação de upload de arquivo
 ├── http/                         ← Request, Response, Constants
-│   └── SSEPushManager.java       ← Server-Sent Events management
-└── net/                          ← URLRequest, HTTPHandler (outbound HTTP)
+│   └── SSEPushManager.java       ← gerenciamento de Server-Sent Events
+└── net/                          ← URLRequest, HTTPHandler (HTTP de saída)
 ```
 
-### Template Behavior and Dispatch Flow
+### Comportamento de Template e Fluxo de Despacho
 
-By default, the framework assumes a view template is required. If `templateRequired` is `true`, `toString()` looks for a `.view` file in `src/main/resources/themes/<ClassName>.view`. Use `setVariable("name", value)` to pass data to templates, which use `{%name%}` for interpolation.
+Por padrão, o framework assume que um template de visualização é necessário. Se `templateRequired` for `true`, `toString()` procura um arquivo `.view` em `src/main/resources/themes/<ClassName>.view`. Use `setVariable("name", value)` para passar dados aos templates, que usam `{%name%}` para interpolação.
 
-## Examples
+## Exemplos
 
-### Minimal Application Initialization
+### Inicialização Mínima de Aplicação
 ```java
 @Override
 public void init() {
-    this.setTemplateRequired(false); // Skip .view template lookup for data-only apps
-    // Do NOT call setAction() here — use @Action annotation instead
+    this.setTemplateRequired(false); // Ignora busca de template .view para apps apenas de dados
+    // NÃO chame setAction() aqui — use a anotação @Action
 }
 ```
 
-### Action Definition and CLI Invocation
+### Definição de Action e Invocação via CLI
 ```java
 @Action("hello")
 public String hello() {
     return "Hello, tinystruct!";
 }
 ```
-**Execution via Dispatcher:**
+**Execução via Dispatcher:**
 ```bash
 bin/dispatcher hello
 bin/dispatcher greet/James
 bin/dispatcher echo --words "Hello" --import com.example.HelloApp
 ```
 
-### Configuration Access
-Located at `src/main/resources/application.properties`:
+### Acesso à Configuração
+Localizado em `src/main/resources/application.properties`:
 ```java
 String port = this.getConfiguration("server.port");
 ```

@@ -1,27 +1,27 @@
 ---
 name: team-builder
-description: Interactive agent picker for composing and dispatching parallel teams
+description: Seletor interativo de agents para compor e despachar equipes paralelas
 metadata:
   origin: community
 ---
 
 # Team Builder
 
-Interactive menu for browsing and composing agent teams on demand. Works with flat or domain-subdirectory agent collections.
+Menu interativo para navegar e compor equipes de agents sob demanda. Funciona com coleções de agents em estrutura plana ou em subdiretórios por domínio.
 
-## When to Use
+## Quando Usar
 
-- You have multiple agent personas (markdown files) and want to pick which ones to use for a task
-- You want to compose an ad-hoc team from different domains (e.g., Security + SEO + Architecture)
-- You want to browse what agents are available before deciding
+- Você tem múltiplas personas de agent (arquivos markdown) e quer escolher quais usar para uma tarefa
+- Quer compor uma equipe ad-hoc de diferentes domínios (ex.: Segurança + SEO + Arquitetura)
+- Quer navegar pelos agents disponíveis antes de decidir
 
-## Prerequisites
+## Pré-requisitos
 
-Agent files must be markdown files containing a persona prompt (identity, rules, workflow, deliverables). The first `# Heading` is used as the agent name and the first paragraph as the description.
+Os arquivos de agent devem ser arquivos markdown contendo um Prompt de persona (identidade, regras, fluxo de trabalho, entregáveis). O primeiro `# Título` é usado como nome do agent e o primeiro parágrafo como descrição.
 
-Both flat and subdirectory layouts are supported:
+Layouts planos e em subdiretórios são suportados:
 
-**Subdirectory layout** — domain is inferred from the folder name:
+**Layout em subdiretório** — domínio inferido pelo nome da pasta:
 
 ```
 agents/
@@ -34,7 +34,7 @@ agents/
     └── discovery-coach.md
 ```
 
-**Flat layout** — domain inferred from shared filename prefixes. A prefix counts as a domain when 2+ files share it. Files with unique prefixes go to "General". Note: the algorithm splits at the first `-`, so multi-word domains (e.g., `product-management`) should use the subdirectory layout instead:
+**Layout plano** — domínio inferido de prefixos compartilhados no nome do arquivo. Um prefixo conta como domínio quando 2+ arquivos o compartilham. Arquivos com prefixos únicos vão para "General". Nota: o algoritmo divide no primeiro `-`, então domínios com múltiplas palavras (ex.: `product-management`) devem usar o layout de subdiretório:
 
 ```
 agents/
@@ -46,124 +46,124 @@ agents/
 └── sales-outbound-strategist.md
 ```
 
-## Configuration
+## Configuração
 
-Agents are discovered via two methods, merged and deduplicated by agent name:
+Os agents são descobertos via dois métodos, mesclados e deduplicados por nome de agent:
 
-1. **`claude agents` command** (primary) — run `claude agents` to get all agents known to the CLI, including user agents, plugin agents (e.g. `everything-claude-code:architect`), and built-in agents. This automatically covers ECC marketplace installs without any path configuration.
-2. **File glob** (fallback, for reading agent content) — agent markdown files are read from:
-   - `./agents/**/*.md` + `./agents/*.md` — project-local agents
-   - `~/.claude/agents/**/*.md` + `~/.claude/agents/*.md` — global user agents
+1. **Comando `claude agents`** (primário) — execute `claude agents` para obter todos os agents conhecidos pelo CLI, incluindo agents de usuário, agents de plugin (ex.: `everything-claude-code:architect`) e agents embutidos. Isso cobre automaticamente instalações do marketplace ECC sem nenhuma configuração de caminho.
+2. **Glob de arquivo** (fallback, para leitura do conteúdo do agent) — arquivos markdown de agent são lidos de:
+   - `./agents/**/*.md` + `./agents/*.md` — agents locais do projeto
+   - `~/.claude/agents/**/*.md` + `~/.claude/agents/*.md` — agents globais do usuário
 
-Earlier sources take precedence when names collide: user agents > plugin agents > built-in agents. A custom path can be used instead if the user specifies one.
+Fontes anteriores têm precedência quando nomes colidem: agents de usuário > agents de plugin > agents embutidos. Um caminho personalizado pode ser usado se o usuário especificar um.
 
-## How It Works
+## Como Funciona
 
-### Step 1: Discover Available Agents
+### Passo 1: Descobrir Agents Disponíveis
 
-Run `claude agents` to get the full agent list. Parse each line:
-- **Plugin agents** are prefixed with `plugin-name:` (e.g., `everything-claude-code:security-reviewer`). Use the part after `:` as the agent name and the plugin name as the domain.
-- **User agents** have no prefix. Read the corresponding markdown file from `~/.claude/agents/` or `./agents/` to extract the name and description.
-- **Built-in agents** (e.g., `Explore`, `Plan`) are skipped unless the user explicitly asks to include them.
+Execute `claude agents` para obter a lista completa de agents. Analise cada linha:
+- **Agents de plugin** são prefixados com `nome-do-plugin:` (ex.: `everything-claude-code:security-reviewer`). Use a parte após `:` como nome do agent e o nome do plugin como domínio.
+- **Agents de usuário** não têm prefixo. Leia o arquivo markdown correspondente de `~/.claude/agents/` ou `./agents/` para extrair nome e descrição.
+- **Agents embutidos** (ex.: `Explore`, `Plan`) são ignorados a menos que o usuário peça explicitamente para incluí-los.
 
-For user agents loaded from markdown files:
-- **Subdirectory layout:** extract the domain from the parent folder name
-- **Flat layout:** collect all filename prefixes (text before the first `-`). A prefix qualifies as a domain only if it appears in 2 or more filenames (e.g., `engineering-security-engineer.md` and `engineering-software-architect.md` both start with `engineering` → Engineering domain). Files with unique prefixes (e.g., `code-reviewer.md`, `tdd-guide.md`) are grouped under "General"
-- Extract the agent name from the first `# Heading`. If no heading is found, derive the name from the filename (strip `.md`, replace hyphens with spaces, title-case)
-- Extract a one-line summary from the first paragraph after the heading
+Para agents de usuário carregados de arquivos markdown:
+- **Layout de subdiretório:** extraia o domínio do nome da pasta pai
+- **Layout plano:** colete todos os prefixos de nome de arquivo (texto antes do primeiro `-`). Um prefixo se qualifica como domínio apenas se aparecer em 2 ou mais nomes de arquivo (ex.: `engineering-security-engineer.md` e `engineering-software-architect.md` ambos começam com `engineering` → domínio Engineering). Arquivos com prefixos únicos (ex.: `code-reviewer.md`, `tdd-guide.md`) são agrupados em "General"
+- Extraia o nome do agent do primeiro `# Título`. Se nenhum título for encontrado, derive o nome do nome do arquivo (remova `.md`, substitua hífens por espaços, use título maiúsculo)
+- Extraia um resumo de uma linha do primeiro parágrafo após o título
 
-If no agents are found after running `claude agents` and probing file locations, inform the user: "No agents found. Run `claude agents` to verify your setup." Then stop.
+Se nenhum agent for encontrado após executar `claude agents` e verificar locais de arquivo, informe o usuário: "Nenhum agent encontrado. Execute `claude agents` para verificar sua configuração." Em seguida, pare.
 
-### Step 2: Present Domain Menu
+### Passo 2: Apresentar Menu de Domínios
 
 ```
-Available agent domains:
+Domínios de agent disponíveis:
 1. Engineering — Software Architect, Security Engineer
 2. Marketing — SEO Specialist
 3. Sales — Discovery Coach, Outbound Strategist
 
-Pick domains or name specific agents (e.g., "1,3" or "security + seo"):
+Escolha domínios ou nomeie agents específicos (ex.: "1,3" ou "security + seo"):
 ```
 
-- Skip domains with zero agents (empty directories)
-- Show agent count per domain
+- Ignore domínios com zero agents (diretórios vazios)
+- Mostre contagem de agents por domínio
 
-### Step 3: Handle Selection
+### Passo 3: Tratar Seleção
 
-Accept flexible input:
-- Numbers: "1,3" selects all agents from Engineering and Sales
-- Names: "security + seo" fuzzy-matches against discovered agents
-- "all from engineering" selects every agent in that domain
+Aceite entradas flexíveis:
+- Números: "1,3" seleciona todos os agents de Engineering e Sales
+- Nomes: "security + seo" faz correspondência fuzzy com os agents descobertos
+- "all from engineering" seleciona todos os agents naquele domínio
 
-If more than 5 agents are selected, list them alphabetically and ask the user to narrow down: "You selected N agents (max 5). Pick which to keep, or say 'first 5' to use the first five alphabetically."
+Se mais de 5 agents forem selecionados, liste-os em ordem alfabética e peça ao usuário para reduzir: "Você selecionou N agents (máx. 5). Escolha quais manter, ou diga 'first 5' para usar os cinco primeiros em ordem alfabética."
 
-Confirm selection:
+Confirme a seleção:
 ```
-Selected: Security Engineer + SEO Specialist
-What should they work on? (describe the task):
+Selecionados: Security Engineer + SEO Specialist
+Em que devem trabalhar? (descreva a tarefa):
 ```
 
-### Step 4: Spawn Agents in Parallel
+### Passo 4: Gerar Agents em Paralelo
 
-1. Read each selected agent's markdown file
-2. Prompt for the task description if not already provided
-3. Spawn all agents in parallel using the Agent tool:
+1. Leia o arquivo markdown de cada agent selecionado
+2. Solicite a descrição da tarefa se ainda não foi fornecida
+3. Gere todos os agents em paralelo usando a ferramenta Agent:
    - `subagent_type: "general-purpose"`
-   - `prompt: "{agent file content}\n\nTask: {task description}"`
-   - Each agent runs independently — no inter-agent communication needed
-4. If an agent fails (error, timeout, or empty output), note the failure inline (e.g., "Security Engineer: failed — [reason]") and continue with results from agents that succeeded
+   - `prompt: "{conteúdo do arquivo do agent}\n\nTask: {descrição da tarefa}"`
+   - Cada agent executa independentemente — sem comunicação entre agents necessária
+4. Se um agent falhar (erro, timeout ou saída vazia), registre a falha inline (ex.: "Security Engineer: falhou — [motivo]") e continue com resultados dos agents que tiveram sucesso
 
-### Step 5: Synthesize Results
+### Passo 5: Sintetizar Resultados
 
-Collect all outputs and present a unified report:
-- Results grouped by agent
-- Synthesis section highlighting:
-  - Agreements across agents
-  - Conflicts or tensions between recommendations
-  - Recommended next steps
+Colete todas as saídas e apresente um relatório unificado:
+- Resultados agrupados por agent
+- Seção de síntese destacando:
+  - Acordos entre agents
+  - Conflitos ou tensões entre recomendações
+  - Próximos passos recomendados
 
-If only 1 agent was selected, skip synthesis and present the output directly.
+Se apenas 1 agent foi selecionado, ignore a síntese e apresente a saída diretamente.
 
-## Rules
+## Regras
 
-- **Dynamic discovery only.** Never hardcode agent lists. New files in the directory auto-appear in the menu.
-- **Max 5 agents per team.** More than 5 produces diminishing returns and excessive token usage. Enforce at selection time.
-- **Parallel dispatch.** All agents run simultaneously — use the Agent tool's parallel invocation pattern.
-- **Parallel Agent calls, not TeamCreate.** This skill uses parallel Agent tool calls for independent work. TeamCreate (a Claude Code tool for multi-agent dialogue) is only needed when agents must debate or respond to each other.
+- **Somente descoberta dinâmica.** Nunca codifique listas de agents. Novos arquivos no diretório aparecem automaticamente no menu.
+- **Máximo de 5 agents por equipe.** Mais de 5 produz retornos decrescentes e uso excessivo de tokens. Aplique no momento da seleção.
+- **Despacho paralelo.** Todos os agents executam simultaneamente — use o padrão de invocação paralela da ferramenta Agent.
+- **Chamadas de Agent em paralelo, não TeamCreate.** Esta skill usa chamadas paralelas da ferramenta Agent para trabalho independente. TeamCreate (uma ferramenta do Claude Code para diálogo multi-agent) só é necessária quando os agents precisam debater ou responder uns aos outros.
 
-## Examples
+## Exemplos
 
 ```
-User: team builder
+Usuário: team builder
 
 Claude:
-Available agent domains:
+Domínios de agent disponíveis:
 1. Engineering (2) — Software Architect, Security Engineer
 2. Marketing (1) — SEO Specialist
 3. Sales (4) — Discovery Coach, Outbound Strategist, Proposal Strategist, Sales Engineer
 4. Support (1) — Executive Summary
 
-Pick domains or name specific agents:
+Escolha domínios ou nomeie agents específicos:
 
-User: security + seo
-
-Claude:
-Selected: Security Engineer + SEO Specialist
-What should they work on?
-
-User: Review my Next.js e-commerce site before launch
-
-[Both agents spawn in parallel, each applying their specialty to the codebase]
+Usuário: security + seo
 
 Claude:
-## Security Engineer Findings
-- [findings...]
+Selecionados: Security Engineer + SEO Specialist
+Em que devem trabalhar?
 
-## SEO Specialist Findings
-- [findings...]
+Usuário: Revise meu site de e-commerce Next.js antes do lançamento
 
-## Synthesis
-Both agents agree on: [...]
-Tension: Security recommends CSP that blocks inline styles, SEO needs inline schema markup. Resolution: [...]
-Next steps: [...]
+[Ambos os agents são gerados em paralelo, cada um aplicando sua especialidade à base de código]
+
+Claude:
+## Descobertas do Security Engineer
+- [descobertas...]
+
+## Descobertas do SEO Specialist
+- [descobertas...]
+
+## Síntese
+Ambos os agents concordam em: [...]
+Tensão: Security recomenda CSP que bloqueia estilos inline, SEO precisa de marcação schema inline. Resolução: [...]
+Próximos passos: [...]
 ```

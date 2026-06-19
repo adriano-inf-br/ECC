@@ -1,183 +1,185 @@
 ---
 name: search-first
-description: Research-before-coding workflow. Search for existing tools, libraries, and patterns before writing custom code. Invokes the researcher agent.
+description: Fluxo de trabalho de pesquisa antes de codificar. Busca ferramentas, bibliotecas e padrões existentes antes de escrever código personalizado. Invoca o agente pesquisador.
 metadata:
   origin: ECC
 ---
 
-# /search-first — Research Before You Code
+# /search-first — Pesquise Antes de Codificar
 
-Systematizes the "search for existing solutions before implementing" workflow.
+Sistematiza o fluxo de trabalho "buscar soluções existentes antes de implementar".
 
-## Trigger
+## Gatilho
 
-Use this skill when:
-- Starting a new feature that likely has existing solutions
-- Adding a dependency or integration
-- The user asks "add X functionality" and you're about to write code
-- Before creating a new utility, helper, or abstraction
+Use esta skill quando:
+- Iniciar um novo recurso que provavelmente já tem soluções existentes
+- Adicionar uma dependência ou integração
+- O usuário pede "adicionar funcionalidade X" e você está prestes a escrever código
+- Antes de criar um novo utilitário, helper ou abstração
 
-## Workflow
+## Fluxo de Trabalho
 
 ```
 ┌─────────────────────────────────────────────┐
-│  0. TOOL AVAILABILITY PREFLIGHT             │
-│     Check search channels before relying on │
-│     them; report skipped channels honestly   │
+│  0. VERIFICAÇÃO DE DISPONIBILIDADE DE TOOLS │
+│     Verifique os canais de busca antes de   │
+│     depender deles; reporte canais pulados  │
 ├─────────────────────────────────────────────┤
-│  1. NEED ANALYSIS                           │
-│     Define what functionality is needed      │
-│     Identify language/framework constraints  │
+│  1. ANÁLISE DE NECESSIDADE                  │
+│     Defina qual funcionalidade é necessária │
+│     Identifique restrições de linguagem/    │
+│     framework                               │
 ├─────────────────────────────────────────────┤
-│  2. PARALLEL SEARCH (researcher agent)      │
+│  2. BUSCA PARALELA (agente pesquisador)     │
 │     ┌──────────┐ ┌──────────┐ ┌──────────┐  │
 │     │  npm /   │ │  MCP /   │ │  GitHub / │  │
 │     │  PyPI    │ │  Skills  │ │  Web      │  │
 │     └──────────┘ └──────────┘ └──────────┘  │
 ├─────────────────────────────────────────────┤
-│  3. EVALUATE                                │
-│     Score candidates (functionality, maint, │
-│     community, docs, license, deps)         │
+│  3. AVALIAR                                 │
+│     Pontuar candidatos (funcionalidade,     │
+│     manutenção, comunidade, docs, licença,  │
+│     dependências)                           │
 ├─────────────────────────────────────────────┤
-│  4. DECIDE                                  │
+│  4. DECIDIR                                 │
 │     ┌─────────┐  ┌──────────┐  ┌─────────┐  │
-│     │  Adopt  │  │  Extend  │  │  Build   │  │
-│     │ as-is   │  │  /Wrap   │  │  Custom  │  │
+│     │ Adotar  │  │ Estender │  │Construir │  │
+│     │ como é  │  │ /Envolver│  │Customiz. │  │
 │     └─────────┘  └──────────┘  └─────────┘  │
 ├─────────────────────────────────────────────┤
-│  5. IMPLEMENT                               │
-│     Install package / Configure MCP /       │
-│     Write minimal custom code               │
+│  5. IMPLEMENTAR                             │
+│     Instalar pacote / Configurar MCP /      │
+│     Escrever código customizado mínimo      │
 └─────────────────────────────────────────────┘
 ```
 
-## Decision Matrix
+## Matriz de Decisão
 
-| Signal | Action |
+| Sinal | Ação |
 |--------|--------|
-| Exact match, well-maintained, MIT/Apache | **Adopt** — install and use directly |
-| Partial match, good foundation | **Extend** — install + write thin wrapper |
-| Multiple weak matches | **Compose** — combine 2-3 small packages |
-| Nothing suitable found | **Build** — write custom, but informed by research |
+| Correspondência exata, bem mantido, MIT/Apache | **Adotar** — instalar e usar diretamente |
+| Correspondência parcial, boa base | **Estender** — instalar + escrever wrapper fino |
+| Múltiplas correspondências fracas | **Compor** — combinar 2-3 pacotes pequenos |
+| Nada adequado encontrado | **Construir** — escrever customizado, mas informado pela pesquisa |
 
-## How to Use
+## Como Usar
 
-### Step 0: Tool Availability Preflight
+### Passo 0: Verificação de Disponibilidade de Tools
 
-This is agent guidance, not an executable setup script. Check only the channels
-that are relevant to the task and project in front of you.
+Esta é uma orientação para o agente, não um script executável de configuração. Verifique apenas os
+canais relevantes para a tarefa e o projeto em questão.
 
-| Channel | Check | If missing |
+| Canal | Verificar | Se ausente |
 |---------|-------|------------|
-| Repository search | `rg --files` and targeted `rg` queries | State that only visible files were inspected |
-| Package registry | `npm --version`, `python -m pip --version`, or project package manager | Use web/docs search and avoid claiming registry coverage |
-| GitHub CLI | `gh auth status` | Use public web or local git history only |
-| MCP/docs tools | Available tool list or local MCP config | Fall back to official docs/web search |
-| Skills directory | `ls ~/.claude/skills ~/.codex/skills` where applicable | Say no local skill catalog was available |
+| Busca no repositório | `rg --files` e consultas `rg` direcionadas | Informe que apenas os arquivos visíveis foram inspecionados |
+| Registro de pacotes | `npm --version`, `python -m pip --version` ou gerenciador de pacotes do projeto | Use busca na web/documentação e evite afirmar cobertura do registro |
+| GitHub CLI | `gh auth status` | Use apenas a web pública ou o histórico git local |
+| Tools MCP/docs | Lista de tools disponíveis ou config MCP local | Use busca na documentação oficial/web como fallback |
+| Diretório de Skills | `ls ~/.claude/skills ~/.codex/skills` quando aplicável | Diga que nenhum catálogo local de skills estava disponível |
 
-### Quick Mode (inline)
+### Modo Rápido (inline)
 
-Before writing a utility or adding functionality, mentally run through:
+Antes de escrever um utilitário ou adicionar funcionalidade, passe mentalmente por:
 
-0. Does this already exist in the repo? → `rg` through relevant modules/tests first
-1. Is this a common problem? → Search npm/PyPI
-2. Is there an MCP for this? → Check `~/.claude/settings.json` and search
-3. Is there a skill for this? → Check `~/.claude/skills/`
-4. Is there a GitHub implementation/template? → Run GitHub code search for maintained OSS before writing net-new code
+0. Isso já existe no repositório? → `rg` pelos módulos/testes relevantes primeiro
+1. É um problema comum? → Pesquise npm/PyPI
+2. Existe um MCP para isso? → Verifique `~/.claude/settings.json` e pesquise
+3. Existe uma skill para isso? → Verifique `~/.claude/skills/`
+4. Existe uma implementação/template no GitHub? → Execute busca de código no GitHub por OSS mantido antes de escrever código novo
 
-### Full Mode (agent)
+### Modo Completo (agente)
 
-For non-trivial functionality, launch the researcher agent:
+Para funcionalidades não triviais, lance o agente pesquisador:
 
 ```
 Agent(subagent_type="general-purpose", prompt="
-  Research existing tools for: [DESCRIPTION]
-  Language/framework: [LANG]
-  Constraints: [ANY]
+  Pesquise ferramentas existentes para: [DESCRIÇÃO]
+  Linguagem/framework: [LANG]
+  Restrições: [QUAISQUER]
 
-  Search: npm/PyPI, MCP servers, Claude Code skills, GitHub
-  Return: Structured comparison with recommendation
+  Buscar: npm/PyPI, servidores MCP, skills do Claude Code, GitHub
+  Retornar: Comparação estruturada com recomendação
 ")
 ```
 
-Older Claude Code docs may call this `Task(...)`; use the current agent/subagent
-tool name exposed by the active harness.
+Documentações mais antigas do Claude Code podem chamar isso de `Task(...)`; use o nome
+atual da tool de agente/subagente exposta pelo harness ativo.
 
-## Search Shortcuts by Category
+## Atalhos de Busca por Categoria
 
-### Development Tooling
+### Tooling de Desenvolvimento
 - Linting → `eslint`, `ruff`, `textlint`, `markdownlint`
-- Formatting → `prettier`, `black`, `gofmt`
-- Testing → `jest`, `pytest`, `go test`
+- Formatação → `prettier`, `black`, `gofmt`
+- Testes → `jest`, `pytest`, `go test`
 - Pre-commit → `husky`, `lint-staged`, `pre-commit`
 
-### AI/LLM Integration
-- Claude SDK → Context7 for latest docs
-- Prompt management → Check MCP servers
-- Document processing → `unstructured`, `pdfplumber`, `mammoth`
+### Integração com AI/LLM
+- Claude SDK → Context7 para documentação mais recente
+- Gerenciamento de Prompt → Verificar servidores MCP
+- Processamento de documentos → `unstructured`, `pdfplumber`, `mammoth`
 
-### Data & APIs
-- HTTP clients → `httpx` (Python), `ky`/`undici` (Node)
-- Validation → `zod` (TS), `pydantic` (Python)
-- Database → Check for MCP servers first
+### Dados e APIs
+- Clientes HTTP → `httpx` (Python), `ky`/`undici` (Node)
+- Validação → `zod` (TS), `pydantic` (Python)
+- Banco de dados → Verificar servidores MCP primeiro
 
-### Content & Publishing
-- Markdown processing → `remark`, `unified`, `markdown-it`
-- Image optimization → `sharp`, `imagemin`
+### Conteúdo e Publicação
+- Processamento de Markdown → `remark`, `unified`, `markdown-it`
+- Otimização de imagens → `sharp`, `imagemin`
 
-## Integration Points
+## Pontos de Integração
 
-### With planner agent
-The planner should invoke researcher before Phase 1 (Architecture Review):
-- Researcher identifies available tools
-- Planner incorporates them into the implementation plan
-- Avoids "reinventing the wheel" in the plan
+### Com o agente planner
+O planner deve invocar o pesquisador antes da Fase 1 (Revisão de Arquitetura):
+- O pesquisador identifica ferramentas disponíveis
+- O planner as incorpora no plano de implementação
+- Evita "reinventar a roda" no plano
 
-### With architect agent
-The architect should consult researcher for:
-- Technology stack decisions
-- Integration pattern discovery
-- Existing reference architectures
+### Com o agente architect
+O architect deve consultar o pesquisador para:
+- Decisões de stack tecnológica
+- Descoberta de padrões de integração
+- Arquiteturas de referência existentes
 
-### With iterative-retrieval skill
-Combine for progressive discovery:
-- Cycle 1: Broad search (npm, PyPI, MCP)
-- Cycle 2: Evaluate top candidates in detail
-- Cycle 3: Test compatibility with project constraints
+### Com a skill iterative-retrieval
+Combine para descoberta progressiva:
+- Ciclo 1: Busca ampla (npm, PyPI, MCP)
+- Ciclo 2: Avaliar os principais candidatos em detalhes
+- Ciclo 3: Testar compatibilidade com as restrições do projeto
 
-## Examples
+## Exemplos
 
-### Example 1: "Add dead link checking"
+### Exemplo 1: "Adicionar verificação de links quebrados"
 ```
-Need: Check markdown files for broken links
-Search: npm "markdown dead link checker"
-Found: textlint-rule-no-dead-link (score: 9/10)
-Action: ADOPT — npm install textlint-rule-no-dead-link
-Result: Zero custom code, battle-tested solution
-```
-
-### Example 2: "Add HTTP client wrapper"
-```
-Need: Resilient HTTP client with retries and timeout handling
-Search: npm "http client retry", PyPI "httpx retry"
-Found: got (Node) with retry plugin, httpx (Python) with built-in retry
-Action: ADOPT — use got/httpx directly with retry config
-Result: Zero custom code, production-proven libraries
+Necessidade: Verificar arquivos markdown em busca de links quebrados
+Busca: npm "markdown dead link checker"
+Encontrado: textlint-rule-no-dead-link (pontuação: 9/10)
+Ação: ADOTAR — npm install textlint-rule-no-dead-link
+Resultado: Zero código customizado, solução testada em campo
 ```
 
-### Example 3: "Add config file linter"
+### Exemplo 2: "Adicionar wrapper de cliente HTTP"
 ```
-Need: Validate project config files against a schema
-Search: npm "config linter schema", "json schema validator cli"
-Found: ajv-cli (score: 8/10)
-Action: ADOPT + EXTEND — install ajv-cli, write project-specific schema
-Result: 1 package + 1 schema file, no custom validation logic
+Necessidade: Cliente HTTP resiliente com retentativas e tratamento de timeout
+Busca: npm "http client retry", PyPI "httpx retry"
+Encontrado: got (Node) com plugin de retry, httpx (Python) com retry integrado
+Ação: ADOTAR — usar got/httpx diretamente com config de retry
+Resultado: Zero código customizado, bibliotecas testadas em produção
 ```
 
-## Anti-Patterns
+### Exemplo 3: "Adicionar linter de arquivo de configuração"
+```
+Necessidade: Validar arquivos de configuração do projeto contra um schema
+Busca: npm "config linter schema", "json schema validator cli"
+Encontrado: ajv-cli (pontuação: 8/10)
+Ação: ADOTAR + ESTENDER — instalar ajv-cli, escrever schema específico do projeto
+Resultado: 1 pacote + 1 arquivo de schema, sem lógica de validação customizada
+```
 
-- **Jumping to code**: Writing a utility without checking if one exists
-- **Ignoring MCP**: Not checking if an MCP server already provides the capability
-- **Silent skipping**: Reporting "nothing found" when a search channel was unavailable
-- **Over-customizing**: Wrapping a library so heavily it loses its benefits
-- **Dependency bloat**: Installing a massive package for one small feature
+## Anti-Padrões
+
+- **Pular direto para o código**: escrever um utilitário sem verificar se já existe
+- **Ignorar MCP**: não verificar se um servidor MCP já fornece a capacidade
+- **Pular silenciosamente**: reportar "nada encontrado" quando um canal de busca estava indisponível
+- **Excesso de customização**: envolver uma biblioteca tão fortemente que ela perde seus benefícios
+- **Inchaço de dependências**: instalar um pacote enorme para um recurso pequeno

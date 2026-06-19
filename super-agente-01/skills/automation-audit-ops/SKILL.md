@@ -22,7 +22,7 @@ Traga estas skills nativas do ECC para o fluxo de trabalho quando relevantes:
 - `research-ops` quando o inventário local deve ser comparado com o suporte atual da plataforma ou documentação pública
 - `verification-loop` para provar o estado pós-correção em vez de confiar em uma recuperação presumida
 
-## When to Use
+## Quando Usar
 
 - o usuário pergunta "quais automações eu tenho", "o que está ativo", "o que está quebrado" ou "o que se sobrepõe"
 - a tarefa abrange cron jobs, GitHub Actions, hooks locais, servidores MCP, conectores, wrappers ou integrações de app
@@ -41,7 +41,7 @@ Traga estas skills nativas do ECC para o fluxo de trabalho quando relevantes:
 - não afirme que uma ferramenta está ativa só porque uma Skill ou config a referencia
 - não mescle nem exclua superfícies sobrepostas até que a tabela de evidências exista
 
-## Workflow
+## Fluxo de Trabalho
 
 ### 1. Inventarie a superfície real
 
@@ -104,7 +104,7 @@ Para cada superfície sobreposta ou suspeita, retorne uma decisão:
 
 O valor está em colapsar automação ruidosa em uma única via canônica do ECC, não em preservar todo caminho histórico.
 
-## Output Format
+## Formato de Saída
 
 ```text
 SUPERFÍCIE ATUAL
@@ -136,7 +136,7 @@ PRÓXIMA AÇÃO ECC
 - não conserte redundância de menor valor antes de nomear o caminho quebrado de alto sinal
 - não amplie a tarefa em uma reescrita do repositório se o usuário pediu inventário primeiro
 
-## Verification
+## Verificação
 
 - afirmações importantes citam um caminho de prova ativo
 - cada automação revelada é rotulada com uma categoria clara de estado ativo

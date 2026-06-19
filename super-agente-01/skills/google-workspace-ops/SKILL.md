@@ -1,96 +1,96 @@
 ---
 name: google-workspace-ops
-description: Operate across Google Drive, Docs, Sheets, and Slides as one workflow surface for plans, trackers, decks, and shared documents. Use when the user needs to find, summarize, edit, migrate, or clean up Google Workspace assets without dropping to raw tool calls.
+description: Opere em Google Drive, Docs, Sheets e Slides como uma única superfície de fluxo de trabalho para planos, rastreadores, decks e documentos compartilhados. Use quando o usuário precisar encontrar, resumir, editar, migrar ou organizar ativos do Google Workspace sem recorrer a chamadas brutas de ferramentas.
 metadata:
   origin: ECC
 ---
 
 # Google Workspace Ops
 
-This skill is for operating shared docs, spreadsheets, and decks as working systems, not just editing one file in isolation.
+Esta skill é para operar documentos compartilhados, planilhas e decks como sistemas funcionais, não apenas editando um arquivo de forma isolada.
 
-## When to Use
+## Quando Usar
 
-- User needs to find a doc, sheet, or deck and update it in place
-- Consolidating plans, trackers, notes, or customer lists stored in Google Drive
-- Cleaning or restructuring a shared spreadsheet
-- Importing, repairing, or reformatting a Google Slides deck
-- Producing summaries from Docs, Sheets, or Slides for decision-making
+- Usuário precisa encontrar um documento, planilha ou deck e atualizá-lo in loco
+- Consolidar planos, rastreadores, notas ou listas de clientes armazenados no Google Drive
+- Limpar ou reestruturar uma planilha compartilhada
+- Importar, reparar ou reformatar um deck do Google Slides
+- Produzir resumos de Docs, Sheets ou Slides para tomada de decisão
 
-## Preferred Tool Surface
+## Superfície de Ferramentas Preferida
 
-Use Google Drive as the entry point, then switch to the right specialist:
+Use o Google Drive como ponto de entrada, depois mude para o especialista adequado:
 
-- Google Docs for text-heavy docs
-- Google Sheets for tabular work, formulas, and charts
-- Google Slides for decks, imports, template migration, and cleanup
+- Google Docs para documentos com muito texto
+- Google Sheets para trabalho tabular, fórmulas e gráficos
+- Google Slides para decks, importações, migração de templates e limpeza
 
-Do not guess structure from filenames alone. Inspect first.
+Não adivinhe a estrutura apenas pelos nomes dos arquivos. Inspecione primeiro.
 
-## Workflow
+## Fluxo de Trabalho
 
-### 1. Find the asset
+### 1. Encontrar o ativo
 
-Start with the Drive search surface to locate:
+Comece com a superfície de busca do Drive para localizar:
 
-- the exact file
-- sibling assets
-- likely duplicates
-- recently modified versions
+- o arquivo exato
+- ativos irmãos
+- prováveis duplicatas
+- versões modificadas recentemente
 
-If several documents look similar, confirm by title, owner, modified time, or folder.
+Se vários documentos parecerem similares, confirme por título, proprietário, horário de modificação ou pasta.
 
-### 2. Inspect before editing
+### 2. Inspecionar antes de editar
 
-Before making changes:
+Antes de fazer mudanças:
 
-- summarize current structure
-- identify tabs, headings, or slide count
-- detect whether the task is local cleanup or structural surgery
+- resuma a estrutura atual
+- identifique abas, títulos ou contagem de slides
+- detecte se a tarefa é uma limpeza local ou uma cirurgia estrutural
 
-Pick the smallest tool that can safely perform the work.
+Escolha a menor ferramenta que possa realizar o trabalho com segurança.
 
-### 3. Edit with precision
+### 3. Editar com precisão
 
-- For Docs: use index-aware edits, not vague rewrites
-- For Sheets: operate on explicit tabs and ranges
-- For Slides: distinguish content edits from visual cleanup or template migration
+- Para Docs: use edições com consciência de índice, não reescritas vagas
+- Para Sheets: opere em abas e intervalos explícitos
+- Para Slides: distingua edições de conteúdo de limpeza visual ou migração de template
 
-If the requested work is visual or layout-sensitive, iterate with inspection and verification instead of one giant blind update.
+Se o trabalho solicitado for sensível ao visual ou ao layout, itere com inspeção e verificação em vez de uma grande atualização cega.
 
-### 4. Keep the working system clean
+### 4. Manter o sistema de trabalho limpo
 
-When the file is part of a larger workflow, also surface:
+Quando o arquivo faz parte de um fluxo de trabalho maior, também apresente:
 
-- duplicate trackers
-- outdated decks
-- stale docs vs canonical docs
-- whether the asset should be archived, merged, or renamed
+- rastreadores duplicados
+- decks desatualizados
+- documentos obsoletos vs. documentos canônicos
+- se o ativo deve ser arquivado, mesclado ou renomeado
 
-## Output Format
+## Formato de Saída
 
 Use:
 
 ```text
-ASSET
-- file name
-- type
-- why this is the right file
+ATIVO
+- nome do arquivo
+- tipo
+- por que este é o arquivo correto
 
-CURRENT STATE
-- structure summary
-- key problems or blockers
+ESTADO ATUAL
+- resumo da estrutura
+- principais problemas ou bloqueadores
 
-ACTION
-- edits made or recommended
+AÇÃO
+- edições feitas ou recomendadas
 
-FOLLOW-UPS
-- archive / merge / duplicate cleanup / next file to update
+PRÓXIMOS PASSOS
+- arquivar / mesclar / limpeza de duplicatas / próximo arquivo a atualizar
 ```
 
-## Good Use Cases
+## Casos de Uso Adequados
 
-- "Find the active planning doc and condense it"
-- "Clean up this customer spreadsheet and show me the churn-risk rows"
-- "Import this deck into Slides and make it presentable"
-- "Find the current tracker, not the stale duplicate"
+- "Encontre o documento de planejamento ativo e condense-o"
+- "Limpe esta planilha de clientes e mostre-me as linhas de risco de churn"
+- "Importe este deck para o Slides e torne-o apresentável"
+- "Encontre o rastreador atual, não a duplicata obsoleta"

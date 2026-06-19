@@ -1,48 +1,48 @@
 ---
 name: swift-protocol-di-testing
-description: Protocol-based dependency injection for testable Swift code — mock file system, network, and external APIs using focused protocols and Swift Testing.
+description: Injeção de dependência baseada em protocolo para código Swift testável — Mock de sistema de arquivos, rede e APIs externas usando protocolos focados e Swift Testing.
 metadata:
   origin: ECC
 ---
 
-# Swift Protocol-Based Dependency Injection for Testing
+# Injeção de Dependência Baseada em Protocolo Swift para Testes
 
-Patterns for making Swift code testable by abstracting external dependencies (file system, network, iCloud) behind small, focused protocols. Enables deterministic tests without I/O.
+Padrões para tornar o código Swift testável abstraindo dependências externas (sistema de arquivos, rede, iCloud) por trás de protocolos pequenos e focados. Permite testes determinísticos sem I/O.
 
-## When to Activate
+## Quando Ativar
 
-- Writing Swift code that accesses file system, network, or external APIs
-- Need to test error handling paths without triggering real failures
-- Building modules that work across environments (app, test, SwiftUI preview)
-- Designing testable architecture with Swift concurrency (actors, Sendable)
+- Escrevendo código Swift que acessa sistema de arquivos, rede ou APIs externas
+- Precisa testar caminhos de tratamento de erro sem acionar falhas reais
+- Construindo módulos que funcionam em diferentes ambientes (app, teste, preview SwiftUI)
+- Projetando arquitetura testável com concorrência Swift (actors, Sendable)
 
-## Core Pattern
+## Padrão Central
 
-### 1. Define Small, Focused Protocols
+### 1. Defina Protocolos Pequenos e Focados
 
-Each protocol handles exactly one external concern.
+Cada protocolo lida exatamente com uma preocupação externa.
 
 ```swift
-// File system access
+// Acesso ao sistema de arquivos
 public protocol FileSystemProviding: Sendable {
     func containerURL(for purpose: Purpose) -> URL?
 }
 
-// File read/write operations
+// Operações de leitura/escrita de arquivo
 public protocol FileAccessorProviding: Sendable {
     func read(from url: URL) throws -> Data
     func write(_ data: Data, to url: URL) throws
     func fileExists(at url: URL) -> Bool
 }
 
-// Bookmark storage (e.g., for sandboxed apps)
+// Armazenamento de bookmarks (ex.: para apps em sandbox)
 public protocol BookmarkStorageProviding: Sendable {
     func saveBookmark(_ data: Data, for key: String) throws
     func loadBookmark(for key: String) throws -> Data?
 }
 ```
 
-### 2. Create Default (Production) Implementations
+### 2. Crie Implementações Padrão (Produção)
 
 ```swift
 public struct DefaultFileSystemProvider: FileSystemProviding {
@@ -70,7 +70,7 @@ public struct DefaultFileAccessor: FileAccessorProviding {
 }
 ```
 
-### 3. Create Mock Implementations for Testing
+### 3. Crie Implementações Mock para Testes
 
 ```swift
 public final class MockFileAccessor: FileAccessorProviding, @unchecked Sendable {
@@ -99,9 +99,9 @@ public final class MockFileAccessor: FileAccessorProviding, @unchecked Sendable 
 }
 ```
 
-### 4. Inject Dependencies with Default Parameters
+### 4. Injete Dependências com Parâmetros Padrão
 
-Production code uses defaults; tests inject mocks.
+O código de produção usa padrões; os testes injetam Mocks.
 
 ```swift
 public actor SyncManager {
@@ -123,17 +123,17 @@ public actor SyncManager {
         let data = try fileAccessor.read(
             from: containerURL.appendingPathComponent("data.json")
         )
-        // Process data...
+        // Processa dados...
     }
 }
 ```
 
-### 5. Write Tests with Swift Testing
+### 5. Escreva Testes com Swift Testing
 
 ```swift
 import Testing
 
-@Test("Sync manager handles missing container")
+@Test("Sync manager lida com container ausente")
 func testMissingContainer() async {
     let mockFileSystem = MockFileSystemProvider(containerURL: nil)
     let manager = SyncManager(fileSystem: mockFileSystem)
@@ -143,7 +143,7 @@ func testMissingContainer() async {
     }
 }
 
-@Test("Sync manager reads data correctly")
+@Test("Sync manager lê dados corretamente")
 func testReadData() async throws {
     let mockFileAccessor = MockFileAccessor()
     mockFileAccessor.files[testURL] = testData
@@ -154,7 +154,7 @@ func testReadData() async throws {
     #expect(result == expectedData)
 }
 
-@Test("Sync manager handles read errors gracefully")
+@Test("Sync manager lida com erros de leitura graciosamente")
 func testReadError() async {
     let mockFileAccessor = MockFileAccessor()
     mockFileAccessor.readError = CocoaError(.fileReadCorruptFile)
@@ -167,25 +167,25 @@ func testReadError() async {
 }
 ```
 
-## Best Practices
+## Boas Práticas
 
-- **Single Responsibility**: Each protocol should handle one concern — don't create "god protocols" with many methods
-- **Sendable conformance**: Required when protocols are used across actor boundaries
-- **Default parameters**: Let production code use real implementations by default; only tests need to specify mocks
-- **Error simulation**: Design mocks with configurable error properties for testing failure paths
-- **Only mock boundaries**: Mock external dependencies (file system, network, APIs), not internal types
+- **Responsabilidade Única**: Cada protocolo deve lidar com uma preocupação — não crie "protocolos deus" com muitos métodos
+- **Conformance Sendable**: Necessária quando protocolos são usados entre limites de actor
+- **Parâmetros padrão**: Deixe o código de produção usar implementações reais por padrão; apenas os testes precisam especificar Mocks
+- **Simulação de erros**: Projete Mocks com propriedades de erro configuráveis para testar caminhos de falha
+- **Mock apenas limites**: Mock dependências externas (sistema de arquivos, rede, APIs), não tipos internos
 
-## Anti-Patterns to Avoid
+## Anti-Padrões a Evitar
 
-- Creating a single large protocol that covers all external access
-- Mocking internal types that have no external dependencies
-- Using `#if DEBUG` conditionals instead of proper dependency injection
-- Forgetting `Sendable` conformance when used with actors
-- Over-engineering: if a type has no external dependencies, it doesn't need a protocol
+- Criar um único protocolo grande que cobre todo acesso externo
+- Fazer Mock de tipos internos que não têm dependências externas
+- Usar condicionais `#if DEBUG` em vez de injeção de dependência adequada
+- Esquecer conformance `Sendable` quando usado com actors
+- Engenharia excessiva: se um tipo não tem dependências externas, ele não precisa de um protocolo
 
-## When to Use
+## Quando Usar
 
-- Any Swift code that touches file system, network, or external APIs
-- Testing error handling paths that are hard to trigger in real environments
-- Building modules that need to work in app, test, and SwiftUI preview contexts
-- Apps using Swift concurrency (actors, structured concurrency) that need testable architecture
+- Qualquer código Swift que toca sistema de arquivos, rede ou APIs externas
+- Testando caminhos de tratamento de erro que são difíceis de acionar em ambientes reais
+- Construindo módulos que precisam funcionar em contextos de app, teste e preview SwiftUI
+- Apps usando concorrência Swift (actors, concorrência estruturada) que precisam de arquitetura testável

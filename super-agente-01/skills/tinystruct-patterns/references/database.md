@@ -1,19 +1,19 @@
-# tinystruct Database Persistence
+# Persistência de Banco de Dados no tinystruct
 
-## When to Use
+## Quando Usar
 
-Use the built-in ORM-like data layer for database operations. It provides a lightweight alternative to JPA/Hibernate using POJOs extending `AbstractData` and XML mapping files.
+Use a camada de dados semelhante a ORM embutida para operações de banco de dados. Ela oferece uma alternativa leve ao JPA/Hibernate usando POJOs que estendem `AbstractData` e arquivos de mapeamento XML.
 
-## How It Works
+## Como Funciona
 
-### Architecture
+### Arquitetura
 
-Each table is represented by:
-1. **Java POJO**: Extends `AbstractData`, provides getters/setters and `setData(Row)`.
-2. **Mapping XML**: `ClassName.map.xml` in resources, binding Java fields to DB columns.
+Cada tabela é representada por:
+1. **Java POJO**: Estende `AbstractData`, fornece getters/setters e `setData(Row)`.
+2. **XML de Mapeamento**: `ClassName.map.xml` em recursos, vinculando campos Java a colunas do banco.
 
-#### Key Base Class: `AbstractData`
-Provides CRUD methods:
+#### Classe Base Principal: `AbstractData`
+Fornece métodos CRUD:
 - `append()` / `appendAndGetId()`
 - `update()`
 - `delete()`
@@ -21,11 +21,11 @@ Provides CRUD methods:
 - `findWith(where, params)`
 - `find(SQL, params)`
 
-### POJO Generation (CLI)
+### Geração de POJO (CLI)
 
-Introspect a live database table to produce the POJO and mapping file.
+Introspecte uma tabela de banco de dados ativa para produzir o POJO e o arquivo de mapeamento.
 
-#### Configuration
+#### Configuração
 `application.properties`:
 ```properties
 driver=com.mysql.cj.jdbc.Driver
@@ -34,18 +34,18 @@ database.user=root
 database.password=secret
 ```
 
-#### Command
+#### Comando
 ```bash
-# Interactive mode
+# Modo interativo
 bin/dispatcher generate
 
-# Specify table
+# Especificar tabela
 bin/dispatcher generate --tables users
 ```
 
-## Examples
+## Exemplos
 
-### CRUD Operations
+### Operações CRUD
 ```java
 // CREATE
 User user = new User();
@@ -65,12 +65,12 @@ user.update();
 user.delete();
 ```
 
-### Querying with Conditions
+### Consultas com Condições
 ```java
 User user = new User();
 Table results = user.findWith("username LIKE ?", new Object[]{"%jam%"});
 
-// Fluent Condition Builder
+// Construtor de Condição Fluente
 Condition condition = new Condition();
 condition.setRequestFields("id,username");
 Table filtered = user.find(
@@ -79,7 +79,7 @@ Table filtered = user.find(
 );
 ```
 
-### Mapping XML Structure
+### Estrutura do XML de Mapeamento
 `User.map.xml`:
 ```xml
 <mapping>
@@ -91,9 +91,9 @@ Table filtered = user.find(
 </mapping>
 ```
 
-## Important Rules
+## Regras Importantes
 
-1. **File Placement**: The mapping XML **must** mirror the POJO's package path under `src/main/resources/`.
-2. **Naming**: Table names are singularized for class names (`users` → `User`). Underscored columns become camelCase fields (`created_at` → `createdAt`).
-3. **Setters**: Use `setFieldAsXxx` methods (e.g., `setFieldAsString`) in setters to sync state with the internal field map.
-4. **Id Field**: The primary key field in Java is always named `Id` (inherited from `AbstractData`).
+1. **Posicionamento do Arquivo**: O XML de mapeamento **deve** espelhar o caminho de pacote do POJO em `src/main/resources/`.
+2. **Nomenclatura**: Nomes de tabelas são singularizados para nomes de classes (`users` → `User`). Colunas com sublinhado se tornam campos camelCase (`created_at` → `createdAt`).
+3. **Setters**: Use métodos `setFieldAsXxx` (ex.: `setFieldAsString`) nos setters para sincronizar o estado com o mapa interno de campos.
+4. **Campo Id**: O campo de chave primária em Java é sempre chamado `Id` (herdado de `AbstractData`).

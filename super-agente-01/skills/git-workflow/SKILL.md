@@ -1,130 +1,130 @@
 ---
 name: git-workflow
-description: Git workflow patterns including branching strategies, commit conventions, merge vs rebase, conflict resolution, and collaborative development best practices for teams of all sizes.
+description: Padrões de fluxo de trabalho Git incluindo estratégias de branching, convenções de Commit, merge vs rebase, resolução de conflitos e melhores práticas de desenvolvimento colaborativo para equipes de todos os tamanhos.
 metadata:
   origin: ECC
 ---
 
-# Git Workflow Patterns
+# Padrões de Fluxo de Trabalho Git
 
-Best practices for Git version control, branching strategies, and collaborative development.
+Melhores práticas para controle de versão Git, estratégias de branching e desenvolvimento colaborativo.
 
-## When to Activate
+## Quando Ativar
 
-- Setting up Git workflow for a new project
-- Deciding on branching strategy (GitFlow, trunk-based, GitHub flow)
-- Writing commit messages and PR descriptions
-- Resolving merge conflicts
-- Managing releases and version tags
-- Onboarding new team members to Git practices
+- Configurando fluxo de trabalho Git para um novo projeto
+- Decidindo sobre estratégia de branching (GitFlow, trunk-based, GitHub flow)
+- Escrevendo mensagens de Commit e descrições de PR
+- Resolvendo conflitos de merge
+- Gerenciando releases e tags de versão
+- Integrando novos membros à equipe nas práticas Git
 
-## Branching Strategies
+## Estratégias de Branching
 
-### GitHub Flow (Simple, Recommended for Most)
+### GitHub Flow (Simples, Recomendado para a Maioria)
 
-Best for continuous deployment and small-to-medium teams.
+Melhor para implantação contínua e equipes pequenas a médias.
 
 ```
-main (protected, always deployable)
+main (protegida, sempre implantável)
   │
-  ├── feature/user-auth      → PR → merge to main
-  ├── feature/payment-flow   → PR → merge to main
-  └── fix/login-bug          → PR → merge to main
+  ├── feature/user-auth      → PR → merge para main
+  ├── feature/payment-flow   → PR → merge para main
+  └── fix/login-bug          → PR → merge para main
 ```
 
-**Rules:**
-- `main` is always deployable
-- Create feature branches from `main`
-- Open Pull Request when ready for review
-- After approval and CI passes, merge to `main`
-- Deploy immediately after merge
+**Regras:**
+- `main` é sempre implantável
+- Crie branches de feature a partir de `main`
+- Abra um Pull Request quando estiver pronto para revisão
+- Após aprovação e CI passar, faça merge para `main`
+- Implante imediatamente após o merge
 
-### Trunk-Based Development (High-Velocity Teams)
+### Desenvolvimento Trunk-Based (Equipes de Alta Velocidade)
 
-Best for teams with strong CI/CD and feature flags.
+Melhor para equipes com CI/CD robusto e feature flags.
 
 ```
 main (trunk)
   │
-  ├── short-lived feature (1-2 days max)
-  ├── short-lived feature
-  └── short-lived feature
+  ├── feature de curta duração (máx. 1-2 dias)
+  ├── feature de curta duração
+  └── feature de curta duração
 ```
 
-**Rules:**
-- Everyone commits to `main` or very short-lived branches
-- Feature flags hide incomplete work
-- CI must pass before merge
-- Deploy multiple times per day
+**Regras:**
+- Todos fazem Commit em `main` ou em branches de curtíssima duração
+- Feature flags ocultam trabalho incompleto
+- CI deve passar antes do merge
+- Implantações múltiplas vezes por dia
 
-### GitFlow (Complex, Release-Cycle Driven)
+### GitFlow (Complexo, Orientado a Ciclo de Release)
 
-Best for scheduled releases and enterprise projects.
+Melhor para releases agendadas e projetos corporativos.
 
 ```
-main (production releases)
+main (releases de produção)
   │
-  └── develop (integration branch)
+  └── develop (branch de integração)
         │
         ├── feature/user-auth
         ├── feature/payment
         │
-        ├── release/1.0.0    → merge to main and develop
+        ├── release/1.0.0    → merge para main e develop
         │
-        └── hotfix/critical  → merge to main and develop
+        └── hotfix/critical  → merge para main e develop
 ```
 
-**Rules:**
-- `main` contains production-ready code only
-- `develop` is the integration branch
-- Feature branches from `develop`, merge back to `develop`
-- Release branches from `develop`, merge to `main` and `develop`
-- Hotfix branches from `main`, merge to both `main` and `develop`
+**Regras:**
+- `main` contém somente código pronto para produção
+- `develop` é o branch de integração
+- Branches de feature a partir de `develop`, merge de volta para `develop`
+- Branches de release a partir de `develop`, merge para `main` e `develop`
+- Branches de hotfix a partir de `main`, merge para `main` e `develop`
 
-### When to Use Which
+### Quando Usar Qual
 
-| Strategy | Team Size | Release Cadence | Best For |
-|----------|-----------|-----------------|----------|
-| GitHub Flow | Any | Continuous | SaaS, web apps, startups |
-| Trunk-Based | 5+ experienced | Multiple/day | High-velocity teams, feature flags |
-| GitFlow | 10+ | Scheduled | Enterprise, regulated industries |
+| Estratégia | Tamanho da Equipe | Cadência de Release | Melhor Para |
+|------------|-------------------|---------------------|-------------|
+| GitHub Flow | Qualquer | Contínua | SaaS, apps web, startups |
+| Trunk-Based | 5+ experientes | Múltiplas/dia | Equipes de alta velocidade, feature flags |
+| GitFlow | 10+ | Agendada | Corporativo, indústrias regulamentadas |
 
-## Commit Messages
+## Mensagens de Commit
 
-### Conventional Commits Format
-
-```
-<type>(<scope>): <subject>
-
-[optional body]
-
-[optional footer(s)]
-```
-
-### Types
-
-| Type | Use For | Example |
-|------|---------|---------|
-| `feat` | New feature | `feat(auth): add OAuth2 login` |
-| `fix` | Bug fix | `fix(api): handle null response in user endpoint` |
-| `docs` | Documentation | `docs(readme): update installation instructions` |
-| `style` | Formatting, no code change | `style: fix indentation in login component` |
-| `refactor` | Code refactoring | `refactor(db): extract connection pool to module` |
-| `test` | Adding/updating tests | `test(auth): add unit tests for token validation` |
-| `chore` | Maintenance tasks | `chore(deps): update dependencies` |
-| `perf` | Performance improvement | `perf(query): add index to users table` |
-| `ci` | CI/CD changes | `ci: add PostgreSQL service to test workflow` |
-| `revert` | Revert previous commit | `revert: revert "feat(auth): add OAuth2 login"` |
-
-### Good vs Bad Examples
+### Formato de Conventional Commits
 
 ```
-# BAD: Vague, no context
+<tipo>(<escopo>): <assunto>
+
+[corpo opcional]
+
+[rodapé(s) opcional(is)]
+```
+
+### Tipos
+
+| Tipo | Usar Para | Exemplo |
+|------|-----------|---------|
+| `feat` | Nova feature | `feat(auth): add OAuth2 login` |
+| `fix` | Correção de bug | `fix(api): handle null response in user endpoint` |
+| `docs` | Documentação | `docs(readme): update installation instructions` |
+| `style` | Formatação, sem mudança de código | `style: fix indentation in login component` |
+| `refactor` | Refatoração de código | `refactor(db): extract connection pool to module` |
+| `test` | Adicionando/atualizando testes | `test(auth): add unit tests for token validation` |
+| `chore` | Tarefas de manutenção | `chore(deps): update dependencies` |
+| `perf` | Melhoria de desempenho | `perf(query): add index to users table` |
+| `ci` | Mudanças de CI/CD | `ci: add PostgreSQL service to test workflow` |
+| `revert` | Reverter Commit anterior | `revert: revert "feat(auth): add OAuth2 login"` |
+
+### Exemplos Bons vs Ruins
+
+```
+# RUIM: Vago, sem contexto
 git commit -m "fixed stuff"
 git commit -m "updates"
 git commit -m "WIP"
 
-# GOOD: Clear, specific, explains why
+# BOM: Claro, específico, explica o porquê
 git commit -m "fix(api): retry requests on 503 Service Unavailable
 
 The external API occasionally returns 503 errors during peak hours.
@@ -133,230 +133,230 @@ Added exponential backoff retry logic with max 3 attempts.
 Closes #123"
 ```
 
-### Commit Message Template
+### Template de Mensagem de Commit
 
-Create `.gitmessage` in repo root:
+Crie `.gitmessage` na raiz do repositório:
 
 ```
-# <type>(<scope>): <subject>
-# # Types: feat, fix, docs, style, refactor, test, chore, perf, ci, revert
-# Scope: api, ui, db, auth, etc.
-# Subject: imperative mood, no period, max 50 chars
+# <tipo>(<escopo>): <assunto>
+# # Tipos: feat, fix, docs, style, refactor, test, chore, perf, ci, revert
+# Escopo: api, ui, db, auth, etc.
+# Assunto: modo imperativo, sem ponto final, máx. 50 caracteres
 #
-# [optional body] - explain why, not what
-# [optional footer] - Breaking changes, closes #issue
+# [corpo opcional] - explique o porquê, não o quê
+# [rodapé opcional] - Breaking changes, closes #issue
 ```
 
-Enable with: `git config commit.template .gitmessage`
+Ative com: `git config commit.template .gitmessage`
 
 ## Merge vs Rebase
 
-### Merge (Preserves History)
+### Merge (Preserva o Histórico)
 
 ```bash
-# Creates a merge commit
+# Cria um Commit de merge
 git checkout main
 git merge feature/user-auth
 
-# Result:
-# *   merge commit
+# Resultado:
+# *   Commit de merge
 # |\
-# | * feature commits
+# | * Commits da feature
 # |/
-# * main commits
+# * Commits do main
 ```
 
-**Use when:**
-- Merging feature branches into `main`
-- You want to preserve exact history
-- Multiple people worked on the branch
-- The branch has been pushed and others may have based work on it
+**Use quando:**
+- Fazendo merge de branches de feature em `main`
+- Quiser preservar o histórico exato
+- Várias pessoas trabalharam no branch
+- O branch foi enviado e outros podem ter baseado trabalho nele
 
-### Rebase (Linear History)
+### Rebase (Histórico Linear)
 
 ```bash
-# Rewrites feature commits onto target branch
+# Reescreve os Commits da feature sobre o branch de destino
 git checkout feature/user-auth
 git rebase main
 
-# Result:
-# * feature commits (rewritten)
-# * main commits
+# Resultado:
+# * Commits da feature (reescritos)
+# * Commits do main
 ```
 
-**Use when:**
-- Updating your local feature branch with latest `main`
-- You want a linear, clean history
-- The branch is local-only (not pushed)
-- You're the only one working on the branch
+**Use quando:**
+- Atualizando seu branch de feature local com o `main` mais recente
+- Quiser um histórico linear e limpo
+- O branch é somente local (não enviado)
+- Você é o único trabalhando no branch
 
-### Rebase Workflow
+### Fluxo de Trabalho com Rebase
 
 ```bash
-# Update feature branch with latest main (before PR)
+# Atualizar branch de feature com o main mais recente (antes do PR)
 git checkout feature/user-auth
 git fetch origin
 git rebase origin/main
 
-# Fix any conflicts
-# Tests should still pass
+# Corrija quaisquer conflitos
+# Os testes ainda devem passar
 
-# Force push (only if you're the only contributor)
+# Force push (somente se você for o único contribuidor)
 git push --force-with-lease origin feature/user-auth
 ```
 
-### When NOT to Rebase
+### Quando NÃO Fazer Rebase
 
 ```
-# NEVER rebase branches that:
-- Have been pushed to a shared repository
-- Other people have based work on
-- Are protected branches (main, develop)
-- Are already merged
+# NUNCA faça rebase em branches que:
+- Foram enviados para um repositório compartilhado
+- Outras pessoas basearam trabalho neles
+- São branches protegidos (main, develop)
+- Já foram mergeados
 
-# Why: Rebase rewrites history, breaking others' work
+# Por quê: Rebase reescreve o histórico, quebrando o trabalho de outros
 ```
 
-## Pull Request Workflow
+## Fluxo de Trabalho de Pull Request
 
-### PR Title Format
+### Formato do Título do PR
 
 ```
-<type>(<scope>): <description>
+<tipo>(<escopo>): <descrição>
 
-Examples:
+Exemplos:
 feat(auth): add SSO support for enterprise users
 fix(api): resolve race condition in order processing
 docs(api): add OpenAPI specification for v2 endpoints
 ```
 
-### PR Description Template
+### Template de Descrição do PR
 
 ```markdown
-## What
+## O quê
 
-Brief description of what this PR does.
+Breve descrição do que este PR faz.
 
-## Why
+## Por quê
 
-Explain the motivation and context.
+Explique a motivação e o contexto.
 
-## How
+## Como
 
-Key implementation details worth highlighting.
+Detalhes principais de implementação que valem destacar.
 
-## Testing
+## Testes
 
-- [ ] Unit tests added/updated
-- [ ] Integration tests added/updated
-- [ ] Manual testing performed
+- [ ] Testes unitários adicionados/atualizados
+- [ ] Testes de integração adicionados/atualizados
+- [ ] Testes manuais realizados
 
-## Screenshots (if applicable)
+## Screenshots (se aplicável)
 
-Before/after screenshots for UI changes.
+Screenshots antes/depois para mudanças de UI.
 
-## Checklist
+## Lista de Verificação
 
-- [ ] Code follows project style guidelines
-- [ ] Self-review completed
-- [ ] Comments added for complex logic
-- [ ] Documentation updated
-- [ ] No new warnings introduced
-- [ ] Tests pass locally
-- [ ] Related issues linked
+- [ ] Código segue as diretrizes de estilo do projeto
+- [ ] Auto-revisão concluída
+- [ ] Comentários adicionados para lógica complexa
+- [ ] Documentação atualizada
+- [ ] Nenhum novo aviso introduzido
+- [ ] Testes passam localmente
+- [ ] Issues relacionadas vinculadas
 
 Closes #123
 ```
 
-### Code Review Checklist
+### Lista de Verificação de Code Review
 
-**For Reviewers:**
+**Para Revisores:**
 
-- [ ] Does the code solve the stated problem?
-- [ ] Are there any edge cases not handled?
-- [ ] Is the code readable and maintainable?
-- [ ] Are there sufficient tests?
-- [ ] Are there security concerns?
-- [ ] Is the commit history clean (squashed if needed)?
+- [ ] O código resolve o problema declarado?
+- [ ] Há casos extremos não tratados?
+- [ ] O código é legível e manutenível?
+- [ ] Há testes suficientes?
+- [ ] Há preocupações de segurança?
+- [ ] O histórico de Commits está limpo (squash se necessário)?
 
-**For Authors:**
+**Para Autores:**
 
-- [ ] Self-review completed before requesting review
-- [ ] CI passes (tests, lint, typecheck)
-- [ ] PR size is reasonable (<500 lines ideal)
-- [ ] Related to a single feature/fix
-- [ ] Description clearly explains the change
+- [ ] Auto-revisão concluída antes de solicitar revisão
+- [ ] CI passa (testes, Lint, typecheck)
+- [ ] Tamanho do PR é razoável (<500 linhas ideal)
+- [ ] Relacionado a uma única feature/correção
+- [ ] Descrição explica claramente a mudança
 
-## Conflict Resolution
+## Resolução de Conflitos
 
-### Identify Conflicts
+### Identificar Conflitos
 
 ```bash
-# Check for conflicts before merge
+# Verificar conflitos antes do merge
 git checkout main
 git merge feature/user-auth --no-commit --no-ff
 
-# If conflicts, Git will show:
+# Se houver conflitos, o Git mostrará:
 # CONFLICT (content): Merge conflict in src/auth/login.ts
 # Automatic merge failed; fix conflicts and then commit the result.
 ```
 
-### Resolve Conflicts
+### Resolver Conflitos
 
 ```bash
-# See conflicted files
+# Ver arquivos com conflito
 git status
 
-# View conflict markers in file
+# Ver marcadores de conflito no arquivo
 # <<<<<<< HEAD
-# content from main
+# conteúdo do main
 # =======
-# content from feature branch
+# conteúdo do branch de feature
 # >>>>>>> feature/user-auth
 
-# Option 1: Manual resolution
-# Edit file, remove markers, keep correct content
+# Opção 1: Resolução manual
+# Edite o arquivo, remova os marcadores, mantenha o conteúdo correto
 
-# Option 2: Use merge tool
+# Opção 2: Usar ferramenta de merge
 git mergetool
 
-# Option 3: Accept one side
-git checkout --ours src/auth/login.ts    # Keep main version
-git checkout --theirs src/auth/login.ts  # Keep feature version
+# Opção 3: Aceitar um lado
+git checkout --ours src/auth/login.ts    # Manter versão do main
+git checkout --theirs src/auth/login.ts  # Manter versão da feature
 
-# After resolving, stage and commit
+# Após resolver, faça stage e Commit
 git add src/auth/login.ts
 git commit
 ```
 
-### Conflict Prevention Strategies
+### Estratégias de Prevenção de Conflitos
 
 ```bash
-# 1. Keep feature branches small and short-lived
-# 2. Rebase frequently onto main
+# 1. Mantenha branches de feature pequenos e de curta duração
+# 2. Faça rebase frequente sobre o main
 git checkout feature/user-auth
 git fetch origin
 git rebase origin/main
 
-# 3. Communicate with team about touching shared files
-# 4. Use feature flags instead of long-lived branches
-# 5. Review and merge PRs promptly
+# 3. Comunique-se com a equipe sobre tocar em arquivos compartilhados
+# 4. Use feature flags em vez de branches de longa duração
+# 5. Revise e faça merge de PRs prontamente
 ```
 
-## Branch Management
+## Gerenciamento de Branches
 
-### Naming Conventions
+### Convenções de Nomenclatura
 
 ```
-# Feature branches
+# Branches de feature
 feature/user-authentication
 feature/JIRA-123-payment-integration
 
-# Bug fixes
+# Correções de bugs
 fix/login-redirect-loop
 fix/456-null-pointer-exception
 
-# Hotfixes (production issues)
+# Hotfixes (problemas de produção)
 hotfix/critical-security-patch
 hotfix/database-connection-leak
 
@@ -364,68 +364,68 @@ hotfix/database-connection-leak
 release/1.2.0
 release/2024-01-hotfix
 
-# Experiments/POCs
+# Experimentos/POCs
 experiment/new-caching-strategy
 poc/graphql-migration
 ```
 
-### Branch Cleanup
+### Limpeza de Branches
 
 ```bash
-# Delete local branches that are merged
+# Excluir branches locais que foram mergeados
 git branch --merged main | grep -v "^\*\|main" | xargs -n 1 git branch -d
 
-# Delete remote-tracking references for deleted remote branches
+# Excluir referências de rastreamento remoto para branches remotos excluídos
 git fetch -p
 
-# Delete local branch
-git branch -d feature/user-auth  # Safe delete (only if merged)
-git branch -D feature/user-auth  # Force delete
+# Excluir branch local
+git branch -d feature/user-auth  # Exclusão segura (somente se mergeado)
+git branch -D feature/user-auth  # Exclusão forçada
 
-# Delete remote branch
+# Excluir branch remoto
 git push origin --delete feature/user-auth
 ```
 
-### Stash Workflow
+### Fluxo de Trabalho com Stash
 
 ```bash
-# Save work in progress
+# Salvar trabalho em andamento
 git stash push -m "WIP: user authentication"
 
-# List stashes
+# Listar stashes
 git stash list
 
-# Apply most recent stash
+# Aplicar stash mais recente
 git stash pop
 
-# Apply specific stash
+# Aplicar stash específico
 git stash apply stash@{2}
 
-# Drop stash
+# Descartar stash
 git stash drop stash@{0}
 ```
 
-## Release Management
+## Gerenciamento de Release
 
-### Semantic Versioning
+### Versionamento Semântico
 
 ```
 MAJOR.MINOR.PATCH
 
 MAJOR: Breaking changes
-MINOR: New features, backward compatible
-PATCH: Bug fixes, backward compatible
+MINOR: Novas features, compatível com versão anterior
+PATCH: Correções de bugs, compatível com versão anterior
 
-Examples:
-1.0.0 → 1.0.1 (patch: bug fix)
-1.0.1 → 1.1.0 (minor: new feature)
+Exemplos:
+1.0.0 → 1.0.1 (patch: correção de bug)
+1.0.1 → 1.1.0 (minor: nova feature)
 1.1.0 → 2.0.0 (major: breaking change)
 ```
 
-### Creating Releases
+### Criando Releases
 
 ```bash
-# Create annotated tag
+# Criar tag anotada
 git tag -a v1.2.0 -m "Release v1.2.0
 
 Features:
@@ -438,59 +438,59 @@ Fixes:
 Breaking Changes:
 - None"
 
-# Push tag to remote
+# Enviar tag para o remoto
 git push origin v1.2.0
 
-# List tags
+# Listar tags
 git tag -l
 
-# Delete tag
+# Excluir tag
 git tag -d v1.2.0
 git push origin --delete v1.2.0
 ```
 
-### Changelog Generation
+### Geração de Changelog
 
 ```bash
-# Generate changelog from commits
+# Gerar changelog a partir dos Commits
 git log v1.1.0..v1.2.0 --oneline --no-merges
 
-# Or use conventional-changelog
+# Ou usar conventional-changelog
 npx conventional-changelog -i CHANGELOG.md -s
 ```
 
-## Git Configuration
+## Configuração do Git
 
-### Essential Configs
+### Configurações Essenciais
 
 ```bash
-# User identity
-git config --global user.name "Your Name"
-git config --global user.email "your@email.com"
+# Identidade do usuário
+git config --global user.name "Seu Nome"
+git config --global user.email "seu@email.com"
 
-# Default branch name
+# Nome do branch padrão
 git config --global init.defaultBranch main
 
-# Pull behavior (rebase instead of merge)
+# Comportamento de pull (rebase em vez de merge)
 git config --global pull.rebase true
 
-# Push behavior (push current branch only)
+# Comportamento de push (enviar somente o branch atual)
 git config --global push.default current
 
-# Auto-correct typos
+# Auto-corrigir erros de digitação
 git config --global help.autocorrect 1
 
-# Better diff algorithm
+# Algoritmo de diff melhor
 git config --global diff.algorithm histogram
 
-# Color output
+# Saída colorida
 git config --global color.ui auto
 ```
 
-### Useful Aliases
+### Aliases Úteis
 
 ```bash
-# Add to ~/.gitconfig
+# Adicionar em ~/.gitconfig
 [alias]
     co = checkout
     br = branch
@@ -505,20 +505,20 @@ git config --global color.ui auto
     contributors = shortlog -sn
 ```
 
-### Gitignore Patterns
+### Padrões de Gitignore
 
 ```gitignore
-# Dependencies
+# Dependências
 node_modules/
 vendor/
 
-# Build outputs
+# Saídas de Build
 dist/
 build/
 *.o
 *.exe
 
-# Environment files
+# Arquivos de ambiente
 .env
 .env.local
 .env.*.local
@@ -529,7 +529,7 @@ build/
 *.swp
 *.swo
 
-# OS files
+# Arquivos de SO
 .DS_Store
 Thumbs.db
 
@@ -537,7 +537,7 @@ Thumbs.db
 *.log
 logs/
 
-# Test coverage
+# Cobertura de testes
 coverage/
 
 # Cache
@@ -545,172 +545,172 @@ coverage/
 *.tsbuildinfo
 ```
 
-## Common Workflows
+## Fluxos de Trabalho Comuns
 
-### Starting a New Feature
+### Iniciando uma Nova Feature
 
 ```bash
-# 1. Update main branch
+# 1. Atualizar o branch main
 git checkout main
 git pull origin main
 
-# 2. Create feature branch
+# 2. Criar branch de feature
 git checkout -b feature/user-auth
 
-# 3. Make changes and commit
+# 3. Fazer mudanças e Commit
 git add .
 git commit -m "feat(auth): implement OAuth2 login"
 
-# 4. Push to remote
+# 4. Enviar para o remoto
 git push -u origin feature/user-auth
 
-# 5. Create Pull Request on GitHub/GitLab
+# 5. Criar Pull Request no GitHub/GitLab
 ```
 
-### Updating a PR with New Changes
+### Atualizando um PR com Novas Mudanças
 
 ```bash
-# 1. Make additional changes
+# 1. Fazer mudanças adicionais
 git add .
 git commit -m "feat(auth): add error handling"
 
-# 2. Push updates
+# 2. Enviar atualizações
 git push origin feature/user-auth
 ```
 
-### Syncing Fork with Upstream
+### Sincronizando Fork com Upstream
 
 ```bash
-# 1. Add upstream remote (once)
+# 1. Adicionar remoto upstream (uma vez)
 git remote add upstream https://github.com/original/repo.git
 
-# 2. Fetch upstream
+# 2. Buscar upstream
 git fetch upstream
 
-# 3. Merge upstream/main into your main
+# 3. Fazer merge do upstream/main no seu main
 git checkout main
 git merge upstream/main
 
-# 4. Push to your fork
+# 4. Enviar para o seu fork
 git push origin main
 ```
 
-### Undoing Mistakes
+### Desfazendo Erros
 
 ```bash
-# Undo last commit (keep changes)
+# Desfazer último Commit (manter mudanças)
 git reset --soft HEAD~1
 
-# Undo last commit (discard changes)
+# Desfazer último Commit (descartar mudanças)
 git reset --hard HEAD~1
 
-# Undo last commit pushed to remote
+# Desfazer último Commit enviado ao remoto
 git revert HEAD
 git push origin main
 
-# Undo specific file changes
+# Desfazer mudanças em arquivo específico
 git checkout HEAD -- path/to/file
 
-# Fix last commit message
-git commit --amend -m "New message"
+# Corrigir última mensagem de Commit
+git commit --amend -m "Nova mensagem"
 
-# Add forgotten file to last commit
+# Adicionar arquivo esquecido ao último Commit
 git add forgotten-file
 git commit --amend --no-edit
 ```
 
 ## Git Hooks
 
-### Pre-Commit Hook
+### Hook de Pre-Commit
 
 ```bash
 #!/bin/bash
 # .git/hooks/pre-commit
 
-# Run linting
+# Executar Lint
 npm run lint || exit 1
 
-# Run tests
+# Executar testes
 npm test || exit 1
 
-# Check for secrets
+# Verificar segredos
 if git diff --cached | grep -E '(password|api_key|secret)'; then
-    echo "Possible secret detected. Commit aborted."
+    echo "Possível segredo detectado. Commit abortado."
     exit 1
 fi
 ```
 
-### Pre-Push Hook
+### Hook de Pre-Push
 
 ```bash
 #!/bin/bash
 # .git/hooks/pre-push
 
-# Run full test suite
+# Executar suíte completa de testes
 npm run test:all || exit 1
 
-# Check for console.log statements
+# Verificar declarações console.log
 if git diff origin/main | grep -E 'console\.log'; then
-    echo "Remove console.log statements before pushing."
+    echo "Remova declarações console.log antes de enviar."
     exit 1
 fi
 ```
 
-## Anti-Patterns
+## Anti-Padrões
 
 ```
-# BAD: Committing directly to main
+# RUIM: Fazer Commit diretamente no main
 git checkout main
 git commit -m "fix bug"
 
-# GOOD: Use feature branches and PRs
+# BOM: Use branches de feature e PRs
 
-# BAD: Committing secrets
-git add .env  # Contains API keys
+# RUIM: Fazer Commit de segredos
+git add .env  # Contém chaves de API
 
-# GOOD: Add to .gitignore, use environment variables
+# BOM: Adicione ao .gitignore, use variáveis de ambiente
 
-# BAD: Giant PRs (1000+ lines)
-# GOOD: Break into smaller, focused PRs
+# RUIM: PRs gigantes (1000+ linhas)
+# BOM: Divida em PRs menores e focados
 
-# BAD: "Update" commit messages
+# RUIM: Mensagens de Commit "Update"
 git commit -m "update"
 git commit -m "fix"
 
-# GOOD: Descriptive messages
+# BOM: Mensagens descritivas
 git commit -m "fix(auth): resolve redirect loop after login"
 
-# BAD: Rewriting public history
+# RUIM: Reescrever histórico público
 git push --force origin main
 
-# GOOD: Use revert for public branches
+# BOM: Use revert para branches públicos
 git revert HEAD
 
-# BAD: Long-lived feature branches (weeks/months)
-# GOOD: Keep branches short (days), rebase frequently
+# RUIM: Branches de feature de longa duração (semanas/meses)
+# BOM: Mantenha branches curtos (dias), faça rebase frequentemente
 
-# BAD: Committing generated files
+# RUIM: Fazer Commit de arquivos gerados
 git add dist/
 git add node_modules/
 
-# GOOD: Add to .gitignore
+# BOM: Adicione ao .gitignore
 ```
 
-## Quick Reference
+## Referência Rápida
 
-| Task | Command |
-|------|---------|
-| Create branch | `git checkout -b feature/name` |
-| Switch branch | `git checkout branch-name` |
-| Delete branch | `git branch -d branch-name` |
-| Merge branch | `git merge branch-name` |
-| Rebase branch | `git rebase main` |
-| View history | `git log --oneline --graph` |
-| View changes | `git diff` |
-| Stage changes | `git add .` or `git add -p` |
-| Commit | `git commit -m "message"` |
-| Push | `git push origin branch-name` |
-| Pull | `git pull origin branch-name` |
-| Stash | `git stash push -m "message"` |
-| Undo last commit | `git reset --soft HEAD~1` |
-| Revert commit | `git revert HEAD` |
+| Tarefa | Comando |
+|--------|---------|
+| Criar branch | `git checkout -b feature/nome` |
+| Trocar branch | `git checkout nome-do-branch` |
+| Excluir branch | `git branch -d nome-do-branch` |
+| Merge de branch | `git merge nome-do-branch` |
+| Rebase de branch | `git rebase main` |
+| Ver histórico | `git log --oneline --graph` |
+| Ver mudanças | `git diff` |
+| Fazer stage de mudanças | `git add .` ou `git add -p` |
+| Commit | `git commit -m "mensagem"` |
+| Push | `git push origin nome-do-branch` |
+| Pull | `git pull origin nome-do-branch` |
+| Stash | `git stash push -m "mensagem"` |
+| Desfazer último Commit | `git reset --soft HEAD~1` |
+| Reverter Commit | `git revert HEAD` |

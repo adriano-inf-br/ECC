@@ -1,41 +1,41 @@
 ---
 name: perl-patterns
-description: Modern Perl 5.36+ idioms, best practices, and conventions for building robust, maintainable Perl applications.
+description: Idiomas modernos do Perl 5.36+, boas práticas e convenções para construir aplicações Perl robustas e de fácil manutenção.
 metadata:
   origin: ECC
 ---
 
-# Modern Perl Development Patterns
+# Padrões Modernos de Desenvolvimento em Perl
 
-Idiomatic Perl 5.36+ patterns and best practices for building robust, maintainable applications.
+Padrões idiomáticos do Perl 5.36+ e boas práticas para construir aplicações robustas e de fácil manutenção.
 
-## When to Activate
+## Quando Ativar
 
-- Writing new Perl code or modules
-- Reviewing Perl code for idiom compliance
-- Refactoring legacy Perl to modern standards
-- Designing Perl module architecture
-- Migrating pre-5.36 code to modern Perl
+- Escrevendo código Perl novo ou módulos
+- Revisando código Perl quanto à conformidade com idiomas
+- Refatorando código Perl legado para padrões modernos
+- Projetando arquitetura de módulos Perl
+- Migrando código pré-5.36 para Perl moderno
 
-## How It Works
+## Como Funciona
 
-Apply these patterns as a bias toward modern Perl 5.36+ defaults: signatures, explicit modules, focused error handling, and testable boundaries. The examples below are meant to be copied as starting points, then tightened for the actual app, dependency stack, and deployment model in front of you.
+Aplique estes padrões como uma tendência para os padrões modernos do Perl 5.36+: assinaturas, módulos explícitos, tratamento de erros focado e fronteiras testáveis. Os exemplos abaixo servem como pontos de partida para serem copiados e ajustados para a aplicação, pilha de dependências e modelo de implantação reais.
 
-## Core Principles
+## Princípios Fundamentais
 
-### 1. Use `v5.36` Pragma
+### 1. Use o Pragma `v5.36`
 
-A single `use v5.36` replaces the old boilerplate and enables strict, warnings, and subroutine signatures.
+Um único `use v5.36` substitui o antigo boilerplate e habilita strict, warnings e assinaturas de sub-rotinas.
 
 ```perl
-# Good: Modern preamble
+# Bom: Preâmbulo moderno
 use v5.36;
 
 sub greet($name) {
     say "Hello, $name!";
 }
 
-# Bad: Legacy boilerplate
+# Ruim: Boilerplate legado
 use strict;
 use warnings;
 use feature 'say', 'signatures';
@@ -47,28 +47,28 @@ sub greet {
 }
 ```
 
-### 2. Subroutine Signatures
+### 2. Assinaturas de Sub-rotinas
 
-Use signatures for clarity and automatic arity checking.
+Use assinaturas para clareza e verificação automática de aridade.
 
 ```perl
 use v5.36;
 
-# Good: Signatures with defaults
+# Bom: Assinaturas com padrões
 sub connect_db($host, $port = 5432, $timeout = 30) {
-    # $host is required, others have defaults
+    # $host é obrigatório, os outros têm padrões
     return DBI->connect("dbi:Pg:host=$host;port=$port", undef, undef, {
         RaiseError => 1,
         PrintError => 0,
     });
 }
 
-# Good: Slurpy parameter for variable args
+# Bom: Parâmetro slurpy para args variáveis
 sub log_message($level, @details) {
     say "[$level] " . join(' ', @details);
 }
 
-# Bad: Manual argument unpacking
+# Ruim: Desempacotamento manual de argumentos
 sub connect_db {
     my ($host, $port, $timeout) = @_;
     $port    //= 5432;
@@ -77,23 +77,23 @@ sub connect_db {
 }
 ```
 
-### 3. Context Sensitivity
+### 3. Sensibilidade ao Contexto
 
-Understand scalar vs list context — a core Perl concept.
+Entenda o contexto escalar vs lista — um conceito central do Perl.
 
 ```perl
 use v5.36;
 
 my @items = (1, 2, 3, 4, 5);
 
-my @copy  = @items;            # List context: all elements
-my $count = @items;            # Scalar context: count (5)
-say "Items: " . scalar @items; # Force scalar context
+my @copy  = @items;            # Contexto lista: todos os elementos
+my $count = @items;            # Contexto escalar: contagem (5)
+say "Items: " . scalar @items; # Forçar contexto escalar
 ```
 
-### 4. Postfix Dereferencing
+### 4. Derreferenciação Pós-fixada
 
-Use postfix dereference syntax for readability with nested structures.
+Use a sintaxe de derreferenciação pós-fixada para legibilidade com estruturas aninhadas.
 
 ```perl
 use v5.36;
@@ -105,28 +105,28 @@ my $data = {
     ],
 };
 
-# Good: Postfix dereferencing
+# Bom: Derreferenciação pós-fixada
 my @users = $data->{users}->@*;
 my @roles = $data->{users}[0]{roles}->@*;
 my %first = $data->{users}[0]->%*;
 
-# Bad: Circumfix dereferencing (harder to read in chains)
+# Ruim: Derreferenciação circunfixa (mais difícil de ler em cadeias)
 my @users = @{ $data->{users} };
 my @roles = @{ $data->{users}[0]{roles} };
 ```
 
-### 5. The `isa` Operator (5.32+)
+### 5. O Operador `isa` (5.32+)
 
-Infix type-check — replaces `blessed($o) && $o->isa('X')`.
+Verificação de tipo infixo — substitui `blessed($o) && $o->isa('X')`.
 
 ```perl
 use v5.36;
 if ($obj isa 'My::Class') { $obj->do_something }
 ```
 
-## Error Handling
+## Tratamento de Erros
 
-### eval/die Pattern
+### Padrão eval/die
 
 ```perl
 use v5.36;
@@ -138,7 +138,7 @@ sub parse_config($path) {
 }
 ```
 
-### Try::Tiny (Reliable Exception Handling)
+### Try::Tiny (Tratamento Confiável de Exceções)
 
 ```perl
 use v5.36;
@@ -157,7 +157,7 @@ sub fetch_user($id) {
 }
 ```
 
-### Native try/catch (5.40+)
+### try/catch Nativo (5.40+)
 
 ```perl
 use v5.40;
@@ -174,12 +174,12 @@ sub divide($x, $y) {
 }
 ```
 
-## Modern OO with Moo
+## OO Moderno com Moo
 
-Prefer Moo for lightweight, modern OO. Use Moose only when its metaprotocol is needed.
+Prefira Moo para OO moderno e leve. Use Moose somente quando seu metaprotocolo for necessário.
 
 ```perl
-# Good: Moo class
+# Bom: Classe Moo
 package User;
 use Moo;
 use Types::Standard qw(Str Int ArrayRef);
@@ -200,14 +200,14 @@ sub greet($self) {
 
 1;
 
-# Usage
+# Uso
 my $user = User->new(
     name  => 'Alice',
     email => 'alice@example.com',
     roles => ['admin', 'user'],
 );
 
-# Bad: Blessed hashref (no validation, no accessors)
+# Ruim: Hashref abençoado (sem validação, sem acessores)
 package User;
 sub new {
     my ($class, %args) = @_;
@@ -217,7 +217,7 @@ sub name { return $_[0]->{name} }
 1;
 ```
 
-### Moo Roles
+### Roles Moo
 
 ```perl
 package Role::Serializable;
@@ -236,7 +236,7 @@ sub TO_HASH($self) { { name => $self->name, email => $self->email } }
 1;
 ```
 
-### Native `class` Keyword (5.38+, Corinna)
+### Palavra-chave `class` Nativa (5.38+, Corinna)
 
 ```perl
 use v5.38;
@@ -253,14 +253,14 @@ my $p = Point->new(x => 3, y => 4);
 say $p->magnitude;  # 5
 ```
 
-## Regular Expressions
+## Expressões Regulares
 
-### Named Captures and `/x` Flag
+### Capturas Nomeadas e a Flag `/x`
 
 ```perl
 use v5.36;
 
-# Good: Named captures with /x for readability
+# Bom: Capturas nomeadas com /x para legibilidade
 my $log_re = qr{
     ^ (?<timestamp> \d{4}-\d{2}-\d{2} \s \d{2}:\d{2}:\d{2} )
     \s+ \[ (?<level> \w+ ) \]
@@ -272,18 +272,18 @@ if ($line =~ $log_re) {
     say "Message: $+{message}";
 }
 
-# Bad: Positional captures (hard to maintain)
+# Ruim: Capturas posicionais (difíceis de manter)
 if ($line =~ /^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\s+\[(\w+)\]\s+(.+)$/) {
     say "Time: $1, Level: $2";
 }
 ```
 
-### Precompiled Patterns
+### Padrões Pré-compilados
 
 ```perl
 use v5.36;
 
-# Good: Compile once, use many
+# Bom: Compile uma vez, use várias vezes
 my $email_re = qr/^[A-Za-z0-9._%+-]+\@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 
 sub validate_emails(@emails) {
@@ -291,14 +291,14 @@ sub validate_emails(@emails) {
 }
 ```
 
-## Data Structures
+## Estruturas de Dados
 
-### References and Safe Deep Access
+### Referências e Acesso Profundo Seguro
 
 ```perl
 use v5.36;
 
-# Hash and array references
+# Referências de hash e array
 my $config = {
     database => {
         host => 'localhost',
@@ -307,18 +307,18 @@ my $config = {
     },
 };
 
-# Safe deep access (returns undef if any level missing)
+# Acesso profundo seguro (retorna undef se algum nível estiver faltando)
 my $port = $config->{database}{port};           # 5432
-my $missing = $config->{cache}{host};           # undef, no error
+my $missing = $config->{cache}{host};           # undef, sem erro
 
-# Hash slices
+# Fatias de hash
 my %subset;
 @subset{qw(host port)} = @{$config->{database}}{qw(host port)};
 
-# Array slices
+# Fatias de array
 my @first_two = $config->{database}{options}->@[0, 1];
 
-# Multi-variable for loop (experimental in 5.36, stable in 5.40)
+# Loop multi-variável para (experimental em 5.36, estável em 5.40)
 use feature 'for_list';
 no warnings 'experimental::for_list';
 for my ($key, $val) (%$config) {
@@ -326,14 +326,14 @@ for my ($key, $val) (%$config) {
 }
 ```
 
-## File I/O
+## E/S de Arquivo
 
-### Three-Argument Open
+### Open com Três Argumentos
 
 ```perl
 use v5.36;
 
-# Good: Three-arg open with autodie (core module, eliminates 'or die')
+# Bom: open com três args com autodie (módulo core, elimina 'or die')
 use autodie;
 
 sub read_file($path) {
@@ -344,12 +344,12 @@ sub read_file($path) {
     return $content;
 }
 
-# Bad: Two-arg open (shell injection risk, see perl-security)
-open FH, $path;            # NEVER do this
-open FH, "< $path";        # Still bad — user data in mode string
+# Ruim: open com dois args (risco de injeção de shell, veja perl-security)
+open FH, $path;            # NUNCA faça isso
+open FH, "< $path";        # Ainda ruim — dados do usuário na string de modo
 ```
 
-### Path::Tiny for File Operations
+### Path::Tiny para Operações de Arquivo
 
 ```perl
 use v5.36;
@@ -359,36 +359,36 @@ my $file = path('config', 'app.json');
 my $content = $file->slurp_utf8;
 $file->spew_utf8($new_content);
 
-# Iterate directory
+# Iterar diretório
 for my $child (path('src')->children(qr/\.pl$/)) {
     say $child->basename;
 }
 ```
 
-## Module Organization
+## Organização de Módulos
 
-### Standard Project Layout
+### Layout Padrão de Projeto
 
 ```text
 MyApp/
 ├── lib/
 │   └── MyApp/
-│       ├── App.pm           # Main module
-│       ├── Config.pm        # Configuration
-│       ├── DB.pm            # Database layer
-│       └── Util.pm          # Utilities
+│       ├── App.pm           # Módulo principal
+│       ├── Config.pm        # Configuração
+│       ├── DB.pm            # Camada de banco de dados
+│       └── Util.pm          # Utilitários
 ├── bin/
-│   └── myapp                # Entry-point script
+│   └── myapp                # Script de ponto de entrada
 ├── t/
-│   ├── 00-load.t            # Compilation tests
-│   ├── unit/                # Unit tests
-│   └── integration/         # Integration tests
-├── cpanfile                 # Dependencies
-├── Makefile.PL              # Build system
-└── .perlcriticrc            # Linting config
+│   ├── 00-load.t            # Testes de compilação
+│   ├── unit/                # Testes unitários
+│   └── integration/         # Testes de integração
+├── cpanfile                 # Dependências
+├── Makefile.PL              # Sistema de build
+└── .perlcriticrc            # Configuração de linting
 ```
 
-### Exporter Patterns
+### Padrões de Exportação
 
 ```perl
 package MyApp::Util;
@@ -403,20 +403,20 @@ sub trim($str) { $str =~ s/^\s+|\s+$//gr }
 1;
 ```
 
-## Tooling
+## Ferramentas
 
-### perltidy Configuration (.perltidyrc)
+### Configuração do perltidy (.perltidyrc)
 
 ```text
--i=4        # 4-space indent
--l=100      # 100-char line length
--ci=4       # continuation indent
--ce         # cuddled else
--bar        # opening brace on same line
--nolq       # don't outdent long quoted strings
+-i=4        # Indentação de 4 espaços
+-l=100      # Comprimento de linha de 100 caracteres
+-ci=4       # Indentação de continuação
+-ce         # else agrupado
+-bar        # chave de abertura na mesma linha
+-nolq       # não recuar strings longas entre aspas
 ```
 
-### perlcritic Configuration (.perlcriticrc)
+### Configuração do perlcritic (.perlcriticrc)
 
 ```ini
 severity = 3
@@ -433,12 +433,12 @@ severity = 4
 allowed_values = 0 1 2 -1
 ```
 
-### Dependency Management (cpanfile + carton)
+### Gerenciamento de Dependências (cpanfile + carton)
 
 ```bash
-cpanm App::cpanminus Carton   # Install tools
-carton install                 # Install deps from cpanfile
-carton exec -- perl bin/myapp  # Run with local deps
+cpanm App::cpanminus Carton   # Instalar ferramentas
+carton install                 # Instalar deps do cpanfile
+carton exec -- perl bin/myapp  # Executar com deps locais
 ```
 
 ```perl
@@ -454,52 +454,52 @@ on test => sub {
 };
 ```
 
-## Quick Reference: Modern Perl Idioms
+## Referência Rápida: Idiomas Modernos do Perl
 
-| Legacy Pattern | Modern Replacement |
+| Padrão Legado | Substituto Moderno |
 |---|---|
 | `use strict; use warnings;` | `use v5.36;` |
 | `my ($x, $y) = @_;` | `sub foo($x, $y) { ... }` |
 | `@{ $ref }` | `$ref->@*` |
 | `%{ $ref }` | `$ref->%*` |
 | `open FH, "< $file"` | `open my $fh, '<:encoding(UTF-8)', $file` |
-| `blessed hashref` | `Moo` class with types |
-| `$1, $2, $3` | `$+{name}` (named captures) |
-| `eval { }; if ($@)` | `Try::Tiny` or native `try/catch` (5.40+) |
+| `blessed hashref` | Classe `Moo` com tipos |
+| `$1, $2, $3` | `$+{name}` (capturas nomeadas) |
+| `eval { }; if ($@)` | `Try::Tiny` ou `try/catch` nativo (5.40+) |
 | `BEGIN { require Exporter; }` | `use Exporter 'import';` |
-| Manual file ops | `Path::Tiny` |
+| Operações de arquivo manuais | `Path::Tiny` |
 | `blessed($o) && $o->isa('X')` | `$o isa 'X'` (5.32+) |
 | `builtin::true / false` | `use builtin 'true', 'false';` (5.36+, experimental) |
 
-## Anti-Patterns
+## Anti-Padrões
 
 ```perl
-# 1. Two-arg open (security risk)
-open FH, $filename;                     # NEVER
+# 1. open com dois args (risco de segurança)
+open FH, $filename;                     # NUNCA
 
-# 2. Indirect object syntax (ambiguous parsing)
-my $obj = new Foo(bar => 1);            # Bad
-my $obj = Foo->new(bar => 1);           # Good
+# 2. Sintaxe de objeto indireto (análise ambígua)
+my $obj = new Foo(bar => 1);            # Ruim
+my $obj = Foo->new(bar => 1);           # Bom
 
-# 3. Excessive reliance on $_
-map { process($_) } grep { validate($_) } @items;  # Hard to follow
-my @valid = grep { validate($_) } @items;           # Better: break it up
+# 3. Dependência excessiva em $_
+map { process($_) } grep { validate($_) } @items;  # Difícil de seguir
+my @valid = grep { validate($_) } @items;           # Melhor: divida
 my @results = map { process($_) } @valid;
 
-# 4. Disabling strict refs
-no strict 'refs';                        # Almost always wrong
-${"My::Package::$var"} = $value;         # Use a hash instead
+# 4. Desabilitar strict refs
+no strict 'refs';                        # Quase sempre errado
+${"My::Package::$var"} = $value;         # Use um hash em vez disso
 
-# 5. Global variables as configuration
-our $TIMEOUT = 30;                       # Bad: mutable global
-use constant TIMEOUT => 30;              # Better: constant
-# Best: Moo attribute with default
+# 5. Variáveis globais como configuração
+our $TIMEOUT = 30;                       # Ruim: global mutável
+use constant TIMEOUT => 30;              # Melhor: constante
+# Melhor ainda: atributo Moo com padrão
 
-# 6. String eval for module loading
-eval "require $module";                  # Bad: code injection risk
-eval "use $module";                      # Bad
-use Module::Runtime 'require_module';    # Good: safe module loading
+# 6. eval de string para carregar módulos
+eval "require $module";                  # Ruim: risco de injeção de código
+eval "use $module";                      # Ruim
+use Module::Runtime 'require_module';    # Bom: carregamento seguro de módulo
 require_module($module);
 ```
 
-**Remember**: Modern Perl is clean, readable, and safe. Let `use v5.36` handle the boilerplate, use Moo for objects, and prefer CPAN's battle-tested modules over hand-rolled solutions.
+**Lembre-se**: Perl moderno é limpo, legível e seguro. Deixe o `use v5.36` cuidar do boilerplate, use Moo para objetos e prefira os módulos testados em campo do CPAN a soluções desenvolvidas manualmente.

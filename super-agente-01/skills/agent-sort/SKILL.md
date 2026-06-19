@@ -11,7 +11,7 @@ Use esta skill quando um repositório precisa de uma superfície ECC específica
 
 O objetivo não é adivinhar o que "parece útil". O objetivo é classificar componentes ECC com evidências da base de código real.
 
-## When to Use
+## Quando Usar
 
 - Um projeto só precisa de um subconjunto da ECC e as instalações completas são ruidosas demais
 - A stack do repositório é clara, mas ninguém quer curar skills manualmente uma a uma

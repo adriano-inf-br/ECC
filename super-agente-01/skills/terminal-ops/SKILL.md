@@ -1,110 +1,110 @@
 ---
 name: terminal-ops
-description: Evidence-first repo execution workflow for ECC. Use when the user wants a command run, a repo checked, a CI failure debugged, or a narrow fix pushed with exact proof of what was executed and verified.
+description: Fluxo de trabalho de execução de repositório baseado em evidências para o ECC. Use quando o usuário quer executar um comando, verificar um repositório, depurar uma falha de CI ou aplicar uma correção pontual com prova exata do que foi executado e verificado.
 metadata:
   origin: ECC
 ---
 
 # Terminal Ops
 
-Use this when the user wants real repo execution: run commands, inspect git state, debug CI or builds, make a narrow fix, and report exactly what changed and what was verified.
+Use quando o usuário quer execução real de repositório: execute comandos, inspecione estado do git, depure CI ou builds, faça uma correção pontual e reporte exatamente o que mudou e o que foi verificado.
 
-This skill is intentionally narrower than general coding guidance. It is an operator workflow for evidence-first terminal execution.
+Esta skill é intencionalmente mais estreita do que orientações gerais de codificação. É um fluxo de trabalho de operador para execução terminal baseada em evidências.
 
-## Skill Stack
+## Stack de Skills
 
-Pull these ECC-native skills into the workflow when relevant:
+Traga estas skills nativas do ECC para o fluxo de trabalho quando relevante:
 
-- `verification-loop` for exact proving steps after changes
-- `tdd-workflow` when the right fix needs regression coverage
-- `security-review` when secrets, auth, or external inputs are involved
-- `github-ops` when the task depends on CI runs, PR state, or release status
-- `knowledge-ops` when the verified outcome needs to be captured into durable project context
+- `verification-loop` para passos exatos de comprovação após mudanças
+- `tdd-workflow` quando a correção certa precisa de cobertura de regressão
+- `security-review` quando segredos, autenticação ou entradas externas estão envolvidos
+- `github-ops` quando a tarefa depende de execuções de CI, estado de PR ou status de release
+- `knowledge-ops` quando o resultado verificado precisa ser capturado em contexto de projeto durável
 
-## When to Use
+## Quando Usar
 
-- user says "fix", "debug", "run this", "check the repo", or "push it"
-- the task depends on command output, git state, test results, or a verified local fix
-- the answer must distinguish changed locally, verified locally, committed, and pushed
+- usuário diz "fix", "debug", "run this", "check the repo" ou "push it"
+- a tarefa depende de saída de comando, estado do git, resultados de testes ou uma correção local verificada
+- a resposta deve distinguir: alterado localmente, verificado localmente, commitado e enviado
 
-## Guardrails
+## Restrições
 
-- inspect before editing
-- stay read-only if the user asked for audit/review only
-- prefer repo-local scripts and helpers over improvised ad hoc wrappers
-- do not claim fixed until the proving command was rerun
-- do not claim pushed unless the branch actually moved upstream
+- inspecione antes de editar
+- mantenha somente leitura se o usuário pediu apenas auditoria/revisão
+- prefira scripts e helpers locais do repositório a wrappers ad hoc improvisados
+- não afirme que está corrigido até que o comando de comprovação tenha sido reexecutado
+- não afirme que foi enviado a menos que o Branch realmente tenha se movido upstream
 
-## Workflow
+## Fluxo de Trabalho
 
-### 1. Resolve the working surface
+### 1. Resolver a superfície de trabalho
 
-Settle:
+Defina:
 
-- exact repo path
-- branch
-- local diff state
-- requested mode:
-  - inspect
-  - fix
-  - verify
-  - push
+- caminho exato do repositório
+- Branch
+- estado de diff local
+- modo solicitado:
+  - inspecionar
+  - corrigir
+  - verificar
+  - enviar
 
-### 2. Read the failing surface first
+### 2. Leia a superfície com falha primeiro
 
-Before changing anything:
+Antes de alterar qualquer coisa:
 
-- inspect the error
-- inspect the file or test
-- inspect git state
-- use any already-supplied logs or context before re-reading blindly
+- inspecione o erro
+- inspecione o arquivo ou teste
+- inspecione o estado do git
+- use quaisquer logs ou contexto já fornecidos antes de reler às cegas
 
-### 3. Keep the fix narrow
+### 3. Mantenha a correção pontual
 
-Solve one dominant failure at a time:
+Resolva uma falha dominante por vez:
 
-- use the smallest useful proving command first
-- only escalate to a bigger build/test pass after the local failure is addressed
-- if a command keeps failing with the same signature, stop broad retries and narrow scope
+- use o menor comando de comprovação útil primeiro
+- só escale para uma passagem maior de build/teste após a falha local ser resolvida
+- se um comando continua falhando com a mesma assinatura, pare de fazer novas tentativas amplas e reduza o escopo
 
-### 4. Report exact execution state
+### 4. Reporte o estado exato de execução
 
-Use exact status words:
+Use palavras de status exatas:
 
-- inspected
-- changed locally
-- verified locally
-- committed
-- pushed
-- blocked
+- inspecionado
+- alterado localmente
+- verificado localmente
+- commitado
+- enviado
+- bloqueado
 
-## Output Format
+## Formato de Saída
 
 ```text
-SURFACE
-- repo
+SUPERFÍCIE
+- repositório
 - branch
-- requested mode
+- modo solicitado
 
-EVIDENCE
-- failing command / diff / test
+EVIDÊNCIA
+- comando / diff / teste com falha
 
-ACTION
-- what changed
+AÇÃO
+- o que mudou
 
 STATUS
-- inspected / changed locally / verified locally / committed / pushed / blocked
+- inspecionado / alterado localmente / verificado localmente / commitado / enviado / bloqueado
 ```
 
-## Pitfalls
+## Armadilhas
 
-- do not work from stale memory when the live repo state can be read
-- do not widen a narrow fix into repo-wide churn
-- do not use destructive git commands
-- do not ignore unrelated local work
+- não trabalhe a partir de memória obsoleta quando o estado ativo do repositório pode ser lido
+- não amplie uma correção pontual para agitar o repositório inteiro
+- não use comandos git destrutivos
+- não ignore trabalho local não relacionado
 
-## Verification
+## Verificação
 
-- the response names the proving command or test
-- git-related work names the repo path and branch
-- any push claim includes the target branch and exact result
+- a resposta nomeia o comando de comprovação ou teste
+- trabalho relacionado ao git nomeia o caminho do repositório e o Branch
+- qualquer afirmação de envio inclui o Branch de destino e o resultado exato

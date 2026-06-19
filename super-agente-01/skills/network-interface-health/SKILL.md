@@ -1,28 +1,28 @@
 ---
 name: network-interface-health
-description: Diagnose interface errors, drops, CRCs, duplex mismatches, flapping, speed negotiation issues, and counter trends on routers, switches, and Linux hosts.
+description: Diagnostique erros de interface, drops, CRCs, incompatibilidades de duplex, flapping, problemas de negociação de velocidade e tendências de contadores em roteadores, switches e hosts Linux.
 metadata:
   origin: community
 ---
 
-# Network Interface Health
+# Saúde de Interface de Rede
 
-Use this skill when a network symptom might be caused by a physical link, switch
-port, cable, transceiver, duplex setting, or congested interface.
+Use esta skill quando um sintoma de rede puder ser causado por um link físico, porta de
+switch, cabo, transceiver, configuração de duplex ou interface congestionada.
 
-## When to Use
+## Quando Usar
 
-- A host or VLAN has packet loss, latency spikes, or intermittent reachability.
-- A switch or router interface shows CRCs, runts, giants, drops, resets, or flaps.
-- You need to compare both ends of a link before replacing hardware.
-- A change window needs before/after interface counter evidence.
-- Monitoring reports rising `ifInErrors`, `ifOutErrors`, or `ifOutDiscards`.
+- Um host ou VLAN apresenta perda de pacotes, picos de latência ou alcançabilidade intermitente.
+- Uma interface de switch ou roteador mostra CRCs, runts, giants, drops, resets ou flaps.
+- Você precisa comparar ambos os lados de um link antes de substituir hardware.
+- Uma janela de mudança precisa de evidências de contadores de interface antes/depois.
+- O monitoramento reporta aumento de `ifInErrors`, `ifOutErrors` ou `ifOutDiscards`.
 
-## How It Works
+## Como Funciona
 
-Interface counters are evidence, but the trend matters more than the absolute
-number. Capture a baseline, wait a measurement interval, capture again, then
-compare increments.
+Contadores de interface são evidências, mas a tendência importa mais do que o número
+absoluto. Capture uma linha de base, aguarde um intervalo de medição, capture novamente e
+compare os incrementos.
 
 ```text
 show interfaces <interface>
@@ -30,7 +30,7 @@ show interfaces <interface> status
 show logging | include <interface>|changed state|line protocol
 ```
 
-On Linux hosts:
+Em hosts Linux:
 
 ```text
 ip -s link show <interface>
@@ -38,53 +38,53 @@ ethtool <interface>
 ethtool -S <interface>
 ```
 
-## Counter Reference
+## Referência de Contadores
 
-| Counter | Meaning | Common cause |
+| Contador | Significado | Causa comum |
 | --- | --- | --- |
-| CRC | Received frame checksum failed | Bad cable, dirty fiber, bad optic, duplex mismatch |
-| input errors | Aggregate receive-side errors | Check sub-counters before concluding |
-| runts | Frames below minimum Ethernet size | Duplex mismatch, collision domain, faulty NIC |
-| giants | Frames larger than expected MTU | MTU mismatch or jumbo-frame boundary |
-| input drops | Device could not accept inbound packets | Burst, oversubscription, CPU path, queue pressure |
-| output drops | Egress queue discarded packets | Congestion, QoS policy, undersized uplink |
-| resets | Interface hardware reset | Flapping, keepalive, driver, optic, power |
-| collisions | Ethernet collision counter | Half duplex or negotiation mismatch |
+| CRC | Checksum de frame recebido falhou | Cabo ruim, fibra suja, óptica ruim, incompatibilidade de duplex |
+| input errors | Erros agregados no lado de recepção | Verifique sub-contadores antes de concluir |
+| runts | Frames abaixo do tamanho mínimo Ethernet | Incompatibilidade de duplex, domínio de colisão, NIC com falha |
+| giants | Frames maiores que o MTU esperado | Incompatibilidade de MTU ou limite de jumbo-frame |
+| input drops | Dispositivo não conseguiu aceitar pacotes de entrada | Burst, superassinatura, caminho de CPU, pressão de fila |
+| output drops | Fila de saída descartou pacotes | Congestionamento, política QoS, uplink subdimensionado |
+| resets | Reset de hardware de interface | Flapping, keepalive, driver, óptica, alimentação |
+| collisions | Contador de colisão Ethernet | Half duplex ou incompatibilidade de negociação |
 
-## Diagnosis Flow
+## Fluxo de Diagnóstico
 
-### CRCs Or Input Errors
+### CRCs ou Erros de Entrada
 
-1. Confirm counters are incrementing, not just historical.
-2. Check both ends of the link. Receive-side errors usually point to the signal
-   arriving on that side, not necessarily the port reporting the error.
-3. Replace patch cable or clean/replace fiber and optics.
-4. Confirm speed/duplex settings match on both sides.
-5. Check logs for flap events around the same timestamp.
+1. Confirme que os contadores estão incrementando, não apenas históricos.
+2. Verifique ambos os lados do link. Erros no lado de recepção geralmente apontam para o sinal
+   chegando naquele lado, não necessariamente para a porta que reporta o erro.
+3. Substitua o cabo de patch ou limpe/substitua a fibra e as ópticas.
+4. Confirme que as configurações de velocidade/duplex coincidem em ambos os lados.
+5. Verifique os logs por eventos de flap em torno do mesmo timestamp.
 
 ### Drops
 
-1. Separate input drops from output drops.
-2. Compare interface rate against capacity.
-3. Check QoS policy, queue counters, and whether the link is an oversubscribed
-   uplink.
-4. Treat queue tuning as secondary. First prove whether the link is congested.
+1. Separe drops de entrada dos drops de saída.
+2. Compare a taxa da interface com a capacidade.
+3. Verifique a política QoS, contadores de fila e se o link é um
+   uplink supersaturado.
+4. Trate o ajuste de fila como secundário. Primeiro prove se o link está congestionado.
 
-### Duplex And Speed
+### Duplex e Velocidade
 
-Prefer auto-negotiation on modern Ethernet links when both sides support it. If
-one side must be fixed, configure both sides explicitly and document why. Never
-mix fixed speed/duplex on one side with auto on the other.
+Prefira auto-negociação em links Ethernet modernos quando ambos os lados suportam. Se
+um lado deve ser fixo, configure ambos os lados explicitamente e documente o motivo. Nunca
+misture velocidade/duplex fixo em um lado com auto no outro.
 
 ```text
 show interfaces <interface> | include duplex|speed
 ```
 
-## Safe Parser Example
+## Exemplo de Parser Seguro
 
-Slice each interface block from one header to the next. Do not use an arbitrary
-character window; large interface blocks can cause counters to be missed or
-assigned to the wrong port.
+Fatie cada bloco de interface de um cabeçalho ao próximo. Não use uma janela de
+caracteres arbitrária; blocos de interface grandes podem fazer com que contadores sejam ignorados ou
+atribuídos à porta errada.
 
 ```python
 import re
@@ -121,32 +121,32 @@ def parse_show_interfaces(raw: str) -> list[dict[str, Any]]:
     return interfaces
 ```
 
-## Examples
+## Exemplos
 
-### CRCs On One Switch Port
+### CRCs em uma Porta de Switch
 
-1. Capture counters on the local port.
-2. Capture counters on the connected remote port.
-3. Replace the cable or optic before changing routing or firewall rules.
-4. Clear counters only after recording the baseline.
-5. Recheck after a fixed interval.
+1. Capture contadores na porta local.
+2. Capture contadores na porta remota conectada.
+3. Substitua o cabo ou a óptica antes de alterar regras de roteamento ou firewall.
+4. Limpe os contadores apenas após registrar a linha de base.
+5. Verifique novamente após um intervalo fixo.
 
-### Internet Slow But LAN Is Fine
+### Internet Lenta mas LAN Está Bem
 
-1. Check WAN interface drops/errors.
-2. Check LAN uplink utilization and output drops.
-3. Check gateway CPU if the WAN link is clean but throughput is still low.
-4. Compare wired and wireless tests before blaming upstream service.
+1. Verifique drops/erros da interface WAN.
+2. Verifique utilização do uplink LAN e drops de saída.
+3. Verifique a CPU do gateway se o link WAN estiver limpo mas o throughput ainda estiver baixo.
+4. Compare testes com fio e sem fio antes de culpar o serviço upstream.
 
-## Anti-Patterns
+## Anti-Padrões
 
-- Clearing counters before saving a baseline.
-- Looking at only one side of a link.
-- Assuming all historical CRCs are active problems without a time window.
-- Mixing auto-negotiation on one side with fixed speed/duplex on the other.
-- Treating output drops as a cable problem before checking congestion.
+- Limpar contadores antes de salvar uma linha de base.
+- Olhar apenas para um lado de um link.
+- Assumir que todos os CRCs históricos são problemas ativos sem uma janela de tempo.
+- Misturar auto-negociação em um lado com velocidade/duplex fixo no outro.
+- Tratar drops de saída como um problema de cabo antes de verificar o congestionamento.
 
-## See Also
+## Veja Também
 
 - Agent: `network-troubleshooter`
 - Skill: `network-config-validation`

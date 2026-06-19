@@ -1,6 +1,6 @@
 ---
 name: nodejs-keccak256
-description: Prevent Ethereum hashing bugs in JavaScript and TypeScript. Node's sha3-256 is NIST SHA3, not Ethereum Keccak-256, and silently breaks selectors, signatures, storage slots, and address derivation.
+description: Previna bugs de hashing Ethereum em JavaScript e TypeScript. O sha3-256 do Node é o NIST SHA3, não o Keccak-256 do Ethereum, e quebra silenciosamente seletores, assinaturas, slots de armazenamento e derivação de endereço.
 metadata:
   origin: ECC direct-port adaptation
 version: "1.0.0"
@@ -8,17 +8,17 @@ version: "1.0.0"
 
 # Node.js Keccak-256
 
-Ethereum uses Keccak-256, not the NIST-standardized SHA3 variant exposed by Node's `crypto.createHash('sha3-256')`.
+O Ethereum usa Keccak-256, não a variante NIST-standardizada SHA3 exposta pelo `crypto.createHash('sha3-256')` do Node.
 
-## When to Use
+## Quando Usar
 
-- Computing Ethereum function selectors or event topics
-- Building EIP-712, signature, Merkle, or storage-slot helpers in JS/TS
-- Reviewing any code that hashes Ethereum data with Node crypto directly
+- Calculando seletores de função Ethereum ou tópicos de eventos
+- Construindo helpers de EIP-712, assinatura, Merkle ou slot de armazenamento em JS/TS
+- Revisando qualquer código que faça hash de dados Ethereum diretamente com o crypto do Node
 
-## How It Works
+## Como Funciona
 
-The two algorithms produce different outputs for the same input, and Node will not warn you.
+Os dois algoritmos produzem saídas diferentes para a mesma entrada, e o Node não avisará você.
 
 ```javascript
 import crypto from 'crypto';
@@ -31,7 +31,7 @@ const keccak = keccak256(toUtf8Bytes(data)).slice(2);
 console.log(nistSha3 === keccak); // false
 ```
 
-## Examples
+## Exemplos
 
 ### ethers v6
 
@@ -65,7 +65,7 @@ const packed = web3.utils.soliditySha3(
 );
 ```
 
-### Common patterns
+### Padrões comuns
 
 ```typescript
 import { id, keccak256, AbiCoder } from 'ethers';
@@ -80,7 +80,7 @@ function getMappingSlot(key: string, mappingSlot: number): string {
 }
 ```
 
-### Address from public key
+### Endereço a partir de chave pública
 
 ```typescript
 import { keccak256 } from 'ethers';
@@ -91,13 +91,13 @@ function pubkeyToAddress(pubkeyBytes: Uint8Array): string {
 }
 ```
 
-### Audit your codebase
+### Audite seu código-fonte
 
 ```bash
 grep -rn "createHash.*sha3" --include="*.ts" --include="*.js" --exclude-dir=node_modules .
 grep -rn "keccak256" --include="*.ts" --include="*.js" . | grep -v node_modules
 ```
 
-## Rule
+## Regra
 
-For Ethereum contexts, never use `crypto.createHash('sha3-256')`. Use Keccak-aware helpers from `ethers`, `viem`, `web3`, or another explicit Keccak implementation.
+Em contextos Ethereum, nunca use `crypto.createHash('sha3-256')`. Use helpers com suporte a Keccak de `ethers`, `viem`, `web3` ou outra implementação explícita de Keccak.

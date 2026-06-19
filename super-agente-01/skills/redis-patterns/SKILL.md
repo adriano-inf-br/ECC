@@ -1,41 +1,41 @@
 ---
 name: redis-patterns
-description: Redis data structure patterns, caching strategies, distributed locks, rate limiting, pub/sub, and connection management for production applications.
+description: Padrões de estrutura de dados Redis, estratégias de cache, locks distribuídos, rate limiting, pub/sub e gerenciamento de conexões para aplicações em produção.
 metadata:
   origin: ECC
 ---
 
-# Redis Patterns
+# Padrões Redis
 
-Quick reference for Redis best practices across common backend use cases.
+Referência rápida de boas práticas Redis para casos de uso comuns de Backend.
 
-## How It Works
+## Como Funciona
 
-Redis is an in-memory data structure store that supports strings, hashes, lists, sets, sorted sets, streams, and more. Individual Redis commands are atomic on a single instance; multi-step workflows require Lua scripts, MULTI/EXEC transactions, or explicit synchronization to stay atomic. Data is optionally persisted via RDB snapshots or AOF logs. Clients communicate over TCP using the RESP protocol; connection pools are essential to avoid per-request handshake overhead.
+Redis é um armazenamento de estrutura de dados em memória que suporta strings, hashes, listas, sets, sorted sets, streams e mais. Comandos Redis individuais são atômicos em uma única instância; fluxos de trabalho de múltiplos passos requerem scripts Lua, transações MULTI/EXEC ou sincronização explícita para permanecerem atômicos. Os dados são opcionalmente persistidos via snapshots RDB ou logs AOF. Os clientes se comunicam via TCP usando o protocolo RESP; pools de conexão são essenciais para evitar sobrecarga de handshake por requisição.
 
-## When to Activate
+## Quando Ativar
 
-- Adding caching to an application
-- Implementing rate limiting or throttling
-- Building distributed locks or coordination
-- Setting up session or token storage
-- Using Pub/Sub or Redis Streams for messaging
-- Configuring Redis in production (pooling, eviction, clustering)
+- Adicionando cache a uma aplicação
+- Implementando rate limiting ou throttling
+- Construindo locks distribuídos ou coordenação
+- Configurando armazenamento de sessão ou token
+- Usando Pub/Sub ou Redis Streams para mensagens
+- Configurando Redis em produção (pooling, eviction, clustering)
 
-## Data Structure Cheat Sheet
+## Cheat Sheet de Estrutura de Dados
 
-| Use Case | Structure | Example Key |
+| Caso de Uso | Estrutura | Exemplo de Chave |
 |----------|-----------|-------------|
-| Simple cache | String | `product:123` |
-| User session | Hash | `session:abc` |
+| Cache simples | String | `product:123` |
+| Sessão de usuário | Hash | `session:abc` |
 | Leaderboard | Sorted Set | `scores:weekly` |
-| Unique visitors | Set | `visitors:2024-01-01` |
-| Activity feed | List | `feed:user:456` |
-| Event stream | Stream | `events:orders` |
-| Counters / rate limits | String (INCR) | `ratelimit:user:123` |
+| Visitantes únicos | Set | `visitors:2024-01-01` |
+| Feed de atividade | List | `feed:user:456` |
+| Stream de eventos | Stream | `events:orders` |
+| Contadores / rate limits | String (INCR) | `ratelimit:user:123` |
 | Bloom filter / HLL | HyperLogLog | `hll:pageviews` |
 
-## Core Patterns
+## Padrões Fundamentais
 
 ### Cache-Aside (Lazy Loading)
 
@@ -53,26 +53,26 @@ def get_product(product_id: int):
         return json.loads(cached)
 
     product = db.query("SELECT * FROM products WHERE id = %s", product_id)
-    r.setex(cache_key, 3600, json.dumps(product))  # TTL: 1 hour
+    r.setex(cache_key, 3600, json.dumps(product))  # TTL: 1 hora
     return product
 ```
 
-### Write-Through Cache
+### Cache Write-Through
 
 ```python
 def update_product(product_id: int, data: dict):
-    # Write to DB first
+    # Escreva no banco de dados primeiro
     db.execute("UPDATE products SET ... WHERE id = %s", product_id)
 
-    # Immediately update cache
+    # Atualize o cache imediatamente
     cache_key = f"product:{product_id}"
     r.setex(cache_key, 3600, json.dumps(data))
 ```
 
-### Cache Invalidation
+### Invalidação de Cache
 
 ```python
-# Tag-based invalidation — group related keys under a set
+# Invalidação baseada em tag — agrupe chaves relacionadas em um set
 def cache_product(product_id: int, category_id: int, data: dict):
     key = f"product:{product_id}"
     tag = f"tag:category:{category_id}"
@@ -90,7 +90,7 @@ def invalidate_category(category_id: int):
     r.delete(tag)
 ```
 
-### Session Storage
+### Armazenamento de Sessão
 
 ```python
 import time
@@ -118,7 +118,7 @@ def delete_session(session_id: str):
 
 ## Rate Limiting
 
-### Fixed Window (Simple)
+### Janela Fixa (Simples)
 
 ```python
 def is_rate_limited(user_id: int, limit: int = 100, window: int = 60) -> bool:
@@ -130,7 +130,7 @@ def is_rate_limited(user_id: int, limit: int = 100, window: int = 60) -> bool:
     return count > limit
 ```
 
-### Sliding Window (Lua — Atomic)
+### Janela Deslizante (Lua — Atômica)
 
 ```lua
 -- sliding_window.lua
@@ -143,7 +143,7 @@ redis.call('ZREMRANGEBYSCORE', key, 0, now - window)
 local count = redis.call('ZCARD', key)
 
 if count < limit then
-    -- Use unique member (now + sequence) to avoid collisions within the same millisecond
+    -- Use membro único (now + sequência) para evitar colisões no mesmo milissegundo
     local seq_key = key .. ':seq'
     local seq = redis.call('INCR', seq_key)
     redis.call('EXPIRE', seq_key, math.ceil(window / 1000))
@@ -163,9 +163,9 @@ def allow_request(user_id: int) -> bool:
     return bool(sliding_window(keys=[key], args=[now, 60000, 100]))
 ```
 
-## Distributed Locks
+## Locks Distribuídos
 
-### Distributed Lock (Single Node — SET NX PX)
+### Lock Distribuído (Nó Único — SET NX PX)
 
 ```python
 import uuid
@@ -187,7 +187,7 @@ def release_lock(resource: str, token: str) -> bool:
     result = r.eval(release_script, 1, f"lock:{resource}", token)
     return bool(result)
 
-# Usage
+# Uso
 token = acquire_lock("order:payment:123")
 if token:
     try:
@@ -196,9 +196,9 @@ if token:
         release_lock("order:payment:123", token)
 ```
 
-> For multi-node setups use the `redlock-py` library which implements the full Redlock algorithm.
+> Para configurações multi-nó use a biblioteca `redlock-py` que implementa o algoritmo Redlock completo.
 
-## Pub/Sub & Streams
+## Pub/Sub e Streams
 
 ### Pub/Sub (Fire-and-Forget)
 
@@ -207,7 +207,7 @@ if token:
 def publish_event(channel: str, payload: dict):
     r.publish(channel, json.dumps(payload))
 
-# Subscriber (blocking — run in separate thread/process)
+# Subscriber (bloqueante — execute em thread/processo separado)
 def subscribe_events(channel: str):
     pubsub = r.pubsub()
     pubsub.subscribe(channel)
@@ -216,18 +216,18 @@ def subscribe_events(channel: str):
             handle(json.loads(message['data']))
 ```
 
-### Redis Streams (Durable Queue)
+### Redis Streams (Fila Durável)
 
 ```python
 # Producer
 def emit(stream: str, event: dict):
-    r.xadd(stream, event, maxlen=10000)  # Cap stream length
+    r.xadd(stream, event, maxlen=10000)  # Limita o tamanho do stream
 
-# Consumer group — guarantees at-least-once delivery
+# Consumer group — garante entrega pelo menos uma vez
 try:
     r.xgroup_create('events:orders', 'processor', id='0', mkstream=True)
 except Exception:
-    pass  # Group already exists
+    pass  # Grupo já existe
 
 def consume(stream: str, group: str, consumer: str):
     while True:
@@ -238,40 +238,40 @@ def consume(stream: str, group: str, consumer: str):
                 r.xack(stream, group, msg_id)
 ```
 
-> Prefer **Streams** over Pub/Sub when you need delivery guarantees, consumer groups, or replay.
+> Prefira **Streams** ao Pub/Sub quando precisar de garantias de entrega, consumer groups ou replay.
 
-## Key Design
+## Design de Chaves
 
-### Naming Conventions
+### Convenções de Nomenclatura
 
 ```
-# Pattern: resource:id:field
+# Padrão: recurso:id:campo
 user:123:profile
 order:456:status
 cache:product:789
 
-# Pattern: namespace:resource:id
+# Padrão: namespace:recurso:id
 myapp:session:abc123
 myapp:ratelimit:user:123
 
-# Pattern: resource:date (time-bound keys)
+# Padrão: recurso:data (chaves com limite de tempo)
 stats:pageviews:2024-01-01
 ```
 
-### TTL Strategy
+### Estratégia de TTL
 
-| Data Type | Suggested TTL |
+| Tipo de Dado | TTL Sugerido |
 |-----------|--------------|
-| User session | 24h (`86400`) |
-| API response cache | 5–15 min |
-| Rate limit window | Match window size |
-| Short-lived tokens | 5–10 min |
+| Sessão de usuário | 24h (`86400`) |
+| Cache de resposta API | 5–15 min |
+| Janela de rate limit | Corresponda ao tamanho da janela |
+| Tokens de curta duração | 5–10 min |
 | Leaderboard | 1h–24h |
-| Static/reference data | 1h–1 week |
+| Dados estáticos/referência | 1h–1 semana |
 
-Always set a TTL. Keys without TTL accumulate indefinitely and cause memory pressure.
+Sempre defina um TTL. Chaves sem TTL acumulam indefinidamente e causam pressão de memória.
 
-## Connection Management
+## Gerenciamento de Conexão
 
 ### Connection Pooling
 
@@ -291,7 +291,7 @@ pool = ConnectionPool(
 r = Redis(connection_pool=pool)
 ```
 
-### Cluster Mode
+### Modo Cluster
 
 ```python
 from redis.cluster import RedisCluster
@@ -303,7 +303,7 @@ r = RedisCluster(
 )
 ```
 
-### Sentinel (High Availability)
+### Sentinel (Alta Disponibilidade)
 
 ```python
 from redis.sentinel import Sentinel
@@ -316,31 +316,31 @@ master = sentinel.master_for('mymaster', decode_responses=True)
 replica = sentinel.slave_for('mymaster', decode_responses=True)
 ```
 
-## Eviction Policies
+## Políticas de Eviction
 
-| Policy | Behavior | Best For |
+| Política | Comportamento | Melhor Para |
 |--------|----------|----------|
-| `noeviction` | Error on write when full | Queues / critical data |
-| `allkeys-lru` | Evict least recently used | General cache |
-| `volatile-lru` | LRU only among keys with TTL | Mixed data store |
-| `allkeys-lfu` | Evict least frequently used | Skewed access patterns |
-| `volatile-ttl` | Evict soonest-to-expire | Prioritize long-lived data |
+| `noeviction` | Erro na escrita quando cheio | Filas / dados críticos |
+| `allkeys-lru` | Evict pelo menos recentemente usado | Cache geral |
+| `volatile-lru` | LRU apenas entre chaves com TTL | Store de dados mistos |
+| `allkeys-lfu` | Evict pelo menos frequentemente usado | Padrões de acesso assimétrico |
+| `volatile-ttl` | Evict o que expira mais cedo | Priorizar dados de longa duração |
 
-Set via `redis.conf`: `maxmemory-policy allkeys-lru`
+Configure via `redis.conf`: `maxmemory-policy allkeys-lru`
 
-## Anti-Patterns
+## Anti-Padrões
 
-| Anti-Pattern | Problem | Fix |
+| Anti-Padrão | Problema | Solução |
 |---|---|---|
-| Keys with no TTL | Memory grows unbounded | Always set TTL |
-| `KEYS *` in production | Blocks the server (O(N)) | Use `SCAN` cursor |
-| Storing large blobs (>100KB) | Slow serialization, memory pressure | Store reference + fetch from object store |
-| Single Redis for everything | No isolation between cache & queue | Use separate DBs or instances |
-| Ignoring connection pool limits | Connection exhaustion under load | Size pool to workload |
-| Not handling cache miss stampede | Thundering herd on cold start | Use locks or probabilistic early expiry |
-| `FLUSHALL` without thought | Wipes entire instance | Scope deletes by key pattern |
+| Chaves sem TTL | Memória cresce ilimitadamente | Sempre defina TTL |
+| `KEYS *` em produção | Bloqueia o servidor (O(N)) | Use cursor `SCAN` |
+| Armazenar blobs grandes (>100KB) | Serialização lenta, pressão de memória | Armazene referência + busque do object store |
+| Redis único para tudo | Sem isolamento entre cache e fila | Use DBs ou instâncias separadas |
+| Ignorar limites do connection pool | Esgotamento de conexão sob carga | Dimensione o pool para a carga de trabalho |
+| Não tratar cache miss stampede | Thundering herd na inicialização a frio | Use locks ou expiração antecipada probabilística |
+| `FLUSHALL` sem reflexão | Limpa toda a instância | Escopice exclusões por padrão de chave |
 
-### Cache Miss Stampede Prevention
+### Prevenção de Cache Miss Stampede
 
 ```python
 import threading
@@ -358,7 +358,7 @@ def get_with_lock(key: str, fetch_fn, ttl: int = 300):
             _locks[key] = threading.Lock()
         lock = _locks[key]
     with lock:
-        cached = r.get(key)  # Re-check after acquiring lock
+        cached = r.get(key)  # Verifique novamente após adquirir o lock
         if cached:
             return json.loads(cached)
         value = fetch_fn()
@@ -366,39 +366,39 @@ def get_with_lock(key: str, fetch_fn, ttl: int = 300):
         return value
 ```
 
-> Note: for multi-process deployments, replace the in-process lock with `acquire_lock`/`release_lock` from the Distributed Locks section above.
+> Observação: para implantações multi-processo, substitua o lock in-process por `acquire_lock`/`release_lock` da seção Locks Distribuídos acima.
 
-## Examples
+## Exemplos
 
-**Add caching to a Django/Flask API endpoint:**
-Use cache-aside with `setex` and a 5-minute TTL on the response. Key on the request parameters.
+**Adicionar cache a um endpoint de API Django/Flask:**
+Use cache-aside com `setex` e TTL de 5 minutos na resposta. Chaveie pelos parâmetros da requisição.
 
-**Rate-limit an API by user:**
-Use fixed-window with `pipeline(transaction=True)` for low-traffic endpoints; use sliding-window Lua for accurate per-user throttling.
+**Rate-limit uma API por usuário:**
+Use janela fixa com `pipeline(transaction=True)` para endpoints de baixo tráfego; use janela deslizante Lua para throttling preciso por usuário.
 
-**Coordinate a background job across workers:**
-Use `acquire_lock` with a TTL that exceeds the expected job duration. Always release in a `finally` block.
+**Coordenar um job em background entre workers:**
+Use `acquire_lock` com um TTL que exceda a duração esperada do job. Sempre libere em um bloco `finally`.
 
-**Fan-out notifications to multiple subscribers:**
-Use Pub/Sub for fire-and-forget. Switch to Streams if you need guaranteed delivery or replay for late consumers.
+**Fan-out de notificações para múltiplos subscribers:**
+Use Pub/Sub para fire-and-forget. Mude para Streams se precisar de entrega garantida ou replay para consumers tardios.
 
-## Quick Reference
+## Referência Rápida
 
-| Pattern | When to Use |
+| Padrão | Quando Usar |
 |---------|-------------|
-| Cache-aside | Read-heavy, tolerate slight staleness |
-| Write-through | Strong consistency required |
-| Distributed lock | Prevent concurrent access to a resource |
-| Sliding window rate limit | Accurate per-user throttling |
-| Redis Streams | Durable event queue with consumer groups |
-| Pub/Sub | Broadcast with no delivery guarantees needed |
-| Sorted Set leaderboard | Ranked scoring, pagination |
-| HyperLogLog | Approximate unique count at low memory |
+| Cache-aside | Leitura intensiva, tolera ligeira desatualização |
+| Write-through | Consistência forte necessária |
+| Lock distribuído | Prevenir acesso concorrente a um recurso |
+| Rate limit com janela deslizante | Throttling preciso por usuário |
+| Redis Streams | Fila de eventos durável com consumer groups |
+| Pub/Sub | Broadcast sem necessidade de garantias de entrega |
+| Leaderboard com Sorted Set | Pontuação ranqueada, paginação |
+| HyperLogLog | Contagem única aproximada com baixo uso de memória |
 
-## Related
+## Relacionados
 
-- Skill: `postgres-patterns` — relational data patterns
-- Skill: `backend-patterns` — API and service layer patterns
-- Skill: `database-migrations` — schema versioning
-- Skill: `django-patterns` — Django cache framework integration
-- Agent: `database-reviewer` — full database review workflow
+- Skill: `postgres-patterns` — padrões de dados relacionais
+- Skill: `backend-patterns` — padrões de API e camada de serviço
+- Skill: `database-migrations` — versionamento de schema
+- Skill: `django-patterns` — integração com o framework de cache do Django
+- Agent: `database-reviewer` — fluxo completo de revisão de banco de dados

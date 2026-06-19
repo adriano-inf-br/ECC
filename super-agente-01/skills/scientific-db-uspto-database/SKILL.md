@@ -1,74 +1,71 @@
 ---
 name: uspto-database
-description: USPTO patent and trademark data workflow for official record lookup, PatentSearch queries, TSDR checks, assignment data, and reproducible IP research logs.
+description: Fluxo de trabalho para dados de patentes e marcas do USPTO, incluindo consulta de registros oficiais, buscas no PatentSearch, verificações no TSDR, dados de cessão e logs reproduzíveis de pesquisa de propriedade intelectual.
 metadata:
   origin: community
 ---
 
-# USPTO Database
+# Banco de Dados USPTO
 
-Use this skill when a task needs official United States patent or trademark
-records from USPTO systems.
+Use esta skill quando uma tarefa precisar de registros oficiais de patentes ou marcas
+dos Estados Unidos nos sistemas do USPTO.
 
-## When to Use
+## Quando Usar
 
-- Searching granted patents or pre-grant publications.
-- Checking patent application status, file-wrapper data, assignments, or
-  public prosecution history.
-- Looking up trademark status, documents, or assignment history.
-- Building reproducible prior-art, portfolio, or IP landscape research logs.
-- Comparing USPTO records with secondary tools such as Google Patents,
-  Lens.org, Semantic Scholar, or company patent pages.
+- Pesquisar patentes concedidas ou publicações de pré-concessão.
+- Verificar o status de pedidos de patente, dados do file wrapper, cessões ou
+  histórico de prosecutação público.
+- Consultar status de marca, documentos ou histórico de cessão.
+- Construir logs reproduzíveis de pesquisa de prior art, portfólio ou panorama de PI.
+- Comparar registros do USPTO com ferramentas secundárias como Google Patents,
+  Lens.org, Semantic Scholar ou páginas de patentes de empresas.
 
-Do not use this skill to give legal advice. Treat it as a data-gathering and
-record-verification workflow.
+Não use esta skill para dar pareceres jurídicos. Trate-a como um fluxo de trabalho de
+coleta de dados e verificação de registros.
 
-## Source Selection
+## Seleção de Fonte
 
-Prefer official USPTO or USPTO-supported surfaces first:
+Prefira as superfícies oficiais do USPTO ou com suporte do USPTO em primeiro lugar:
 
-- Open Data Portal (ODP): current home for migrated USPTO datasets and APIs.
-- Patent File Wrapper: public patent application bibliographic data and file
-  wrapper records.
-- PatentSearch API: PatentsView search API for granted patents and pre-grant
-  publication datasets.
-- TSDR Data API: trademark status and document retrieval.
-- Patent and Trademark Assignment Search: ownership transfer records.
-- PTAB data in ODP: Patent Trial and Appeal Board proceedings.
+- Open Data Portal (ODP): residência atual de datasets e APIs migrados do USPTO.
+- Patent File Wrapper: dados bibliográficos públicos de pedidos de patente e registros do file wrapper.
+- PatentSearch API: API de busca PatentsView para patentes concedidas e datasets de publicações de pré-concessão.
+- TSDR Data API: recuperação de status e documentos de marcas.
+- Patent and Trademark Assignment Search: registros de transferência de titularidade.
+- Dados do PTAB no ODP: procedimentos do Patent Trial and Appeal Board.
 
-Use secondary sources only as convenience indexes. When the answer matters,
-cross-check the official record.
+Use fontes secundárias apenas como índices de conveniência. Quando a resposta for relevante,
+confirme com o registro oficial.
 
-## Authentication and Secrets
+## Autenticação e Segredos
 
-Many USPTO API flows require an API key. Store keys in environment variables or
-a secret manager, never in committed files or pasted transcripts.
+Muitos fluxos de API do USPTO exigem uma chave de API. Armazene as chaves em variáveis de
+ambiente ou em um gerenciador de segredos, nunca em arquivos versionados ou transcrições coladas.
 
-Common environment names:
+Nomes de ambiente comuns:
 
 ```bash
 export USPTO_API_KEY="..."
 export PATENTSVIEW_API_KEY="..."
 ```
 
-For PatentSearch, send the key with the `X-Api-Key` header. For TSDR, follow
-the current USPTO API Manager instructions and rate-limit guidance.
+Para PatentSearch, envie a chave com o cabeçalho `X-Api-Key`. Para TSDR, siga as instruções
+atuais do USPTO API Manager e as orientações de limite de taxa.
 
-## PatentSearch Workflow
+## Fluxo de Trabalho do PatentSearch
 
-Use PatentSearch for broad patent and pre-grant publication search when the
-question is about trends, inventors, assignees, classifications, dates, or
-portfolio slices.
+Use PatentSearch para busca ampla de patentes e publicações de pré-concessão quando a
+questão envolver tendências, inventores, cessionários, classificações, datas ou fatias de portfólio.
 
-Workflow:
+Fluxo de trabalho:
 
-1. Identify the endpoint from the current PatentSearch reference or Swagger UI.
-2. Build a JSON query with explicit filters.
-3. Request only the fields needed for the analysis.
-4. Sort and paginate deterministically.
-5. Record the endpoint, query body, date, data currency note, and result count.
+1. Identifique o endpoint na referência atual do PatentSearch ou na Swagger UI.
+2. Construa uma consulta JSON com filtros explícitos.
+3. Solicite apenas os campos necessários para a análise.
+4. Ordene e pagine de forma determinística.
+5. Registre o endpoint, o corpo da consulta, a data, a nota de atualidade dos dados e a contagem de resultados.
 
-Python request skeleton:
+Esqueleto de requisição Python:
 
 ```python
 import os
@@ -99,80 +96,77 @@ response.raise_for_status()
 print(response.json())
 ```
 
-Before reusing a query, verify current endpoint names, field paths, request
-parameters, and API-key availability in the live PatentSearch docs.
+Antes de reutilizar uma consulta, verifique os nomes de endpoints atuais, caminhos de campo,
+parâmetros de requisição e disponibilidade de chave de API na documentação ativa do PatentSearch.
 
-## Trademark/TSDR Workflow
+## Fluxo de Trabalho de Marcas/TSDR
 
-Use TSDR when the task needs trademark case status, documents, images, owner
-history, or prosecution events.
+Use TSDR quando a tarefa precisar de status de caso de marca, documentos, imagens, histórico
+de proprietário ou eventos de prosecutação.
 
-Workflow:
+Fluxo de trabalho:
 
-1. Normalize the serial number or registration number.
-2. Check the current TSDR API instructions and required API-key header.
-3. Fetch status first, then documents only if needed.
-4. Respect the lower rate limit for PDF, ZIP, and multi-case downloads.
-5. Capture retrieval date and serial/registration identifier in the output.
+1. Normalize o número de série ou número de registro.
+2. Verifique as instruções atuais da API TSDR e o cabeçalho de chave de API obrigatório.
+3. Busque o status primeiro e, em seguida, os documentos somente se necessário.
+4. Respeite o limite de taxa mais baixo para downloads de PDF, ZIP e múltiplos casos.
+5. Capture a data de recuperação e o identificador de série/registro na saída.
 
-For large trademark pulls, prefer documented bulk-data flows rather than
-screen-scraping public pages.
+Para grandes volumes de marcas, prefira fluxos de dados em lote documentados em vez de
+scraping de páginas públicas.
 
-## File Wrapper and Prosecution History
+## File Wrapper e Histórico de Prosecutação
 
-For application status, transaction history, and prosecution documents:
+Para status de pedido, histórico de transações e documentos de prosecutação:
 
-- Start with ODP Patent File Wrapper search.
-- Use exact identifiers when available: application number, publication number,
-  patent number, or party name.
-- Record whether the record is a granted patent, pre-grant publication, or
-  pending application.
-- Cross-check document dates and status against the record detail page before
-  citing them.
+- Comece com a busca no ODP Patent File Wrapper.
+- Use identificadores exatos quando disponíveis: número de pedido, número de publicação,
+  número de patente ou nome da parte.
+- Registre se o registro é uma patente concedida, publicação de pré-concessão ou pedido pendente.
+- Confirme datas e status dos documentos na página de detalhe do registro antes de citá-los.
 
-## Assignment Workflow
+## Fluxo de Trabalho de Cessão
 
-For patent or trademark ownership:
+Para titularidade de patentes ou marcas:
 
-1. Search official assignment data by patent/application/registration number,
-   assignor, assignee, or reel/frame when available.
-2. Record conveyance text, execution date, recordation date, and parties.
-3. Distinguish assignment records from current legal ownership conclusions.
-4. If ownership is material, flag the result for attorney or subject-matter
-   review.
+1. Pesquise dados oficiais de cessão por número de patente/pedido/registro,
+   cedente, cessionário ou reel/frame quando disponível.
+2. Registre o texto de conveyance, data de execução, data de registro e partes.
+3. Distinga registros de cessão de conclusões sobre titularidade legal atual.
+4. Se a titularidade for relevante, sinalize o resultado para revisão por advogado ou especialista.
 
-## Reproducible Output
+## Saída Reproduzível
 
-Every USPTO research pass should include a log table:
+Cada passagem de pesquisa USPTO deve incluir uma tabela de log:
 
 ```markdown
-| Source | Date searched | Identifier/query | Filters | Results | Notes |
+| Fonte | Data da busca | Identificador/consulta | Filtros | Resultados | Notas |
 | --- | --- | --- | --- | ---: | --- |
-| PatentSearch | 2026-05-11 | `assignee=Alphabet AND date>=2024` | patent endpoint | 118 | API docs checked before run |
-| TSDR | 2026-05-11 | `serial=90000000` | status only | 1 | API-key flow, no document bulk pull |
+| PatentSearch | 2026-05-11 | `assignee=Alphabet AND date>=2024` | endpoint de patente | 118 | Docs da API verificados antes da execução |
+| TSDR | 2026-05-11 | `serial=90000000` | somente status | 1 | Fluxo de chave de API, sem download em lote de documentos |
 ```
 
-For final writeups, separate:
+Para trabalhos finais, separe:
 
-- official record facts
-- inferred analysis
-- secondary-source convenience matches
-- unresolved gaps or records that require legal review
+- fatos de registros oficiais
+- análise inferida
+- correspondências de conveniência de fontes secundárias
+- lacunas não resolvidas ou registros que requerem revisão jurídica
 
-## Review Checklist
+## Lista de Verificação da Revisão
 
-- Did you use an official USPTO or USPTO-supported source first?
-- Did you verify current endpoint and field names before running code?
-- Are API keys kept out of files, shell history, and output logs?
-- Does the query log include the date searched and exact request shape?
-- Are rate limits respected?
-- Are legal conclusions avoided or explicitly escalated?
-- Are secondary sources labeled as secondary?
+- Você usou uma fonte oficial do USPTO ou com suporte do USPTO em primeiro lugar?
+- Você verificou os nomes de endpoints e campos atuais antes de executar o código?
+- As chaves de API estão fora de arquivos, histórico de shell e logs de saída?
+- O log de consulta inclui a data pesquisada e o formato exato da requisição?
+- Os limites de taxa são respeitados?
+- Conclusões jurídicas são evitadas ou explicitamente escaladas?
+- As fontes secundárias estão identificadas como secundárias?
 
-## References
+## Referências
 
-- [USPTO APIs catalog](https://developer.uspto.gov/api-catalog)
-- [USPTO Open Data Portal](https://data.uspto.gov/)
-- [PatentSearch API reference](https://search.patentsview.org/docs/docs/Search%20API/SearchAPIReference/)
-- [PatentSearch API updates](https://search.patentsview.org/docs/)
-- [TSDR API bulk download FAQ](https://developer.uspto.gov/faq/tsdr-api-bulk-download)
+- [Catálogo de APIs do USPTO](https://developer.uspto.gov/api-catalog)
+- [Open Data Portal do USPTO](https://data.uspto.gov/)
+- [Referência da API PatentSearch](https://search.patentsview.org/docs/docs/Search%20API/SearchAPIReference/)
+- [Atualizações da API PatentSearch](https://search.patentsview.org/docs/)
+- [FAQ de download em lote da API TSDR](https://developer.uspto.gov/faq/tsdr-api-bulk-download)

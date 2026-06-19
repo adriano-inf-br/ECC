@@ -1,160 +1,160 @@
 ---
 name: healthcare-emr-patterns
-description: EMR/EHR development patterns for healthcare applications. Clinical safety, encounter workflows, prescription generation, clinical decision support integration, and accessibility-first UI for medical data entry.
+description: Padrões de desenvolvimento de EMR/EHR para aplicações de saúde. Segurança clínica, fluxos de trabalho de consultas, geração de prescrições, integração de suporte à decisão clínica e UI com acessibilidade em primeiro lugar para entrada de dados médicos.
 metadata:
   origin: Health1 Super Speciality Hospitals — contributed by Dr. Keyur Patel
 version: "1.0.0"
 ---
 
-# Healthcare EMR Development Patterns
+# Padrões de Desenvolvimento de EMR em Saúde
 
-Patterns for building Electronic Medical Record (EMR) and Electronic Health Record (EHR) systems. Prioritizes patient safety, clinical accuracy, and practitioner efficiency.
+Padrões para construir sistemas de Registro Médico Eletrônico (EMR) e Registro Eletrônico de Saúde (EHR). Prioriza segurança do paciente, precisão clínica e eficiência do profissional.
 
-## When to Use
+## Quando Usar
 
-- Building patient encounter workflows (complaint, exam, diagnosis, prescription)
-- Implementing clinical note-taking (structured + free text + voice-to-text)
-- Designing prescription/medication modules with drug interaction checking
-- Integrating Clinical Decision Support Systems (CDSS)
-- Building lab result displays with reference range highlighting
-- Implementing audit trails for clinical data
-- Designing healthcare-accessible UIs for clinical data entry
+- Construindo fluxos de trabalho de consultas de pacientes (queixa, exame, diagnóstico, prescrição)
+- Implementando anotação clínica (estruturada + texto livre + voz para texto)
+- Projetando módulos de prescrição/medicação com verificação de interações medicamentosas
+- Integrando Sistemas de Suporte à Decisão Clínica (CDSS)
+- Construindo exibições de resultados laboratoriais com destaque de faixa de referência
+- Implementando trilhas de auditoria para dados clínicos
+- Projetando UIs acessíveis para saúde para entrada de dados clínicos
 
-## How It Works
+## Como Funciona
 
-### Patient Safety First
+### Segurança do Paciente em Primeiro Lugar
 
-Every design decision must be evaluated against: "Could this harm a patient?"
+Toda decisão de design deve ser avaliada contra: "Isso poderia prejudicar um paciente?"
 
-- Drug interactions MUST alert, not silently pass
-- Abnormal lab values MUST be visually flagged
-- Critical vitals MUST trigger escalation workflows
-- No clinical data modification without audit trail
+- Interações medicamentosas DEVEM alertar, não passar silenciosamente
+- Valores laboratoriais anormais DEVEM ser sinalizados visualmente
+- Sinais vitais críticos DEVEM acionar fluxos de trabalho de escalada
+- Nenhuma modificação de dados clínicos sem trilha de auditoria
 
-### Single-Page Encounter Flow
+### Fluxo de Consulta em Página Única
 
-Clinical encounters should flow vertically on a single page — no tab switching:
+As consultas clínicas devem fluir verticalmente em uma única página — sem troca de abas:
 
 ```
-Patient Header (sticky — always visible)
-├── Demographics, allergies, active medications
+Cabeçalho do Paciente (fixo — sempre visível)
+├── Dados demográficos, alergias, medicamentos ativos
 │
-Encounter Flow (vertical scroll)
-├── 1. Chief Complaint (structured templates + free text)
-├── 2. History of Present Illness
-├── 3. Physical Examination (system-wise)
-├── 4. Vitals (auto-trigger clinical scoring)
-├── 5. Diagnosis (ICD-10/SNOMED search)
-├── 6. Medications (drug DB + interaction check)
-├── 7. Investigations (lab/radiology orders)
-├── 8. Plan & Follow-up
-└── 9. Sign / Lock / Print
+Fluxo de Consulta (rolagem vertical)
+├── 1. Queixa Principal (templates estruturados + texto livre)
+├── 2. Histórico da Doença Atual
+├── 3. Exame Físico (por sistema)
+├── 4. Sinais Vitais (aciona pontuação clínica automaticamente)
+├── 5. Diagnóstico (busca ICD-10/SNOMED)
+├── 6. Medicamentos (banco de dados de medicamentos + verificação de interação)
+├── 7. Investigações (pedidos laboratoriais/radiológicos)
+├── 8. Plano e Acompanhamento
+└── 9. Assinar / Bloquear / Imprimir
 ```
 
-### Smart Template System
+### Sistema Inteligente de Templates
 
 ```typescript
 interface ClinicalTemplate {
   id: string;
-  name: string;             // e.g., "Chest Pain"
-  chips: string[];          // clickable symptom chips
-  requiredFields: string[]; // mandatory data points
-  redFlags: string[];       // triggers non-dismissable alert
-  icdSuggestions: string[]; // pre-mapped diagnosis codes
+  name: string;             // ex. "Dor no Peito"
+  chips: string[];          // chips de sintomas clicáveis
+  requiredFields: string[]; // pontos de dados obrigatórios
+  redFlags: string[];       // dispara alerta não descartável
+  icdSuggestions: string[]; // códigos de diagnóstico pré-mapeados
 }
 ```
 
-Red flags in any template must trigger a visible, non-dismissable alert — NOT a toast notification.
+Sinais de alerta em qualquer template devem disparar um alerta visível e não descartável — NÃO uma notificação toast.
 
-### Medication Safety Pattern
-
-```
-User selects drug
-  → Check current medications for interactions
-  → Check encounter medications for interactions
-  → Check patient allergies
-  → Validate dose against weight/age/renal function
-  → If CRITICAL interaction: BLOCK prescribing entirely
-  → Clinician must document override reason to proceed past a block
-  → If MAJOR interaction: display warning, require acknowledgment
-  → Log all alerts and override reasons in audit trail
-```
-
-Critical interactions **block prescribing by default**. The clinician must explicitly override with a documented reason stored in the audit trail. The system never silently allows a critical interaction.
-
-### Locked Encounter Pattern
-
-Once a clinical encounter is signed:
-- No edits allowed — only an addendum (a separate linked record)
-- Both original and addendum appear in the patient timeline
-- Audit trail captures who signed, when, and any addendum records
-
-### UI Patterns for Clinical Data
-
-**Vitals Display:** Current values with normal range highlighting (green/yellow/red), trend arrows vs previous, clinical scoring auto-calculated (NEWS2, qSOFA), escalation guidance inline.
-
-**Lab Results Display:** Normal range highlighting, previous value comparison, critical values with non-dismissable alert, collection/analysis timestamps, pending orders with expected turnaround.
-
-**Prescription PDF:** One-click generation with patient demographics, allergies, diagnosis, drug details (generic + brand, dose, route, frequency, duration), clinician signature block.
-
-### Accessibility for Healthcare
-
-Healthcare UIs have stricter requirements than typical web apps:
-- 4.5:1 minimum contrast (WCAG AA) — clinicians work in varied lighting
-- Large touch targets (44x44px minimum) — for gloved/rushed interaction
-- Keyboard navigation — for power users entering data rapidly
-- No color-only indicators — always pair color with text/icon (colorblind clinicians)
-- Screen reader labels on all form fields
-- No auto-dismissing toasts for clinical alerts — clinician must actively acknowledge
-
-### Anti-Patterns
-
-- Storing clinical data in browser localStorage
-- Silent failures in drug interaction checking
-- Dismissable toasts for critical clinical alerts
-- Tab-based encounter UIs that fragment the clinical workflow
-- Allowing edits to signed/locked encounters
-- Displaying clinical data without audit trail
-- Using `any` type for clinical data structures
-
-## Examples
-
-### Example 1: Patient Encounter Flow
+### Padrão de Segurança de Medicação
 
 ```
-Doctor opens encounter for Patient #4521
-  → Sticky header shows: "Rajesh M, 58M, Allergies: Penicillin, Active Meds: Metformin 500mg"
-  → Chief Complaint: selects "Chest Pain" template
-    → Clicks chips: "substernal", "radiating to left arm", "crushing"
-    → Red flag "crushing substernal chest pain" triggers non-dismissable alert
-  → Examination: CVS system — "S1 S2 normal, no murmur"
-  → Vitals: HR 110, BP 90/60, SpO2 94%
-    → NEWS2 auto-calculates: score 8, risk HIGH, escalation alert shown
-  → Diagnosis: searches "ACS" → selects ICD-10 I21.9
-  → Medications: selects Aspirin 300mg
-    → CDSS checks against Metformin: no interaction
-  → Signs encounter → locked, addendum-only from this point
+Usuário seleciona medicamento
+  → Verificar medicamentos atuais para interações
+  → Verificar medicamentos da consulta para interações
+  → Verificar alergias do paciente
+  → Validar dose em relação ao peso/idade/função renal
+  → Se interação CRÍTICA: BLOQUEAR a prescrição completamente
+  → O clínico deve documentar motivo de substituição para continuar após um bloqueio
+  → Se interação MAIOR: exibir aviso, exigir confirmação de ciência
+  → Registrar todos os alertas e motivos de substituição na trilha de auditoria
 ```
 
-### Example 2: Medication Safety Workflow
+Interações críticas **bloqueiam a prescrição por padrão**. O clínico deve substituir explicitamente com um motivo documentado armazenado na trilha de auditoria. O sistema nunca permite silenciosamente uma interação crítica.
+
+### Padrão de Consulta Bloqueada
+
+Uma vez que uma consulta clínica é assinada:
+- Nenhuma edição é permitida — apenas um adendo (um registro separado vinculado)
+- Tanto o original quanto o adendo aparecem na linha do tempo do paciente
+- A trilha de auditoria captura quem assinou, quando e quaisquer registros de adendo
+
+### Padrões de UI para Dados Clínicos
+
+**Exibição de Sinais Vitais:** Valores atuais com destaque de faixa normal (verde/amarelo/vermelho), setas de tendência em relação ao anterior, pontuação clínica calculada automaticamente (NEWS2, qSOFA), orientação de escalada inline.
+
+**Exibição de Resultados Laboratoriais:** Destaque de faixa normal, comparação com valor anterior, valores críticos com alerta não descartável, timestamps de coleta/análise, pedidos pendentes com prazo esperado.
+
+**PDF de Prescrição:** Geração com um clique incluindo dados demográficos do paciente, alergias, diagnóstico, detalhes do medicamento (genérico + marca, dose, via, frequência, duração), bloco de assinatura do clínico.
+
+### Acessibilidade para Saúde
+
+UIs de saúde têm requisitos mais rigorosos do que aplicativos web típicos:
+- Contraste mínimo de 4,5:1 (WCAG AA) — clínicos trabalham em iluminação variada
+- Alvos de toque grandes (mínimo 44x44px) — para interação com luvas/apressada
+- Navegação por teclado — para usuários avançados inserindo dados rapidamente
+- Sem indicadores somente de cor — sempre combine cor com texto/ícone (clínicos daltônicos)
+- Rótulos de leitores de tela em todos os campos de formulário
+- Sem toasts autodescartáveis para alertas clínicos — o clínico deve confirmar ativamente
+
+### Anti-Padrões
+
+- Armazenar dados clínicos no localStorage do navegador
+- Falhas silenciosas na verificação de interações medicamentosas
+- Toasts descartáveis para alertas clínicos críticos
+- UIs de consulta baseadas em abas que fragmentam o fluxo de trabalho clínico
+- Permitir edições em consultas assinadas/bloqueadas
+- Exibir dados clínicos sem trilha de auditoria
+- Usar tipo `any` para estruturas de dados clínicos
+
+## Exemplos
+
+### Exemplo 1: Fluxo de Consulta do Paciente
 
 ```
-Doctor prescribes Warfarin for Patient #4521
-  → CDSS detects: Warfarin + Aspirin = CRITICAL interaction
-  → UI: red non-dismissable modal blocks prescribing
-  → Doctor clicks "Override with reason"
-  → Types: "Benefits outweigh risks — monitored INR protocol"
-  → Override reason + alert stored in audit trail
-  → Prescription proceeds with documented override
+Médico abre consulta para Paciente #4521
+  → Cabeçalho fixo mostra: "Rajesh M, 58M, Alergias: Penicilina, Medicamentos Ativos: Metformina 500mg"
+  → Queixa Principal: seleciona template "Dor no Peito"
+    → Clica nos chips: "substernal", "irradiando para o braço esquerdo", "opressiva"
+    → Sinal de alerta "dor substernal opressiva" dispara alerta não descartável
+  → Exame: sistema cardiovascular — "B1 B2 normais, sem sopro"
+  → Sinais Vitais: FC 110, PA 90/60, SpO2 94%
+    → NEWS2 calcula automaticamente: pontuação 8, risco ALTO, alerta de escalada exibido
+  → Diagnóstico: pesquisa "SCA" → seleciona ICD-10 I21.9
+  → Medicamentos: seleciona Aspirina 300mg
+    → CDSS verifica contra Metformina: sem interação
+  → Assina consulta → bloqueada, somente adendo a partir deste ponto
 ```
 
-### Example 3: Locked Encounter + Addendum
+### Exemplo 2: Fluxo de Trabalho de Segurança de Medicação
 
 ```
-Encounter #E-2024-0891 signed by Dr. Shah at 14:30
-  → All fields locked — no edit buttons visible
-  → "Add Addendum" button available
-  → Dr. Shah clicks addendum, adds: "Lab results received — Troponin elevated"
-  → New record E-2024-0891-A1 linked to original
-  → Timeline shows both: original encounter + addendum with timestamps
+Médico prescreve Varfarina para Paciente #4521
+  → CDSS detecta: Varfarina + Aspirina = interação CRÍTICA
+  → UI: modal vermelho não descartável bloqueia a prescrição
+  → Médico clica em "Substituir com motivo"
+  → Digite: "Benefícios superam os riscos — protocolo INR monitorado"
+  → Motivo de substituição + alerta armazenados na trilha de auditoria
+  → Prescrição prossegue com substituição documentada
+```
+
+### Exemplo 3: Consulta Bloqueada + Adendo
+
+```
+Consulta #E-2024-0891 assinada pelo Dr. Shah às 14:30
+  → Todos os campos bloqueados — sem botões de edição visíveis
+  → Botão "Adicionar Adendo" disponível
+  → Dr. Shah clica em adendo, adiciona: "Resultados laboratoriais recebidos — Troponina elevada"
+  → Novo registro E-2024-0891-A1 vinculado ao original
+  → Linha do tempo mostra ambos: consulta original + adendo com timestamps
 ```

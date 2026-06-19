@@ -1,46 +1,46 @@
 ---
 name: strategic-compact
-description: Suggests manual context compaction at logical intervals to preserve context through task phases rather than arbitrary auto-compaction.
+description: Sugere compactação manual de contexto em intervalos lógicos para preservar o contexto ao longo das fases de uma tarefa, em vez de depender de compactação automática arbitrária.
 metadata:
   origin: ECC
 ---
 
-# Strategic Compact Skill
+# Skill de Compactação Estratégica
 
-Suggests manual `/compact` at strategic points in your workflow rather than relying on arbitrary auto-compaction.
+Sugere o uso manual de `/compact` em pontos estratégicos do seu fluxo de trabalho, em vez de depender de compactação automática arbitrária.
 
-## When to Activate
+## Quando Ativar
 
-- Running long sessions that approach context limits (200K+ tokens)
-- Working on multi-phase tasks (research → plan → implement → test)
-- Switching between unrelated tasks within the same session
-- After completing a major milestone and starting new work
-- When responses slow down or become less coherent (context pressure)
+- Sessões longas que se aproximam dos limites de contexto (200K+ tokens)
+- Trabalho em tarefas com múltiplas fases (pesquisa → planejamento → implementação → teste)
+- Alternância entre tarefas não relacionadas dentro da mesma sessão
+- Após concluir um marco importante e iniciar um novo trabalho
+- Quando as respostas ficam mais lentas ou menos coerentes (pressão de contexto)
 
-## Why Strategic Compaction?
+## Por Que Compactação Estratégica?
 
-Auto-compaction triggers at arbitrary points:
-- Often mid-task, losing important context
-- No awareness of logical task boundaries
-- Can interrupt complex multi-step operations
+A compactação automática é acionada em pontos arbitrários:
+- Muitas vezes no meio de uma tarefa, perdendo contexto importante
+- Sem consciência de limites lógicos de tarefa
+- Pode interromper operações complexas de múltiplas etapas
 
-Strategic compaction at logical boundaries:
-- **After exploration, before execution** — Compact research context, keep implementation plan
-- **After completing a milestone** — Fresh start for next phase
-- **Before major context shifts** — Clear exploration context before different task
+A compactação estratégica em limites lógicos:
+- **Após exploração, antes da execução** — Compacta o contexto de pesquisa, mantém o plano de implementação
+- **Após concluir um marco** — Começo limpo para a próxima fase
+- **Antes de mudanças grandes de contexto** — Limpa o contexto de exploração antes de uma tarefa diferente
 
-## How It Works
+## Como Funciona
 
-The `suggest-compact.js` script runs on PreToolUse (Edit/Write) and combines two signals:
+O script `suggest-compact.js` é executado no PreToolUse (Edit/Write) e combina dois sinais:
 
-1. **Context size (primary)** — Reads the latest `usage` record from the session transcript (`transcript_path` in the hook payload) and sums `input_tokens + cache_read_input_tokens + cache_creation_input_tokens` (the true context size of the turn). Suggests `/compact` at a window-scaled threshold — 160k tokens on a 200k window, 250k on a 1M window (detected from a `[1m]` model marker, or inferred when observed tokens already exceed 200k) — and re-reminds after every additional 60k tokens of context growth
-2. **Tool-call count (secondary)** — Counts tool invocations in session; suggests at a configurable threshold (default: 50 calls), then every 25 calls after
+1. **Tamanho do contexto (primário)** — Lê o registro de `usage` mais recente do transcript da sessão (`transcript_path` no payload do hook) e soma `input_tokens + cache_read_input_tokens + cache_creation_input_tokens` (o tamanho real do contexto do turno). Sugere `/compact` em um limiar escalado pela janela — 160k tokens em uma janela de 200k, 250k em uma de 1M (detectado a partir de um marcador de modelo `[1m]`, ou inferido quando os tokens observados já excedem 200k) — e lembra novamente após cada 60k tokens adicionais de crescimento de contexto
+2. **Contagem de chamadas de ferramentas (secundário)** — Conta invocações de ferramentas na sessão; sugere em um limiar configurável (padrão: 50 chamadas) e depois a cada 25 chamadas
 
-Tool count alone is a weak proxy for window pressure: a few large file reads or MCP responses can fill the window in very few calls, while many tiny calls can cross 50 with a near-empty window. The context-size signal fires when it actually matters.
+A contagem de ferramentas sozinha é um proxy fraco para a pressão da janela: algumas leituras grandes de arquivo ou respostas de MCP podem preencher a janela em poucas chamadas, enquanto muitas chamadas pequenas podem cruzar 50 com uma janela quase vazia. O sinal de tamanho de contexto dispara quando realmente importa.
 
-## Hook Setup
+## Configuração do Hook
 
-Add to your `~/.claude/settings.json`:
+Adicione ao seu `~/.claude/settings.json`:
 
 ```json
 {
@@ -59,78 +59,78 @@ Add to your `~/.claude/settings.json`:
 }
 ```
 
-## Configuration
+## Configuração
 
-Environment variables:
-- `COMPACT_THRESHOLD` — Tool calls before first suggestion (default: 50)
-- `COMPACT_CONTEXT_THRESHOLD` — Context tokens before the context-size suggestion (default: 160000 on a 200k window, 250000 on a 1M window; `0` disables the context signal)
-- `COMPACT_CONTEXT_INTERVAL` — Additional context tokens before the suggestion repeats (default: 60000)
-- `COMPACT_STATE_TTL_DAYS` — Days before stale per-session state files in the temp dir are swept (default: 14)
+Variáveis de ambiente:
+- `COMPACT_THRESHOLD` — Chamadas de ferramentas antes da primeira sugestão (padrão: 50)
+- `COMPACT_CONTEXT_THRESHOLD` — Tokens de contexto antes da sugestão por tamanho de contexto (padrão: 160000 em janela de 200k, 250000 em janela de 1M; `0` desativa o sinal de contexto)
+- `COMPACT_CONTEXT_INTERVAL` — Tokens de contexto adicionais antes de repetir a sugestão (padrão: 60000)
+- `COMPACT_STATE_TTL_DAYS` — Dias antes que arquivos de estado por sessão antigos no diretório temporário sejam removidos (padrão: 14)
 
-## Compaction Decision Guide
+## Guia de Decisão de Compactação
 
-Use this table to decide when to compact:
+Use esta tabela para decidir quando compactar:
 
-| Phase Transition | Compact? | Why |
+| Transição de Fase | Compactar? | Por quê |
 |-----------------|----------|-----|
-| Research → Planning | Yes | Research context is bulky; plan is the distilled output |
-| Planning → Implementation | Yes | Plan is in TodoWrite or a file; free up context for code |
-| Implementation → Testing | Maybe | Keep if tests reference recent code; compact if switching focus |
-| Debugging → Next feature | Yes | Debug traces pollute context for unrelated work |
-| Mid-implementation | No | Losing variable names, file paths, and partial state is costly |
-| After a failed approach | Yes | Clear the dead-end reasoning before trying a new approach |
+| Pesquisa → Planejamento | Sim | O contexto de pesquisa é volumoso; o plano é o resultado destilado |
+| Planejamento → Implementação | Sim | O plano está no TodoWrite ou em um arquivo; libere espaço no contexto para código |
+| Implementação → Testes | Talvez | Mantenha se os testes referenciam código recente; compacte se mudar de foco |
+| Depuração → Próxima funcionalidade | Sim | Rastros de depuração poluem o contexto para trabalho não relacionado |
+| No meio da implementação | Não | Perder nomes de variáveis, caminhos de arquivo e estado parcial é custoso |
+| Após uma abordagem fracassada | Sim | Limpe o raciocínio sem saída antes de tentar uma nova abordagem |
 
-## What Survives Compaction
+## O Que Sobrevive à Compactação
 
-Understanding what persists helps you compact with confidence:
+Entender o que persiste ajuda a compactar com confiança:
 
-| Persists | Lost |
+| Persiste | Perdido |
 |----------|------|
-| CLAUDE.md instructions | Intermediate reasoning and analysis |
-| TodoWrite task list | File contents you previously read |
-| Memory files (`~/.claude/memory/`) | Multi-step conversation context |
-| Git state (commits, branches) | Tool call history and counts |
-| Files on disk | Nuanced user preferences stated verbally |
+| Instruções do CLAUDE.md | Raciocínio intermediário e análise |
+| Lista de tarefas do TodoWrite | Conteúdo de arquivos lidos anteriormente |
+| Arquivos de memória (`~/.claude/memory/`) | Contexto de conversa em múltiplas etapas |
+| Estado do git (commits, branches) | Histórico e contagens de chamadas de ferramentas |
+| Arquivos em disco | Preferências sutis do usuário declaradas verbalmente |
 
-## Best Practices
+## Boas Práticas
 
-1. **Compact after planning** — Once plan is finalized in TodoWrite, compact to start fresh
-2. **Compact after debugging** — Clear error-resolution context before continuing
-3. **Don't compact mid-implementation** — Preserve context for related changes
-4. **Read the suggestion** — The hook tells you *when*, you decide *if*
-5. **Write before compacting** — Save important context to files or memory before compacting
-6. **Use `/compact` with a summary** — Add a custom message: `/compact Focus on implementing auth middleware next`
+1. **Compactar após o planejamento** — Uma vez que o plano está finalizado no TodoWrite, compacte para começar do zero
+2. **Compactar após depuração** — Limpe o contexto de resolução de erros antes de continuar
+3. **Não compactar no meio da implementação** — Preserve o contexto para mudanças relacionadas
+4. **Leia a sugestão** — O hook diz *quando*, você decide *se*
+5. **Escreva antes de compactar** — Salve contexto importante em arquivos ou memória antes de compactar
+6. **Use `/compact` com um resumo** — Adicione uma mensagem personalizada: `/compact Focus on implementing auth middleware next`
 
-## Token Optimization Patterns
+## Padrões de Otimização de Token
 
-### Trigger-Table Lazy Loading
-Instead of loading full skill content at session start, use a trigger table that maps keywords to skill paths. Skills load only when triggered, reducing baseline context by 50%+:
+### Carregamento Lazy por Tabela de Gatilhos
+Em vez de carregar o conteúdo completo de skills no início da sessão, use uma tabela de gatilhos que mapeia palavras-chave para caminhos de skills. As skills carregam apenas quando acionadas, reduzindo o contexto base em 50%+:
 
-| Trigger | Skill | Load When |
+| Gatilho | Skill | Carregue Quando |
 |---------|-------|-----------|
-| "test", "tdd", "coverage" | tdd-workflow | User mentions testing |
-| "security", "auth", "xss" | security-review | Security-related work |
-| "deploy", "ci/cd" | deployment-patterns | Deployment context |
+| "test", "tdd", "coverage" | tdd-workflow | Usuário menciona testes |
+| "security", "auth", "xss" | security-review | Trabalho relacionado à segurança |
+| "deploy", "ci/cd" | deployment-patterns | Contexto de deploy |
 
-### Context Composition Awareness
-Monitor what's consuming your context window:
-- **CLAUDE.md files** — Always loaded, keep lean
-- **Loaded skills** — Each skill adds 1-5K tokens
-- **Conversation history** — Grows with each exchange
-- **Tool results** — File reads, search results add bulk
+### Consciência da Composição do Contexto
+Monitore o que está consumindo sua janela de contexto:
+- **Arquivos CLAUDE.md** — Sempre carregados, mantenha-os enxutos
+- **Skills carregadas** — Cada skill adiciona 1-5K tokens
+- **Histórico de conversa** — Cresce a cada troca
+- **Resultados de ferramentas** — Leituras de arquivo, resultados de busca adicionam volume
 
-### Duplicate Instruction Detection
-Common sources of duplicate context:
-- Same rules in both `~/.claude/rules/` and project `.claude/rules/`
-- Skills that repeat CLAUDE.md instructions
-- Multiple skills covering overlapping domains
+### Detecção de Instruções Duplicadas
+Fontes comuns de contexto duplicado:
+- Mesmas regras em `~/.claude/rules/` e no projeto `.claude/rules/`
+- Skills que repetem instruções do CLAUDE.md
+- Múltiplas skills cobrindo domínios sobrepostos
 
-### Context Optimization Tools
-- `token-optimizer` MCP — Automated 95%+ token reduction via content deduplication
-- `context-mode` — Context virtualization (315KB to 5.4KB demonstrated)
+### Ferramentas de Otimização de Contexto
+- `token-optimizer` MCP — Redução automatizada de 95%+ de tokens via deduplicação de conteúdo
+- `context-mode` — Virtualização de contexto (demonstrado: 315KB para 5.4KB)
 
-## Related
+## Relacionados
 
-- [The Longform Guide](https://x.com/affaanmustafa/status/2014040193557471352) — Token optimization section
-- Memory persistence hooks — For state that survives compaction
-- `continuous-learning` skill — Extracts patterns before session ends
+- [The Longform Guide](https://x.com/affaanmustafa/status/2014040193557471352) — Seção de otimização de tokens
+- Hooks de persistência de memória — Para estado que sobrevive à compactação
+- Skill `continuous-learning` — Extrai padrões antes do fim da sessão

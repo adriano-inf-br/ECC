@@ -19,7 +19,7 @@ O objetivo é corresponder ao padrão do repositório hospedeiro:
 - estilo de teste
 - ligação de registro/descoberta (registration/discovery)
 
-## When to Use
+## Quando Usar
 
 - "Construa um conector do Jira para este projeto"
 - "Adicione um provedor do Slack seguindo o padrão existente"
@@ -33,7 +33,7 @@ O objetivo é corresponder ao padrão do repositório hospedeiro:
 - não pare no código de transporte se o repositório espera ligação de registro, testes e documentação
 - não faça cargo-cult de conectores antigos se o repositório tem um padrão atual mais recente
 
-## Workflow
+## Fluxo de Trabalho
 
 ### 1. Aprenda o estilo da casa
 
@@ -71,7 +71,7 @@ Fatias típicas:
 
 O novo conector deve parecer óbvio no codebase, e não importado de um ecossistema diferente.
 
-## Reference Shapes
+## Formatos de Referência
 
 ### Estilo Provedor (Provider-style)
 
@@ -104,7 +104,7 @@ src/integrations/
     test.ts
 ```
 
-## Quality Checklist
+## Checklist de Qualidade
 
 - [ ] corresponde a um padrão de integração já existente no repositório
 - [ ] existe validação de configuração
@@ -114,7 +114,7 @@ src/integrations/
 - [ ] os testes espelham o estilo do repositório hospedeiro
 - [ ] docs/exemplos são atualizados se o repositório esperar isso
 
-## Related Skills
+## Skills Relacionadas
 
 - `backend-patterns`
 - `mcp-server-patterns`

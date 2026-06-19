@@ -5,13 +5,13 @@ metadata:
   tags: decode, validation, video, audio, compatibility, browser
 ---
 
-# Checking if a video can be decoded
+# Verificando se um vídeo pode ser decodificado
 
-Use Mediabunny to check if a video can be decoded by the browser before attempting to play it.
+Use o Mediabunny para verificar se um vídeo pode ser decodificado pelo navegador antes de tentar reproduzi-lo.
 
-## The `canDecode()` function
+## A função `canDecode()`
 
-This function can be copy-pasted into any project.
+Esta função pode ser copiada e colada em qualquer projeto.
 
 ```tsx
 import { Input, ALL_FORMATS, UrlSource } from "mediabunny";
@@ -44,7 +44,7 @@ export const canDecode = async (src: string) => {
 };
 ```
 
-## Usage
+## Uso
 
 ```tsx
 const src = "https://remotion.media/video.mp4";
@@ -57,9 +57,9 @@ if (isDecodable) {
 }
 ```
 
-## Using with Blob
+## Usando com Blob
 
-For file uploads or drag-and-drop, use `BlobSource`:
+Para uploads de arquivos ou drag-and-drop, use `BlobSource`:
 
 ```tsx
 import { Input, ALL_FORMATS, BlobSource } from "mediabunny";
@@ -70,6 +70,6 @@ export const canDecodeBlob = async (blob: Blob) => {
     source: new BlobSource(blob),
   });
 
-  // Same validation logic as above
+  // Mesma lógica de validação que acima
 };
 ```

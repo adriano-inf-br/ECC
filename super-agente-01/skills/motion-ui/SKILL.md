@@ -5,13 +5,13 @@ metadata:
   origin: ECC
 ---
 
-# Motion System v4.2
+# Sistema de Motion v4.2
 
 Sistema de motion de UI pronto para produção para React / Next.js.
 
 Focado em **desempenho, acessibilidade e usabilidade** — não em decoração.
 
-## When to Use
+## Quando Usar
 
 Use este sistema de motion quando o movimento:
 
@@ -19,19 +19,19 @@ Use este sistema de motion quando o movimento:
 * Comunica estado (carregando, sucesso, erro, transições)
 * Preserva a continuidade espacial (mudanças de layout, navegação)
 
-### Appropriate Scenarios
+### Cenários Adequados
 
 * Componentes interativos (botões, modais, menus)
 * Transições de estado (carregando → carregado, aberto → fechado)
 * Navegação e continuidade de layout (elementos compartilhados, crossfade)
 
-### Considerations
+### Considerações
 
 * **Acessibilidade**: sempre dê suporte a movimento reduzido
 * **Adaptação ao dispositivo**: ajuste para dispositivos de baixo desempenho
 * **Compensações de desempenho**: prefira responsividade a suavidade visual
 
-### Avoid Using Motion When
+### Evite Usar Motion Quando
 
 * É puramente decorativo
 * Reduz a usabilidade ou a clareza
@@ -39,9 +39,9 @@ Use este sistema de motion quando o movimento:
 
 ---
 
-## How It Works
+## Como Funciona
 
-### Core Principle
+### Princípio Central
 
 O movimento deve:
 
@@ -53,7 +53,7 @@ Se não fizer nenhuma dessas coisas → remova-o.
 
 ---
 
-### Installation
+### Instalação
 
 ```bash
 npm install motion
@@ -61,7 +61,7 @@ npm install motion
 
 ---
 
-### Version
+### Versão
 
 * `motion/react` - padrão para projetos atuais de Motion for React (pacote: `motion`)
 * `framer-motion` - caminho de import legado para projetos que ainda dependem do Framer Motion
@@ -88,7 +88,7 @@ import { motion, AnimatePresence } from "framer-motion"
 
 ---
 
-### Motion Tokens
+### Tokens de Motion
 
 ```ts
 // motionTokens.ts
@@ -129,7 +129,7 @@ import { motionTokens } from "@/lib/motionTokens"
 
 ---
 
-### Performance Rules
+### Regras de Desempenho
 
 **Seguro**
 
@@ -145,7 +145,7 @@ Regra: responsividade > suavidade
 
 ---
 
-### Device Adaptation
+### Adaptação ao Dispositivo
 
 A heurística combina contagem de núcleos de CPU **e** memória disponível para um sinal mais confiável. `deviceMemory` está disponível no Chrome/Android; o fallback cobre Safari e Firefox.
 
@@ -163,7 +163,7 @@ const duration = isLowEnd ? 0.2 : 0.4
 
 ---
 
-### Accessibility
+### Acessibilidade
 
 #### JS (useReducedMotion)
 
@@ -204,9 +204,9 @@ export function FadeIn() {
 
 ---
 
-### Architecture & Patterns
+### Arquitetura e Padrões
 
-#### Core Patterns
+#### Padrões Fundamentais
 
 | Cenário | Padrão |
 |---|---|
@@ -221,12 +221,12 @@ export function FadeIn() {
 
 > **Por que evitar `layout` em containers grandes?** A animação de layout do Framer usa `transform` para reconciliar posições, mas em elementos que ocupam toda a viewport ou disparam reflow profundo, o custo de medição causa jank visível e CLS. Prefira transições de CSS Grid/Flexbox ou coordene com `layoutId` apenas em elementos filhos específicos.
 
-#### Layout & Transitions
+#### Layout e Transições
 
 * Transições de elemento compartilhado → `layoutId` (deve ser único por instância montada)
 * Transições de entrada / saída → `AnimatePresence` (veja a orientação de `mode` abaixo)
 
-#### AnimatePresence `mode`
+#### `mode` do AnimatePresence
 
 Sempre especifique `mode` explicitamente — o padrão (`"sync"`) executa entrada e saída simultaneamente, o que causa sobreposição visual na maioria dos padrões de UI.
 
@@ -250,7 +250,7 @@ Sempre especifique `mode` explicitamente — o padrão (`"sync"`) executa entrad
 
 ---
 
-### Advanced Patterns (Concepts)
+### Padrões Avançados (Conceitos)
 
 * Parallax (transforms vinculados ao scroll)
 * Storytelling de scroll (seções fixas)
@@ -263,7 +263,7 @@ Sempre especifique `mode` explicitamente — o padrão (`"sync"`) executa entrad
 
 ---
 
-### Modal Essentials
+### Essenciais de Modal
 
 * Focus trap
 * Fechamento com Escape
@@ -271,7 +271,7 @@ Sempre especifique `mode` explicitamente — o padrão (`"sync"`) executa entrad
 * Roles ARIA
 * Use `AnimatePresence mode="wait"` para que a animação de saída termine antes de o próximo modal entrar
 
-#### Full Example
+#### Exemplo Completo
 
 ```tsx
 import React, { useEffect, useRef, useState } from "react"
@@ -372,7 +372,7 @@ export function Example() {
 
 ---
 
-### SSR Safety
+### Segurança com SSR
 
 * Faça os estados iniciais coincidirem entre as renderizações do servidor e do cliente
 * Evite origens de animação implícitas (sempre defina `initial` explicitamente)
@@ -380,7 +380,7 @@ export function Example() {
 
 ---
 
-### Debugging
+### Depuração
 
 Verifique:
 
@@ -406,7 +406,7 @@ Verifique:
 
 ---
 
-### Anti-Patterns
+### Anti-Padrões
 
 * Animar propriedades de layout (`width`, `height`, `top`, `left`)
 * Animações infinitas sem propósito (sempre pergunte: que estado isso comunica?)
@@ -418,21 +418,21 @@ Verifique:
 
 ---
 
-### Philosophy
+### Filosofia
 
 Motion é design de interação.
 
 ---
 
-### Final Rule
+### Regra Final
 
 > Se o motion não melhora a UX → remova-o.
 
 ---
 
-## Examples
+## Exemplos
 
-### Button Interaction
+### Interação de Botão
 
 ```tsx
 import { motion } from "motion/react"
@@ -452,7 +452,7 @@ export function Button() {
 
 ---
 
-### Reduced Motion Example
+### Exemplo de Movimento Reduzido
 
 ```tsx
 import { motion, useReducedMotion } from "motion/react"
@@ -472,7 +472,7 @@ export function FadeIn() {
 
 ---
 
-### Stagger List
+### Lista com Stagger
 
 ```tsx
 import { motion } from "motion/react"
@@ -502,7 +502,7 @@ export function List() {
 
 ---
 
-### Modal with AnimatePresence
+### Modal com AnimatePresence
 
 ```tsx
 import { motion, AnimatePresence } from "motion/react"
@@ -525,7 +525,7 @@ export function Modal({ open }: { open: boolean }) {
 
 ---
 
-### Scroll Parallax
+### Parallax com Scroll
 
 ```tsx
 import { useScroll, useTransform, motion } from "motion/react"
@@ -540,7 +540,7 @@ export function Parallax() {
 
 ---
 
-### Skeleton Loading
+### Skeleton de Carregamento
 
 ```tsx
 import { motion } from "motion/react"
@@ -562,7 +562,7 @@ export function Skeleton() {
 
 ---
 
-### Shared Layout (Crossfade)
+### Layout Compartilhado (Crossfade)
 
 ```tsx
 import { motion } from "motion/react"

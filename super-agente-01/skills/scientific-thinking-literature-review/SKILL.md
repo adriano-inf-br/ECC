@@ -1,193 +1,192 @@
 ---
 name: literature-review
-description: Systematic literature-review workflow for academic, biomedical, technical, and scientific topics, including search planning, source screening, synthesis, citation checks, and evidence logging.
+description: Fluxo de trabalho sistemático de revisão de literatura para temas acadêmicos, biomédicos, técnicos e científicos, incluindo planejamento de busca, triagem de fontes, síntese, verificação de citações e registro de evidências.
 metadata:
   origin: community
 ---
 
-# Literature Review
+# Revisão de Literatura
 
-Use this skill when the task is to find, screen, synthesize, and cite a body of
-academic or technical literature.
+Use esta skill quando a tarefa for encontrar, triar, sintetizar e citar um conjunto de
+literatura acadêmica ou técnica.
 
-## When to Use
+## Quando Usar
 
-- Building a systematic, scoping, or narrative literature review.
-- Synthesizing the state of the art for a research question.
-- Finding gaps, contradictions, or future-work directions.
-- Preparing citation-backed background sections for papers or reports.
-- Comparing evidence across peer-reviewed papers, preprints, patents, and
-  technical reports.
+- Construir uma revisão de literatura sistemática, de escopo ou narrativa.
+- Sintetizar o estado da arte para uma questão de pesquisa.
+- Encontrar lacunas, contradições ou direções para trabalhos futuros.
+- Preparar seções de contextualização com citações para artigos ou relatórios.
+- Comparar evidências entre artigos revisados por pares, preprints, patentes e
+  relatórios técnicos.
 
-## Review Types
+## Tipos de Revisão
 
-- **Narrative review**: broad synthesis; useful for orientation.
-- **Scoping review**: maps concepts, methods, and evidence gaps.
-- **Systematic review**: predefined protocol, reproducible search, explicit
-  screening and exclusion.
-- **Meta-analysis**: systematic review plus quantitative effect aggregation.
+- **Revisão narrativa**: síntese ampla; útil para orientação.
+- **Revisão de escopo**: mapeia conceitos, métodos e lacunas de evidências.
+- **Revisão sistemática**: protocolo predefinido, busca reproduzível, triagem e exclusão explícitas.
+- **Meta-análise**: revisão sistemática mais agregação quantitativa de efeitos.
 
-Ask the user which level of rigor is needed. If unspecified, default to a
-scoping review for exploratory work and a systematic review for publication or
-clinical claims.
+Pergunte ao usuário qual nível de rigor é necessário. Se não especificado, use como padrão
+uma revisão de escopo para trabalho exploratório e revisão sistemática para publicação ou
+afirmações clínicas.
 
-## Workflow
+## Fluxo de Trabalho
 
-### 1. Define the Question
+### 1. Definir a Questão
 
-Convert the prompt into a searchable research question.
+Converta o prompt em uma questão de pesquisa pesquisável.
 
-For clinical or biomedical work, use PICO:
+Para trabalhos clínicos ou biomédicos, use PICO:
 
-- Population
-- Intervention or exposure
-- Comparator
-- Outcome
+- Population (População)
+- Intervention or exposure (Intervenção ou exposição)
+- Comparator (Comparador)
+- Outcome (Desfecho)
 
-For technical work, use:
+Para trabalhos técnicos, use:
 
-- system or domain
-- method or intervention
-- comparison baseline
-- evaluation metric
+- sistema ou domínio
+- método ou intervenção
+- linha de base de comparação
+- métrica de avaliação
 
-### 2. Plan the Search
+### 2. Planejar a Busca
 
-Create a search protocol before collecting sources:
+Crie um protocolo de busca antes de coletar fontes:
 
-- databases to search
-- date range
-- languages
-- publication types
-- inclusion criteria
-- exclusion criteria
-- exact search strings
+- bancos de dados a pesquisar
+- intervalo de datas
+- idiomas
+- tipos de publicação
+- critérios de inclusão
+- critérios de exclusão
+- strings de busca exatas
 
-Minimum useful database set:
+Conjunto mínimo útil de bancos de dados:
 
-- PubMed for biomedical and life-sciences literature.
-- arXiv for CS, math, physics, quantitative biology, and preprints.
-- Semantic Scholar or Crossref for broad academic discovery.
-- Domain-specific sources when relevant, such as clinical-trial registries,
-  patent databases, standards bodies, or official technical docs.
+- PubMed para literatura biomédica e de ciências da vida.
+- arXiv para CS, matemática, física, biologia quantitativa e preprints.
+- Semantic Scholar ou Crossref para descoberta acadêmica ampla.
+- Fontes específicas de domínio quando relevantes, como registros de ensaios clínicos,
+  bancos de dados de patentes, órgãos normativos ou documentos técnicos oficiais.
 
-### 3. Search and Log Evidence
+### 3. Buscar e Registrar Evidências
 
-Keep a search log that makes the review reproducible:
+Mantenha um log de busca que torne a revisão reproduzível:
 
 ```markdown
-| Database | Date searched | Query | Filters | Results | Export |
+| Banco de Dados | Data da busca | Consulta | Filtros | Resultados | Exportação |
 | --- | --- | --- | --- | ---: | --- |
-| PubMed | 2026-05-11 | `("CRISPR"[tiab] OR "Cas9"[tiab]) AND "sickle cell"[tiab]` | 2020:2026, English | 86 | PMID list |
+| PubMed | 2026-05-11 | `("CRISPR"[tiab] OR "Cas9"[tiab]) AND "sickle cell"[tiab]` | 2020:2026, English | 86 | Lista de PMIDs |
 | arXiv | 2026-05-11 | `CRISPR sickle cell gene editing` | q-bio, 2020:2026 | 9 | BibTeX |
 ```
 
-Save raw IDs, URLs, DOIs, abstracts, and notes separately from the final prose.
+Salve IDs brutos, URLs, DOIs, resumos e notas separadamente do texto final.
 
-### 4. Deduplicate
+### 4. Deduplicar
 
-Deduplicate in this order:
+Deduplique nesta ordem:
 
 1. DOI
-2. PMID or arXiv ID
-3. exact title
-4. normalized title plus first author and year
+2. PMID ou ID arXiv
+3. título exato
+4. título normalizado mais primeiro autor e ano
 
-Record how many duplicates were removed.
+Registre quantas duplicatas foram removidas.
 
-### 5. Screen Sources
+### 5. Triar Fontes
 
-Screen in stages:
+Triagem em etapas:
 
-1. title
-2. abstract
-3. full text
+1. título
+2. resumo
+3. texto completo
 
-For systematic work, record exclusion reasons:
+Para trabalhos sistemáticos, registre os motivos de exclusão:
 
-- wrong population
-- wrong intervention
-- wrong outcome
-- not primary research
-- duplicate
-- unavailable full text
-- outside date range
+- população incorreta
+- intervenção incorreta
+- desfecho incorreto
+- não é pesquisa primária
+- duplicata
+- texto completo indisponível
+- fora do intervalo de datas
 
-### 6. Extract Data
+### 6. Extrair Dados
 
-Use a structured extraction table:
+Use uma tabela de extração estruturada:
 
 ```markdown
-| Study | Design | Population/Data | Method | Comparator | Outcome | Key finding | Limitations |
+| Estudo | Desenho | População/Dados | Método | Comparador | Desfecho | Achado principal | Limitações |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| Author Year | RCT/cohort/review/etc. | sample or corpus | method | baseline | measured outcome | result | caveat |
+| Autor Ano | ECR/coorte/revisão/etc. | amostra ou corpus | método | linha de base | desfecho medido | resultado | ressalva |
 ```
 
-For technical papers, include dataset, benchmark, metric, baseline, and
-reproducibility notes.
+Para artigos técnicos, inclua dataset, benchmark, métrica, linha de base e
+notas de reprodutibilidade.
 
-### 7. Synthesize
+### 7. Sintetizar
 
-Group evidence by theme rather than summarizing papers one by one.
+Agrupe as evidências por tema em vez de resumir os artigos um por um.
 
-Useful synthesis lenses:
+Perspectivas úteis de síntese:
 
-- strongest evidence
-- conflicting evidence
-- methodological weaknesses
-- population or dataset limits
-- recency and replication
-- practical implications
-- unanswered questions
+- evidências mais fortes
+- evidências conflitantes
+- fraquezas metodológicas
+- limites de população ou dataset
+- recência e replicação
+- implicações práticas
+- questões sem resposta
 
-Separate claims by confidence:
+Separe as afirmações por confiança:
 
-- **High confidence**: replicated, high-quality evidence across sources.
-- **Medium confidence**: plausible but limited by sample, method, or recency.
-- **Low confidence**: early, speculative, single-source, or weakly measured.
+- **Alta confiança**: evidências replicadas e de alta qualidade entre fontes.
+- **Confiança média**: plausível, mas limitado por amostra, método ou recência.
+- **Baixa confiança**: preliminar, especulativo, de fonte única ou com medição fraca.
 
-### 8. Verify Citations
+### 8. Verificar Citações
 
-Before finalizing:
+Antes de finalizar:
 
-- verify DOI, PMID, arXiv ID, or official URL
-- check author names and publication year
-- do not cite a paper for a claim it does not make
-- mark preprints as preprints
-- distinguish reviews from primary evidence
+- verifique DOI, PMID, ID arXiv ou URL oficial
+- confira nomes de autores e ano de publicação
+- não cite um artigo por uma afirmação que ele não faça
+- identifique preprints como preprints
+- distinga revisões de evidências primárias
 
-## Output Template
+## Modelo de Saída
 
 ```markdown
-# Literature Review: <Topic>
+# Revisão de Literatura: <Tema>
 
-Generated: <date>
-Review type: <narrative | scoping | systematic | meta-analysis>
-Search window: <dates>
-Databases: <list>
+Gerado: <data>
+Tipo de revisão: <narrativa | escopo | sistemática | meta-análise>
+Janela de busca: <datas>
+Bancos de dados: <lista>
 
-## Research Question
+## Questão de Pesquisa
 
-## Search Strategy
+## Estratégia de Busca
 
-## Inclusion and Exclusion Criteria
+## Critérios de Inclusão e Exclusão
 
-## Evidence Summary
+## Resumo das Evidências
 
-## Thematic Synthesis
+## Síntese Temática
 
-## Gaps and Limitations
+## Lacunas e Limitações
 
-## References
+## Referências
 
-## Search Log
+## Log de Busca
 ```
 
-## Pitfalls
+## Armadilhas
 
-- Do not treat search snippets as evidence.
-- Do not mix preprints, reviews, and primary studies without labeling them.
-- Do not omit negative or conflicting findings.
-- Do not claim systematic-review rigor without a reproducible protocol.
-- Do not use a single database for a broad claim unless the scope is explicitly
-  limited to that database.
+- Não trate trechos de busca como evidência.
+- Não misture preprints, revisões e estudos primários sem identificá-los.
+- Não omita achados negativos ou conflitantes.
+- Não reivindique rigor de revisão sistemática sem um protocolo reproduzível.
+- Não use um único banco de dados para uma afirmação ampla, a menos que o escopo seja
+  explicitamente limitado a esse banco de dados.

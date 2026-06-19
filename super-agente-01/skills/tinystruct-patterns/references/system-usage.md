@@ -1,16 +1,16 @@
-# tinystruct System and Usage Reference
+# Referência de Sistema e Uso do tinystruct
 
-## When to Use
+## Quando Usar
 
-Use these patterns to handle request state, manage web sessions, implement Server-Sent Events (SSE), handle file uploads, or perform outbound HTTP networking.
+Use estes padrões para gerenciar estado de requisição, administrar sessões web, implementar Server-Sent Events (SSE), lidar com uploads de arquivos ou realizar requisições HTTP de saída.
 
-## How It Works
+## Como Funciona
 
-### Context and CLI Arguments
-`Context` is the primary data store for request-specific state. CLI flags passed as `--key value` are stored in `Context` as `"--key"`.
+### Context e Argumentos CLI
+`Context` é o armazenamento principal de estado específico da requisição. Flags CLI passadas como `--key value` são armazenadas no `Context` como `"--key"`.
 
-### Session Management
-Pluggable architecture. Default is `MemorySessionRepository`. Configure Redis in `application.properties`:
+### Gerenciamento de Sessão
+Arquitetura plugável. O padrão é `MemorySessionRepository`. Configure Redis em `application.properties`:
 ```properties
 default.session.repository=org.tinystruct.http.RedisSessionRepository
 redis.host=127.0.0.1
@@ -18,14 +18,14 @@ redis.port=6379
 ```
 
 ### Server-Sent Events (SSE)
-Built-in support for real-time push. The `HttpServer` automatically handles the SSE lifecycle when it detects the `Accept: text/event-stream` header. Connections are tracked by session ID in `SSEPushManager`.
+Suporte embutido para push em tempo real. O `HttpServer` trata automaticamente o ciclo de vida do SSE ao detectar o cabeçalho `Accept: text/event-stream`. As conexões são rastreadas por ID de sessão no `SSEPushManager`.
 
-### Outbound Networking
-Use `URLRequest` and `HTTPHandler` for making HTTP requests to external services.
+### Requisições HTTP de Saída
+Use `URLRequest` e `HTTPHandler` para fazer requisições HTTP a serviços externos.
 
-## Examples
+## Exemplos
 
-### Context and CLI Arguments
+### Context e Argumentos CLI
 ```java
 @Action("echo")
 public String echo() {
@@ -36,7 +36,7 @@ public String echo() {
 }
 ```
 
-### Session Management
+### Gerenciamento de Sessão
 ```java
 @Action(value = "login", mode = Mode.HTTP_POST)
 public String login(Request<?, ?> request) {
@@ -52,12 +52,12 @@ public String connect() {
     return "{\"type\":\"connect\",\"message\":\"Connected\"}";
 }
 
-// In another method or event handler:
+// Em outro método ou handler de evento:
 String sessionId = getContext().getId();
 SSEPushManager.getInstance().push(sessionId, new Builder().put("msg", "hello"));
 ```
 
-### File Uploads
+### Upload de Arquivos
 ```java
 import org.tinystruct.data.FileEntity;
 
@@ -73,7 +73,7 @@ public String upload(Request<?, ?> request) throws ApplicationException {
 }
 ```
 
-### Outbound HTTP
+### HTTP de Saída
 ```java
 import org.tinystruct.net.URLRequest;
 import org.tinystruct.net.handlers.HTTPHandler;
@@ -88,8 +88,8 @@ if (response.getStatusCode() == 200) {
 }
 ```
 
-### Event System
-Register handlers in `init()` for asynchronous task execution.
+### Sistema de Eventos
+Registre handlers em `init()` para execução assíncrona de tarefas.
 ```java
 EventDispatcher.getInstance().registerHandler(MyEvent.class, event -> {
     CompletableFuture.runAsync(() -> doHeavyWork(event.getPayload()));

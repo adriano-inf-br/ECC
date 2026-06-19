@@ -1,32 +1,32 @@
-# Visa Document Translator
+# Tradutor de Documentos de Visto
 
-Automatically translate visa application documents from images to professional English PDFs.
+Traduza automaticamente documentos de solicitação de visto de imagens para PDFs profissionais em inglês.
 
-## Features
+## Funcionalidades
 
-- **Automatic OCR**: Tries multiple OCR methods (macOS Vision, EasyOCR, Tesseract)
-- **Bilingual PDF**: Original image + professional English translation
-- **Multi-language**: Supports Chinese, and other languages
-- **Professional Format**: Suitable for official visa applications
-- **Fully Automated**: No manual intervention required
+- **OCR Automático**: Tenta múltiplos métodos de OCR (macOS Vision, EasyOCR, Tesseract)
+- **PDF Bilíngue**: Imagem original + tradução profissional em inglês
+- **Múltiplos Idiomas**: Suporta chinês e outros idiomas
+- **Formato Profissional**: Adequado para solicitações oficiais de visto
+- **Totalmente Automatizado**: Sem intervenção manual necessária
 
-## Supported Documents
+## Documentos Suportados
 
-- Bank deposit certificates (存款证明)
-- Employment certificates (在职证明)
-- Retirement certificates (退休证明)
-- Income certificates (收入证明)
-- Property certificates (房产证明)
-- Business licenses (营业执照)
-- ID cards and passports
+- Certificados de depósito bancário (存款证明)
+- Certificados de emprego (在职证明)
+- Certificados de aposentadoria (退休证明)
+- Certificados de renda (收入证明)
+- Certificados de propriedade (房产证明)
+- Alvarás de funcionamento (营业执照)
+- Documentos de identidade e passaportes
 
-## Usage
+## Uso
 
 ```bash
-/visa-doc-translate <image-file>
+/visa-doc-translate <arquivo-de-imagem>
 ```
 
-### Examples
+### Exemplos
 
 ```bash
 /visa-doc-translate RetirementCertificate.PNG
@@ -34,27 +34,27 @@ Automatically translate visa application documents from images to professional E
 /visa-doc-translate EmploymentLetter.jpg
 ```
 
-## Output
+## Saída
 
-Creates `<filename>_Translated.pdf` with:
-- **Page 1**: Original document image (centered, A4 size)
-- **Page 2**: Professional English translation
+Cria `<nome-do-arquivo>_Translated.pdf` com:
+- **Página 1**: Imagem do documento original (centralizada, tamanho A4)
+- **Página 2**: Tradução profissional em inglês
 
-## Requirements
+## Requisitos
 
-### Python Libraries
+### Bibliotecas Python
 ```bash
 pip install pillow reportlab
 ```
 
-### OCR (one of the following)
+### OCR (uma das seguintes opções)
 
-**macOS (recommended)**:
+**macOS (recomendado)**:
 ```bash
 pip install pyobjc-framework-Vision pyobjc-framework-Quartz
 ```
 
-**Cross-platform**:
+**Multiplataforma**:
 ```bash
 pip install easyocr
 ```
@@ -65,22 +65,22 @@ brew install tesseract tesseract-lang
 pip install pytesseract
 ```
 
-## How It Works
+## Como Funciona
 
-1. Converts HEIC to PNG if needed
-2. Checks and applies EXIF rotation
-3. Extracts text using available OCR method
-4. Translates to professional English
-5. Generates bilingual PDF
+1. Converte HEIC para PNG se necessário
+2. Verifica e aplica rotação EXIF
+3. Extrai texto usando o método de OCR disponível
+4. Traduz para inglês profissional
+5. Gera PDF bilíngue
 
-## Perfect For
+## Ideal Para
 
-- Australia visa applications
-- USA visa applications
-- Canada visa applications
-- UK visa applications
-- EU visa applications
+- Solicitações de visto para a Austrália
+- Solicitações de visto para os EUA
+- Solicitações de visto para o Canadá
+- Solicitações de visto para o Reino Unido
+- Solicitações de visto para a União Europeia
 
-## License
+## Licença
 
 MIT

@@ -1,22 +1,22 @@
-# Animation Patterns Reference
+# Referência de Padrões de Animação
 
-Use this reference when generating presentations. Match animations to the intended feeling.
+Use esta referência ao gerar apresentações. Combine as animações com o sentimento desejado.
 
-## Effect-to-Feeling Guide
+## Guia de Efeito para Sentimento
 
-| Feeling | Animations | Visual Cues |
+| Sentimento | Animações | Dicas Visuais |
 |---------|-----------|-------------|
-| **Dramatic / Cinematic** | Slow fade-ins (1-1.5s), large-scale transitions (0.9 to 1), parallax scrolling | Dark backgrounds, spotlight effects, full-bleed images |
-| **Techy / Futuristic** | Neon glow (box-shadow), glitch/scramble text, grid reveals | Particle systems (canvas), grid patterns, monospace accents, cyan/magenta/electric blue |
-| **Playful / Friendly** | Bouncy easing (spring physics), floating/bobbing | Rounded corners, pastel/bright colors, hand-drawn elements |
-| **Professional / Corporate** | Subtle fast animations (200-300ms), clean slides | Navy/slate/charcoal, precise spacing, data visualization focus |
-| **Calm / Minimal** | Very slow subtle motion, gentle fades | High whitespace, muted palette, serif typography, generous padding |
-| **Editorial / Magazine** | Staggered text reveals, image-text interplay | Strong type hierarchy, pull quotes, grid-breaking layouts, serif headlines + sans body |
+| **Dramático / Cinematográfico** | Fade-ins lentos (1-1.5s), transições em grande escala (0.9 a 1), rolagem em paralaxe | Fundos escuros, efeitos de holofote, imagens em sangria total |
+| **Tecnológico / Futurístico** | Brilho neon (box-shadow), texto glitch/scramble, revelações em grade | Sistemas de partículas (canvas), padrões de grade, acentos monoespaçados, ciano/magenta/azul elétrico |
+| **Divertido / Amigável** | Easing elástico (física de mola), flutuação/balanço | Cantos arredondados, cores pastel/vivas, elementos desenhados à mão |
+| **Profissional / Corporativo** | Animações sutis e rápidas (200-300ms), slides limpos | Azul-marinho/ardósia/carvão, espaçamento preciso, foco em visualização de dados |
+| **Calmo / Minimalista** | Movimento muito lento e sutil, fades suaves | Muito espaço em branco, paleta discreta, tipografia serifada, espaçamento generoso |
+| **Editorial / Revista** | Revelações de texto escalonadas, interação imagem-texto | Hierarquia tipográfica forte, citações em destaque, layouts que rompem a grade, títulos serifados + corpo sem serifa |
 
-## Entrance Animations
+## Animações de Entrada
 
 ```css
-/* Fade + Slide Up (most versatile) */
+/* Fade + Deslize para Cima (mais versátil) */
 .reveal {
     opacity: 0;
     transform: translateY(30px);
@@ -28,7 +28,7 @@ Use this reference when generating presentations. Match animations to the intend
     transform: translateY(0);
 }
 
-/* Scale In */
+/* Escala de Entrada */
 .reveal-scale {
     opacity: 0;
     transform: scale(0.9);
@@ -39,7 +39,7 @@ Use this reference when generating presentations. Match animations to the intend
     transform: scale(1);
 }
 
-/* Slide from Left */
+/* Deslize da Esquerda */
 .reveal-left {
     opacity: 0;
     transform: translateX(-50px);
@@ -50,7 +50,7 @@ Use this reference when generating presentations. Match animations to the intend
     transform: translateX(0);
 }
 
-/* Blur In */
+/* Desfoque de Entrada */
 .reveal-blur {
     opacity: 0;
     filter: blur(10px);
@@ -62,10 +62,10 @@ Use this reference when generating presentations. Match animations to the intend
 }
 ```
 
-## Background Effects
+## Efeitos de Fundo
 
 ```css
-/* Gradient Mesh — layered radial gradients for depth */
+/* Malha de Gradiente — gradientes radiais em camadas para profundidade */
 .gradient-bg {
     background:
         radial-gradient(ellipse at 20% 80%, rgba(120, 0, 255, 0.3) 0%, transparent 50%),
@@ -73,12 +73,12 @@ Use this reference when generating presentations. Match animations to the intend
         var(--bg-primary);
 }
 
-/* Noise Texture — inline SVG for grain */
+/* Textura de Ruído — SVG inline para granulado */
 .noise-bg {
-    background-image: url("data:image/svg+xml,..."); /* Inline SVG noise */
+    background-image: url("data:image/svg+xml,..."); /* SVG de ruído inline */
 }
 
-/* Grid Pattern — subtle structural lines */
+/* Padrão de Grade — linhas estruturais sutis */
 .grid-bg {
     background-image:
         linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
@@ -87,10 +87,10 @@ Use this reference when generating presentations. Match animations to the intend
 }
 ```
 
-## Interactive Effects
+## Efeitos Interativos
 
 ```javascript
-/* 3D Tilt on Hover — adds depth to cards/panels */
+/* Inclinação 3D ao Passar o Mouse — adiciona profundidade a cartões/painéis */
 class TiltEffect {
     constructor(element) {
         this.element = element;
@@ -111,12 +111,12 @@ class TiltEffect {
 }
 ```
 
-## Troubleshooting
+## Solução de Problemas
 
-| Problem | Fix |
+| Problema | Solução |
 |---------|-----|
-| Fonts not loading | Check Fontshare/Google Fonts URL; ensure font names match in CSS |
-| Animations not triggering | Verify Intersection Observer is running; check `.visible` class is being added |
-| Scroll snap not working | Ensure `scroll-snap-type: y mandatory` on html; each slide needs `scroll-snap-align: start` |
-| Mobile issues | Disable heavy effects at 768px breakpoint; test touch events; reduce particle count |
-| Performance issues | Use `will-change` sparingly; prefer `transform`/`opacity` animations; throttle scroll handlers |
+| Fontes não carregando | Verifique a URL do Fontshare/Google Fonts; certifique-se de que os nomes das fontes coincidem no CSS |
+| Animações não disparando | Verifique se o Intersection Observer está rodando; confira se a classe `.visible` está sendo adicionada |
+| Scroll snap não funcionando | Certifique-se de que `scroll-snap-type: y mandatory` está no html; cada slide precisa de `scroll-snap-align: start` |
+| Problemas no mobile | Desative efeitos pesados no breakpoint de 768px; teste eventos de toque; reduza a contagem de partículas |
+| Problemas de desempenho | Use `will-change` com moderação; prefira animações de `transform`/`opacity`; limite os handlers de scroll |

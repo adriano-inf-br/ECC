@@ -1,105 +1,105 @@
 ---
 name: messages-ops
-description: Evidence-first live messaging workflow for ECC. Use when the user wants to read texts or DMs, recover a recent one-time code, inspect a thread before replying, or prove which message source was actually checked.
+description: Fluxo de trabalho de mensagens ao vivo baseado em evidências para o ECC. Use quando o usuário quiser ler textos ou DMs, recuperar um código de uso único recente, inspecionar uma conversa antes de responder ou comprovar qual fonte de mensagem foi de fato verificada.
 metadata:
   origin: ECC
 ---
 
-# Messages Ops
+# Operações de Mensagens
 
-Use this when the task is live-message retrieval: iMessage, DMs, recent one-time codes, or thread inspection before a follow-up.
+Use quando a tarefa for recuperação de mensagens ao vivo: iMessage, DMs, códigos de uso único recentes ou inspeção de conversas antes de um acompanhamento.
 
-This is not email work. If the dominant surface is a mailbox, use `email-ops`.
+Isso não é trabalho de e-mail. Se a superfície dominante for uma caixa de entrada, use `email-ops`.
 
-## Skill Stack
+## Pilha de Skills
 
-Pull these ECC-native skills into the workflow when relevant:
+Incorpore estas skills nativas do ECC ao fluxo de trabalho quando relevante:
 
-- `email-ops` when the message task is really mailbox work
-- `connections-optimizer` when the DM thread belongs to outbound network work
-- `lead-intelligence` when the live thread should inform targeting or warm-path outreach
-- `knowledge-ops` when the thread contents need to be captured into durable context
+- `email-ops` quando a tarefa de mensagem for realmente trabalho de caixa de entrada
+- `connections-optimizer` quando o thread de DM pertencer a trabalho de rede de saída
+- `lead-intelligence` quando a conversa ao vivo precisar informar segmentação ou abordagem por caminho aquecido
+- `knowledge-ops` quando o conteúdo do thread precisar ser capturado em contexto durável
 
-## When to Use
+## Quando Usar
 
-- user says "read my messages", "check texts", "look in DMs", or "find the code"
-- the task depends on a live thread or a recent code delivered to a local messaging surface
-- the user wants proof of which source or thread was inspected
+- O usuário diz "leia minhas mensagens", "verifique os textos", "olhe nos DMs" ou "encontre o código"
+- A tarefa depende de um thread ao vivo ou de um código recente entregue em uma superfície de mensagens local
+- O usuário quer comprovação de qual fonte ou thread foi inspecionado
 
-## Guardrails
+## Restrições
 
-- resolve the source first:
-  - local messages
-  - X / social DM
-  - another browser-gated message surface
-- do not claim a thread was checked without naming the source
-- do not improvise raw database access if a checked helper or standard path exists
-- if auth or MFA blocks the surface, report the exact blocker
+- resolva a fonte primeiro:
+  - mensagens locais
+  - X / DM social
+  - outra superfície de mensagem protegida por navegador
+- não afirme que um thread foi verificado sem nomear a fonte
+- não improvise acesso direto ao banco de dados se existir um helper verificado ou caminho padrão
+- se autenticação ou MFA bloquear a superfície, relate o bloqueio exato
 
-## Workflow
+## Fluxo de Trabalho
 
-### 1. Resolve the exact thread
+### 1. Resolva o thread exato
 
-Before doing anything else, settle:
+Antes de fazer qualquer coisa, defina:
 
-- message surface
-- sender / recipient / service
-- time window
-- whether the task is retrieval, inspection, or prep for a reply
+- superfície de mensagem
+- remetente / destinatário / serviço
+- janela de tempo
+- se a tarefa é recuperação, inspeção ou preparação para uma resposta
 
-### 2. Read before drafting
+### 2. Leia antes de rascunhar
 
-If the task may turn into an outbound follow-up:
+Se a tarefa puder se transformar em um acompanhamento de saída:
 
-- read the latest inbound
-- identify the open loop
-- then hand off to the correct outbound skill if needed
+- leia a última mensagem recebida
+- identifique o ponto em aberto
+- depois passe para a skill de saída correta se necessário
 
-### 3. Handle codes as a focused retrieval task
+### 3. Trate códigos como uma tarefa de recuperação focada
 
-For one-time codes:
+Para códigos de uso único:
 
-- search the recent local message window first
-- narrow by service or sender when possible
-- stop once the code is found or the focused search is exhausted
+- pesquise primeiro na janela de mensagem local recente
+- restrinja por serviço ou remetente quando possível
+- pare assim que o código for encontrado ou a pesquisa focada for esgotada
 
-### 4. Report exact evidence
+### 4. Reporte evidências exatas
 
-Return:
+Retorne:
 
-- source used
-- thread or sender when possible
-- time window
-- exact status:
-  - read
-  - code-found
-  - blocked
-  - awaiting reply draft
+- fonte utilizada
+- thread ou remetente quando possível
+- janela de tempo
+- status exato:
+  - lido
+  - código-encontrado
+  - bloqueado
+  - aguardando rascunho de resposta
 
-## Output Format
+## Formato de Saída
 
 ```text
-SOURCE
-- message surface
-- sender / thread / service
+FONTE
+- superfície de mensagem
+- remetente / thread / serviço
 
-RESULT
-- message summary or code
-- time window
+RESULTADO
+- resumo da mensagem ou código
+- janela de tempo
 
 STATUS
-- read / code-found / blocked / awaiting reply draft
+- lido / código-encontrado / bloqueado / aguardando rascunho de resposta
 ```
 
-## Pitfalls
+## Armadilhas
 
-- do not blur mailbox work and DM/text work
-- do not claim retrieval without naming the source
-- do not burn time on broad searches when the ask is a recent-code lookup
-- do not keep retrying a blocked auth path without surfacing the blocker
+- não confunda trabalho de caixa de entrada com trabalho de DM/texto
+- não afirme recuperação sem nomear a fonte
+- não perca tempo em pesquisas amplas quando a pergunta é uma busca por código recente
+- não continue tentando um caminho de autenticação bloqueado sem expor o bloqueio
 
-## Verification
+## Verificação
 
-- the response names the message source
-- the response includes a sender, service, thread, or clear blocker
-- the final state is explicit and bounded
+- a resposta nomeia a fonte da mensagem
+- a resposta inclui um remetente, serviço, thread ou bloqueio claro
+- o estado final é explícito e delimitado

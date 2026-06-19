@@ -223,34 +223,34 @@ cat $HOME/opensource-staging/${PROJECT}/SANITIZATION_REPORT.md
 cat $HOME/opensource-staging/${PROJECT}/FORK_REPORT.md
 ```
 
-## Staging Layout
+## Layout de Staging
 
 ```
 $HOME/opensource-staging/
   my-project/
-    FORK_REPORT.md           # From forker agent
-    SANITIZATION_REPORT.md   # From sanitizer agent
-    CLAUDE.md                # From packager agent
-    setup.sh                 # From packager agent
-    README.md                # From packager agent
-    .env.example             # From forker agent
-    ...                      # Sanitized project files
+    FORK_REPORT.md           # Do agent forker
+    SANITIZATION_REPORT.md   # Do agent sanitizer
+    CLAUDE.md                # Do agent packager
+    setup.sh                 # Do agent packager
+    README.md                # Do agent packager
+    .env.example             # Do agent forker
+    ...                      # Arquivos do projeto sanitizados
 ```
 
-## Anti-Patterns
+## Antipadrões
 
-- **Never** push to GitHub without user approval
-- **Never** skip the sanitizer — it is the safety gate
-- **Never** proceed after a sanitizer FAIL without fixing all critical findings
-- **Never** leave `.env`, `*.pem`, or `credentials.json` in the staging directory
+- **Nunca** faça push para o GitHub sem a aprovação do usuário
+- **Nunca** pule o sanitizer — ele é o portão de segurança
+- **Nunca** prossiga após um FAIL do sanitizer sem corrigir todos os achados críticos
+- **Nunca** deixe `.env`, `*.pem` ou `credentials.json` no diretório de staging
 
-## Best Practices
+## Boas Práticas
 
-- Always run the full pipeline (fork → sanitize → package) for new releases
-- The staging directory persists until explicitly cleaned up — use it for review
-- Re-run the sanitizer after any manual fixes before publishing
-- Parameterize secrets rather than deleting them — preserve project functionality
+- Sempre rode o pipeline completo (fork → sanitize → package) para novos lançamentos
+- O diretório de staging persiste até ser limpo explicitamente — use-o para revisão
+- Rode o sanitizer novamente após quaisquer correções manuais antes de publicar
+- Parametrize os segredos em vez de apagá-los — preserve a funcionalidade do projeto
 
-## Related Skills
+## Skills Relacionadas
 
-See `security-review` for secret detection patterns used by the sanitizer.
+Veja `security-review` para os padrões de detecção de segredos usados pelo sanitizer.

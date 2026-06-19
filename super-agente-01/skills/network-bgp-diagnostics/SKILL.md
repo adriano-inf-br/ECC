@@ -1,34 +1,34 @@
 ---
 name: network-bgp-diagnostics
-description: Diagnostics-only BGP troubleshooting patterns for neighbor state, route exchange, prefix policy, AS path inspection, and safe evidence collection.
+description: Padrões de troubleshooting BGP somente de diagnóstico para estado de vizinho, troca de rotas, política de prefixos, inspeção de AS path e coleta segura de evidências.
 metadata:
   origin: community
 ---
 
-# Network BGP Diagnostics
+# Diagnóstico BGP de Rede
 
-Use this skill when a BGP session is down, flapping, established with missing
-routes, or advertising unexpected prefixes. The default workflow is read-only
-evidence collection; policy and reset actions belong in a reviewed change
-window.
+Use esta skill quando uma sessão BGP estiver caída, instável (flapping),
+estabelecida mas com rotas faltando, ou anunciando prefixos inesperados. O fluxo
+de trabalho padrão é a coleta de evidências somente leitura; ações de política e
+reset pertencem a uma janela de mudança revisada.
 
-## When to Use
+## Quando Usar
 
-- BGP neighbors are stuck in Idle, Connect, Active, OpenSent, or OpenConfirm.
-- A session is Established but expected prefixes are missing.
-- A route-map, prefix-list, max-prefix limit, or AS path policy may be filtering
-  routes.
-- You need before/after evidence for a BGP change.
-- You are reviewing automation that parses BGP summary output.
+- Vizinhos BGP estão presos em Idle, Connect, Active, OpenSent ou OpenConfirm.
+- Uma sessão está Established mas os prefixos esperados estão faltando.
+- Um route-map, prefix-list, limite max-prefix ou política de AS path pode estar
+  filtrando rotas.
+- Você precisa de evidências antes/depois para uma mudança BGP.
+- Você está revisando automação que faz parsing da saída do BGP summary.
 
-## Read-Only Triage Flow
+## Fluxo de Triagem Somente Leitura
 
-1. Identify the exact neighbor, address family, VRF, and local/remote ASNs.
-2. Capture summary state and last reset reason.
-3. Prove reachability to the peer source address.
-4. Check route policy references before assuming transport failure.
-5. Compare advertised, received, and installed routes where the platform
-   supports those commands.
+1. Identifique o vizinho exato, a address family, a VRF e os ASNs local/remoto.
+2. Capture o estado do summary e o motivo do último reset.
+3. Prove a acessibilidade ao endereço de origem do peer.
+4. Verifique as referências de política de rota antes de presumir falha de transporte.
+5. Compare rotas anunciadas, recebidas e instaladas onde a plataforma
+   suportar esses comandos.
 
 ```text
 show bgp summary

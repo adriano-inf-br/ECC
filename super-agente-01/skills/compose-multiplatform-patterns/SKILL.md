@@ -87,7 +87,7 @@ sealed interface ItemListEvent {
     data object Refresh : ItemListEvent
 }
 
-// In ViewModel
+// No ViewModel
 fun onEvent(event: ItemListEvent) {
     when (event) {
         is ItemListEvent.Search -> onSearch(event.query)
@@ -96,18 +96,18 @@ fun onEvent(event: ItemListEvent) {
     }
 }
 
-// In Composable — single lambda instead of many
+// No Composable — uma única lambda em vez de várias
 ItemListContent(
     state = state,
     onEvent = viewModel::onEvent
 )
 ```
 
-## Navigation
+## Navegação
 
-### Type-Safe Navigation (Compose Navigation 2.8+)
+### Navegação Type-Safe (Compose Navigation 2.8+)
 
-Define routes as `@Serializable` objects:
+Defina as rotas como objetos `@Serializable`:
 
 ```kotlin
 @Serializable data object HomeRoute
@@ -129,9 +129,9 @@ fun AppNavHost(navController: NavHostController = rememberNavController()) {
 }
 ```
 
-### Dialog and Bottom Sheet Navigation
+### Navegação de Dialog e Bottom Sheet
 
-Use `dialog()` and overlay patterns instead of imperative show/hide:
+Use `dialog()` e padrões de overlay em vez de show/hide imperativo:
 
 ```kotlin
 NavHost(navController, startDestination = HomeRoute) {
@@ -147,11 +147,11 @@ NavHost(navController, startDestination = HomeRoute) {
 }
 ```
 
-## Composable Design
+## Design de Composables
 
-### Slot-Based APIs
+### APIs Baseadas em Slots
 
-Design composables with slot parameters for flexibility:
+Projete composables com parâmetros de slot para flexibilidade:
 
 ```kotlin
 @Composable

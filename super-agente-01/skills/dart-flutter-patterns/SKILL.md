@@ -64,45 +64,45 @@ double cartTotal(Ref ref) {
 
 ---
 
-Practical, production-ready patterns for Dart and Flutter applications. Library-agnostic where possible, with explicit coverage of the most common ecosystem packages.
+Padrões práticos e prontos para produção para aplicações Dart e Flutter. Agnósticos de biblioteca onde possível, com cobertura explícita dos pacotes mais comuns do ecossistema.
 
 ---
 
-## 1. Null Safety Fundamentals
+## 1. Fundamentos de Null Safety
 
-### Prefer Patterns Over Bang Operator
+### Prefira Patterns ao Operador Bang
 
 ```dart
-// BAD — crashes at runtime if null
+// RUIM — quebra em tempo de execução se for null
 final name = user!.name;
 
-// GOOD — provide fallback
+// BOM — forneça um fallback
 final name = user?.name ?? 'Unknown';
 
-// GOOD — Dart 3 pattern matching (preferred for complex cases)
+// BOM — pattern matching do Dart 3 (preferível para casos complexos)
 final display = switch (user) {
   User(:final name, :final email) => '$name <$email>',
   null => 'Guest',
 };
 
-// GOOD — guard early return
+// BOM — guard com retorno antecipado
 String getUserName(User? user) {
   if (user == null) return 'Unknown';
-  return user.name; // promoted to non-null after check
+  return user.name; // promovido a não-null após a verificação
 }
 ```
 
-### Avoid `late` Overuse
+### Evite o Uso Excessivo de `late`
 
 ```dart
-// BAD — defers null error to runtime
+// RUIM — adia o erro de null para o tempo de execução
 late String userId;
 
-// GOOD — nullable with explicit initialization
+// BOM — nullable com inicialização explícita
 String? userId;
 
-// OK — use late only when initialization is guaranteed before first access
-// (e.g., in initState() before any widget interaction)
+// OK — use late apenas quando a inicialização é garantida antes do primeiro acesso
+// (ex.: em initState() antes de qualquer interação com widget)
 late final AnimationController _controller;
 
 @override
@@ -114,9 +114,9 @@ void initState() {
 
 ---
 
-## 2. Immutable State
+## 2. Estado Imutável
 
-### Sealed Classes for State Hierarchies
+### Sealed Classes para Hierarquias de Estado
 
 ```dart
 sealed class UserState {}

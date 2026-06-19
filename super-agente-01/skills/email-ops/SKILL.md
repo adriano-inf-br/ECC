@@ -1,82 +1,82 @@
 ---
 name: email-ops
-description: Evidence-first mailbox triage, drafting, send verification, and sent-mail-safe follow-up workflow for ECC. Use when the user wants to organize email, draft or send through the real mail surface, or prove what landed in Sent.
+description: Fluxo de trabalho do ECC, baseado em evidências, para triagem de caixa de correio, redação, verificação de envio e follow-up seguro de mensagens enviadas. Use quando o usuário quiser organizar e-mail, redigir ou enviar pela superfície de correio real, ou comprovar o que chegou em Enviados.
 metadata:
   origin: ECC
 ---
 
 # Email Ops
 
-Use this when the real task is mailbox work: triage, drafting, replying, sending, or proving a message landed in Sent.
+Use isto quando a tarefa real for trabalho de caixa de correio: triagem, redação, resposta, envio ou comprovação de que uma mensagem chegou em Enviados.
 
-This is not a generic writing skill. It is an operator workflow around the actual mail surface.
+Esta não é uma skill genérica de escrita. É um fluxo de trabalho de operador em torno da superfície de correio real.
 
 ## Skill Stack
 
-Pull these ECC-native skills into the workflow when relevant:
+Traga estas skills nativas do ECC para o fluxo de trabalho quando relevante:
 
-- `brand-voice` before drafting anything user-facing
-- `investor-outreach` for investor, partner, or sponsor-facing mail
-- `customer-billing-ops` when the thread is a billing/support incident rather than generic correspondence
-- `knowledge-ops` when the message or thread should be captured into durable context afterward
-- `research-ops` when a reply depends on fresh external facts
+- `brand-voice` antes de redigir qualquer coisa voltada ao usuário
+- `investor-outreach` para correio voltado a investidores, parceiros ou patrocinadores
+- `customer-billing-ops` quando a thread for um incidente de cobrança/suporte em vez de correspondência genérica
+- `knowledge-ops` quando a mensagem ou thread deve ser capturada em contexto durável depois
+- `research-ops` quando uma resposta depende de fatos externos recentes
 
-## When to Use
+## Quando Usar
 
-- user asks to triage inbox or archive low-signal mail
-- user wants a draft, reply, or new outbound email
-- user wants to know whether a mail was already sent
-- the user wants proof of which account, thread, or Sent entry was used
+- usuário pede para triar a caixa de entrada ou arquivar correio de baixo sinal
+- usuário quer um rascunho, resposta ou novo e-mail de saída
+- usuário quer saber se um e-mail já foi enviado
+- o usuário quer prova de qual conta, thread ou entrada de Enviados foi usada
 
 ## Guardrails
 
-- draft first unless the user clearly asked for a live send
-- never claim a message was sent without a real Sent-folder or client-side confirmation
-- do not switch sender accounts casually; choose the account that matches the project and recipient
-- do not delete uncertain business mail during cleanup
-- if the task is really DM or iMessage work, hand off to `messages-ops`
+- redija primeiro, a menos que o usuário tenha pedido claramente um envio ao vivo
+- nunca afirme que uma mensagem foi enviada sem uma confirmação real da pasta Enviados ou do lado do cliente
+- não troque de conta remetente casualmente; escolha a conta que combina com o projeto e o destinatário
+- não exclua correio comercial incerto durante a limpeza
+- se a tarefa for realmente trabalho de DM ou iMessage, repasse para `messages-ops`
 
-## Workflow
+## Fluxo de Trabalho
 
-### 1. Resolve the exact surface
+### 1. Resolva a superfície exata
 
-Before acting, settle:
+Antes de agir, defina:
 
-- which mailbox account
-- which thread or recipient
-- whether the task is triage, draft, reply, or send
-- whether the user wants draft-only or live send
+- qual conta de caixa de correio
+- qual thread ou destinatário
+- se a tarefa é triagem, rascunho, resposta ou envio
+- se o usuário quer apenas rascunho ou envio ao vivo
 
-### 2. Read the thread before composing
+### 2. Leia a thread antes de compor
 
-If replying:
+Se for responder:
 
-- read the existing thread
-- identify the last outbound touch
-- identify any commitments, deadlines, or unanswered questions
+- leia a thread existente
+- identifique o último contato de saída
+- identifique quaisquer compromissos, prazos ou perguntas não respondidas
 
-If creating a new outbound:
+Se for criar uma nova saída:
 
-- identify warmth level
-- select the correct channel and sender account
-- pull `brand-voice` before drafting
+- identifique o nível de proximidade (warmth)
+- selecione o canal e a conta remetente corretos
+- traga `brand-voice` antes de redigir
 
-### 3. Draft, then verify
+### 3. Redija, depois verifique
 
-For draft-only work:
+Para trabalho apenas de rascunho:
 
-- produce the final copy
-- state sender, recipient, subject, and purpose
+- produza o texto final
+- declare remetente, destinatário, assunto e propósito
 
-For live-send work:
+Para trabalho de envio ao vivo:
 
-- verify the exact final body first
-- send through the chosen mail surface
-- confirm the message landed in Sent or the equivalent sent-copy store
+- verifique primeiro o corpo final exato
+- envie pela superfície de correio escolhida
+- confirme que a mensagem chegou em Enviados ou no armazenamento equivalente de cópia de enviados
 
-### 4. Report exact state
+### 4. Reporte o estado exato
 
-Use exact status words:
+Use palavras de status exatas:
 
 - drafted
 - approval-pending
@@ -84,9 +84,9 @@ Use exact status words:
 - blocked
 - awaiting verification
 
-If the send surface is blocked, preserve the draft and report the exact blocker instead of improvising a second transport without saying so.
+Se a superfície de envio estiver bloqueada, preserve o rascunho e reporte o bloqueador exato em vez de improvisar um segundo transporte sem dizê-lo.
 
-## Output Format
+## Formato de Saída
 
 ```text
 MAIL SURFACE
@@ -108,15 +108,15 @@ NEXT STEP
 - archive / move
 ```
 
-## Pitfalls
+## Armadilhas
 
-- do not claim send success without a sent-copy check
-- do not ignore the thread history and write a contextless reply
-- do not mix mailbox work with DM or text-message workflows
-- do not expose secrets, auth details, or unnecessary message metadata
+- não afirme sucesso de envio sem uma verificação de cópia de enviados
+- não ignore o histórico da thread e escreva uma resposta sem contexto
+- não misture trabalho de caixa de correio com fluxos de DM ou mensagem de texto
+- não exponha segredos, detalhes de auth ou metadados de mensagem desnecessários
 
-## Verification
+## Verificação
 
-- the response names the account and thread or recipient
-- any send claim includes Sent proof or an explicit client-side confirmation
-- the final state is one of drafted / sent / blocked / awaiting verification
+- a resposta nomeia a conta e a thread ou o destinatário
+- qualquer afirmação de envio inclui prova de Enviados ou uma confirmação explícita do lado do cliente
+- o estado final é um de drafted / sent / blocked / awaiting verification

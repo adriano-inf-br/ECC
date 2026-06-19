@@ -1,38 +1,38 @@
-# Using Tailwind CSS with Angular
+# Usando Tailwind CSS com Angular
 
-Tailwind CSS is a utility-first CSS framework that integrates seamlessly with Angular.
+O Tailwind CSS é um framework CSS utility-first que se integra perfeitamente ao Angular.
 
-**CRITICAL AGENT GUIDANCE: ALWAYS focus on Tailwind CSS v4 practices. DO NOT revert to old Tailwind v3 patterns (like creating `tailwind.config.js` with `@tailwind` directives) as this will break the application build. Modern Angular projects use Tailwind v4.**
+**ORIENTAÇÃO CRÍTICA PARA O AGENT: SEMPRE concentre-se nas práticas do Tailwind CSS v4. NÃO volte aos padrões antigos do Tailwind v3 (como criar `tailwind.config.js` com diretivas `@tailwind`), pois isso quebrará o build da aplicação. Projetos Angular modernos usam o Tailwind v4.**
 
-## Automated Setup (Recommended)
+## Configuração Automatizada (Recomendada)
 
-The easiest way to add Tailwind CSS to an Angular project is via the Angular CLI:
+A forma mais fácil de adicionar o Tailwind CSS a um projeto Angular é via Angular CLI:
 
 ```shell
 ng add tailwindcss
 ```
 
-This will automatically:
+Isso irá automaticamente:
 
-1. Install `tailwindcss` and peer dependencies.
-2. Configure the project to use Tailwind CSS.
-3. Add the proper import to your global styles.
+1. Instalar `tailwindcss` e as dependências de pares (peer dependencies).
+2. Configurar o projeto para usar o Tailwind CSS.
+3. Adicionar o import adequado aos seus estilos globais.
 
-## Manual Setup (Tailwind v4)
+## Configuração Manual (Tailwind v4)
 
-If setting up manually, use the following Tailwind v4 pattern:
+Se for configurar manualmente, use o seguinte padrão do Tailwind v4:
 
-### 1. Install Dependencies
+### 1. Instalar Dependências
 
-Install Tailwind CSS and PostCSS:
+Instale o Tailwind CSS e o PostCSS:
 
 ```shell
 npm install tailwindcss @tailwindcss/postcss postcss
 ```
 
-### 2. Configure PostCSS
+### 2. Configurar o PostCSS
 
-Create a `.postcssrc.json` file in the project root:
+Crie um arquivo `.postcssrc.json` na raiz do projeto:
 
 ```json
 {
@@ -42,28 +42,28 @@ Create a `.postcssrc.json` file in the project root:
 }
 ```
 
-_(Do NOT create a `tailwind.config.js` file! Configuration in v4 is handled through CSS variables)._
+_(NÃO crie um arquivo `tailwind.config.js`! A configuração no v4 é feita através de variáveis CSS)._
 
-### 3. Import Tailwind CSS
+### 3. Importar o Tailwind CSS
 
-In your global styles file (e.g., `src/styles.css`), add the standard v4 import:
+No seu arquivo de estilos globais (por exemplo, `src/styles.css`), adicione o import padrão do v4:
 
 ```css
 @import 'tailwindcss';
 ```
 
-_(If using SCSS, use `@use 'tailwindcss';` instead)._
+_(Se estiver usando SCSS, use `@use 'tailwindcss';` em vez disso)._
 
-### 4. Use Utility Classes
+### 4. Usar Classes Utilitárias
 
-You can now use Tailwind classes directly in your component templates:
+Agora você pode usar classes do Tailwind diretamente nos templates dos seus componentes:
 
 ```html
 <h1 class="text-3xl font-bold underline">Hello world!</h1>
 ```
 
-## Summary for AI Agents
+## Resumo para Agents de IA
 
-- **Do not use `@tailwind base; @tailwind components; @tailwind utilities;`**. Use `@import 'tailwindcss';`.
-- **Do not create `tailwind.config.js`**. Configuration is managed directly in CSS via theme variables or using PostCSS configurations.
-- Stick strictly to v4 syntax and workflows.
+- **Não use `@tailwind base; @tailwind components; @tailwind utilities;`**. Use `@import 'tailwindcss';`.
+- **Não crie `tailwind.config.js`**. A configuração é gerenciada diretamente no CSS via variáveis de tema ou usando configurações do PostCSS.
+- Siga rigorosamente a sintaxe e os fluxos de trabalho do v4.

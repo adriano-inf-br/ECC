@@ -1,59 +1,60 @@
-# Module 50 — Voice & Tone
+# Módulo 50 — Voz & Tom
 
 > **Frameworks:** Brand voice spectrum (formal <-> casual, serious <-> playful,
 > distant <-> warm, conventional <-> irreverent) · Content-type tone matrix
 >
-> **Goal:** Codify the brand's verbal register precisely enough that two different
-> writers produce copy that sounds like the same person. Voice is constant;
-> tone shifts by context (home page vs. error message vs. proposal cover).
+> **Objetivo:** Codificar o registro verbal da marca com precisão suficiente para
+> que dois escritores diferentes produzam textos que soem como a mesma pessoa. A
+> voz é constante; o tom muda conforme o contexto (página inicial vs. mensagem de
+> erro vs. capa de proposta).
 
 ---
 
-## Raw
+## Bruto
 
-<!-- Verbatim quotes and examples from the interview.
-     Collect actual copy samples the founder likes or hates. -->
+<!-- Citações literais e exemplos da entrevista.
+     Colete amostras reais de texto que o fundador gosta ou detesta. -->
 
-### Copy the founder admires (from their own brand or others) — include the source
+### Texto que o fundador admira (da própria marca ou de outras) — inclua a fonte
 
-### Copy the founder dislikes or finds "wrong register" — what specifically is wrong?
+### Texto de que o fundador não gosta ou considera "registro errado" — o que especificamente está errado?
 
-### Words or phrases the brand uses all the time (even informally)
+### Palavras ou frases que a marca usa o tempo todo (mesmo informalmente)
 
-### Words or phrases the brand actively avoids
+### Palavras ou frases que a marca evita ativamente
 
-### How should the brand sound on: a sales page? an error message? a proposal?
+### Como a marca deve soar em: uma página de vendas? uma mensagem de erro? uma proposta?
 
-### "We always…" / "We never…" statements about how the brand communicates
+### Declarações "Nós sempre…" / "Nós nunca…" sobre como a marca se comunica
 
 ---
 
-## Synthesis
+## Síntese
 
-### Voice spectrum (mark the brand's position on each axis)
+### Espectro de voz (marque a posição da marca em cada eixo)
 
-| Axis | 1 | 2 | 3 | 4 | 5 | Notes |
+| Eixo | 1 | 2 | 3 | 4 | 5 | Notas |
 |---|---|---|---|---|---|---|
 | Formal ←→ Casual | | | | | | |
-| Serious ←→ Playful | | | | | | |
-| Distant ←→ Warm | | | | | | |
-| Conventional ←→ Irreverent | | | | | | |
-| Minimal ←→ Expressive | | | | | | |
+| Sério ←→ Brincalhão | | | | | | |
+| Distante ←→ Caloroso | | | | | | |
+| Convencional ←→ Irreverente | | | | | | |
+| Minimalista ←→ Expressivo | | | | | | |
 
-### Voice statement (one paragraph a writer can internalise)
+### Declaração de voz (um parágrafo que um escritor possa internalizar)
 
-### Tone matrix by content type
+### Matriz de tom por tipo de conteúdo
 
-| Content type | Tone shift | Example phrase |
+| Tipo de conteúdo | Mudança de tom | Frase de exemplo |
 |---|---|---|
-| Homepage headline | | |
-| Case study / evidence | | |
-| Proposal / commercial | | |
-| Error / apology | | |
+| Título da página inicial | | |
+| Estudo de caso / evidência | | |
+| Proposta / comercial | | |
+| Erro / pedido de desculpas | | |
 | Social / informal | | |
 
-### The three things to check every draft against
+### As três coisas a verificar em todo rascunho
 
 1.
 2.
-3. ### Open questions / tensions with Module 40 Personality
+3. ### Perguntas em aberto / tensões com a Personalidade do Módulo 40

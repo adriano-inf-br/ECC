@@ -1,57 +1,58 @@
-# Module 40 — Personality & Archetype
+# Módulo 40 — Personalidade & Arquétipo
 
 > **Frameworks:** Mark & Pearson 12 brand archetypes · J. Aaker 5 brand personality
 > dimensions (sincerity / excitement / competence / sophistication / ruggedness)
 >
-> **Goal:** Establish the brand's character — how it would behave if it were a
-> person. Personality governs tone, visual register, and what feels "on brand"
-> versus "wrong". A sharp archetype makes a hundred small decisions automatic.
+> **Objetivo:** Estabelecer o caráter da marca — como ela se comportaria se fosse
+> uma pessoa. A personalidade governa o tom, o registro visual e o que parece "de
+> acordo com a marca" versus "errado". Um arquétipo bem definido torna automáticas
+> uma centena de pequenas decisões.
 
 ---
 
-## Raw
+## Bruto
 
-<!-- Verbatim quotes and projective-technique responses. -->
+<!-- Citações literais e respostas a técnicas projetivas. -->
 
-### "If the brand were a person, how would they walk into a room?"
+### "Se a marca fosse uma pessoa, como ela entraria numa sala?"
 
-### Archetype instinct (which of the 12 resonates immediately, and why?)
+### Instinto de arquétipo (qual dos 12 ressoa imediatamente, e por quê?)
 > Creator · Caregiver · Ruler · Jester · Regular Person · Lover · Hero ·
 > Outlaw · Magician · Innocent · Sage · Explorer
 
-### Three adjectives the founder uses most naturally to describe the brand's character
+### Três adjetivos que o fundador usa mais naturalmente para descrever o caráter da marca
 
-### One brand or public figure the founder admires but the brand should NOT become (and specifically what to avoid)
+### Uma marca ou figura pública que o fundador admira mas que a marca NÃO deve se tornar (e especificamente o que evitar)
 
-### One brand or public figure whose personality register the brand aspires to
+### Uma marca ou figura pública cujo registro de personalidade a marca aspira a ter
 
-### How should the brand make clients feel? (not think — feel)
+### Como a marca deve fazer os clientes se sentirem? (não pensarem — se sentirem)
 
 ---
 
-## Synthesis
+## Síntese
 
-### Primary archetype + shadow
+### Arquétipo primário + sombra
 
 | | |
 |---|---|
-| **Primary archetype** | (name + 1-line why) |
-| **Secondary / shadow** | (what the primary archetype risks becoming; what keeps it honest) |
+| **Arquétipo primário** | (nome + 1 linha de porquê) |
+| **Secundário / sombra** | (o que o arquétipo primário corre o risco de se tornar; o que o mantém honesto) |
 
-### J. Aaker personality scores (1–5, 5 = strongly applies)
+### Pontuações de personalidade de J. Aaker (1–5, 5 = aplica-se fortemente)
 
-| Dimension | Score | Evidence |
+| Dimensão | Pontuação | Evidência |
 |---|---|---|
-| Sincerity (warm, honest, down-to-earth) | | |
-| Excitement (daring, spirited, imaginative) | | |
-| Competence (reliable, intelligent, successful) | | |
-| Sophistication (upper-class, charming) | | |
-| Ruggedness (outdoorsy, tough) | | |
+| Sinceridade (caloroso, honesto, pé no chão) | | |
+| Empolgação (ousado, animado, imaginativo) | | |
+| Competência (confiável, inteligente, bem-sucedido) | | |
+| Sofisticação (classe alta, charmoso) | | |
+| Robustez (ligado à natureza, durão) | | |
 
-### Personality in action (3 behavioural guidelines derived from the archetype)
+### Personalidade em ação (3 diretrizes comportamentais derivadas do arquétipo)
 
 1.
 2.
-3. ### What the brand must never sound or look like (the anti-personality)
+3. ### Como a marca nunca deve soar ou parecer (a antipersonalidade)
 
-### Open questions / tensions with Module 50 Voice
+### Perguntas em aberto / tensões com a Voz do Módulo 50

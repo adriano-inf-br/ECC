@@ -1,51 +1,51 @@
 ---
 name: agent-introspection-debugging
-description: Structured self-debugging workflow for AI agent failures using capture, diagnosis, contained recovery, and introspection reports.
+description: Fluxo de trabalho estruturado de autodepuração para falhas de agents de IA usando captura, diagnóstico, recuperação contida e relatórios de introspecção.
 metadata:
   origin: ECC
 ---
 
-# Agent Introspection Debugging
+# Depuração por Introspecção de Agent
 
-Use this skill when an agent run is failing repeatedly, consuming tokens without progress, looping on the same tools, or drifting away from the intended task.
+Use esta skill quando uma execução de agent está falhando repetidamente, consumindo tokens sem progresso, entrando em loop nas mesmas tools ou se desviando da tarefa pretendida.
 
-This is a workflow skill, not a hidden runtime. It teaches the agent to debug itself systematically before escalating to a human.
+Esta é uma skill de fluxo de trabalho, não um runtime oculto. Ela ensina o agent a depurar a si mesmo de forma sistemática antes de escalar para um humano.
 
-## When to Activate
+## Quando Ativar
 
-- Maximum tool call / loop-limit failures
-- Repeated retries with no forward progress
-- Context growth or prompt drift that starts degrading output quality
-- File-system or environment state mismatch between expectation and reality
-- Tool failures that are likely recoverable with diagnosis and a smaller corrective action
+- Falhas de limite máximo de tool calls / limite de loop
+- Retries repetidos sem progresso para frente
+- Crescimento de contexto ou desvio de prompt que começa a degradar a qualidade da saída
+- Incompatibilidade de estado do sistema de arquivos ou do ambiente entre a expectativa e a realidade
+- Falhas de tool que provavelmente são recuperáveis com diagnóstico e uma ação corretiva menor
 
-## Scope Boundaries
+## Limites de Escopo
 
-Activate this skill for:
-- capturing failure state before retrying blindly
-- diagnosing common agent-specific failure patterns
-- applying contained recovery actions
-- producing a structured human-readable debug report
+Ative esta skill para:
+- capturar o estado de falha antes de tentar novamente às cegas
+- diagnosticar padrões comuns de falha específicos de agent
+- aplicar ações de recuperação contidas
+- produzir um relatório de depuração estruturado e legível por humanos
 
-Do not use this skill as the primary source for:
-- feature verification after code changes; use `verification-loop`
-- framework-specific debugging when a narrower ECC skill already exists
-- runtime promises the current harness cannot enforce automatically
+Não use esta skill como fonte primária para:
+- verificação de recurso após mudanças de código; use `verification-loop`
+- depuração específica de framework quando uma skill ECC mais estreita já existir
+- promessas de runtime que o harness atual não consegue impor automaticamente
 
-## Four-Phase Loop
+## Loop de Quatro Fases
 
-### Phase 1: Failure Capture
+### Fase 1: Captura de Falha
 
-Before trying to recover, record the failure precisely.
+Antes de tentar se recuperar, registre a falha com precisão.
 
 Capture:
-- error type, message, and stack trace when available
-- last meaningful tool call sequence
-- what the agent was trying to do
-- current context pressure: repeated prompts, oversized pasted logs, duplicated plans, or runaway notes
-- current environment assumptions: cwd, branch, relevant service state, expected files
+- tipo de erro, mensagem e stack trace quando disponíveis
+- a última sequência de tool calls significativa
+- o que o agent estava tentando fazer
+- a pressão de contexto atual: prompts repetidos, logs colados superdimensionados, planos duplicados ou notas descontroladas
+- as suposições de ambiente atuais: cwd, branch, estado de serviço relevante, arquivos esperados
 
-Minimum capture template:
+Template mínimo de captura:
 
 ```markdown
 ## Failure Capture
@@ -58,40 +58,40 @@ Minimum capture template:
 - Environment assumptions to verify:
 ```
 
-### Phase 2: Root-Cause Diagnosis
+### Fase 2: Diagnóstico de Causa Raiz
 
-Match the failure to a known pattern before changing anything.
+Combine a falha com um padrão conhecido antes de mudar qualquer coisa.
 
-| Pattern | Likely Cause | Check |
+| Padrão | Causa Provável | Verificação |
 | --- | --- | --- |
-| Maximum tool calls / repeated same command | loop or no-exit observer path | inspect the last N tool calls for repetition |
-| Context overflow / degraded reasoning | unbounded notes, repeated plans, oversized logs | inspect recent context for duplication and low-signal bulk |
-| `ECONNREFUSED` / timeout | service unavailable or wrong port | verify service health, URL, and port assumptions |
-| `429` / quota exhaustion | retry storm or missing backoff | count repeated calls and inspect retry spacing |
-| file missing after write / stale diff | race, wrong cwd, or branch drift | re-check path, cwd, git status, and actual file existence |
-| tests still failing after “fix” | wrong hypothesis | isolate the exact failing test and re-derive the bug |
+| Máximo de tool calls / mesmo comando repetido | caminho de loop ou de observer sem saída | inspecione as últimas N tool calls em busca de repetição |
+| Estouro de contexto / raciocínio degradado | notas sem limite, planos repetidos, logs superdimensionados | inspecione o contexto recente em busca de duplicação e volume de baixo sinal |
+| `ECONNREFUSED` / timeout | serviço indisponível ou porta errada | verifique a saúde do serviço, a URL e as suposições de porta |
+| `429` / esgotamento de quota | tempestade de retries ou falta de backoff | conte chamadas repetidas e inspecione o espaçamento dos retries |
+| arquivo ausente após escrita / diff obsoleto | race, cwd errado ou desvio de branch | reverifique o caminho, o cwd, o git status e a existência real do arquivo |
+| testes ainda falhando após o "fix" | hipótese errada | isole o teste exato que falha e re-derive o bug |
 
-Diagnosis questions:
-- is this a logic failure, state failure, environment failure, or policy failure?
-- did the agent lose the real objective and start optimizing the wrong subtask?
-- is the failure deterministic or transient?
-- what is the smallest reversible action that would validate the diagnosis?
+Perguntas de diagnóstico:
+- isto é uma falha de lógica, falha de estado, falha de ambiente ou falha de política?
+- o agent perdeu o objetivo real e começou a otimizar a subtarefa errada?
+- a falha é determinística ou transiente?
+- qual é a menor ação reversível que validaria o diagnóstico?
 
-### Phase 3: Contained Recovery
+### Fase 3: Recuperação Contida
 
-Recover with the smallest action that changes the diagnosis surface.
+Recupere-se com a menor ação que muda a superfície de diagnóstico.
 
-Safe recovery actions:
-- stop repeated retries and restate the hypothesis
-- trim low-signal context and keep only the active goal, blockers, and evidence
-- re-check the actual filesystem / branch / process state
-- narrow the task to one failing command, one file, or one test
-- switch from speculative reasoning to direct observation
-- escalate to a human when the failure is high-risk or externally blocked
+Ações de recuperação seguras:
+- pare os retries repetidos e reformule a hipótese
+- corte o contexto de baixo sinal e mantenha apenas o objetivo ativo, os bloqueadores e as evidências
+- reverifique o estado real do sistema de arquivos / branch / processo
+- restrinja a tarefa a um comando que falha, um arquivo ou um teste
+- mude do raciocínio especulativo para a observação direta
+- escale para um humano quando a falha for de alto risco ou bloqueada externamente
 
-Do not claim unsupported auto-healing actions like “reset agent state” or “update harness config” unless you are actually doing them through real tools in the current environment.
+Não afirme ações de autocorreção não suportadas como "resetar o estado do agent" ou "atualizar a config do harness" a menos que você esteja de fato fazendo isso por meio de tools reais no ambiente atual.
 
-Contained recovery checklist:
+Checklist de recuperação contida:
 
 ```markdown
 ## Recovery Action
@@ -101,9 +101,9 @@ Contained recovery checklist:
 - What evidence would prove the fix worked:
 ```
 
-### Phase 4: Introspection Report
+### Fase 4: Relatório de Introspecção
 
-End with a report that makes the recovery legible to the next agent or human.
+Termine com um relatório que torne a recuperação legível para o próximo agent ou humano.
 
 ```markdown
 ## Agent Self-Debug Report
@@ -117,38 +117,38 @@ End with a report that makes the recovery legible to the next agent or human.
 - Preventive change to encode later:
 ```
 
-## Recovery Heuristics
+## Heurísticas de Recuperação
 
-Prefer these interventions in order:
+Prefira estas intervenções nesta ordem:
 
-1. Restate the real objective in one sentence.
-2. Verify the world state instead of trusting memory.
-3. Shrink the failing scope.
-4. Run one discriminating check.
-5. Only then retry.
+1. Reformule o objetivo real em uma frase.
+2. Verifique o estado do mundo em vez de confiar na memória.
+3. Reduza o escopo que está falhando.
+4. Rode uma verificação discriminante.
+5. Só então tente novamente.
 
-Bad pattern:
-- retrying the same action three times with slightly different wording
+Padrão ruim:
+- tentar a mesma ação três vezes com uma redação ligeiramente diferente
 
-Good pattern:
-- capture failure
-- classify the pattern
-- run one direct check
-- change the plan only if the check supports it
+Padrão bom:
+- capturar a falha
+- classificar o padrão
+- rodar uma verificação direta
+- mudar o plano apenas se a verificação a sustentar
 
-## Integration with ECC
+## Integração com a ECC
 
-- Use `verification-loop` after recovery if code was changed.
-- Use `continuous-learning-v2` when the failure pattern is worth turning into an instinct or later skill.
-- Use `council` when the issue is not technical failure but decision ambiguity.
-- Use `workspace-surface-audit` if the failure came from conflicting local state or repo drift.
+- Use `verification-loop` após a recuperação se o código foi alterado.
+- Use `continuous-learning-v2` quando o padrão de falha vale a pena virar um instinto ou skill futura.
+- Use `council` quando o problema não é falha técnica mas ambiguidade de decisão.
+- Use `workspace-surface-audit` se a falha veio de estado local conflitante ou desvio do repositório.
 
-## Output Standard
+## Padrão de Saída
 
-When this skill is active, do not end with “I fixed it” alone.
+Quando esta skill está ativa, não termine apenas com "eu corrigi".
 
-Always provide:
-- the failure pattern
-- the root-cause hypothesis
-- the recovery action
-- the evidence that the situation is now better or still blocked
+Sempre forneça:
+- o padrão de falha
+- a hipótese de causa raiz
+- a ação de recuperação
+- a evidência de que a situação agora está melhor ou ainda bloqueada

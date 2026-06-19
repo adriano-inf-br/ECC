@@ -1,221 +1,221 @@
 ---
 name: agent-architecture-audit
-description: Full-stack diagnostic for agent and LLM applications. Audits the 12-layer agent stack for wrapper regression, memory pollution, tool discipline failures, hidden repair loops, and rendering corruption. Produces severity-ranked findings with code-first fixes. Essential for developers building agent applications, autonomous loops, or any LLM-powered feature.
+description: Diagnóstico full-stack para aplicações de agent e LLM. Audita a pilha de agent de 12 camadas em busca de regressão de wrapper, poluição de memória, falhas de disciplina de tools, loops de reparo ocultos e corrupção de renderização. Produz achados ordenados por severidade com correções code-first. Essencial para desenvolvedores que constroem aplicações de agent, loops autônomos ou qualquer recurso movido a LLM.
 metadata:
   origin: oh-my-agent-check
 tools: Read, Write, Edit, Bash, Grep, Glob
 ---
 
-# Agent Architecture Audit
+# Auditoria de Arquitetura de Agent
 
-A diagnostic workflow for agent systems that hide failures behind wrapper layers, stale memory, retry loops, or transport/rendering mutations.
+Um fluxo de trabalho de diagnóstico para sistemas de agent que escondem falhas atrás de camadas de wrapper, memória obsoleta, loops de retry ou mutações de transporte/renderização.
 
-## When to Activate
+## Quando Ativar
 
-**MANDATORY for:**
-- Releasing any agent or LLM-powered application to production
-- Shipping features with tool calling, memory, or multi-step workflows
-- Agent behavior degrades after adding wrapper layers
-- User reports "the agent is getting worse" or "tools are flaky"
-- Same model works in playground but breaks inside your wrapper
-- Debugging agent behavior for more than 15 minutes without finding root cause
+**OBRIGATÓRIO para:**
+- Liberar qualquer aplicação de agent ou movida a LLM para produção
+- Entregar recursos com tool calling, memória ou fluxos de trabalho multi-etapa
+- Comportamento do agent se degrada após adicionar camadas de wrapper
+- Usuário relata "o agent está piorando" ou "as tools estão instáveis"
+- O mesmo modelo funciona no playground mas quebra dentro do seu wrapper
+- Depurar comportamento do agent por mais de 15 minutos sem encontrar a causa raiz
 
-**Especially critical when:**
-- You've added new prompt layers, tool definitions, or memory systems
-- Different agents in your system behave inconsistently
-- The model was fine yesterday but is hallucinating today
-- You suspect hidden repair/retry loops silently mutating responses
+**Especialmente crítico quando:**
+- Você adicionou novas camadas de prompt, definições de tools ou sistemas de memória
+- Diferentes agents no seu sistema se comportam de forma inconsistente
+- O modelo estava bem ontem mas está alucinando hoje
+- Você suspeita de loops de reparo/retry ocultos mutando respostas silenciosamente
 
-**Do not use for:**
-- General code debugging — use `agent-introspection-debugging`
-- Code review — use language-specific reviewer agents
-- Security scanning — use `security-review` or `security-review/scan`
-- Agent performance benchmarking — use `agent-eval`
-- Writing new features — use the appropriate workflow skill
+**Não use para:**
+- Depuração geral de código — use `agent-introspection-debugging`
+- Revisão de código — use agents revisores específicos da linguagem
+- Varredura de segurança — use `security-review` ou `security-review/scan`
+- Benchmarking de desempenho de agent — use `agent-eval`
+- Escrever novos recursos — use a skill de fluxo de trabalho apropriada
 
-## The 12-Layer Stack
+## A Pilha de 12 Camadas
 
-Every agent system has these layers. Any of them can corrupt the answer:
+Todo sistema de agent tem estas camadas. Qualquer uma delas pode corromper a resposta:
 
-| # | Layer | What Goes Wrong |
+| # | Camada | O Que Dá Errado |
 |---|-------|----------------|
-| 1 | System prompt | Conflicting instructions, instruction bloat |
-| 2 | Session history | Stale context injection from previous turns |
-| 3 | Long-term memory | Pollution across sessions, old topics in new conversations |
-| 4 | Distillation | Compressed artifacts re-entering as pseudo-facts |
-| 5 | Active recall | Redundant re-summary layers wasting context |
-| 6 | Tool selection | Wrong tool routing, model skips required tools |
-| 7 | Tool execution | Hallucinated execution — claims to call but doesn't |
-| 8 | Tool interpretation | Misread or ignored tool output |
-| 9 | Answer shaping | Format corruption in final response |
-| 10 | Platform rendering | Transport-layer mutation (UI, API, CLI mutates valid answers) |
-| 11 | Hidden repair loops | Silent fallback/retry agents running second LLM pass |
-| 12 | Persistence | Expired state or cached artifacts reused as live evidence |
+| 1 | System prompt | Instruções conflitantes, inchaço de instruções |
+| 2 | Histórico de sessão | Injeção de contexto obsoleto de turnos anteriores |
+| 3 | Memória de longo prazo | Poluição entre sessões, tópicos antigos em novas conversas |
+| 4 | Destilação | Artefatos comprimidos reentrando como pseudofatos |
+| 5 | Recall ativo | Camadas redundantes de re-resumo desperdiçando contexto |
+| 6 | Seleção de tool | Roteamento de tool errado, modelo pula tools obrigatórias |
+| 7 | Execução de tool | Execução alucinada — afirma chamar mas não chama |
+| 8 | Interpretação de tool | Saída de tool mal lida ou ignorada |
+| 9 | Formatação da resposta | Corrupção de formato na resposta final |
+| 10 | Renderização de plataforma | Mutação na camada de transporte (UI, API, CLI mutam respostas válidas) |
+| 11 | Loops de reparo ocultos | Agents de fallback/retry silenciosos rodando uma segunda passagem de LLM |
+| 12 | Persistência | Estado expirado ou artefatos em cache reutilizados como evidência ativa |
 
-## Common Failure Patterns
+## Padrões Comuns de Falha
 
-### 1. Wrapper Regression
+### 1. Regressão de Wrapper
 
-The base model produces correct answers, but the wrapper layers make it worse.
+O modelo base produz respostas corretas, mas as camadas de wrapper o tornam pior.
 
-**Symptoms:**
-- Model works fine in playground or direct API call, breaks in your agent
-- Added a new prompt layer, existing behavior degraded
-- Agent sounds confident but is confidently wrong
-- "It was working before the last update"
+**Sintomas:**
+- O modelo funciona bem no playground ou em chamada direta de API, quebra no seu agent
+- Adicionou uma nova camada de prompt, o comportamento existente se degradou
+- O agent soa confiante mas está confiantemente errado
+- "Estava funcionando antes da última atualização"
 
-### 2. Memory Contamination
+### 2. Contaminação de Memória
 
-Old topics leak into new conversations through history, memory retrieval, or distillation.
+Tópicos antigos vazam para novas conversas por meio do histórico, da recuperação de memória ou da destilação.
 
-**Symptoms:**
-- Agent brings up unrelated past topics
-- User corrections don't stick (old memory overwrites new)
-- Same-session artifacts re-enter as pseudo-facts
-- Memory grows without bound, degrading response quality over time
+**Sintomas:**
+- O agent traz à tona tópicos passados não relacionados
+- Correções do usuário não se fixam (memória antiga sobrescreve a nova)
+- Artefatos da mesma sessão reentram como pseudofatos
+- A memória cresce sem limite, degradando a qualidade da resposta ao longo do tempo
 
-### 3. Tool Discipline Failure
+### 3. Falha de Disciplina de Tool
 
-Tools are declared in the prompt but not enforced in code. The model skips them or hallucinates execution.
+As tools são declaradas no prompt mas não são impostas no código. O modelo as pula ou aluciná a execução.
 
-**Symptoms:**
-- "Must use tool X" in prompt, but model answers without calling it
-- Tool results look correct but were never actually executed
-- Different tools fight over the same responsibility
-- Model uses tool when it shouldn't, or skips it when it must
+**Sintomas:**
+- "Deve usar a tool X" no prompt, mas o modelo responde sem chamá-la
+- Os resultados da tool parecem corretos mas nunca foram de fato executados
+- Diferentes tools brigam pela mesma responsabilidade
+- O modelo usa a tool quando não deveria, ou a pula quando é obrigatório
 
-### 4. Rendering/Transport Corruption
+### 4. Corrupção de Renderização/Transporte
 
-The agent's internal answer is correct, but the platform layer mutates it during delivery.
+A resposta interna do agent está correta, mas a camada de plataforma a muta durante a entrega.
 
-**Symptoms:**
-- Logs show correct answer, user sees broken output
-- Markdown rendering, JSON parsing, or streaming fragments corrupt valid responses
-- Hidden fallback agent quietly replaces the answer before delivery
-- Output differs between terminal and UI
+**Sintomas:**
+- Os logs mostram a resposta correta, o usuário vê uma saída quebrada
+- Renderização de markdown, parsing de JSON ou fragmentos de streaming corrompem respostas válidas
+- Um agent de fallback oculto substitui silenciosamente a resposta antes da entrega
+- A saída difere entre o terminal e a UI
 
-### 5. Hidden Agent Layers
+### 5. Camadas de Agent Ocultas
 
-Silent repair, retry, summarization, or recall agents run without explicit contracts.
+Agents silenciosos de reparo, retry, sumarização ou recall rodam sem contratos explícitos.
 
-**Symptoms:**
-- Output changes between internal generation and user delivery
-- "Auto-fix" loops run a second LLM pass the user doesn't know about
-- Multiple agents modify the same output without coordination
-- Answers get "smoothed" or "corrected" by invisible layers
+**Sintomas:**
+- A saída muda entre a geração interna e a entrega ao usuário
+- Loops de "auto-fix" rodam uma segunda passagem de LLM que o usuário desconhece
+- Múltiplos agents modificam a mesma saída sem coordenação
+- As respostas são "suavizadas" ou "corrigidas" por camadas invisíveis
 
-## Audit Workflow
+## Fluxo de Trabalho de Auditoria
 
-### Phase 1: Scope
+### Fase 1: Escopo
 
-Define what you're auditing:
+Defina o que você está auditando:
 
-- **Target system** — what agent application?
-- **Entrypoints** — how do users interact with it?
-- **Model stack** — which LLM(s) and providers?
-- **Symptoms** — what does the user report?
-- **Time window** — when did it start?
-- **Layers to audit** — which of the 12 layers apply?
+- **Sistema-alvo** — qual aplicação de agent?
+- **Pontos de entrada** — como os usuários interagem com ele?
+- **Pilha de modelos** — qual(is) LLM(s) e provedores?
+- **Sintomas** — o que o usuário relata?
+- **Janela de tempo** — quando começou?
+- **Camadas a auditar** — quais das 12 camadas se aplicam?
 
-### Phase 2: Evidence Collection
+### Fase 2: Coleta de Evidências
 
-Gather evidence from the codebase:
+Reúna evidências da base de código:
 
-- **Source code** — agent loop, tool router, memory admission, prompt assembly
-- **Logs** — historical session traces, tool call records
-- **Config** — prompt templates, tool schemas, provider settings
-- **Memory files** — SOPs, knowledge bases, session archives
+- **Código-fonte** — loop do agent, roteador de tools, admissão de memória, montagem de prompt
+- **Logs** — traces históricos de sessão, registros de tool calls
+- **Config** — templates de prompt, schemas de tools, configurações de provedor
+- **Arquivos de memória** — SOPs, bases de conhecimento, arquivos de sessão
 
-Use `rg` to search for anti-patterns:
+Use `rg` para buscar anti-padrões:
 
 ```bash
-# Tool requirements expressed only in prompt text (not code)
+# Requisitos de tool expressos apenas em texto de prompt (não em código)
 rg "must.*tool|必须.*工具|required.*call" --type md
 
-# Tool execution without validation
+# Execução de tool sem validação
 rg "tool_call|toolCall|tool_use" --type py --type ts
 
-# Hidden LLM calls outside main agent loop
+# Chamadas de LLM ocultas fora do loop principal do agent
 rg "completion|chat\.create|messages\.create|llm\.invoke"
 
-# Memory admission without user-correction priority
+# Admissão de memória sem prioridade de correção do usuário
 rg "memory.*admit|long.*term.*update|persist.*memory" --type py --type ts
 
-# Fallback loops that run additional LLM calls
+# Loops de fallback que rodam chamadas adicionais de LLM
 rg "fallback|retry.*llm|repair.*prompt|re-?prompt" --type py --type ts
 
-# Silent output mutation
+# Mutação silenciosa de saída
 rg "mutate|rewrite.*response|transform.*output|shap" --type py --type ts
 ```
 
-### Phase 3: Failure Mapping
+### Fase 3: Mapeamento de Falhas
 
-For each finding, document:
+Para cada achado, documente:
 
-- **Symptom** — what the user sees
-- **Mechanism** — how the wrapper causes it
-- **Source layer** — which of the 12 layers
-- **Root cause** — the deepest cause
-- **Evidence** — file:line or log:row reference
-- **Confidence** — 0.0 to 1.0
+- **Sintoma** — o que o usuário vê
+- **Mecanismo** — como o wrapper o causa
+- **Camada de origem** — qual das 12 camadas
+- **Causa raiz** — a causa mais profunda
+- **Evidência** — referência file:line ou log:row
+- **Confiança** — 0.0 a 1.0
 
-### Phase 4: Fix Strategy
+### Fase 4: Estratégia de Correção
 
-Default fix order (code-first, not prompt-first):
+Ordem de correção padrão (code-first, não prompt-first):
 
-1. **Code-gate tool requirements** — enforce in code, not just prompt text
-2. **Remove or narrow hidden repair agents** — make fallback explicit with contracts
-3. **Reduce context duplication** — same info through prompt + history + memory + distillation
-4. **Tighten memory admission** — user corrections > agent assertions
-5. **Tighten distillation triggers** — don't compress what shouldn't be compressed
-6. **Reduce rendering mutation** — pass-through, don't transform
-7. **Convert to typed JSON envelopes** — structured internal flow, not freeform prose
+1. **Gate de tool por código** — imponha no código, não apenas no texto do prompt
+2. **Remova ou restrinja agents de reparo ocultos** — torne o fallback explícito com contratos
+3. **Reduza a duplicação de contexto** — a mesma informação por prompt + histórico + memória + destilação
+4. **Aperte a admissão de memória** — correções do usuário > asserções do agent
+5. **Aperte os gatilhos de destilação** — não comprima o que não deveria ser comprimido
+6. **Reduza a mutação de renderização** — pass-through, não transforme
+7. **Converta para envelopes JSON tipados** — fluxo interno estruturado, não prosa livre
 
-## Severity Model
+## Modelo de Severidade
 
-| Level | Meaning | Action |
+| Nível | Significado | Ação |
 |-------|---------|--------|
-| `critical` | Agent can confidently produce wrong operational behavior | Fix before next release |
-| `high` | Agent frequently degrades correctness or stability | Fix this sprint |
-| `medium` | Correctness usually survives but output is fragile or wasteful | Plan for next cycle |
-| `low` | Mostly cosmetic or maintainability issues | Backlog |
+| `critical` | O agent pode produzir confiantemente comportamento operacional errado | Corrija antes do próximo release |
+| `high` | O agent frequentemente degrada corretude ou estabilidade | Corrija neste sprint |
+| `medium` | A corretude geralmente sobrevive mas a saída é frágil ou desperdiçadora | Planeje para o próximo ciclo |
+| `low` | Problemas em sua maioria cosméticos ou de manutenibilidade | Backlog |
 
-## Output Format
+## Formato de Saída
 
-Present findings to the user in this order:
+Apresente os achados ao usuário nesta ordem:
 
-1. **Severity-ranked findings** (most critical first)
-2. **Architecture diagnosis** (which layer corrupted what, and why)
-3. **Ordered fix plan** (code-first, not prompt-first)
+1. **Achados ordenados por severidade** (mais crítico primeiro)
+2. **Diagnóstico de arquitetura** (qual camada corrompeu o quê, e por quê)
+3. **Plano de correção ordenado** (code-first, não prompt-first)
 
-Do not lead with compliments or summaries. If the system is broken, say so directly.
+Não comece com elogios ou resumos. Se o sistema está quebrado, diga isso diretamente.
 
-## Quick Diagnostic Questions
+## Perguntas Rápidas de Diagnóstico
 
-When auditing an agent system, answer these:
+Ao auditar um sistema de agent, responda a estas:
 
-| # | Question | If Yes → |
+| # | Pergunta | Se Sim → |
 |---|----------|----------|
-| 1 | Can the model skip a required tool and still answer? | Tool not code-gated |
-| 2 | Does old conversation content appear in new turns? | Memory contamination |
-| 3 | Is the same info in system prompt AND memory AND history? | Context duplication |
-| 4 | Does the platform run a second LLM pass before delivery? | Hidden repair loop |
-| 5 | Does the output differ between internal generation and user delivery? | Rendering corruption |
-| 6 | Are "must use tool X" rules only in prompt text? | Tool discipline failure |
-| 7 | Can the agent's own monologue become persistent memory? | Memory poisoning |
+| 1 | O modelo pode pular uma tool obrigatória e ainda assim responder? | Tool sem gate de código |
+| 2 | Conteúdo de conversas antigas aparece em novos turnos? | Contaminação de memória |
+| 3 | A mesma informação está no system prompt E na memória E no histórico? | Duplicação de contexto |
+| 4 | A plataforma roda uma segunda passagem de LLM antes da entrega? | Loop de reparo oculto |
+| 5 | A saída difere entre a geração interna e a entrega ao usuário? | Corrupção de renderização |
+| 6 | As regras "deve usar a tool X" estão apenas em texto de prompt? | Falha de disciplina de tool |
+| 7 | O próprio monólogo do agent pode virar memória persistente? | Envenenamento de memória |
 
-## Anti-Patterns to Avoid
+## Anti-Padrões a Evitar
 
-- Avoid blaming the model before falsifying wrapper-layer regressions.
-- Avoid blaming memory without showing the contamination path.
-- Do not let a clean current state erase a dirty historical incident.
-- Do not treat markdown prose as a trustworthy internal protocol.
-- Do not accept "must use tool" in prompt text when code never enforces it.
-- Keep findings direct, evidence-backed, and severity-ranked.
+- Evite culpar o modelo antes de falsificar regressões na camada de wrapper.
+- Evite culpar a memória sem mostrar o caminho da contaminação.
+- Não deixe um estado atual limpo apagar um incidente histórico sujo.
+- Não trate prosa em markdown como um protocolo interno confiável.
+- Não aceite "deve usar a tool" em texto de prompt quando o código nunca o impõe.
+- Mantenha os achados diretos, embasados em evidências e ordenados por severidade.
 
-## Report Schema
+## Schema de Relatório
 
-Audits should produce structured reports following this shape:
+As auditorias devem produzir relatórios estruturados seguindo este formato:
 
 ```json
 {
@@ -248,10 +248,10 @@ Audits should produce structured reports following this shape:
 }
 ```
 
-## Related Skills
+## Skills Relacionadas
 
-- `agent-introspection-debugging` — Debug agent runtime failures (loops, timeouts, state errors)
-- `agent-eval` — Benchmark agent performance head-to-head
-- `security-review` — Security audit for code and configuration
-- `autonomous-agent-harness` — Set up autonomous agent operations
-- `agent-harness-construction` — Build agent harnesses from scratch
+- `agent-introspection-debugging` — Depure falhas de runtime do agent (loops, timeouts, erros de estado)
+- `agent-eval` — Faça benchmark de desempenho de agent lado a lado
+- `security-review` — Auditoria de segurança para código e configuração
+- `autonomous-agent-harness` — Configure operações de agent autônomo
+- `agent-harness-construction` — Construa harnesses de agent do zero

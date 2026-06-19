@@ -1,43 +1,43 @@
-# Hierarchical Injectors
+# Injetores Hierárquicos
 
-Angular's dependency injection system is hierarchical, meaning services can be scoped to different levels of the application.
+O sistema de injeção de dependência do Angular é hierárquico, ou seja, os serviços podem ter escopo em diferentes níveis da aplicação.
 
-## Types of Injector Hierarchies
+## Tipos de Hierarquias de Injetores
 
-1. **`EnvironmentInjector` Hierarchy**: Configured via `@Injectable({ providedIn: 'root' })` or `ApplicationConfig.providers` during bootstrap. These are global singletons.
-2. **`ElementInjector` Hierarchy**: Created implicitly at each DOM element. Configured via the `providers` or `viewProviders` array in `@Component()` or `@Directive()`.
+1. **Hierarquia `EnvironmentInjector`**: configurada via `@Injectable({ providedIn: 'root' })` ou `ApplicationConfig.providers` durante o bootstrap. Estes são singletons globais.
+2. **Hierarquia `ElementInjector`**: criada implicitamente em cada elemento do DOM. Configurada via o array `providers` ou `viewProviders` em `@Component()` ou `@Directive()`.
 
-## Resolution Rules
+## Regras de Resolução
 
-When a dependency is requested, Angular resolves it in two phases:
+Quando uma dependência é solicitada, o Angular a resolve em duas fases:
 
-1. It searches up the **`ElementInjector`** tree, starting from the requesting component/directive up to the root element.
-2. If not found, it searches the **`EnvironmentInjector`** tree, starting from the closest environment injector up to the root.
-3. If still not found, it throws an error (unless marked optional).
+1. Ele busca subindo a árvore do **`ElementInjector`**, começando do componente/diretiva solicitante até o elemento raiz.
+2. Se não for encontrada, ele busca na árvore do **`EnvironmentInjector`**, começando do injetor de ambiente mais próximo até a raiz.
+3. Se ainda assim não for encontrada, ele lança um erro (a menos que esteja marcada como opcional).
 
-## Resolution Modifiers
+## Modificadores de Resolução
 
-You can alter how Angular searches for a dependency using the options object in `inject()`:
+Você pode alterar como o Angular busca por uma dependência usando o objeto de opções em `inject()`:
 
-- **`optional`**: If the dependency isn't found, return `null` instead of throwing an error.
-- **`self`**: Only check the current `ElementInjector`. Do not look up the parent tree.
-- **`skipSelf`**: Start searching in the parent `ElementInjector`, skipping the current element.
-- **`host`**: Stop searching when reaching the host component's view boundary.
+- **`optional`**: se a dependência não for encontrada, retorna `null` em vez de lançar um erro.
+- **`self`**: verifica apenas o `ElementInjector` atual. Não busca na árvore pai.
+- **`skipSelf`**: começa a busca no `ElementInjector` pai, pulando o elemento atual.
+- **`host`**: interrompe a busca ao atingir o limite da view do componente host.
 
 ```ts
 @Component({...})
 export class Example {
-  // Returns null if not found instead of crashing
+  // Retorna null se não for encontrada, em vez de quebrar
   optionalService = inject(MyService, { optional: true });
 
-  // Skips this component's providers, looks at parent
+  // Pula os provedores deste componente, olha no pai
   parentService = inject(ParentService, { skipSelf: true });
 }
 ```
 
 ## `providers` vs `viewProviders`
 
-When providing a service at the component level:
+Ao fornecer um serviço no nível do componente:
 
-- **`providers`**: The service is available to the component, its view (template), and any **projected content** (`<ng-content>`).
-- **`viewProviders`**: The service is available to the component and its view, but **NOT** to projected content. Use this to isolate services from content passed in by consumers.
+- **`providers`**: o serviço fica disponível para o componente, sua view (template) e qualquer **conteúdo projetado** (`<ng-content>`).
+- **`viewProviders`**: o serviço fica disponível para o componente e sua view, mas **NÃO** para o conteúdo projetado. Use isto para isolar serviços do conteúdo passado pelos consumidores.

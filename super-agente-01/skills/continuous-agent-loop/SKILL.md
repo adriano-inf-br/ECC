@@ -1,46 +1,46 @@
 ---
 name: continuous-agent-loop
-description: Patterns for continuous autonomous agent loops with quality gates, evals, and recovery controls.
+description: Padrões para loops de agent autônomos contínuos com portões de qualidade, evals e controles de recuperação.
 metadata:
   origin: ECC
 ---
 
 # Continuous Agent Loop
 
-This is the v1.8+ canonical loop skill name. It supersedes `autonomous-loops` while keeping compatibility for one release.
+Este é o nome canônico da skill de loop na v1.8+. Ele substitui `autonomous-loops` mantendo compatibilidade por uma release.
 
-## Loop Selection Flow
+## Fluxo de Seleção de Loop
 
 ```text
 Start
   |
-  +-- Need strict CI/PR control? -- yes --> continuous-pr
+  +-- Precisa de controle estrito de CI/PR? -- sim --> continuous-pr
   |
-  +-- Need RFC decomposition? -- yes --> rfc-dag
+  +-- Precisa de decomposição de RFC? -- sim --> rfc-dag
   |
-  +-- Need exploratory parallel generation? -- yes --> infinite
+  +-- Precisa de geração paralela exploratória? -- sim --> infinite
   |
-  +-- default --> sequential
+  +-- padrão --> sequential
 ```
 
-## Combined Pattern
+## Padrão Combinado
 
-Recommended production stack:
-1. RFC decomposition (`ralphinho-rfc-pipeline`)
-2. quality gates (`plankton-code-quality` + `/quality-gate`)
-3. eval loop (`eval-harness`)
-4. session persistence (`nanoclaw-repl`)
+Pilha de produção recomendada:
+1. decomposição de RFC (`ralphinho-rfc-pipeline`)
+2. portões de qualidade (`plankton-code-quality` + `/quality-gate`)
+3. loop de eval (`eval-harness`)
+4. persistência de sessão (`nanoclaw-repl`)
 
-## Failure Modes
+## Modos de Falha
 
-- loop churn without measurable progress
-- repeated retries with same root cause
-- merge queue stalls
-- cost drift from unbounded escalation
+- agitação do loop sem progresso mensurável
+- retentativas repetidas com a mesma causa raiz
+- travamentos na fila de merge
+- desvio de custo por escalonamento sem limites
 
-## Recovery
+## Recuperação
 
-- freeze loop
-- run `/harness-audit`
-- reduce scope to failing unit
-- replay with explicit acceptance criteria
+- congele o loop
+- execute `/harness-audit`
+- reduza o escopo à unidade que está falhando
+- reproduza com critérios de aceitação explícitos

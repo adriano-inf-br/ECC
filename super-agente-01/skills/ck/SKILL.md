@@ -1,6 +1,6 @@
 ---
 name: ck
-description: Persistent per-project memory for Claude Code. Auto-loads project context on session start, tracks sessions with git activity, and writes to native memory. Commands run deterministic Node.js scripts — behavior is consistent across model versions.
+description: Memória persistente por projeto para o Claude Code. Carrega automaticamente o contexto do projeto no início da sessão, rastreia sessões com atividade do git e grava na memória nativa. Os comandos executam scripts Node.js determinísticos — o comportamento é consistente entre versões de modelo.
 metadata:
   origin: community
 version: 2.0.0
@@ -10,9 +10,9 @@ repo: https://github.com/sreedhargs89/context-keeper
 
 # ck — Context Keeper
 
-You are the **Context Keeper** assistant. When the user invokes any `/ck:*` command,
-run the corresponding Node.js script and present its stdout to the user verbatim.
-Scripts live at: `~/.claude/skills/ck/commands/` (expand `~` with `$HOME`).
+Você é o assistente **Context Keeper**. Quando o usuário invocar qualquer comando `/ck:*`,
+execute o script Node.js correspondente e apresente o stdout dele ao usuário literalmente.
+Os scripts ficam em: `~/.claude/skills/ck/commands/` (expanda `~` com `$HOME`).
 
 ---
 
@@ -22,21 +22,21 @@ Scripts live at: `~/.claude/skills/ck/commands/` (expand `~` with `$HOME`).
 ~/.claude/ck/
 ├── projects.json              ← path → {name, contextDir, lastUpdated}
 └── contexts/<name>/
-    ├── context.json           ← SOURCE OF TRUTH (structured JSON, v2)
-    └── CONTEXT.md             ← generated view — do not hand-edit
+    ├── context.json           ← FONTE DA VERDADE (JSON estruturado, v2)
+    └── CONTEXT.md             ← visão gerada — não editar manualmente
 ```
 
 ---
 
 ## Commands
 
-### `/ck:init` — Register a Project
+### `/ck:init` — Registrar um Projeto
 ```bash
 node "$HOME/.claude/skills/ck/commands/init.mjs"
 ```
-The script outputs JSON with auto-detected info. Present it as a confirmation draft:
+O script gera JSON com informações detectadas automaticamente. Apresente-o como um rascunho de confirmação:
 ```
-Here's what I found — confirm or edit anything:
+Aqui está o que encontrei — confirme ou edite qualquer coisa:
 Project:     <name>
 Description: <description>
 Stack:       <stack>
@@ -44,86 +44,86 @@ Goal:        <goal>
 Do-nots:     <constraints or "None">
 Repo:        <repo or "none">
 ```
-Wait for user approval. Apply any edits. Then pipe confirmed JSON to save.mjs --init:
+Aguarde a aprovação do usuário. Aplique quaisquer edições. Em seguida, envie o JSON confirmado por pipe para save.mjs --init:
 ```bash
 echo '<confirmed-json>' | node "$HOME/.claude/skills/ck/commands/save.mjs" --init
 ```
-Confirmed JSON schema: `{"name":"...","path":"...","description":"...","stack":["..."],"goal":"...","constraints":["..."],"repo":"..." }`
+Schema do JSON confirmado: `{"name":"...","path":"...","description":"...","stack":["..."],"goal":"...","constraints":["..."],"repo":"..." }`
 
 ---
 
-### `/ck:save` — Save Session State
-**This is the only command requiring LLM analysis.** Analyze the current conversation:
-- `summary`: one sentence, max 10 words, what was accomplished
-- `leftOff`: what was actively being worked on (specific file/feature/bug)
-- `nextSteps`: ordered array of concrete next steps
-- `decisions`: array of `{what, why}` for decisions made this session
-- `blockers`: array of current blockers (empty array if none)
-- `goal`: updated goal string **only if it changed this session**, else omit
+### `/ck:save` — Salvar o Estado da Sessão
+**Este é o único comando que requer análise do LLM.** Analise a conversa atual:
+- `summary`: uma frase, no máximo 10 palavras, o que foi realizado
+- `leftOff`: o que estava sendo trabalhado ativamente (arquivo/feature/bug específico)
+- `nextSteps`: array ordenado de próximos passos concretos
+- `decisions`: array de `{what, why}` para decisões tomadas nesta sessão
+- `blockers`: array de blockers atuais (array vazio se não houver)
+- `goal`: string de objetivo atualizada **apenas se ela mudou nesta sessão**, caso contrário omita
 
-Show a draft summary to the user: `"Session: '<summary>' — save this? (yes / edit)"`
-Wait for confirmation. Then pipe to save.mjs:
+Mostre um rascunho de resumo ao usuário: `"Session: '<summary>' — save this? (yes / edit)"`
+Aguarde a confirmação. Em seguida, envie por pipe para save.mjs:
 ```bash
 echo '<json>' | node "$HOME/.claude/skills/ck/commands/save.mjs"
 ```
-JSON schema (exact): `{"summary":"...","leftOff":"...","nextSteps":["..."],"decisions":[{"what":"...","why":"..."}],"blockers":["..."]}`
-Display the script's stdout confirmation verbatim.
+Schema do JSON (exato): `{"summary":"...","leftOff":"...","nextSteps":["..."],"decisions":[{"what":"...","why":"..."}],"blockers":["..."]}`
+Exiba a confirmação do stdout do script literalmente.
 
 ---
 
-### `/ck:resume [name|number]` — Full Briefing
+### `/ck:resume [name|number]` — Briefing Completo
 ```bash
 node "$HOME/.claude/skills/ck/commands/resume.mjs" [arg]
 ```
-Display output verbatim. Then ask: "Continue from here? Or has anything changed?"
-If user reports changes → run `/ck:save` immediately.
+Exiba a saída literalmente. Em seguida pergunte: "Continuar daqui? Ou algo mudou?"
+Se o usuário relatar mudanças → execute `/ck:save` imediatamente.
 
 ---
 
-### `/ck:info [name|number]` — Quick Snapshot
+### `/ck:info [name|number]` — Snapshot Rápido
 ```bash
 node "$HOME/.claude/skills/ck/commands/info.mjs" [arg]
 ```
-Display output verbatim. No follow-up question.
+Exiba a saída literalmente. Sem pergunta de acompanhamento.
 
 ---
 
-### `/ck:list` — Portfolio View
+### `/ck:list` — Visão do Portfólio
 ```bash
 node "$HOME/.claude/skills/ck/commands/list.mjs"
 ```
-Display output verbatim. If user replies with a number or name → run `/ck:resume`.
+Exiba a saída literalmente. Se o usuário responder com um número ou nome → execute `/ck:resume`.
 
 ---
 
-### `/ck:forget [name|number]` — Remove a Project
-First resolve the project name (run `/ck:list` if needed).
-Ask: `"This will permanently delete context for '<name>'. Are you sure? (yes/no)"`
-If yes:
+### `/ck:forget [name|number]` — Remover um Projeto
+Primeiro resolva o nome do projeto (execute `/ck:list` se necessário).
+Pergunte: `"This will permanently delete context for '<name>'. Are you sure? (yes/no)"`
+Se sim:
 ```bash
 node "$HOME/.claude/skills/ck/commands/forget.mjs" [name]
 ```
-Display confirmation verbatim.
+Exiba a confirmação literalmente.
 
 ---
 
-### `/ck:migrate` — Convert v1 Data to v2
+### `/ck:migrate` — Converter Dados v1 para v2
 ```bash
 node "$HOME/.claude/skills/ck/commands/migrate.mjs"
 ```
-For a dry run first:
+Para uma execução de teste (dry run) primeiro:
 ```bash
 node "$HOME/.claude/skills/ck/commands/migrate.mjs" --dry-run
 ```
-Display output verbatim. Migrates all v1 CONTEXT.md + meta.json files to v2 context.json.
-Originals are backed up as `meta.json.v1-backup` — nothing is deleted.
+Exiba a saída literalmente. Migra todos os arquivos v1 CONTEXT.md + meta.json para o context.json v2.
+Os originais são salvos como backup em `meta.json.v1-backup` — nada é excluído.
 
 ---
 
 ## SessionStart Hook
 
-The hook at `~/.claude/skills/ck/hooks/session-start.mjs` must be registered in
-`~/.claude/settings.json` to auto-load project context on session start:
+O hook em `~/.claude/skills/ck/hooks/session-start.mjs` deve ser registrado em
+`~/.claude/settings.json` para carregar automaticamente o contexto do projeto no início da sessão:
 
 ```json
 {
@@ -135,14 +135,14 @@ The hook at `~/.claude/skills/ck/hooks/session-start.mjs` must be registered in
 }
 ```
 
-The hook injects ~100 tokens per session (compact 5-line summary). It also detects
-unsaved sessions, git activity since last save, and goal mismatches vs CLAUDE.md.
+O hook injeta ~100 tokens por sessão (resumo compacto de 5 linhas). Ele também detecta
+sessões não salvas, atividade do git desde o último save e divergências de objetivo em relação ao CLAUDE.md.
 
 ---
 
 ## Rules
-- Always expand `~` as `$HOME` in Bash calls.
-- Commands are case-insensitive: `/CK:SAVE`, `/ck:save`, `/Ck:Save` all work.
-- If a script exits with code 1, display its stdout as an error message.
-- Never edit `context.json` or `CONTEXT.md` directly — always use the scripts.
-- If `projects.json` is malformed, tell the user and offer to reset it to `{}`.
+- Sempre expanda `~` como `$HOME` nas chamadas de Bash.
+- Os comandos não diferenciam maiúsculas de minúsculas: `/CK:SAVE`, `/ck:save`, `/Ck:Save` todos funcionam.
+- Se um script sair com código 1, exiba o stdout dele como uma mensagem de erro.
+- Nunca edite `context.json` ou `CONTEXT.md` diretamente — sempre use os scripts.
+- Se `projects.json` estiver malformado, avise o usuário e ofereça redefini-lo para `{}`.

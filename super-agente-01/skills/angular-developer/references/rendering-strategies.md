@@ -1,44 +1,44 @@
-# Rendering Strategies
+# Estratégias de Renderização
 
-Angular supports multiple rendering strategies to optimize for SEO, performance, and interactivity.
+O Angular suporta múltiplas estratégias de renderização para otimizar SEO, performance e interatividade.
 
-## 1. Client-Side Rendering (CSR)
+## 1. Renderização no Cliente (CSR)
 
-**Default Strategy.** Content is rendered entirely in the browser.
+**Estratégia Padrão.** O conteúdo é renderizado inteiramente no navegador.
 
-- **Use case**: Interactive dashboards, internal tools.
-- **Pros**: Simplest to configure, low server cost.
-- **Cons**: Poor SEO, slower initial content visibility (must wait for JS).
+- **Caso de uso**: Dashboards interativos, ferramentas internas.
+- **Prós**: Mais simples de configurar, baixo custo de servidor.
+- **Contras**: SEO ruim, visibilidade de conteúdo inicial mais lenta (precisa aguardar o JS).
 
-## 2. Static Site Generation (SSG / Prerendering)
+## 2. Geração de Site Estático (SSG / Prerendering)
 
-Content is pre-rendered into static HTML files at **build time**.
+O conteúdo é pré-renderizado em arquivos HTML estáticos em **tempo de build**.
 
-- **Use case**: Marketing pages, blogs, documentation.
-- **Pros**: Fastest initial load, excellent SEO, CDN-friendly.
-- **Cons**: Requires rebuild for content updates, not for user-specific data.
+- **Caso de uso**: Páginas de marketing, blogs, documentação.
+- **Prós**: Carregamento inicial mais rápido, excelente SEO, compatível com CDN.
+- **Contras**: Requer rebuild para atualizações de conteúdo, não serve para dados específicos do usuário.
 
-## 3. Server-Side Rendering (SSR)
+## 3. Renderização no Servidor (SSR)
 
-Content is rendered on the server for the **initial request**. Subsequent navigations happen client-side (SPA style).
+O conteúdo é renderizado no servidor para a **requisição inicial**. Navegações subsequentes ocorrem no cliente (estilo SPA).
 
-- **Use case**: E-commerce product pages, news sites, personalized dynamic content.
-- **Pros**: Excellent SEO, fast initial content visibility.
-- **Cons**: Requires a server (Node.js), higher server cost/latency.
+- **Caso de uso**: Páginas de produto de e-commerce, sites de notícias, conteúdo dinâmico personalizado.
+- **Prós**: Excelente SEO, visibilidade rápida do conteúdo inicial.
+- **Contras**: Requer um servidor (Node.js), maior custo/latência de servidor.
 
-## Hydration
+## Hidratação (Hydration)
 
-Hydration is the process of making server-rendered HTML interactive in the browser.
+A hidratação é o processo de tornar o HTML renderizado no servidor interativo no navegador.
 
-- **Full Hydration**: The entire app becomes interactive at once.
-- **Incremental Hydration**: (Advanced) Parts become interactive as needed using `@defer` blocks.
-- **Event Replay**: Captures and replays user events that happened before hydration finished.
+- **Hidratação Completa**: A aplicação inteira se torna interativa de uma vez.
+- **Hidratação Incremental**: (Avançado) Partes se tornam interativas conforme necessário usando blocos `@defer`.
+- **Event Replay**: Captura e reproduz eventos do usuário que ocorreram antes de a hidratação terminar.
 
-## Decision Matrix
+## Matriz de Decisão
 
-| Requirement                     | Strategy             |
+| Requisito                       | Estratégia           |
 | :------------------------------ | :------------------- |
-| **SEO + Static Content**        | SSG                  |
-| **SEO + Dynamic Content**       | SSR                  |
-| **No SEO + High Interactivity** | CSR                  |
-| **Mixed**                       | Hybrid (Route-based) |
+| **SEO + Conteúdo Estático**     | SSG                  |
+| **SEO + Conteúdo Dinâmico**     | SSR                  |
+| **Sem SEO + Alta Interatividade** | CSR                |
+| **Misto**                       | Híbrido (por rota)   |

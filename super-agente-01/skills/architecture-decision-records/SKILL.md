@@ -1,110 +1,110 @@
 ---
 name: architecture-decision-records
-description: Capture architectural decisions made during Claude Code sessions as structured ADRs. Auto-detects decision moments, records context, alternatives considered, and rationale. Maintains an ADR log so future developers understand why the codebase is shaped the way it is.
+description: Capture decisões de arquitetura tomadas durante sessões do Claude Code como ADRs estruturados. Detecta automaticamente momentos de decisão, registra contexto, alternativas consideradas e justificativa. Mantém um log de ADRs para que futuros desenvolvedores entendam por que o codebase tem a forma que tem.
 metadata:
   origin: ECC
 ---
 
 # Architecture Decision Records
 
-Capture architectural decisions as they happen during coding sessions. Instead of decisions living only in Slack threads, PR comments, or someone's memory, this skill produces structured ADR documents that live alongside the code.
+Capture decisões de arquitetura conforme elas acontecem durante as sessões de código. Em vez de as decisões viverem apenas em threads do Slack, comentários de PR ou na memória de alguém, esta Skill produz documentos ADR estruturados que vivem ao lado do código.
 
 ## When to Activate
 
-- User explicitly says "let's record this decision" or "ADR this"
-- User chooses between significant alternatives (framework, library, pattern, database, API design)
-- User says "we decided to..." or "the reason we're doing X instead of Y is..."
-- User asks "why did we choose X?" (read existing ADRs)
-- During planning phases when architectural trade-offs are discussed
+- O usuário diz explicitamente "vamos registrar esta decisão" ou "faça um ADR disso"
+- O usuário escolhe entre alternativas significativas (framework, biblioteca, padrão, banco de dados, design de API)
+- O usuário diz "decidimos por..." ou "a razão de fazermos X em vez de Y é..."
+- O usuário pergunta "por que escolhemos X?" (ler ADRs existentes)
+- Durante fases de planejamento quando trade-offs de arquitetura são discutidos
 
-## ADR Format
+## Formato de ADR
 
-Use the lightweight ADR format proposed by Michael Nygard, adapted for AI-assisted development:
+Use o formato leve de ADR proposto por Michael Nygard, adaptado para desenvolvimento assistido por IA:
 
 ```markdown
-# ADR-NNNN: [Decision Title]
+# ADR-NNNN: [Título da Decisão]
 
 **Date**: YYYY-MM-DD
 **Status**: proposed | accepted | deprecated | superseded by ADR-NNNN
-**Deciders**: [who was involved]
+**Deciders**: [quem esteve envolvido]
 
 ## Context
 
-What is the issue that we're seeing that is motivating this decision or change?
+Qual é o problema que estamos vendo que está motivando esta decisão ou mudança?
 
-[2-5 sentences describing the situation, constraints, and forces at play]
+[2-5 frases descrevendo a situação, restrições e forças em jogo]
 
 ## Decision
 
-What is the change that we're proposing and/or doing?
+Qual é a mudança que estamos propondo e/ou fazendo?
 
-[1-3 sentences stating the decision clearly]
+[1-3 frases declarando a decisão com clareza]
 
 ## Alternatives Considered
 
-### Alternative 1: [Name]
-- **Pros**: [benefits]
-- **Cons**: [drawbacks]
-- **Why not**: [specific reason this was rejected]
+### Alternative 1: [Nome]
+- **Pros**: [benefícios]
+- **Cons**: [desvantagens]
+- **Why not**: [razão específica pela qual foi rejeitada]
 
-### Alternative 2: [Name]
-- **Pros**: [benefits]
-- **Cons**: [drawbacks]
-- **Why not**: [specific reason this was rejected]
+### Alternative 2: [Nome]
+- **Pros**: [benefícios]
+- **Cons**: [desvantagens]
+- **Why not**: [razão específica pela qual foi rejeitada]
 
 ## Consequences
 
-What becomes easier or more difficult to do because of this change?
+O que se torna mais fácil ou mais difícil de fazer por causa desta mudança?
 
 ### Positive
-- [benefit 1]
-- [benefit 2]
+- [benefício 1]
+- [benefício 2]
 
 ### Negative
 - [trade-off 1]
 - [trade-off 2]
 
 ### Risks
-- [risk and mitigation]
+- [risco e mitigação]
 ```
 
 ## Workflow
 
-### Capturing a New ADR
+### Capturando um Novo ADR
 
-When a decision moment is detected:
+Quando um momento de decisão é detectado:
 
-1. **Initialize (first time only)** — if `docs/adr/` does not exist, ask the user for confirmation before creating the directory, a `README.md` seeded with the index table header (see ADR Index Format below), and a blank `template.md` for manual use. Do not create files without explicit consent.
-2. **Identify the decision** — extract the core architectural choice being made
-3. **Gather context** — what problem prompted this? What constraints exist?
-4. **Document alternatives** — what other options were considered? Why were they rejected?
-5. **State consequences** — what are the trade-offs? What becomes easier/harder?
-6. **Assign a number** — scan existing ADRs in `docs/adr/` and increment
-7. **Confirm and write** — present the draft ADR to the user for review. Only write to `docs/adr/NNNN-decision-title.md` after explicit approval. If the user declines, discard the draft without writing any files.
-8. **Update the index** — append to `docs/adr/README.md`
+1. **Inicialize (apenas na primeira vez)** — se `docs/adr/` não existir, peça confirmação ao usuário antes de criar o diretório, um `README.md` preenchido com o cabeçalho da tabela de índice (veja Formato do Índice de ADR abaixo) e um `template.md` em branco para uso manual. Não crie arquivos sem consentimento explícito.
+2. **Identifique a decisão** — extraia a escolha de arquitetura central que está sendo feita
+3. **Reúna o contexto** — qual problema motivou isto? Quais restrições existem?
+4. **Documente as alternativas** — quais outras opções foram consideradas? Por que foram rejeitadas?
+5. **Declare as consequências** — quais são os trade-offs? O que fica mais fácil/mais difícil?
+6. **Atribua um número** — varra os ADRs existentes em `docs/adr/` e incremente
+7. **Confirme e escreva** — apresente o rascunho do ADR ao usuário para revisão. Só escreva em `docs/adr/NNNN-decision-title.md` após aprovação explícita. Se o usuário recusar, descarte o rascunho sem escrever nenhum arquivo.
+8. **Atualize o índice** — adicione ao `docs/adr/README.md`
 
-### Reading Existing ADRs
+### Lendo ADRs Existentes
 
-When a user asks "why did we choose X?":
+Quando um usuário pergunta "por que escolhemos X?":
 
-1. Check if `docs/adr/` exists — if not, respond: "No ADRs found in this project. Would you like to start recording architectural decisions?"
-2. If it exists, scan `docs/adr/README.md` index for relevant entries
-3. Read matching ADR files and present the Context and Decision sections
-4. If no match is found, respond: "No ADR found for that decision. Would you like to record one now?"
+1. Verifique se `docs/adr/` existe — caso contrário, responda: "Nenhum ADR encontrado neste projeto. Você gostaria de começar a registrar decisões de arquitetura?"
+2. Se existir, varra o índice em `docs/adr/README.md` em busca de entradas relevantes
+3. Leia os arquivos ADR correspondentes e apresente as seções Context e Decision
+4. Se nenhuma correspondência for encontrada, responda: "Nenhum ADR encontrado para essa decisão. Você gostaria de registrar um agora?"
 
-### ADR Directory Structure
+### Estrutura do Diretório de ADR
 
 ```
 docs/
 └── adr/
-    ├── README.md              ← index of all ADRs
+    ├── README.md              ← índice de todos os ADRs
     ├── 0001-use-nextjs.md
     ├── 0002-postgres-over-mongo.md
     ├── 0003-rest-over-graphql.md
-    └── template.md            ← blank template for manual use
+    └── template.md            ← template em branco para uso manual
 ```
 
-### ADR Index Format
+### Formato do Índice de ADR
 
 ```markdown
 # Architecture Decision Records
@@ -116,65 +116,65 @@ docs/
 | [0003](0003-rest-over-graphql.md) | REST API over GraphQL | accepted | 2026-02-01 |
 ```
 
-## Decision Detection Signals
+## Sinais de Detecção de Decisão
 
-Watch for these patterns in conversation that indicate an architectural decision:
+Fique atento a estes padrões na conversa que indicam uma decisão de arquitetura:
 
-**Explicit signals**
-- "Let's go with X"
-- "We should use X instead of Y"
-- "The trade-off is worth it because..."
-- "Record this as an ADR"
+**Sinais explícitos**
+- "Vamos com X"
+- "Devíamos usar X em vez de Y"
+- "O trade-off vale a pena porque..."
+- "Registre isto como um ADR"
 
-**Implicit signals** (suggest recording an ADR — do not auto-create without user confirmation)
-- Comparing two frameworks or libraries and reaching a conclusion
-- Making a database schema design choice with stated rationale
-- Choosing between architectural patterns (monolith vs microservices, REST vs GraphQL)
-- Deciding on authentication/authorization strategy
-- Selecting deployment infrastructure after evaluating alternatives
+**Sinais implícitos** (sugira registrar um ADR — não crie automaticamente sem confirmação do usuário)
+- Comparar dois frameworks ou bibliotecas e chegar a uma conclusão
+- Fazer uma escolha de design de schema de banco de dados com justificativa declarada
+- Escolher entre padrões de arquitetura (monolito vs microsserviços, REST vs GraphQL)
+- Decidir sobre a estratégia de autenticação/autorização
+- Selecionar infraestrutura de deploy após avaliar alternativas
 
-## What Makes a Good ADR
+## O Que Faz um Bom ADR
 
-### Do
-- **Be specific** — "Use Prisma ORM" not "use an ORM"
-- **Record the why** — the rationale matters more than the what
-- **Include rejected alternatives** — future developers need to know what was considered
-- **State consequences honestly** — every decision has trade-offs
-- **Keep it short** — an ADR should be readable in 2 minutes
-- **Use present tense** — "We use X" not "We will use X"
+### Faça
+- **Seja específico** — "Use o ORM Prisma", não "use um ORM"
+- **Registre o porquê** — a justificativa importa mais do que o quê
+- **Inclua as alternativas rejeitadas** — futuros desenvolvedores precisam saber o que foi considerado
+- **Declare as consequências honestamente** — toda decisão tem trade-offs
+- **Mantenha curto** — um ADR deve ser legível em 2 minutos
+- **Use o tempo presente** — "Nós usamos X", não "Nós usaremos X"
 
-### Don't
-- Record trivial decisions — variable naming or formatting choices don't need ADRs
-- Write essays — if the context section exceeds 10 lines, it's too long
-- Omit alternatives — "we just picked it" is not a valid rationale
-- Backfill without marking it — if recording a past decision, note the original date
-- Let ADRs go stale — superseded decisions should reference their replacement
+### Não Faça
+- Registrar decisões triviais — nomenclatura de variáveis ou escolhas de formatação não precisam de ADRs
+- Escrever ensaios — se a seção de contexto exceder 10 linhas, está longa demais
+- Omitir alternativas — "a gente só escolheu" não é uma justificativa válida
+- Preencher retroativamente sem marcar isso — se registrar uma decisão passada, anote a data original
+- Deixar os ADRs ficarem obsoletos — decisões substituídas devem referenciar sua substituta
 
-## ADR Lifecycle
+## Ciclo de Vida do ADR
 
 ```
 proposed → accepted → [deprecated | superseded by ADR-NNNN]
 ```
 
-- **proposed**: decision is under discussion, not yet committed
-- **accepted**: decision is in effect and being followed
-- **deprecated**: decision is no longer relevant (e.g., feature removed)
-- **superseded**: a newer ADR replaces this one (always link the replacement)
+- **proposed**: a decisão está em discussão, ainda não confirmada
+- **accepted**: a decisão está em vigor e sendo seguida
+- **deprecated**: a decisão não é mais relevante (ex.: funcionalidade removida)
+- **superseded**: um ADR mais novo substitui este (sempre vincule a substituta)
 
-## Categories of Decisions Worth Recording
+## Categorias de Decisões que Valem Registro
 
-| Category | Examples |
+| Categoria | Exemplos |
 |----------|---------|
-| **Technology choices** | Framework, language, database, cloud provider |
-| **Architecture patterns** | Monolith vs microservices, event-driven, CQRS |
-| **API design** | REST vs GraphQL, versioning strategy, auth mechanism |
-| **Data modeling** | Schema design, normalization decisions, caching strategy |
-| **Infrastructure** | Deployment model, CI/CD pipeline, monitoring stack |
-| **Security** | Auth strategy, encryption approach, secret management |
-| **Testing** | Test framework, coverage targets, E2E vs integration balance |
-| **Process** | Branching strategy, review process, release cadence |
+| **Escolhas de tecnologia** | Framework, linguagem, banco de dados, provedor de nuvem |
+| **Padrões de arquitetura** | Monolito vs microsserviços, orientado a eventos, CQRS |
+| **Design de API** | REST vs GraphQL, estratégia de versionamento, mecanismo de auth |
+| **Modelagem de dados** | Design de schema, decisões de normalização, estratégia de cache |
+| **Infraestrutura** | Modelo de deploy, pipeline de CI/CD, stack de monitoramento |
+| **Segurança** | Estratégia de auth, abordagem de criptografia, gestão de segredos |
+| **Testes** | Framework de teste, metas de cobertura, equilíbrio E2E vs integração |
+| **Processo** | Estratégia de branching, processo de revisão, cadência de releases |
 
-## Integration with Other Skills
+## Integração com Outras Skills
 
-- **Planner agent**: when the planner proposes architecture changes, suggest creating an ADR
-- **Code reviewer agent**: flag PRs that introduce architectural changes without a corresponding ADR
+- **Agent planner**: quando o planner propõe mudanças de arquitetura, sugira criar um ADR
+- **Agent code reviewer**: sinalize PRs que introduzem mudanças de arquitetura sem um ADR correspondente

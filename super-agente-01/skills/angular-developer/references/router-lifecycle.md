@@ -1,20 +1,20 @@
-# Router Lifecycle and Events
+# Ciclo de Vida e Eventos do Router
 
-Angular Router emits events through the `Router.events` observable, allowing you to track the navigation lifecycle from start to finish.
+O Angular Router emite eventos através do observable `Router.events`, permitindo que você rastreie o ciclo de vida da navegação do início ao fim.
 
-## Common Router Events (Chronological)
+## Eventos Comuns do Router (Cronológicos)
 
-1. **`NavigationStart`**: Navigation begins.
-2. **`RoutesRecognized`**: Router matches the URL to a route.
-3. **`GuardsCheckStart` / `End`**: Evaluation of `canActivate`, `canMatch`, etc.
-4. **`ResolveStart` / `End`**: Data resolution phase (fetching data via resolvers).
-5. **`NavigationEnd`**: Navigation completed successfully.
-6. **`NavigationCancel`**: Navigation canceled (e.g., guard returned `false`).
-7. **`NavigationError`**: Navigation failed (e.g., error in resolver).
+1. **`NavigationStart`**: A navegação começa.
+2. **`RoutesRecognized`**: O router corresponde a URL a uma rota.
+3. **`GuardsCheckStart` / `End`**: Avaliação de `canActivate`, `canMatch`, etc.
+4. **`ResolveStart` / `End`**: Fase de resolução de dados (buscando dados via resolvers).
+5. **`NavigationEnd`**: A navegação foi concluída com sucesso.
+6. **`NavigationCancel`**: Navegação cancelada (por exemplo, guard retornou `false`).
+7. **`NavigationError`**: A navegação falhou (por exemplo, erro em um resolver).
 
-## Subscribing to Events
+## Inscrevendo-se nos Eventos
 
-Inject the `Router` and filter the `events` observable.
+Injete o `Router` e filtre o observable `events`.
 
 ```ts
 import {Router, NavigationStart, NavigationEnd} from '@angular/router';
@@ -30,16 +30,16 @@ export class MyService {
 }
 ```
 
-## Debugging
+## Depuração
 
-Enable detailed console logging of all routing events during application bootstrap.
+Habilite o log detalhado no console de todos os eventos de roteamento durante o bootstrap da aplicação.
 
 ```ts
 provideRouter(routes, withDebugTracing());
 ```
 
-## Common Use Cases
+## Casos de Uso Comuns
 
-- **Loading Indicators**: Show a spinner when `NavigationStart` fires and hide it on `NavigationEnd`/`Cancel`/`Error`.
-- **Analytics**: Track page views by listening for `NavigationEnd`.
-- **Scroll Management**: Respond to `Scroll` events for custom scroll behavior.
+- **Indicadores de Carregamento**: Mostre um spinner quando `NavigationStart` for disparado e oculte-o em `NavigationEnd`/`Cancel`/`Error`.
+- **Analytics**: Rastreie visualizações de página escutando `NavigationEnd`.
+- **Gerenciamento de Rolagem**: Responda a eventos `Scroll` para comportamento de rolagem personalizado.

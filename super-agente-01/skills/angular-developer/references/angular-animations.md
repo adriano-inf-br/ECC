@@ -1,17 +1,17 @@
 # Angular Animations
 
-When animating elements in Angular, **first analyze the project's Angular version** in `package.json`.
-For modern applications (**Angular v20.2 and above**), prefer using native CSS with `animate.enter` and `animate.leave`. For older applications, you may need to use the deprecated `@angular/animations` package.
+Ao animar elementos no Angular, **primeiro analise a versão do Angular do projeto** no `package.json`.
+Para aplicações modernas (**Angular v20.2 e acima**), prefira usar CSS nativo com `animate.enter` e `animate.leave`. Para aplicações mais antigas, você pode precisar usar o pacote depreciado `@angular/animations`.
 
-## 1. Native CSS Animations (v20.2+ Recommended)
+## 1. Animações com CSS Nativo (Recomendado para v20.2+)
 
-Modern Angular provides `animate.enter` and `animate.leave` to animate elements as they enter or leave the DOM. They apply CSS classes at the appropriate times.
+O Angular moderno fornece `animate.enter` e `animate.leave` para animar elementos à medida que entram ou saem do DOM. Eles aplicam classes CSS nos momentos apropriados.
 
-### `animate.enter` and `animate.leave`
+### `animate.enter` e `animate.leave`
 
-Use these directly on elements to apply CSS classes during the enter or leave phase. Angular automatically removes the enter classes when the animation completes. For `animate.leave`, Angular waits for the animation to finish before removing the element from the DOM.
+Use-os diretamente nos elementos para aplicar classes CSS durante a fase de entrada ou de saída. O Angular remove automaticamente as classes de entrada quando a animação termina. Para `animate.leave`, o Angular aguarda a conclusão da animação antes de remover o elemento do DOM.
 
-`animate.enter` example:
+Exemplo de `animate.enter`:
 
 ```html
 @if (isShown()) {
@@ -22,7 +22,7 @@ Use these directly on elements to apply CSS classes during the enter or leave ph
 ```
 
 ```css
-/* Ensure you have a starting style if using transitions instead of keyframes */
+/* Garanta que você tenha um estilo inicial se usar transitions em vez de keyframes */
 .enter-container {
   border: 1px solid #dddddd;
   margin-top: 1em;
@@ -48,11 +48,11 @@ Use these directly on elements to apply CSS classes during the enter or leave ph
 }
 ```
 
-_Note: `animate.leave` may be added to child elements being removed._
+_Nota: `animate.leave` pode ser adicionado a elementos filhos que estão sendo removidos._
 
-### Event Bindings and Third-party Libraries
+### Event Bindings e Bibliotecas de Terceiros
 
-You can bind to `(animate.enter)` and `(animate.leave)` to call functions or use JS libraries like GSAP.
+Você pode fazer binding em `(animate.enter)` e `(animate.leave)` para chamar funções ou usar bibliotecas JS como GSAP.
 
 ```html
 @if(show()) {
@@ -64,19 +64,19 @@ You can bind to `(animate.enter)` and `(animate.leave)` to call functions or use
 import { AnimationCallbackEvent } from '@angular/core';
 
 onLeave(event: AnimationCallbackEvent) {
-  // Custom animation logic here
-  // CRITICAL: You MUST call animationComplete() when done so Angular removes the element!
+  // Lógica de animação customizada aqui
+  // CRÍTICO: você DEVE chamar animationComplete() ao terminar para que o Angular remova o elemento!
   event.animationComplete();
 }
 ```
 
-## 2. Advanced CSS Animations
+## 2. Animações CSS Avançadas
 
-CSS offers robust tools for advanced animation sequences.
+O CSS oferece ferramentas robustas para sequências de animação avançadas.
 
-### Animating State and Styles
+### Animando Estado e Estilos
 
-Toggle CSS classes on elements using property binding to trigger transitions.
+Alterne classes CSS nos elementos usando property binding para disparar transitions.
 
 ```html
 <div [class.open]="isOpen">...</div>
@@ -92,9 +92,9 @@ div.open {
 }
 ```
 
-### Animating Auto Height
+### Animando Altura Automática
 
-You can use `css-grid` to animate to auto height.
+Você pode usar `css-grid` para animar até a altura automática.
 
 ```css
 .container {
@@ -110,27 +110,27 @@ You can use `css-grid` to animate to auto height.
 }
 ```
 
-### Staggering and Parallel Animations
+### Animações Escalonadas e Paralelas
 
-- **Staggering**: Use `animation-delay` or `transition-delay` with different values for items in a list.
-- **Parallel**: Apply multiple animations in the `animation` shorthand (e.g., `animation: rotate 3s, fade-in 2s;`).
+- **Escalonamento (staggering)**: Use `animation-delay` ou `transition-delay` com valores diferentes para os itens de uma lista.
+- **Paralelas**: Aplique múltiplas animações na forma abreviada de `animation` (ex.: `animation: rotate 3s, fade-in 2s;`).
 
-### Programmatic Control
+### Controle Programático
 
-Retrieve animations directly using standard Web APIs:
+Recupere animações diretamente usando as Web APIs padrão:
 
 ```ts
 const animations = element.getAnimations();
 animations.forEach((anim) => anim.pause());
 ```
 
-## 3. Legacy Animations DSL (Deprecated)
+## 3. DSL de Animações Legada (Depreciada)
 
-For older projects (pre v20.2 or where `@angular/animations` is already heavily used), you use the component metadata DSL.
+Para projetos mais antigos (anteriores à v20.2 ou onde `@angular/animations` já é amplamente usado), você usa a DSL dos metadados do componente.
 
-**Important:** Do not mix legacy animations and `animate.enter`/`leave` in the same component.
+**Importante:** Não misture animações legadas e `animate.enter`/`leave` no mesmo componente.
 
-### Setup
+### Configuração
 
 ```ts
 bootstrapApplication(App, {
@@ -138,7 +138,7 @@ bootstrapApplication(App, {
 });
 ```
 
-### Defining Transitions
+### Definindo Transitions
 
 ```ts
 import {signal} from '@angular/core';

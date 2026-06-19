@@ -1,10 +1,10 @@
-# End-to-End (E2E) Testing
+# Testes de Ponta a Ponta (E2E)
 
-Use E2E tests to cover critical user journeys in a real browser. Prefer the framework already configured in the Angular workspace, such as Cypress or Playwright.
+Use testes E2E para cobrir jornadas críticas do usuário em um navegador real. Prefira o framework já configurado no workspace Angular, como Cypress ou Playwright.
 
-## Running E2E Tests
+## Executando Testes E2E
 
-Check `package.json` and `angular.json` for the project-specific command. Common patterns include:
+Verifique `package.json` e `angular.json` para o comando específico do projeto. Padrões comuns incluem:
 
 ```shell
 npm run e2e
@@ -12,15 +12,15 @@ pnpm e2e
 ng e2e
 ```
 
-When the app must be built or served first, use the existing project scripts instead of inventing a parallel test entrypoint.
+Quando a aplicação precisa ser construída ou servida primeiro, use os scripts existentes do projeto em vez de inventar um ponto de entrada de teste paralelo.
 
-## Test Structure
+## Estrutura de Teste
 
-- Keep E2E specs close to the configured test framework, such as `cypress/e2e/` or `e2e/`.
-- Put reusable login/setup helpers in the framework support directory.
-- Keep fixtures explicit and small enough that each test can explain the user state it depends on.
+- Mantenha as specs E2E próximas ao framework de teste configurado, como `cypress/e2e/` ou `e2e/`.
+- Coloque helpers reutilizáveis de login/setup no diretório de suporte do framework.
+- Mantenha fixtures explícitas e pequenas o suficiente para que cada teste possa explicar o estado do usuário do qual depende.
 
-### Cypress Example
+### Exemplo com Cypress
 
 ```typescript
 describe('Login flow', () => {
@@ -34,7 +34,7 @@ describe('Login flow', () => {
 });
 ```
 
-### Playwright Example
+### Exemplo com Playwright
 
 ```typescript
 import {expect, test} from '@playwright/test';
@@ -48,9 +48,9 @@ test('redirects to dashboard on valid credentials', async ({page}) => {
 });
 ```
 
-## Best Practices
+## Boas Práticas
 
-- Prefer accessible locators (`getByRole`, `getByLabel`) or stable `data-*` attributes.
-- Avoid selectors that depend on CSS classes, DOM depth, or incidental text.
-- Wait for specific UI states, routes, or network responses instead of arbitrary sleeps.
-- Keep smoke tests short and reserve full workflow coverage for the highest-value paths.
+- Prefira localizadores acessíveis (`getByRole`, `getByLabel`) ou atributos `data-*` estáveis.
+- Evite seletores que dependam de classes CSS, profundidade do DOM ou texto incidental.
+- Aguarde estados de UI, rotas ou respostas de rede específicos em vez de esperas (sleeps) arbitrárias.
+- Mantenha os testes de smoke curtos e reserve a cobertura completa de fluxo de trabalho para os caminhos de maior valor.

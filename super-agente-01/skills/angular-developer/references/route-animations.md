@@ -1,32 +1,32 @@
-# Route Transition Animations
+# Animações de Transição de Rota
 
-Angular Router supports the browser's **View Transitions API** for smooth visual transitions between routes.
+O Angular Router suporta a **View Transitions API** do navegador para transições visuais suaves entre rotas.
 
-## Enabling View Transitions
+## Habilitando View Transitions
 
-Add `withViewTransitions()` to your router configuration.
+Adicione `withViewTransitions()` à configuração do seu router.
 
 ```ts
 provideRouter(routes, withViewTransitions());
 ```
 
-This is a **progressive enhancement**. In browsers that don't support the API, the router will still work but without the transition animation.
+Isso é um **aprimoramento progressivo**. Em navegadores que não suportam a API, o router continuará funcionando, mas sem a animação de transição.
 
-## How it Works
+## Como Funciona
 
-1. Browser takes a screenshot of the old state.
-2. Router updates the DOM (activates new component).
-3. Browser takes a screenshot of the new state.
-4. Browser animates between the two states.
+1. O navegador tira uma captura de tela do estado antigo.
+2. O router atualiza o DOM (ativa o novo componente).
+3. O navegador tira uma captura de tela do novo estado.
+4. O navegador anima entre os dois estados.
 
-## Customizing with CSS
+## Personalizando com CSS
 
-Transitions are customized in **global CSS files** (not component-scoped CSS).
+As transições são personalizadas em **arquivos CSS globais** (não em CSS com escopo de componente).
 
-Use the `::view-transition-old()` and `::view-transition-new()` pseudo-elements.
+Use os pseudo-elementos `::view-transition-old()` e `::view-transition-new()`.
 
 ```css
-/* Example: Cross-fade + Slide */
+/* Exemplo: Cross-fade + Slide */
 ::view-transition-old(root) {
   animation: 90ms cubic-bezier(0.4, 0, 1, 1) both fade-out;
 }
@@ -35,14 +35,14 @@ Use the `::view-transition-old()` and `::view-transition-new()` pseudo-elements.
 }
 ```
 
-## Advanced Control
+## Controle Avançado
 
-Use `onViewTransitionCreated` to skip transitions or customize behavior based on the navigation context.
+Use `onViewTransitionCreated` para pular transições ou personalizar o comportamento com base no contexto da navegação.
 
 ```ts
 withViewTransitions({
   onViewTransitionCreated: ({transition, from, to}) => {
-    // Skip animation for specific routes
+    // Pular animação para rotas específicas
     if (to.url === '/no-animation') {
       transition.skipTransition();
     }
@@ -50,7 +50,7 @@ withViewTransitions({
 });
 ```
 
-## Best Practices
+## Boas Práticas
 
-- **Global Styles**: Always define transition animations in `styles.css` to avoid view encapsulation issues.
-- **View Transition Names**: Assign unique `view-transition-name` to elements that should transition smoothly across routes (e.g., a header image).
+- **Estilos Globais**: Sempre defina as animações de transição em `styles.css` para evitar problemas de encapsulamento de view.
+- **Nomes de View Transition**: Atribua `view-transition-name` únicos a elementos que devem transicionar suavemente entre rotas (por exemplo, uma imagem de cabeçalho).

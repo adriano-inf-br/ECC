@@ -1,6 +1,6 @@
 # Voice Profile Schema
 
-Use this exact structure when building a reusable voice profile:
+Use exatamente esta estrutura ao construir um perfil de voz reutilizável:
 
 ```text
 VOICE PROFILE
@@ -47,9 +47,9 @@ Channel Notes
 - Email:
 ```
 
-Guidelines:
+Diretrizes:
 
-- Keep the profile concrete and source-backed.
-- Use short bullets, not essay paragraphs.
-- Every banned move should be observable in the source set or explicitly requested by the user.
-- If the source set conflicts, call out the split instead of averaging it into mush.
+- Mantenha o perfil concreto e fundamentado nas fontes.
+- Use bullets curtos, não parágrafos de ensaio.
+- Cada movimento banido deve ser observável no conjunto de fontes ou explicitamente solicitado pelo usuário.
+- Se o conjunto de fontes conflitar, aponte a divisão em vez de fazer uma média que vire um amontoado sem forma.

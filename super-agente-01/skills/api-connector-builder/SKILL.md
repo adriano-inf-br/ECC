@@ -1,6 +1,6 @@
 ---
 name: api-connector-builder
-description: Build a new API connector or provider by matching the target repo's existing integration pattern exactly. Use when adding one more integration without inventing a second architecture.
+description: Construa um novo conector ou provedor de API correspondendo exatamente ao padrão de integração existente no repositório-alvo. Use ao adicionar mais uma integração sem inventar uma segunda arquitetura.
 metadata:
   origin: ECC direct-port adaptation
 version: "1.0.0"
@@ -8,72 +8,72 @@ version: "1.0.0"
 
 # API Connector Builder
 
-Use this when the job is to add a repo-native integration surface, not just a generic HTTP client.
+Use isto quando a tarefa for adicionar uma superfície de integração nativa do repositório, e não apenas um cliente HTTP genérico.
 
-The point is to match the host repository's pattern:
+O objetivo é corresponder ao padrão do repositório hospedeiro:
 
-- connector layout
-- config schema
-- auth model
-- error handling
-- test style
-- registration/discovery wiring
+- layout do conector
+- esquema de configuração
+- modelo de autenticação
+- tratamento de erros
+- estilo de teste
+- ligação de registro/descoberta (registration/discovery)
 
 ## When to Use
 
-- "Build a Jira connector for this project"
-- "Add a Slack provider following the existing pattern"
-- "Create a new integration for this API"
-- "Build a plugin that matches the repo's connector style"
+- "Construa um conector do Jira para este projeto"
+- "Adicione um provedor do Slack seguindo o padrão existente"
+- "Crie uma nova integração para esta API"
+- "Construa um Plugin que corresponda ao estilo de conector do repositório"
 
 ## Guardrails
 
-- do not invent a new integration architecture when the repo already has one
-- do not start from vendor docs alone; start from existing in-repo connectors first
-- do not stop at transport code if the repo expects registry wiring, tests, and docs
-- do not cargo-cult old connectors if the repo has a newer current pattern
+- não invente uma nova arquitetura de integração quando o repositório já tem uma
+- não comece apenas pela documentação do fornecedor; comece primeiro pelos conectores já existentes no repositório
+- não pare no código de transporte se o repositório espera ligação de registro, testes e documentação
+- não faça cargo-cult de conectores antigos se o repositório tem um padrão atual mais recente
 
 ## Workflow
 
-### 1. Learn the house style
+### 1. Aprenda o estilo da casa
 
-Inspect at least 2 existing connectors/providers and map:
+Inspecione pelo menos 2 conectores/provedores existentes e mapeie:
 
-- file layout
-- abstraction boundaries
-- config model
-- retry / pagination conventions
-- registry hooks
-- test fixtures and naming
+- layout de arquivos
+- limites de abstração
+- modelo de configuração
+- convenções de retry / paginação
+- hooks de registro
+- fixtures de teste e nomenclatura
 
-### 2. Narrow the target integration
+### 2. Restrinja a integração-alvo
 
-Define only the surface the repo actually needs:
+Defina apenas a superfície que o repositório realmente precisa:
 
-- auth flow
-- key entities
-- core read/write operations
-- pagination and rate limits
-- webhook or polling model
+- fluxo de autenticação
+- entidades-chave
+- operações principais de leitura/escrita
+- paginação e limites de taxa (rate limits)
+- modelo de webhook ou polling
 
-### 3. Build in repo-native layers
+### 3. Construa em camadas nativas do repositório
 
-Typical slices:
+Fatias típicas:
 
 - config/schema
-- client/transport
-- mapping layer
-- connector/provider entrypoint
-- registration
-- tests
+- cliente/transporte
+- camada de mapeamento
+- ponto de entrada do conector/provedor
+- registro
+- testes
 
-### 4. Validate against the source pattern
+### 4. Valide contra o padrão de origem
 
-The new connector should look obvious in the codebase, not imported from a different ecosystem.
+O novo conector deve parecer óbvio no codebase, e não importado de um ecossistema diferente.
 
 ## Reference Shapes
 
-### Provider-style
+### Estilo Provedor (Provider-style)
 
 ```text
 providers/
@@ -83,7 +83,7 @@ providers/
     config.py
 ```
 
-### Connector-style
+### Estilo Conector (Connector-style)
 
 ```text
 integrations/
@@ -93,7 +93,7 @@ integrations/
     connector.py
 ```
 
-### TypeScript plugin-style
+### Estilo Plugin TypeScript (TypeScript plugin-style)
 
 ```text
 src/integrations/
@@ -106,13 +106,13 @@ src/integrations/
 
 ## Quality Checklist
 
-- [ ] matches an existing in-repo integration pattern
-- [ ] config validation exists
-- [ ] auth and error handling are explicit
-- [ ] pagination/retry behavior follows repo norms
-- [ ] registry/discovery wiring is complete
-- [ ] tests mirror the host repo's style
-- [ ] docs/examples are updated if expected by the repo
+- [ ] corresponde a um padrão de integração já existente no repositório
+- [ ] existe validação de configuração
+- [ ] autenticação e tratamento de erros são explícitos
+- [ ] o comportamento de paginação/retry segue as normas do repositório
+- [ ] a ligação de registro/descoberta está completa
+- [ ] os testes espelham o estilo do repositório hospedeiro
+- [ ] docs/exemplos são atualizados se o repositório esperar isso
 
 ## Related Skills
 

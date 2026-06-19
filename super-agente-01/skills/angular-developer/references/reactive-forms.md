@@ -1,19 +1,19 @@
 # Reactive Forms
 
-Reactive forms provide a model-driven approach to handling form inputs. They are built around observable streams and provide synchronous access to the data model, making them more scalable and testable than template-driven forms.
+Reactive forms oferecem uma abordagem orientada a modelo para lidar com entradas de formulário. São construídos em torno de fluxos observáveis e fornecem acesso síncrono ao modelo de dados, tornando-os mais escaláveis e testáveis do que os template-driven forms.
 
-## Core Classes
+## Classes Centrais
 
-Reactive forms are built using these fundamental classes from `@angular/forms`:
+Reactive forms são construídos usando estas classes fundamentais de `@angular/forms`:
 
-- `FormControl`: Manages the value and validity of an individual input.
-- `FormGroup`: Manages a group of controls (an object-like structure).
-- `FormArray`: Manages a numerically indexed array of controls.
-- `FormBuilder`: A service that provides factory methods for creating control instances.
+- `FormControl`: Gerencia o valor e a validade de uma entrada individual.
+- `FormGroup`: Gerencia um grupo de controles (uma estrutura semelhante a um objeto).
+- `FormArray`: Gerencia um array de controles indexado numericamente.
+- `FormBuilder`: Um serviço que fornece métodos de fábrica para criar instâncias de controle.
 
-## Setup
+## Configuração
 
-Import `ReactiveFormsModule` into your component.
+Importe o `ReactiveFormsModule` no seu componente.
 
 ```ts
 import {Component, inject} from '@angular/core';
@@ -27,7 +27,7 @@ import {ReactiveFormsModule, FormGroup, FormControl, Validators, FormBuilder} fr
 export class ProfileEditor {
   private fb = inject(FormBuilder);
 
-  // Using FormBuilder for concise definition
+  // Usando FormBuilder para uma definição concisa
   profileForm = this.fb.group({
     firstName: ['', Validators.required],
     lastName: [''],
@@ -44,15 +44,15 @@ export class ProfileEditor {
 }
 ```
 
-## Template Binding
+## Vinculação no Template
 
-Use directives to bind the model to the view:
+Use diretivas para vincular o modelo à view:
 
-- `[formGroup]`: Binds a `FormGroup` to a `<form>` or `<div>`.
-- `formControlName`: Binds a named control within a group to an input.
-- `formGroupName`: Binds a nested `FormGroup`.
-- `formArrayName`: Binds a nested `FormArray`.
-- `[formControl]`: Binds a standalone `FormControl`.
+- `[formGroup]`: Vincula um `FormGroup` a um `<form>` ou `<div>`.
+- `formControlName`: Vincula um controle nomeado dentro de um grupo a uma entrada.
+- `formGroupName`: Vincula um `FormGroup` aninhado.
+- `formArrayName`: Vincula um `FormArray` aninhado.
+- `[formControl]`: Vincula um `FormControl` independente.
 
 ```html
 <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
@@ -72,9 +72,9 @@ Use directives to bind the model to the view:
 </form>
 ```
 
-## Accessing Controls
+## Acessando Controles
 
-Use getters for easy access to controls, especially for `FormArray`.
+Use getters para acesso fácil aos controles, especialmente para `FormArray`.
 
 ```ts
 get aliases() {
@@ -86,10 +86,10 @@ addAlias() {
 }
 ```
 
-## Updating Values
+## Atualizando Valores
 
-- `patchValue()`: Updates only the specified properties. Fails silently on structural mismatches.
-- `setValue()`: Replaces the entire model. Strictly enforces the form structure.
+- `patchValue()`: Atualiza apenas as propriedades especificadas. Falha silenciosamente em incompatibilidades estruturais.
+- `setValue()`: Substitui o modelo inteiro. Impõe rigorosamente a estrutura do formulário.
 
 ```ts
 updateProfile() {
@@ -100,9 +100,9 @@ updateProfile() {
 }
 ```
 
-## Unified Change Events
+## Eventos de Mudança Unificados
 
-Modern Angular (v18+) provides a single `events` observable on all controls to track value, status, pristine, touched, reset, and submit events.
+O Angular moderno (v18+) fornece um único observable `events` em todos os controles para rastrear eventos de valor, status, pristine, touched, reset e submit.
 
 ```ts
 import {ValueChangeEvent, StatusChangeEvent} from '@angular/forms';
@@ -114,9 +114,9 @@ this.profileForm.events.subscribe((event) => {
 });
 ```
 
-## Manual State Management
+## Gerenciamento Manual de Estado
 
-- `markAsTouched()` / `markAllAsTouched()`: Useful for showing validation errors on submit.
-- `markAsDirty()` / `markAsPristine()`: Tracks if the value has been modified.
-- `updateValueAndValidity()`: Manually triggers recalculation of value and status.
-- Options `{ emitEvent: false }` or `{ onlySelf: true }` can be passed to most methods to control propagation.
+- `markAsTouched()` / `markAllAsTouched()`: Útil para exibir erros de validação no submit.
+- `markAsDirty()` / `markAsPristine()`: Rastreia se o valor foi modificado.
+- `updateValueAndValidity()`: Dispara manualmente o recálculo de valor e status.
+- As opções `{ emitEvent: false }` ou `{ onlySelf: true }` podem ser passadas para a maioria dos métodos para controlar a propagação.

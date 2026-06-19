@@ -1,16 +1,16 @@
-# Async Reactivity with `resource`
+# Reatividade Assíncrona com `resource`
 
 > [!IMPORTANT]
-> The `resource` API is currently experimental in Angular.
+> A API `resource` é atualmente experimental no Angular.
 
-A `Resource` incorporates asynchronous data fetching into Angular's signal-based reactivity. It executes an async loader function whenever its dependencies change, exposing the status and result as synchronous signals.
+Um `Resource` incorpora a busca de dados assíncrona à reatividade baseada em signals do Angular. Ele executa uma função loader assíncrona sempre que suas dependências mudam, expondo o status e o resultado como signals síncronos.
 
-## Basic Usage
+## Uso Básico
 
-The `resource` function accepts an options object with two main properties:
+A função `resource` aceita um objeto de opções com duas propriedades principais:
 
-1. `params`: A reactive computation (like `computed`). When signals read here change, the resource re-fetches.
-2. `loader`: An async function that fetches data based on the parameters.
+1. `params`: Uma computação reativa (como `computed`). Quando os signals lidos aqui mudam, o resource busca os dados novamente.
+2. `loader`: Uma função assíncrona que busca dados com base nos parâmetros.
 
 ```ts
 import { Component, resource, signal, computed } from '@angular/core';
@@ -20,10 +20,10 @@ export class UserProfile {
   userId = signal('123');
 
   userResource = resource({
-    // Reactively tracking userId
+    // Rastreando userId reativamente
     params: () => ({ id: this.userId() }),
 
-    // Executes whenever params change
+    // Executa sempre que params mudam
     loader: async ({ params, abortSignal }) => {
       const response = await fetch(`/api/users/${params.id}`, { signal: abortSignal });
       if (!response.ok) throw new Error('Network error');
@@ -31,7 +31,7 @@ export class UserProfile {
     }
   });
 
-  // Use the resource value in computed signals
+  // Use o valor do resource em signals computados
   userName = computed(() => {
     if (this.userResource.hasValue()) {
       return this.userResource.value()?.name;
@@ -42,36 +42,36 @@ export class UserProfile {
 }
 ```
 
-## Aborting Requests
+## Abortando Requisições
 
-If the `params` signal changes while a previous loader is still running, the `Resource` will attempt to abort the outstanding request using the provided `abortSignal`. **Always pass `abortSignal` to your `fetch` calls.**
+Se o signal `params` mudar enquanto um loader anterior ainda estiver em execução, o `Resource` tentará abortar a requisição pendente usando o `abortSignal` fornecido. **Sempre passe o `abortSignal` para suas chamadas `fetch`.**
 
-## Reloading Data
+## Recarregando Dados
 
-You can imperatively force the resource to re-run the loader without the params changing by calling `.reload()`.
+Você pode forçar imperativamente o resource a reexecutar o loader sem que os params mudem, chamando `.reload()`.
 
 ```ts
 this.userResource.reload();
 ```
 
-## Resource Status Signals
+## Signals de Status do Resource
 
-The `Resource` object provides several signals to read its current state:
+O objeto `Resource` fornece vários signals para ler seu estado atual:
 
-- `value()`: The resolved data, or `undefined`.
-- `hasValue()`: Type-guard boolean. `true` if a value exists.
-- `isLoading()`: Boolean indicating if the loader is currently running.
-- `error()`: The error thrown by the loader, or `undefined`.
-- `status()`: A string constant representing the exact state (`'idle'`, `'loading'`, `'resolved'`, `'error'`, `'reloading'`, `'local'`).
+- `value()`: Os dados resolvidos, ou `undefined`.
+- `hasValue()`: Booleano de type-guard. `true` se existir um valor.
+- `isLoading()`: Booleano que indica se o loader está em execução no momento.
+- `error()`: O erro lançado pelo loader, ou `undefined`.
+- `status()`: Uma constante de string representando o estado exato (`'idle'`, `'loading'`, `'resolved'`, `'error'`, `'reloading'`, `'local'`).
 
-## Local Mutation
+## Mutação Local
 
-You can optimistically update the resource's value directly. This changes the status to `'local'`.
+Você pode atualizar de forma otimista o valor do resource diretamente. Isso altera o status para `'local'`.
 
 ```ts
 this.userResource.value.set({name: 'Optimistic Update'});
 ```
 
-## Reactive Data Fetching with `httpResource`
+## Busca de Dados Reativa com `httpResource`
 
-If you are using Angular's `HttpClient`, prefer using `httpResource`. It is a specialized wrapper that leverages the Angular HTTP stack (including interceptors) while providing the same signal-based resource API.
+Se você estiver usando o `HttpClient` do Angular, prefira usar `httpResource`. É um wrapper especializado que aproveita a stack HTTP do Angular (incluindo interceptors) ao mesmo tempo em que fornece a mesma API de resource baseada em signals.

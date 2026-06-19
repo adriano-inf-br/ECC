@@ -1,12 +1,12 @@
-# Dependent State with `linkedSignal`
+# Estado Dependente com `linkedSignal`
 
-The `linkedSignal` function lets you create writable state that is intrinsically linked to some other state. It is perfect for state that needs a default value derived from an input or another signal, but can still be independently modified by the user.
+A função `linkedSignal` permite criar estado gravável que está intrinsecamente vinculado a algum outro estado. É perfeita para estado que precisa de um valor padrão derivado de um input ou de outro signal, mas que ainda pode ser modificado de forma independente pelo usuário.
 
-If the source state changes, the `linkedSignal` resets to a new computed value.
+Se o estado de origem mudar, o `linkedSignal` é reiniciado para um novo valor computado.
 
-## Basic Usage
+## Uso Básico
 
-When you only need to recompute based on a source, pass a computation function. `linkedSignal` works like `computed`, but the resulting signal is writable (you can call `.set()` or `.update()` on it).
+Quando você só precisa recomputar com base em uma origem, passe uma função de computação. O `linkedSignal` funciona como `computed`, mas o signal resultante é gravável (você pode chamar `.set()` ou `.update()` nele).
 
 ```ts
 import { Component, signal, linkedSignal } from '@angular/core';
@@ -15,22 +15,22 @@ import { Component, signal, linkedSignal } from '@angular/core';
 export class ShippingMethodPicker {
   shippingOptions = signal(['Ground', 'Air', 'Sea']);
 
-  // Defaults to the first option.
-  // If shippingOptions changes, selectedOption resets to the new first option.
+  // Assume a primeira opção como padrão.
+  // Se shippingOptions mudar, selectedOption reinicia para a nova primeira opção.
   selectedOption = linkedSignal(() => this.shippingOptions()[0]);
 
   changeShipping(index: number) {
-    // We can still manually update this signal!
+    // Ainda podemos atualizar este signal manualmente!
     this.selectedOption.set(this.shippingOptions()[index]);
   }
 }
 ```
 
-## Advanced Usage: Accounting for Previous State
+## Uso Avançado: Considerando o Estado Anterior
 
-Sometimes, when the source state changes, you want to preserve the user's manual selection if it is still valid. To do this, use the object syntax providing `source` and `computation`.
+Às vezes, quando o estado de origem muda, você quer preservar a seleção manual do usuário se ela ainda for válida. Para isso, use a sintaxe de objeto fornecendo `source` e `computation`.
 
-The `computation` function receives the new value of the source, and a `previous` object containing the previous source value and the previous `linkedSignal` value.
+A função `computation` recebe o novo valor da origem e um objeto `previous` contendo o valor anterior da origem e o valor anterior do `linkedSignal`.
 
 ```ts
 interface ShippingMethod { id: number; name: string; }
@@ -44,16 +44,16 @@ export class ShippingMethodPicker {
   selectedOption = linkedSignal<ShippingMethod[], ShippingMethod>({
     source: this.shippingOptions,
     computation: (newOptions, previous) => {
-      // If the newly loaded options still contain the user's previously
-      // selected option, keep it selected. Otherwise, reset to the first option.
+      // Se as opções recém-carregadas ainda contiverem a opção previamente
+      // selecionada pelo usuário, mantenha-a selecionada. Caso contrário, reinicie para a primeira opção.
       return newOptions.find(opt => opt.id === previous?.value.id) ?? newOptions[0];
     }
   });
 }
 ```
 
-### When to use `linkedSignal` vs `computed` vs `effect`
+### Quando usar `linkedSignal` vs `computed` vs `effect`
 
-- Use `computed`: When state is **strictly** derived from other state and should never be manually updated.
-- Use `linkedSignal`: When state is derived from other state, but the user **must** be able to override or manually update it.
-- **Never** use `effect` to sync one piece of state to another. That is an anti-pattern. Use `computed` or `linkedSignal` instead.
+- Use `computed`: quando o estado é **estritamente** derivado de outro estado e nunca deve ser atualizado manualmente.
+- Use `linkedSignal`: quando o estado é derivado de outro estado, mas o usuário **precisa** poder sobrescrevê-lo ou atualizá-lo manualmente.
+- **Nunca** use `effect` para sincronizar uma parte do estado com outra. Isso é um antipadrão. Use `computed` ou `linkedSignal` em vez disso.

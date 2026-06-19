@@ -1,57 +1,57 @@
 ---
 name: android-clean-architecture
-description: Clean Architecture patterns for Android and Kotlin Multiplatform projects — module structure, dependency rules, UseCases, Repositories, and data layer patterns.
+description: Padrões de Clean Architecture para projetos Android e Kotlin Multiplatform — estrutura de módulos, regras de dependência, UseCases, Repositories e padrões da camada de dados.
 metadata:
   origin: ECC
 ---
 
-# Android Clean Architecture
+# Clean Architecture para Android
 
-Clean Architecture patterns for Android and KMP projects. Covers module boundaries, dependency inversion, UseCase/Repository patterns, and data layer design with Room, SQLDelight, and Ktor.
+Padrões de Clean Architecture para projetos Android e KMP. Cobre limites de módulos, inversão de dependência, padrões de UseCase/Repository e design da camada de dados com Room, SQLDelight e Ktor.
 
-## When to Activate
+## Quando Ativar
 
-- Structuring Android or KMP project modules
-- Implementing UseCases, Repositories, or DataSources
-- Designing data flow between layers (domain, data, presentation)
-- Setting up dependency injection with Koin or Hilt
-- Working with Room, SQLDelight, or Ktor in a layered architecture
+- Estruturar módulos de um projeto Android ou KMP
+- Implementar UseCases, Repositories ou DataSources
+- Projetar o fluxo de dados entre camadas (domain, data, presentation)
+- Configurar injeção de dependência com Koin ou Hilt
+- Trabalhar com Room, SQLDelight ou Ktor em uma arquitetura em camadas
 
-## Module Structure
+## Estrutura de Módulos
 
-### Recommended Layout
+### Layout Recomendado
 
 ```
 project/
-├── app/                  # Android entry point, DI wiring, Application class
-├── core/                 # Shared utilities, base classes, error types
-├── domain/               # UseCases, domain models, repository interfaces (pure Kotlin)
-├── data/                 # Repository implementations, DataSources, DB, network
-├── presentation/         # Screens, ViewModels, UI models, navigation
-├── design-system/        # Reusable Compose components, theme, typography
-└── feature/              # Feature modules (optional, for larger projects)
+├── app/                  # Ponto de entrada Android, fiação de DI, classe Application
+├── core/                 # Utilitários compartilhados, classes base, tipos de erro
+├── domain/               # UseCases, modelos de domínio, interfaces de repository (Kotlin puro)
+├── data/                 # Implementações de Repository, DataSources, DB, rede
+├── presentation/         # Telas, ViewModels, modelos de UI, navegação
+├── design-system/        # Componentes Compose reutilizáveis, tema, tipografia
+└── feature/              # Módulos de feature (opcional, para projetos maiores)
     ├── auth/
     ├── settings/
     └── profile/
 ```
 
-### Dependency Rules
+### Regras de Dependência
 
 ```
 app → presentation, domain, data, core
 presentation → domain, design-system, core
 data → domain, core
-domain → core (or no dependencies)
-core → (nothing)
+domain → core (ou nenhuma dependência)
+core → (nada)
 ```
 
-**Critical**: `domain` must NEVER depend on `data`, `presentation`, or any framework. It contains pure Kotlin only.
+**Crítico**: `domain` NUNCA deve depender de `data`, `presentation` ou de qualquer framework. Ele contém apenas Kotlin puro.
 
-## Domain Layer
+## Camada de Domínio
 
-### UseCase Pattern
+### Padrão UseCase
 
-Each UseCase represents one business operation. Use `operator fun invoke` for clean call sites:
+Cada UseCase representa uma operação de negócio. Use `operator fun invoke` para call sites limpos:
 
 ```kotlin
 class GetItemsByCategoryUseCase(
@@ -62,7 +62,7 @@ class GetItemsByCategoryUseCase(
     }
 }
 
-// Flow-based UseCase for reactive streams
+// UseCase baseado em Flow para streams reativos
 class ObserveUserProgressUseCase(
     private val repository: UserRepository
 ) {
@@ -72,9 +72,9 @@ class ObserveUserProgressUseCase(
 }
 ```
 
-### Domain Models
+### Modelos de Domínio
 
-Domain models are plain Kotlin data classes — no framework annotations:
+Os modelos de domínio são data classes Kotlin simples — sem anotações de framework:
 
 ```kotlin
 data class Item(
@@ -89,9 +89,9 @@ data class Item(
 enum class Status { DRAFT, ACTIVE, ARCHIVED }
 ```
 
-### Repository Interfaces
+### Interfaces de Repository
 
-Defined in domain, implemented in data:
+Definidas em domain, implementadas em data:
 
 ```kotlin
 interface ItemRepository {
@@ -101,11 +101,11 @@ interface ItemRepository {
 }
 ```
 
-## Data Layer
+## Camada de Dados
 
-### Repository Implementation
+### Implementação de Repository
 
-Coordinates between local and remote data sources:
+Coordena entre as fontes de dados local e remota:
 
 ```kotlin
 class ItemRepositoryImpl(
@@ -135,12 +135,12 @@ class ItemRepositoryImpl(
 }
 ```
 
-### Mapper Pattern
+### Padrão Mapper
 
-Keep mappers as extension functions near the data models:
+Mantenha os mappers como extension functions próximas aos modelos de dados:
 
 ```kotlin
-// In data layer
+// Na camada de dados
 fun ItemEntity.toDomain() = Item(
     id = id,
     title = title,
@@ -160,7 +160,7 @@ fun ItemDto.toEntity() = ItemEntity(
 )
 ```
 
-### Room Database (Android)
+### Banco de Dados Room (Android)
 
 ```kotlin
 @Entity(tableName = "items")
@@ -210,7 +210,7 @@ observeAll:
 SELECT * FROM ItemEntity;
 ```
 
-### Ktor Network Client (KMP)
+### Cliente de Rede Ktor (KMP)
 
 ```kotlin
 class ItemRemoteDataSource(private val client: HttpClient) {
@@ -222,7 +222,7 @@ class ItemRemoteDataSource(private val client: HttpClient) {
     }
 }
 
-// HttpClient setup with content negotiation
+// Configuração do HttpClient com content negotiation
 val httpClient = HttpClient {
     install(ContentNegotiation) { json(Json { ignoreUnknownKeys = true }) }
     install(Logging) { level = LogLevel.HEADERS }
@@ -230,32 +230,32 @@ val httpClient = HttpClient {
 }
 ```
 
-## Dependency Injection
+## Injeção de Dependência
 
-### Koin (KMP-friendly)
+### Koin (amigável a KMP)
 
 ```kotlin
-// Domain module
+// Módulo de domínio
 val domainModule = module {
     factory { GetItemsByCategoryUseCase(get()) }
     factory { ObserveUserProgressUseCase(get()) }
 }
 
-// Data module
+// Módulo de dados
 val dataModule = module {
     single<ItemRepository> { ItemRepositoryImpl(get(), get()) }
     single { ItemLocalDataSource(get()) }
     single { ItemRemoteDataSource(get()) }
 }
 
-// Presentation module
+// Módulo de apresentação
 val presentationModule = module {
     viewModelOf(::ItemListViewModel)
     viewModelOf(::DashboardViewModel)
 }
 ```
 
-### Hilt (Android-only)
+### Hilt (somente Android)
 
 ```kotlin
 @Module
@@ -271,11 +271,11 @@ class ItemListViewModel @Inject constructor(
 ) : ViewModel()
 ```
 
-## Error Handling
+## Tratamento de Erros
 
-### Result/Try Pattern
+### Padrão Result/Try
 
-Use `Result<T>` or a custom sealed type for error propagation:
+Use `Result<T>` ou um sealed type customizado para a propagação de erros:
 
 ```kotlin
 sealed interface Try<out T> {
@@ -289,7 +289,7 @@ sealed interface AppError {
     data object Unauthorized : AppError
 }
 
-// In ViewModel — map to UI state
+// No ViewModel — mapeia para o estado da UI
 viewModelScope.launch {
     when (val result = getItems(category)) {
         is Try.Success -> _state.update { it.copy(items = result.value, isLoading = false) }
@@ -300,7 +300,7 @@ viewModelScope.launch {
 
 ## Convention Plugins (Gradle)
 
-For KMP projects, use convention plugins to reduce build file duplication:
+Para projetos KMP, use convention plugins para reduzir a duplicação nos arquivos de build:
 
 ```kotlin
 // build-logic/src/main/kotlin/kmp-library.gradle.kts
@@ -312,29 +312,29 @@ kotlin {
     androidTarget()
     iosX64(); iosArm64(); iosSimulatorArm64()
     sourceSets {
-        commonMain.dependencies { /* shared deps */ }
+        commonMain.dependencies { /* dependências compartilhadas */ }
         commonTest.dependencies { implementation(kotlin("test")) }
     }
 }
 ```
 
-Apply in modules:
+Aplique nos módulos:
 
 ```kotlin
 // domain/build.gradle.kts
 plugins { id("kmp-library") }
 ```
 
-## Anti-Patterns to Avoid
+## Anti-Padrões a Evitar
 
-- Importing Android framework classes in `domain` — keep it pure Kotlin
-- Exposing database entities or DTOs to the UI layer — always map to domain models
-- Putting business logic in ViewModels — extract to UseCases
-- Using `GlobalScope` or unstructured coroutines — use `viewModelScope` or structured concurrency
-- Fat repository implementations — split into focused DataSources
-- Circular module dependencies — if A depends on B, B must not depend on A
+- Importar classes do framework Android em `domain` — mantenha-o como Kotlin puro
+- Expor entidades de banco de dados ou DTOs à camada de UI — sempre mapeie para modelos de domínio
+- Colocar lógica de negócio em ViewModels — extraia para UseCases
+- Usar `GlobalScope` ou corrotinas não estruturadas — use `viewModelScope` ou concorrência estruturada
+- Implementações de repository "gordas" — divida em DataSources focados
+- Dependências circulares entre módulos — se A depende de B, B não pode depender de A
 
-## References
+## Referências
 
-See skill: `compose-multiplatform-patterns` for UI patterns.
-See skill: `kotlin-coroutines-flows` for async patterns.
+Veja a skill: `compose-multiplatform-patterns` para padrões de UI.
+Veja a skill: `kotlin-coroutines-flows` para padrões assíncronos.

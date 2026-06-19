@@ -1,49 +1,50 @@
-# Module 70 — Founder Brand vs Organisation Brand
+# Módulo 70 — Marca do Fundador vs Marca da Organização
 
 > **Frameworks:** Enns *Win Without Pitching* · Personal brand vs institutional
 > brand spectrum
 >
-> **Goal:** Map the relationship between the founder's personal reputation and the
-> organisation's brand. Clarify how much equity each carries, what the healthy
-> boundary is, and how to sequence personal vs organisation brand investment.
-> Unresolved founder-brand tension is a common scaling bottleneck.
+> **Objetivo:** Mapear a relação entre a reputação pessoal do fundador e a marca
+> da organização. Esclarecer quanto patrimônio cada uma carrega, qual é o limite
+> saudável e como sequenciar o investimento na marca pessoal vs. na marca da
+> organização. Tensão não resolvida entre marca-fundador é um gargalo comum de
+> escalabilidade.
 
 ---
 
-## Raw
+## Bruto
 
-<!-- Verbatim quotes. -->
+<!-- Citações literais. -->
 
-### Is the founder personally known in the market? How?
+### O fundador é conhecido pessoalmente no mercado? Como?
 
-### Do clients buy the founder or the organisation? (ask for evidence, not instinct)
+### Os clientes compram o fundador ou a organização? (peça evidências, não instinto)
 
-### What happens to the brand if the founder steps back or is unavailable?
+### O que acontece com a marca se o fundador recuar ou ficar indisponível?
 
-### What does the founder want for their personal brand in 3–5 years?
+### O que o fundador quer para a sua marca pessoal em 3–5 anos?
 
-### What does the organisation's brand need to be able to do independently?
+### O que a marca da organização precisa ser capaz de fazer de forma independente?
 
-### Where has the founder-brand been an asset? Where has it been a constraint?
+### Onde a marca-fundador foi um ativo? Onde foi uma restrição?
 
 ---
 
-## Synthesis
+## Síntese
 
-### Current state: where on the spectrum?
+### Estado atual: onde no espectro?
 
 ```
-[Founder IS the brand] ←————————→ [Organisation brand stands alone]
+[Fundador É a marca] ←————————→ [Marca da organização se sustenta sozinha]
          1         2         3         4         5
 ```
-Current position: `___`   Target position (3-year): `___`
+Posição atual: `___`   Posição-alvo (3 anos): `___`
 
-### What the founder brand should own (and keeps owning)
+### O que a marca do fundador deve dominar (e continua dominando)
 
-### What the organisation brand needs to own (independently of the founder)
+### O que a marca da organização precisa dominar (independentemente do fundador)
 
-### Transition plan sketch (if moving from founder-centric toward institutional)
+### Esboço de plano de transição (se estiver migrando de algo centrado no fundador para o institucional)
 
-### Risk if nothing changes
+### Risco se nada mudar
 
-### Open questions / threads for Module 90 Synthesis
+### Perguntas em aberto / fios para a Síntese do Módulo 90

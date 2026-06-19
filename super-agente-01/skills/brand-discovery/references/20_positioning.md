@@ -1,44 +1,45 @@
-# Module 20 — Positioning
+# Módulo 20 — Posicionamento
 
 > **Frameworks:** Dunford *Obviously Awesome* · Moore crossing-the-chasm template ·
 > Jobs-to-be-done lens
 >
-> **Goal:** Define the brand's competitive frame — who it's for, what category it
-> competes in, what it does uniquely, and why that matters to the target client.
-> Output is the raw material for a positioning statement the brand can act on.
+> **Objetivo:** Definir o enquadramento competitivo da marca — para quem ela é, em
+> que categoria ela compete, o que ela faz de forma única e por que isso importa
+> para o cliente-alvo. A saída é o material bruto para uma declaração de
+> posicionamento sobre a qual a marca possa agir.
 
 ---
 
-## Raw
+## Bruto
 
-<!-- Verbatim quotes and examples. Record exact language. -->
+<!-- Citações literais e exemplos. Registre a linguagem exata. -->
 
-### Who is the target client? (role, company type, situation)
+### Quem é o cliente-alvo? (papel, tipo de empresa, situação)
 
-### What category does the brand compete in? (how clients currently solve this problem)
+### Em que categoria a marca compete? (como os clientes resolvem esse problema atualmente)
 
-### What makes the brand different from alternatives in that category?
+### O que torna a marca diferente das alternativas naquela categoria?
 
-### What does the target client care about most? (the value they get that others can't match)
+### Com o que o cliente-alvo mais se importa? (o valor que ele obtém e que os outros não conseguem igualar)
 
-### Competitive alternatives named by the founder (include "do nothing" / "hire in-house")
+### Alternativas competitivas citadas pelo fundador (inclua "não fazer nada" / "contratar internamente")
 
-### Phrases or metaphors the founder uses naturally to describe what they do
+### Frases ou metáforas que o fundador usa naturalmente para descrever o que faz
 
 ---
 
-## Synthesis
+## Síntese
 
-### Positioning statement draft (Dunford template)
-> For **[target client]** who **[situation / JTBD]**, **[brand name]** is the
-> **[category]** that **[unique value]**. Unlike **[alternatives]**, we
-> **[key differentiator]**.
+### Rascunho da declaração de posicionamento (template Dunford)
+> Para **[cliente-alvo]** que **[situação / JTBD]**, **[nome da marca]** é a
+> **[categoria]** que **[valor único]**. Diferentemente de **[alternativas]**, nós
+> **[diferencial-chave]**.
 
-### Alternative framings (vary the category or the differentiator)
+### Enquadramentos alternativos (varie a categoria ou o diferencial)
 
 1.
-2. ### White-space hypothesis (what no competitor is claiming that this brand could own)
+2. ### Hipótese de espaço em branco (o que nenhum concorrente está reivindicando e que esta marca poderia dominar)
 
-### Open questions / ambiguities
+### Perguntas em aberto / ambiguidades
 
-### Tensions with Module 10 Why (flag any contradictions for Module 90 reconciliation)
+### Tensões com o Porquê do Módulo 10 (sinalize quaisquer contradições para reconciliação no Módulo 90)

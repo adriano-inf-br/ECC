@@ -1,6 +1,6 @@
 ---
 name: claude-devfleet
-description: Orchestrate multi-agent coding tasks via Claude DevFleet — plan projects, dispatch parallel agents in isolated worktrees, monitor progress, and read structured reports.
+description: Orquestre tarefas de código multi-agent via Claude DevFleet — planeje projetos, despache agents paralelos em worktrees isolados, monitore o progresso e leia relatórios estruturados.
 metadata:
   origin: community
 ---
@@ -9,20 +9,20 @@ metadata:
 
 ## When to Use
 
-Use this skill when you need to dispatch multiple Claude Code agents to work on coding tasks in parallel. Each agent runs in an isolated git worktree with full tooling.
+Use esta skill quando você precisar despachar múltiplos agents do Claude Code para trabalhar em tarefas de código em paralelo. Cada agent roda em um worktree git isolado com ferramental completo.
 
 ## Setup
 
-The DevFleet server is a separate project, not bundled with ECC. Install and
-run it from its repository first: <https://github.com/LEC-AI/claude-devfleet>
+O servidor DevFleet é um projeto separado, não incluído no ECC. Instale e
+execute-o a partir do repositório dele primeiro: <https://github.com/LEC-AI/claude-devfleet>
 
-Then connect the running instance via MCP:
+Em seguida, conecte a instância em execução via MCP:
 ```bash
 claude mcp add devfleet --transport http http://localhost:18801/mcp
 ```
 
-Before first use, verify the process listening on port 18801 is the DevFleet
-binary you installed (see SECURITY.md on localhost MCP servers).
+Antes do primeiro uso, verifique se o processo escutando na porta 18801 é o
+binário do DevFleet que você instalou (veja SECURITY.md sobre servidores MCP em localhost).
 
 ## How It Works
 

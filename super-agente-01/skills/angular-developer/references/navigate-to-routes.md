@@ -1,10 +1,10 @@
-# Navigate to Routes
+# Navegar para Rotas
 
-Angular provides both declarative and programmatic ways to navigate between routes.
+O Angular oferece formas declarativas e programáticas de navegar entre rotas.
 
-## Declarative Navigation (`RouterLink`)
+## Navegação Declarativa (`RouterLink`)
 
-Use the `RouterLink` directive on anchor elements.
+Use a diretiva `RouterLink` em elementos de âncora.
 
 ```ts
 import {RouterLink, RouterLinkActive} from '@angular/router';
@@ -23,47 +23,47 @@ export class Nav {
 }
 ```
 
-- **Absolute Paths**: Start with `/` (e.g., `/settings`).
-- **Relative Paths**: No leading `/`. Use `../` to go up a level.
+- **Caminhos Absolutos**: começam com `/` (ex.: `/settings`).
+- **Caminhos Relativos**: sem `/` inicial. Use `../` para subir um nível.
 
-## Programmatic Navigation (`Router`)
+## Navegação Programática (`Router`)
 
-Inject the `Router` service to navigate via TypeScript code.
+Injete o serviço `Router` para navegar via código TypeScript.
 
 ### `router.navigate()`
 
-Uses an array of commands.
+Usa um array de comandos.
 
 ```ts
 private router = inject(Router);
 private route = inject(ActivatedRoute);
 
-// Standard navigation
+// Navegação padrão
 this.router.navigate(['/profile']);
 
-// With parameters
+// Com parâmetros
 this.router.navigate(['/search'], {
   queryParams: { q: 'angular' },
   fragment: 'results'
 });
 
-// Relative navigation
+// Navegação relativa
 this.router.navigate(['edit'], { relativeTo: this.route });
 ```
 
 ### `router.navigateByUrl()`
 
-Uses a string path. Ideal for absolute navigation or full URLs.
+Usa um caminho em string. Ideal para navegação absoluta ou URLs completas.
 
 ```ts
 this.router.navigateByUrl('/products/123?view=details');
 
-// Replace current entry in history
+// Substitui a entrada atual no histórico
 this.router.navigateByUrl('/login', {replaceUrl: true});
 ```
 
-## URL Parameters
+## Parâmetros de URL
 
-- **Route Params**: Part of the path (e.g., `/user/123`).
-- **Query Params**: After the `?` (e.g., `/search?q=query`).
-- **Matrix Params**: Scoped to a segment (e.g., `/products;category=books`).
+- **Parâmetros de Rota (Route Params)**: parte do caminho (ex.: `/user/123`).
+- **Parâmetros de Consulta (Query Params)**: após o `?` (ex.: `/search?q=query`).
+- **Parâmetros de Matriz (Matrix Params)**: com escopo em um segmento (ex.: `/products;category=books`).

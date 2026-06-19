@@ -1,41 +1,41 @@
-# Angular CLI MCP Server
+# Servidor MCP do Angular CLI
 
-The Angular CLI includes a Model Context Protocol (MCP) server that enables AI assistants (like Cursor, Gemini CLI, JetBrains AI, etc.) to interact directly with the Angular CLI. It provides tools for code generation, modernizing code, fetching examples, and running builds/tests.
+O Angular CLI inclui um servidor MCP (Model Context Protocol) que permite que assistentes de IA (como Cursor, Gemini CLI, JetBrains AI, etc.) interajam diretamente com o Angular CLI. Ele fornece ferramentas para geração de código, modernização de código, busca de exemplos e execução de builds/testes.
 
-## Available Tools (Default)
+## Ferramentas Disponíveis (Padrão)
 
-When the MCP server is enabled, AI agents have access to the following tools:
+Quando o servidor MCP está habilitado, os agents de IA têm acesso às seguintes ferramentas:
 
-| Name                        | Description                                                                                               |
+| Nome                        | Descrição                                                                                               |
 | :-------------------------- | :-------------------------------------------------------------------------------------------------------- |
-| `ai_tutor`                  | Launches an interactive AI-powered Angular tutor.                                                         |
-| `find_examples`             | Finds authoritative, best-practice code examples for modern Angular features.                             |
-| `get_best_practices`        | Retrieves the Angular Best Practices Guide (crucial for standalone components, typed forms, etc.).        |
-| `list_projects`             | Lists all applications and libraries in the workspace by reading `angular.json`.                          |
-| `onpush_zoneless_migration` | Analyzes code and provides a plan to migrate it to `OnPush` change detection (prerequisite for zoneless). |
-| `search_documentation`      | Searches the official documentation at `https://angular.dev`.                                             |
+| `ai_tutor`                  | Inicia um tutor de Angular interativo baseado em IA.                                                       |
+| `find_examples`             | Encontra exemplos de código autoritativos e de boas práticas para funcionalidades modernas do Angular.    |
+| `get_best_practices`        | Recupera o Guia de Boas Práticas do Angular (crucial para componentes standalone, formulários tipados, etc.). |
+| `list_projects`             | Lista todas as aplicações e bibliotecas do workspace lendo `angular.json`.                                |
+| `onpush_zoneless_migration` | Analisa o código e fornece um plano para migrá-lo para a detecção de mudanças `OnPush` (pré-requisito para zoneless). |
+| `search_documentation`      | Busca na documentação oficial em `https://angular.dev`.                                                   |
 
-## Experimental Tools
+## Ferramentas Experimentais
 
-Some tools must be enabled explicitly using the `--experimental-tool` (or `-E`) flag.
+Algumas ferramentas devem ser habilitadas explicitamente usando a flag `--experimental-tool` (ou `-E`).
 
-| Name                       | Description                                                              |
+| Nome                       | Descrição                                                              |
 | :------------------------- | :----------------------------------------------------------------------- |
-| `build`                    | Performs a one-off build using `ng build`.                               |
-| `devserver.start`          | Asynchronously starts a dev server (`ng serve`). Returns immediately.    |
-| `devserver.stop`           | Stops the dev server.                                                    |
-| `devserver.wait_for_build` | Returns the logs of the most recent build in a running dev server.       |
-| `e2e`                      | Executes end-to-end tests.                                               |
-| `modernize`                | Performs code migrations to align with latest best practices and syntax. |
-| `test`                     | Runs the project's unit tests.                                           |
+| `build`                    | Realiza um build avulso usando `ng build`.                               |
+| `devserver.start`          | Inicia um servidor de desenvolvimento de forma assíncrona (`ng serve`). Retorna imediatamente. |
+| `devserver.stop`           | Para o servidor de desenvolvimento.                                      |
+| `devserver.wait_for_build` | Retorna os logs do build mais recente em um servidor de desenvolvimento em execução. |
+| `e2e`                      | Executa testes de ponta a ponta.                                         |
+| `modernize`                | Realiza migrações de código para alinhá-lo às boas práticas e à sintaxe mais recentes. |
+| `test`                     | Executa os testes unitários do projeto.                                  |
 
-## Configuration
+## Configuração
 
-To use the MCP server, you configure your host environment (IDE or CLI) to run `npx @angular/cli mcp`.
+Para usar o servidor MCP, você configura seu ambiente host (IDE ou CLI) para executar `npx @angular/cli mcp`.
 
 ### Antigravity IDE
 
-Create a file named `.antigravity/mcp.json` in your project's root:
+Crie um arquivo chamado `.antigravity/mcp.json` na raiz do seu projeto:
 
 ```json
 {
@@ -50,7 +50,7 @@ Create a file named `.antigravity/mcp.json` in your project's root:
 
 ### Gemini CLI
 
-Create `.gemini/settings.json` in the project root:
+Crie `.gemini/settings.json` na raiz do projeto:
 
 ```json
 {
@@ -65,7 +65,7 @@ Create `.gemini/settings.json` in the project root:
 
 ### Cursor
 
-Create `.cursor/mcp.json` in the project root (or globally at `~/.cursor/mcp.json`):
+Crie `.cursor/mcp.json` na raiz do projeto (ou globalmente em `~/.cursor/mcp.json`):
 
 ```json
 {
@@ -80,7 +80,7 @@ Create `.cursor/mcp.json` in the project root (or globally at `~/.cursor/mcp.jso
 
 ### VS Code
 
-Create `.vscode/mcp.json`:
+Crie `.vscode/mcp.json`:
 
 ```json
 {
@@ -93,15 +93,15 @@ Create `.vscode/mcp.json`:
 }
 ```
 
-## Command Options
+## Opções de Comando
 
-You can pass arguments to the MCP server in the `args` array of your configuration:
+Você pode passar argumentos ao servidor MCP no array `args` da sua configuração:
 
-- `--read-only`: Only registers tools that do not modify the project.
-- `--local-only`: Only registers tools that do not require an internet connection.
-- `--experimental-tool` (`-E`): Enables specific experimental tools (e.g., `-E build`, `-E devserver`).
+- `--read-only`: registra apenas ferramentas que não modificam o projeto.
+- `--local-only`: registra apenas ferramentas que não requerem conexão com a internet.
+- `--experimental-tool` (`-E`): habilita ferramentas experimentais específicas (ex.: `-E build`, `-E devserver`).
 
-Example for read-only mode with experimental tools enabled:
+Exemplo para modo somente leitura com ferramentas experimentais habilitadas:
 
 ```json
 "args": ["-y", "@angular/cli", "mcp", "--read-only", "-E", "build", "-E", "modernize"]

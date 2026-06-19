@@ -1,52 +1,52 @@
-# Module 30 — Audience & Niche
+# Módulo 30 — Público & Nicho
 
 > **Frameworks:** Baker *The Business of Expertise* · Ideal Client Profile (ICP) ·
 > Pain / trigger / desired outcome lens
 >
-> **Goal:** Make the target audience concrete enough to brief a copywriter or run
-> a paid campaign — not a demographic sketch, but a psychographic and situational
-> portrait of the best client the brand wants more of.
+> **Objetivo:** Tornar o público-alvo concreto o suficiente para orientar um
+> copywriter ou rodar uma campanha paga — não um esboço demográfico, mas um
+> retrato psicográfico e situacional do melhor cliente que a marca quer ter mais.
 
 ---
 
-## Raw
+## Bruto
 
-<!-- Verbatim quotes and examples. -->
+<!-- Citações literais e exemplos. -->
 
-### Who is the ideal client? (describe a specific person, not a segment)
+### Quem é o cliente ideal? (descreva uma pessoa específica, não um segmento)
 
-### What situation or trigger brings them to look for help?
+### Que situação ou gatilho o leva a procurar ajuda?
 
-### What have they tried before and why did it fall short?
+### O que ele já tentou antes e por que não deu certo?
 
-### What does success look like to them? (in their words, not the brand's)
+### Como é o sucesso para ele? (nas palavras dele, não nas da marca)
 
-### What do they fear or want to avoid?
+### O que ele teme ou quer evitar?
 
-### Worst-fit clients (who the brand doesn't want to work with, and why)
+### Clientes de pior encaixe (com quem a marca não quer trabalhar, e por quê)
 
-### Quotes or stories from real past clients that illustrate the ideal fit
+### Citações ou histórias de clientes reais do passado que ilustram o encaixe ideal
 
 ---
 
-## Synthesis
+## Síntese
 
-### Ideal Client Profile (ICP)
+### Perfil de Cliente Ideal (ICP)
 
-| Dimension | Description |
+| Dimensão | Descrição |
 |---|---|
-| Role / title | |
-| Organisation type & size | |
-| Trigger situation | |
-| Primary pain | |
-| Desired outcome | |
-| Budget signal | |
-| Red-flag / disqualifier | |
+| Papel / cargo | |
+| Tipo & porte da organização | |
+| Situação de gatilho | |
+| Dor principal | |
+| Resultado desejado | |
+| Sinal de orçamento | |
+| Bandeira vermelha / desqualificador | |
 
-### Psychographic portrait (2–3 sentences: how this person thinks, what they value, what they distrust)
+### Retrato psicográfico (2–3 frases: como essa pessoa pensa, o que valoriza, do que desconfia)
 
-### Niche hypothesis (the smallest viable market the brand could credibly own)
+### Hipótese de nicho (o menor mercado viável que a marca poderia dominar de forma crível)
 
-### Audience segments to test (if there is ambiguity about primary vs secondary ICP)
+### Segmentos de público a testar (se houver ambiguidade sobre ICP primário vs secundário)
 
-### Open questions / threads for Module 20 positioning reconciliation
+### Perguntas em aberto / fios para reconciliação do posicionamento no Módulo 20

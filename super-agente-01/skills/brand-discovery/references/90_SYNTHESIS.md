@@ -1,132 +1,132 @@
-# Module 90 — Master Brandbook (Synthesis)
+# Módulo 90 — Brandbook Mestre (Síntese)
 
 > **Frameworks:** Kapferer Brand Identity Prism · Aaker brand system (identity /
 > personality / associations / equity)
 >
-> **Goal:** Reconcile all seven preceding modules into a single, actionable
-> brandbook. This document is the source of truth the brand uses to brief
-> designers, writers, and external collaborators. It resolves tensions between
-> modules, commits to specific formulations, and translates them into practical
-> guidelines.
+> **Objetivo:** Reconciliar todos os sete módulos anteriores em um único brandbook
+> acionável. Este documento é a fonte de verdade que a marca usa para orientar
+> designers, escritores e colaboradores externos. Ele resolve tensões entre
+> módulos, compromete-se com formulações específicas e as traduz em diretrizes
+> práticas.
 
 ---
 
-## Raw
+## Bruto
 
-<!-- Module 90 consolidates outputs from Modules 10–70; minimal new raw input is
-     collected here. Capture any final founder statements or corrections made
-     during the synthesis pass below. -->
-
----
-
-## Synthesis
-
-### 1. The Why (from Module 10)
-
-> **Core belief:**
->
-> **Behavioural How (values in action):**
->
-> **What we refuse to be:**
+<!-- O Módulo 90 consolida as saídas dos Módulos 10–70; pouco material bruto novo é
+     coletado aqui. Capture quaisquer declarações ou correções finais do fundador
+     feitas durante a passagem de síntese abaixo. -->
 
 ---
 
-### 2. Positioning (from Module 20)
+## Síntese
 
-> **Positioning statement:**
-> For **[target client]** who **[situation]**, **[brand name]** is the
-> **[category]** that **[unique value]**. Unlike **[alternatives]**, we
-> **[key differentiator]**.
+### 1. O Porquê (do Módulo 10)
+
+> **Crença central:**
 >
-> **White-space the brand owns:**
+> **Como comportamental (valores em ação):**
+>
+> **O que nos recusamos a ser:**
 
 ---
 
-### 3. Audience (from Module 30)
+### 2. Posicionamento (do Módulo 20)
 
-> **Ideal Client Profile (one-paragraph portrait):**
+> **Declaração de posicionamento:**
+> Para **[cliente-alvo]** que **[situação]**, **[nome da marca]** é a
+> **[categoria]** que **[valor único]**. Diferentemente de **[alternativas]**, nós
+> **[diferencial-chave]**.
 >
-> **Niche the brand is building toward:**
->
-> **Red-flag / disqualifier:**
+> **Espaço em branco que a marca domina:**
 
 ---
 
-### 4. Kapferer Brand Identity Prism
+### 3. Público (do Módulo 30)
 
-| Facet | Content |
+> **Perfil de Cliente Ideal (retrato de um parágrafo):**
+>
+> **Nicho em direção ao qual a marca está construindo:**
+>
+> **Bandeira vermelha / desqualificador:**
+
+---
+
+### 4. Prisma de Identidade de Marca de Kapferer
+
+| Faceta | Conteúdo |
 |---|---|
-| **Physique** (visible, tangible brand attributes) | |
-| **Personality** (character if the brand were a person) | |
-| **Culture** (values and principles behind the brand) | |
-| **Relationship** (how the brand relates to clients) | |
-| **Reflection** (how clients see themselves using this brand) | |
-| **Self-image** (how clients feel inside when using this brand) | |
+| **Físico** (atributos visíveis e tangíveis da marca) | |
+| **Personalidade** (caráter se a marca fosse uma pessoa) | |
+| **Cultura** (valores e princípios por trás da marca) | |
+| **Relação** (como a marca se relaciona com os clientes) | |
+| **Reflexo** (como os clientes se veem ao usar esta marca) | |
+| **Autoimagem** (como os clientes se sentem por dentro ao usar esta marca) | |
 
 ---
 
-### 4b. Aaker Brand System (from Module 40)
+### 4b. Sistema de Marca de Aaker (do Módulo 40)
 
-> **Primary archetype** (Mark & Pearson):
+> **Arquétipo primário** (Mark & Pearson):
 >
-> **Secondary archetype** (if present):
+> **Arquétipo secundário** (se presente):
 >
-> **Aaker brand identity** — four dimensions:
-> - *Brand as product:*
-> - *Brand as organisation:*
-> - *Brand as person (personality):*
-> - *Brand as symbol:*
+> **Identidade de marca de Aaker** — quatro dimensões:
+> - *Marca como produto:*
+> - *Marca como organização:*
+> - *Marca como pessoa (personalidade):*
+> - *Marca como símbolo:*
 >
-> **Brand associations** (3–5 key associations the brand should own):
+> **Associações de marca** (3–5 associações-chave que a marca deve dominar):
 >
-> **Brand equity signals** (what clients would lose if this brand disappeared):
+> **Sinais de patrimônio de marca** (o que os clientes perderiam se esta marca desaparecesse):
 
 ---
 
-### 5. Voice & Tone summary (from Module 50)
+### 5. Resumo de Voz & Tom (do Módulo 50)
 
-> **Voice statement (one paragraph):**
+> **Declaração de voz (um parágrafo):**
 >
-> **The three checks every draft must pass:**
+> **As três verificações que todo rascunho deve passar:**
 > 1.
 > 2.
 > 3.
 
 ---
 
-### 6. Narrative assets (from Module 60)
+### 6. Ativos narrativos (do Módulo 60)
 
 > **Trueline:**
 >
-> **Brand story arc (one paragraph, usable as an About page starting point):**
+> **Arco da história da marca (um parágrafo, utilizável como ponto de partida de uma página Sobre):**
 
 ---
 
-### 7. Founder / organisation brand boundary (from Module 70)
+### 7. Limite entre marca do fundador / da organização (do Módulo 70)
 
-> **What the founder brand owns:**
+> **O que a marca do fundador domina:**
 >
-> **What the organisation brand owns:**
+> **O que a marca da organização domina:**
 
 ---
 
-### 8. Tensions resolved (record any module-to-module conflicts and how they were settled)
+### 8. Tensões resolvidas (registre quaisquer conflitos módulo-a-módulo e como foram resolvidos)
 
-| Tension | Module A | Module B | Resolution |
+| Tensão | Módulo A | Módulo B | Resolução |
 |---|---|---|---|
 | | | | |
 
 ---
 
-### 9. Open questions deferred to next session
+### 9. Perguntas em aberto adiadas para a próxima sessão
 
-<!-- Anything that couldn't be resolved with the current data. -->
+<!-- Qualquer coisa que não pôde ser resolvida com os dados atuais. -->
 
 ---
 
-### 10. Practical next steps
+### 10. Próximos passos práticos
 
-<!-- 3–5 concrete actions the brand can take based on this brandbook. -->
+<!-- 3–5 ações concretas que a marca pode tomar com base neste brandbook. -->
 
 1.
 2.

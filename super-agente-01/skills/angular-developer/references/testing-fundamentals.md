@@ -1,18 +1,18 @@
-# Testing Fundamentals
+# Fundamentos de Testes
 
-This guide covers the fundamental principles and practices for writing Angular unit and component tests. Use the runner already configured in the project.
+Este guia cobre os princípios e práticas fundamentais para escrever testes unitários e de componentes no Angular. Use o runner já configurado no projeto.
 
-## Core Philosophy: Async-First
+## Filosofia Central: Async-First
 
-Modern Angular applications often schedule state changes asynchronously, especially when using signals or zoneless change detection. Tests should account for this.
+Aplicações Angular modernas frequentemente agendam mudanças de estado de forma assíncrona, especialmente ao usar signals ou detecção de mudanças sem zone (zoneless). Os testes devem levar isso em conta.
 
-Prefer the "Act, Wait, Assert" pattern:
+Prefira o padrão "Agir, Aguardar, Verificar":
 
-1. **Act:** Update state or perform an action (e.g., set a component input, click a button).
-2. **Wait:** Use `await fixture.whenStable()` to allow the framework to process the scheduled update and render the changes.
-3. **Assert:** Verify the outcome.
+1. **Agir:** atualize o estado ou execute uma ação (ex.: definir um input de componente, clicar em um botão).
+2. **Aguardar:** use `await fixture.whenStable()` para permitir que o framework processe a atualização agendada e renderize as mudanças.
+3. **Verificar:** valide o resultado.
 
-### Basic Test Structure Example
+### Exemplo de Estrutura Básica de Teste
 
 ```ts
 import {ComponentFixture, TestBed} from '@angular/core/testing';
@@ -24,42 +24,42 @@ describe('MyComponent', () => {
   let h1: HTMLElement;
 
   beforeEach(async () => {
-    // 1. Configure the test module
+    // 1. Configura o módulo de teste
     await TestBed.configureTestingModule({
       imports: [MyComponent],
     }).compileComponents();
 
-    // 2. Create the component fixture
+    // 2. Cria o fixture do componente
     fixture = TestBed.createComponent(MyComponent);
     component = fixture.componentInstance;
     h1 = fixture.nativeElement.querySelector('h1');
   });
 
   it('should display the default title', async () => {
-    // ACT: (Implicit) Component is created with default state.
-    // WAIT for initial data binding.
+    // AGIR: (Implícito) O componente é criado com o estado padrão.
+    // AGUARDAR a vinculação inicial de dados.
     await fixture.whenStable();
-    // ASSERT the initial state.
+    // VERIFICAR o estado inicial.
     expect(h1.textContent).toContain('Default Title');
   });
 
   it('should display a different title after a change', async () => {
-    // ACT: Change the component's title property.
+    // AGIR: Altera a propriedade title do componente.
     component.title.set('New Test Title');
 
-    // WAIT for the asynchronous update to complete.
+    // AGUARDAR a conclusão da atualização assíncrona.
     await fixture.whenStable();
 
-    // ASSERT the DOM has been updated.
+    // VERIFICAR que o DOM foi atualizado.
     expect(h1.textContent).toContain('New Test Title');
   });
 });
 ```
 
-## TestBed and ComponentFixture
+## TestBed e ComponentFixture
 
-- **`TestBed`**: The primary utility for creating a test-specific Angular module. Use `TestBed.configureTestingModule({...})` in your `beforeEach` to declare components, provide services, and set up imports needed for your test.
-- **`ComponentFixture`**: A handle on the created component instance and its environment.
-  - `fixture.componentInstance`: Access the component's class instance.
-  - `fixture.nativeElement`: Access the component's root DOM element.
-  - `fixture.debugElement`: An Angular-specific wrapper around the `nativeElement` that provides safer, platform-agnostic ways to query the DOM (e.g., `debugElement.query(By.css('p'))`).
+- **`TestBed`**: o utilitário principal para criar um módulo Angular específico de teste. Use `TestBed.configureTestingModule({...})` no seu `beforeEach` para declarar componentes, fornecer serviços e configurar os imports necessários para o seu teste.
+- **`ComponentFixture`**: um handle para a instância do componente criada e seu ambiente.
+  - `fixture.componentInstance`: acessa a instância da classe do componente.
+  - `fixture.nativeElement`: acessa o elemento DOM raiz do componente.
+  - `fixture.debugElement`: um wrapper específico do Angular em torno do `nativeElement` que fornece formas mais seguras e independentes de plataforma para consultar o DOM (ex.: `debugElement.query(By.css('p'))`).

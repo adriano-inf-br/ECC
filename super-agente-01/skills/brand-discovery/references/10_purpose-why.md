@@ -1,40 +1,40 @@
-# Module 10 — Purpose / Why
+# Módulo 10 — Propósito / Porquê
 
 > **Frameworks:** Sinek Golden Circle · Lencioni organisational purpose
 >
-> **Goal:** Surface the brand's core belief — the Why that exists independently
-> of what the organisation sells or how it delivers. Captures the founding
-> conviction, not the elevator pitch.
+> **Objetivo:** Trazer à tona a crença central da marca — o Porquê que existe
+> independentemente do que a organização vende ou de como ela entrega. Captura a
+> convicção fundadora, não o elevator pitch.
 
 ---
 
-## Raw
+## Bruto
 
-<!-- Verbatim quotes, stories, and examples captured during the interview.
-     Record exact language — paraphrase belongs in Synthesis, not here.
-     Include speaker attribution if multi-founder session. -->
+<!-- Citações literais, histórias e exemplos capturados durante a entrevista.
+     Registre a linguagem exata — paráfrases pertencem à Síntese, não aqui.
+     Inclua atribuição de quem falou se for uma sessão com múltiplos fundadores. -->
 
-### Core belief (why does this exist?)
+### Crença central (por que isto existe?)
 
-### The behavioural How (values in action, not poster slogans)
+### O Como comportamental (valores em ação, não slogans de cartaz)
 
-### What the brand refuses to be or do
+### O que a marca se recusa a ser ou fazer
 
-### Founder quotes strong enough to become internal anchors
+### Citações do fundador fortes o suficiente para se tornarem âncoras internas
 
 ---
 
-## Synthesis
+## Síntese
 
-<!-- Your interpretation of the raw material.
-     Write three sections: formulations, open questions, contradictions. -->
+<!-- Sua interpretação do material bruto.
+     Escreva três seções: formulações, perguntas em aberto, contradições. -->
 
-### Candidate Why formulations (offer 2–3 versions, vary register and specificity)
+### Formulações candidatas do Porquê (ofereça 2–3 versões, variando registro e especificidade)
 
 1.
 2.
-3. ### Open questions / threads to pursue in later modules
+3. ### Perguntas em aberto / fios a explorar em módulos posteriores
 
-### Contradictions or tensions between participants (multi-founder only)
+### Contradições ou tensões entre participantes (apenas com múltiplos fundadores)
 
-### How does this Why constrain or enable positioning? (bridge to Module 20)
+### Como este Porquê restringe ou habilita o posicionamento? (ponte para o Módulo 20)

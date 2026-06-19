@@ -1,80 +1,80 @@
 ---
 name: article-writing
-description: Write articles, guides, blog posts, tutorials, newsletter issues, and other long-form content in a distinctive voice derived from supplied examples or brand guidance. Use when the user wants polished written content longer than a paragraph, especially when voice consistency, structure, and credibility matter.
+description: Escreva artigos, guias, posts de blog, tutoriais, edições de newsletter e outros conteúdos de formato longo em uma voz distinta derivada de exemplos fornecidos ou de orientação de marca. Use quando o usuário quer conteúdo escrito e polido maior que um parágrafo, especialmente quando consistência de voz, estrutura e credibilidade importam.
 metadata:
   origin: ECC
 ---
 
 # Article Writing
 
-Write long-form content that sounds like an actual person with a point of view, not an LLM smoothing itself into paste.
+Escreva conteúdo de formato longo que soe como uma pessoa real com um ponto de vista, e não como um LLM se nivelando até virar pasta.
 
 ## When to Activate
 
-- drafting blog posts, essays, launch posts, guides, tutorials, or newsletter issues
-- turning notes, transcripts, or research into polished articles
-- matching an existing founder, operator, or brand voice from examples
-- tightening structure, pacing, and evidence in already-written long-form copy
+- redigir posts de blog, ensaios, posts de lançamento, guias, tutoriais ou edições de newsletter
+- transformar anotações, transcrições ou pesquisa em artigos polidos
+- corresponder a uma voz existente de fundador, operador ou marca a partir de exemplos
+- apertar estrutura, ritmo e evidência em texto de formato longo já escrito
 
-## Core Rules
+## Regras Centrais
 
-1. Lead with the concrete thing: artifact, example, output, anecdote, number, screenshot, or code.
-2. Explain after the example, not before.
-3. Keep sentences tight unless the source voice is intentionally expansive.
-4. Use proof instead of adjectives.
-5. Never invent facts, credibility, or customer evidence.
+1. Comece pela coisa concreta: artefato, exemplo, output, anedota, número, captura de tela ou código.
+2. Explique depois do exemplo, não antes.
+3. Mantenha as frases enxutas, a menos que a voz de origem seja intencionalmente expansiva.
+4. Use provas em vez de adjetivos.
+5. Nunca invente fatos, credibilidade ou evidências de clientes.
 
-## Voice Handling
+## Tratamento de Voz
 
-If the user wants a specific voice, run `brand-voice` first and reuse its `VOICE PROFILE`.
-Do not duplicate a second style-analysis pass here unless the user explicitly asks for one.
+Se o usuário quiser uma voz específica, execute `brand-voice` primeiro e reutilize seu `VOICE PROFILE`.
+Não duplique aqui uma segunda passagem de análise de estilo, a menos que o usuário peça explicitamente por uma.
 
-If no voice references are given, default to a sharp operator voice: concrete, unsentimental, useful.
+Se nenhuma referência de voz for dada, use por padrão uma voz afiada de operador: concreta, sem sentimentalismo, útil.
 
-## Banned Patterns
+## Padrões Banidos
 
-Delete and rewrite any of these:
-- "In today's rapidly evolving landscape"
-- "game-changer", "cutting-edge", "revolutionary"
-- "here's why this matters" as a standalone bridge
-- fake vulnerability arcs
-- a closing question added only to juice engagement
-- biography padding that does not move the argument
-- generic AI throat-clearing that delays the point
+Apague e reescreva qualquer um destes:
+- "No cenário em rápida evolução de hoje"
+- "divisor de águas", "de ponta", "revolucionário"
+- "eis por que isto importa" como uma ponte isolada
+- arcos de vulnerabilidade falsos
+- uma pergunta de encerramento adicionada apenas para impulsionar engajamento
+- enchimento biográfico que não move o argumento
+- pigarro genérico de IA que adia o ponto
 
-## Writing Process
+## Processo de Escrita
 
-1. Clarify the audience and purpose.
-2. Build a hard outline with one job per section.
-3. Start sections with proof, artifact, conflict, or example.
-4. Expand only where the next sentence earns space.
-5. Cut anything that sounds templated, overexplained, or self-congratulatory.
+1. Esclareça o público e o propósito.
+2. Construa um esboço firme com um trabalho por seção.
+3. Comece as seções com prova, artefato, conflito ou exemplo.
+4. Expanda apenas onde a próxima frase merece espaço.
+5. Corte qualquer coisa que soe como modelo, superexplicada ou autoelogiosa.
 
-## Structure Guidance
+## Orientação de Estrutura
 
-### Technical Guides
+### Guias Técnicos
 
-- open with what the reader gets
-- use code, commands, screenshots, or concrete output in major sections
-- end with actionable takeaways, not a soft recap
+- abra com o que o leitor ganha
+- use código, comandos, capturas de tela ou output concreto nas seções principais
+- termine com conclusões acionáveis, não um resumo morno
 
-### Essays / Opinion
+### Ensaios / Opinião
 
-- start with tension, contradiction, or a specific observation
-- keep one argument thread per section
-- make opinions answer to evidence
+- comece com tensão, contradição ou uma observação específica
+- mantenha um único fio de argumento por seção
+- faça as opiniões responderem à evidência
 
 ### Newsletters
 
-- keep the first screen doing real work
-- do not front-load diary filler
-- use section labels only when they improve scanability
+- mantenha a primeira tela fazendo trabalho de verdade
+- não coloque enchimento de diário no início
+- use rótulos de seção apenas quando melhorarem a facilidade de leitura
 
-## Quality Gate
+## Portão de Qualidade
 
-Before delivering:
-- factual claims are backed by provided sources
-- generic AI transitions are gone
-- the voice matches the supplied examples or the agreed `VOICE PROFILE`
-- every section adds something new
-- formatting matches the intended medium
+Antes de entregar:
+- afirmações factuais são embasadas pelas fontes fornecidas
+- transições genéricas de IA foram removidas
+- a voz corresponde aos exemplos fornecidos ou ao `VOICE PROFILE` acordado
+- cada seção acrescenta algo novo
+- a formatação corresponde ao meio pretendido

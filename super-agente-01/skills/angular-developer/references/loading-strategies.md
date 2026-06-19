@@ -1,25 +1,25 @@
-# Route Loading Strategies
+# Estratégias de Carregamento de Rotas
 
-Angular supports two main strategies for loading routes and components to balance initial load time and navigation responsiveness.
+O Angular oferece duas estratégias principais para carregar rotas e componentes, equilibrando o tempo de carregamento inicial e a responsividade da navegação.
 
-## Eager Loading
+## Carregamento Antecipado (Eager Loading)
 
-Components are bundled into the initial JavaScript payload and are available immediately.
+Os componentes são agrupados no payload JavaScript inicial e ficam disponíveis imediatamente.
 
 ```ts
 { path: 'home', component: Home }
 ```
 
-- **Pros**: Seamless transitions.
-- **Cons**: Increases initial bundle size.
+- **Prós**: transições sem interrupção.
+- **Contras**: aumenta o tamanho do bundle inicial.
 
-## Lazy Loading
+## Carregamento Tardio (Lazy Loading)
 
-Components or routes are loaded only when the user navigates to them. This creates separate JavaScript "chunks".
+Componentes ou rotas são carregados apenas quando o usuário navega até eles. Isso cria "chunks" JavaScript separados.
 
-### Lazy Loading Components
+### Carregamento Tardio de Componentes
 
-Use `loadComponent` to fetch the component on demand.
+Use `loadComponent` para buscar o componente sob demanda.
 
 ```ts
 {
@@ -28,9 +28,9 @@ Use `loadComponent` to fetch the component on demand.
 }
 ```
 
-### Lazy Loading Child Routes
+### Carregamento Tardio de Rotas Filhas
 
-Use `loadChildren` to fetch a set of routes.
+Use `loadChildren` para buscar um conjunto de rotas.
 
 ```ts
 {
@@ -39,9 +39,9 @@ Use `loadChildren` to fetch a set of routes.
 }
 ```
 
-## Injection Context and Lazy Loading
+## Contexto de Injeção e Carregamento Tardio
 
-Loader functions run within the **injection context** of the current route. This allows you to call `inject()` to make context-aware loading decisions.
+As funções de carregamento (loaders) são executadas dentro do **contexto de injeção** da rota atual. Isso permite chamar `inject()` para tomar decisões de carregamento sensíveis ao contexto.
 
 ```ts
 {
@@ -55,7 +55,7 @@ Loader functions run within the **injection context** of the current route. This
 }
 ```
 
-## Recommendation
+## Recomendação
 
-- Use **Eager Loading** for the primary landing pages.
-- Use **Lazy Loading** for all other feature areas to keep the initial bundle small.
+- Use **Carregamento Antecipado** para as páginas de aterrissagem principais.
+- Use **Carregamento Tardio** para todas as outras áreas de funcionalidade, mantendo o bundle inicial pequeno.

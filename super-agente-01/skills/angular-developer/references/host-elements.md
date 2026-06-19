@@ -1,21 +1,21 @@
-# Component Host Elements
+# Elementos Host de Componentes
 
-The **host element** is the DOM element that matches a component's selector. The component's template renders inside this element.
+O **elemento host** é o elemento do DOM que corresponde ao seletor de um componente. O template do componente é renderizado dentro deste elemento.
 
-## Binding to the Host Element
+## Vinculando ao Elemento Host
 
-Use the `host` property in the `@Component` decorator to bind properties, attributes, styles, and events to the host element. This is the **preferred approach** over legacy decorators.
+Use a propriedade `host` no decorador `@Component` para vincular propriedades, atributos, estilos e eventos ao elemento host. Esta é a **abordagem preferida** em relação aos decoradores legados.
 
 ```ts
 @Component({
   selector: 'custom-slider',
   host: {
-    'role': 'slider', // Static attribute
-    '[attr.aria-valuenow]': 'value', // Attribute binding
-    '[class.active]': 'isActive()', // Class binding
-    '[style.color]': 'color()', // Style binding
-    '[tabIndex]': 'disabled ? -1 : 0', // Property binding
-    '(keydown)': 'onKeyDown($event)', // Event binding
+    'role': 'slider', // Atributo estático
+    '[attr.aria-valuenow]': 'value', // Vinculação de atributo
+    '[class.active]': 'isActive()', // Vinculação de classe
+    '[style.color]': 'color()', // Vinculação de estilo
+    '[tabIndex]': 'disabled ? -1 : 0', // Vinculação de propriedade
+    '(keydown)': 'onKeyDown($event)', // Vinculação de evento
   },
 })
 export class CustomSlider {
@@ -30,9 +30,9 @@ export class CustomSlider {
 }
 ```
 
-## Legacy Decorators
+## Decoradores Legados
 
-`@HostBinding` and `@HostListener` are supported for backwards compatibility but should be avoided in new code.
+`@HostBinding` e `@HostListener` são suportados para compatibilidade retroativa, mas devem ser evitados em código novo.
 
 ```ts
 export class CustomSlider {
@@ -48,17 +48,17 @@ export class CustomSlider {
 }
 ```
 
-## Binding Collisions
+## Colisões de Vinculação
 
-If both the component (host binding) and the consumer (template binding) bind to the same property:
+Se tanto o componente (vinculação no host) quanto o consumidor (vinculação no template) vincularem à mesma propriedade:
 
-1. **Static vs Static**: The instance (consumer) binding wins.
-2. **Static vs Dynamic**: The dynamic binding wins.
-3. **Dynamic vs Dynamic**: The component's host binding wins.
+1. **Estático vs Estático**: a vinculação da instância (consumidor) vence.
+2. **Estático vs Dinâmico**: a vinculação dinâmica vence.
+3. **Dinâmico vs Dinâmico**: a vinculação no host do componente vence.
 
-## Injecting Host Attributes
+## Injetando Atributos do Host
 
-Use `HostAttributeToken` with the `inject` function to read static attributes from the host element at construction time.
+Use `HostAttributeToken` com a função `inject` para ler atributos estáticos do elemento host no momento da construção.
 
 ```ts
 import {Component, HostAttributeToken, inject} from '@angular/core';
@@ -68,12 +68,12 @@ import {Component, HostAttributeToken, inject} from '@angular/core';
   template: `<ng-content />`,
 })
 export class AppButton {
-  // Throws error if 'type' is missing unless injected with { optional: true }
+  // Lança erro se 'type' estiver ausente, a menos que injetado com { optional: true }
   type = inject(new HostAttributeToken('type'));
 }
 ```
 
-Usage:
+Uso:
 
 ```html
 <app-btn type="primary">Click Me</app-btn>

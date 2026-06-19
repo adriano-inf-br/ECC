@@ -1,29 +1,29 @@
-# Injection Context
+# Contexto de Injeção
 
-The `inject()` function can only be used when code is executing within an **injection context**.
+A função `inject()` só pode ser usada quando o código está sendo executado dentro de um **contexto de injeção**.
 
-## Where is an Injection Context Available?
+## Onde um Contexto de Injeção Está Disponível?
 
-An injection context is automatically available in:
+Um contexto de injeção está automaticamente disponível em:
 
-1. **Field initializers** of classes instantiated by DI (`@Injectable`, `@Component`, `@Directive`, `@Pipe`).
-2. **Constructors** of classes instantiated by DI.
-3. **Factory functions** specified in `useFactory` or `InjectionToken` configurations.
-4. **Functional APIs** executed by Angular (e.g., functional route guards, resolvers, interceptors).
+1. **Inicializadores de campo** de classes instanciadas pela DI (`@Injectable`, `@Component`, `@Directive`, `@Pipe`).
+2. **Construtores** de classes instanciadas pela DI.
+3. **Funções de fábrica** especificadas em configurações de `useFactory` ou `InjectionToken`.
+4. **APIs funcionais** executadas pelo Angular (ex.: route guards funcionais, resolvers, interceptors).
 
 ```ts
 @Component({...})
 export class Example {
-  // Valid: Field initializer
+  // Válido: inicializador de campo
   private router = inject(Router);
 
   constructor() {
-    // Valid: Constructor
+    // Válido: construtor
     const http = inject(HttpClient);
   }
 
   onClick() {
-    // Invalid: Not an injection context
+    // Inválido: não é um contexto de injeção
     // const auth = inject(AuthService);
   }
 }
@@ -31,7 +31,7 @@ export class Example {
 
 ## `runInInjectionContext`
 
-If you need to run a function within an injection context (often needed for dynamic component creation or testing), use `runInInjectionContext`. This requires access to an existing injector (like `EnvironmentInjector` or `Injector`).
+Se você precisa executar uma função dentro de um contexto de injeção (frequentemente necessário para criação dinâmica de componentes ou testes), use `runInInjectionContext`. Isso requer acesso a um injetor existente (como `EnvironmentInjector` ou `Injector`).
 
 ```ts
 import {Injectable, inject, EnvironmentInjector, runInInjectionContext} from '@angular/core';
@@ -42,7 +42,7 @@ export class MyService {
 
   doSomethingDynamic() {
     runInInjectionContext(this.injector, () => {
-      // Now valid to use inject() here
+      // Agora é válido usar inject() aqui
       const router = inject(Router);
     });
   }
@@ -51,7 +51,7 @@ export class MyService {
 
 ## `assertInInjectionContext`
 
-Use `assertInInjectionContext` in utility functions to guarantee they are called from a valid context. It throws a clear error if not.
+Use `assertInInjectionContext` em funções utilitárias para garantir que elas sejam chamadas a partir de um contexto válido. Ela lança um erro claro se não for o caso.
 
 ```ts
 import {assertInInjectionContext, inject, ElementRef} from '@angular/core';

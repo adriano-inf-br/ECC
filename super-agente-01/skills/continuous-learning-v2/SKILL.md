@@ -1,53 +1,53 @@
 ---
 name: continuous-learning-v2
-description: Instinct-based learning system that observes sessions via hooks, creates atomic instincts with confidence scoring, and evolves them into skills/commands/agents. v2.1 adds project-scoped instincts to prevent cross-project contamination.
+description: Sistema de aprendizado baseado em instintos que observa sessões via hooks, cria instintos atômicos com pontuação de confiança e os evolui para skills/comandos/agents. A v2.1 adiciona instintos com escopo de projeto para evitar contaminação entre projetos.
 metadata:
   origin: ECC
 version: 2.1.0
 ---
 
-# Continuous Learning v2.1 - Instinct
--Based Architecture
+# Continuous Learning v2.1 - Arquitetura Baseada
+-em Instintos
 
-An advanced learning system that turns your Claude Code sessions into reusable knowledge through atomic "instincts" - small learned behaviors with confidence scoring.
+Um sistema de aprendizado avançado que transforma suas sessões do Claude Code em conhecimento reutilizável por meio de "instintos" atômicos — pequenos comportamentos aprendidos com pontuação de confiança.
 
-**v2.1** adds **project-scoped instincts** — React patterns stay in your React project, Python conventions stay in your Python project, and universal patterns (like "always validate input") are shared globally.
+**v2.1** adiciona **instintos com escopo de projeto** — padrões de React ficam no seu projeto React, convenções de Python ficam no seu projeto Python, e padrões universais (como "sempre validar entrada") são compartilhados globalmente.
 
-## When to Activate
+## Quando Ativar
 
-- Setting up automatic learning from Claude Code sessions
-- Configuring instinct-based behavior extraction via hooks
-- Tuning confidence thresholds for learned behaviors
-- Reviewing, exporting, or importing instinct libraries
-- Evolving instincts into full skills, commands, or agents
-- Managing project-scoped vs global instincts
-- Promoting instincts from project to global scope
+- Configurar o aprendizado automático a partir de sessões do Claude Code
+- Configurar a extração de comportamentos baseada em instintos via hooks
+- Ajustar limiares de confiança para comportamentos aprendidos
+- Revisar, exportar ou importar bibliotecas de instintos
+- Evoluir instintos para skills, comandos ou agents completos
+- Gerenciar instintos com escopo de projeto vs globais
+- Promover instintos do escopo de projeto para o escopo global
 
-## What's New in v2.1
+## Novidades na v2.1
 
-| Feature | v2.0 | v2.1 |
+| Recurso | v2.0 | v2.1 |
 |---------|------|------|
-| Storage | Global (`~/.claude/homunculus/`) | Project-scoped (`${XDG_DATA_HOME:-~/.local/share}/ecc-homunculus/projects/<hash>/`) |
-| Scope | All instincts apply everywhere | Project-scoped + global |
-| Detection | None | git remote URL / repo path |
-| Promotion | N/A | Project → global when seen in 2+ projects |
-| Commands | 4 (status/evolve/export/import) | 6 (+promote/projects) |
-| Cross-project | Contamination risk | Isolated by default |
+| Armazenamento | Global (`~/.claude/homunculus/`) | Escopo de projeto (`${XDG_DATA_HOME:-~/.local/share}/ecc-homunculus/projects/<hash>/`) |
+| Escopo | Todos os instintos se aplicam em todo lugar | Escopo de projeto + global |
+| Detecção | Nenhuma | URL do remote git / caminho do repo |
+| Promoção | N/A | Projeto → global quando visto em 2+ projetos |
+| Comandos | 4 (status/evolve/export/import) | 6 (+promote/projects) |
+| Entre projetos | Risco de contaminação | Isolado por padrão |
 
-## What's New in v2 (vs v1)
+## Novidades na v2 (vs v1)
 
-| Feature | v1 | v2 |
+| Recurso | v1 | v2 |
 |---------|----|----|
-| Observation | Stop hook (session end) | PreToolUse/PostToolUse (100% reliable) |
-| Analysis | Main context | Background agent (Haiku) |
-| Granularity | Full skills | Atomic "instincts" |
-| Confidence | None | 0.3-0.9 weighted |
-| Evolution | Direct to skill | Instincts -> cluster -> skill/command/agent |
-| Sharing | None | Export/import instincts |
+| Observação | Hook Stop (fim de sessão) | PreToolUse/PostToolUse (100% confiável) |
+| Análise | Contexto principal | Agent em segundo plano (Haiku) |
+| Granularidade | Skills completas | "Instintos" atômicos |
+| Confiança | Nenhuma | Ponderada de 0.3 a 0.9 |
+| Evolução | Direto para skill | Instintos -> cluster -> skill/comando/agent |
+| Compartilhamento | Nenhum | Exportar/importar instintos |
 
-## The Instinct Model
+## O Modelo de Instinto
 
-An instinct is a small learned behavior:
+Um instinto é um pequeno comportamento aprendido:
 
 ```yaml
 ---
@@ -71,37 +71,37 @@ Use functional patterns over classes when appropriate.
 - User corrected class-based approach to functional on 2025-01-15
 ```
 
-**Properties:**
-- **Atomic** -- one trigger, one action
-- **Confidence-weighted** -- 0.3 = tentative, 0.9 = near certain
-- **Domain-tagged** -- code-style, testing, git, debugging, workflow, etc.
-- **Evidence-backed** -- tracks what observations created it
-- **Scope-aware** -- `project` (default) or `global`
+**Propriedades:**
+- **Atômico** -- um gatilho, uma ação
+- **Ponderado por confiança** -- 0.3 = tentativo, 0.9 = quase certo
+- **Marcado por domínio** -- code-style, testing, git, debugging, workflow, etc.
+- **Lastreado em evidências** -- rastreia quais observações o criaram
+- **Ciente de escopo** -- `project` (padrão) ou `global`
 
-## How It Works
+## Como Funciona
 
 ```
-Session Activity (in a git repo)
+Atividade de Sessão (em um repositório git)
       |
-      | Hooks capture prompts + tool use (100% reliable)
-      | + detect project context (git remote / repo path)
+      | Hooks capturam prompts + uso de tools (100% confiável)
+      | + detectam o contexto do projeto (remote git / caminho do repo)
       v
 +---------------------------------------------+
 |  projects/<project-hash>/observations.jsonl  |
-|   (prompts, tool calls, outcomes, project)   |
+|   (prompts, chamadas de tool, resultados, projeto)   |
 +---------------------------------------------+
       |
-      | Observer agent reads (background, Haiku)
+      | O agent observer lê (em segundo plano, Haiku)
       v
 +---------------------------------------------+
-|          PATTERN DETECTION                   |
-|   * User corrections -> instinct             |
-|   * Error resolutions -> instinct            |
-|   * Repeated workflows -> instinct           |
-|   * Scope decision: project or global?       |
+|          DETECÇÃO DE PADRÕES                 |
+|   * Correções do usuário -> instinto         |
+|   * Resoluções de erro -> instinto           |
+|   * Fluxos de trabalho repetidos -> instinto |
+|   * Decisão de escopo: projeto ou global?    |
 +---------------------------------------------+
       |
-      | Creates/updates
+      | Cria/atualiza
       v
 +---------------------------------------------+
 |  projects/<project-hash>/instincts/personal/ |
@@ -113,10 +113,10 @@ Session Activity (in a git repo)
 |   * grep-before-edit.yaml (0.6) [global]     |
 +---------------------------------------------+
       |
-      | /evolve clusters + /promote
+      | /evolve agrupa em clusters + /promote
       v
 +---------------------------------------------+
-|  projects/<hash>/evolved/ (project-scoped)   |
+|  projects/<hash>/evolved/ (escopo de projeto)   |
 |  evolved/ (global)                           |
 |   * commands/new-feature.md                  |
 |   * skills/testing-workflow.md               |
@@ -124,42 +124,42 @@ Session Activity (in a git repo)
 +---------------------------------------------+
 ```
 
-## Project Detection
+## Detecção de Projeto
 
-The system automatically detects your current project:
+O sistema detecta automaticamente seu projeto atual:
 
-1. **`CLAUDE_PROJECT_DIR` env var** (highest priority)
-2. **`git remote get-url origin`** -- hashed to create a portable project ID (same repo on different machines gets the same ID)
-3. **`git rev-parse --show-toplevel`** -- fallback using repo path (machine-specific)
-4. **Global fallback** -- if no project is detected, instincts go to global scope
+1. **Variável de ambiente `CLAUDE_PROJECT_DIR`** (prioridade máxima)
+2. **`git remote get-url origin`** -- transformado em hash para criar um ID de projeto portável (o mesmo repo em máquinas diferentes recebe o mesmo ID)
+3. **`git rev-parse --show-toplevel`** -- fallback usando o caminho do repo (específico da máquina)
+4. **Fallback global** -- se nenhum projeto for detectado, os instintos vão para o escopo global
 
-Each project gets a 12-character hash ID (e.g., `a1b2c3d4e5f6`). A registry file at `${XDG_DATA_HOME:-~/.local/share}/ecc-homunculus/projects.json` maps IDs to human-readable names.
+Cada projeto recebe um ID de hash de 12 caracteres (ex.: `a1b2c3d4e5f6`). Um arquivo de registro em `${XDG_DATA_HOME:-~/.local/share}/ecc-homunculus/projects.json` mapeia IDs para nomes legíveis.
 
-### Data Directory
+### Diretório de Dados
 
-Continuous-learning-v2 stores observer data outside `~/.claude` so Claude Code's sensitive-path guard does not block background instinct writes:
+O continuous-learning-v2 armazena os dados do observer fora de `~/.claude` para que o guarda de caminhos sensíveis do Claude Code não bloqueie gravações de instintos em segundo plano:
 
-1. `CLV2_HOMUNCULUS_DIR` when set to an absolute path
+1. `CLV2_HOMUNCULUS_DIR` quando definido como um caminho absoluto
 2. `$XDG_DATA_HOME/ecc-homunculus`
 3. `$HOME/.local/share/ecc-homunculus`
 
-Existing users with data at `~/.claude/homunculus` can migrate once:
+Usuários existentes com dados em `~/.claude/homunculus` podem migrar uma vez:
 
 ```bash
 bash skills/continuous-learning-v2/scripts/migrate-homunculus.sh
 ```
 
-## Quick Start
+## Início Rápido
 
-### 1. Enable Observation Hooks
+### 1. Habilite os Hooks de Observação
 
-**If installed as a plugin** (recommended):
+**Se instalado como um plugin** (recomendado):
 
-No extra `settings.json` hook block is required. Claude Code v2.1+ auto-loads the plugin `hooks/hooks.json`, and `observe.sh` is already registered there.
+Nenhum bloco de hook extra em `settings.json` é necessário. O Claude Code v2.1+ carrega automaticamente o `hooks/hooks.json` do plugin, e o `observe.sh` já está registrado ali.
 
-If you previously copied `observe.sh` into `~/.claude/settings.json`, remove that duplicate `PreToolUse` / `PostToolUse` block. Duplicating the plugin hook causes double execution and `${CLAUDE_PLUGIN_ROOT}` resolution errors because that variable is only available inside plugin-managed `hooks/hooks.json` entries.
+Se você copiou anteriormente o `observe.sh` para `~/.claude/settings.json`, remova esse bloco `PreToolUse` / `PostToolUse` duplicado. Duplicar o hook do plugin causa execução dupla e erros de resolução de `${CLAUDE_PLUGIN_ROOT}`, pois essa variável só está disponível dentro de entradas de `hooks/hooks.json` gerenciadas pelo plugin.
 
-**If installed manually** to `~/.claude/skills`, add this to your `~/.claude/settings.json`:
+**Se instalado manualmente** em `~/.claude/skills`, adicione isto ao seu `~/.claude/settings.json`:
 
 ```json
 {
@@ -182,9 +182,9 @@ If you previously copied `observe.sh` into `~/.claude/settings.json`, remove tha
 }
 ```
 
-### 2. Initialize Directory Structure
+### 2. Inicialize a Estrutura de Diretórios
 
-The system creates directories automatically on first use, but you can also create them manually:
+O sistema cria os diretórios automaticamente no primeiro uso, mas você também pode criá-los manualmente:
 
 ```bash
 # Global directories
@@ -193,31 +193,31 @@ mkdir -p "${XDG_DATA_HOME:-$HOME/.local/share}/ecc-homunculus"/{instincts/{perso
 # Project directories are auto-created when the hook first runs in a git repo
 ```
 
-### 3. Use the Instinct Commands
+### 3. Use os Comandos de Instinto
 
 ```bash
-/instinct-status     # Show learned instincts (project + global)
-/evolve              # Cluster related instincts into skills/commands
-/instinct-export     # Export instincts to file
-/instinct-import     # Import instincts from others
-/promote             # Promote project instincts to global scope
-/projects            # List all known projects and their instinct counts
+/instinct-status     # Mostra os instintos aprendidos (projeto + global)
+/evolve              # Agrupa instintos relacionados em skills/comandos
+/instinct-export     # Exporta instintos para arquivo
+/instinct-import     # Importa instintos de outras pessoas
+/promote             # Promove instintos do projeto para o escopo global
+/projects            # Lista todos os projetos conhecidos e suas contagens de instintos
 ```
 
-## Commands
+## Comandos
 
-| Command | Description |
+| Comando | Descrição |
 |---------|-------------|
-| `/instinct-status` | Show all instincts (project-scoped + global) with confidence |
-| `/evolve` | Cluster related instincts into skills/commands, suggest promotions |
-| `/instinct-export` | Export instincts (filterable by scope/domain) |
-| `/instinct-import <file>` | Import instincts with scope control |
-| `/promote [id]` | Promote project instincts to global scope |
-| `/projects` | List all known projects and their instinct counts |
+| `/instinct-status` | Mostra todos os instintos (escopo de projeto + global) com confiança |
+| `/evolve` | Agrupa instintos relacionados em skills/comandos, sugere promoções |
+| `/instinct-export` | Exporta instintos (filtráveis por escopo/domínio) |
+| `/instinct-import <file>` | Importa instintos com controle de escopo |
+| `/promote [id]` | Promove instintos do projeto para o escopo global |
+| `/projects` | Lista todos os projetos conhecidos e suas contagens de instintos |
 
-## Configuration
+## Configuração
 
-Edit `config.json` to control the background observer:
+Edite `config.json` para controlar o observer em segundo plano:
 
 ```json
 {
@@ -230,132 +230,132 @@ Edit `config.json` to control the background observer:
 }
 ```
 
-| Key | Default | Description |
+| Chave | Padrão | Descrição |
 |-----|---------|-------------|
-| `observer.enabled` | `false` | Enable the background observer agent |
-| `observer.run_interval_minutes` | `5` | How often the observer analyzes observations |
-| `observer.min_observations_to_analyze` | `20` | Minimum observations before analysis runs |
+| `observer.enabled` | `false` | Habilita o agent observer em segundo plano |
+| `observer.run_interval_minutes` | `5` | Com que frequência o observer analisa as observações |
+| `observer.min_observations_to_analyze` | `20` | Observações mínimas antes de a análise rodar |
 
-Other behavior (observation capture, instinct thresholds, project scoping, promotion criteria) is configured via code defaults in `instinct-cli.py` and `observe.sh`.
+Outros comportamentos (captura de observações, limiares de instinto, escopo de projeto, critérios de promoção) são configurados por padrões de código em `instinct-cli.py` e `observe.sh`.
 
-## File Structure
+## Estrutura de Arquivos
 
 ```
 ${XDG_DATA_HOME:-~/.local/share}/ecc-homunculus/
-+-- identity.json           # Your profile, technical level
-+-- projects.json           # Registry: project hash -> name/path/remote
-+-- observations.jsonl      # Global observations (fallback)
++-- identity.json           # Seu perfil, nível técnico
++-- projects.json           # Registro: hash do projeto -> nome/caminho/remote
++-- observations.jsonl      # Observações globais (fallback)
 +-- instincts/
-|   +-- personal/           # Global auto-learned instincts
-|   +-- inherited/          # Global imported instincts
+|   +-- personal/           # Instintos globais aprendidos automaticamente
+|   +-- inherited/          # Instintos globais importados
 +-- evolved/
-|   +-- agents/             # Global generated agents
-|   +-- skills/             # Global generated skills
-|   +-- commands/           # Global generated commands
+|   +-- agents/             # Agents globais gerados
+|   +-- skills/             # Skills globais geradas
+|   +-- commands/           # Comandos globais gerados
 +-- projects/
-    +-- a1b2c3d4e5f6/       # Project hash (from git remote URL)
-    |   +-- project.json    # Per-project metadata mirror (id/name/root/remote)
+    +-- a1b2c3d4e5f6/       # Hash do projeto (a partir da URL do remote git)
+    |   +-- project.json    # Espelho de metadados por projeto (id/name/root/remote)
     |   +-- observations.jsonl
     |   +-- observations.archive/
     |   +-- instincts/
-    |   |   +-- personal/   # Project-specific auto-learned
-    |   |   +-- inherited/  # Project-specific imported
+    |   |   +-- personal/   # Aprendidos automaticamente, específicos do projeto
+    |   |   +-- inherited/  # Importados, específicos do projeto
     |   +-- evolved/
     |       +-- skills/
     |       +-- commands/
     |       +-- agents/
-    +-- f6e5d4c3b2a1/       # Another project
+    +-- f6e5d4c3b2a1/       # Outro projeto
         +-- ...
 ```
 
-## Scope Decision Guide
+## Guia de Decisão de Escopo
 
-| Pattern Type | Scope | Examples |
+| Tipo de Padrão | Escopo | Exemplos |
 |-------------|-------|---------|
-| Language/framework conventions | **project** | "Use React hooks", "Follow Django REST patterns" |
-| File structure preferences | **project** | "Tests in `__tests__`/", "Components in src/components/" |
-| Code style | **project** | "Use functional style", "Prefer dataclasses" |
-| Error handling strategies | **project** | "Use Result type for errors" |
-| Security practices | **global** | "Validate user input", "Sanitize SQL" |
-| General best practices | **global** | "Write tests first", "Always handle errors" |
-| Tool workflow preferences | **global** | "Grep before Edit", "Read before Write" |
-| Git practices | **global** | "Conventional commits", "Small focused commits" |
+| Convenções de linguagem/framework | **project** | "Use React hooks", "Follow Django REST patterns" |
+| Preferências de estrutura de arquivos | **project** | "Tests in `__tests__`/", "Components in src/components/" |
+| Estilo de código | **project** | "Use functional style", "Prefer dataclasses" |
+| Estratégias de tratamento de erros | **project** | "Use Result type for errors" |
+| Práticas de segurança | **global** | "Validate user input", "Sanitize SQL" |
+| Boas práticas gerais | **global** | "Write tests first", "Always handle errors" |
+| Preferências de fluxo de trabalho de tools | **global** | "Grep before Edit", "Read before Write" |
+| Práticas de git | **global** | "Conventional commits", "Small focused commits" |
 
-## Instinct Promotion (Project -> Global)
+## Promoção de Instinto (Projeto -> Global)
 
-When the same instinct appears in multiple projects with high confidence, it's a candidate for promotion to global scope.
+Quando o mesmo instinto aparece em múltiplos projetos com alta confiança, ele é um candidato à promoção para o escopo global.
 
-**Auto-promotion criteria:**
-- Same instinct ID in 2+ projects
-- Average confidence >= 0.8
+**Critérios de promoção automática:**
+- Mesmo ID de instinto em 2+ projetos
+- Confiança média >= 0.8
 
-**How to promote:**
+**Como promover:**
 
 ```bash
-# Promote a specific instinct
+# Promove um instinto específico
 python3 instinct-cli.py promote prefer-explicit-errors
 
-# Auto-promote all qualifying instincts
+# Promove automaticamente todos os instintos qualificados
 python3 instinct-cli.py promote
 
-# Preview without changes
+# Pré-visualiza sem alterações
 python3 instinct-cli.py promote --dry-run
 ```
 
-The `/evolve` command also suggests promotion candidates.
+O comando `/evolve` também sugere candidatos à promoção.
 
-## Confidence Scoring
+## Pontuação de Confiança
 
-Confidence evolves over time:
+A confiança evolui ao longo do tempo:
 
-| Score | Meaning | Behavior |
+| Pontuação | Significado | Comportamento |
 |-------|---------|----------|
-| 0.3 | Tentative | Suggested but not enforced |
-| 0.5 | Moderate | Applied when relevant |
-| 0.7 | Strong | Auto-approved for application |
-| 0.9 | Near-certain | Core behavior |
+| 0.3 | Tentativo | Sugerido mas não imposto |
+| 0.5 | Moderado | Aplicado quando relevante |
+| 0.7 | Forte | Aprovado automaticamente para aplicação |
+| 0.9 | Quase certo | Comportamento central |
 
-**Confidence increases** when:
-- Pattern is repeatedly observed
-- User doesn't correct the suggested behavior
-- Similar instincts from other sources agree
+**A confiança aumenta** quando:
+- O padrão é observado repetidamente
+- O usuário não corrige o comportamento sugerido
+- Instintos semelhantes de outras fontes concordam
 
-**Confidence decreases** when:
-- User explicitly corrects the behavior
-- Pattern isn't observed for extended periods
-- Contradicting evidence appears
+**A confiança diminui** quando:
+- O usuário corrige explicitamente o comportamento
+- O padrão não é observado por períodos prolongados
+- Surgem evidências contraditórias
 
-## Why Hooks vs Skills for Observation?
+## Por Que Hooks vs Skills para Observação?
 
-> "v1 relied on skills to observe. Skills are probabilistic -- they fire ~50-80% of the time based on Claude's judgment."
+> "A v1 dependia de skills para observar. Skills são probabilísticas -- elas disparam ~50-80% das vezes com base no julgamento do Claude."
 
-Hooks fire **100% of the time**, deterministically. This means:
-- Every tool call is observed
-- No patterns are missed
-- Learning is comprehensive
+Hooks disparam **100% das vezes**, de forma determinística. Isso significa:
+- Toda chamada de tool é observada
+- Nenhum padrão é perdido
+- O aprendizado é abrangente
 
-## Backward Compatibility
+## Compatibilidade Retroativa
 
-v2.1 is fully compatible with v2.0 and v1:
-- Existing global instincts can be migrated from `~/.claude/homunculus/instincts/` with `scripts/migrate-homunculus.sh`
-- Existing `~/.claude/skills/learned/` skills from v1 still work
-- Stop hook still runs (but now also feeds into v2)
-- Gradual migration: run both in parallel
+A v2.1 é totalmente compatível com a v2.0 e a v1:
+- Instintos globais existentes podem ser migrados de `~/.claude/homunculus/instincts/` com `scripts/migrate-homunculus.sh`
+- Skills existentes em `~/.claude/skills/learned/` da v1 continuam funcionando
+- O hook Stop ainda roda (mas agora também alimenta a v2)
+- Migração gradual: rode ambos em paralelo
 
-## Privacy
+## Privacidade
 
-- Observations stay **local** on your machine
-- Project-scoped instincts are isolated per project
-- Only **instincts** (patterns) can be exported — not raw observations
-- No actual code or conversation content is shared
-- You control what gets exported and promoted
+- As observações permanecem **locais** na sua máquina
+- Instintos com escopo de projeto são isolados por projeto
+- Apenas **instintos** (padrões) podem ser exportados — não observações brutas
+- Nenhum código real ou conteúdo de conversa é compartilhado
+- Você controla o que é exportado e promovido
 
-## Related
+## Relacionados
 
-- [ECC-Tools GitHub App](https://github.com/apps/ecc-tools) - Generate instincts from repo history
-- Homunculus - Community project that inspired the v2 instinct-based architecture (atomic observations, confidence scoring, instinct evolution pipeline)
-- [The Longform Guide](https://x.com/affaanmustafa/status/2014040193557471352) - Continuous learning section
+- [ECC-Tools GitHub App](https://github.com/apps/ecc-tools) - Gere instintos a partir do histórico do repo
+- Homunculus - Projeto da comunidade que inspirou a arquitetura baseada em instintos da v2 (observações atômicas, pontuação de confiança, pipeline de evolução de instintos)
+- [The Longform Guide](https://x.com/affaanmustafa/status/2014040193557471352) - Seção de aprendizado contínuo
 
 ---
 
-*Instinct-based learning: teaching Claude your patterns, one project at a time.*
+*Aprendizado baseado em instintos: ensinando ao Claude os seus padrões, um projeto de cada vez.*

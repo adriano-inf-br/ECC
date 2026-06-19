@@ -1,59 +1,59 @@
 ---
 name: agent-payment-x402
-description: Add x402 payment execution to AI agents with per-task budgets, spending controls, and non-custodial wallets. Supports Base through agentwallet-sdk and X Layer through OKX Payments / OKX Agent Payments Protocol.
+description: Adicione execução de pagamentos x402 a agents de IA com orçamentos por tarefa, controles de gastos e carteiras não custodiais. Suporta Base via agentwallet-sdk e X Layer via OKX Payments / OKX Agent Payments Protocol.
 metadata:
   origin: community
 ---
 
-# Agent Payment Execution (x402)
+# Execução de Pagamentos de Agent (x402)
 
-Enable AI agents to make policy-gated payments with built-in spending controls. Uses the x402 HTTP payment protocol and MCP tools so agents can pay for external services, APIs, or other agents without custodial risk.
+Permita que agents de IA façam pagamentos controlados por política com controles de gastos embutidos. Usa o protocolo de pagamento HTTP x402 e tools MCP para que agents possam pagar por serviços externos, APIs ou outros agents sem risco custodial.
 
 ## When to Use
 
-Use when: your agent needs to pay for an API call, purchase a service, settle with another agent, enforce per-task spending limits, or manage a non-custodial wallet. Pairs naturally with cost-aware-llm-pipeline and security-review skills.
+Use quando: seu agent precisa pagar por uma chamada de API, comprar um serviço, acertar contas com outro agent, impor limites de gasto por tarefa ou gerenciar uma carteira não custodial. Combina naturalmente com as skills cost-aware-llm-pipeline e security-review.
 
-## Decision Tree
+## Árvore de Decisão
 
-Choose the integration path based on whether your agent is buying access to a paid API or charging others for one:
+Escolha o caminho de integração com base em se seu agent está comprando acesso a uma API paga ou cobrando outros por uma:
 
-| Need | Recommended path |
+| Necessidade | Caminho recomendado |
 |------|------------------|
-| Agent pays a 402-gated API on Base or another agentwallet-supported chain | Use `agentwallet-sdk` as an MCP payment server with strict spending policy |
-| Agent pays a 402-gated API on X Layer | Use OKX Agent Payments Protocol from `okx/onchainos-skills`; `okx-x402-payment` is a deprecated legacy alias |
-| TypeScript API charges agents | Use OKX Payments TypeScript seller SDK docs for Express, Hono, Fastify, or Next.js |
-| Go API charges agents | Use OKX Payments Go seller SDK docs for Gin, Echo, or `net/http` |
-| Rust API charges agents | Use OKX Payments Rust seller SDK docs for Axum |
-| Java API charges agents | Use OKX Payments Java seller SDK docs for Spring Boot 2/3, Java EE, or Jakarta |
-| Python API charges agents | Check the current OKX Payments repository before implementation; a Python seller guide may not be available |
+| Agent paga uma API protegida por 402 na Base ou em outra chain suportada pela agentwallet | Use `agentwallet-sdk` como servidor de pagamento MCP com política de gastos estrita |
+| Agent paga uma API protegida por 402 na X Layer | Use o OKX Agent Payments Protocol de `okx/onchainos-skills`; `okx-x402-payment` é um alias legado depreciado |
+| API TypeScript cobra agents | Use a documentação do SDK vendedor OKX Payments para TypeScript com Express, Hono, Fastify ou Next.js |
+| API Go cobra agents | Use a documentação do SDK vendedor OKX Payments para Go com Gin, Echo ou `net/http` |
+| API Rust cobra agents | Use a documentação do SDK vendedor OKX Payments para Rust com Axum |
+| API Java cobra agents | Use a documentação do SDK vendedor OKX Payments para Java com Spring Boot 2/3, Java EE ou Jakarta |
+| API Python cobra agents | Verifique o repositório OKX Payments atual antes da implementação; um guia de vendedor Python pode não estar disponível |
 
-## Supported Networks
+## Redes Suportadas
 
-- `agentwallet-sdk`: use the package docs to confirm current network coverage before production. Base Sepolia is the safest development default; Base mainnet is the production path called out by the original skill.
-- OKX Payments / X Layer: current seller docs target X Layer (`eip155:196`) and USDT0 settlement. Fetch current SDK docs before generating production code because payment packages and facilitator behavior can change quickly.
+- `agentwallet-sdk`: use a documentação do pacote para confirmar a cobertura de rede atual antes de produção. Base Sepolia é o padrão de desenvolvimento mais seguro; a Base mainnet é o caminho de produção apontado pela skill original.
+- OKX Payments / X Layer: a documentação atual de vendedor mira a X Layer (`eip155:196`) e a liquidação em USDT0. Busque a documentação atual do SDK antes de gerar código de produção, porque pacotes de pagamento e o comportamento do facilitador podem mudar rapidamente.
 
 ## How It Works
 
-### x402 Protocol
-x402 extends HTTP 402 (Payment Required) into a machine-negotiable flow. When a server returns `402`, the agent's payment tool negotiates price, checks budget, signs a transaction, and retries only inside the policy and confirmation boundary set by the orchestrator.
+### Protocolo x402
+O x402 estende o HTTP 402 (Payment Required) em um fluxo negociável por máquina. Quando um servidor retorna `402`, a tool de pagamento do agent negocia o preço, verifica o orçamento, assina uma transação e tenta novamente apenas dentro da fronteira de política e confirmação definida pelo orquestrador.
 
-### Spending Controls
-Every payment tool call enforces a `SpendingPolicy`:
-- **Per-task budget** — max spend for a single agent action
-- **Per-session budget** — cumulative limit across an entire session
-- **Allowlisted recipients** — restrict which addresses/services the agent can pay
-- **Rate limits** — max transactions per minute/hour
+### Controles de Gastos
+Toda chamada de tool de pagamento impõe uma `SpendingPolicy`:
+- **Orçamento por tarefa** — gasto máximo para uma única ação de agent
+- **Orçamento por sessão** — limite cumulativo ao longo de uma sessão inteira
+- **Destinatários na allowlist** — restringe quais endereços/serviços o agent pode pagar
+- **Limites de taxa (rate limits)** — máximo de transações por minuto/hora
 
-### Non-Custodial Wallets
-Agents hold their own keys via ERC-4337 smart accounts. The orchestrator sets policy before delegation; the agent can only spend within bounds. No pooled funds, no custodial risk.
+### Carteiras Não Custodiais
+Os agents detêm suas próprias chaves via smart accounts ERC-4337. O orquestrador define a política antes da delegação; o agent só pode gastar dentro dos limites. Sem fundos agrupados, sem risco custodial.
 
-## MCP Integration
+## Integração MCP
 
-The payment layer exposes standard MCP tools that slot into any Claude Code or agent harness setup.
+A camada de pagamento expõe tools MCP padrão que se encaixam em qualquer configuração de Claude Code ou harness de agent.
 
-> **Security note**: Always pin the package version. This tool manages private keys — unpinned `npx` installs introduce supply-chain risk.
+> **Nota de segurança**: Sempre fixe a versão do pacote. Esta tool gerencia chaves privadas — instalações `npx` sem versão fixa introduzem risco de supply chain.
 
-### Option A: agentwallet-sdk (Base / multi-chain)
+### Opção A: agentwallet-sdk (Base / multi-chain)
 
 ```json
 {
@@ -66,62 +66,62 @@ The payment layer exposes standard MCP tools that slot into any Claude Code or a
 }
 ```
 
-### Available Tools (agent-callable)
+### Tools Disponíveis (chamáveis pelo agent)
 
-| Tool | Purpose |
+| Tool | Propósito |
 |------|---------|
-| `get_balance` | Check agent wallet balance |
-| `send_payment` | Send payment to address or ENS |
-| `check_spending` | Query remaining budget |
-| `list_transactions` | Audit trail of all payments |
+| `get_balance` | Verificar o saldo da carteira do agent |
+| `send_payment` | Enviar pagamento para um endereço ou ENS |
+| `check_spending` | Consultar o orçamento restante |
+| `list_transactions` | Trilha de auditoria de todos os pagamentos |
 
-> **Note**: Spending policy is set by the **orchestrator** before delegating to the agent — not by the agent itself. This prevents agents from escalating their own spending limits. Configure policy via `set_policy` in your orchestration layer or pre-task hook, never as an agent-callable tool.
+> **Nota**: A política de gastos é definida pelo **orquestrador** antes de delegar ao agent — não pelo próprio agent. Isso impede que agents escalem seus próprios limites de gasto. Configure a política via `set_policy` na sua camada de orquestração ou hook de pré-tarefa, nunca como uma tool chamável pelo agent.
 
-### Option B: OKX Agent Payments Protocol (X Layer)
+### Opção B: OKX Agent Payments Protocol (X Layer)
 
-Use this path for X Layer x402, Multi-Party Payment (MPP), session payment, charge, and A2A charge flows.
+Use este caminho para os fluxos de x402 na X Layer, Multi-Party Payment (MPP), pagamento por sessão, cobrança (charge) e cobrança A2A.
 
-For buyer-side agent flows:
+Para fluxos de agent do lado comprador:
 
-1. Install or reference the current `okx/onchainos-skills` repository.
-2. Use `skills/okx-agent-payments-protocol/SKILL.md` as the dispatcher.
-3. Treat `skills/okx-x402-payment/SKILL.md` as a deprecated compatibility alias, not as the canonical skill.
-4. Require explicit user confirmation before wallet status checks or payment actions. Do not hide payment execution behind a generic tool call.
+1. Instale ou referencie o repositório atual `okx/onchainos-skills`.
+2. Use `skills/okx-agent-payments-protocol/SKILL.md` como o dispatcher.
+3. Trate `skills/okx-x402-payment/SKILL.md` como um alias de compatibilidade depreciado, não como a skill canônica.
+4. Exija confirmação explícita do usuário antes de verificações de status da carteira ou ações de pagamento. Não esconda a execução de pagamento atrás de uma chamada de tool genérica.
 
-For seller-side API flows, fetch the latest language-specific guide before generating code:
+Para fluxos de API do lado vendedor, busque o guia mais recente específico da linguagem antes de gerar código:
 
-| Runtime | Current guide |
+| Runtime | Guia atual |
 |---------|---------------|
 | TypeScript | `https://raw.githubusercontent.com/okx/payments/main/typescript/SELLER.md` |
 | Go | `https://raw.githubusercontent.com/okx/payments/main/go/x402/SELLER.md` |
 | Rust | `https://raw.githubusercontent.com/okx/payments/main/rust/x402/SELLER.md` |
 | Java | `https://raw.githubusercontent.com/okx/payments/main/java/SELLER.md` |
 
-Do not copy examples from older docs without checking the current OKX repository. Current OKX guidance uses `okx-agent-payments-protocol` as the dispatcher, and Java seller docs are now available.
+Não copie exemplos de documentações mais antigas sem verificar o repositório OKX atual. A orientação atual da OKX usa `okx-agent-payments-protocol` como o dispatcher, e a documentação de vendedor Java agora está disponível.
 
 ## Examples
 
-### Budget enforcement in an MCP client
+### Imposição de orçamento em um cliente MCP
 
-When building an orchestrator that calls the agentpay MCP server, enforce budgets before dispatching paid tool calls.
+Ao construir um orquestrador que chama o servidor MCP agentpay, imponha orçamentos antes de despachar chamadas de tool pagas.
 
-> **Prerequisites**: Install the package before adding the MCP config — `npx` without `-y` will prompt for confirmation in non-interactive environments, causing the server to hang: `npm install -g agentwallet-sdk@6.0.0`
+> **Pré-requisitos**: Instale o pacote antes de adicionar a config MCP — `npx` sem `-y` solicitará confirmação em ambientes não interativos, fazendo o servidor travar: `npm install -g agentwallet-sdk@6.0.0`
 
 ```typescript
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 
 async function main() {
-  // 1. Validate credentials before constructing the transport.
-  //    A missing key must fail immediately — never let the subprocess start without auth.
+  // 1. Valide as credenciais antes de construir o transport.
+  //    Uma chave ausente deve falhar imediatamente — nunca deixe o subprocesso iniciar sem auth.
   const walletKey = process.env.WALLET_PRIVATE_KEY;
   if (!walletKey) {
     throw new Error("WALLET_PRIVATE_KEY is not set — refusing to start payment server");
   }
 
-  // Connect to the agentpay MCP server via stdio transport.
-  // Whitelist only the env vars the server needs — never forward all of process.env
-  // to a third-party subprocess that manages private keys.
+  // Conecte-se ao servidor MCP agentpay via stdio transport.
+  // Passe apenas as variáveis de ambiente que o servidor precisa — nunca encaminhe todo o process.env
+  // para um subprocesso de terceiros que gerencia chaves privadas.
   const transport = new StdioClientTransport({
     command: "npx",
     args: ["agentwallet-sdk@6.0.0"],
@@ -134,8 +134,8 @@ async function main() {
   const agentpay = new Client({ name: "orchestrator", version: "1.0.0" });
   await agentpay.connect(transport);
 
-  // 2. Set spending policy before delegating to the agent.
-  //    Always verify success — a silent failure means no controls are active.
+  // 2. Defina a política de gastos antes de delegar ao agent.
+  //    Sempre verifique o sucesso — uma falha silenciosa significa que nenhum controle está ativo.
   const policyResult = await agentpay.callTool({
     name: "set_policy",
     arguments: {
@@ -150,18 +150,18 @@ async function main() {
     );
   }
 
-  // 3. Use preToolCheck before any paid action
+  // 3. Use preToolCheck antes de qualquer ação paga
   await preToolCheck(agentpay, 0.01);
 }
 
-// Pre-tool hook: fail-closed budget enforcement with four distinct error paths.
+// Hook de pré-tool: imposição de orçamento fail-closed com quatro caminhos de erro distintos.
 async function preToolCheck(agentpay: Client, apiCost: number): Promise<void> {
-  // Path 1: Reject invalid input (NaN/Infinity bypass the < comparison)
+  // Caminho 1: Rejeite entrada inválida (NaN/Infinity contornam a comparação <)
   if (!Number.isFinite(apiCost) || apiCost < 0) {
     throw new Error(`Invalid apiCost: ${apiCost} — action blocked`);
   }
 
-  // Path 2: Transport/connectivity failure
+  // Caminho 2: Falha de transport/conectividade
   let result;
   try {
     result = await agentpay.callTool({ name: "check_spending" });
@@ -169,14 +169,14 @@ async function preToolCheck(agentpay: Client, apiCost: number): Promise<void> {
     throw new Error(`Payment service unreachable — action blocked: ${err}`);
   }
 
-  // Path 3: Tool returned an error (e.g., auth failure, wallet not initialised)
+  // Caminho 3: A tool retornou um erro (ex.: falha de auth, carteira não inicializada)
   if (result.isError) {
     throw new Error(
       `check_spending failed — action blocked: ${JSON.stringify(result.content)}`
     );
   }
 
-  // Path 4: Parse and validate the response shape
+  // Caminho 4: Faça parse e valide o formato da resposta
   let remaining: number;
   try {
     const parsed = JSON.parse(
@@ -192,7 +192,7 @@ async function preToolCheck(agentpay: Client, apiCost: number): Promise<void> {
     );
   }
 
-  // Path 5: Budget exceeded
+  // Caminho 5: Orçamento excedido
   if (remaining < apiCost) {
     throw new Error(
       `Budget exceeded: need $${apiCost} but only $${remaining} remaining`
@@ -206,20 +206,20 @@ main().catch((err) => {
 });
 ```
 
-## Best Practices
+## Boas Práticas
 
-- **Set budgets before delegation**: When spawning sub-agents, attach a SpendingPolicy via your orchestration layer. Never give an agent unlimited spend.
-- **Pin your dependencies**: Always specify an exact version in your MCP config (e.g., `agentwallet-sdk@6.0.0`). Verify package integrity before deploying to production.
-- **Audit trails**: Use `list_transactions` in post-task hooks to log what was spent and why.
-- **Fail closed**: If the payment tool is unreachable, block the paid action — don't fall back to unmetered access.
-- **Pair with security-review**: Payment tools are high-privilege. Apply the same scrutiny as shell access.
-- **Test with testnets first**: Use Base Sepolia for development; switch to Base mainnet for production.
+- **Defina orçamentos antes da delegação**: Ao gerar sub-agents, anexe uma SpendingPolicy via sua camada de orquestração. Nunca dê a um agent gasto ilimitado.
+- **Fixe suas dependências**: Sempre especifique uma versão exata na sua config MCP (ex.: `agentwallet-sdk@6.0.0`). Verifique a integridade do pacote antes de fazer deploy em produção.
+- **Trilhas de auditoria**: Use `list_transactions` em hooks de pós-tarefa para registrar o que foi gasto e por quê.
+- **Falhe fechado (fail closed)**: Se a tool de pagamento estiver inacessível, bloqueie a ação paga — não recorra a acesso não medido.
+- **Combine com security-review**: Tools de pagamento são de alto privilégio. Aplique o mesmo escrutínio que ao acesso ao shell.
+- **Teste primeiro com testnets**: Use a Base Sepolia para desenvolvimento; troque para a Base mainnet para produção.
 
-## Production Reference
+## Referência de Produção
 
 - **npm**: [`agentwallet-sdk`](https://www.npmjs.com/package/agentwallet-sdk)
-- **Merged into NVIDIA NeMo Agent Toolkit**: [PR #17](https://github.com/NVIDIA/NeMo-Agent-Toolkit-Examples/pull/17) — x402 payment tool for NVIDIA's agent examples
-- **Protocol spec**: [x402.org](https://x402.org)
-- **OKX Payments SDKs**: [`okx/payments`](https://github.com/okx/payments) — TypeScript, Go, Rust, and Java seller integrations for X Layer x402
-- **OKX Agent Payments Protocol skill**: [`okx/onchainos-skills`](https://github.com/okx/onchainos-skills/tree/main/skills/okx-agent-payments-protocol)
-- **OKX Payments overview**: [web3.okx.com/onchainos/dev-docs/payments/overview](https://web3.okx.com/onchainos/dev-docs/payments/overview)
+- **Incorporado ao NVIDIA NeMo Agent Toolkit**: [PR #17](https://github.com/NVIDIA/NeMo-Agent-Toolkit-Examples/pull/17) — tool de pagamento x402 para os exemplos de agent da NVIDIA
+- **Especificação do protocolo**: [x402.org](https://x402.org)
+- **SDKs OKX Payments**: [`okx/payments`](https://github.com/okx/payments) — integrações de vendedor em TypeScript, Go, Rust e Java para x402 na X Layer
+- **Skill OKX Agent Payments Protocol**: [`okx/onchainos-skills`](https://github.com/okx/onchainos-skills/tree/main/skills/okx-agent-payments-protocol)
+- **Visão geral do OKX Payments**: [web3.okx.com/onchainos/dev-docs/payments/overview](https://web3.okx.com/onchainos/dev-docs/payments/overview)

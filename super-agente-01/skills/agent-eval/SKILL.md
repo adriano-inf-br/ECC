@@ -1,31 +1,31 @@
 ---
 name: agent-eval
-description: Head-to-head comparison of coding agents (Claude Code, Aider, Codex, etc.) on custom tasks with pass rate, cost, time, and consistency metrics
+description: Comparação lado a lado de agents de programação (Claude Code, Aider, Codex, etc.) em tarefas customizadas com métricas de taxa de aprovação, custo, tempo e consistência
 metadata:
   origin: ECC
 tools: Read, Write, Edit, Bash, Grep, Glob
 ---
 
-# Agent Eval Skill
+# Skill Agent Eval
 
-A lightweight CLI tool for comparing coding agents head-to-head on reproducible tasks. Every "which coding agent is best?" comparison runs on vibes — this tool systematizes it.
+Uma ferramenta de CLI leve para comparar agents de programação lado a lado em tarefas reprodutíveis. Toda comparação de "qual agent de programação é o melhor?" roda na base do feeling — esta ferramenta a sistematiza.
 
-## When to Activate
+## Quando Ativar
 
-- Comparing coding agents (Claude Code, Aider, Codex, etc.) on your own codebase
-- Measuring agent performance before adopting a new tool or model
-- Running regression checks when an agent updates its model or tooling
-- Producing data-backed agent selection decisions for a team
+- Comparar agents de programação (Claude Code, Aider, Codex, etc.) na sua própria base de código
+- Medir o desempenho de um agent antes de adotar uma nova ferramenta ou modelo
+- Rodar verificações de regressão quando um agent atualiza seu modelo ou ferramental
+- Produzir decisões de seleção de agent embasadas em dados para uma equipe
 
-## Installation
+## Instalação
 
-> **Note:** Install agent-eval from its repository after reviewing the source.
+> **Nota:** Instale o agent-eval a partir de seu repositório após revisar o código-fonte.
 
-## Core Concepts
+## Conceitos Centrais
 
-### YAML Task Definitions
+### Definições de Tarefa em YAML
 
-Define tasks declaratively. Each task specifies what to do, which files to touch, and how to judge success:
+Defina tarefas de forma declarativa. Cada tarefa especifica o que fazer, quais arquivos tocar e como julgar o sucesso:
 
 ```yaml
 name: add-retry-logic
@@ -42,50 +42,50 @@ judge:
   - type: grep
     pattern: "exponential_backoff|retry"
     files: src/http_client.py
-commit: "abc1234"  # pin to specific commit for reproducibility
+commit: "abc1234"  # fixe em um commit específico para reprodutibilidade
 ```
 
-### Git Worktree Isolation
+### Isolamento por Git Worktree
 
-Each agent run gets its own git worktree — no Docker required. This provides reproducibility isolation so agents cannot interfere with each other or corrupt the base repo.
+Cada execução de agent recebe seu próprio git worktree — sem necessidade de Docker. Isso fornece isolamento de reprodutibilidade para que os agents não possam interferir uns com os outros nem corromper o repositório base.
 
-### Metrics Collected
+### Métricas Coletadas
 
-| Metric | What It Measures |
+| Métrica | O Que Mede |
 |--------|-----------------|
-| Pass rate | Did the agent produce code that passes the judge? |
-| Cost | API spend per task (when available) |
-| Time | Wall-clock seconds to completion |
-| Consistency | Pass rate across repeated runs (e.g., 3/3 = 100%) |
+| Taxa de aprovação | O agent produziu código que passa no juiz? |
+| Custo | Gasto de API por tarefa (quando disponível) |
+| Tempo | Segundos de relógio até a conclusão |
+| Consistência | Taxa de aprovação em execuções repetidas (ex.: 3/3 = 100%) |
 
-## Workflow
+## Fluxo de Trabalho
 
-### 1. Define Tasks
+### 1. Definir Tarefas
 
-Create a `tasks/` directory with YAML files, one per task:
+Crie um diretório `tasks/` com arquivos YAML, um por tarefa:
 
 ```bash
 mkdir tasks
-# Write task definitions (see template above)
+# Escreva as definições de tarefa (veja o template acima)
 ```
 
-### 2. Run Agents
+### 2. Executar Agents
 
-Execute agents against your tasks:
+Execute os agents contra suas tarefas:
 
 ```bash
 agent-eval run --task tasks/add-retry-logic.yaml --agent claude-code --agent aider --runs 3
 ```
 
-Each run:
-1. Creates a fresh git worktree from the specified commit
-2. Hands the prompt to the agent
-3. Runs the judge criteria
-4. Records pass/fail, cost, and time
+Cada execução:
+1. Cria um git worktree novo a partir do commit especificado
+2. Entrega o prompt ao agent
+3. Roda os critérios do juiz
+4. Registra aprovação/falha, custo e tempo
 
-### 3. Compare Results
+### 3. Comparar Resultados
 
-Generate a comparison report:
+Gere um relatório de comparação:
 
 ```bash
 agent-eval report --format table
@@ -101,9 +101,9 @@ Task: add-retry-logic (3 runs each)
 └──────────────┴───────────┴────────┴────────┴─────────────┘
 ```
 
-## Judge Types
+## Tipos de Juiz
 
-### Code-Based (deterministic)
+### Baseado em Código (determinístico)
 
 ```yaml
 judge:
@@ -113,7 +113,7 @@ judge:
     command: npm run build
 ```
 
-### Pattern-Based
+### Baseado em Padrão
 
 ```yaml
 judge:
@@ -122,7 +122,7 @@ judge:
     files: src/**/*.py
 ```
 
-### Model-Based (LLM-as-judge)
+### Baseado em Modelo (LLM-as-judge)
 
 ```yaml
 judge:
@@ -132,15 +132,15 @@ judge:
       Check for: max retries, increasing delays, jitter.
 ```
 
-## Best Practices
+## Boas Práticas
 
-- **Start with 3-5 tasks** that represent your real workload, not toy examples
-- **Run at least 3 trials** per agent to capture variance — agents are non-deterministic
-- **Pin the commit** in your task YAML so results are reproducible across days/weeks
-- **Include at least one deterministic judge** (tests, build) per task — LLM judges add noise
-- **Track cost alongside pass rate** — a 95% agent at 10x the cost may not be the right choice
-- **Version your task definitions** — they are test fixtures, treat them as code
+- **Comece com 3-5 tarefas** que representem sua carga de trabalho real, não exemplos de brinquedo
+- **Rode ao menos 3 ensaios** por agent para capturar a variância — agents são não determinísticos
+- **Fixe o commit** no YAML da tarefa para que os resultados sejam reprodutíveis ao longo de dias/semanas
+- **Inclua ao menos um juiz determinístico** (testes, build) por tarefa — juízes LLM adicionam ruído
+- **Acompanhe o custo junto com a taxa de aprovação** — um agent com 95% a 10x o custo pode não ser a escolha certa
+- **Versione suas definições de tarefa** — elas são fixtures de teste, trate-as como código
 
 ## Links
 
-- Repository: [github.com/joaquinhuigomez/agent-eval](https://github.com/joaquinhuigomez/agent-eval)
+- Repositório: [github.com/joaquinhuigomez/agent-eval](https://github.com/joaquinhuigomez/agent-eval)

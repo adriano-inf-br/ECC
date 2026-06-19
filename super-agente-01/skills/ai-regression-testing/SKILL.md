@@ -1,55 +1,55 @@
 ---
 name: ai-regression-testing
-description: Regression testing strategies for AI-assisted development. Sandbox-mode API testing without database dependencies, automated bug-check workflows, and patterns to catch AI blind spots where the same model writes and reviews code.
+description: Estratégias de teste de regressão para desenvolvimento assistido por IA. Testes de API em modo sandbox sem dependências de banco de dados, fluxos de trabalho automatizados de verificação de bugs e padrões para detectar pontos cegos da IA, onde o mesmo modelo escreve e revisa o código.
 metadata:
   origin: ECC
 ---
 
-# AI Regression Testing
+# Testes de Regressão com IA
 
-Testing patterns specifically designed for AI-assisted development, where the same model writes code and reviews it — creating systematic blind spots that only automated tests can catch.
+Padrões de teste projetados especificamente para o desenvolvimento assistido por IA, onde o mesmo modelo escreve o código e o revisa — criando pontos cegos sistemáticos que somente testes automatizados conseguem detectar.
 
-## When to Activate
+## Quando Ativar
 
-- AI agent (Claude Code, Cursor, Codex) has modified API routes or backend logic
-- A bug was found and fixed — need to prevent re-introduction
-- Project has a sandbox/mock mode that can be leveraged for DB-free testing
-- Running `/bug-check` or similar review commands after code changes
-- Multiple code paths exist (sandbox vs production, feature flags, etc.)
+- Um agent de IA (Claude Code, Cursor, Codex) modificou rotas de API ou lógica de backend
+- Um bug foi encontrado e corrigido — é preciso evitar a reintrodução
+- O projeto tem um modo sandbox/mock que pode ser aproveitado para testes sem banco de dados
+- Ao executar `/bug-check` ou comandos de revisão semelhantes após mudanças de código
+- Existem múltiplos caminhos de código (sandbox vs. produção, feature flags, etc.)
 
-## The Core Problem
+## O Problema Central
 
-When an AI writes code and then reviews its own work, it carries the same assumptions into both steps. This creates a predictable failure pattern:
-
-```
-AI writes fix → AI reviews fix → AI says "looks correct" → Bug still exists
-```
-
-**Real-world example** (observed in production):
+Quando uma IA escreve código e depois revisa o próprio trabalho, ela carrega as mesmas premissas para ambas as etapas. Isso cria um padrão de falha previsível:
 
 ```
-Fix 1: Added notification_settings to API response
-  → Forgot to add it to the SELECT query
-  → AI reviewed and missed it (same blind spot)
-
-Fix 2: Added it to SELECT query
-  → TypeScript build error (column not in generated types)
-  → AI reviewed Fix 1 but didn't catch the SELECT issue
-
-Fix 3: Changed to SELECT *
-  → Fixed production path, forgot sandbox path
-  → AI reviewed and missed it AGAIN (4th occurrence)
-
-Fix 4: Test caught it instantly on first run PASS:
+IA escreve a correção → IA revisa a correção → IA diz "parece correto" → O bug ainda existe
 ```
 
-The pattern: **sandbox/production path inconsistency** is the #1 AI-introduced regression.
+**Exemplo do mundo real** (observado em produção):
 
-## Sandbox-Mode API Testing
+```
+Correção 1: Adicionado notification_settings à resposta da API
+  → Esqueceu de adicioná-lo à query SELECT
+  → IA revisou e não percebeu (mesmo ponto cego)
 
-Most projects with AI-friendly architecture have a sandbox/mock mode. This is the key to fast, DB-free API testing.
+Correção 2: Adicionado à query SELECT
+  → Erro de build do TypeScript (coluna ausente nos tipos gerados)
+  → IA revisou a Correção 1 mas não detectou o problema do SELECT
 
-### Setup (Vitest + Next.js App Router)
+Correção 3: Alterado para SELECT *
+  → Corrigiu o caminho de produção, esqueceu o caminho sandbox
+  → IA revisou e não percebeu DE NOVO (4ª ocorrência)
+
+Correção 4: O teste detectou na hora, na primeira execução PASS:
+```
+
+O padrão: **inconsistência entre o caminho sandbox e o de produção** é a regressão introduzida por IA nº 1.
+
+## Testes de API em Modo Sandbox
+
+A maioria dos projetos com arquitetura amigável a IA tem um modo sandbox/mock. Essa é a chave para testes de API rápidos e sem banco de dados.
+
+### Configuração (Vitest + Next.js App Router)
 
 ```typescript
 // vitest.config.ts
@@ -73,13 +73,13 @@ export default defineConfig({
 
 ```typescript
 // __tests__/setup.ts
-// Force sandbox mode — no database needed
+// Força o modo sandbox — nenhum banco de dados necessário
 process.env.SANDBOX_MODE = "true";
 process.env.NEXT_PUBLIC_SUPABASE_URL = "";
 process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = "";
 ```
 
-### Test Helper for Next.js API Routes
+### Helper de Teste para Rotas de API do Next.js
 
 ```typescript
 // __tests__/helpers.ts
@@ -121,9 +121,9 @@ export async function parseResponse(response: Response) {
 }
 ```
 
-### Writing Regression Tests
+### Escrevendo Testes de Regressão
 
-The key principle: **write tests for bugs that were found, not for code that works**.
+O princípio-chave: **escreva testes para os bugs encontrados, não para o código que funciona**.
 
 ```typescript
 // __tests__/api/user/profile.test.ts
@@ -131,7 +131,7 @@ import { describe, it, expect } from "vitest";
 import { createTestRequest, parseResponse } from "../../helpers";
 import { GET, PATCH } from "@/app/api/user/profile/route";
 
-// Define the contract — what fields MUST be in the response
+// Define o contrato — quais campos DEVEM estar na resposta
 const REQUIRED_FIELDS = [
   "id",
   "email",
@@ -140,7 +140,7 @@ const REQUIRED_FIELDS = [
   "role",
   "created_at",
   "avatar_url",
-  "notification_settings",  // ← Added after bug found it missing
+  "notification_settings",  // ← Adicionado depois que um bug o encontrou ausente
 ];
 
 describe("GET /api/user/profile", () => {
@@ -155,7 +155,7 @@ describe("GET /api/user/profile", () => {
     }
   });
 
-  // Regression test — this exact bug was introduced by AI 4 times
+  // Teste de regressão — este bug exato foi introduzido pela IA 4 vezes
   it("notification_settings is not undefined (BUG-R1 regression)", async () => {
     const req = createTestRequest("/api/user/profile");
     const res = await GET(req);
@@ -168,12 +168,12 @@ describe("GET /api/user/profile", () => {
 });
 ```
 
-### Testing Sandbox/Production Parity
+### Testando a Paridade entre Sandbox e Produção
 
-The most common AI regression: fixing production path but forgetting sandbox path (or vice versa).
+A regressão de IA mais comum: corrigir o caminho de produção mas esquecer o caminho sandbox (ou vice-versa).
 
 ```typescript
-// Test that sandbox responses match the expected contract
+// Testa que as respostas do sandbox correspondem ao contrato esperado
 describe("GET /api/user/messages (conversation list)", () => {
   it("includes partner_name in sandbox mode", async () => {
     const req = createTestRequest("/api/user/messages", {
@@ -182,8 +182,8 @@ describe("GET /api/user/messages (conversation list)", () => {
     const res = await GET(req);
     const { json } = await parseResponse(res);
 
-    // This caught a bug where partner_name was added
-    // to production path but not sandbox path
+    // Isto detectou um bug em que partner_name foi adicionado
+    // ao caminho de produção mas não ao caminho sandbox
     if (json.data.length > 0) {
       for (const conv of json.data) {
         expect("partner_name" in conv).toBe(true);
@@ -193,9 +193,9 @@ describe("GET /api/user/messages (conversation list)", () => {
 });
 ```
 
-## Integrating Tests into Bug-Check Workflow
+## Integrando os Testes ao Fluxo de Trabalho de Verificação de Bugs
 
-### Custom Command Definition
+### Definição de Comando Customizado
 
 ```markdown
 <!-- .claude/commands/bug-check.md -->
@@ -223,52 +223,52 @@ Run these commands FIRST before any code review:
 ## Step 3: For each bug fixed, propose a regression test
 ```
 
-### The Workflow
+### O Fluxo de Trabalho
 
 ```
-User: "バグチェックして" (or "/bug-check")
+Usuário: "バグチェックして" (ou "/bug-check")
   │
-  ├─ Step 1: npm run test
-  │   ├─ FAIL → Bug found mechanically (no AI judgment needed)
-  │   └─ PASS → Continue
+  ├─ Etapa 1: npm run test
+  │   ├─ FAIL → Bug encontrado mecanicamente (sem julgamento de IA necessário)
+  │   └─ PASS → Continuar
   │
-  ├─ Step 2: npm run build
-  │   ├─ FAIL → Type error found mechanically
-  │   └─ PASS → Continue
+  ├─ Etapa 2: npm run build
+  │   ├─ FAIL → Erro de tipo encontrado mecanicamente
+  │   └─ PASS → Continuar
   │
-  ├─ Step 3: AI code review (with known blind spots in mind)
-  │   └─ Findings reported
+  ├─ Etapa 3: Revisão de código por IA (com os pontos cegos conhecidos em mente)
+  │   └─ Achados reportados
   │
-  └─ Step 4: For each fix, write a regression test
-      └─ Next bug-check catches if fix breaks
+  └─ Etapa 4: Para cada correção, escrever um teste de regressão
+      └─ A próxima bug-check detecta se a correção quebrar
 ```
 
-## Common AI Regression Patterns
+## Padrões Comuns de Regressão de IA
 
-### Pattern 1: Sandbox/Production Path Mismatch
+### Padrão 1: Divergência entre Caminho Sandbox e Produção
 
-**Frequency**: Most common (observed in 3 out of 4 regressions)
+**Frequência**: Mais comum (observado em 3 de 4 regressões)
 
 ```typescript
-// FAIL: AI adds field to production path only
+// FAIL: A IA adiciona o campo somente ao caminho de produção
 if (isSandboxMode()) {
-  return { data: { id, email, name } };  // Missing new field
+  return { data: { id, email, name } };  // Falta o novo campo
 }
-// Production path
+// Caminho de produção
 return { data: { id, email, name, notification_settings } };
 
-// PASS: Both paths must return the same shape
+// PASS: Ambos os caminhos devem retornar o mesmo formato
 if (isSandboxMode()) {
   return { data: { id, email, name, notification_settings: null } };
 }
 return { data: { id, email, name, notification_settings } };
 ```
 
-**Test to catch it**:
+**Teste para detectá-lo**:
 
 ```typescript
 it("sandbox and production return same fields", async () => {
-  // In test env, sandbox mode is forced ON
+  // No ambiente de teste, o modo sandbox é forçado a ON
   const res = await GET(createTestRequest("/api/user/profile"));
   const { json } = await parseResponse(res);
 
@@ -278,56 +278,56 @@ it("sandbox and production return same fields", async () => {
 });
 ```
 
-### Pattern 2: SELECT Clause Omission
+### Padrão 2: Omissão da Cláusula SELECT
 
-**Frequency**: Common with Supabase/Prisma when adding new columns
+**Frequência**: Comum com Supabase/Prisma ao adicionar novas colunas
 
 ```typescript
-// FAIL: New column added to response but not to SELECT
+// FAIL: Nova coluna adicionada à resposta mas não ao SELECT
 const { data } = await supabase
   .from("users")
-  .select("id, email, name")  // notification_settings not here
+  .select("id, email, name")  // notification_settings não está aqui
   .single();
 
 return { data: { ...data, notification_settings: data.notification_settings } };
-// → notification_settings is always undefined
+// → notification_settings é sempre undefined
 
-// PASS: Use SELECT * or explicitly include new columns
+// PASS: Use SELECT * ou inclua explicitamente as novas colunas
 const { data } = await supabase
   .from("users")
   .select("*")
   .single();
 ```
 
-### Pattern 3: Error State Leakage
+### Padrão 3: Vazamento de Estado de Erro
 
-**Frequency**: Moderate — when adding error handling to existing components
+**Frequência**: Moderada — ao adicionar tratamento de erro a componentes existentes
 
 ```typescript
-// FAIL: Error state set but old data not cleared
+// FAIL: Estado de erro definido mas os dados antigos não limpos
 catch (err) {
   setError("Failed to load");
-  // reservations still shows data from previous tab!
+  // reservations ainda mostra dados da aba anterior!
 }
 
-// PASS: Clear related state on error
+// PASS: Limpe o estado relacionado em caso de erro
 catch (err) {
-  setReservations([]);  // Clear stale data
+  setReservations([]);  // Limpa dados obsoletos
   setError("Failed to load");
 }
 ```
 
-### Pattern 4: Optimistic Update Without Proper Rollback
+### Padrão 4: Atualização Otimista sem Rollback Adequado
 
 ```typescript
-// FAIL: No rollback on failure
+// FAIL: Sem rollback em caso de falha
 const handleRemove = async (id: string) => {
   setItems(prev => prev.filter(i => i.id !== id));
   await fetch(`/api/items/${id}`, { method: "DELETE" });
-  // If API fails, item is gone from UI but still in DB
+  // Se a API falhar, o item some da UI mas continua no DB
 };
 
-// PASS: Capture previous state and rollback on failure
+// PASS: Capture o estado anterior e faça rollback em caso de falha
 const handleRemove = async (id: string) => {
   const prevItems = [...items];
   setItems(prev => prev.filter(i => i.id !== id));
@@ -341,46 +341,46 @@ const handleRemove = async (id: string) => {
 };
 ```
 
-## Strategy: Test Where Bugs Were Found
+## Estratégia: Teste Onde os Bugs Foram Encontrados
 
-Don't aim for 100% coverage. Instead:
+Não busque 100% de cobertura. Em vez disso:
 
 ```
-Bug found in /api/user/profile     → Write test for profile API
-Bug found in /api/user/messages    → Write test for messages API
-Bug found in /api/user/favorites   → Write test for favorites API
-No bug in /api/user/notifications  → Don't write test (yet)
+Bug encontrado em /api/user/profile     → Escreva teste para a API de profile
+Bug encontrado em /api/user/messages    → Escreva teste para a API de messages
+Bug encontrado em /api/user/favorites   → Escreva teste para a API de favorites
+Nenhum bug em /api/user/notifications   → Não escreva teste (ainda)
 ```
 
-**Why this works with AI development:**
+**Por que isso funciona no desenvolvimento com IA:**
 
-1. AI tends to make the **same category of mistake** repeatedly
-2. Bugs cluster in complex areas (auth, multi-path logic, state management)
-3. Once tested, that exact regression **cannot happen again**
-4. Test count grows organically with bug fixes — no wasted effort
+1. A IA tende a cometer a **mesma categoria de erro** repetidamente
+2. Os bugs se concentram em áreas complexas (autenticação, lógica de múltiplos caminhos, gerenciamento de estado)
+3. Uma vez testada, aquela regressão exata **não pode acontecer de novo**
+4. A quantidade de testes cresce organicamente com as correções de bugs — sem esforço desperdiçado
 
-## Quick Reference
+## Referência Rápida
 
-| AI Regression Pattern | Test Strategy | Priority |
+| Padrão de Regressão de IA | Estratégia de Teste | Prioridade |
 |---|---|---|
-| Sandbox/production mismatch | Assert same response shape in sandbox mode |  High |
-| SELECT clause omission | Assert all required fields in response |  High |
-| Error state leakage | Assert state cleanup on error |  Medium |
-| Missing rollback | Assert state restored on API failure |  Medium |
-| Type cast masking null | Assert field is not undefined |  Medium |
+| Divergência sandbox/produção | Verifique o mesmo formato de resposta no modo sandbox |  Alta |
+| Omissão da cláusula SELECT | Verifique todos os campos obrigatórios na resposta |  Alta |
+| Vazamento de estado de erro | Verifique a limpeza de estado em caso de erro |  Média |
+| Rollback ausente | Verifique se o estado é restaurado em falha de API |  Média |
+| Type cast mascarando null | Verifique que o campo não é undefined |  Média |
 
 ## DO / DON'T
 
 **DO:**
-- Write tests immediately after finding a bug (before fixing it if possible)
-- Test the API response shape, not the implementation
-- Run tests as the first step of every bug-check
-- Keep tests fast (< 1 second total with sandbox mode)
-- Name tests after the bug they prevent (e.g., "BUG-R1 regression")
+- Escreva testes imediatamente após encontrar um bug (antes de corrigi-lo, se possível)
+- Teste o formato da resposta da API, não a implementação
+- Execute os testes como primeiro passo de toda verificação de bugs
+- Mantenha os testes rápidos (< 1 segundo no total com o modo sandbox)
+- Nomeie os testes pelo bug que previnem (ex.: "BUG-R1 regression")
 
 **DON'T:**
-- Write tests for code that has never had a bug
-- Trust AI self-review as a substitute for automated tests
-- Skip sandbox path testing because "it's just mock data"
-- Write integration tests when unit tests suffice
-- Aim for coverage percentage — aim for regression prevention
+- Escrever testes para código que nunca teve um bug
+- Confiar na autorrevisão da IA como substituta de testes automatizados
+- Pular o teste do caminho sandbox porque "são só dados mock"
+- Escrever testes de integração quando testes unitários bastam
+- Mirar em porcentagem de cobertura — mire na prevenção de regressões

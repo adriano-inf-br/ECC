@@ -6,41 +6,41 @@ paths:
   - "**/*.psgi"
   - "**/*.cgi"
 ---
-# Perl Coding Style
+# Estilo de Código Perl
 
-> This file extends [common/coding-style.md](../common/coding-style.md) with Perl-specific content.
+> Este arquivo estende [common/coding-style.md](../common/coding-style.md) com conteúdo específico de Perl.
 
-## Standards
+## Padrões
 
-- Always `use v5.36` (enables `strict`, `warnings`, `say`, subroutine signatures)
-- Use subroutine signatures — never unpack `@_` manually
-- Prefer `say` over `print` with explicit newlines
+- Sempre `use v5.36` (habilita `strict`, `warnings`, `say`, assinaturas de subrotina)
+- Use assinaturas de subrotina — nunca desempacote `@_` manualmente
+- Prefira `say` em vez de `print` com novas linhas explícitas
 
-## Immutability
+## Imutabilidade
 
-- Use **Moo** with `is => 'ro'` and `Types::Standard` for all attributes
-- Never use blessed hashrefs directly — always use Moo/Moose accessors
-- **OO override note**: Moo `has` attributes with `builder` or `default` are acceptable for computed read-only values
+- Use **Moo** com `is => 'ro'` e `Types::Standard` para todos os atributos
+- Nunca use hashrefs "blessed" diretamente — sempre use accessors do Moo/Moose
+- **Observação sobre override de OO**: atributos `has` do Moo com `builder` ou `default` são aceitáveis para valores somente-leitura computados
 
-## Formatting
+## Formatação
 
-Use **perltidy** with these settings:
+Use **perltidy** com estas configurações:
 
 ```
--i=4    # 4-space indent
--l=100  # 100 char line length
--ce     # cuddled else
--bar    # opening brace always right
+-i=4    # indentação de 4 espaços
+-l=100  # comprimento de linha de 100 caracteres
+-ce     # cuddled else (else aninhado junto à chave)
+-bar    # chave de abertura sempre à direita
 ```
 
 ## Linting
 
-Use **perlcritic** at severity 3 with themes: `core`, `pbp`, `security`.
+Use **perlcritic** na severidade 3 com os temas: `core`, `pbp`, `security`.
 
 ```bash
 perlcritic --severity 3 --theme 'core || pbp || security' lib/
 ```
 
-## Reference
+## Referência
 
-See skill: `perl-patterns` for comprehensive modern Perl idioms and best practices.
+Veja a skill: `perl-patterns` para idiomas modernos abrangentes de Perl e melhores práticas.

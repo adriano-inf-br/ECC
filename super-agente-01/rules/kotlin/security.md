@@ -3,34 +3,34 @@ paths:
   - "**/*.kt"
   - "**/*.kts"
 ---
-# Kotlin Security
+# Segurança em Kotlin
 
-> This file extends [common/security.md](../common/security.md) with Kotlin and Android/KMP-specific content.
+> Este arquivo estende [common/security.md](../common/security.md) com conteúdo específico de Kotlin e Android/KMP.
 
-## Secrets Management
+## Gerenciamento de Segredos
 
-- Never hardcode API keys, tokens, or credentials in source code
-- Use `local.properties` (git-ignored) for local development secrets
-- Use `BuildConfig` fields generated from CI secrets for release builds
-- Use `EncryptedSharedPreferences` (Android) or Keychain (iOS) for runtime secret storage
+- Nunca codifique chaves de API, tokens ou credenciais diretamente no código-fonte
+- Use `local.properties` (ignorado pelo git) para segredos de desenvolvimento local
+- Use campos do `BuildConfig` gerados a partir de segredos do CI para builds de release
+- Use `EncryptedSharedPreferences` (Android) ou Keychain (iOS) para armazenamento de segredos em tempo de execução
 
 ```kotlin
-// BAD
+// RUIM
 val apiKey = "sk-abc123..."
 
-// GOOD — from BuildConfig (generated at build time)
+// BOM — a partir do BuildConfig (gerado em tempo de build)
 val apiKey = BuildConfig.API_KEY
 
-// GOOD — from secure storage at runtime
+// BOM — a partir do armazenamento seguro em tempo de execução
 val token = secureStorage.get("auth_token")
 ```
 
-## Network Security
+## Segurança de Rede
 
-- Use HTTPS exclusively — configure `network_security_config.xml` to block cleartext
-- Pin certificates for sensitive endpoints using OkHttp `CertificatePinner` or Ktor equivalent
-- Set timeouts on all HTTP clients — never leave defaults (which may be infinite)
-- Validate and sanitize all server responses before use
+- Use HTTPS exclusivamente — configure `network_security_config.xml` para bloquear tráfego em texto puro
+- Faça pinning de certificados para endpoints sensíveis usando o `CertificatePinner` do OkHttp ou equivalente do Ktor
+- Defina timeouts em todos os clientes HTTP — nunca deixe os padrões (que podem ser infinitos)
+- Valide e sanitize todas as respostas do servidor antes do uso
 
 ```xml
 <!-- res/xml/network_security_config.xml -->
@@ -39,44 +39,44 @@ val token = secureStorage.get("auth_token")
 </network-security-config>
 ```
 
-## Input Validation
+## Validação de Entrada
 
-- Validate all user input before processing or sending to API
-- Use parameterized queries for Room/SQLDelight — never concatenate user input into SQL
-- Sanitize file paths from user input to prevent path traversal
+- Valide toda entrada do usuário antes de processar ou enviar à API
+- Use consultas parametrizadas para Room/SQLDelight — nunca concatene entrada do usuário em SQL
+- Sanitize caminhos de arquivo vindos de entrada do usuário para prevenir path traversal
 
 ```kotlin
-// BAD — SQL injection
+// RUIM — injeção SQL
 @Query("SELECT * FROM items WHERE name = '$input'")
 
-// GOOD — parameterized
+// BOM — parametrizada
 @Query("SELECT * FROM items WHERE name = :input")
 fun findByName(input: String): List<ItemEntity>
 ```
 
-## Data Protection
+## Proteção de Dados
 
-- Use `EncryptedSharedPreferences` for sensitive key-value data on Android
-- Use `@Serializable` with explicit field names — don't leak internal property names
-- Clear sensitive data from memory when no longer needed
-- Use `@Keep` or ProGuard rules for serialized classes to prevent name mangling
+- Use `EncryptedSharedPreferences` para dados chave-valor sensíveis no Android
+- Use `@Serializable` com nomes de campo explícitos — não vaze nomes internos de propriedades
+- Limpe dados sensíveis da memória quando não forem mais necessários
+- Use `@Keep` ou regras do ProGuard para classes serializadas para evitar mangling de nomes
 
-## Authentication
+## Autenticação
 
-- Store tokens in secure storage, not in plain SharedPreferences
-- Implement token refresh with proper 401/403 handling
-- Clear all auth state on logout (tokens, cached user data, cookies)
-- Use biometric authentication (`BiometricPrompt`) for sensitive operations
+- Armazene tokens em armazenamento seguro, não em SharedPreferences em texto puro
+- Implemente refresh de token com tratamento adequado de 401/403
+- Limpe todo o estado de autenticação no logout (tokens, dados de usuário em cache, cookies)
+- Use autenticação biométrica (`BiometricPrompt`) para operações sensíveis
 
 ## ProGuard / R8
 
-- Keep rules for all serialized models (`@Serializable`, Gson, Moshi)
-- Keep rules for reflection-based libraries (Koin, Retrofit)
-- Test release builds — obfuscation can break serialization silently
+- Mantenha regras para todos os modelos serializados (`@Serializable`, Gson, Moshi)
+- Mantenha regras para bibliotecas baseadas em reflexão (Koin, Retrofit)
+- Teste os builds de release — a ofuscação pode quebrar a serialização silenciosamente
 
-## WebView Security
+## Segurança do WebView
 
-- Disable JavaScript unless explicitly needed: `settings.javaScriptEnabled = false`
-- Validate URLs before loading in WebView
-- Never expose `@JavascriptInterface` methods that access sensitive data
-- Use `WebViewClient.shouldOverrideUrlLoading()` to control navigation
+- Desabilite o JavaScript a menos que seja explicitamente necessário: `settings.javaScriptEnabled = false`
+- Valide URLs antes de carregá-las no WebView
+- Nunca exponha métodos `@JavascriptInterface` que acessam dados sensíveis
+- Use `WebViewClient.shouldOverrideUrlLoading()` para controlar a navegação

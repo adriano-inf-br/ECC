@@ -2,13 +2,13 @@
 paths:
   - "**/*.java"
 ---
-# Java Patterns
+# Padrões de Java
 
-> This file extends [common/patterns.md](../common/patterns.md) with Java-specific content.
+> Este arquivo estende [common/patterns.md](../common/patterns.md) com conteúdo específico de Java.
 
-## Repository Pattern
+## Padrão Repository
 
-Encapsulate data access behind an interface:
+Encapsule o acesso a dados atrás de uma interface:
 
 ```java
 public interface OrderRepository {
@@ -19,11 +19,11 @@ public interface OrderRepository {
 }
 ```
 
-Concrete implementations handle storage details (JPA, JDBC, in-memory for tests).
+Implementações concretas tratam dos detalhes de armazenamento (JPA, JDBC, em memória para testes).
 
-## Service Layer
+## Camada de Serviço
 
-Business logic in service classes; keep controllers and repositories thin:
+Lógica de negócio em classes de serviço; mantenha controllers e repositórios enxutos:
 
 ```java
 public class OrderService {
@@ -44,12 +44,12 @@ public class OrderService {
 }
 ```
 
-## Constructor Injection
+## Injeção via Construtor
 
-Always use constructor injection — never field injection:
+Sempre use injeção via construtor — nunca injeção em campo:
 
 ```java
-// GOOD — constructor injection (testable, immutable)
+// BOM — injeção via construtor (testável, imutável)
 public class NotificationService {
     private final EmailSender emailSender;
 
@@ -58,16 +58,16 @@ public class NotificationService {
     }
 }
 
-// BAD — field injection (untestable without reflection, requires framework magic)
+// RUIM — injeção em campo (não testável sem reflexão, exige mágica do framework)
 public class NotificationService {
-    @Inject // or @Autowired
+    @Inject // ou @Autowired
     private EmailSender emailSender;
 }
 ```
 
-## DTO Mapping
+## Mapeamento de DTO
 
-Use records for DTOs. Map at service/controller boundaries:
+Use records para DTOs. Faça o mapeamento nas fronteiras de serviço/controller:
 
 ```java
 public record OrderResponse(Long id, String customer, BigDecimal total) {
@@ -77,9 +77,9 @@ public record OrderResponse(Long id, String customer, BigDecimal total) {
 }
 ```
 
-## Builder Pattern
+## Padrão Builder
 
-Use for objects with many optional parameters:
+Use para objetos com muitos parâmetros opcionais:
 
 ```java
 public class SearchCriteria {
@@ -110,7 +110,7 @@ public class SearchCriteria {
 }
 ```
 
-## Sealed Types for Domain Models
+## Tipos Sealed para Modelos de Domínio
 
 ```java
 public sealed interface PaymentResult permits PaymentSuccess, PaymentFailure {
@@ -118,16 +118,16 @@ public sealed interface PaymentResult permits PaymentSuccess, PaymentFailure {
     record PaymentFailure(String errorCode, String message) implements PaymentResult {}
 }
 
-// Exhaustive handling (Java 21+)
+// Tratamento exaustivo (Java 21+)
 String message = switch (result) {
     case PaymentSuccess s -> "Paid: " + s.transactionId();
     case PaymentFailure f -> "Failed: " + f.errorCode();
 };
 ```
 
-## API Response Envelope
+## Envelope de Resposta da API
 
-Consistent API responses:
+Respostas de API consistentes:
 
 ```java
 public record ApiResponse<T>(boolean success, T data, String error) {
@@ -140,8 +140,8 @@ public record ApiResponse<T>(boolean success, T data, String error) {
 }
 ```
 
-## References
+## Referências
 
-See skill: `springboot-patterns` for Spring Boot architecture patterns.
-See skill: `quarkus-patterns` for Quarkus architecture patterns with REST, Panache, and messaging.
-See skill: `jpa-patterns` for entity design and query optimization.
+Veja a skill: `springboot-patterns` para padrões de arquitetura do Spring Boot.
+Veja a skill: `quarkus-patterns` para padrões de arquitetura do Quarkus com REST, Panache e mensageria.
+Veja a skill: `jpa-patterns` para design de entidades e otimização de consultas.

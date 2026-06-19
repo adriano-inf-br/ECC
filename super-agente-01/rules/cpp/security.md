@@ -8,44 +8,44 @@ paths:
   - "**/*.h"
   - "**/CMakeLists.txt"
 ---
-# C++ Security
+# Segurança em C++
 
-> This file extends [common/security.md](../common/security.md) with C++ specific content.
+> Este arquivo estende [common/security.md](../common/security.md) com conteúdo específico de C++.
 
-## Memory Safety
+## Segurança de Memória
 
-- Never use raw `new`/`delete` — use smart pointers
-- Never use C-style arrays — use `std::array` or `std::vector`
-- Never use `malloc`/`free` — use C++ allocation
-- Avoid `reinterpret_cast` unless absolutely necessary
+- Nunca use `new`/`delete` cru — use smart pointers
+- Nunca use arrays no estilo C — use `std::array` ou `std::vector`
+- Nunca use `malloc`/`free` — use alocação de C++
+- Evite `reinterpret_cast` a menos que seja absolutamente necessário
 
-## Buffer Overflows
+## Estouros de Buffer (Buffer Overflows)
 
-- Use `std::string` over `char*`
-- Use `.at()` for bounds-checked access when safety matters
-- Never use `strcpy`, `strcat`, `sprintf` — use `std::string` or `fmt::format`
+- Use `std::string` em vez de `char*`
+- Use `.at()` para acesso com verificação de limites quando a segurança importar
+- Nunca use `strcpy`, `strcat`, `sprintf` — use `std::string` ou `fmt::format`
 
-## Undefined Behavior
+## Comportamento Indefinido (Undefined Behavior)
 
-- Always initialize variables
-- Avoid signed integer overflow
-- Never dereference null or dangling pointers
-- Use sanitizers in CI:
+- Sempre inicialize as variáveis
+- Evite estouro de inteiro com sinal
+- Nunca desreferencie ponteiros nulos ou pendentes (dangling)
+- Use sanitizers no CI:
   ```bash
   cmake -DCMAKE_CXX_FLAGS="-fsanitize=address,undefined" ..
   ```
 
-## Static Analysis
+## Análise Estática
 
-- Use **clang-tidy** for automated checks:
+- Use **clang-tidy** para verificações automatizadas:
   ```bash
   clang-tidy --checks='*' src/*.cpp
   ```
-- Use **cppcheck** for additional analysis:
+- Use **cppcheck** para análise adicional:
   ```bash
   cppcheck --enable=all src/
   ```
 
-## Reference
+## Referência
 
-See skill: `cpp-coding-standards` for detailed security guidelines.
+Veja a skill: `cpp-coding-standards` para diretrizes detalhadas de segurança.

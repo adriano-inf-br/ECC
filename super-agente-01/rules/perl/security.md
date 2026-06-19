@@ -6,19 +6,19 @@ paths:
   - "**/*.psgi"
   - "**/*.cgi"
 ---
-# Perl Security
+# Segurança do Perl
 
-> This file extends [common/security.md](../common/security.md) with Perl-specific content.
+> Este arquivo estende [common/security.md](../common/security.md) com conteúdo específico de Perl.
 
 ## Taint Mode
 
-- Use `-T` flag on all CGI/web-facing scripts
-- Sanitize `%ENV` (`$ENV{PATH}`, `$ENV{CDPATH}`, etc.) before any external command
+- Use a flag `-T` em todos os scripts CGI/voltados para a web
+- Sanitize `%ENV` (`$ENV{PATH}`, `$ENV{CDPATH}`, etc.) antes de qualquer comando externo
 
-## Input Validation
+## Validação de Entrada
 
-- Use allowlist regex for untainting — never `/(.*)/s`
-- Validate all user input with explicit patterns:
+- Use regex de allowlist para "untainting" — nunca `/(.*)/s`
+- Valide toda entrada do usuário com padrões explícitos:
 
 ```perl
 if ($input =~ /\A([a-zA-Z0-9_-]+)\z/) {
@@ -26,10 +26,10 @@ if ($input =~ /\A([a-zA-Z0-9_-]+)\z/) {
 }
 ```
 
-## File I/O
+## I/O de Arquivo
 
-- **Three-arg open only** — never two-arg open
-- Prevent path traversal with `Cwd::realpath`:
+- **Apenas open de três argumentos** — nunca open de dois argumentos
+- Previna travessia de caminho (path traversal) com `Cwd::realpath`:
 
 ```perl
 use Cwd 'realpath';
@@ -37,33 +37,33 @@ my $safe_path = realpath($user_path);
 die "Path traversal" unless $safe_path =~ m{\A/allowed/directory/};
 ```
 
-## Process Execution
+## Execução de Processos
 
-- Use **list-form `system()`** — never single-string form
-- Use **IPC::Run3** for capturing output
-- Never use backticks with variable interpolation
+- Use **`system()` na forma de lista** — nunca a forma de string única
+- Use **IPC::Run3** para capturar a saída
+- Nunca use crases (backticks) com interpolação de variáveis
 
 ```perl
-system('grep', '-r', $pattern, $directory);  # safe
+system('grep', '-r', $pattern, $directory);  # seguro
 ```
 
-## SQL Injection Prevention
+## Prevenção de Injeção SQL
 
-Always use DBI placeholders — never interpolate into SQL:
+Sempre use placeholders do DBI — nunca interpole dentro do SQL:
 
 ```perl
 my $sth = $dbh->prepare('SELECT * FROM users WHERE email = ?');
 $sth->execute($email);
 ```
 
-## Security Scanning
+## Varredura de Segurança
 
-Run **perlcritic** with the security theme at severity 4+:
+Execute **perlcritic** com o tema de segurança na severidade 4+:
 
 ```bash
 perlcritic --severity 4 --theme security lib/
 ```
 
-## Reference
+## Referência
 
-See skill: `perl-security` for comprehensive Perl security patterns, taint mode, and safe I/O.
+Veja a skill: `perl-security` para padrões abrangentes de segurança em Perl, taint mode e I/O seguro.

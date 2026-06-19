@@ -4,19 +4,19 @@ paths:
   - "**/pubspec.yaml"
   - "**/analysis_options.yaml"
 ---
-# Dart/Flutter Hooks
+# Hooks Dart/Flutter
 
-> This file extends [common/hooks.md](../common/hooks.md) with Dart and Flutter-specific content.
+> Este arquivo estende [common/hooks.md](../common/hooks.md) com conteúdo específico de Dart e Flutter.
 
-## PostToolUse Hooks
+## Hooks PostToolUse
 
-Configure in `~/.claude/settings.json`:
+Configure em `~/.claude/settings.json`:
 
-- **dart format**: Auto-format `.dart` files after edit
-- **dart analyze**: Run static analysis after editing Dart files and surface warnings
-- **flutter test**: Optionally run affected tests after significant changes
+- **dart format**: Formata automaticamente arquivos `.dart` após edição
+- **dart analyze**: Executa análise estática após editar arquivos Dart e exibe avisos
+- **flutter test**: Opcionalmente executa os testes afetados após mudanças significativas
 
-## Recommended Hook Configuration
+## Configuração de Hook Recomendada
 
 ```json
 {
@@ -33,9 +33,9 @@ Configure in `~/.claude/settings.json`:
 }
 ```
 
-## Pre-commit Checks
+## Verificações de Pre-commit
 
-Run before committing Dart/Flutter changes:
+Execute antes de commitar mudanças em Dart/Flutter:
 
 ```bash
 dart format --set-exit-if-changed .
@@ -43,24 +43,24 @@ dart analyze --fatal-infos
 flutter test
 ```
 
-## Useful One-liners
+## One-liners Úteis
 
 ```bash
-# Format all Dart files
+# Formata todos os arquivos Dart
 dart format .
 
-# Analyze and report issues
+# Analisa e reporta problemas
 dart analyze
 
-# Run all tests with coverage
+# Executa todos os testes com cobertura
 flutter test --coverage
 
-# Regenerate code-gen files
+# Regenera arquivos de geração de código
 dart run build_runner build --delete-conflicting-outputs
 
-# Check for outdated packages
+# Verifica pacotes desatualizados
 flutter pub outdated
 
-# Upgrade packages within constraints
+# Atualiza pacotes dentro das restrições
 flutter pub upgrade
 ```

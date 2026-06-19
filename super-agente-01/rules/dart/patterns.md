@@ -3,11 +3,11 @@ paths:
   - "**/*.dart"
   - "**/pubspec.yaml"
 ---
-# Dart/Flutter Patterns
+# Padrões Dart/Flutter
 
-> This file extends [common/patterns.md](../common/patterns.md) with Dart, Flutter, and common ecosystem-specific content.
+> Este arquivo estende [common/patterns.md](../common/patterns.md) com conteúdo específico de Dart, Flutter e do ecossistema comum.
 
-## Repository Pattern
+## Padrão Repositório
 
 ```dart
 abstract interface class UserRepository {
@@ -56,10 +56,10 @@ class UserRepositoryImpl implements UserRepository {
 }
 ```
 
-## State Management: BLoC/Cubit
+## Gerenciamento de Estado: BLoC/Cubit
 
 ```dart
-// Cubit — simple state transitions
+// Cubit — transições de estado simples
 class CounterCubit extends Cubit<int> {
   CounterCubit() : super(0);
 
@@ -67,7 +67,7 @@ class CounterCubit extends Cubit<int> {
   void decrement() => emit(state - 1);
 }
 
-// BLoC — event-driven
+// BLoC — orientado a eventos
 @immutable
 sealed class CartEvent {}
 class CartItemAdded extends CartEvent { CartItemAdded(this.item); final Item item; }
@@ -92,17 +92,17 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 }
 ```
 
-## State Management: Riverpod
+## Gerenciamento de Estado: Riverpod
 
 ```dart
-// Simple provider
+// Provider simples
 @riverpod
 Future<List<User>> users(Ref ref) async {
   final repo = ref.watch(userRepositoryProvider);
   return repo.getAll();
 }
 
-// Notifier for mutable state
+// Notifier para estado mutável
 @riverpod
 class CartNotifier extends _$CartNotifier {
   @override
@@ -127,12 +127,12 @@ class CartPage extends ConsumerWidget {
 }
 ```
 
-## Dependency Injection
+## Injeção de Dependência
 
-Constructor injection is preferred. Use `get_it` or Riverpod providers at composition root:
+A injeção via construtor é preferida. Use `get_it` ou providers do Riverpod na raiz de composição:
 
 ```dart
-// get_it registration (in a setup file)
+// registro com get_it (em um arquivo de setup)
 void setupDependencies() {
   final di = GetIt.instance;
   di.registerSingleton<ApiClient>(ApiClient(baseUrl: Env.apiUrl));
@@ -143,7 +143,7 @@ void setupDependencies() {
 }
 ```
 
-## ViewModel Pattern (without BLoC/Riverpod)
+## Padrão ViewModel (sem BLoC/Riverpod)
 
 ```dart
 class UserListViewModel extends ChangeNotifier {
@@ -168,7 +168,7 @@ class UserListViewModel extends ChangeNotifier {
 }
 ```
 
-## UseCase Pattern
+## Padrão UseCase
 
 ```dart
 class GetUserUseCase {
@@ -181,17 +181,17 @@ class GetUserUseCase {
 class CreateUserUseCase {
   const CreateUserUseCase(this._repository, this._idGenerator);
   final UserRepository _repository;
-  final IdGenerator _idGenerator; // injected — domain layer must not depend on uuid package directly
+  final IdGenerator _idGenerator; // injetado — a camada de domínio não deve depender do pacote uuid diretamente
 
   Future<void> call(CreateUserInput input) async {
-    // Validate, apply business rules, then persist
+    // Valida, aplica regras de negócio e então persiste
     final user = User(id: _idGenerator.generate(), name: input.name, email: input.email);
     await _repository.save(user);
   }
 }
 ```
 
-## Immutable State with freezed
+## Estado Imutável com freezed
 
 ```dart
 @freezed
@@ -204,29 +204,29 @@ class UserState with _$UserState {
 }
 ```
 
-## Clean Architecture Layer Boundaries
+## Fronteiras de Camada da Clean Architecture
 
 ```
 lib/
-├── domain/              # Pure Dart — no Flutter, no external packages
+├── domain/              # Dart puro — sem Flutter, sem pacotes externos
 │   ├── entities/
-│   ├── repositories/    # Abstract interfaces
+│   ├── repositories/    # Interfaces abstratas
 │   └── usecases/
-├── data/                # Implements domain interfaces
+├── data/                # Implementa as interfaces de domínio
 │   ├── datasources/
-│   ├── models/          # DTOs with fromJson/toJson
+│   ├── models/          # DTOs com fromJson/toJson
 │   └── repositories/
-└── presentation/        # Flutter widgets + state management
+└── presentation/        # Widgets Flutter + gerenciamento de estado
     ├── pages/
     ├── widgets/
-    └── providers/ (or blocs/ or viewmodels/)
+    └── providers/ (ou blocs/ ou viewmodels/)
 ```
 
-- Domain must not import `package:flutter` or any data-layer package
-- Data layer maps DTOs to domain entities at repository boundaries
-- Presentation calls use cases, not repositories directly
+- O domínio não deve importar `package:flutter` nem qualquer pacote da camada de dados
+- A camada de dados mapeia DTOs para entidades de domínio nas fronteiras do repositório
+- A apresentação chama use cases, não repositórios diretamente
 
-## Navigation (GoRouter)
+## Navegação (GoRouter)
 
 ```dart
 final router = GoRouter(
@@ -243,7 +243,7 @@ final router = GoRouter(
       },
     ),
   ],
-  // refreshListenable re-evaluates redirect whenever auth state changes
+  // refreshListenable reavalia o redirect sempre que o estado de autenticação muda
   refreshListenable: GoRouterRefreshStream(authCubit.stream),
   redirect: (context, state) {
     final isLoggedIn = context.read<AuthCubit>().state is AuthAuthenticated;
@@ -255,7 +255,7 @@ final router = GoRouter(
 );
 ```
 
-## References
+## Referências
 
-See skill: `flutter-dart-code-review` for the comprehensive review checklist.
-See skill: `compose-multiplatform-patterns` for Kotlin Multiplatform/Flutter interop patterns.
+Veja a skill: `flutter-dart-code-review` para o checklist abrangente de revisão.
+Veja a skill: `compose-multiplatform-patterns` para padrões de interoperabilidade Kotlin Multiplatform/Flutter.

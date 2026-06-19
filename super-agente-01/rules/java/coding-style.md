@@ -2,29 +2,29 @@
 paths:
   - "**/*.java"
 ---
-# Java Coding Style
+# Estilo de Código Java
 
-> This file extends [common/coding-style.md](../common/coding-style.md) with Java-specific content.
+> Este arquivo estende [common/coding-style.md](../common/coding-style.md) com conteúdo específico de Java.
 
-## Formatting
+## Formatação
 
-- **google-java-format** or **Checkstyle** (Google or Sun style) for enforcement
-- One public top-level type per file
-- Consistent indent: 2 or 4 spaces (match project standard)
-- Member order: constants, fields, constructors, public methods, protected, private
+- **google-java-format** ou **Checkstyle** (estilo Google ou Sun) para imposição
+- Um único tipo público de nível superior por arquivo
+- Indentação consistente: 2 ou 4 espaços (siga o padrão do projeto)
+- Ordem dos membros: constantes, campos, construtores, métodos públicos, protegidos, privados
 
-## Immutability
+## Imutabilidade
 
-- Prefer `record` for value types (Java 16+)
-- Mark fields `final` by default — use mutable state only when required
-- Return defensive copies from public APIs: `List.copyOf()`, `Map.copyOf()`, `Set.copyOf()`
-- Copy-on-write: return new instances rather than mutating existing ones
+- Prefira `record` para tipos de valor (Java 16+)
+- Marque campos como `final` por padrão — use estado mutável somente quando necessário
+- Retorne cópias defensivas em APIs públicas: `List.copyOf()`, `Map.copyOf()`, `Set.copyOf()`
+- Copy-on-write: retorne novas instâncias em vez de mutar as existentes
 
 ```java
-// GOOD — immutable value type
+// BOM — tipo de valor imutável
 public record OrderSummary(Long id, String customerName, BigDecimal total) {}
 
-// GOOD — final fields, no setters
+// BOM — campos final, sem setters
 public class Order {
     private final Long id;
     private final List<LineItem> items;
@@ -35,31 +35,31 @@ public class Order {
 }
 ```
 
-## Naming
+## Nomenclatura
 
-Follow standard Java conventions:
-- `PascalCase` for classes, interfaces, records, enums
-- `camelCase` for methods, fields, parameters, local variables
-- `SCREAMING_SNAKE_CASE` for `static final` constants
-- Packages: all lowercase, reverse domain (`com.example.app.service`)
+Siga as convenções padrão de Java:
+- `PascalCase` para classes, interfaces, records, enums
+- `camelCase` para métodos, campos, parâmetros, variáveis locais
+- `SCREAMING_SNAKE_CASE` para constantes `static final`
+- Pacotes: tudo em minúsculas, domínio invertido (`com.example.app.service`)
 
-## Modern Java Features
+## Recursos Modernos do Java
 
-Use modern language features where they improve clarity:
-- **Records** for DTOs and value types (Java 16+)
-- **Sealed classes** for closed type hierarchies (Java 17+)
-- **Pattern matching** with `instanceof` — no explicit cast (Java 16+)
-- **Text blocks** for multi-line strings — SQL, JSON templates (Java 15+)
-- **Switch expressions** with arrow syntax (Java 14+)
-- **Pattern matching in switch** — exhaustive sealed type handling (Java 21+)
+Use recursos modernos da linguagem onde melhorem a clareza:
+- **Records** para DTOs e tipos de valor (Java 16+)
+- **Sealed classes** para hierarquias de tipos fechadas (Java 17+)
+- **Pattern matching** com `instanceof` — sem cast explícito (Java 16+)
+- **Text blocks** para strings de múltiplas linhas — SQL, templates JSON (Java 15+)
+- **Switch expressions** com sintaxe de seta (Java 14+)
+- **Pattern matching em switch** — tratamento exaustivo de tipos sealed (Java 21+)
 
 ```java
-// Pattern matching instanceof
+// Pattern matching com instanceof
 if (shape instanceof Circle c) {
     return Math.PI * c.radius() * c.radius();
 }
 
-// Sealed type hierarchy
+// Hierarquia de tipos sealed
 public sealed interface PaymentMethod permits CreditCard, BankTransfer, Wallet {}
 
 // Switch expression
@@ -70,28 +70,28 @@ String label = switch (status) {
 };
 ```
 
-## Optional Usage
+## Uso de Optional
 
-- Return `Optional<T>` from finder methods that may have no result
-- Use `map()`, `flatMap()`, `orElseThrow()` — never call `get()` without `isPresent()`
-- Never use `Optional` as a field type or method parameter
+- Retorne `Optional<T>` de métodos localizadores que podem não ter resultado
+- Use `map()`, `flatMap()`, `orElseThrow()` — nunca chame `get()` sem `isPresent()`
+- Nunca use `Optional` como tipo de campo ou parâmetro de método
 
 ```java
-// GOOD
+// BOM
 return repository.findById(id)
     .map(ResponseDto::from)
     .orElseThrow(() -> new OrderNotFoundException(id));
 
-// BAD — Optional as parameter
+// RUIM — Optional como parâmetro
 public void process(Optional<String> name) {}
 ```
 
-## Error Handling
+## Tratamento de Erros
 
-- Prefer unchecked exceptions for domain errors
-- Create domain-specific exceptions extending `RuntimeException`
-- Avoid broad `catch (Exception e)` unless at top-level handlers
-- Include context in exception messages
+- Prefira exceções não verificadas (unchecked) para erros de domínio
+- Crie exceções específicas de domínio estendendo `RuntimeException`
+- Evite `catch (Exception e)` abrangente, exceto em handlers de nível superior
+- Inclua contexto nas mensagens de exceção
 
 ```java
 public class OrderNotFoundException extends RuntimeException {
@@ -103,12 +103,12 @@ public class OrderNotFoundException extends RuntimeException {
 
 ## Streams
 
-- Use streams for transformations; keep pipelines short (3-4 operations max)
-- Prefer method references when readable: `.map(Order::getTotal)`
-- Avoid side effects in stream operations
-- For complex logic, prefer a loop over a convoluted stream pipeline
+- Use streams para transformações; mantenha pipelines curtos (máximo de 3-4 operações)
+- Prefira referências de método quando legíveis: `.map(Order::getTotal)`
+- Evite efeitos colaterais em operações de stream
+- Para lógica complexa, prefira um loop a um pipeline de stream rebuscado
 
-## References
+## Referências
 
-See skill: `java-coding-standards` for full coding standards with examples.
-See skill: `jpa-patterns` for JPA/Hibernate entity design patterns.
+Veja a skill: `java-coding-standards` para os padrões de código completos com exemplos.
+Veja a skill: `jpa-patterns` para padrões de design de entidades JPA/Hibernate.

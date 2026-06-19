@@ -3,14 +3,14 @@ paths:
   - "**/*.rs"
   - "**/Cargo.toml"
 ---
-# Rust Hooks
+# Hooks Rust
 
-> This file extends [common/hooks.md](../common/hooks.md) with Rust-specific content.
+> Este arquivo estende [common/hooks.md](../common/hooks.md) com conteúdo específico de Rust.
 
-## PostToolUse Hooks
+## Hooks PostToolUse
 
-Configure in `~/.claude/settings.json`:
+Configure em `~/.claude/settings.json`:
 
-- **cargo fmt**: Auto-format `.rs` files after edit
-- **cargo clippy**: Run lint checks after editing Rust files
-- **cargo check**: Verify compilation after changes (faster than `cargo build`)
+- **cargo fmt**: Formata automaticamente arquivos `.rs` após a edição
+- **cargo clippy**: Executa verificações de lint após editar arquivos Rust
+- **cargo check**: Verifica a compilação após mudanças (mais rápido que `cargo build`)

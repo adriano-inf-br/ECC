@@ -3,22 +3,22 @@ paths:
   - "**/*.cs"
   - "**/*.csx"
 ---
-# C# Coding Style
+# Estilo de Código C#
 
-> This file extends [common/coding-style.md](../common/coding-style.md) with C#-specific content.
+> Este arquivo estende [common/coding-style.md](../common/coding-style.md) com conteúdo específico de C#.
 
-## Standards
+## Padrões
 
-- Follow current .NET conventions and enable nullable reference types
-- Prefer explicit access modifiers on public and internal APIs
-- Keep files aligned with the primary type they define
+- Siga as convenções atuais do .NET e habilite os nullable reference types
+- Prefira modificadores de acesso explícitos em APIs public e internal
+- Mantenha os arquivos alinhados com o tipo principal que eles definem
 
-## Types and Models
+## Tipos e Modelos
 
-- Prefer `record` or `record struct` for immutable value-like models
-- Use `class` for entities or types with identity and lifecycle
-- Use `interface` for service boundaries and abstractions
-- Avoid `dynamic` in application code; prefer generics or explicit models
+- Prefira `record` ou `record struct` para modelos imutáveis semelhantes a valores
+- Use `class` para entidades ou tipos com identidade e ciclo de vida
+- Use `interface` para limites de serviço e abstrações
+- Evite `dynamic` no código da aplicação; prefira generics ou modelos explícitos
 
 ```csharp
 public sealed record UserDto(Guid Id, string Email);
@@ -29,10 +29,10 @@ public interface IUserRepository
 }
 ```
 
-## Immutability
+## Imutabilidade
 
-- Prefer `init` setters, constructor parameters, and immutable collections for shared state
-- Do not mutate input models in-place when producing updated state
+- Prefira setters `init`, parâmetros de construtor e coleções imutáveis para estado compartilhado
+- Não mute modelos de entrada in-place ao produzir um estado atualizado
 
 ```csharp
 public sealed record UserProfile(string Name, string Email);
@@ -41,11 +41,11 @@ public static UserProfile Rename(UserProfile profile, string name) =>
     profile with { Name = name };
 ```
 
-## Async and Error Handling
+## Async e Tratamento de Erros
 
-- Prefer `async`/`await` over blocking calls like `.Result` or `.Wait()`
-- Pass `CancellationToken` through public async APIs
-- Throw specific exceptions and log with structured properties
+- Prefira `async`/`await` em vez de chamadas bloqueantes como `.Result` ou `.Wait()`
+- Propague o `CancellationToken` através das APIs async públicas
+- Lance exceções específicas e registre logs com propriedades estruturadas
 
 ```csharp
 public async Task<Order> LoadOrderAsync(
@@ -65,8 +65,8 @@ public async Task<Order> LoadOrderAsync(
 }
 ```
 
-## Formatting
+## Formatação
 
-- Use `dotnet format` for formatting and analyzer fixes
-- Keep `using` directives organized and remove unused imports
-- Prefer expression-bodied members only when they stay readable
+- Use `dotnet format` para formatação e correções de analyzer
+- Mantenha as diretivas `using` organizadas e remova os imports não utilizados
+- Prefira membros com corpo de expressão (expression-bodied) somente quando permanecerem legíveis

@@ -1,44 +1,44 @@
-# Development Workflow
+# Fluxo de trabalho de desenvolvimento
 
-> This file extends [common/git-workflow.md](./git-workflow.md) with the full feature development process that happens before git operations.
+> Este arquivo estende [common/git-workflow.md](./git-workflow.md) com o processo completo de desenvolvimento de funcionalidades que ocorre antes das operações de git.
 
-The Feature Implementation Workflow describes the development pipeline: research, planning, TDD, code review, and then committing to git.
+O Fluxo de Implementação de Funcionalidades descreve o pipeline de desenvolvimento: pesquisa, planejamento, TDD, revisão de código e, então, o commit no git.
 
-## Feature Implementation Workflow
+## Fluxo de Implementação de Funcionalidades
 
-0. **Research & Reuse** _(mandatory before any new implementation)_
-   - **GitHub code search first:** Run `gh search repos` and `gh search code` to find existing implementations, templates, and patterns before writing anything new.
-   - **Library docs second:** Use Context7 or primary vendor docs to confirm API behavior, package usage, and version-specific details before implementing.
-   - **Exa only when the first two are insufficient:** Use Exa for broader web research or discovery after GitHub search and primary docs.
-   - **Check package registries:** Search npm, PyPI, crates.io, and other registries before writing utility code. Prefer battle-tested libraries over hand-rolled solutions.
-   - **Search for adaptable implementations:** Look for open-source projects that solve 80%+ of the problem and can be forked, ported, or wrapped.
-   - Prefer adopting or porting a proven approach over writing net-new code when it meets the requirement.
+0. **Pesquisa e Reutilização** _(obrigatório antes de qualquer nova implementação)_
+   - **Busca de código no GitHub primeiro:** Execute `gh search repos` e `gh search code` para encontrar implementações, templates e padrões existentes antes de escrever qualquer coisa nova.
+   - **Documentação de bibliotecas em segundo:** Use o Context7 ou a documentação primária do fornecedor para confirmar o comportamento da API, o uso de pacotes e detalhes específicos de versão antes de implementar.
+   - **Exa somente quando os dois primeiros forem insuficientes:** Use o Exa para pesquisa ou descoberta mais ampla na web depois da busca no GitHub e da documentação primária.
+   - **Verifique os registros de pacotes:** Pesquise npm, PyPI, crates.io e outros registros antes de escrever código utilitário. Prefira bibliotecas testadas em campo em vez de soluções feitas à mão.
+   - **Procure implementações adaptáveis:** Busque projetos open-source que resolvam 80% ou mais do problema e que possam sofrer fork, ser portados ou encapsulados.
+   - Prefira adotar ou portar uma abordagem comprovada em vez de escrever código totalmente novo quando ela atender ao requisito.
 
-1. **Plan First**
-   - Use **planner** agent to create implementation plan
-   - Generate planning docs before coding: PRD, architecture, system_design, tech_doc, task_list
-   - Identify dependencies and risks
-   - Break down into phases
+1. **Planeje Primeiro**
+   - Use o agent **planner** para criar o plano de implementação
+   - Gere documentos de planejamento antes de codar: PRD, arquitetura, system_design, tech_doc, task_list
+   - Identifique dependências e riscos
+   - Divida em fases
 
-2. **TDD Approach**
-   - Use **tdd-guide** agent
-   - Write tests first (RED)
-   - Implement to pass tests (GREEN)
-   - Refactor (IMPROVE)
-   - Verify 80%+ coverage
+2. **Abordagem TDD**
+   - Use o agent **tdd-guide**
+   - Escreva os testes primeiro (RED)
+   - Implemente para passar nos testes (GREEN)
+   - Refatore (IMPROVE)
+   - Verifique cobertura de 80% ou mais
 
-3. **Code Review**
-   - Use **code-reviewer** agent immediately after writing code
-   - Address CRITICAL and HIGH issues
-   - Fix MEDIUM issues when possible
+3. **Revisão de código**
+   - Use o agent **code-reviewer** imediatamente após escrever o código
+   - Trate os problemas CRITICAL e HIGH
+   - Corrija os problemas MEDIUM quando possível
 
-4. **Commit & Push**
-   - Detailed commit messages
-   - Follow conventional commits format
-   - See [git-workflow.md](./git-workflow.md) for commit message format and PR process
+4. **Commit e Push**
+   - Mensagens de commit detalhadas
+   - Siga o formato de conventional commits
+   - Veja [git-workflow.md](./git-workflow.md) para o formato de mensagem de commit e o processo de PR
 
-5. **Pre-Review Checks**
-   - Verify all automated checks (CI/CD) are passing
-   - Resolve any merge conflicts
-   - Ensure branch is up to date with target branch
-   - Only request review after these checks pass
+5. **Verificações Pré-Revisão**
+   - Verifique se todas as checagens automatizadas (CI/CD) estão passando
+   - Resolva quaisquer conflitos de merge
+   - Garanta que o branch esteja atualizado com o branch de destino
+   - Solicite a revisão somente depois que essas verificações passarem

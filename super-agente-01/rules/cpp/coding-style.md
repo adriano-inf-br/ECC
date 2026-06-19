@@ -8,37 +8,37 @@ paths:
   - "**/*.h"
   - "**/CMakeLists.txt"
 ---
-# C++ Coding Style
+# Estilo de Código C++
 
-> This file extends [common/coding-style.md](../common/coding-style.md) with C++ specific content.
+> Este arquivo estende [common/coding-style.md](../common/coding-style.md) com conteúdo específico de C++.
 
-## Modern C++ (C++17/20/23)
+## C++ Moderno (C++17/20/23)
 
-- Prefer **modern C++ features** over C-style constructs
-- Use `auto` when the type is obvious from context
-- Use `constexpr` for compile-time constants
+- Prefira **recursos modernos de C++** em vez de construções no estilo C
+- Use `auto` quando o tipo for óbvio pelo contexto
+- Use `constexpr` para constantes de tempo de compilação
 - Use structured bindings: `auto [key, value] = map_entry;`
 
-## Resource Management
+## Gerenciamento de Recursos
 
-- **RAII everywhere** — no manual `new`/`delete`
-- Use `std::unique_ptr` for exclusive ownership
-- Use `std::shared_ptr` only when shared ownership is truly needed
-- Use `std::make_unique` / `std::make_shared` over raw `new`
+- **RAII em todo lugar** — sem `new`/`delete` manual
+- Use `std::unique_ptr` para posse exclusiva
+- Use `std::shared_ptr` somente quando a posse compartilhada for realmente necessária
+- Use `std::make_unique` / `std::make_shared` em vez de `new` cru
 
-## Naming Conventions
+## Convenções de Nomeação
 
-- Types/Classes: `PascalCase`
-- Functions/Methods: `snake_case` or `camelCase` (follow project convention)
-- Constants: `kPascalCase` or `UPPER_SNAKE_CASE`
+- Tipos/Classes: `PascalCase`
+- Funções/Métodos: `snake_case` ou `camelCase` (siga a convenção do projeto)
+- Constantes: `kPascalCase` ou `UPPER_SNAKE_CASE`
 - Namespaces: `lowercase`
-- Member variables: `snake_case_` (trailing underscore) or `m_` prefix
+- Variáveis de membro: `snake_case_` (underscore ao final) ou prefixo `m_`
 
-## Formatting
+## Formatação
 
-- Use **clang-format** — no style debates
-- Run `clang-format -i <file>` before committing
+- Use **clang-format** — sem debates de estilo
+- Execute `clang-format -i <file>` antes de fazer commit
 
-## Reference
+## Referência
 
-See skill: `cpp-coding-standards` for comprehensive C++ coding standards and guidelines.
+Veja a skill: `cpp-coding-standards` para padrões e diretrizes abrangentes de código C++.

@@ -5,38 +5,38 @@ paths:
   - "**/AndroidManifest.xml"
   - "**/Info.plist"
 ---
-# Dart/Flutter Security
+# Segurança Dart/Flutter
 
-> This file extends [common/security.md](../common/security.md) with Dart, Flutter, and mobile-specific content.
+> Este arquivo estende [common/security.md](../common/security.md) com conteúdo específico de Dart, Flutter e mobile.
 
-## Secrets Management
+## Gerenciamento de Segredos
 
-- Never hardcode API keys, tokens, or credentials in Dart source
-- Use `--dart-define` or `--dart-define-from-file` for compile-time config (values are not truly secret — use a backend proxy for server-side secrets)
-- Use `flutter_dotenv` or equivalent, with `.env` files listed in `.gitignore`
-- Store runtime secrets in platform-secure storage: `flutter_secure_storage` (Keychain on iOS, EncryptedSharedPreferences on Android)
+- Nunca embuta chaves de API, tokens ou credenciais diretamente no código-fonte Dart
+- Use `--dart-define` ou `--dart-define-from-file` para configuração de tempo de compilação (os valores não são realmente secretos — use um proxy de backend para segredos do lado do servidor)
+- Use `flutter_dotenv` ou equivalente, com arquivos `.env` listados no `.gitignore`
+- Armazene segredos de tempo de execução em armazenamento seguro da plataforma: `flutter_secure_storage` (Keychain no iOS, EncryptedSharedPreferences no Android)
 
 ```dart
-// BAD
+// RUIM
 const apiKey = 'sk-abc123...';
 
-// GOOD — compile-time config (not secret, just configurable)
+// BOM — configuração de tempo de compilação (não secreta, apenas configurável)
 const apiKey = String.fromEnvironment('API_KEY');
 
-// GOOD — runtime secret from secure storage
+// BOM — segredo de tempo de execução vindo de armazenamento seguro
 final token = await secureStorage.read(key: 'auth_token');
 ```
 
-## Network Security
+## Segurança de Rede
 
-- Enforce HTTPS — no `http://` calls in production
-- Configure Android `network_security_config.xml` to block cleartext traffic
-- Set `NSAppTransportSecurity` in `Info.plist` to disallow arbitrary loads
-- Set request timeouts on all HTTP clients — never leave defaults
-- Consider certificate pinning for high-security endpoints
+- Imponha HTTPS — sem chamadas `http://` em produção
+- Configure o `network_security_config.xml` do Android para bloquear tráfego em texto puro
+- Defina `NSAppTransportSecurity` no `Info.plist` para proibir carregamentos arbitrários
+- Defina timeouts de requisição em todos os clientes HTTP — nunca deixe os padrões
+- Considere certificate pinning para endpoints de alta segurança
 
 ```dart
-// Dio with timeout and HTTPS enforcement
+// Dio com timeout e imposição de HTTPS
 final dio = Dio(BaseOptions(
   baseUrl: 'https://api.example.com',
   connectTimeout: const Duration(seconds: 10),
@@ -44,73 +44,73 @@ final dio = Dio(BaseOptions(
 ));
 ```
 
-## Input Validation
+## Validação de Entrada
 
-- Validate and sanitize all user input before sending to API or storage
-- Never pass unsanitized input to SQL queries — use parameterized queries (sqflite, drift)
-- Sanitize deep link URLs before navigation — validate scheme, host, and path parameters
-- Use `Uri.tryParse` and validate before navigating
+- Valide e sanitize toda entrada do usuário antes de enviá-la para a API ou armazenamento
+- Nunca passe entrada não sanitizada para consultas SQL — use consultas parametrizadas (sqflite, drift)
+- Sanitize URLs de deep link antes da navegação — valide esquema, host e parâmetros de caminho
+- Use `Uri.tryParse` e valide antes de navegar
 
 ```dart
-// BAD — SQL injection
+// RUIM — injeção SQL
 await db.rawQuery("SELECT * FROM users WHERE email = '$userInput'");
 
-// GOOD — parameterized
+// BOM — parametrizado
 await db.query('users', where: 'email = ?', whereArgs: [userInput]);
 
-// BAD — unvalidated deep link
+// RUIM — deep link não validado
 final uri = Uri.parse(incomingLink);
-context.go(uri.path); // could navigate to any route
+context.go(uri.path); // poderia navegar para qualquer rota
 
-// GOOD — validated deep link
+// BOM — deep link validado
 final uri = Uri.tryParse(incomingLink);
 if (uri != null && uri.host == 'myapp.com' && _allowedPaths.contains(uri.path)) {
   context.go(uri.path);
 }
 ```
 
-## Data Protection
+## Proteção de Dados
 
-- Store tokens, PII, and credentials only in `flutter_secure_storage`
-- Never write sensitive data to `SharedPreferences` or local files in plaintext
-- Clear auth state on logout: tokens, cached user data, cookies
-- Use biometric authentication (`local_auth`) for sensitive operations
-- Avoid logging sensitive data — no `print(token)` or `debugPrint(password)`
+- Armazene tokens, PII (dados pessoais identificáveis) e credenciais apenas em `flutter_secure_storage`
+- Nunca grave dados sensíveis em `SharedPreferences` ou arquivos locais em texto puro
+- Limpe o estado de autenticação no logout: tokens, dados de usuário em cache, cookies
+- Use autenticação biométrica (`local_auth`) para operações sensíveis
+- Evite registrar dados sensíveis em log — sem `print(token)` ou `debugPrint(password)`
 
-## Android-Specific
+## Específico do Android
 
-- Declare only required permissions in `AndroidManifest.xml`
-- Export Android components (`Activity`, `Service`, `BroadcastReceiver`) only when necessary; add `android:exported="false"` where not needed
-- Review intent filters — exported components with implicit intent filters are accessible by any app
-- Use `FLAG_SECURE` for screens displaying sensitive data (prevents screenshots)
+- Declare apenas as permissões necessárias no `AndroidManifest.xml`
+- Exporte componentes Android (`Activity`, `Service`, `BroadcastReceiver`) apenas quando necessário; adicione `android:exported="false"` onde não for preciso
+- Revise os intent filters — componentes exportados com intent filters implícitos são acessíveis por qualquer app
+- Use `FLAG_SECURE` para telas que exibem dados sensíveis (impede capturas de tela)
 
 ```xml
-<!-- AndroidManifest.xml — restrict exported components -->
+<!-- AndroidManifest.xml — restringe componentes exportados -->
 <activity android:name=".MainActivity" android:exported="true">
-    <!-- Only the launcher activity needs exported=true -->
+    <!-- Apenas a launcher activity precisa de exported=true -->
 </activity>
 <activity android:name=".SensitiveActivity" android:exported="false" />
 ```
 
-## iOS-Specific
+## Específico do iOS
 
-- Declare only required usage descriptions in `Info.plist` (`NSCameraUsageDescription`, etc.)
-- Store secrets in Keychain — `flutter_secure_storage` uses Keychain on iOS
-- Use App Transport Security (ATS) — disallow arbitrary loads
-- Enable data protection entitlement for sensitive files
+- Declare apenas as descrições de uso necessárias no `Info.plist` (`NSCameraUsageDescription`, etc.)
+- Armazene segredos no Keychain — o `flutter_secure_storage` usa o Keychain no iOS
+- Use App Transport Security (ATS) — proíba carregamentos arbitrários
+- Habilite a entitlement de proteção de dados para arquivos sensíveis
 
-## WebView Security
+## Segurança de WebView
 
-- Use `webview_flutter` v4+ (`WebViewController` / `WebViewWidget`) — the legacy `WebView` widget is removed
-- Disable JavaScript unless explicitly required (`JavaScriptMode.disabled`)
-- Validate URLs before loading — never load arbitrary URLs from deep links
-- Never expose Dart callbacks to JavaScript unless absolutely needed and carefully sandboxed
-- Use `NavigationDelegate.onNavigationRequest` to intercept and validate navigation requests
+- Use `webview_flutter` v4+ (`WebViewController` / `WebViewWidget`) — o widget `WebView` legado foi removido
+- Desabilite o JavaScript a menos que seja explicitamente necessário (`JavaScriptMode.disabled`)
+- Valide URLs antes de carregar — nunca carregue URLs arbitrárias vindas de deep links
+- Nunca exponha callbacks Dart ao JavaScript a menos que seja absolutamente necessário e cuidadosamente isolado em sandbox
+- Use `NavigationDelegate.onNavigationRequest` para interceptar e validar requisições de navegação
 
 ```dart
-// webview_flutter v4+ API (WebViewController + WebViewWidget)
+// API do webview_flutter v4+ (WebViewController + WebViewWidget)
 final controller = WebViewController()
-  ..setJavaScriptMode(JavaScriptMode.disabled) // disabled unless required
+  ..setJavaScriptMode(JavaScriptMode.disabled) // desabilitado a menos que seja necessário
   ..setNavigationDelegate(
     NavigationDelegate(
       onNavigationRequest: (request) {
@@ -123,13 +123,13 @@ final controller = WebViewController()
     ),
   );
 
-// In your widget tree:
+// Na sua árvore de widgets:
 WebViewWidget(controller: controller)
 ```
 
-## Obfuscation and Build Security
+## Ofuscação e Segurança de Build
 
-- Enable obfuscation in release builds: `flutter build apk --obfuscate --split-debug-info=./debug-info/`
-- Keep `--split-debug-info` output out of version control (used for crash symbolication only)
-- Ensure ProGuard/R8 rules don't inadvertently expose serialized classes
-- Run `flutter analyze` and address all warnings before release
+- Habilite a ofuscação em builds de release: `flutter build apk --obfuscate --split-debug-info=./debug-info/`
+- Mantenha a saída de `--split-debug-info` fora do controle de versão (usada apenas para simbolização de crashes)
+- Garanta que as regras do ProGuard/R8 não exponham inadvertidamente classes serializadas
+- Execute `flutter analyze` e resolva todos os avisos antes do release

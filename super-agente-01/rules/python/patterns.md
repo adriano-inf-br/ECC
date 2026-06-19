@@ -3,9 +3,9 @@ paths:
   - "**/*.py"
   - "**/*.pyi"
 ---
-# Python Patterns
+# Padrões do Python
 
-> This file extends [common/patterns.md](../common/patterns.md) with Python specific content.
+> Este arquivo estende [common/patterns.md](../common/patterns.md) com conteúdo específico de Python.
 
 ## Protocol (Duck Typing)
 
@@ -17,7 +17,7 @@ class Repository(Protocol):
     def save(self, entity: dict) -> dict: ...
 ```
 
-## Dataclasses as DTOs
+## Dataclasses como DTOs
 
 ```python
 from dataclasses import dataclass
@@ -29,11 +29,11 @@ class CreateUserRequest:
     age: int | None = None
 ```
 
-## Context Managers & Generators
+## Context Managers e Generators
 
-- Use context managers (`with` statement) for resource management
-- Use generators for lazy evaluation and memory-efficient iteration
+- Use context managers (instrução `with`) para gerenciamento de recursos
+- Use generators para avaliação preguiçosa (lazy) e iteração eficiente em memória
 
-## Reference
+## Referência
 
-See skill: `python-patterns` for comprehensive patterns including decorators, concurrency, and package organization.
+Veja a skill: `python-patterns` para padrões abrangentes incluindo decorators, concorrência e organização de pacotes.

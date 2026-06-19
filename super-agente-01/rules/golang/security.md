@@ -4,29 +4,29 @@ paths:
   - "**/go.mod"
   - "**/go.sum"
 ---
-# Go Security
+# Segurança em Go
 
-> This file extends [common/security.md](../common/security.md) with Go specific content.
+> Este arquivo estende [common/security.md](../common/security.md) com conteúdo específico de Go.
 
-## Secret Management
+## Gerenciamento de Segredos
 
 ```go
 apiKey := os.Getenv("OPENAI_API_KEY")
 if apiKey == "" {
-    log.Fatal("OPENAI_API_KEY not configured")
+    log.Fatal("OPENAI_API_KEY não configurada")
 }
 ```
 
-## Security Scanning
+## Varredura de Segurança
 
-- Use **gosec** for static security analysis:
+- Use **gosec** para análise estática de segurança:
   ```bash
   gosec ./...
   ```
 
-## Context & Timeouts
+## Context e Timeouts
 
-Always use `context.Context` for timeout control:
+Sempre use `context.Context` para controle de timeout:
 
 ```go
 ctx, cancel := context.WithTimeout(ctx, 5*time.Second)

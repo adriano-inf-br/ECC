@@ -3,11 +3,11 @@ paths:
   - "**/*.cs"
   - "**/*.csx"
 ---
-# C# Patterns
+# Padrões C#
 
-> This file extends [common/patterns.md](../common/patterns.md) with C#-specific content.
+> Este arquivo estende [common/patterns.md](../common/patterns.md) com conteúdo específico de C#.
 
-## API Response Pattern
+## Padrão de Resposta de API
 
 ```csharp
 public sealed record ApiResponse<T>(
@@ -17,7 +17,7 @@ public sealed record ApiResponse<T>(
     object? Meta = null);
 ```
 
-## Repository Pattern
+## Padrão Repositório
 
 ```csharp
 public interface IRepository<T>
@@ -30,9 +30,9 @@ public interface IRepository<T>
 }
 ```
 
-## Options Pattern
+## Padrão Options
 
-Use strongly typed options for config instead of reading raw strings throughout the codebase.
+Use opções fortemente tipadas para configuração em vez de ler strings cruas por toda a base de código.
 
 ```csharp
 public sealed class PaymentsOptions
@@ -43,8 +43,8 @@ public sealed class PaymentsOptions
 }
 ```
 
-## Dependency Injection
+## Injeção de Dependência
 
-- Depend on interfaces at service boundaries
-- Keep constructors focused; if a service needs too many dependencies, split responsibilities
-- Register lifetimes intentionally: singleton for stateless/shared services, scoped for request data, transient for lightweight pure workers
+- Dependa de interfaces nas fronteiras de serviço
+- Mantenha os construtores focados; se um serviço precisa de dependências demais, separe responsabilidades
+- Registre os tempos de vida intencionalmente: singleton para serviços sem estado/compartilhados, scoped para dados de requisição, transient para workers leves e puros

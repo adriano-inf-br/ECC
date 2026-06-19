@@ -3,18 +3,18 @@ paths:
   - "**/*.py"
   - "**/*.pyi"
 ---
-# Python Coding Style
+# Estilo de Código Python
 
-> This file extends [common/coding-style.md](../common/coding-style.md) with Python specific content.
+> Este arquivo estende [common/coding-style.md](../common/coding-style.md) com conteúdo específico de Python.
 
-## Standards
+## Padrões
 
-- Follow **PEP 8** conventions
-- Use **type annotations** on all function signatures
+- Siga as convenções do **PEP 8**
+- Use **type annotations** em todas as assinaturas de função
 
-## Immutability
+## Imutabilidade
 
-Prefer immutable data structures:
+Prefira estruturas de dados imutáveis:
 
 ```python
 from dataclasses import dataclass
@@ -31,12 +31,12 @@ class Point(NamedTuple):
     y: float
 ```
 
-## Formatting
+## Formatação
 
-- **black** for code formatting
-- **isort** for import sorting
-- **ruff** for linting
+- **black** para formatação de código
+- **isort** para ordenação de imports
+- **ruff** para linting
 
-## Reference
+## Referência
 
-See skill: `python-patterns` for comprehensive Python idioms and patterns.
+Veja a skill: `python-patterns` para idiomas e padrões abrangentes de Python.

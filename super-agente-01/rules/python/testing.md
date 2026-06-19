@@ -3,23 +3,23 @@ paths:
   - "**/*.py"
   - "**/*.pyi"
 ---
-# Python Testing
+# Testes do Python
 
-> This file extends [common/testing.md](../common/testing.md) with Python specific content.
+> Este arquivo estende [common/testing.md](../common/testing.md) com conteúdo específico de Python.
 
 ## Framework
 
-Use **pytest** as the testing framework.
+Use **pytest** como framework de testes.
 
-## Coverage
+## Cobertura
 
 ```bash
 pytest --cov=src --cov-report=term-missing
 ```
 
-## Test Organization
+## Organização dos Testes
 
-Use `pytest.mark` for test categorization:
+Use `pytest.mark` para categorização de testes:
 
 ```python
 import pytest
@@ -33,6 +33,6 @@ def test_database_connection():
     ...
 ```
 
-## Reference
+## Referência
 
-See skill: `python-testing` for detailed pytest patterns and fixtures.
+Veja a skill: `python-testing` para padrões detalhados de pytest e fixtures.

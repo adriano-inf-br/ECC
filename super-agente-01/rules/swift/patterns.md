@@ -3,13 +3,13 @@ paths:
   - "**/*.swift"
   - "**/Package.swift"
 ---
-# Swift Patterns
+# Padrões Swift
 
-> This file extends [common/patterns.md](../common/patterns.md) with Swift specific content.
+> Este arquivo estende [common/patterns.md](../common/patterns.md) com conteúdo específico de Swift.
 
-## Protocol-Oriented Design
+## Design Orientado a Protocolos
 
-Define small, focused protocols. Use protocol extensions for shared defaults:
+Defina protocolos pequenos e focados. Use extensões de protocolo para padrões compartilhados:
 
 ```swift
 protocol Repository: Sendable {
@@ -19,10 +19,10 @@ protocol Repository: Sendable {
 }
 ```
 
-## Value Types
+## Tipos de Valor
 
-- Use structs for data transfer objects and models
-- Use enums with associated values to model distinct states:
+- Use structs para objetos de transferência de dados e modelos
+- Use enums com valores associados para modelar estados distintos:
 
 ```swift
 enum LoadState<T: Sendable>: Sendable {
@@ -33,9 +33,9 @@ enum LoadState<T: Sendable>: Sendable {
 }
 ```
 
-## Actor Pattern
+## Padrão Actor
 
-Use actors for shared mutable state instead of locks or dispatch queues:
+Use actors para estado mutável compartilhado em vez de locks ou dispatch queues:
 
 ```swift
 actor Cache<Key: Hashable & Sendable, Value: Sendable> {
@@ -46,9 +46,9 @@ actor Cache<Key: Hashable & Sendable, Value: Sendable> {
 }
 ```
 
-## Dependency Injection
+## Injeção de Dependência
 
-Inject protocols with default parameters — production uses defaults, tests inject mocks:
+Injete protocolos com parâmetros padrão — a produção usa os padrões, os testes injetam mocks:
 
 ```swift
 struct UserService {
@@ -60,7 +60,7 @@ struct UserService {
 }
 ```
 
-## References
+## Referências
 
-See skill: `swift-actor-persistence` for actor-based persistence patterns.
-See skill: `swift-protocol-di-testing` for protocol-based DI and testing.
+Veja a skill: `swift-actor-persistence` para padrões de persistência baseados em actor.
+Veja a skill: `swift-protocol-di-testing` para DI baseado em protocolo e testes.

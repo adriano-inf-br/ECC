@@ -1,63 +1,63 @@
-> This file extends [common/patterns.md](../common/patterns.md) with web-specific design-quality guidance.
+> Este arquivo estende [common/patterns.md](../common/patterns.md) com orientações de qualidade de design específicas de web.
 
-# Web Design Quality Standards
+# Padrões de Qualidade de Design Web
 
-## Anti-Template Policy
+## Política Anti-Template
 
-Do not ship generic template-looking UI. Frontend output should look intentional, opinionated, and specific to the product.
+Não entregue UI genérica com cara de template. A saída de frontend deve parecer intencional, opinativa e específica para o produto.
 
-### Banned Patterns
+### Padrões Banidos
 
-- Default card grids with uniform spacing and no hierarchy
-- Stock hero section with centered headline, gradient blob, and generic CTA
-- Unmodified library defaults passed off as finished design
-- Flat layouts with no layering, depth, or motion
-- Uniform radius, spacing, and shadows across every component
-- Safe gray-on-white styling with one decorative accent color
-- Dashboard-by-numbers layouts with sidebar + cards + charts and no point of view
-- Default font stacks used without a deliberate reason
+- Grids de cards padrão com espaçamento uniforme e sem hierarquia
+- Seção hero de prateleira com título centralizado, blob de gradiente e CTA genérico
+- Defaults de biblioteca sem modificações passados como design finalizado
+- Layouts planos sem camadas, profundidade ou movimento
+- Raio, espaçamento e sombras uniformes em todos os componentes
+- Estilização segura de cinza-sobre-branco com uma cor de destaque decorativa
+- Layouts de dashboard por números com sidebar + cards + gráficos e sem ponto de vista
+- Pilhas de fontes padrão usadas sem uma razão deliberada
 
-### Required Qualities
+### Qualidades Exigidas
 
-Every meaningful frontend surface should demonstrate at least four of these:
+Toda superfície de frontend significativa deve demonstrar pelo menos quatro destas:
 
-1. Clear hierarchy through scale contrast
-2. Intentional rhythm in spacing, not uniform padding everywhere
-3. Depth or layering through overlap, shadows, surfaces, or motion
-4. Typography with character and a real pairing strategy
-5. Color used semantically, not just decoratively
-6. Hover, focus, and active states that feel designed
-7. Grid-breaking editorial or bento composition where appropriate
-8. Texture, grain, or atmosphere when it fits the visual direction
-9. Motion that clarifies flow instead of distracting from it
-10. Data visualization treated as part of the design system, not an afterthought
+1. Hierarquia clara por meio de contraste de escala
+2. Ritmo intencional no espaçamento, não padding uniforme em todo lugar
+3. Profundidade ou camadas por meio de sobreposição, sombras, superfícies ou movimento
+4. Tipografia com personalidade e uma estratégia real de pareamento
+5. Cor usada de forma semântica, não apenas decorativa
+6. Estados de hover, focus e active que pareçam projetados
+7. Composição editorial ou bento que quebra o grid, onde apropriado
+8. Textura, grão ou atmosfera quando combinar com a direção visual
+9. Movimento que esclarece o fluxo em vez de distrair dele
+10. Visualização de dados tratada como parte do design system, não como algo secundário
 
-## Before Writing Frontend Code
+## Antes de Escrever Código de Frontend
 
-1. Pick a specific style direction. Avoid vague defaults like "clean minimal".
-2. Define a palette intentionally.
-3. Choose typography deliberately.
-4. Gather at least a small set of real references.
-5. Use ECC design/frontend skills where relevant.
+1. Escolha uma direção de estilo específica. Evite defaults vagos como "clean minimal".
+2. Defina uma paleta de forma intencional.
+3. Escolha a tipografia deliberadamente.
+4. Reúna pelo menos um pequeno conjunto de referências reais.
+5. Use as skills de design/frontend do ECC quando relevante.
 
-## Worthwhile Style Directions
+## Direções de Estilo Que Valem a Pena
 
-- Editorial / magazine
-- Neo-brutalism
-- Glassmorphism with real depth
-- Dark luxury or light luxury with disciplined contrast
-- Bento layouts
+- Editorial / revista
+- Neo-brutalismo
+- Glassmorphism com profundidade real
+- Dark luxury ou light luxury com contraste disciplinado
+- Layouts bento
 - Scrollytelling
-- 3D integration
+- Integração 3D
 - Swiss / International
-- Retro-futurism
+- Retrofuturismo
 
-Do not default to dark mode automatically. Choose the visual direction the product actually wants.
+Não use dark mode por padrão automaticamente. Escolha a direção visual que o produto realmente quer.
 
-## Component Checklist
+## Checklist de Componente
 
-- [ ] Does it avoid looking like a default Tailwind or shadcn template?
-- [ ] Does it have intentional hover/focus/active states?
-- [ ] Does it use hierarchy rather than uniform emphasis?
-- [ ] Would this look believable in a real product screenshot?
-- [ ] If it supports both themes, do both light and dark feel intentional?
+- [ ] Ele evita parecer um template padrão de Tailwind ou shadcn?
+- [ ] Ele tem estados intencionais de hover/focus/active?
+- [ ] Ele usa hierarquia em vez de ênfase uniforme?
+- [ ] Isto pareceria crível no screenshot de um produto real?
+- [ ] Se suporta ambos os temas, tanto o light quanto o dark parecem intencionais?

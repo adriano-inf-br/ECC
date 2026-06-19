@@ -7,43 +7,43 @@ paths:
   - "**/middleware/**"
 ---
 
-# Nuxt Testing
+# Testes do Nuxt
 
-> This file extends [common/testing.md](../common/testing.md) with Nuxt specific content.
+> Este arquivo estende [common/testing.md](../common/testing.md) com conteúdo específico de Nuxt.
 
-Package: `@nuxt/test-utils`. Vitest-first for unit and component tests, with built-in Playwright browser E2E support. nuxt-vitest and vitest-environment-nuxt are superseded and folded into it.
+Pacote: `@nuxt/test-utils`. Vitest-first para testes unitários e de componente, com suporte E2E de navegador via Playwright embutido. nuxt-vitest e vitest-environment-nuxt foram substituídos e incorporados a ele.
 
 ## Setup
 
-- Install dev deps: `@nuxt/test-utils vitest @vue/test-utils happy-dom playwright-core`.
-- Config: `defineVitestConfig({ test: { environment: 'nuxt' } })` from `@nuxt/test-utils/config`. Use `defineVitestProject` for multi-project (separate unit / nuxt / e2e environments).
-- Add `@nuxt/test-utils/module` to `nuxt.config`. Per-file opt-in via `// @vitest-environment nuxt`.
+- Instale as dependências de desenvolvimento: `@nuxt/test-utils vitest @vue/test-utils happy-dom playwright-core`.
+- Config: `defineVitestConfig({ test: { environment: 'nuxt' } })` de `@nuxt/test-utils/config`. Use `defineVitestProject` para multi-projeto (ambientes separados de unit / nuxt / e2e).
+- Adicione `@nuxt/test-utils/module` ao `nuxt.config`. Opt-in por arquivo via `// @vitest-environment nuxt`.
 
-## Runtime helpers
+## Helpers de runtime
 
-Import from `@nuxt/test-utils/runtime`.
+Importe de `@nuxt/test-utils/runtime`.
 
-- `mountSuspended(component, opts)` mounts in the Nuxt env with async setup + plugin injection (accepts `@vue/test-utils` mount options + `route`).
-- `renderSuspended(component, opts)` is the Testing Library variant (needs `@testing-library/vue`).
-- `mockNuxtImport(name, factory)` mocks auto-imports (e.g. `useState`). Once per import per file, use `vi.hoisted()`.
-- `mockComponent(name, factory)` mocks by PascalCase name or path.
-- `registerEndpoint(path, handler|opts)` mocks a Nitro endpoint to test server routes or stub the backend. Supports method + `once`.
+- `mountSuspended(component, opts)` monta no ambiente Nuxt com setup assíncrono + injeção de plugin (aceita as opções de mount do `@vue/test-utils` + `route`).
+- `renderSuspended(component, opts)` é a variante da Testing Library (precisa de `@testing-library/vue`).
+- `mockNuxtImport(name, factory)` faz mock de auto-imports (ex.: `useState`). Uma vez por import por arquivo, use `vi.hoisted()`.
+- `mockComponent(name, factory)` faz mock por nome PascalCase ou caminho.
+- `registerEndpoint(path, handler|opts)` faz mock de um endpoint Nitro para testar rotas de servidor ou criar stub do backend. Suporta método + `once`.
 
-## E2E helpers
+## Helpers de E2E
 
-Import from `@nuxt/test-utils/e2e`.
+Importe de `@nuxt/test-utils/e2e`.
 
-- `await setup({ rootDir, server, browser, ... })` inside the describe block (manages beforeAll/afterAll).
-- Then `$fetch(url)` (rendered HTML), `fetch(url)` (response object), `url(path)` (full URL with port), `createPage(url)` (Playwright).
-- Playwright integration: import `expect` / `test` from `@nuxt/test-utils/playwright`.
+- `await setup({ rootDir, server, browser, ... })` dentro do bloco describe (gerencia beforeAll/afterAll).
+- Então `$fetch(url)` (HTML renderizado), `fetch(url)` (objeto de resposta), `url(path)` (URL completa com porta), `createPage(url)` (Playwright).
+- Integração com Playwright: importe `expect` / `test` de `@nuxt/test-utils/playwright`.
 
-## What to test how
+## O que testar e como
 
-- Composables: mock auto-imports with `mockNuxtImport`, mount a host component via `mountSuspended` to exercise `useState` / `useFetch` in the Nuxt runtime.
-- Server routes: `registerEndpoint` to stub, or e2e `$fetch` / `fetch` against the real Nitro server.
+- Composables: faça mock dos auto-imports com `mockNuxtImport`, monte um componente host via `mountSuspended` para exercitar `useState` / `useFetch` no runtime do Nuxt.
+- Rotas de servidor: `registerEndpoint` para criar stub, ou `$fetch` / `fetch` e2e contra o servidor Nitro real.
 
-## Reference
+## Referência
 
-- ECC skills: `nuxt4-patterns`, `e2e-testing`, `vite-patterns`.
-- [Nuxt testing docs](https://nuxt.com/docs/getting-started/testing)
+- Skills do ECC: `nuxt4-patterns`, `e2e-testing`, `vite-patterns`.
+- [Documentação de testes do Nuxt](https://nuxt.com/docs/getting-started/testing)
 - [@nuxt/test-utils npm](https://www.npmjs.com/package/@nuxt/test-utils)

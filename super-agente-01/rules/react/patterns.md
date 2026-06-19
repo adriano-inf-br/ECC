@@ -7,16 +7,16 @@ paths:
   - "**/app/**/*.tsx"
   - "**/pages/**/*.tsx"
 ---
-# React Patterns
+# Padrões React
 
-> This file extends [typescript/patterns.md](../typescript/patterns.md) and [common/patterns.md](../common/patterns.md) with React specific content. For hook-specific rules see [hooks.md](./hooks.md).
+> Este arquivo estende [typescript/patterns.md](../typescript/patterns.md) e [common/patterns.md](../common/patterns.md) com conteúdo específico de React. Para regras específicas de hooks veja [hooks.md](./hooks.md).
 
-## Container / Presentational Split
+## Divisão Container / Apresentação
 
-Container components own data fetching, state, and side effects. Presentational components receive props and render — no service calls, no hooks beyond local UI state.
+Componentes container são donos do data fetching, do estado e dos efeitos colaterais. Componentes de apresentação recebem props e renderizam — sem chamadas de serviço, sem hooks além de estado local de UI.
 
 ```tsx
-// Container — owns data
+// Container — dono dos dados
 export function UserPage({ userId }: { userId: string }) {
   const { data: user, isLoading } = useUser(userId);
   if (isLoading) return <Spinner />;
@@ -24,31 +24,31 @@ export function UserPage({ userId }: { userId: string }) {
   return <UserCard user={user} onSelect={handleSelect} />;
 }
 
-// Presentational — pure
+// Apresentação — puro
 export function UserCard({ user, onSelect }: { user: User; onSelect: (id: string) => void }) {
   return <button onClick={() => onSelect(user.id)}>{user.name}</button>;
 }
 ```
 
-## State Location Decision Tree
+## Árvore de Decisão de Localização do Estado
 
-1. Used by one component → `useState` inside it
-2. Used by parent + a few children → lift to nearest common ancestor, pass via props
-3. Used across distant branches → React Context **for low-frequency reads only** (theme, auth, locale)
-4. High-frequency updates shared across the tree → external store (Zustand, Jotai, Redux Toolkit)
-5. Server-derived data → server-state library (TanStack Query, SWR, RSC fetch) — not application state
+1. Usado por um componente → `useState` dentro dele
+2. Usado pelo pai + alguns filhos → eleve ao ancestral comum mais próximo, passe via props
+3. Usado entre ramos distantes → React Context **apenas para leituras de baixa frequência** (tema, autenticação, locale)
+4. Atualizações de alta frequência compartilhadas pela árvore → store externa (Zustand, Jotai, Redux Toolkit)
+5. Dados derivados do servidor → biblioteca de estado de servidor (TanStack Query, SWR, fetch de RSC) — não estado de aplicação
 
-Context misused for frequently changing values causes every consumer to re-render on every update.
+Context usado indevidamente para valores que mudam com frequência faz com que todo consumidor re-renderize a cada atualização.
 
-## Server / Client Component Boundary (RSC, Next.js App Router)
+## Fronteira Server / Client Component (RSC, Next.js App Router)
 
-- Server Components are the default — they run on the server, do not ship to the client, and can `await` directly
-- Client Components opt in with `"use client"` at the top of the file
-- Data flows down: a Server Component can render a Client Component and pass serializable props
-- A Client Component cannot import a Server Component, but it can receive one via `children` or named slots
+- Server Components são o padrão — rodam no servidor, não são enviados ao cliente e podem usar `await` diretamente
+- Client Components optam por entrar com `"use client"` no topo do arquivo
+- Os dados fluem para baixo: um Server Component pode renderizar um Client Component e passar props serializáveis
+- Um Client Component não pode importar um Server Component, mas pode recebê-lo via `children` ou slots nomeados
 
 ```tsx
-// Server (default)
+// Server (padrão)
 export default async function Page() {
   const user = await fetchUser();
   return <UserClient user={user} />;
@@ -62,12 +62,12 @@ export function UserClient({ user }: { user: User }) {
 }
 ```
 
-- Never import `"server-only"` packages (DB clients, secrets) from a Client Component file — wrap them in a Server Component or Server Action
-- Mark sensitive modules with `import "server-only"` so the bundler errors if a client file imports them
+- Nunca importe pacotes `"server-only"` (clientes de BD, segredos) de um arquivo de Client Component — encapsule-os em um Server Component ou Server Action
+- Marque módulos sensíveis com `import "server-only"` para que o bundler gere erro se um arquivo de cliente os importar
 
 ## Suspense + Error Boundaries
 
-Every Suspense boundary needs an Error Boundary above it. The pair handles both states.
+Toda fronteira de Suspense precisa de um Error Boundary acima dela. O par lida com ambos os estados.
 
 ```tsx
 <ErrorBoundary fallback={<ErrorView />}>
@@ -77,15 +77,15 @@ Every Suspense boundary needs an Error Boundary above it. The pair handles both 
 </ErrorBoundary>
 ```
 
-- Place Suspense boundaries close to where data is needed, not at the route root
-- Multiple narrower boundaries reveal loaded content progressively
-- Error Boundary must be a Class Component (React 19 has no functional equivalent yet) OR use a library wrapper such as `react-error-boundary`
+- Coloque fronteiras de Suspense próximas de onde os dados são necessários, não na raiz da rota
+- Múltiplas fronteiras mais estreitas revelam o conteúdo carregado progressivamente
+- O Error Boundary precisa ser um Componente de Classe (o React 19 ainda não tem equivalente funcional) OU use um wrapper de biblioteca como `react-error-boundary`
 
-## Forms
+## Formulários
 
-### Uncontrolled (React 19 + form actions)
+### Não controlados (React 19 + form actions)
 
-Prefer uncontrolled inputs with form actions when the form has a clear submit step. The browser owns the value; React reads it via `FormData` on submit.
+Prefira inputs não controlados com form actions quando o formulário tem um passo de submissão claro. O navegador é dono do valor; o React o lê via `FormData` na submissão.
 
 ```tsx
 async function action(formData: FormData) {
@@ -103,50 +103,50 @@ export function UserForm() {
 }
 ```
 
-### Controlled
+### Controlados
 
-Use controlled inputs when the value drives other UI, requires real-time validation, or formatting.
+Use inputs controlados quando o valor dirige outra parte da UI, requer validação em tempo real ou formatação.
 
 ```tsx
 const [email, setEmail] = useState("");
 return <input value={email} onChange={(e) => setEmail(e.target.value)} />;
 ```
 
-### Form Libraries
+### Bibliotecas de Formulário
 
-For complex forms (multi-step, dynamic field arrays, cross-field validation), use a library:
+Para formulários complexos (multi-etapa, arrays de campos dinâmicos, validação cruzada de campos), use uma biblioteca:
 
-- React Hook Form — minimal re-renders, uncontrolled-first
-- TanStack Form — typed, framework-agnostic
-- Final Form — when subscription-based re-renders matter
+- React Hook Form — re-renderizações mínimas, prioriza inputs não controlados
+- TanStack Form — tipado, agnóstico a framework
+- Final Form — quando re-renderizações baseadas em assinatura importam
 
 ## Data Fetching
 
-| Strategy | When |
+| Estratégia | Quando |
 |---|---|
-| RSC fetch (`await` in Server Component) | Per-request data in Next.js App Router, no client-side cache needed |
-| TanStack Query | Client-side cache, mutations, optimistic updates, polling |
-| SWR | Lightweight cache + revalidation, simpler than TanStack Query |
-| `fetch` in `useEffect` | Avoid — race conditions, no cache, no retry. Only acceptable for one-off fire-and-forget |
+| fetch de RSC (`await` em Server Component) | Dados por requisição no Next.js App Router, sem necessidade de cache no lado do cliente |
+| TanStack Query | Cache no lado do cliente, mutações, atualizações otimistas, polling |
+| SWR | Cache leve + revalidação, mais simples que o TanStack Query |
+| `fetch` em `useEffect` | Evite — condições de corrida, sem cache, sem retry. Aceitável apenas para um disparo único do tipo "atire e esqueça" |
 
-Never fetch in a `useEffect` when a real cache library is available — they handle deduping, cache invalidation, error retry, and Suspense integration.
+Nunca faça fetch em um `useEffect` quando uma biblioteca de cache real estiver disponível — elas lidam com deduplicação, invalidação de cache, retry de erro e integração com Suspense.
 
-## Lists and Keys
+## Listas e Keys
 
-- `key` must be stable across renders — never `index` for any list that can reorder, insert, or delete
-- `key` must be unique among siblings, not globally
-- A reordered list with index keys causes state in child components to attach to the wrong row
+- A `key` deve ser estável entre renderizações — nunca `index` para qualquer lista que possa reordenar, inserir ou excluir
+- A `key` deve ser única entre os irmãos, não globalmente
+- Uma lista reordenada com keys de índice faz o estado dos componentes filhos se associar à linha errada
 
-## Composition over Inheritance
+## Composição em vez de Herança
 
-- Pass `children` for slot-style composition
-- Pass render-prop functions for parameterized rendering
-- Pass component types for plug-in points: `renderItem={UserRow}`
-- Never extend a component class to specialize behavior
+- Passe `children` para composição em estilo de slot
+- Passe funções de render-prop para renderização parametrizada
+- Passe tipos de componente para pontos de plug-in: `renderItem={UserRow}`
+- Nunca estenda uma classe de componente para especializar o comportamento
 
-## Compound Components
+## Componentes Compostos (Compound Components)
 
-For related controls (Tabs, Accordion, Menu), use compound components sharing state via Context:
+Para controles relacionados (Tabs, Accordion, Menu), use componentes compostos que compartilham estado via Context:
 
 ```tsx
 <Tabs defaultValue="profile">
@@ -161,11 +161,11 @@ For related controls (Tabs, Accordion, Menu), use compound components sharing st
 
 ## Portals
 
-Use `createPortal` for modals, tooltips, toast containers — anything that must escape the parent's `overflow: hidden` or `z-index` stacking context. Render to a stable DOM node mounted in `index.html`.
+Use `createPortal` para modais, tooltips, containers de toast — qualquer coisa que precise escapar do `overflow: hidden` ou do contexto de empilhamento `z-index` do pai. Renderize em um nó do DOM estável montado em `index.html`.
 
-## Refs and Forwarding (React 19+)
+## Refs e Encaminhamento (React 19+)
 
-React 19 lets function components accept `ref` as a regular prop — `forwardRef` is no longer required.
+O React 19 permite que componentes de função aceitem `ref` como uma prop comum — `forwardRef` não é mais necessário.
 
 ```tsx
 export function Input({ ref, ...rest }: { ref?: React.Ref<HTMLInputElement> } & InputProps) {
@@ -173,22 +173,22 @@ export function Input({ ref, ...rest }: { ref?: React.Ref<HTMLInputElement> } & 
 }
 ```
 
-Older codebases on React 18 still need `forwardRef`.
+Bases de código mais antigas no React 18 ainda precisam de `forwardRef`.
 
-## Out of Scope (Pointer Sections)
+## Fora de Escopo (Seções de Apontamento)
 
 ### Next.js (App Router)
 
-- Server Actions, Route Handlers, Middleware, Parallel/Intercepted Routes, streaming Metadata
-- Treated as a separate framework concern — when adding deep Next-specific patterns, propose a dedicated `rules/nextjs/` track
-- For now follow Next.js official docs for App Router specifics
+- Server Actions, Route Handlers, Middleware, Parallel/Intercepted Routes, Metadata em streaming
+- Tratados como uma preocupação de framework separada — ao adicionar padrões profundos específicos do Next, proponha uma trilha dedicada `rules/nextjs/`
+- Por ora, siga a documentação oficial do Next.js para detalhes do App Router
 
 ### React Native
 
-- Platform-specific imports (`Platform.OS`, `.ios.tsx` / `.android.tsx`), `StyleSheet`, navigation libraries (React Navigation, Expo Router)
-- Treated as a separate track — `rules/react-native/` is not yet present
-- React core hooks/patterns from this file still apply
+- Imports específicos de plataforma (`Platform.OS`, `.ios.tsx` / `.android.tsx`), `StyleSheet`, bibliotecas de navegação (React Navigation, Expo Router)
+- Tratados como uma trilha separada — `rules/react-native/` ainda não existe
+- Os hooks/padrões centrais de React deste arquivo continuam valendo
 
-## Skill Reference
+## Referência de Skills
 
-For React-specific deep dives see `skills/react-patterns/SKILL.md`. For cross-framework frontend concerns see `skills/frontend-patterns/SKILL.md`. For accessibility see `skills/accessibility/SKILL.md`.
+Para aprofundamentos específicos de React veja `skills/react-patterns/SKILL.md`. Para preocupações de frontend entre frameworks veja `skills/frontend-patterns/SKILL.md`. Para acessibilidade veja `skills/accessibility/SKILL.md`.

@@ -3,31 +3,31 @@ paths:
   - "**/*.php"
   - "**/composer.json"
 ---
-# PHP Patterns
+# Padrões do PHP
 
-> This file extends [common/patterns.md](../common/patterns.md) with PHP specific content.
+> Este arquivo estende [common/patterns.md](../common/patterns.md) com conteúdo específico de PHP.
 
-## Thin Controllers, Explicit Services
+## Controllers Enxutos, Serviços Explícitos
 
-- Keep controllers focused on transport: auth, validation, serialization, status codes.
-- Move business rules into application/domain services that are easy to test without HTTP bootstrapping.
+- Mantenha os controllers focados em transporte: autenticação, validação, serialização, códigos de status.
+- Mova as regras de negócio para serviços de aplicação/domínio que sejam fáceis de testar sem o bootstrap de HTTP.
 
-## DTOs and Value Objects
+## DTOs e Objetos de Valor
 
-- Replace shape-heavy associative arrays with DTOs for requests, commands, and external API payloads.
-- Use value objects for money, identifiers, date ranges, and other constrained concepts.
+- Substitua arrays associativos com estrutura pesada por DTOs para requisições, comandos e payloads de API externa.
+- Use objetos de valor para dinheiro, identificadores, intervalos de datas e outros conceitos restritos.
 
-## Dependency Injection
+## Injeção de Dependência
 
-- Depend on interfaces or narrow service contracts, not framework globals.
-- Pass collaborators through constructors so services are testable without service-locator lookups.
+- Dependa de interfaces ou contratos de serviço estreitos, não de globais do framework.
+- Passe os colaboradores pelos construtores para que os serviços sejam testáveis sem buscas por service locator.
 
-## Boundaries
+## Fronteiras
 
-- Isolate ORM models from domain decisions when the model layer is doing more than persistence.
-- Wrap third-party SDKs behind small adapters so the rest of the codebase depends on your contract, not theirs.
+- Isole os models do ORM das decisões de domínio quando a camada de model estiver fazendo mais do que persistência.
+- Envolva SDKs de terceiros atrás de pequenos adaptadores para que o resto da base de código dependa do seu contrato, não do deles.
 
-## Reference
+## Referência
 
-See skill: `api-design` for endpoint conventions and response-shape guidance.
-See skill: `laravel-patterns` for Laravel-specific architecture guidance.
+Veja a skill: `api-design` para convenções de endpoint e orientações sobre o formato de resposta.
+Veja a skill: `laravel-patterns` para orientações de arquitetura específicas do Laravel.

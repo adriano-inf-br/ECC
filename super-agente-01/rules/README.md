@@ -1,11 +1,11 @@
-# Rules
-## Structure
+# Regras
+## Estrutura
 
-Rules are organized into a **common** layer plus **language-specific** directories:
+As regras são organizadas em uma camada **common** mais diretórios **específicos por linguagem**:
 
 ```
 rules/
-├── common/          # Language-agnostic principles (always install)
+├── common/          # Princípios independentes de linguagem (sempre instalar)
 │   ├── coding-style.md
 │   ├── git-workflow.md
 │   ├── testing.md
@@ -14,28 +14,28 @@ rules/
 │   ├── hooks.md
 │   ├── agents.md
 │   └── security.md
-├── typescript/      # TypeScript/JavaScript specific
-├── angular/         # Angular specific
-├── vue/             # Vue 3 specific
-├── nuxt/            # Nuxt 4 specific
-├── python/          # Python specific
-├── golang/          # Go specific
-├── web/             # Web and frontend specific
-├── swift/           # Swift specific
-├── php/             # PHP specific
-├── ruby/            # Ruby / Rails specific
-└── arkts/           # HarmonyOS / ArkTS specific
+├── typescript/      # Específico de TypeScript/JavaScript
+├── angular/         # Específico de Angular
+├── vue/             # Específico de Vue 3
+├── nuxt/            # Específico de Nuxt 4
+├── python/          # Específico de Python
+├── golang/          # Específico de Go
+├── web/             # Específico de Web e frontend
+├── swift/           # Específico de Swift
+├── php/             # Específico de PHP
+├── ruby/            # Específico de Ruby / Rails
+└── arkts/           # Específico de HarmonyOS / ArkTS
 ```
 
-- **common/** contains universal principles — no language-specific code examples.
-- **Language directories** extend the common rules with framework-specific patterns, tools, and code examples. Each file references its common counterpart.
+- **common/** contém princípios universais — sem exemplos de código específicos de linguagem.
+- **Diretórios de linguagem** estendem as regras common com padrões, ferramentas e exemplos de código específicos de framework. Cada arquivo referencia seu equivalente em common.
 
-## Installation
+## Instalação
 
-### Option 1: Install Script (Recommended)
+### Opção 1: Script de Instalação (Recomendado)
 
 ```bash
-# Install common + one or more language-specific rule sets
+# Instalar common + um ou mais conjuntos de regras específicos de linguagem
 ./install.sh typescript
 ./install.sh angular
 ./install.sh vue
@@ -48,30 +48,30 @@ rules/
 ./install.sh ruby
 ./install.sh arkts
 
-# Install multiple languages at once
+# Instalar várias linguagens de uma vez
 ./install.sh typescript python
 ```
 
-### Option 2: Manual Installation
+### Opção 2: Instalação Manual
 
-> **Important:** Copy entire directories — do NOT flatten with `/*`.
-> Common and language-specific directories contain files with the same names.
-> Flattening them into one directory causes language-specific files to overwrite
-> common rules, and breaks the relative `../common/` references used by
-> language-specific files.
+> **Importante:** Copie diretórios inteiros — NÃO achate com `/*`.
+> Os diretórios common e específicos de linguagem contêm arquivos com os mesmos nomes.
+> Achatá-los em um único diretório faz com que os arquivos específicos de linguagem
+> sobrescrevam as regras common, e quebra as referências relativas `../common/` usadas pelos
+> arquivos específicos de linguagem.
 >
-> Use the ECC-owned namespace below for user-level Claude installs. Flat
-> package-level destinations can collide with non-ECC rule packs and do not
-> match the main README guidance.
+> Use o namespace de propriedade do ECC abaixo para instalações do Claude em nível de usuário. Destinos
+> achatados em nível de pacote podem colidir com pacotes de regras alheios ao ECC e não
+> correspondem à orientação do README principal.
 
 ```bash
-# Create the ECC rule namespace once.
+# Crie o namespace de regras do ECC uma única vez.
 mkdir -p ~/.claude/rules/ecc
 
-# Install common rules (required for all projects)
+# Instale as regras common (obrigatórias para todos os projetos)
 cp -r rules/common ~/.claude/rules/ecc/
 
-# Install language-specific rules based on your project's tech stack
+# Instale as regras específicas de linguagem com base no tech stack do seu projeto
 cp -r rules/typescript ~/.claude/rules/ecc/
 cp -r rules/angular ~/.claude/rules/ecc/
 cp -r rules/vue ~/.claude/rules/ecc/
@@ -84,10 +84,10 @@ cp -r rules/php ~/.claude/rules/ecc/
 cp -r rules/ruby ~/.claude/rules/ecc/
 cp -r rules/arkts ~/.claude/rules/ecc/
 
-# Attention ! ! ! Configure according to your actual project requirements; the configuration here is for reference only.
+# Atenção ! ! ! Configure de acordo com os requisitos reais do seu projeto; a configuração aqui é apenas para referência.
 ```
 
-For project-local rules, use the same namespace under the project root:
+Para regras locais do projeto, use o mesmo namespace na raiz do projeto:
 
 ```bash
 mkdir -p .claude/rules/ecc
@@ -95,47 +95,47 @@ cp -r rules/common .claude/rules/ecc/
 cp -r rules/typescript .claude/rules/ecc/
 ```
 
-## Rules vs Skills
+## Regras vs Skills
 
-- **Rules** define standards, conventions, and checklists that apply broadly (e.g., "80% test coverage", "no hardcoded secrets").
-- **Skills** (`skills/` directory) provide deep, actionable reference material for specific tasks (e.g., `python-patterns`, `golang-testing`).
+- **Regras** definem padrões, convenções e checklists que se aplicam amplamente (ex.: "80% de cobertura de testes", "sem segredos hardcoded").
+- **Skills** (diretório `skills/`) fornecem material de referência profundo e acionável para tarefas específicas (ex.: `python-patterns`, `golang-testing`).
 
-Language-specific rule files reference relevant skills where appropriate. Rules tell you *what* to do; skills tell you *how* to do it.
+Os arquivos de regras específicos de linguagem referenciam as skills relevantes quando apropriado. As regras dizem *o que* fazer; as skills dizem *como* fazer.
 
-## Adding a New Language
+## Adicionando uma Nova Linguagem
 
-To add support for a new language (e.g., `rust/`):
+Para adicionar suporte a uma nova linguagem (ex.: `rust/`):
 
-1. Create a `rules/rust/` directory
-2. Add files that extend the common rules:
-   - `coding-style.md` — formatting tools, idioms, error handling patterns
-   - `testing.md` — test framework, coverage tools, test organization
-   - `patterns.md` — language-specific design patterns
-   - `hooks.md` — PostToolUse hooks for formatters, linters, type checkers
-   - `security.md` — secret management, security scanning tools
-3. Each file should start with:
+1. Crie um diretório `rules/rust/`
+2. Adicione arquivos que estendam as regras common:
+   - `coding-style.md` — ferramentas de formatação, idiomas, padrões de tratamento de erros
+   - `testing.md` — framework de teste, ferramentas de cobertura, organização de testes
+   - `patterns.md` — padrões de design específicos da linguagem
+   - `hooks.md` — Hooks PostToolUse para formatadores, linters, verificadores de tipo
+   - `security.md` — gerenciamento de segredos, ferramentas de varredura de segurança
+3. Cada arquivo deve começar com:
    ```
    > This file extends [common/xxx.md](../common/xxx.md) with <Language> specific content.
    ```
-4. Reference existing skills if available, or create new ones under `skills/`.
+4. Referencie skills existentes, se disponíveis, ou crie novas em `skills/`.
 
-For non-language domains like `web/`, follow the same layered pattern when there is enough reusable domain-specific guidance to justify a standalone ruleset.
+Para domínios não relacionados a linguagem, como `web/`, siga o mesmo padrão em camadas quando houver orientação específica de domínio reutilizável suficiente para justificar um conjunto de regras independente.
 
-## Rule Priority
+## Prioridade das Regras
 
-When language-specific rules and common rules conflict, **language-specific rules take precedence** (specific overrides general). This follows the standard layered configuration pattern (similar to CSS specificity or `.gitignore` precedence).
+Quando regras específicas de linguagem e regras common entram em conflito, **as regras específicas de linguagem têm precedência** (o específico sobrepõe o geral). Isso segue o padrão de configuração em camadas padrão (semelhante à especificidade do CSS ou à precedência do `.gitignore`).
 
-- `rules/common/` defines universal defaults applicable to all projects.
-- `rules/golang/`, `rules/python/`, `rules/swift/`, `rules/php/`, `rules/typescript/`, etc. override those defaults where language idioms differ.
+- `rules/common/` define padrões universais aplicáveis a todos os projetos.
+- `rules/golang/`, `rules/python/`, `rules/swift/`, `rules/php/`, `rules/typescript/`, etc. sobrepõem esses padrões onde os idiomas da linguagem diferem.
 
-### Example
+### Exemplo
 
-`common/coding-style.md` recommends immutability as a default principle. A language-specific `golang/coding-style.md` can override this:
+`common/coding-style.md` recomenda imutabilidade como princípio padrão. Um `golang/coding-style.md` específico de linguagem pode sobrepor isso:
 
-> Idiomatic Go uses pointer receivers for struct mutation — see [common/coding-style.md](../common/coding-style.md) for the general principle, but Go-idiomatic mutation is preferred here.
+> Go idiomático usa receivers de ponteiro para mutação de struct — veja [common/coding-style.md](../common/coding-style.md) para o princípio geral, mas a mutação idiomática de Go é preferida aqui.
 
-### Common rules with override notes
+### Regras common com notas de sobreposição
 
-Rules in `rules/common/` that may be overridden by language-specific files are marked with:
+As regras em `rules/common/` que podem ser sobrepostas por arquivos específicos de linguagem são marcadas com:
 
-> **Language note**: This rule may be overridden by language-specific rules for languages where this pattern is not idiomatic.
+> **Nota de linguagem**: Esta regra pode ser sobreposta por regras específicas de linguagem para linguagens onde este padrão não é idiomático.

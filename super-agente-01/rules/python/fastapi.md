@@ -4,24 +4,24 @@ paths:
   - "**/fastapi/**/*.py"
   - "**/*_api.py"
 ---
-# FastAPI Rules
+# Regras do FastAPI
 
-Use these rules for FastAPI projects alongside the general Python rules.
+Use estas regras para projetos FastAPI juntamente com as regras gerais de Python.
 
-## Structure
+## Estrutura
 
-- Put app construction in `create_app()`.
-- Keep routers thin; move persistence and business behavior into services or CRUD helpers.
-- Keep request schemas, update schemas, and response schemas separate.
-- Keep database sessions and auth in dependencies.
+- Coloque a construção da aplicação em `create_app()`.
+- Mantenha os routers enxutos; mova a persistência e o comportamento de negócio para serviços ou helpers de CRUD.
+- Mantenha separados os schemas de requisição, os schemas de atualização e os schemas de resposta.
+- Mantenha as sessões de banco de dados e a autenticação em dependências.
 
 ## Async
 
-- Use `async def` for endpoints that perform I/O.
-- Use async database and HTTP clients from async endpoints.
-- Do not call `requests`, sync SQLAlchemy sessions, or blocking file/network operations from async routes.
+- Use `async def` para endpoints que realizam I/O.
+- Use clientes de banco de dados e HTTP assíncronos a partir de endpoints async.
+- Não chame `requests`, sessões síncronas do SQLAlchemy ou operações bloqueantes de arquivo/rede a partir de rotas async.
 
-## Dependency Injection
+## Injeção de Dependências
 
 ```python
 @router.get("/users/{user_id}")
@@ -33,26 +33,26 @@ async def get_user(
     ...
 ```
 
-Do not create `SessionLocal()` or long-lived clients inside route handlers.
+Não crie `SessionLocal()` ou clientes de longa duração dentro dos handlers de rota.
 
 ## Schemas
 
-- Never include passwords, password hashes, access tokens, refresh tokens, or internal auth state in response models.
-- Use `response_model` on endpoints that return application data.
-- Use field constraints instead of hand-written validation when Pydantic can express the rule.
+- Nunca inclua senhas, hashes de senha, access tokens, refresh tokens ou estado interno de autenticação nos modelos de resposta.
+- Use `response_model` em endpoints que retornam dados da aplicação.
+- Use restrições de campo (field constraints) em vez de validação escrita à mão quando o Pydantic puder expressar a regra.
 
-## Security
+## Segurança
 
-- Keep CORS origins environment-specific.
-- Do not combine wildcard origins with credentialed CORS.
-- Validate JWT expiry, issuer, audience, and algorithm.
-- Rate-limit auth and write-heavy endpoints.
-- Redact credentials, cookies, authorization headers, and tokens from logs.
+- Mantenha as origens de CORS específicas por ambiente.
+- Não combine origens curinga (wildcard) com CORS com credenciais.
+- Valide expiração, issuer, audience e algoritmo do JWT.
+- Aplique rate limit em endpoints de autenticação e de escrita intensa.
+- Remova (redact) credenciais, cookies, cabeçalhos de autorização e tokens dos logs.
 
-## Testing
+## Testes
 
-- Override the exact dependency used by `Depends`.
-- Clear `app.dependency_overrides` after tests.
-- Prefer async test clients for async applications.
+- Sobrescreva a dependência exata usada por `Depends`.
+- Limpe `app.dependency_overrides` após os testes.
+- Prefira clientes de teste assíncronos para aplicações assíncronas.
 
-See skill: `fastapi-patterns`.
+Veja a skill: `fastapi-patterns`.

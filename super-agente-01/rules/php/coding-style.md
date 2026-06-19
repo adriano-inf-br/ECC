@@ -3,38 +3,38 @@ paths:
   - "**/*.php"
   - "**/composer.json"
 ---
-# PHP Coding Style
+# Estilo de Código PHP
 
-> This file extends [common/coding-style.md](../common/coding-style.md) with PHP specific content.
+> Este arquivo estende [common/coding-style.md](../common/coding-style.md) com conteúdo específico de PHP.
 
-## Standards
+## Padrões
 
-- Follow **PSR-12** formatting and naming conventions.
-- Prefer `declare(strict_types=1);` in application code.
-- Use scalar type hints, return types, and typed properties everywhere new code permits.
+- Siga as convenções de formatação e nomenclatura do **PSR-12**.
+- Prefira `declare(strict_types=1);` em código de aplicação.
+- Use type hints escalares, tipos de retorno e propriedades tipadas em todo lugar em que código novo permitir.
 
-## Immutability
+## Imutabilidade
 
-- Prefer immutable DTOs and value objects for data crossing service boundaries.
-- Use `readonly` properties or immutable constructors for request/response payloads where possible.
-- Keep arrays for simple maps; promote business-critical structures into explicit classes.
+- Prefira DTOs e objetos de valor imutáveis para dados que cruzam fronteiras de serviço.
+- Use propriedades `readonly` ou construtores imutáveis para payloads de requisição/resposta sempre que possível.
+- Mantenha arrays para mapas simples; promova estruturas críticas para o negócio a classes explícitas.
 
-## Formatting
+## Formatação
 
-- Use **PHP-CS-Fixer** or **Laravel Pint** for formatting.
-- Use **PHPStan** or **Psalm** for static analysis.
-- Keep Composer scripts checked in so the same commands run locally and in CI.
+- Use **PHP-CS-Fixer** ou **Laravel Pint** para formatação.
+- Use **PHPStan** ou **Psalm** para análise estática.
+- Mantenha os scripts do Composer versionados para que os mesmos comandos rodem localmente e em CI.
 
 ## Imports
 
-- Add `use` statements for all referenced classes, interfaces, and traits.
-- Avoid relying on the global namespace unless the project explicitly prefers fully qualified names.
+- Adicione declarações `use` para todas as classes, interfaces e traits referenciadas.
+- Evite depender do namespace global, a menos que o projeto explicitamente prefira nomes totalmente qualificados.
 
-## Error Handling
+## Tratamento de Erros
 
-- Throw exceptions for exceptional states; avoid returning `false`/`null` as hidden error channels in new code.
-- Convert framework/request input into validated DTOs before it reaches domain logic.
+- Lance exceções para estados excepcionais; evite retornar `false`/`null` como canais de erro ocultos em código novo.
+- Converta a entrada do framework/requisição em DTOs validados antes que ela chegue à lógica de domínio.
 
-## Reference
+## Referência
 
-See skill: `backend-patterns` for broader service/repository layering guidance.
+Veja a skill: `backend-patterns` para orientações mais amplas sobre camadas de serviço/repositório.

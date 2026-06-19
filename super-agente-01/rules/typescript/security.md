@@ -5,17 +5,17 @@ paths:
   - "**/*.js"
   - "**/*.jsx"
 ---
-# TypeScript/JavaScript Security
+# Segurança em TypeScript/JavaScript
 
-> This file extends [common/security.md](../common/security.md) with TypeScript/JavaScript specific content.
+> Este arquivo estende [common/security.md](../common/security.md) com conteúdo específico de TypeScript/JavaScript.
 
-## Secret Management
+## Gerenciamento de Segredos
 
 ```typescript
-// NEVER: Hardcoded secrets
+// NUNCA: Segredos embutidos no código
 const apiKey = "sk-proj-xxxxx"
 
-// ALWAYS: Environment variables
+// SEMPRE: Variáveis de ambiente
 const apiKey = process.env.API_KEY
 
 if (!apiKey) {
@@ -23,6 +23,6 @@ if (!apiKey) {
 }
 ```
 
-## Agent Support
+## Suporte de Agent
 
-- Use **security-reviewer** skill for comprehensive security audits
+- Use a skill **security-reviewer** para auditorias de segurança abrangentes

@@ -5,14 +5,14 @@ paths:
   - "**/build.gradle"
   - "**/build.gradle.kts"
 ---
-# Java Hooks
+# Hooks de Java
 
-> This file extends [common/hooks.md](../common/hooks.md) with Java-specific content.
+> Este arquivo estende [common/hooks.md](../common/hooks.md) com conteúdo específico de Java.
 
-## PostToolUse Hooks
+## Hooks PostToolUse
 
-Configure in `~/.claude/settings.json`:
+Configure em `~/.claude/settings.json`:
 
-- **google-java-format**: Auto-format `.java` files after edit
-- **checkstyle**: Run style checks after editing Java files
-- **./mvnw compile** or **./gradlew compileJava**: Verify compilation after changes
+- **google-java-format**: Formata automaticamente arquivos `.java` após edição
+- **checkstyle**: Executa verificações de estilo após editar arquivos Java
+- **./mvnw compile** ou **./gradlew compileJava**: Verifica a compilação após alterações

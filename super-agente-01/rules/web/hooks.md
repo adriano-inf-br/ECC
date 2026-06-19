@@ -1,14 +1,14 @@
-> This file extends [common/hooks.md](../common/hooks.md) with web-specific hook recommendations.
+> Este arquivo estende [common/hooks.md](../common/hooks.md) com recomendações de hooks específicas de web.
 
-# Web Hooks
+# Hooks Web
 
-## Recommended PostToolUse Hooks
+## Hooks de PostToolUse Recomendados
 
-Prefer project-local tooling. Do not wire hooks to remote one-off package execution.
+Prefira tooling local ao projeto. Não conecte hooks à execução remota e pontual de pacotes.
 
 ### Format on Save
 
-Use the project's existing formatter entrypoint after edits:
+Use o entrypoint de formatação já existente no projeto após edições:
 
 ```json
 {
@@ -24,9 +24,9 @@ Use the project's existing formatter entrypoint after edits:
 }
 ```
 
-Equivalent local commands via `yarn prettier` or `npm exec prettier --` are fine when they use repo-owned dependencies.
+Comandos locais equivalentes via `yarn prettier` ou `npm exec prettier --` são aceitáveis quando usam dependências de propriedade do repositório.
 
-### Lint Check
+### Verificação de Lint
 
 ```json
 {
@@ -42,9 +42,9 @@ Equivalent local commands via `yarn prettier` or `npm exec prettier --` are fine
 }
 ```
 
-### Type Check
+### Verificação de Tipos
 
-Use `--incremental` so re-runs reuse the previous `.tsbuildinfo` (1-3s on unchanged code instead of 30-60s every time). Wrap in `timeout` so a stuck tsc gets reaped by the OS instead of accumulating across edits — this prevents the multi-process buildup that happens when edits fire faster than tsc finishes.
+Use `--incremental` para que as reexecuções reaproveitem o `.tsbuildinfo` anterior (1-3s em código inalterado, em vez de 30-60s toda vez). Envolva em `timeout` para que um tsc travado seja encerrado pelo SO em vez de acumular ao longo das edições — isso evita o acúmulo de múltiplos processos que acontece quando as edições disparam mais rápido do que o tsc termina.
 
 ```json
 {
@@ -60,14 +60,14 @@ Use `--incremental` so re-runs reuse the previous `.tsbuildinfo` (1-3s on unchan
 }
 ```
 
-**Why both flags matter:**
-- Without `--incremental`, every edit re-checks the entire program from scratch. On a real Next.js project this stacks fast: edits at 5-10s intervals + 30-60s tsc runs = N concurrent tsc processes.
-- Without `timeout`, a tsc that hangs (transitive dep change, type-checker stuck on a recursive type) never exits and orphans when the parent shell does.
-- `--tsBuildInfoFile` is required because `--noEmit` normally suppresses the buildinfo write; specifying the path explicitly keeps incremental working.
+**Por que ambas as flags importam:**
+- Sem `--incremental`, toda edição reverifica o programa inteiro do zero. Em um projeto Next.js real isso se acumula rápido: edições em intervalos de 5-10s + execuções de tsc de 30-60s = N processos tsc concorrentes.
+- Sem `timeout`, um tsc que trava (mudança em dependência transitiva, type-checker preso em um tipo recursivo) nunca encerra e fica órfão quando o shell pai encerra.
+- `--tsBuildInfoFile` é obrigatório porque `--noEmit` normalmente suprime a escrita do buildinfo; especificar o caminho explicitamente mantém o incremental funcionando.
 
-If you're on Windows without GNU coreutils, swap `timeout 60` for a PowerShell wrapper or rely on a Stop/SessionEnd hook to sweep stale tsc processes.
+Se você estiver no Windows sem o GNU coreutils, troque `timeout 60` por um wrapper de PowerShell ou conte com um hook de Stop/SessionEnd para varrer processos tsc obsoletos.
 
-### CSS Lint
+### Lint de CSS
 
 ```json
 {
@@ -83,11 +83,11 @@ If you're on Windows without GNU coreutils, swap `timeout 60` for a PowerShell w
 }
 ```
 
-## PreToolUse Hooks
+## Hooks de PreToolUse
 
-### Guard File Size
+### Limitar o Tamanho do Arquivo
 
-Block oversized writes from tool input content, not from a file that may not exist yet:
+Bloqueie escritas excessivamente grandes a partir do conteúdo de entrada da tool, não de um arquivo que pode ainda não existir:
 
 ```json
 {
@@ -103,9 +103,9 @@ Block oversized writes from tool input content, not from a file that may not exi
 }
 ```
 
-## Stop Hooks
+## Hooks de Stop
 
-### Final Build Verification
+### Verificação Final de Build
 
 ```json
 {
@@ -120,10 +120,10 @@ Block oversized writes from tool input content, not from a file that may not exi
 }
 ```
 
-## Ordering
+## Ordenação
 
-Recommended order:
+Ordem recomendada:
 1. format
 2. lint
-3. type check
-4. build verification
+3. verificação de tipos
+4. verificação de build

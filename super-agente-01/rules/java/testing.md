@@ -2,30 +2,30 @@
 paths:
   - "**/*.java"
 ---
-# Java Testing
+# Testes em Java
 
-> This file extends [common/testing.md](../common/testing.md) with Java-specific content.
+> Este arquivo estende [common/testing.md](../common/testing.md) com conteúdo específico de Java.
 
-## Test Framework
+## Framework de Testes
 
 - **JUnit 5** (`@Test`, `@ParameterizedTest`, `@Nested`, `@DisplayName`)
-- **AssertJ** for fluent assertions (`assertThat(result).isEqualTo(expected)`)
-- **Mockito** for mocking dependencies
-- **Testcontainers** for integration tests requiring databases or services
+- **AssertJ** para asserções fluentes (`assertThat(result).isEqualTo(expected)`)
+- **Mockito** para criar mocks de dependências
+- **Testcontainers** para testes de integração que exigem bancos de dados ou serviços
 
-## Test Organization
+## Organização dos Testes
 
 ```
 src/test/java/com/example/app/
-  service/           # Unit tests for service layer
-  controller/        # Web layer / API tests
-  repository/        # Data access tests
-  integration/       # Cross-layer integration tests
+  service/           # Testes unitários da camada de serviço
+  controller/        # Testes da camada web / API
+  repository/        # Testes de acesso a dados
+  integration/       # Testes de integração entre camadas
 ```
 
-Mirror the `src/main/java` package structure in `src/test/java`.
+Espelhe a estrutura de pacotes de `src/main/java` em `src/test/java`.
 
-## Unit Test Pattern
+## Padrão de Teste Unitário
 
 ```java
 @ExtendWith(MockitoExtension.class)
@@ -65,7 +65,7 @@ class OrderServiceTest {
 }
 ```
 
-## Parameterized Tests
+## Testes Parametrizados
 
 ```java
 @ParameterizedTest
@@ -80,9 +80,9 @@ void applyDiscount(BigDecimal price, int pct, BigDecimal expected) {
 }
 ```
 
-## Integration Tests
+## Testes de Integração
 
-Use Testcontainers for real database integration:
+Use Testcontainers para integração real com banco de dados:
 
 ```java
 @Testcontainers
@@ -111,23 +111,23 @@ class OrderRepositoryIT {
 }
 ```
 
-For Spring Boot integration tests, see skill: `springboot-tdd`.
-For Quarkus integration tests, see skill: `quarkus-tdd`.
+Para testes de integração do Spring Boot, veja a skill: `springboot-tdd`.
+Para testes de integração do Quarkus, veja a skill: `quarkus-tdd`.
 
-## Test Naming
+## Nomenclatura de Testes
 
-Use descriptive names with `@DisplayName`:
-- `methodName_scenario_expectedBehavior()` for method names
-- `@DisplayName("human-readable description")` for reports
+Use nomes descritivos com `@DisplayName`:
+- `methodName_scenario_expectedBehavior()` para nomes de métodos
+- `@DisplayName("descrição legível por humanos")` para relatórios
 
-## Coverage
+## Cobertura
 
-- Target 80%+ line coverage
-- Use JaCoCo for coverage reporting
-- Focus on service and domain logic — skip trivial getters/config classes
+- Mire em 80%+ de cobertura de linhas
+- Use JaCoCo para relatórios de cobertura
+- Foque na lógica de serviço e de domínio — pule getters triviais/classes de configuração
 
-## References
+## Referências
 
-See skill: `springboot-tdd` for Spring Boot TDD patterns with MockMvc and Testcontainers.
-See skill: `quarkus-tdd` for Quarkus TDD patterns with REST Assured and Dev Services.
-See skill: `java-coding-standards` for testing expectations.
+Veja a skill: `springboot-tdd` para padrões de TDD do Spring Boot com MockMvc e Testcontainers.
+Veja a skill: `quarkus-tdd` para padrões de TDD do Quarkus com REST Assured e Dev Services.
+Veja a skill: `java-coding-standards` para as expectativas de teste.

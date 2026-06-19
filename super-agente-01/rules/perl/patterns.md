@@ -6,13 +6,13 @@ paths:
   - "**/*.psgi"
   - "**/*.cgi"
 ---
-# Perl Patterns
+# Padrões do Perl
 
-> This file extends [common/patterns.md](../common/patterns.md) with Perl-specific content.
+> Este arquivo estende [common/patterns.md](../common/patterns.md) com conteúdo específico de Perl.
 
-## Repository Pattern
+## Padrão de Repositório
 
-Use **DBI** or **DBIx::Class** behind an interface:
+Use **DBI** ou **DBIx::Class** por trás de uma interface:
 
 ```perl
 package MyApp::Repo::User;
@@ -27,9 +27,9 @@ sub find_by_id ($self, $id) {
 }
 ```
 
-## DTOs / Value Objects
+## DTOs / Objetos de Valor
 
-Use **Moo** classes with **Types::Standard** (equivalent to Python dataclasses):
+Use classes **Moo** com **Types::Standard** (equivalente às dataclasses do Python):
 
 ```perl
 package MyApp::DTO::User;
@@ -41,10 +41,10 @@ has email => (is => 'ro', isa => Str, required => 1);
 has age   => (is => 'ro', isa => Int);
 ```
 
-## Resource Management
+## Gerenciamento de Recursos
 
-- Always use **three-arg open** with `autodie`
-- Use **Path::Tiny** for file operations
+- Sempre use **open de três argumentos** com `autodie`
+- Use **Path::Tiny** para operações de arquivo
 
 ```perl
 use autodie;
@@ -53,24 +53,24 @@ use Path::Tiny;
 my $content = path('config.json')->slurp_utf8;
 ```
 
-## Module Interface
+## Interface de Módulo
 
-Use `Exporter 'import'` with `@EXPORT_OK` — never `@EXPORT`:
+Use `Exporter 'import'` com `@EXPORT_OK` — nunca `@EXPORT`:
 
 ```perl
 use Exporter 'import';
 our @EXPORT_OK = qw(parse_config validate_input);
 ```
 
-## Dependency Management
+## Gerenciamento de Dependências
 
-Use **cpanfile** + **carton** for reproducible installs:
+Use **cpanfile** + **carton** para instalações reproduzíveis:
 
 ```bash
 carton install
 carton exec prove -lr t/
 ```
 
-## Reference
+## Referência
 
-See skill: `perl-patterns` for comprehensive modern Perl patterns and idioms.
+Veja a skill: `perl-patterns` para padrões e idiomas modernos abrangentes de Perl.

@@ -3,47 +3,47 @@ paths:
   - "**/*.kt"
   - "**/*.kts"
 ---
-# Kotlin Coding Style
+# Estilo de Código Kotlin
 
-> This file extends [common/coding-style.md](../common/coding-style.md) with Kotlin-specific content.
+> Este arquivo estende [common/coding-style.md](../common/coding-style.md) com conteúdo específico de Kotlin.
 
-## Formatting
+## Formatação
 
-- **ktlint** or **Detekt** for style enforcement
-- Official Kotlin code style (`kotlin.code.style=official` in `gradle.properties`)
+- **ktlint** ou **Detekt** para imposição de estilo
+- Estilo de código oficial do Kotlin (`kotlin.code.style=official` em `gradle.properties`)
 
-## Immutability
+## Imutabilidade
 
-- Prefer `val` over `var` — default to `val` and only use `var` when mutation is required
-- Use `data class` for value types; use immutable collections (`List`, `Map`, `Set`) in public APIs
-- Copy-on-write for state updates: `state.copy(field = newValue)`
+- Prefira `val` a `var` — use `val` por padrão e só use `var` quando a mutação for necessária
+- Use `data class` para tipos de valor; use coleções imutáveis (`List`, `Map`, `Set`) em APIs públicas
+- Copy-on-write para atualizações de estado: `state.copy(field = newValue)`
 
-## Naming
+## Nomenclatura
 
-Follow Kotlin conventions:
-- `camelCase` for functions and properties
-- `PascalCase` for classes, interfaces, objects, and type aliases
-- `SCREAMING_SNAKE_CASE` for constants (`const val` or `@JvmStatic`)
-- Prefix interfaces with behavior, not `I`: `Clickable` not `IClickable`
+Siga as convenções do Kotlin:
+- `camelCase` para funções e propriedades
+- `PascalCase` para classes, interfaces, objects e type aliases
+- `SCREAMING_SNAKE_CASE` para constantes (`const val` ou `@JvmStatic`)
+- Prefixe interfaces com o comportamento, não com `I`: `Clickable`, não `IClickable`
 
-## Null Safety
+## Segurança Contra Nulos (Null Safety)
 
-- Never use `!!` — prefer `?.`, `?:`, `requireNotNull()`, or `checkNotNull()`
-- Use `?.let {}` for scoped null-safe operations
-- Return nullable types from functions that can legitimately have no result
+- Nunca use `!!` — prefira `?.`, `?:`, `requireNotNull()` ou `checkNotNull()`
+- Use `?.let {}` para operações seguras contra nulos em escopo
+- Retorne tipos nulos de funções que podem legitimamente não ter resultado
 
 ```kotlin
-// BAD
+// RUIM
 val name = user!!.name
 
-// GOOD
+// BOM
 val name = user?.name ?: "Unknown"
 val name = requireNotNull(user) { "User must be set before accessing name" }.name
 ```
 
-## Sealed Types
+## Tipos Sealed
 
-Use sealed classes/interfaces to model closed state hierarchies:
+Use sealed classes/interfaces para modelar hierarquias de estado fechadas:
 
 ```kotlin
 sealed interface UiState<out T> {
@@ -53,34 +53,34 @@ sealed interface UiState<out T> {
 }
 ```
 
-Always use exhaustive `when` with sealed types — no `else` branch.
+Sempre use `when` exaustivo com tipos sealed — sem ramo `else`.
 
-## Extension Functions
+## Funções de Extensão
 
-Use extension functions for utility operations, but keep them discoverable:
-- Place in a file named after the receiver type (`StringExt.kt`, `FlowExt.kt`)
-- Keep scope limited — don't add extensions to `Any` or overly generic types
+Use funções de extensão para operações utilitárias, mas mantenha-as fáceis de descobrir:
+- Coloque em um arquivo nomeado a partir do tipo receptor (`StringExt.kt`, `FlowExt.kt`)
+- Mantenha o escopo limitado — não adicione extensões a `Any` ou a tipos genéricos demais
 
-## Scope Functions
+## Funções de Escopo (Scope Functions)
 
-Use the right scope function:
-- `let` — null check + transform: `user?.let { greet(it) }`
-- `run` — compute a result using receiver: `service.run { fetch(config) }`
-- `apply` — configure an object: `builder.apply { timeout = 30 }`
-- `also` — side effects: `result.also { log(it) }`
-- Avoid deep nesting of scope functions (max 2 levels)
+Use a função de escopo certa:
+- `let` — verificação de nulo + transformação: `user?.let { greet(it) }`
+- `run` — computa um resultado usando o receptor: `service.run { fetch(config) }`
+- `apply` — configura um objeto: `builder.apply { timeout = 30 }`
+- `also` — efeitos colaterais: `result.also { log(it) }`
+- Evite aninhamento profundo de funções de escopo (máximo de 2 níveis)
 
-## Error Handling
+## Tratamento de Erros
 
-- Use `Result<T>` or custom sealed types
-- Use `runCatching {}` for wrapping throwable code
-- Never catch `CancellationException` — always rethrow it
-- Avoid `try-catch` for control flow
+- Use `Result<T>` ou tipos sealed personalizados
+- Use `runCatching {}` para encapsular código que pode lançar exceções
+- Nunca capture `CancellationException` — sempre relance-a
+- Evite `try-catch` para controle de fluxo
 
 ```kotlin
-// BAD — using exceptions for control flow
+// RUIM — usando exceções para controle de fluxo
 val user = try { repository.getUser(id) } catch (e: NotFoundException) { null }
 
-// GOOD — nullable return
+// BOM — retorno nulo
 val user: User? = repository.findUser(id)
 ```

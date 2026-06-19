@@ -7,26 +7,26 @@ paths:
   - "**/hooks/**/*.ts"
   - "**/hooks/**/*.js"
 ---
-# React Coding Style
+# Estilo de Código React
 
-> This file extends [typescript/coding-style.md](../typescript/coding-style.md) and [common/coding-style.md](../common/coding-style.md) with React specific content.
+> Este arquivo estende [typescript/coding-style.md](../typescript/coding-style.md) e [common/coding-style.md](../common/coding-style.md) com conteúdo específico de React.
 
-## File Extensions
+## Extensões de Arquivo
 
-- `.tsx` for any file containing JSX, even one-liner snippets
-- `.ts` for pure logic, custom hooks without JSX, type definitions, utilities
-- `.test.tsx` / `.test.ts` mirroring the source file
-- Use `.jsx` only when the project intentionally avoids TypeScript — flag every new untyped React file in review
+- `.tsx` para qualquer arquivo que contenha JSX, mesmo trechos de uma linha
+- `.ts` para lógica pura, custom hooks sem JSX, definições de tipo, utilitários
+- `.test.tsx` / `.test.ts` espelhando o arquivo de origem
+- Use `.jsx` apenas quando o projeto evita TypeScript intencionalmente — sinalize na revisão todo novo arquivo React sem tipagem
 
-## Naming
+## Nomenclatura
 
-- Components: `PascalCase` for both the symbol and the file (`UserCard.tsx`, default export `UserCard`)
-- Custom hooks: `useCamelCase` for the symbol, kebab-case for the file when the project convention is kebab-case (`use-debounce.ts` exports `useDebounce`)
-- Context: `<Domain>Context` symbol, `<Domain>Provider` provider component, `use<Domain>` consumer hook
-- Event handlers: `handleClick`, `handleSubmit` inside the component; the prop that receives it is `onClick`, `onSubmit`
-- Boolean props: `isLoading`, `hasError`, `canSubmit` — never `loading` or `error` alone for booleans
+- Componentes: `PascalCase` tanto para o símbolo quanto para o arquivo (`UserCard.tsx`, export padrão `UserCard`)
+- Custom hooks: `useCamelCase` para o símbolo, kebab-case para o arquivo quando a convenção do projeto é kebab-case (`use-debounce.ts` exporta `useDebounce`)
+- Context: símbolo `<Domain>Context`, componente provider `<Domain>Provider`, hook consumidor `use<Domain>`
+- Manipuladores de evento: `handleClick`, `handleSubmit` dentro do componente; a prop que o recebe é `onClick`, `onSubmit`
+- Props booleanas: `isLoading`, `hasError`, `canSubmit` — nunca apenas `loading` ou `error` para booleanos
 
-## Component Shape
+## Forma do Componente
 
 ```tsx
 type Props = {
@@ -43,67 +43,67 @@ export function UserCard({ user, onSelect }: Props) {
 }
 ```
 
-- Prefer `type Props = {}` for closed component prop shapes
-- Use `interface` only when the prop type is extended via declaration merging or exported as a public API extension point
-- Always destructure props in the parameter list — no `props.user` access inside the body
-- Type the return implicitly through JSX (`function Foo(): JSX.Element` only when the function returns conditionally and the union confuses inference)
+- Prefira `type Props = {}` para formatos fechados de props de componente
+- Use `interface` apenas quando o tipo da prop é estendido via declaration merging ou exportado como ponto de extensão de uma API pública
+- Sempre desestruture as props na lista de parâmetros — sem acesso a `props.user` dentro do corpo
+- Tipe o retorno implicitamente através do JSX (`function Foo(): JSX.Element` apenas quando a função retorna condicionalmente e a união confunde a inferência)
 
 ## JSX
 
-- Self-close tags with no children: `<img />`, `<UserCard user={u} />`
-- Use fragments `<>...</>` over wrapper `<div>` when no DOM element is needed
-- Conditional rendering: `{condition && <Foo />}` for booleans, ternary for either/or, early return for guard clauses
-- Never put logic inline in JSX when it reads as multi-line — extract to a const above the return or a function
+- Auto-feche tags sem filhos: `<img />`, `<UserCard user={u} />`
+- Use fragments `<>...</>` em vez de um `<div>` wrapper quando nenhum elemento do DOM é necessário
+- Renderização condicional: `{condition && <Foo />}` para booleanos, ternário para um-ou-outro, retorno antecipado para cláusulas de guarda
+- Nunca coloque lógica inline no JSX quando ela se lê em várias linhas — extraia para uma const acima do return ou para uma função
 
 ```tsx
-// Prefer
+// Prefira
 const greeting = user.isAdmin ? "Welcome, admin" : `Hello ${user.name}`;
 return <h1>{greeting}</h1>;
 
-// Over
+// Em vez de
 return <h1>{user.isAdmin ? "Welcome, admin" : `Hello ${user.name}`}</h1>;
 ```
 
-## Server / Client Boundary (Next.js App Router, RSC)
+## Fronteira Server / Client (Next.js App Router, RSC)
 
-- Default a new file to Server Component — only add `"use client"` when the file uses state, effects, refs, browser APIs, or event handlers
-- Place the `"use client"` directive on line 1, before any imports
-- Never import a Client Component file from inside a `"use server"` action file
-- Never re-export server-only code through a client module — the bundler will silently include it
+- Por padrão, um novo arquivo é um Server Component — adicione `"use client"` apenas quando o arquivo usa estado, efeitos, refs, APIs do navegador ou manipuladores de evento
+- Coloque a diretiva `"use client"` na linha 1, antes de qualquer import
+- Nunca importe um arquivo de Client Component de dentro de um arquivo de action `"use server"`
+- Nunca reexporte código exclusivo de servidor através de um módulo de cliente — o bundler o incluirá silenciosamente
 
 ## Imports
 
-- React imports first: `import { useState } from "react"`
-- Then third-party libs, then absolute project imports, then relative
-- Type-only imports: `import type { ReactNode } from "react"` — never mix runtime and type imports in one statement when ESLint's `consistent-type-imports` is configured
+- Imports de React primeiro: `import { useState } from "react"`
+- Depois bibliotecas de terceiros, depois imports absolutos do projeto, depois relativos
+- Imports apenas de tipo: `import type { ReactNode } from "react"` — nunca misture imports de runtime e de tipo em uma única instrução quando a regra `consistent-type-imports` do ESLint estiver configurada
 
-## Hooks Discipline
+## Disciplina de Hooks
 
-See [hooks.md](./hooks.md) for the full ruleset. Style highlights:
+Veja [hooks.md](./hooks.md) para o conjunto completo de regras. Destaques de estilo:
 
-- Custom hooks must start with `use` — enforced by `eslint-plugin-react-hooks`
-- Group all hook calls at the top of the component, before any conditional logic
-- Avoid creating ad-hoc hooks for one-line wrappers — inline the call instead
+- Custom hooks devem começar com `use` — imposto pelo `eslint-plugin-react-hooks`
+- Agrupe todas as chamadas de hook no topo do componente, antes de qualquer lógica condicional
+- Evite criar hooks ad-hoc para wrappers de uma linha — faça a chamada inline em vez disso
 
-## State
+## Estado
 
-- Local first (`useState`), lift only when shared
-- Context for cross-cutting state read by many components (theme, auth, i18n) — not for high-frequency updates
-- External store (Zustand, Jotai, Redux Toolkit) when state must persist across route changes, sync across tabs, or be debugged via devtools
-- Never duplicate state that can be derived — compute during render
+- Local primeiro (`useState`), eleve apenas quando compartilhado
+- Context para estado transversal lido por muitos componentes (tema, autenticação, i18n) — não para atualizações de alta frequência
+- Store externa (Zustand, Jotai, Redux Toolkit) quando o estado precisa persistir entre mudanças de rota, sincronizar entre abas ou ser depurado via devtools
+- Nunca duplique estado que pode ser derivado — compute durante a renderização
 
-## Class Components
+## Componentes de Classe
 
-Forbidden in new code. Convert legacy class components to function components when touching them for non-trivial changes.
+Proibidos em código novo. Converta componentes de classe legados em componentes de função ao tocá-los para mudanças não triviais.
 
-## File Layout per Component
+## Layout de Arquivos por Componente
 
 ```
 components/UserCard/
   UserCard.tsx
-  UserCard.module.css   # or styled-components, or Tailwind classes inline
+  UserCard.module.css   # ou styled-components, ou classes Tailwind inline
   UserCard.test.tsx
-  index.ts              # re-export only
+  index.ts              # apenas reexport
 ```
 
-Inline single-file components are fine for trivial presentational pieces.
+Componentes inline de arquivo único são aceitáveis para peças de apresentação triviais.

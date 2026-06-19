@@ -2,55 +2,55 @@
 paths:
   - "**/*.java"
 ---
-# Java Security
+# Segurança em Java
 
-> This file extends [common/security.md](../common/security.md) with Java-specific content.
+> Este arquivo estende [common/security.md](../common/security.md) com conteúdo específico de Java.
 
-## Secrets Management
+## Gerenciamento de Segredos
 
-- Never hardcode API keys, tokens, or credentials in source code
-- Use environment variables: `System.getenv("API_KEY")`
-- Use a secret manager (Vault, AWS Secrets Manager) for production secrets
-- Keep local config files with secrets in `.gitignore`
+- Nunca codifique chaves de API, tokens ou credenciais diretamente no código-fonte
+- Use variáveis de ambiente: `System.getenv("API_KEY")`
+- Use um gerenciador de segredos (Vault, AWS Secrets Manager) para segredos de produção
+- Mantenha arquivos de configuração local com segredos no `.gitignore`
 
 ```java
-// BAD
+// RUIM
 private static final String API_KEY = "sk-abc123...";
 
-// GOOD — environment variable
+// BOM — variável de ambiente
 String apiKey = System.getenv("PAYMENT_API_KEY");
 Objects.requireNonNull(apiKey, "PAYMENT_API_KEY must be set");
 ```
 
-## SQL Injection Prevention
+## Prevenção de Injeção SQL
 
-- Always use parameterized queries — never concatenate user input into SQL
-- Use `PreparedStatement` or your framework's parameterized query API
-- Validate and sanitize any input used in native queries
+- Sempre use consultas parametrizadas — nunca concatene entrada do usuário em SQL
+- Use `PreparedStatement` ou a API de consultas parametrizadas do seu framework
+- Valide e sanitize qualquer entrada usada em consultas nativas
 
 ```java
-// BAD — SQL injection via string concatenation
+// RUIM — injeção SQL via concatenação de strings
 Statement stmt = conn.createStatement();
 String sql = "SELECT * FROM orders WHERE name = '" + name + "'";
 stmt.executeQuery(sql);
 
-// GOOD — PreparedStatement with parameterized query
+// BOM — PreparedStatement com consulta parametrizada
 PreparedStatement ps = conn.prepareStatement("SELECT * FROM orders WHERE name = ?");
 ps.setString(1, name);
 
-// GOOD — JDBC template
+// BOM — JDBC template
 jdbcTemplate.query("SELECT * FROM orders WHERE name = ?", mapper, name);
 ```
 
-## Input Validation
+## Validação de Entrada
 
-- Validate all user input at system boundaries before processing
-- Use Bean Validation (`@NotNull`, `@NotBlank`, `@Size`) on DTOs when using a validation framework
-- Sanitize file paths and user-provided strings before use
-- Reject input that fails validation with clear error messages
+- Valide toda entrada do usuário nas fronteiras do sistema antes de processar
+- Use Bean Validation (`@NotNull`, `@NotBlank`, `@Size`) em DTOs ao usar um framework de validação
+- Sanitize caminhos de arquivo e strings fornecidas pelo usuário antes do uso
+- Rejeite entradas que falham na validação com mensagens de erro claras
 
 ```java
-// Validate manually in plain Java
+// Validação manual em Java puro
 public Order createOrder(String customerName, BigDecimal amount) {
     if (customerName == null || customerName.isBlank()) {
         throw new IllegalArgumentException("Customer name is required");
@@ -62,40 +62,40 @@ public Order createOrder(String customerName, BigDecimal amount) {
 }
 ```
 
-## Authentication and Authorization
+## Autenticação e Autorização
 
-- Never implement custom auth crypto — use established libraries
-- Store passwords with bcrypt or Argon2, never MD5/SHA1
-- Enforce authorization checks at service boundaries
-- Clear sensitive data from logs — never log passwords, tokens, or PII
+- Nunca implemente criptografia de autenticação própria — use bibliotecas consolidadas
+- Armazene senhas com bcrypt ou Argon2, nunca MD5/SHA1
+- Imponha verificações de autorização nas fronteiras de serviço
+- Limpe dados sensíveis dos logs — nunca registre senhas, tokens ou PII
 
-## Dependency Security
+## Segurança de Dependências
 
-- Run `mvn dependency:tree` or `./gradlew dependencies` to audit transitive dependencies
-- Use OWASP Dependency-Check or Snyk to scan for known CVEs
-- Keep dependencies updated — set up Dependabot or Renovate
+- Execute `mvn dependency:tree` ou `./gradlew dependencies` para auditar dependências transitivas
+- Use OWASP Dependency-Check ou Snyk para varrer CVEs conhecidos
+- Mantenha as dependências atualizadas — configure Dependabot ou Renovate
 
-## Error Messages
+## Mensagens de Erro
 
-- Never expose stack traces, internal paths, or SQL errors in API responses
-- Map exceptions to safe, generic client messages at handler boundaries
-- Log detailed errors server-side; return generic messages to clients
+- Nunca exponha stack traces, caminhos internos ou erros de SQL em respostas de API
+- Mapeie exceções para mensagens genéricas e seguras ao cliente nas fronteiras dos handlers
+- Registre erros detalhados no lado do servidor; retorne mensagens genéricas aos clientes
 
 ```java
-// Log the detail, return a generic message
+// Registre o detalhe, retorne uma mensagem genérica
 try {
     return orderService.findById(id);
 } catch (OrderNotFoundException ex) {
     log.warn("Order not found: id={}", id);
-    return ApiResponse.error("Resource not found");  // generic, no internals
+    return ApiResponse.error("Resource not found");  // genérica, sem detalhes internos
 } catch (Exception ex) {
     log.error("Unexpected error processing order id={}", id, ex);
-    return ApiResponse.error("Internal server error");  // never expose ex.getMessage()
+    return ApiResponse.error("Internal server error");  // nunca exponha ex.getMessage()
 }
 ```
 
-## References
+## Referências
 
-See skill: `springboot-security` for Spring Security authentication and authorization patterns.
-See skill: `quarkus-security` for Quarkus security with JWT/OIDC, RBAC, and CDI.
-See skill: `security-review` for general security checklists.
+Veja a skill: `springboot-security` para padrões de autenticação e autorização do Spring Security.
+Veja a skill: `quarkus-security` para segurança do Quarkus com JWT/OIDC, RBAC e CDI.
+Veja a skill: `security-review` para checklists gerais de segurança.

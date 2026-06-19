@@ -1,30 +1,30 @@
-# Hooks System
+# Sistema de Hooks
 
-## Hook Types
+## Tipos de Hook
 
-- **PreToolUse**: Before tool execution (validation, parameter modification)
-- **PostToolUse**: After tool execution (auto-format, checks)
-- **Stop**: When session ends (final verification)
+- **PreToolUse**: Antes da execução da tool (validação, modificação de parâmetros)
+- **PostToolUse**: Depois da execução da tool (auto-formatação, verificações)
+- **Stop**: Quando a sessão termina (verificação final)
 
-## Auto-Accept Permissions
+## Permissões de Aceitação Automática
 
-Use with caution:
-- Enable for trusted, well-defined plans
-- Disable for exploratory work
-- Never use dangerously-skip-permissions flag
-- Configure `allowedTools` in `~/.claude.json` instead
+Use com cautela:
+- Habilite para planos confiáveis e bem definidos
+- Desabilite para trabalho exploratório
+- Nunca use a flag dangerously-skip-permissions
+- Em vez disso, configure `allowedTools` em `~/.claude.json`
 
-## TodoWrite Best Practices
+## Boas Práticas de TodoWrite
 
-Use TodoWrite tool to:
-- Track progress on multi-step tasks
-- Verify understanding of instructions
-- Enable real-time steering
-- Show granular implementation steps
+Use a tool TodoWrite para:
+- Acompanhar o progresso em tarefas de múltiplas etapas
+- Verificar o entendimento das instruções
+- Permitir direcionamento em tempo real
+- Mostrar etapas granulares de implementação
 
-Todo list reveals:
-- Out of order steps
-- Missing items
-- Extra unnecessary items
-- Wrong granularity
-- Misinterpreted requirements
+A lista de todos revela:
+- Etapas fora de ordem
+- Itens faltando
+- Itens extras desnecessários
+- Granularidade errada
+- Requisitos mal interpretados

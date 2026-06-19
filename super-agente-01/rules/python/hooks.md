@@ -3,17 +3,17 @@ paths:
   - "**/*.py"
   - "**/*.pyi"
 ---
-# Python Hooks
+# Hooks do Python
 
-> This file extends [common/hooks.md](../common/hooks.md) with Python specific content.
+> Este arquivo estende [common/hooks.md](../common/hooks.md) com conteúdo específico de Python.
 
-## PostToolUse Hooks
+## Hooks PostToolUse
 
-Configure in `~/.claude/settings.json`:
+Configure em `~/.claude/settings.json`:
 
-- **black/ruff**: Auto-format `.py` files after edit
-- **mypy/pyright**: Run type checking after editing `.py` files
+- **black/ruff**: formata automaticamente arquivos `.py` após a edição
+- **mypy/pyright**: executa a verificação de tipos após editar arquivos `.py`
 
-## Warnings
+## Avisos
 
-- Warn about `print()` statements in edited files (use `logging` module instead)
+- Avise sobre instruções `print()` em arquivos editados (use o módulo `logging` em vez disso)

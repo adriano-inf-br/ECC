@@ -9,28 +9,28 @@ paths:
   - "**/*.resolver.ts"
   - "**/*.module.ts"
 ---
-# Angular Coding Style
+# Estilo de Código Angular
 
 > This file extends [common/coding-style.md](../common/coding-style.md) with Angular specific content.
 
-## Version Awareness
+## Consciência de Versão
 
-Always check the project's Angular version before writing code — features differ significantly between versions. Run `ng version` or inspect `package.json`. When creating a new project, do not pin a version unless the user specifies one.
+Sempre verifique a versão do Angular do projeto antes de escrever código — os recursos diferem significativamente entre versões. Execute `ng version` ou inspecione o `package.json`. Ao criar um novo projeto, não fixe uma versão a menos que o usuário especifique uma.
 
-After generating or modifying Angular code, always run `ng build` to catch errors before finishing.
+Após gerar ou modificar código Angular, sempre execute `ng build` para capturar erros antes de finalizar.
 
-## File Naming
+## Nomenclatura de Arquivos
 
-Follow Angular CLI conventions — one artifact per file:
+Siga as convenções da CLI do Angular — um artefato por arquivo:
 
 - `user-profile.component.ts` + `user-profile.component.html` + `user-profile.component.spec.ts`
 - `user.service.ts`, `auth.guard.ts`, `date-format.pipe.ts`
-- Feature folders: `features/users/`, `features/auth/`
-- Generate with the CLI: `ng generate component features/users/user-card`
+- Pastas de feature: `features/users/`, `features/auth/`
+- Gere com a CLI: `ng generate component features/users/user-card`
 
-## Components
+## Componentes
 
-Prefer standalone components (v17+ default). Use `OnPush` change detection on all new components.
+Prefira componentes standalone (padrão a partir da v17). Use detecção de mudanças `OnPush` em todos os novos componentes.
 
 ```typescript
 @Component({
@@ -46,37 +46,37 @@ export class UserCardComponent {
 }
 ```
 
-## Dependency Injection
+## Injeção de Dependência
 
-Use `inject()` over constructor injection. Keep constructors empty or remove them entirely.
+Use `inject()` em vez de injeção via construtor. Mantenha os construtores vazios ou remova-os por completo.
 
 ```typescript
-// CORRECT
+// CORRETO
 @Injectable({ providedIn: 'root' })
 export class UserService {
   private http = inject(HttpClient);
   private router = inject(Router);
 }
 
-// WRONG: Constructor injection is verbose and harder to tree-shake
+// ERRADO: Injeção via construtor é verbosa e mais difícil de fazer tree-shaking
 constructor(private http: HttpClient, private router: Router) {}
 ```
 
-Use `InjectionToken` for non-class dependencies:
+Use `InjectionToken` para dependências que não são classes:
 
 ```typescript
 const API_URL = new InjectionToken<string>('API_URL');
 
-// Provide:
+// Forneça:
 { provide: API_URL, useValue: 'https://api.example.com' }
 
-// Consume:
+// Consuma:
 private apiUrl = inject(API_URL);
 ```
 
 ## Signals
 
-### Core Primitives
+### Primitivas Centrais
 
 ```typescript
 count = signal(0);
@@ -87,18 +87,18 @@ increment() {
 }
 ```
 
-### `linkedSignal` — Writable Derived State
+### `linkedSignal` — Estado Derivado Gravável
 
-Use `linkedSignal` when a signal must reset or adapt when a source changes, but also be independently writable:
+Use `linkedSignal` quando um signal deve ser resetado ou adaptado quando uma fonte muda, mas também ser gravável de forma independente:
 
 ```typescript
 selectedOption = linkedSignal(() => this.options()[0]);
-// Resets to first option when options changes, but user can override
+// Reseta para a primeira opção quando options muda, mas o usuário pode sobrescrever
 ```
 
-### `resource` — Async Data into Signals
+### `resource` — Dados Assíncronos em Signals
 
-Use `resource()` to fetch async data reactively without manual subscriptions:
+Use `resource()` para buscar dados assíncronos de forma reativa sem subscriptions manuais:
 
 ```typescript
 userResource = resource({
@@ -106,24 +106,24 @@ userResource = resource({
   loader: ({ request }) => fetch(`/api/users/${request.id}`).then(r => r.json()),
 });
 
-// Access: userResource.value(), userResource.isLoading(), userResource.error()
+// Acesso: userResource.value(), userResource.isLoading(), userResource.error()
 ```
 
-### `effect` Usage
+### Uso de `effect`
 
-Use `effect()` only for side effects that must react to signal changes (logging, third-party DOM manipulation). Never use effects to synchronize signals — use `computed` or `linkedSignal` instead. For DOM work after render, use `afterRenderEffect`.
+Use `effect()` apenas para efeitos colaterais que devem reagir a mudanças de signal (logging, manipulação de DOM de terceiros). Nunca use effects para sincronizar signals — use `computed` ou `linkedSignal` em vez disso. Para trabalho de DOM após a renderização, use `afterRenderEffect`.
 
 ```typescript
-// CORRECT: Side effect
+// CORRETO: Efeito colateral
 effect(() => console.log('User changed:', this.user()));
 
-// WRONG: Use computed instead
+// ERRADO: Use computed em vez disso
 effect(() => { this.fullName.set(`${this.first()} ${this.last()}`); });
 ```
 
 ## Templates
 
-Use v17+ block syntax. Always provide `track` in `@for`:
+Use a sintaxe de blocos da v17+. Sempre forneça `track` em `@for`:
 
 ```html
 @for (item of items(); track item.id) {
@@ -139,18 +139,18 @@ Use v17+ block syntax. Always provide `track` in `@for`:
 }
 ```
 
-No logic in templates beyond simple conditionals — move to component methods or pipes.
+Nenhuma lógica em templates além de condicionais simples — mova para métodos do componente ou pipes.
 
-## Forms
+## Formulários
 
-Choose the form strategy that matches the project's existing approach:
+Escolha a estratégia de formulário que corresponda à abordagem existente do projeto:
 
-- **Signal Forms** (v21+): Preferred for new projects on v21+. Signal-based form state.
-- **Reactive Forms**: `FormBuilder` + `FormGroup` + `FormControl`. Best for complex forms with dynamic validation.
-- **Template-Driven Forms**: `ngModel`. Suitable for simple forms only.
+- **Signal Forms** (v21+): Preferido para novos projetos na v21+. Estado de formulário baseado em signals.
+- **Reactive Forms**: `FormBuilder` + `FormGroup` + `FormControl`. Melhor para formulários complexos com validação dinâmica.
+- **Template-Driven Forms**: `ngModel`. Adequado apenas para formulários simples.
 
 ```typescript
-// Reactive Forms — standard approach for most apps
+// Reactive Forms — abordagem padrão para a maioria dos apps
 export class LoginComponent {
   private fb = inject(FormBuilder);
 
@@ -167,16 +167,16 @@ export class LoginComponent {
 }
 ```
 
-## Component Styles
+## Estilos de Componentes
 
-Use component-level styles with `ViewEncapsulation.Emulated` (default). Avoid `ViewEncapsulation.None` unless building a design system that intentionally bleeds styles.
+Use estilos em nível de componente com `ViewEncapsulation.Emulated` (padrão). Evite `ViewEncapsulation.None` a menos que esteja construindo um design system que intencionalmente vaza estilos.
 
-- Scope styles to the component — do not use global class names inside component stylesheets
-- Use `:host` for host element styling
-- Prefer CSS custom properties for themeable values
+- Escope os estilos ao componente — não use nomes de classe globais dentro das folhas de estilo do componente
+- Use `:host` para estilização do elemento host
+- Prefira CSS custom properties para valores tematizáveis
 
-## Change Detection
+## Detecção de Mudanças
 
-- Default to `ChangeDetectionStrategy.OnPush` on all new components
-- Signals and `async` pipe handle detection automatically — avoid `markForCheck()` and `detectChanges()`
-- Never mutate `@Input()` objects in place when using OnPush
+- Use por padrão `ChangeDetectionStrategy.OnPush` em todos os novos componentes
+- Signals e o pipe `async` lidam com a detecção automaticamente — evite `markForCheck()` e `detectChanges()`
+- Nunca mute objetos `@Input()` no lugar ao usar OnPush

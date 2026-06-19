@@ -8,32 +8,32 @@ paths:
   - "**/*.h"
   - "**/CMakeLists.txt"
 ---
-# C++ Hooks
+# Hooks de C++
 
-> This file extends [common/hooks.md](../common/hooks.md) with C++ specific content.
+> Este arquivo estende [common/hooks.md](../common/hooks.md) com conteúdo específico de C++.
 
-## Build Hooks
+## Hooks de Build
 
-Run these checks before committing C++ changes:
+Execute estas verificações antes de fazer commit de alterações em C++:
 
 ```bash
-# Format check
+# Verificação de formatação
 clang-format --dry-run --Werror src/*.cpp src/*.hpp
 
-# Static analysis
+# Análise estática
 clang-tidy src/*.cpp -- -std=c++17
 
 # Build
 cmake --build build
 
-# Tests
+# Testes
 ctest --test-dir build --output-on-failure
 ```
 
-## Recommended CI Pipeline
+## Pipeline de CI Recomendado
 
-1. **clang-format** — formatting check
-2. **clang-tidy** — static analysis
-3. **cppcheck** — additional analysis
-4. **cmake build** — compilation
-5. **ctest** — test execution with sanitizers
+1. **clang-format** — verificação de formatação
+2. **clang-tidy** — análise estática
+3. **cppcheck** — análise adicional
+4. **cmake build** — compilação
+5. **ctest** — execução de testes com sanitizers

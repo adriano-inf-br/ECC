@@ -3,32 +3,32 @@ paths:
   - "**/*.kt"
   - "**/*.kts"
 ---
-# Kotlin Patterns
+# Padrões de Kotlin
 
-> This file extends [common/patterns.md](../common/patterns.md) with Kotlin and Android/KMP-specific content.
+> Este arquivo estende [common/patterns.md](../common/patterns.md) com conteúdo específico de Kotlin e Android/KMP.
 
-## Dependency Injection
+## Injeção de Dependência
 
-Prefer constructor injection. Use Koin (KMP) or Hilt (Android-only):
+Prefira injeção via construtor. Use Koin (KMP) ou Hilt (somente Android):
 
 ```kotlin
-// Koin — declare modules
+// Koin — declarar módulos
 val dataModule = module {
     single<ItemRepository> { ItemRepositoryImpl(get(), get()) }
     factory { GetItemsUseCase(get()) }
     viewModelOf(::ItemListViewModel)
 }
 
-// Hilt — annotations
+// Hilt — anotações
 @HiltViewModel
 class ItemListViewModel @Inject constructor(
     private val getItems: GetItemsUseCase
 ) : ViewModel()
 ```
 
-## ViewModel Pattern
+## Padrão ViewModel
 
-Single state object, event sink, one-way data flow:
+Objeto de estado único, sink de eventos, fluxo de dados unidirecional:
 
 ```kotlin
 data class ScreenState(
@@ -49,11 +49,11 @@ class ScreenViewModel(private val useCase: GetItemsUseCase) : ViewModel() {
 }
 ```
 
-## Repository Pattern
+## Padrão Repository
 
-- `suspend` functions return `Result<T>` or custom error type
-- `Flow` for reactive streams
-- Coordinate local + remote data sources
+- Funções `suspend` retornam `Result<T>` ou um tipo de erro personalizado
+- `Flow` para streams reativos
+- Coordene fontes de dados local + remota
 
 ```kotlin
 interface ItemRepository {
@@ -63,9 +63,9 @@ interface ItemRepository {
 }
 ```
 
-## UseCase Pattern
+## Padrão UseCase
 
-Single responsibility, `operator fun invoke`:
+Responsabilidade única, `operator fun invoke`:
 
 ```kotlin
 class GetItemUseCase(private val repository: ItemRepository) {
@@ -83,7 +83,7 @@ class GetItemsUseCase(private val repository: ItemRepository) {
 
 ## expect/actual (KMP)
 
-Use for platform-specific implementations:
+Use para implementações específicas de plataforma:
 
 ```kotlin
 // commonMain
@@ -108,13 +108,13 @@ actual class SecureStorage {
 }
 ```
 
-## Coroutine Patterns
+## Padrões de Coroutines
 
-- Use `viewModelScope` in ViewModels, `coroutineScope` for structured child work
-- Use `stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), initialValue)` for StateFlow from cold Flows
-- Use `supervisorScope` when child failures should be independent
+- Use `viewModelScope` em ViewModels, `coroutineScope` para trabalho filho estruturado
+- Use `stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), initialValue)` para StateFlow a partir de Flows frios
+- Use `supervisorScope` quando falhas dos filhos devem ser independentes
 
-## Builder Pattern with DSL
+## Padrão Builder com DSL
 
 ```kotlin
 class HttpClientConfig {
@@ -132,7 +132,7 @@ fun httpClient(block: HttpClientConfig.() -> Unit): HttpClient {
     return HttpClient(config)
 }
 
-// Usage
+// Uso
 val client = httpClient {
     baseUrl = "https://api.example.com"
     timeout = 15_000
@@ -140,7 +140,7 @@ val client = httpClient {
 }
 ```
 
-## References
+## Referências
 
-See skill: `kotlin-coroutines-flows` for detailed coroutine patterns.
-See skill: `android-clean-architecture` for module and layer patterns.
+Veja a skill: `kotlin-coroutines-flows` para padrões detalhados de coroutines.
+Veja a skill: `android-clean-architecture` para padrões de módulos e camadas.

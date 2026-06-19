@@ -1,10 +1,10 @@
-> This file extends [common/coding-style.md](../common/coding-style.md) with web-specific frontend content.
+> Este arquivo estende [common/coding-style.md](../common/coding-style.md) com conteúdo frontend específico de web.
 
-# Web Coding Style
+# Estilo de Código Web
 
-## File Organization
+## Organização de Arquivos
 
-Organize by feature or surface area, not by file type:
+Organize por funcionalidade ou área de superfície, não por tipo de arquivo:
 
 ```text
 src/
@@ -33,9 +33,9 @@ src/
     └── global.css
 ```
 
-## CSS Custom Properties
+## Custom Properties de CSS
 
-Define design tokens as variables. Do not hardcode palette, typography, or spacing repeatedly:
+Defina design tokens como variáveis. Não fixe paleta, tipografia ou espaçamento repetidamente no código:
 
 ```css
 :root {
@@ -54,15 +54,15 @@ Define design tokens as variables. Do not hardcode palette, typography, or spaci
 }
 ```
 
-## Animation-Only Properties
+## Propriedades Exclusivas de Animação
 
-Prefer compositor-friendly motion:
+Prefira movimento amigável ao compositor:
 - `transform`
 - `opacity`
 - `clip-path`
-- `filter` (sparingly)
+- `filter` (com parcimônia)
 
-Avoid animating layout-bound properties:
+Evite animar propriedades vinculadas ao layout:
 - `width`
 - `height`
 - `top`
@@ -72,7 +72,7 @@ Avoid animating layout-bound properties:
 - `border`
 - `font-size`
 
-## Semantic HTML First
+## HTML Semântico Primeiro
 
 ```html
 <header>
@@ -86,11 +86,11 @@ Avoid animating layout-bound properties:
 <footer>...</footer>
 ```
 
-Do not reach for generic wrapper `div` stacks when a semantic element exists.
+Não recorra a pilhas genéricas de `div` envoltórias quando existe um elemento semântico.
 
-## Naming
+## Nomenclatura
 
-- Components: PascalCase (`ScrollySection`, `SurfaceCard`)
-- Hooks: `use` prefix (`useReducedMotion`)
-- CSS classes: kebab-case or utility classes
-- Animation timelines: camelCase with intent (`heroRevealTl`)
+- Componentes: PascalCase (`ScrollySection`, `SurfaceCard`)
+- Hooks: prefixo `use` (`useReducedMotion`)
+- Classes CSS: kebab-case ou classes utilitárias
+- Timelines de animação: camelCase com intenção (`heroRevealTl`)

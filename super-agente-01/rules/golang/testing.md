@@ -4,28 +4,28 @@ paths:
   - "**/go.mod"
   - "**/go.sum"
 ---
-# Go Testing
+# Testes em Go
 
-> This file extends [common/testing.md](../common/testing.md) with Go specific content.
+> Este arquivo estende [common/testing.md](../common/testing.md) com conteúdo específico de Go.
 
 ## Framework
 
-Use the standard `go test` with **table-driven tests**.
+Use o `go test` padrão com **testes orientados a tabela** (table-driven tests).
 
-## Race Detection
+## Detecção de Corrida (Race Detection)
 
-Always run with the `-race` flag:
+Sempre execute com a flag `-race`:
 
 ```bash
 go test -race ./...
 ```
 
-## Coverage
+## Cobertura
 
 ```bash
 go test -cover ./...
 ```
 
-## Reference
+## Referência
 
-See skill: `golang-testing` for detailed Go testing patterns and helpers.
+Veja a skill: `golang-testing` para padrões e helpers detalhados de testes em Go.

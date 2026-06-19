@@ -4,72 +4,72 @@ paths:
   - "**/pubspec.yaml"
   - "**/analysis_options.yaml"
 ---
-# Dart/Flutter Coding Style
+# Estilo de Código Dart/Flutter
 
-> This file extends [common/coding-style.md](../common/coding-style.md) with Dart and Flutter-specific content.
+> Este arquivo estende [common/coding-style.md](../common/coding-style.md) com conteúdo específico de Dart e Flutter.
 
-## Formatting
+## Formatação
 
-- **dart format** for all `.dart` files — enforced in CI (`dart format --set-exit-if-changed .`)
-- Line length: 80 characters (dart format default)
-- Trailing commas on multi-line argument/parameter lists to improve diffs and formatting
+- **dart format** para todos os arquivos `.dart` — imposto na CI (`dart format --set-exit-if-changed .`)
+- Comprimento de linha: 80 caracteres (padrão do dart format)
+- Vírgulas finais em listas de argumentos/parâmetros multilinha para melhorar diffs e formatação
 
-## Immutability
+## Imutabilidade
 
-- Prefer `final` for local variables and `const` for compile-time constants
-- Use `const` constructors wherever all fields are `final`
-- Return unmodifiable collections from public APIs (`List.unmodifiable`, `Map.unmodifiable`)
-- Use `copyWith()` for state mutations in immutable state classes
+- Prefira `final` para variáveis locais e `const` para constantes de tempo de compilação
+- Use construtores `const` sempre que todos os campos forem `final`
+- Retorne coleções não modificáveis a partir de APIs públicas (`List.unmodifiable`, `Map.unmodifiable`)
+- Use `copyWith()` para mutações de estado em classes de estado imutáveis
 
 ```dart
-// BAD
+// RUIM
 var count = 0;
 List<String> items = ['a', 'b'];
 
-// GOOD
+// BOM
 final count = 0;
 const items = ['a', 'b'];
 ```
 
-## Naming
+## Nomenclatura
 
-Follow Dart conventions:
-- `camelCase` for variables, parameters, and named constructors
-- `PascalCase` for classes, enums, typedefs, and extensions
-- `snake_case` for file names and library names
-- `SCREAMING_SNAKE_CASE` for constants declared with `const` at top level
-- Prefix private members with `_`
-- Extension names describe the type they extend: `StringExtensions`, not `MyHelpers`
+Siga as convenções do Dart:
+- `camelCase` para variáveis, parâmetros e construtores nomeados
+- `PascalCase` para classes, enums, typedefs e extensões
+- `snake_case` para nomes de arquivos e nomes de bibliotecas
+- `SCREAMING_SNAKE_CASE` para constantes declaradas com `const` no nível superior
+- Prefixe membros privados com `_`
+- Nomes de extensões descrevem o tipo que estendem: `StringExtensions`, não `MyHelpers`
 
 ## Null Safety
 
-- Avoid `!` (bang operator) — prefer `?.`, `??`, `if (x != null)`, or Dart 3 pattern matching; reserve `!` only where a null value is a programming error and crashing is the right behaviour
-- Avoid `late` unless initialization is guaranteed before first use (prefer nullable or constructor init)
-- Use `required` for constructor parameters that must always be provided
+- Evite `!` (operador bang) — prefira `?.`, `??`, `if (x != null)` ou correspondência de padrões do Dart 3; reserve o `!` apenas onde um valor nulo é um erro de programação e travar é o comportamento correto
+- Evite `late` a menos que a inicialização seja garantida antes do primeiro uso (prefira nullable ou inicialização no construtor)
+- Use `required` para parâmetros de construtor que devem sempre ser fornecidos
 
 ```dart
-// BAD — crashes at runtime if user is null
+// RUIM — trava em tempo de execução se user for nulo
 final name = user!.name;
 
-// GOOD — null-aware operators
+// BOM — operadores null-aware
 final name = user?.name ?? 'Unknown';
 
-// GOOD — Dart 3 pattern matching (exhaustive, compiler-checked)
+// BOM — correspondência de padrões do Dart 3 (exaustiva, verificada pelo compilador)
 final name = switch (user) {
   User(:final name) => name,
   null => 'Unknown',
 };
 
-// GOOD — early-return null guard
+// BOM — guarda de nulo com retorno antecipado
 String getUserName(User? user) {
   if (user == null) return 'Unknown';
-  return user.name; // promoted to non-null after the guard
+  return user.name; // promovido para não-nulo após a guarda
 }
 ```
 
-## Sealed Types and Pattern Matching (Dart 3+)
+## Tipos Sealed e Correspondência de Padrões (Dart 3+)
 
-Use sealed classes to model closed state hierarchies:
+Use classes sealed para modelar hierarquias de estado fechadas:
 
 ```dart
 sealed class AsyncState<T> {
@@ -91,13 +91,13 @@ final class Failure<T> extends AsyncState<T> {
 }
 ```
 
-Always use exhaustive `switch` with sealed types — no default/wildcard:
+Sempre use `switch` exaustivo com tipos sealed — sem default/wildcard:
 
 ```dart
-// BAD
+// RUIM
 if (state is Loading) { ... }
 
-// GOOD
+// BOM
 return switch (state) {
   Loading() => const CircularProgressIndicator(),
   Success(:final data) => DataWidget(data),
@@ -105,22 +105,22 @@ return switch (state) {
 };
 ```
 
-## Error Handling
+## Tratamento de Erros
 
-- Specify exception types in `on` clauses — never use bare `catch (e)`
-- Never catch `Error` subtypes — they indicate programming bugs
-- Use `Result`-style types or sealed classes for recoverable errors
-- Avoid using exceptions for control flow
+- Especifique os tipos de exceção nas cláusulas `on` — nunca use `catch (e)` genérico
+- Nunca capture subtipos de `Error` — eles indicam bugs de programação
+- Use tipos no estilo `Result` ou classes sealed para erros recuperáveis
+- Evite usar exceções para controle de fluxo
 
 ```dart
-// BAD
+// RUIM
 try {
   await fetchUser();
 } catch (e) {
   log(e.toString());
 }
 
-// GOOD
+// BOM
 try {
   await fetchUser();
 } on NetworkException catch (e) {
@@ -132,28 +132,28 @@ try {
 
 ## Async / Futures
 
-- Always `await` Futures or explicitly call `unawaited()` to signal intentional fire-and-forget
-- Never mark a function `async` if it never `await`s anything
-- Use `Future.wait` / `Future.any` for concurrent operations
-- Check `context.mounted` before using `BuildContext` after any `await` (Flutter 3.7+)
+- Sempre faça `await` em Futures ou chame explicitamente `unawaited()` para sinalizar fire-and-forget intencional
+- Nunca marque uma função como `async` se ela nunca faz `await` em nada
+- Use `Future.wait` / `Future.any` para operações concorrentes
+- Verifique `context.mounted` antes de usar `BuildContext` após qualquer `await` (Flutter 3.7+)
 
 ```dart
-// BAD — ignoring Future
-fetchData(); // fire-and-forget without marking intent
+// RUIM — ignorando o Future
+fetchData(); // fire-and-forget sem sinalizar intenção
 
-// GOOD
-unawaited(fetchData()); // explicit fire-and-forget
-await fetchData();      // or properly awaited
+// BOM
+unawaited(fetchData()); // fire-and-forget explícito
+await fetchData();      // ou devidamente aguardado
 ```
 
 ## Imports
 
-- Use `package:` imports throughout — never relative imports (`../`) for cross-feature or cross-layer code
-- Order: `dart:` → external `package:` → internal `package:` (same package)
-- No unused imports — `dart analyze` enforces this with `unused_import`
+- Use imports `package:` em todo o código — nunca imports relativos (`../`) para código entre features ou entre camadas
+- Ordem: `dart:` → `package:` externo → `package:` interno (mesmo pacote)
+- Sem imports não utilizados — `dart analyze` impõe isso com `unused_import`
 
-## Code Generation
+## Geração de Código
 
-- Generated files (`.g.dart`, `.freezed.dart`, `.gr.dart`) must be committed or gitignored consistently — pick one strategy per project
-- Never manually edit generated files
-- Keep generator annotations (`@JsonSerializable`, `@freezed`, `@riverpod`, etc.) on the canonical source file only
+- Arquivos gerados (`.g.dart`, `.freezed.dart`, `.gr.dart`) devem ser commitados ou ignorados pelo git de forma consistente — escolha uma estratégia por projeto
+- Nunca edite manualmente arquivos gerados
+- Mantenha as anotações de geradores (`@JsonSerializable`, `@freezed`, `@riverpod`, etc.) apenas no arquivo-fonte canônico

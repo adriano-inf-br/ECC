@@ -3,46 +3,46 @@ paths:
   - "**/*.vue"
 ---
 
-# Vue Patterns
+# Padrões Vue
 
-> This file extends [common/patterns.md](../common/patterns.md) with Vue specific content.
+> Este arquivo estende [common/patterns.md](../common/patterns.md) com conteúdo específico de Vue.
 
 ## Composables
 
-- The composable (`useXxx`) is the reusable-logic unit. In Feature-Sliced Design it lives in the slice `model` segment.
-- Accept `MaybeRefOrGetter<T>` inputs and normalize with `toValue`, so callers can pass a ref, a getter, or a raw value.
-- Return `toRefs(reactive(...))` so consumers can destructure without losing reactivity.
-- A composable that uses lifecycle hooks or `provide` / `inject` must be called inside a component `setup`, not lazily or conditionally.
+- O composable (`useXxx`) é a unidade de lógica reutilizável. No Feature-Sliced Design ele fica no segmento `model` da fatia.
+- Aceite entradas `MaybeRefOrGetter<T>` e normalize com `toValue`, para que quem chama possa passar um ref, um getter ou um valor cru.
+- Retorne `toRefs(reactive(...))` para que os consumidores possam desestruturar sem perder a reatividade.
+- Um composable que usa hooks de ciclo de vida ou `provide` / `inject` deve ser chamado dentro do `setup` de um componente, não de forma lazy ou condicional.
 
 ## Props, Emits, v-model
 
-- Type-based `defineProps<Props>()` and tuple-form `defineEmits<{ change: [id: number] }>()`.
-- `defineModel<T>('name', { default })` for two-way binding. It compiles to a prop plus an `update:*` emit.
+- `defineProps<Props>()` baseado em tipo e `defineEmits<{ change: [id: number] }>()` na forma de tupla.
+- `defineModel<T>('name', { default })` para binding bidirecional. Ele compila para uma prop mais um emit `update:*`.
 
 ## Provide / Inject
 
-- Use `provide` / `inject` for tree-scoped data without prop drilling.
-- Type-safe collision-free keys: `const key = Symbol() as InjectionKey<T>`.
-- The provider owns mutations. Expose a `readonly` ref plus an explicit updater function, never a raw mutable ref.
+- Use `provide` / `inject` para dados com escopo de árvore sem prop drilling.
+- Chaves type-safe e livres de colisão: `const key = Symbol() as InjectionKey<T>`.
+- O provedor é dono das mutações. Exponha um ref `readonly` mais uma função atualizadora explícita, nunca um ref mutável cru.
 
-## Pinia (FSD model segment)
+## Pinia (segmento model do FSD)
 
-- Prefer setup stores: `ref` is state, `computed` is getters, `function` is actions.
-- Setup stores do not get `$reset` for free. Define your own.
-- Use `storeToRefs` for state and getters. Destructure actions directly off the store.
-- Never persist raw auth tokens to `localStorage`.
+- Prefira setup stores: `ref` é estado, `computed` são getters, `function` são actions.
+- Setup stores não ganham `$reset` de graça. Defina o seu próprio.
+- Use `storeToRefs` para estado e getters. Desestruture as actions diretamente da store.
+- Nunca persista tokens de autenticação crus no `localStorage`.
 
 ## vue-router
 
-- Lazy-load route components with dynamic `import()`.
-- A global `beforeEach` auth gate keyed on `meta.requiresAuth`. Guards return `false` (cancel), a route location (redirect), or `undefined` / `true` (continue).
-- Watch `() => route.params.id`, not the whole `route` object.
+- Faça lazy-load dos componentes de rota com `import()` dinâmico.
+- Um gate de autenticação `beforeEach` global baseado em `meta.requiresAuth`. Os guards retornam `false` (cancelar), uma localização de rota (redirecionar), ou `undefined` / `true` (continuar).
+- Observe `() => route.params.id`, não o objeto `route` inteiro.
 
-## vue-query (server cache)
+## vue-query (cache de servidor)
 
-- `@tanstack/vue-query` owns server-cache state. Pinia owns client state.
-- Put request functions plus `queryOptions` factories in the FSD `api` segment.
-- Critical: put the ref or computed ITSELF in the query key, never `.value`. Passing `.value` freezes the key and kills reactive refetch.
+- `@tanstack/vue-query` é dono do estado de cache de servidor. O Pinia é dono do estado de cliente.
+- Coloque as funções de requisição mais as factories de `queryOptions` no segmento `api` do FSD.
+- Crítico: coloque o ref ou computed EM SI na query key, nunca `.value`. Passar `.value` congela a key e mata o refetch reativo.
 
 ```ts
 useQuery({ queryKey: ['auction', id], queryFn: () => fetchAuction(toValue(id)) })
@@ -50,7 +50,7 @@ useQuery({ queryKey: ['auction', id], queryFn: () => fetchAuction(toValue(id)) }
 queryClient.invalidateQueries({ queryKey: ['auction', id] })
 ```
 
-## Reference
+## Referência
 
-- ECC skills: `frontend-patterns`, `vite-patterns`.
+- Skills ECC: `frontend-patterns`, `vite-patterns`.
 - Docs: <https://pinia.vuejs.org/> · <https://router.vuejs.org/> · <https://tanstack.com/query/latest/docs/framework/vue/overview> · <https://vuejs.org/guide/reusability/composables.html>

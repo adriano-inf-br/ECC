@@ -1,55 +1,55 @@
-# Performance Optimization
+# Otimização de Performance
 
-## Model Selection Strategy
+## Estratégia de Seleção de Modelo
 
-**Haiku** (90% of Sonnet capability, 3x cost savings):
-- Lightweight agents with frequent invocation
-- Pair programming and code generation
-- Worker agents in multi-agent systems
+**Haiku** (90% da capacidade do Sonnet, 3x de economia de custo):
+- Agents leves com invocação frequente
+- Programação em par e geração de código
+- Agents trabalhadores em sistemas multi-agente
 
-**Sonnet** (Best coding model):
-- Main development work
-- Orchestrating multi-agent workflows
-- Complex coding tasks
+**Sonnet** (Melhor modelo de código):
+- Trabalho principal de desenvolvimento
+- Orquestração de fluxos de trabalho multi-agente
+- Tarefas complexas de código
 
-**Opus** (Deepest reasoning):
-- Complex architectural decisions
-- Maximum reasoning requirements
-- Research and analysis tasks
+**Opus** (Raciocínio mais profundo):
+- Decisões arquiteturais complexas
+- Requisitos máximos de raciocínio
+- Tarefas de pesquisa e análise
 
-## Context Window Management
+## Gerenciamento da Janela de Contexto
 
-Avoid last 20% of context window for:
-- Large-scale refactoring
-- Feature implementation spanning multiple files
-- Debugging complex interactions
+Evite os últimos 20% da janela de contexto para:
+- Refatoração em larga escala
+- Implementação de funcionalidades que abrange múltiplos arquivos
+- Depuração de interações complexas
 
-Lower context sensitivity tasks:
-- Single-file edits
-- Independent utility creation
-- Documentation updates
-- Simple bug fixes
+Tarefas com menor sensibilidade ao contexto:
+- Edições em arquivo único
+- Criação de utilitários independentes
+- Atualizações de documentação
+- Correções simples de bugs
 
 ## Extended Thinking + Plan Mode
 
-Extended thinking is enabled by default, reserving up to 31,999 tokens for internal reasoning.
+O extended thinking está habilitado por padrão, reservando até 31.999 tokens para raciocínio interno.
 
-Control extended thinking via:
+Controle o extended thinking via:
 - **Toggle**: Option+T (macOS) / Alt+T (Windows/Linux)
-- **Config**: Set `alwaysThinkingEnabled` in `~/.claude/settings.json`
-- **Budget cap**: `export MAX_THINKING_TOKENS=10000` (bash) or `$env:MAX_THINKING_TOKENS = "10000"` (PowerShell)
-- **Verbose mode**: Ctrl+O to see thinking output
+- **Config**: Defina `alwaysThinkingEnabled` em `~/.claude/settings.json`
+- **Limite de orçamento**: `export MAX_THINKING_TOKENS=10000` (bash) ou `$env:MAX_THINKING_TOKENS = "10000"` (PowerShell)
+- **Modo verboso**: Ctrl+O para ver a saída do raciocínio
 
-For complex tasks requiring deep reasoning:
-1. Ensure extended thinking is enabled (on by default)
-2. Enable **Plan Mode** for structured approach
-3. Use multiple critique rounds for thorough analysis
-4. Use split role sub-agents for diverse perspectives
+Para tarefas complexas que exigem raciocínio profundo:
+1. Garanta que o extended thinking esteja habilitado (ligado por padrão)
+2. Habilite o **Plan Mode** para uma abordagem estruturada
+3. Use múltiplas rodadas de crítica para análise minuciosa
+4. Use sub-agentes com papéis divididos para perspectivas diversas
 
-## Build Troubleshooting
+## Solução de Problemas de Build
 
-If build fails:
-1. Use **build-error-resolver** agent
-2. Analyze error messages
-3. Fix incrementally
-4. Verify after each fix
+Se o build falhar:
+1. Use o agent **build-error-resolver**
+2. Analise as mensagens de erro
+3. Corrija incrementalmente
+4. Verifique após cada correção

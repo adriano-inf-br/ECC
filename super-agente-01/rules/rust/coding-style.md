@@ -2,29 +2,29 @@
 paths:
   - "**/*.rs"
 ---
-# Rust Coding Style
+# Estilo de Código Rust
 
-> This file extends [common/coding-style.md](../common/coding-style.md) with Rust-specific content.
+> Este arquivo estende [common/coding-style.md](../common/coding-style.md) com conteúdo específico de Rust.
 
-## Formatting
+## Formatação
 
-- **rustfmt** for enforcement — always run `cargo fmt` before committing
-- **clippy** for lints — `cargo clippy -- -D warnings` (treat warnings as errors)
-- 4-space indent (rustfmt default)
-- Max line width: 100 characters (rustfmt default)
+- **rustfmt** para aplicação — sempre execute `cargo fmt` antes de fazer commit
+- **clippy** para lints — `cargo clippy -- -D warnings` (trate avisos como erros)
+- Indentação de 4 espaços (padrão do rustfmt)
+- Largura máxima de linha: 100 caracteres (padrão do rustfmt)
 
-## Immutability
+## Imutabilidade
 
-Rust variables are immutable by default — embrace this:
+As variáveis em Rust são imutáveis por padrão — adote isso:
 
-- Use `let` by default; only use `let mut` when mutation is required
-- Prefer returning new values over mutating in place
-- Use `Cow<'_, T>` when a function may or may not need to allocate
+- Use `let` por padrão; use `let mut` apenas quando a mutação for necessária
+- Prefira retornar novos valores em vez de mutar no local
+- Use `Cow<'_, T>` quando uma função pode ou não precisar alocar
 
 ```rust
 use std::borrow::Cow;
 
-// GOOD — immutable by default, new value returned
+// BOM — imutável por padrão, novo valor retornado
 fn normalize(input: &str) -> Cow<'_, str> {
     if input.contains(' ') {
         Cow::Owned(input.replace(' ', "_"))
@@ -33,54 +33,54 @@ fn normalize(input: &str) -> Cow<'_, str> {
     }
 }
 
-// BAD — unnecessary mutation
+// RUIM — mutação desnecessária
 fn normalize_bad(input: &mut String) {
     *input = input.replace(' ', "_");
 }
 ```
 
-## Naming
+## Nomenclatura
 
-Follow standard Rust conventions:
-- `snake_case` for functions, methods, variables, modules, crates
-- `PascalCase` (UpperCamelCase) for types, traits, enums, type parameters
-- `SCREAMING_SNAKE_CASE` for constants and statics
-- Lifetimes: short lowercase (`'a`, `'de`) — descriptive names for complex cases (`'input`)
+Siga as convenções padrão de Rust:
+- `snake_case` para funções, métodos, variáveis, módulos, crates
+- `PascalCase` (UpperCamelCase) para tipos, traits, enums, parâmetros de tipo
+- `SCREAMING_SNAKE_CASE` para constantes e statics
+- Lifetimes: minúsculas curtas (`'a`, `'de`) — nomes descritivos para casos complexos (`'input`)
 
-## Ownership and Borrowing
+## Posse e Empréstimo (Ownership and Borrowing)
 
-- Borrow (`&T`) by default; take ownership only when you need to store or consume
-- Never clone to satisfy the borrow checker without understanding the root cause
-- Accept `&str` over `String`, `&[T]` over `Vec<T>` in function parameters
-- Use `impl Into<String>` for constructors that need to own a `String`
+- Empreste (`&T`) por padrão; tome posse apenas quando precisar armazenar ou consumir
+- Nunca clone para satisfazer o borrow checker sem entender a causa raiz
+- Aceite `&str` em vez de `String`, `&[T]` em vez de `Vec<T>` em parâmetros de função
+- Use `impl Into<String>` para construtores que precisam possuir uma `String`
 
 ```rust
-// GOOD — borrows when ownership isn't needed
+// BOM — empresta quando a posse não é necessária
 fn word_count(text: &str) -> usize {
     text.split_whitespace().count()
 }
 
-// GOOD — takes ownership in constructor via Into
+// BOM — toma posse no construtor via Into
 fn new(name: impl Into<String>) -> Self {
     Self { name: name.into() }
 }
 
-// BAD — takes String when &str suffices
+// RUIM — toma String quando &str é suficiente
 fn word_count_bad(text: String) -> usize {
     text.split_whitespace().count()
 }
 ```
 
-## Error Handling
+## Tratamento de Erros
 
-- Use `Result<T, E>` and `?` for propagation — never `unwrap()` in production code
-- **Libraries**: define typed errors with `thiserror`
-- **Applications**: use `anyhow` for flexible error context
-- Add context with `.with_context(|| format!("failed to ..."))?`
-- Reserve `unwrap()` / `expect()` for tests and truly unreachable states
+- Use `Result<T, E>` e `?` para propagação — nunca `unwrap()` em código de produção
+- **Bibliotecas**: defina erros tipados com `thiserror`
+- **Aplicações**: use `anyhow` para contexto de erro flexível
+- Adicione contexto com `.with_context(|| format!("failed to ..."))?`
+- Reserve `unwrap()` / `expect()` para testes e estados verdadeiramente inalcançáveis
 
 ```rust
-// GOOD — library error with thiserror
+// BOM — erro de biblioteca com thiserror
 #[derive(Debug, thiserror::Error)]
 pub enum ConfigError {
     #[error("failed to read config: {0}")]
@@ -89,7 +89,7 @@ pub enum ConfigError {
     Parse(String),
 }
 
-// GOOD — application error with anyhow
+// BOM — erro de aplicação com anyhow
 use anyhow::Context;
 
 fn load_config(path: &str) -> anyhow::Result<Config> {
@@ -100,18 +100,18 @@ fn load_config(path: &str) -> anyhow::Result<Config> {
 }
 ```
 
-## Iterators Over Loops
+## Iteradores em vez de Loops
 
-Prefer iterator chains for transformations; use loops for complex control flow:
+Prefira cadeias de iteradores para transformações; use loops para controle de fluxo complexo:
 
 ```rust
-// GOOD — declarative and composable
+// BOM — declarativo e combinável
 let active_emails: Vec<&str> = users.iter()
     .filter(|u| u.is_active)
     .map(|u| u.email.as_str())
     .collect();
 
-// GOOD — loop for complex logic with early returns
+// BOM — loop para lógica complexa com retornos antecipados
 for user in &users {
     if let Some(verified) = verify_email(&user.email)? {
         send_welcome(&verified)?;
@@ -119,33 +119,33 @@ for user in &users {
 }
 ```
 
-## Module Organization
+## Organização de Módulos
 
-Organize by domain, not by type:
+Organize por domínio, não por tipo:
 
 ```text
 src/
 ├── main.rs
 ├── lib.rs
-├── auth/           # Domain module
+├── auth/           # Módulo de domínio
 │   ├── mod.rs
 │   ├── token.rs
 │   └── middleware.rs
-├── orders/         # Domain module
+├── orders/         # Módulo de domínio
 │   ├── mod.rs
 │   ├── model.rs
 │   └── service.rs
-└── db/             # Infrastructure
+└── db/             # Infraestrutura
     ├── mod.rs
     └── pool.rs
 ```
 
-## Visibility
+## Visibilidade
 
-- Default to private; use `pub(crate)` for internal sharing
-- Only mark `pub` what is part of the crate's public API
-- Re-export public API from `lib.rs`
+- Padronize como privado; use `pub(crate)` para compartilhamento interno
+- Marque como `pub` apenas o que faz parte da API pública da crate
+- Reexporte a API pública a partir de `lib.rs`
 
-## References
+## Referências
 
-See skill: `rust-patterns` for comprehensive Rust idioms and patterns.
+Veja a skill: `rust-patterns` para idiomas e padrões abrangentes de Rust.

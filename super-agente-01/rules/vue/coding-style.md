@@ -3,42 +3,42 @@ paths:
   - "**/*.vue"
 ---
 
-# Vue Coding Style
+# Estilo de Código Vue
 
-> This file extends [common/coding-style.md](../common/coding-style.md) with Vue specific content.
+> Este arquivo estende [common/coding-style.md](../common/coding-style.md) com conteúdo específico de Vue.
 
-## SFC Structure
+## Estrutura do SFC
 
-- Always `<script setup lang="ts">` with the Composition API. No Options API in new code.
-- Block order inside a `.vue` file: `<script setup>`, then `<template>`, then `<style scoped>`. One component per file.
-- Naming: component files PascalCase (`AuctionCard.vue`), composables camelCase prefixed `useXxx` (`useAuctionTimer`).
-- Format with Prettier plus ESLint flat config using `eslint-plugin-vue` (`vue/vue3-recommended`). Type-check with `vue-tsc`.
+- Sempre `<script setup lang="ts">` com a Composition API. Sem Options API em código novo.
+- Ordem dos blocos dentro de um arquivo `.vue`: `<script setup>`, depois `<template>`, depois `<style scoped>`. Um componente por arquivo.
+- Nomenclatura: arquivos de componente em PascalCase (`AuctionCard.vue`), composables em camelCase com prefixo `useXxx` (`useAuctionTimer`).
+- Formate com Prettier mais a flat config do ESLint usando `eslint-plugin-vue` (`vue/vue3-recommended`). Faça type-check com `vue-tsc`.
 
-## Reactivity Discipline
+## Disciplina de Reatividade
 
-- `ref` is the primary state API. Mutate via `.value` in script, auto-unwrapped only at template top level.
-- Nested `ref` inside arrays, `Map`, or `Set` still needs `.value` to read.
-- Reach for `reactive` only for grouped object state. Never reassign a whole `reactive` object.
-- Never destructure a `reactive` object or a Pinia store without `toRefs` / `storeToRefs`. Plain destructure silently drops reactivity.
+- `ref` é a API de estado primária. Mute via `.value` no script, com unwrap automático apenas no nível superior do template.
+- `ref` aninhado dentro de arrays, `Map` ou `Set` ainda precisa de `.value` para leitura.
+- Recorra a `reactive` apenas para estado de objeto agrupado. Nunca reatribua um objeto `reactive` inteiro.
+- Nunca desestruture um objeto `reactive` ou uma store do Pinia sem `toRefs` / `storeToRefs`. A desestruturação simples descarta a reatividade silenciosamente.
 
-## Computed and Watchers
+## Computed e Watchers
 
-- `computed` getters must be pure: no side effects, no async, no DOM access.
-- 3.4+ `computed` only triggers when the returned value changes. Return the prior object unchanged when equal to skip downstream updates.
-- `watch` is lazy. Pass a getter for a reactive property (`watch(() => x.value, ...)`), not the bare reactive object.
-- `watchEffect` is eager and stops tracking dependencies after its first `await`.
+- Os getters de `computed` devem ser puros: sem efeitos colaterais, sem assíncrono, sem acesso ao DOM.
+- A partir do 3.4, `computed` só dispara quando o valor retornado muda. Retorne o objeto anterior inalterado quando for igual, para pular atualizações subsequentes.
+- `watch` é lazy. Passe um getter para uma propriedade reativa (`watch(() => x.value, ...)`), não o objeto reativo cru.
+- `watchEffect` é eager e para de rastrear dependências após seu primeiro `await`.
 
-## Lifecycle and DOM
+## Ciclo de Vida e DOM
 
-- Register lifecycle hooks synchronously inside `setup` (`onMounted`, `onUnmounted`).
-- Clean up timers, listeners, and subscriptions in `onUnmounted`.
-- Read or measure the DOM only after `await nextTick()`.
+- Registre os hooks de ciclo de vida de forma síncrona dentro de `setup` (`onMounted`, `onUnmounted`).
+- Limpe timers, listeners e assinaturas em `onUnmounted`.
+- Leia ou meça o DOM apenas após `await nextTick()`.
 
-## Macros and Templates
+## Macros e Templates
 
-- Macros: `defineProps` / `defineEmits` (tuple form `change: [id: number]`), `defineModel` (3.4+) for `v-model`, `withDefaults` or 3.5+ reactive-props-destructure for defaults, `defineExpose` for the public ref API.
-- Put a `:key` on every `v-for`, a stable unique primitive. Never the array index, never an object.
-- Never put `v-if` and `v-for` on the same element. Wrap with `<template v-for>` plus an inner `v-if`, or precompute a filtered list.
+- Macros: `defineProps` / `defineEmits` (forma de tupla `change: [id: number]`), `defineModel` (3.4+) para `v-model`, `withDefaults` ou a desestruturação reativa de props do 3.5+ para defaults, `defineExpose` para a API pública de ref.
+- Coloque um `:key` em todo `v-for`, um primitivo único e estável. Nunca o índice do array, nunca um objeto.
+- Nunca coloque `v-if` e `v-for` no mesmo elemento. Envolva com `<template v-for>` mais um `v-if` interno, ou pré-compute uma lista filtrada.
 
 ```vue
 <script setup lang="ts">
@@ -48,7 +48,7 @@ const open = defineModel<boolean>('open', { default: false })
 </script>
 ```
 
-## Reference
+## Referência
 
-- ECC skills: `frontend-patterns`, `vite-patterns`.
+- Skills ECC: `frontend-patterns`, `vite-patterns`.
 - Docs: <https://vuejs.org/api/sfc-script-setup.html> · <https://vuejs.org/guide/essentials/reactivity-fundamentals.html> · <https://eslint.vuejs.org/>

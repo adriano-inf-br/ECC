@@ -8,13 +8,13 @@ paths:
   - "**/*.h"
   - "**/CMakeLists.txt"
 ---
-# C++ Patterns
+# Padrões de C++
 
-> This file extends [common/patterns.md](../common/patterns.md) with C++ specific content.
+> Este arquivo estende [common/patterns.md](../common/patterns.md) com conteúdo específico de C++.
 
 ## RAII (Resource Acquisition Is Initialization)
 
-Tie resource lifetime to object lifetime:
+Vincule o tempo de vida do recurso ao tempo de vida do objeto:
 
 ```cpp
 class FileHandle {
@@ -28,24 +28,24 @@ private:
 };
 ```
 
-## Rule of Five/Zero
+## Regra dos Cinco/Zero
 
-- **Rule of Zero**: Prefer classes that need no custom destructor, copy/move constructors, or assignments
-- **Rule of Five**: If you define any of destructor/copy-ctor/copy-assign/move-ctor/move-assign, define all five
+- **Regra do Zero**: Prefira classes que não precisam de destrutor, construtores de cópia/movimentação ou atribuições personalizados
+- **Regra dos Cinco**: Se você definir qualquer um entre destrutor/copy-ctor/copy-assign/move-ctor/move-assign, defina todos os cinco
 
-## Value Semantics
+## Semântica de Valor
 
-- Pass small/trivial types by value
-- Pass large types by `const&`
-- Return by value (rely on RVO/NRVO)
-- Use move semantics for sink parameters
+- Passe tipos pequenos/triviais por valor
+- Passe tipos grandes por `const&`
+- Retorne por valor (conte com RVO/NRVO)
+- Use semântica de movimentação para parâmetros sink
 
-## Error Handling
+## Tratamento de Erros
 
-- Use exceptions for exceptional conditions
-- Use `std::optional` for values that may not exist
-- Use `std::expected` (C++23) or result types for expected failures
+- Use exceções para condições excepcionais
+- Use `std::optional` para valores que podem não existir
+- Use `std::expected` (C++23) ou tipos de resultado para falhas esperadas
 
-## Reference
+## Referência
 
-See skill: `cpp-coding-standards` for comprehensive C++ patterns and anti-patterns.
+Veja a skill: `cpp-coding-standards` para padrões e anti-padrões abrangentes de C++.

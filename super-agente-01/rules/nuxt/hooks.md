@@ -6,34 +6,34 @@ paths:
   - "**/*.vue"
 ---
 
-# Nuxt Hooks
+# Hooks do Nuxt
 
-> This file extends [common/hooks.md](../common/hooks.md) with Nuxt specific content.
+> Este arquivo estende [common/hooks.md](../common/hooks.md) com conteúdo específico de Nuxt.
 
-These are Claude Code harness hooks for Nuxt work. They run via the harness, not Claude.
+Estes são hooks do harness do Claude Code para trabalho com Nuxt. Eles executam via harness, não pelo Claude.
 
 ## Typecheck
 
-- `nuxi typecheck` wraps `vue-tsc`. Requires `vue-tsc` + `typescript` dev deps.
-- Run on `.vue` / `.ts` edit or pre-commit. Typecheck is project-wide, so debounce it and wrap it in a timeout (mirror `web/hooks.md`, for example `timeout 60 nuxi typecheck`) so a hung type-check is reaped instead of accumulating across fast edits.
+- `nuxi typecheck` encapsula o `vue-tsc`. Requer as dependências de desenvolvimento `vue-tsc` + `typescript`.
+- Execute na edição de `.vue` / `.ts` ou em pré-commit. A verificação de tipos abrange o projeto inteiro, portanto faça debounce dela e a envolva em um timeout (espelhe `web/hooks.md`, por exemplo `timeout 60 nuxi typecheck`) para que uma verificação de tipos travada seja encerrada em vez de se acumular entre edições rápidas.
 
 ## Lint
 
-- Use the `@nuxt/eslint` module (flat-config, project-aware, generates `.nuxt/eslint.config.mjs`).
-- Run `eslint .` or `eslint --fix`. This is the Nuxt-official ESLint integration, prefer it over hand-rolled configs.
+- Use o módulo `@nuxt/eslint` (flat-config, ciente do projeto, gera `.nuxt/eslint.config.mjs`).
+- Execute `eslint .` ou `eslint --fix`. Esta é a integração oficial de ESLint do Nuxt; prefira-a a configurações feitas manualmente.
 
 ## Format
 
-- `prettier --write`, or enable stylistic rules in `@nuxt/eslint` to avoid a Prettier/ESLint conflict.
-- Pick one formatting authority. Do not run both Prettier and ESLint stylistic at once.
+- `prettier --write`, ou habilite as regras estilísticas no `@nuxt/eslint` para evitar um conflito entre Prettier/ESLint.
+- Escolha uma única autoridade de formatação. Não execute Prettier e o estilístico do ESLint ao mesmo tempo.
 
-## Suggested PostToolUse chain
+## Cadeia de PostToolUse sugerida
 
-- On Edit to `app/**` and `server/**`: run `eslint --fix` then `timeout 60 nuxi typecheck`.
-- Order matters: lint-fix first (mutates the file), the timed typecheck second (verifies the result). Debouncing still applies.
+- Na edição (Edit) de `app/**` e `server/**`: execute `eslint --fix` e depois `timeout 60 nuxi typecheck`.
+- A ordem importa: o lint-fix primeiro (modifica o arquivo), o typecheck com timeout em segundo (verifica o resultado). O debounce ainda se aplica.
 
-## Reference
+## Referência
 
-- ECC skills: `nuxt4-patterns`, `vite-patterns`.
-- [@nuxt/eslint module](https://eslint.nuxt.com/)
+- Skills do ECC: `nuxt4-patterns`, `vite-patterns`.
+- [módulo @nuxt/eslint](https://eslint.nuxt.com/)
 - [nuxi typecheck](https://nuxt.com/docs/api/commands/typecheck)

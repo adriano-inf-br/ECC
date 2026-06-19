@@ -1,31 +1,31 @@
-# Common Patterns
+# Padrões Comuns
 
-## Skeleton Projects
+## Projetos Esqueleto
 
-When implementing new functionality:
-1. Search for battle-tested skeleton projects
-2. Use parallel agents to evaluate options:
-   - Security assessment
-   - Extensibility analysis
-   - Relevance scoring
-   - Implementation planning
-3. Clone best match as foundation
-4. Iterate within proven structure
+Ao implementar uma nova funcionalidade:
+1. Procure por projetos esqueleto testados em campo
+2. Use agents paralelos para avaliar as opções:
+   - Avaliação de segurança
+   - Análise de extensibilidade
+   - Pontuação de relevância
+   - Planejamento de implementação
+3. Clone a melhor correspondência como base
+4. Itere dentro de uma estrutura comprovada
 
-## Design Patterns
+## Padrões de Projeto
 
-### Repository Pattern
+### Padrão Repositório
 
-Encapsulate data access behind a consistent interface:
-- Define standard operations: findAll, findById, create, update, delete
-- Concrete implementations handle storage details (database, API, file, etc.)
-- Business logic depends on the abstract interface, not the storage mechanism
-- Enables easy swapping of data sources and simplifies testing with mocks
+Encapsule o acesso a dados por trás de uma interface consistente:
+- Defina operações padrão: findAll, findById, create, update, delete
+- Implementações concretas tratam os detalhes de armazenamento (banco de dados, API, arquivo, etc.)
+- A lógica de negócio depende da interface abstrata, não do mecanismo de armazenamento
+- Permite a troca fácil de fontes de dados e simplifica os testes com mocks
 
-### API Response Format
+### Formato de Resposta da API
 
-Use a consistent envelope for all API responses:
-- Include a success/status indicator
-- Include the data payload (nullable on error)
-- Include an error message field (nullable on success)
-- Include metadata for paginated responses (total, page, limit)
+Use um envelope consistente para todas as respostas da API:
+- Inclua um indicador de sucesso/status
+- Inclua o payload de dados (anulável em caso de erro)
+- Inclua um campo de mensagem de erro (anulável em caso de sucesso)
+- Inclua metadados para respostas paginadas (total, page, limit)

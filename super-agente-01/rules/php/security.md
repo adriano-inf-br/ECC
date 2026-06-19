@@ -4,34 +4,34 @@ paths:
   - "**/composer.lock"
   - "**/composer.json"
 ---
-# PHP Security
+# Segurança do PHP
 
-> This file extends [common/security.md](../common/security.md) with PHP specific content.
+> Este arquivo estende [common/security.md](../common/security.md) com conteúdo específico de PHP.
 
-## Input and Output
+## Entrada e Saída
 
-- Validate request input at the framework boundary (`FormRequest`, Symfony Validator, or explicit DTO validation).
-- Escape output in templates by default; treat raw HTML rendering as an exception that must be justified.
-- Never trust query params, cookies, headers, or uploaded file metadata without validation.
+- Valide a entrada de requisição na fronteira do framework (`FormRequest`, Symfony Validator ou validação explícita de DTO).
+- Faça escape da saída em templates por padrão; trate a renderização de HTML bruto como uma exceção que deve ser justificada.
+- Nunca confie em query params, cookies, headers ou metadados de arquivos enviados sem validação.
 
-## Database Safety
+## Segurança de Banco de Dados
 
-- Use prepared statements (`PDO`, Doctrine, Eloquent query builder) for all dynamic queries.
-- Avoid string-building SQL in controllers/views.
-- Scope ORM mass-assignment carefully and whitelist writable fields.
+- Use prepared statements (`PDO`, Doctrine, query builder do Eloquent) para todas as consultas dinâmicas.
+- Evite construir SQL com strings em controllers/views.
+- Limite cuidadosamente a atribuição em massa (mass-assignment) do ORM e faça whitelist dos campos graváveis.
 
-## Secrets and Dependencies
+## Segredos e Dependências
 
-- Load secrets from environment variables or a secret manager, never from committed config files.
-- Run `composer audit` in CI and review new package maintainer trust before adding dependencies.
-- Pin major versions deliberately and remove abandoned packages quickly.
+- Carregue segredos a partir de variáveis de ambiente ou de um gerenciador de segredos, nunca de arquivos de configuração versionados.
+- Execute `composer audit` em CI e revise a confiança no mantenedor do novo pacote antes de adicionar dependências.
+- Fixe versões maiores deliberadamente e remova pacotes abandonados rapidamente.
 
-## Auth and Session Safety
+## Segurança de Autenticação e Sessão
 
-- Use `password_hash()` / `password_verify()` for password storage.
-- Regenerate session identifiers after authentication and privilege changes.
-- Enforce CSRF protection on state-changing web requests.
+- Use `password_hash()` / `password_verify()` para armazenamento de senhas.
+- Regenere os identificadores de sessão após autenticação e mudanças de privilégio.
+- Imponha proteção CSRF em requisições web que alteram estado.
 
-## Reference
+## Referência
 
-See skill: `laravel-security` for Laravel-specific security guidance.
+Veja a skill: `laravel-security` para orientações de segurança específicas do Laravel.

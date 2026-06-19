@@ -4,22 +4,22 @@ paths:
   - "**/*.csx"
   - "**/*.csproj"
 ---
-# C# Testing
+# Testes C#
 
-> This file extends [common/testing.md](../common/testing.md) with C#-specific content.
+> Este arquivo estende [common/testing.md](../common/testing.md) com conteúdo específico de C#.
 
-## Test Framework
+## Framework de Testes
 
-- Prefer **xUnit** for unit and integration tests
-- Use **FluentAssertions** for readable assertions
-- Use **Moq** or **NSubstitute** for mocking dependencies
-- Use **Testcontainers** when integration tests need real infrastructure
+- Prefira **xUnit** para testes unitários e de integração
+- Use **FluentAssertions** para asserções legíveis
+- Use **Moq** ou **NSubstitute** para fazer mock de dependências
+- Use **Testcontainers** quando testes de integração precisarem de infraestrutura real
 
-## Test Organization
+## Organização dos Testes
 
-- Mirror `src/` structure under `tests/`
-- Separate unit, integration, and end-to-end coverage clearly
-- Name tests by behavior, not implementation details
+- Espelhe a estrutura de `src/` sob `tests/`
+- Separe claramente a cobertura unitária, de integração e end-to-end
+- Nomeie testes pelo comportamento, não por detalhes de implementação
 
 ```csharp
 public sealed class OrderServiceTests
@@ -27,20 +27,20 @@ public sealed class OrderServiceTests
     [Fact]
     public async Task FindByIdAsync_ReturnsOrder_WhenOrderExists()
     {
-        // Arrange
-        // Act
-        // Assert
+        // Arrange (preparar)
+        // Act (agir)
+        // Assert (verificar)
     }
 }
 ```
 
-## ASP.NET Core Integration Tests
+## Testes de Integração ASP.NET Core
 
-- Use `WebApplicationFactory<TEntryPoint>` for API integration coverage
-- Test auth, validation, and serialization through HTTP, not by bypassing middleware
+- Use `WebApplicationFactory<TEntryPoint>` para cobertura de integração de API
+- Teste autenticação, validação e serialização através de HTTP, não contornando o middleware
 
-## Coverage
+## Cobertura
 
-- Target 80%+ line coverage
-- Focus coverage on domain logic, validation, auth, and failure paths
-- Run `dotnet test` in CI with coverage collection enabled where available
+- Mire em 80%+ de cobertura de linhas
+- Concentre a cobertura na lógica de domínio, validação, autenticação e caminhos de falha
+- Execute `dotnet test` na CI com coleta de cobertura habilitada onde disponível

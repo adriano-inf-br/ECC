@@ -6,19 +6,19 @@ paths:
   - "**/phpstan.neon.dist"
   - "**/psalm.xml"
 ---
-# PHP Hooks
+# Hooks do PHP
 
-> This file extends [common/hooks.md](../common/hooks.md) with PHP specific content.
+> Este arquivo estende [common/hooks.md](../common/hooks.md) com conteúdo específico de PHP.
 
-## PostToolUse Hooks
+## Hooks de PostToolUse
 
-Configure in `~/.claude/settings.json`:
+Configure em `~/.claude/settings.json`:
 
-- **Pint / PHP-CS-Fixer**: Auto-format edited `.php` files.
-- **PHPStan / Psalm**: Run static analysis after PHP edits in typed codebases.
-- **PHPUnit / Pest**: Run targeted tests for touched files or modules when edits affect behavior.
+- **Pint / PHP-CS-Fixer**: Formatar automaticamente arquivos `.php` editados.
+- **PHPStan / Psalm**: Executar análise estática após edições de PHP em bases de código tipadas.
+- **PHPUnit / Pest**: Executar testes direcionados para arquivos ou módulos tocados quando as edições afetam o comportamento.
 
-## Warnings
+## Avisos
 
-- Warn on `var_dump`, `dd`, `dump`, or `die()` left in edited files.
-- Warn when edited PHP files add raw SQL or disable CSRF/session protections.
+- Avise sobre `var_dump`, `dd`, `dump` ou `die()` deixados em arquivos editados.
+- Avise quando arquivos PHP editados adicionarem SQL bruto ou desabilitarem proteções de CSRF/sessão.

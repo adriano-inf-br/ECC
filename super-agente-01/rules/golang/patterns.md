@@ -4,9 +4,9 @@ paths:
   - "**/go.mod"
   - "**/go.sum"
 ---
-# Go Patterns
+# Padrões de Go
 
-> This file extends [common/patterns.md](../common/patterns.md) with Go specific content.
+> Este arquivo estende [common/patterns.md](../common/patterns.md) com conteúdo específico de Go.
 
 ## Functional Options
 
@@ -26,13 +26,13 @@ func NewServer(opts ...Option) *Server {
 }
 ```
 
-## Small Interfaces
+## Interfaces Pequenas
 
-Define interfaces where they are used, not where they are implemented.
+Defina interfaces onde são usadas, não onde são implementadas.
 
-## Dependency Injection
+## Injeção de Dependência
 
-Use constructor functions to inject dependencies:
+Use funções construtoras para injetar dependências:
 
 ```go
 func NewUserService(repo UserRepository, logger Logger) *UserService {
@@ -40,6 +40,6 @@ func NewUserService(repo UserRepository, logger Logger) *UserService {
 }
 ```
 
-## Reference
+## Referência
 
-See skill: `golang-patterns` for comprehensive Go patterns including concurrency, error handling, and package organization.
+Veja a skill: `golang-patterns` para padrões abrangentes de Go incluindo concorrência, tratamento de erros e organização de pacotes.

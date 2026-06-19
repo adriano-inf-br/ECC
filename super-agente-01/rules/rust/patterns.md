@@ -2,13 +2,13 @@
 paths:
   - "**/*.rs"
 ---
-# Rust Patterns
+# Padrões Rust
 
-> This file extends [common/patterns.md](../common/patterns.md) with Rust-specific content.
+> Este arquivo estende [common/patterns.md](../common/patterns.md) com conteúdo específico de Rust.
 
-## Repository Pattern with Traits
+## Padrão Repositório com Traits
 
-Encapsulate data access behind a trait:
+Encapsule o acesso a dados atrás de um trait:
 
 ```rust
 pub trait OrderRepository: Send + Sync {
@@ -19,11 +19,11 @@ pub trait OrderRepository: Send + Sync {
 }
 ```
 
-Concrete implementations handle storage details (Postgres, SQLite, in-memory for tests).
+Implementações concretas tratam os detalhes de armazenamento (Postgres, SQLite, em memória para testes).
 
-## Service Layer
+## Camada de Serviço
 
-Business logic in service structs; inject dependencies via constructor:
+Lógica de negócio em structs de serviço; injete dependências via construtor:
 
 ```rust
 pub struct OrderService {
@@ -45,23 +45,23 @@ impl OrderService {
 }
 ```
 
-## Newtype Pattern for Type Safety
+## Padrão Newtype para Segurança de Tipos
 
-Prevent argument mix-ups with distinct wrapper types:
+Evite trocas de argumentos com tipos wrapper distintos:
 
 ```rust
 struct UserId(u64);
 struct OrderId(u64);
 
 fn get_order(user: UserId, order: OrderId) -> anyhow::Result<Order> {
-    // Can't accidentally swap user and order IDs at call sites
+    // Não é possível trocar acidentalmente os IDs de user e order nos pontos de chamada
     todo!()
 }
 ```
 
-## Enum State Machines
+## Máquinas de Estado com Enums
 
-Model states as enums — make illegal states unrepresentable:
+Modele estados como enums — torne estados ilegais irrepresentáveis:
 
 ```rust
 enum ConnectionState {
@@ -83,11 +83,11 @@ fn handle(state: &ConnectionState) {
 }
 ```
 
-Always match exhaustively — no wildcard `_` for business-critical enums.
+Sempre faça o match de forma exaustiva — sem curinga `_` para enums críticos ao negócio.
 
-## Builder Pattern
+## Padrão Builder
 
-Use for structs with many optional parameters:
+Use para structs com muitos parâmetros opcionais:
 
 ```rust
 pub struct ServerConfig {
@@ -128,9 +128,9 @@ impl ServerConfigBuilder {
 }
 ```
 
-## Sealed Traits for Extensibility Control
+## Sealed Traits para Controle de Extensibilidade
 
-Use a private module to seal a trait, preventing external implementations:
+Use um módulo privado para selar um trait, evitando implementações externas:
 
 ```rust
 mod private {
@@ -148,9 +148,9 @@ impl Format for Json {
 }
 ```
 
-## API Response Envelope
+## Envelope de Resposta de API
 
-Consistent API responses using a generic enum:
+Respostas de API consistentes usando um enum genérico:
 
 ```rust
 #[derive(Debug, serde::Serialize)]
@@ -163,6 +163,6 @@ pub enum ApiResponse<T: serde::Serialize> {
 }
 ```
 
-## References
+## Referências
 
-See skill: `rust-patterns` for comprehensive patterns including ownership, traits, generics, concurrency, and async.
+Veja a skill: `rust-patterns` para padrões abrangentes incluindo posse, traits, generics, concorrência e async.

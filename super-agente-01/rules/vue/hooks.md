@@ -5,29 +5,29 @@ paths:
   - "**/*.tsx"
 ---
 
-# Vue Hooks
+# Hooks Vue
 
-> This file extends [common/hooks.md](../common/hooks.md) with Vue specific content.
+> Este arquivo estende [common/hooks.md](../common/hooks.md) com conteúdo específico de Vue.
 
-## PostToolUse Targets
+## Alvos de PostToolUse
 
-Run on `*.vue`, `*.ts`, and `*.tsx` after edits. Scope to changed files where possible.
+Execute em `*.vue`, `*.ts` e `*.tsx` após edições. Restrinja aos arquivos alterados sempre que possível.
 
 ## Typecheck
 
-- Use `vue-tsc --noEmit` for SFC plus TypeScript checking. Plain `tsc` cannot read `.vue` single-file components, so it must not be the typecheck hook for this project.
-- Typecheck is project-wide. Debounce or scope it so a save-on-every-keystroke loop does not stall the editor.
+- Use `vue-tsc --noEmit` para checagem de SFC mais TypeScript. O `tsc` puro não consegue ler componentes single-file `.vue`, então ele não deve ser o hook de typecheck para este projeto.
+- O typecheck abrange todo o projeto. Faça debounce ou restrinja o escopo para que um loop de salvar-a-cada-tecla não trave o editor.
 
-## Lint and Format
+## Lint e Format
 
-- `eslint --fix` with `eslint-plugin-vue` (flat-config `vue/vue3-recommended`) covers both template and script lint.
-- `prettier --write` for formatting. Prefer Prettier-via-ESLint over a separate Prettier pass to avoid double formatting and fight loops.
+- `eslint --fix` com `eslint-plugin-vue` (flat-config `vue/vue3-recommended`) cobre o lint tanto de template quanto de script.
+- `prettier --write` para formatação. Prefira Prettier-via-ESLint a uma passagem separada do Prettier, para evitar formatação dupla e loops de conflito.
 
-## Architecture Boundaries
+## Limites de Arquitetura
 
-- Optional: enforce Feature-Sliced Design slice boundaries with `@feature-sliced/steiger` or `eslint-plugin-boundaries` to block deep cross-slice imports.
+- Opcional: imponha os limites de fatia do Feature-Sliced Design com `@feature-sliced/steiger` ou `eslint-plugin-boundaries` para bloquear imports profundos entre fatias.
 
-## Sequencing
+## Sequenciamento
 
 ```bash
 # changed files only
@@ -37,9 +37,9 @@ prettier --write "$FILE"
 vue-tsc --noEmit
 ```
 
-- Run lint and format per-file first, then the project-wide typecheck last so type errors reflect the formatted source.
+- Execute lint e format por arquivo primeiro, depois o typecheck de todo o projeto por último, para que os erros de tipo reflitam o código-fonte formatado.
 
-## Reference
+## Referência
 
-- ECC skills: `frontend-patterns`, `vite-patterns`.
+- Skills ECC: `frontend-patterns`, `vite-patterns`.
 - Docs: <https://github.com/vuejs/language-tools> (vue-tsc) · <https://eslint.vuejs.org/> · <https://github.com/feature-sliced/steiger>

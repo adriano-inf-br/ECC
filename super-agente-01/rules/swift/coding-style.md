@@ -3,31 +3,31 @@ paths:
   - "**/*.swift"
   - "**/Package.swift"
 ---
-# Swift Coding Style
+# Estilo de Código Swift
 
-> This file extends [common/coding-style.md](../common/coding-style.md) with Swift specific content.
+> Este arquivo estende [common/coding-style.md](../common/coding-style.md) com conteúdo específico de Swift.
 
-## Formatting
+## Formatação
 
-- **SwiftFormat** for auto-formatting, **SwiftLint** for style enforcement
-- `swift-format` is bundled with Xcode 16+ as an alternative
+- **SwiftFormat** para formatação automática, **SwiftLint** para aplicação de estilo
+- `swift-format` vem incluído no Xcode 16+ como alternativa
 
-## Immutability
+## Imutabilidade
 
-- Prefer `let` over `var` — define everything as `let` and only change to `var` if the compiler requires it
-- Use `struct` with value semantics by default; use `class` only when identity or reference semantics are needed
+- Prefira `let` em vez de `var` — defina tudo como `let` e só mude para `var` se o compilador exigir
+- Use `struct` com semântica de valor por padrão; use `class` apenas quando identidade ou semântica de referência forem necessárias
 
-## Naming
+## Nomenclatura
 
-Follow [Apple API Design Guidelines](https://www.swift.org/documentation/api-design-guidelines/):
+Siga as [Apple API Design Guidelines](https://www.swift.org/documentation/api-design-guidelines/):
 
-- Clarity at the point of use — omit needless words
-- Name methods and properties for their roles, not their types
-- Use `static let` for constants over global constants
+- Clareza no ponto de uso — omita palavras desnecessárias
+- Nomeie métodos e propriedades por seus papéis, não por seus tipos
+- Use `static let` para constantes em vez de constantes globais
 
-## Error Handling
+## Tratamento de Erros
 
-Use typed throws (Swift 6+) and pattern matching:
+Use typed throws (Swift 6+) e pattern matching:
 
 ```swift
 func load(id: String) throws(LoadError) -> Item {
@@ -38,10 +38,10 @@ func load(id: String) throws(LoadError) -> Item {
 }
 ```
 
-## Concurrency
+## Concorrência
 
-Enable Swift 6 strict concurrency checking. Prefer:
+Habilite a verificação estrita de concorrência do Swift 6. Prefira:
 
-- `Sendable` value types for data crossing isolation boundaries
-- Actors for shared mutable state
-- Structured concurrency (`async let`, `TaskGroup`) over unstructured `Task {}`
+- Tipos de valor `Sendable` para dados que cruzam limites de isolamento
+- Actors para estado mutável compartilhado
+- Concorrência estruturada (`async let`, `TaskGroup`) em vez de `Task {}` não estruturado

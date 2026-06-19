@@ -1,24 +1,24 @@
-# Git Workflow
+# Fluxo de trabalho do Git
 
-## Commit Message Format
+## Formato da Mensagem de Commit
 ```
 <type>: <description>
 
 <optional body>
 ```
 
-Types: feat, fix, refactor, docs, test, chore, perf, ci
+Tipos: feat, fix, refactor, docs, test, chore, perf, ci
 
-Note: Attribution disabled globally via ~/.claude/settings.json.
+Nota: Atribuição desabilitada globalmente via ~/.claude/settings.json.
 
-## Pull Request Workflow
+## Fluxo de Pull Request
 
-When creating PRs:
-1. Analyze full commit history (not just latest commit)
-2. Use `git diff [base-branch]...HEAD` to see all changes
-3. Draft comprehensive PR summary
-4. Include test plan with TODOs
-5. Push with `-u` flag if new branch
+Ao criar PRs:
+1. Analise o histórico completo de commits (não apenas o commit mais recente)
+2. Use `git diff [base-branch]...HEAD` para ver todas as alterações
+3. Elabore um resumo abrangente do PR
+4. Inclua um plano de testes com TODOs
+5. Faça o push com a flag `-u` se for um branch novo
 
-> For the full development process (planning, TDD, code review) before git operations,
-> see [development-workflow.md](./development-workflow.md).
+> Para o processo completo de desenvolvimento (planejamento, TDD, revisão de código) antes das operações de git,
+> veja [development-workflow.md](./development-workflow.md).

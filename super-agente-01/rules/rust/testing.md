@@ -2,40 +2,40 @@
 paths:
   - "**/*.rs"
 ---
-# Rust Testing
+# Testes em Rust
 
-> This file extends [common/testing.md](../common/testing.md) with Rust-specific content.
+> Este arquivo estende [common/testing.md](../common/testing.md) com conteúdo específico de Rust.
 
-## Test Framework
+## Framework de Testes
 
-- **`#[test]`** with `#[cfg(test)]` modules for unit tests
-- **rstest** for parameterized tests and fixtures
-- **proptest** for property-based testing
-- **mockall** for trait-based mocking
-- **`#[tokio::test]`** for async tests
+- **`#[test]`** com módulos `#[cfg(test)]` para testes unitários
+- **rstest** para testes parametrizados e fixtures
+- **proptest** para testes baseados em propriedades
+- **mockall** para mocking baseado em traits
+- **`#[tokio::test]`** para testes assíncronos
 
-## Test Organization
+## Organização de Testes
 
 ```text
 my_crate/
 ├── src/
-│   ├── lib.rs           # Unit tests in #[cfg(test)] modules
+│   ├── lib.rs           # Testes unitários em módulos #[cfg(test)]
 │   ├── auth/
 │   │   └── mod.rs       # #[cfg(test)] mod tests { ... }
 │   └── orders/
 │       └── service.rs   # #[cfg(test)] mod tests { ... }
-├── tests/               # Integration tests (each file = separate binary)
+├── tests/               # Testes de integração (cada arquivo = binário separado)
 │   ├── api_test.rs
 │   ├── db_test.rs
-│   └── common/          # Shared test utilities
+│   └── common/          # Utilitários de teste compartilhados
 │       └── mod.rs
-└── benches/             # Criterion benchmarks
+└── benches/             # Benchmarks com Criterion
     └── benchmark.rs
 ```
 
-Unit tests go inside `#[cfg(test)]` modules in the same file. Integration tests go in `tests/`.
+Testes unitários ficam dentro de módulos `#[cfg(test)]` no mesmo arquivo. Testes de integração ficam em `tests/`.
 
-## Unit Test Pattern
+## Padrão de Teste Unitário
 
 ```rust
 #[cfg(test)]
@@ -57,7 +57,7 @@ mod tests {
 }
 ```
 
-## Parameterized Tests
+## Testes Parametrizados
 
 ```rust
 use rstest::rstest;
@@ -71,7 +71,7 @@ fn test_string_length(#[case] input: &str, #[case] expected: usize) {
 }
 ```
 
-## Async Tests
+## Testes Assíncronos
 
 ```rust
 #[tokio::test]
@@ -82,12 +82,12 @@ async fn fetches_data_successfully() {
 }
 ```
 
-## Mocking with mockall
+## Mocking com mockall
 
-Define traits in production code; generate mocks in test modules:
+Defina traits no código de produção; gere mocks nos módulos de teste:
 
 ```rust
-// Production trait — pub so integration tests can import it
+// Trait de produção — pub para que os testes de integração possam importá-lo
 pub trait UserRepository {
     fn find_by_id(&self, id: u64) -> Option<User>;
 }
@@ -119,36 +119,36 @@ mod tests {
 }
 ```
 
-## Test Naming
+## Nomenclatura de Testes
 
-Use descriptive names that explain the scenario:
+Use nomes descritivos que expliquem o cenário:
 - `creates_user_with_valid_email()`
 - `rejects_order_when_insufficient_stock()`
 - `returns_none_when_not_found()`
 
-## Coverage
+## Cobertura
 
-- Target 80%+ line coverage
-- Use **cargo-llvm-cov** for coverage reporting
-- Focus on business logic — exclude generated code and FFI bindings
-
-```bash
-cargo llvm-cov                       # Summary
-cargo llvm-cov --html                # HTML report
-cargo llvm-cov --fail-under-lines 80 # Fail if below threshold
-```
-
-## Testing Commands
+- Mire em 80%+ de cobertura de linhas
+- Use **cargo-llvm-cov** para relatórios de cobertura
+- Foque na lógica de negócio — exclua código gerado e bindings FFI
 
 ```bash
-cargo test                       # Run all tests
-cargo test -- --nocapture        # Show println output
-cargo test test_name             # Run tests matching pattern
-cargo test --lib                 # Unit tests only
-cargo test --test api_test       # Specific integration test (tests/api_test.rs)
-cargo test --doc                 # Doc tests only
+cargo llvm-cov                       # Resumo
+cargo llvm-cov --html                # Relatório HTML
+cargo llvm-cov --fail-under-lines 80 # Falha se abaixo do limiar
 ```
 
-## References
+## Comandos de Teste
 
-See skill: `rust-testing` for comprehensive testing patterns including property-based testing, fixtures, and benchmarking with Criterion.
+```bash
+cargo test                       # Executa todos os testes
+cargo test -- --nocapture        # Mostra a saída de println
+cargo test test_name             # Executa testes que correspondem ao padrão
+cargo test --lib                 # Apenas testes unitários
+cargo test --test api_test       # Teste de integração específico (tests/api_test.rs)
+cargo test --doc                 # Apenas doc tests
+```
+
+## Referências
+
+Veja a skill: `rust-testing` para padrões abrangentes de teste incluindo testes baseados em propriedades, fixtures e benchmarking com Criterion.

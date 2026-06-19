@@ -7,19 +7,19 @@ paths:
   - "**/Directory.Build.props"
   - "**/Directory.Build.targets"
 ---
-# C# Hooks
+# Hooks de C#
 
-> This file extends [common/hooks.md](../common/hooks.md) with C#-specific content.
+> Este arquivo estende [common/hooks.md](../common/hooks.md) com conteúdo específico de C#.
 
-## PostToolUse Hooks
+## Hooks de PostToolUse
 
-Configure in `~/.claude/settings.json`:
+Configure em `~/.claude/settings.json`:
 
-- **dotnet format**: Auto-format edited C# files and apply analyzer fixes
-- **dotnet build**: Verify the solution or project still compiles after edits
-- **dotnet test --no-build**: Re-run the nearest relevant test project after behavior changes
+- **dotnet format**: Auto-formata os arquivos C# editados e aplica as correções de analyzer
+- **dotnet build**: Verifica se a solution ou o projeto ainda compila após as edições
+- **dotnet test --no-build**: Reexecuta o projeto de testes relevante mais próximo após mudanças de comportamento
 
-## Stop Hooks
+## Hooks de Stop
 
-- Run a final `dotnet build` before ending a session with broad C# changes
-- Warn on modified `appsettings*.json` files so secrets do not get committed
+- Execute um `dotnet build` final antes de encerrar uma sessão com alterações amplas em C#
+- Avise sobre arquivos `appsettings*.json` modificados para que segredos não sejam commitados

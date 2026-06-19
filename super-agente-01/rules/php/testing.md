@@ -5,35 +5,35 @@ paths:
   - "**/phpunit.xml.dist"
   - "**/composer.json"
 ---
-# PHP Testing
+# Testes do PHP
 
-> This file extends [common/testing.md](../common/testing.md) with PHP specific content.
+> Este arquivo estende [common/testing.md](../common/testing.md) com conteúdo específico de PHP.
 
 ## Framework
 
-Use **PHPUnit** as the default test framework. If **Pest** is configured in the project, prefer Pest for new tests and avoid mixing frameworks.
+Use **PHPUnit** como framework de teste padrão. Se o **Pest** estiver configurado no projeto, prefira o Pest para novos testes e evite misturar frameworks.
 
-## Coverage
+## Cobertura
 
 ```bash
 vendor/bin/phpunit --coverage-text
-# or
+# ou
 vendor/bin/pest --coverage
 ```
 
-Prefer **pcov** or **Xdebug** in CI, and keep coverage thresholds in CI rather than as tribal knowledge.
+Prefira **pcov** ou **Xdebug** em CI, e mantenha os limiares de cobertura no CI em vez de como conhecimento tribal.
 
-## Test Organization
+## Organização dos Testes
 
-- Separate fast unit tests from framework/database integration tests.
-- Use factory/builders for fixtures instead of large hand-written arrays.
-- Keep HTTP/controller tests focused on transport and validation; move business rules into service-level tests.
+- Separe testes unitários rápidos dos testes de integração com framework/banco de dados.
+- Use factories/builders para fixtures em vez de grandes arrays escritos à mão.
+- Mantenha os testes de HTTP/controller focados em transporte e validação; mova as regras de negócio para testes no nível de serviço.
 
 ## Inertia
 
-If the project uses Inertia.js, prefer `assertInertia` with `AssertableInertia` to verify component names and props instead of raw JSON assertions.
+Se o projeto usa Inertia.js, prefira `assertInertia` com `AssertableInertia` para verificar nomes de componentes e props em vez de asserções de JSON bruto.
 
-## Reference
+## Referência
 
-See skill: `tdd-workflow` for the repo-wide RED -> GREEN -> REFACTOR loop.
-See skill: `laravel-tdd` for Laravel-specific testing patterns (PHPUnit and Pest).
+Veja a skill: `tdd-workflow` para o loop RED -> GREEN -> REFACTOR de todo o repositório.
+Veja a skill: `laravel-tdd` para padrões de teste específicos do Laravel (PHPUnit e Pest).

@@ -6,13 +6,13 @@ paths:
   - "**/*.psgi"
   - "**/*.cgi"
 ---
-# Perl Testing
+# Testes do Perl
 
-> This file extends [common/testing.md](../common/testing.md) with Perl-specific content.
+> Este arquivo estende [common/testing.md](../common/testing.md) com conteúdo específico de Perl.
 
 ## Framework
 
-Use **Test2::V0** for new projects (not Test::More):
+Use **Test2::V0** para novos projetos (não Test::More):
 
 ```perl
 use Test2::V0;
@@ -25,15 +25,15 @@ done_testing;
 ## Runner
 
 ```bash
-prove -l t/              # adds lib/ to @INC
-prove -lr -j8 t/         # recursive, 8 parallel jobs
+prove -l t/              # adiciona lib/ ao @INC
+prove -lr -j8 t/         # recursivo, 8 jobs em paralelo
 ```
 
-Always use `-l` to ensure `lib/` is on `@INC`.
+Sempre use `-l` para garantir que `lib/` esteja no `@INC`.
 
-## Coverage
+## Cobertura
 
-Use **Devel::Cover** — target 80%+:
+Use **Devel::Cover** — meta de 80%+:
 
 ```bash
 cover -test
@@ -41,14 +41,14 @@ cover -test
 
 ## Mocking
 
-- **Test::MockModule** — mock methods on existing modules
-- **Test::MockObject** — create test doubles from scratch
+- **Test::MockModule** — fazer mock de métodos em módulos existentes
+- **Test::MockObject** — criar test doubles do zero
 
-## Pitfalls
+## Armadilhas
 
-- Always end test files with `done_testing`
-- Never forget the `-l` flag with `prove`
+- Sempre encerre os arquivos de teste com `done_testing`
+- Nunca esqueça a flag `-l` com `prove`
 
-## Reference
+## Referência
 
-See skill: `perl-testing` for detailed Perl TDD patterns with Test2::V0, prove, and Devel::Cover.
+Veja a skill: `perl-testing` para padrões detalhados de TDD em Perl com Test2::V0, prove e Devel::Cover.

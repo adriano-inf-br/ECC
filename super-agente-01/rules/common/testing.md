@@ -1,54 +1,54 @@
-# Testing Requirements
+# Requisitos de Teste
 
-## Minimum Test Coverage: 80%
+## Cobertura Mínima de Testes: 80%
 
-Test Types (ALL required):
-1. **Unit Tests** - Individual functions, utilities, components
-2. **Integration Tests** - API endpoints, database operations
-3. **E2E Tests** - Critical user flows (framework chosen per language)
+Tipos de Teste (TODOS obrigatórios):
+1. **Testes Unitários** - Funções, utilitários e componentes individuais
+2. **Testes de Integração** - Endpoints de API, operações de banco de dados
+3. **Testes E2E** - Fluxos críticos do usuário (framework escolhido por linguagem)
 
-## Test-Driven Development
+## Desenvolvimento Orientado a Testes (TDD)
 
-MANDATORY workflow:
-1. Write test first (RED)
-2. Run test - it should FAIL
-3. Write minimal implementation (GREEN)
-4. Run test - it should PASS
-5. Refactor (IMPROVE)
-6. Verify coverage (80%+)
+Fluxo de trabalho OBRIGATÓRIO:
+1. Escreva o teste primeiro (RED)
+2. Execute o teste - ele deve FALHAR
+3. Escreva a implementação mínima (GREEN)
+4. Execute o teste - ele deve PASSAR
+5. Refatore (IMPROVE)
+6. Verifique a cobertura (80% ou mais)
 
-## Troubleshooting Test Failures
+## Solução de Problemas em Falhas de Teste
 
-1. Use **tdd-guide** agent
-2. Check test isolation
-3. Verify mocks are correct
-4. Fix implementation, not tests (unless tests are wrong)
+1. Use o agent **tdd-guide**
+2. Verifique o isolamento dos testes
+3. Verifique se os mocks estão corretos
+4. Corrija a implementação, não os testes (a menos que os testes estejam errados)
 
-## Agent Support
+## Suporte de Agents
 
-- **tdd-guide** - Use PROACTIVELY for new features, enforces write-tests-first
+- **tdd-guide** - Use PROATIVAMENTE para novas funcionalidades; impõe escrever os testes primeiro
 
-## Test Structure (AAA Pattern)
+## Estrutura de Teste (Padrão AAA)
 
-Prefer Arrange-Act-Assert structure for tests:
+Prefira a estrutura Arrange-Act-Assert para os testes:
 
 ```typescript
 test('calculates similarity correctly', () => {
-  // Arrange
+  // Arrange (Preparar)
   const vector1 = [1, 0, 0]
   const vector2 = [0, 1, 0]
 
-  // Act
+  // Act (Agir)
   const similarity = calculateCosineSimilarity(vector1, vector2)
 
-  // Assert
+  // Assert (Verificar)
   expect(similarity).toBe(0)
 })
 ```
 
-### Test Naming
+### Nomeação de Testes
 
-Use descriptive names that explain the behavior under test:
+Use nomes descritivos que expliquem o comportamento em teste:
 
 ```typescript
 test('returns empty array when no markets match query', () => {})

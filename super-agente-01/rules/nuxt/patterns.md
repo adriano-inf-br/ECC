@@ -8,47 +8,47 @@ paths:
   - "**/middleware/**"
 ---
 
-# Nuxt Patterns
+# Padrões do Nuxt
 
-> This file extends [common/patterns.md](../common/patterns.md) with Nuxt specific content.
+> Este arquivo estende [common/patterns.md](../common/patterns.md) com conteúdo específico de Nuxt.
 
-## Data-fetch selection
+## Seleção de busca de dados
 
-Load-bearing. Pick by render timing, not habit.
+Crítico. Escolha pelo momento de renderização, não por hábito.
 
-- `useFetch(url)` = SSR-safe, URL-first initial/first-paint data. The default. Forwards the server result through the payload so there is no hydration double-fetch.
-- `useAsyncData(key, fn)` = SSR-safe, custom async logic (SDK / GraphQL / combined calls). The explicit key shares the result across components.
-- `$fetch` = client interactions only (form submit, button click, POST/PUT/DELETE). NOT SSR-safe, double-fetches if used for first paint.
-- Rule: `useFetch` / `useAsyncData` for anything rendered on first paint, `$fetch` only for event-driven mutations.
+- `useFetch(url)` = seguro para SSR, dados iniciais/de primeira pintura baseados em URL. O padrão. Encaminha o resultado do servidor pelo payload, de modo que não há busca dupla na hidratação.
+- `useAsyncData(key, fn)` = seguro para SSR, lógica assíncrona customizada (SDK / GraphQL / chamadas combinadas). A key explícita compartilha o resultado entre componentes.
+- `$fetch` = apenas interações do cliente (envio de formulário, clique de botão, POST/PUT/DELETE). NÃO é seguro para SSR; faz busca dupla se usado para a primeira pintura.
+- Regra: `useFetch` / `useAsyncData` para qualquer coisa renderizada na primeira pintura, `$fetch` apenas para mutações orientadas a eventos.
 
-## Shared state
+## Estado compartilhado
 
-- `useState('key', () => init)` for SSR-safe shared state. Values must be JSON-serializable.
-- NEVER `export const x = ref()` at module scope. One shared instance leaks across concurrent SSR requests and causes a memory leak.
-- With `@pinia/nuxt`: Pinia for domain state, `useState` for small cross-component primitives.
-- Async server-side init goes in `callOnce(async () => {...})`, not as a side effect inside `useAsyncData`.
+- `useState('key', () => init)` para estado compartilhado seguro para SSR. Os valores devem ser serializáveis em JSON.
+- NUNCA `export const x = ref()` no escopo do módulo. Uma única instância compartilhada vaza entre requisições SSR concorrentes e causa um vazamento de memória.
+- Com `@pinia/nuxt`: Pinia para estado de domínio, `useState` para pequenos primitivos compartilhados entre componentes.
+- A inicialização assíncrona no lado do servidor vai em `callOnce(async () => {...})`, não como um efeito colateral dentro de `useAsyncData`.
 
-## Nitro server routes
+## Rotas de servidor Nitro
 
-- `server/api/*.{get,post}.ts` auto-register by path + method. Handler is `defineEventHandler((event) => ...)`.
-- Errors via `throw createError({ status, statusText })`. Prefer the Web-API `status` / `statusText` over deprecated `statusCode` / `statusMessage`.
-- `server/middleware/` must NOT return a response. Only mutate `event.context` or set headers.
+- `server/api/*.{get,post}.ts` se auto-registram por caminho + método. O handler é `defineEventHandler((event) => ...)`.
+- Erros via `throw createError({ status, statusText })`. Prefira `status` / `statusText` da Web-API em vez de `statusCode` / `statusMessage`, que estão obsoletos.
+- `server/middleware/` NÃO deve retornar uma resposta. Apenas mute `event.context` ou defina headers.
 
-## Route middleware
+## Middleware de rota
 
-- `app/middleware/*.ts` with `defineNuxtRouteMiddleware((to, from) => ...)`.
-- Use the `to` / `from` args. Do NOT call `useRoute()` inside middleware.
-- `.global` suffix runs on every route. Return `navigateTo()` to redirect, `abortNavigation()` to stop.
+- `app/middleware/*.ts` com `defineNuxtRouteMiddleware((to, from) => ...)`.
+- Use os argumentos `to` / `from`. NÃO chame `useRoute()` dentro do middleware.
+- O sufixo `.global` executa em toda rota. Retorne `navigateTo()` para redirecionar, `abortNavigation()` para interromper.
 
-## Hydration-safe rendering
+## Renderização segura para hidratação
 
-- Route off `status` (`idle | pending | success | error`) for lazy fetches.
-- `useAsyncData` payload uses `devalue` (Date/Map/Set/refs survive). A `server/api` response is `JSON.stringify`-only, so define `toJSON()` for non-JSON types.
-- Shrink payload with `pick` / `transform`. This reduces serialized size, it does not skip the fetch.
+- Direcione com base em `status` (`idle | pending | success | error`) para buscas lazy.
+- O payload de `useAsyncData` usa `devalue` (Date/Map/Set/refs sobrevivem). Uma resposta de `server/api` é apenas `JSON.stringify`, então defina `toJSON()` para tipos não-JSON.
+- Reduza o payload com `pick` / `transform`. Isso reduz o tamanho serializado, não pula a busca.
 
-## Reference
+## Referência
 
-- ECC skills: `nuxt4-patterns`, `vite-patterns`, `frontend-patterns`.
-- [Nuxt data fetching](https://nuxt.com/docs/getting-started/data-fetching)
-- [Nuxt state management](https://nuxt.com/docs/getting-started/state-management)
-- [Nuxt server engine (Nitro)](https://nuxt.com/docs/guide/directory-structure/server)
+- Skills do ECC: `nuxt4-patterns`, `vite-patterns`, `frontend-patterns`.
+- [Busca de dados do Nuxt](https://nuxt.com/docs/getting-started/data-fetching)
+- [Gerenciamento de estado do Nuxt](https://nuxt.com/docs/getting-started/state-management)
+- [Motor de servidor do Nuxt (Nitro)](https://nuxt.com/docs/guide/directory-structure/server)

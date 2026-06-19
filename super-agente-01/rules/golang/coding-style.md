@@ -4,22 +4,22 @@ paths:
   - "**/go.mod"
   - "**/go.sum"
 ---
-# Go Coding Style
+# Estilo de Código Go
 
-> This file extends [common/coding-style.md](../common/coding-style.md) with Go specific content.
+> Este arquivo estende [common/coding-style.md](../common/coding-style.md) com conteúdo específico de Go.
 
-## Formatting
+## Formatação
 
-- **gofmt** and **goimports** are mandatory — no style debates
+- **gofmt** e **goimports** são obrigatórios — sem debates de estilo
 
-## Design Principles
+## Princípios de Design
 
-- Accept interfaces, return structs
-- Keep interfaces small (1-3 methods)
+- Aceite interfaces, retorne structs
+- Mantenha as interfaces pequenas (1-3 métodos)
 
-## Error Handling
+## Tratamento de Erros
 
-Always wrap errors with context:
+Sempre envolva (wrap) os erros com contexto:
 
 ```go
 if err != nil {
@@ -27,6 +27,6 @@ if err != nil {
 }
 ```
 
-## Reference
+## Referência
 
-See skill: `golang-patterns` for comprehensive Go idioms and patterns.
+Veja a skill: `golang-patterns` para idiomas e padrões abrangentes de Go.

@@ -6,39 +6,39 @@ paths:
   - "**/app/**/*.erb"
   - "**/config/routes.rb"
 ---
-# Ruby Patterns
+# Padrões do Ruby
 
-> This file extends [common/patterns.md](../common/patterns.md) with Ruby and Rails specific content.
+> Este arquivo estende [common/patterns.md](../common/patterns.md) com conteúdo específico de Ruby e Rails.
 
-## Rails Way First
+## O Jeito Rails Primeiro
 
-- Start with plain Rails MVC and Active Record conventions for small and medium features.
-- Introduce service objects, query objects, form objects, decorators, or presenters when the model/controller boundary is carrying multiple responsibilities.
-- Name extracted objects after the business operation they perform, not after generic layers like `Manager` or `Processor`.
+- Comece com o MVC simples do Rails e as convenções do Active Record para funcionalidades pequenas e médias.
+- Introduza service objects, query objects, form objects, decorators ou presenters quando a fronteira model/controller estiver carregando múltiplas responsabilidades.
+- Nomeie objetos extraídos pela operação de negócio que realizam, não por camadas genéricas como `Manager` ou `Processor`.
 
-## Persistence
+## Persistência
 
-- Prefer PostgreSQL for multi-host production Rails apps unless the existing platform has a clear reason for MySQL or SQLite.
-- Treat Rails 8 SQLite-backed defaults as viable for single-host or modest deployments, not as an automatic fit for shared multi-service systems.
-- Keep raw SQL behind query objects or model scopes and parameterize every dynamic value.
+- Prefira PostgreSQL para apps Rails de produção multi-host, a menos que a plataforma existente tenha um motivo claro para MySQL ou SQLite.
+- Trate os padrões do Rails 8 baseados em SQLite como viáveis para deployments single-host ou modestos, não como uma escolha automática para sistemas multi-serviço compartilhados.
+- Mantenha SQL bruto atrás de query objects ou scopes de model e parametrize todo valor dinâmico.
 
-## Background Jobs And Runtime Services
+## Background Jobs e Serviços de Runtime
 
-- Use **Solid Queue** for greenfield Rails 8 apps with modest throughput and simple deployment needs.
-- Use **Sidekiq** when the app needs mature observability, high throughput, existing Redis infrastructure, or Pro/Enterprise features.
-- Use **Solid Cache** and **Solid Cable** when their deployment model matches the app; use Redis when shared cross-service behavior, high fanout, or advanced data structures matter.
+- Use o **Solid Queue** para apps Rails 8 greenfield com throughput modesto e necessidades de deployment simples.
+- Use o **Sidekiq** quando o app precisa de observabilidade madura, alto throughput, infraestrutura Redis existente ou funcionalidades Pro/Enterprise.
+- Use **Solid Cache** e **Solid Cable** quando o modelo de deployment deles combinar com o app; use Redis quando comportamento compartilhado entre serviços, alto fanout ou estruturas de dados avançadas importarem.
 
 ## Frontend
 
-- Prefer **Hotwire** with Turbo, Stimulus, Importmap, and Propshaft for server-rendered Rails apps.
-- Use React, Vue, Inertia.js, or a separate SPA when interaction complexity, existing product architecture, or team ownership justifies the extra client surface.
-- Keep view components, partials, and presenters focused on rendering decisions; keep persistence and authorization out of templates.
+- Prefira **Hotwire** com Turbo, Stimulus, Importmap e Propshaft para apps Rails renderizados no servidor.
+- Use React, Vue, Inertia.js ou uma SPA separada quando a complexidade de interação, a arquitetura de produto existente ou a propriedade do time justificarem a superfície de cliente extra.
+- Mantenha view components, partials e presenters focados em decisões de renderização; mantenha persistência e autorização fora dos templates.
 
-## Authentication
+## Autenticação
 
-- Use the Rails 8 authentication generator for straightforward session auth and password reset needs.
-- Use Devise or another established auth system when requirements include OAuth, MFA, confirmable/lockable flows, multi-model auth, or a large existing Devise footprint.
+- Use o gerador de autenticação do Rails 8 para necessidades diretas de autenticação por sessão e redefinição de senha.
+- Use Devise ou outro sistema de autenticação estabelecido quando os requisitos incluem OAuth, MFA, fluxos confirmable/lockable, autenticação multi-model ou uma grande base existente de Devise.
 
-## Reference
+## Referência
 
-See skill: `backend-patterns` for service boundaries and adapter patterns.
+Veja a skill: `backend-patterns` para fronteiras de service e padrões de adapter.

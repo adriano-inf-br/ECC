@@ -4,23 +4,23 @@ paths:
   - "**/*.fsx"
   - "**/*.fsproj"
 ---
-# F# Testing
+# Testes F#
 
-> This file extends [common/testing.md](../common/testing.md) with F#-specific content.
+> Este arquivo estende [common/testing.md](../common/testing.md) com conteúdo específico de F#.
 
-## Test Framework
+## Framework de Testes
 
-- Prefer **xUnit** with **FsUnit.xUnit** for F#-friendly assertions
-- Use **Unquote** for quotation-based assertions with clear failure messages
-- Use **FsCheck.xUnit** for property-based testing
-- Use **NSubstitute** or function stubs for mocking dependencies
-- Use **Testcontainers** when integration tests need real infrastructure
+- Prefira **xUnit** com **FsUnit.xUnit** para asserções amigáveis ao F#
+- Use **Unquote** para asserções baseadas em quotations com mensagens de falha claras
+- Use **FsCheck.xUnit** para testes baseados em propriedades
+- Use **NSubstitute** ou stubs de função para fazer mock de dependências
+- Use **Testcontainers** quando testes de integração precisarem de infraestrutura real
 
-## Test Organization
+## Organização dos Testes
 
-- Mirror `src/` structure under `tests/`
-- Separate unit, integration, and end-to-end coverage clearly
-- Name tests by behavior, not implementation details
+- Espelhe a estrutura de `src/` sob `tests/`
+- Separe claramente a cobertura unitária, de integração e end-to-end
+- Nomeie testes pelo comportamento, não por detalhes de implementação
 
 ```fsharp
 open Xunit
@@ -39,7 +39,7 @@ let ``PlaceOrder returns error when items are empty`` () =
     test <@ Result.isError result @>
 ```
 
-## Property-Based Testing with FsCheck
+## Testes Baseados em Propriedades com FsCheck
 
 ```fsharp
 open FsCheck.Xunit
@@ -50,13 +50,13 @@ let ``order total is never negative`` (items: OrderItem list) =
     total >= 0m
 ```
 
-## ASP.NET Core Integration Tests
+## Testes de Integração ASP.NET Core
 
-- Use `WebApplicationFactory<TEntryPoint>` for API integration coverage
-- Test auth, validation, and serialization through HTTP, not by bypassing middleware
+- Use `WebApplicationFactory<TEntryPoint>` para cobertura de integração de API
+- Teste autenticação, validação e serialização através de HTTP, não contornando o middleware
 
-## Coverage
+## Cobertura
 
-- Target 80%+ line coverage
-- Focus coverage on domain logic, validation, auth, and failure paths
-- Run `dotnet test` in CI with coverage collection enabled where available
+- Mire em 80%+ de cobertura de linhas
+- Concentre a cobertura na lógica de domínio, validação, autenticação e caminhos de falha
+- Execute `dotnet test` na CI com coleta de cobertura habilitada onde disponível

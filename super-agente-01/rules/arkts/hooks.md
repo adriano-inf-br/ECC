@@ -5,43 +5,43 @@ paths:
   - "**/module.json5"
   - "**/oh-package.json5"
 ---
-# HarmonyOS / ArkTS Hooks
+# Hooks do HarmonyOS / ArkTS
 
 > This file extends [common/hooks.md](../common/hooks.md) with HarmonyOS-specific build and validation hooks.
 
-## Build Commands
+## Comandos de Build
 
-### HAP Package Build
+### Build de Pacote HAP
 
 ```bash
-# Build HAP package (global hvigor environment)
+# Compilar pacote HAP (ambiente hvigor global)
 hvigorw assembleHap -p product=default
 
-# Build with specific module
+# Compilar com módulo específico
 hvigorw assembleHap -p module=entry -p product=default
 
-# Clean build
+# Build limpo
 hvigorw clean
 ```
 
-### DevEco Studio CLI
+### CLI do DevEco Studio
 
 ```bash
-# Check project structure
+# Verificar a estrutura do projeto
 hvigorw --version
 
-# Install dependencies
+# Instalar dependências
 ohpm install
 
-# Update dependencies
+# Atualizar dependências
 ohpm update
 ```
 
-## Recommended PostToolUse Hooks
+## Hooks PostToolUse Recomendados
 
-### After Editing .ets/.ts Files
+### Após Editar Arquivos .ets/.ts
 
-Run hvigor build to check for ArkTS compilation errors:
+Execute o build do hvigor para verificar erros de compilação do ArkTS:
 
 ```json
 {
@@ -60,9 +60,9 @@ Run hvigor build to check for ArkTS compilation errors:
 }
 ```
 
-### After Editing module.json5
+### Após Editar module.json5
 
-Validate permission and ability declarations:
+Valide as declarações de permissão e de ability:
 
 ```json
 {
@@ -80,9 +80,9 @@ Validate permission and ability declarations:
 }
 ```
 
-### After Editing oh-package.json5
+### Após Editar oh-package.json5
 
-Reinstall dependencies:
+Reinstale as dependências:
 
 ```json
 {
@@ -101,11 +101,11 @@ Reinstall dependencies:
 }
 ```
 
-## PreToolUse Hooks
+## Hooks PreToolUse
 
-### V1 Decorator Guard
+### Guard de Decorators V1
 
-Warn when code contains V1 state management decorators:
+Avise quando o código contiver decorators de gerenciamento de estado V1:
 
 ```json
 {
@@ -122,14 +122,14 @@ Warn when code contains V1 state management decorators:
 }
 ```
 
-## Validation Checklist
+## Checklist de Validação
 
-After each implementation cycle, verify:
+Após cada ciclo de implementação, verifique:
 
-- [ ] `hvigorw assembleHap` completes without errors
-- [ ] No V1 decorators in new or modified `.ets` files
-- [ ] No `@ohos.router` imports in new or modified files
-- [ ] All API permissions declared in `module.json5`
-- [ ] All dependencies listed in `oh-package.json5`
-- [ ] Resource strings added to all i18n directories
-- [ ] Dark theme colors provided for new color resources
+- [ ] `hvigorw assembleHap` conclui sem erros
+- [ ] Sem decorators V1 em arquivos `.ets` novos ou modificados
+- [ ] Sem imports `@ohos.router` em arquivos novos ou modificados
+- [ ] Todas as permissões de API declaradas em `module.json5`
+- [ ] Todas as dependências listadas em `oh-package.json5`
+- [ ] Strings de recurso adicionadas a todos os diretórios de i18n
+- [ ] Cores de tema escuro fornecidas para novos recursos de cor

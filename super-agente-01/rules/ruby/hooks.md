@@ -6,26 +6,26 @@ paths:
   - "**/Gemfile.lock"
   - "**/config/routes.rb"
 ---
-# Ruby Hooks
+# Hooks do Ruby
 
-> This file extends [common/hooks.md](../common/hooks.md) with Ruby and Rails specific content.
+> Este arquivo estende [common/hooks.md](../common/hooks.md) com conteúdo específico de Ruby e Rails.
 
-## PostToolUse Hooks
+## Hooks PostToolUse
 
-Configure project-local hooks to prefer binstubs and checked-in tooling:
+Configure hooks locais do projeto para preferir binstubs e ferramentas versionadas:
 
-- **RuboCop**: run `bundle exec rubocop -A <file>` or the project's safer formatter command after Ruby edits.
-- **Brakeman**: run `bundle exec brakeman --no-progress` after security-sensitive Rails changes.
-- **Tests**: run the narrowest matching `bin/rails test ...` or `bundle exec rspec ...` command for touched files.
-- **Bundler audit**: run `bundle exec bundle-audit check --update` when `Gemfile` or `Gemfile.lock` changes and the project has bundler-audit installed.
+- **RuboCop**: execute `bundle exec rubocop -A <file>` ou o comando de formatter mais seguro do projeto após edições em Ruby.
+- **Brakeman**: execute `bundle exec brakeman --no-progress` após mudanças no Rails sensíveis à segurança.
+- **Testes**: execute o comando `bin/rails test ...` ou `bundle exec rspec ...` mais estreito que corresponda aos arquivos alterados.
+- **Bundler audit**: execute `bundle exec bundle-audit check --update` quando `Gemfile` ou `Gemfile.lock` mudar e o projeto tiver o bundler-audit instalado.
 
-## Warnings
+## Avisos
 
-- Warn on committed `debugger`, `binding.irb`, `binding.pry`, `puts`, `pp`, or `p` calls in application code.
-- Warn when an edit disables CSRF protection, expands mass-assignment, or adds raw SQL without parameterization.
-- Warn when a migration changes data destructively without a reversible path or documented rollout plan.
+- Avise sobre chamadas commitadas de `debugger`, `binding.irb`, `binding.pry`, `puts`, `pp` ou `p` em código de aplicação.
+- Avise quando uma edição desabilita a proteção CSRF, expande mass-assignment ou adiciona SQL bruto sem parametrização.
+- Avise quando uma migration altera dados de forma destrutiva sem um caminho reversível ou um plano de rollout documentado.
 
-## CI Gate Suggestions
+## Sugestões de Gate no CI
 
 ```bash
 bundle exec rubocop
@@ -34,4 +34,4 @@ bin/rails test
 bundle exec rspec
 ```
 
-Use only the commands that are present in the project; do not install new hook dependencies without maintainer approval.
+Use apenas os comandos presentes no projeto; não instale novas dependências de hook sem a aprovação do mantenedor.

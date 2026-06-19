@@ -135,7 +135,7 @@ final class UserError extends UserState {
   final String message;
 }
 
-// Exhaustive switch — compiler enforces all branches
+// Switch exaustivo — o compilador exige todos os ramos
 Widget buildFrom(UserState state) => switch (state) {
   UserInitial() => const SizedBox.shrink(),
   UserLoading() => const CircularProgressIndicator(),
@@ -144,7 +144,7 @@ Widget buildFrom(UserState state) => switch (state) {
 };
 ```
 
-### Freezed for Boilerplate-Free Immutability
+### Freezed para Imutabilidade sem Boilerplate
 
 ```dart
 import 'package:freezed_annotation/freezed_annotation.dart';

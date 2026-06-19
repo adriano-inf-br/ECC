@@ -171,24 +171,24 @@ fun AppCard(
 }
 ```
 
-### Modifier Ordering
+### Ordenação de Modifiers
 
-Modifier order matters — apply in this sequence:
+A ordem dos modifiers importa — aplique nesta sequência:
 
 ```kotlin
 Text(
     text = "Hello",
     modifier = Modifier
-        .padding(16.dp)          // 1. Layout (padding, size)
-        .clip(RoundedCornerShape(8.dp))  // 2. Shape
-        .background(Color.White) // 3. Drawing (background, border)
-        .clickable { }           // 4. Interaction
+        .padding(16.dp)          // 1. Layout (padding, tamanho)
+        .clip(RoundedCornerShape(8.dp))  // 2. Forma
+        .background(Color.White) // 3. Desenho (background, borda)
+        .clickable { }           // 4. Interação
 )
 ```
 
-## KMP Platform-Specific UI
+## UI Específica de Plataforma em KMP
 
-### expect/actual for Platform Composables
+### expect/actual para Composables de Plataforma
 
 ```kotlin
 // commonMain
@@ -205,15 +205,15 @@ actual fun PlatformStatusBar(darkIcons: Boolean) {
 // iosMain
 @Composable
 actual fun PlatformStatusBar(darkIcons: Boolean) {
-    // iOS handles this via UIKit interop or Info.plist
+    // O iOS lida com isso via interop do UIKit ou Info.plist
 }
 ```
 
 ## Performance
 
-### Stable Types for Skippable Recomposition
+### Tipos Estáveis para Recomposição Pulável
 
-Mark classes as `@Stable` or `@Immutable` when all properties are stable:
+Marque as classes como `@Stable` ou `@Immutable` quando todas as propriedades forem estáveis:
 
 ```kotlin
 @Immutable

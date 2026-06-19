@@ -41,21 +41,21 @@ show ip prefix-list
 show route-map
 ```
 
-Use platform-specific address-family commands when the device uses VRFs, IPv6,
-VPNv4, or EVPN. Do not assume global IPv4 unicast.
+Use comandos de address-family específicos da plataforma quando o dispositivo usar VRFs, IPv6,
+VPNv4 ou EVPN. Não presuma IPv4 unicast global.
 
-## State Interpretation
+## Interpretação de Estado
 
-| State | First checks |
+| Estado | Primeiras verificações |
 | --- | --- |
-| Established with prefix count | Route exchange is up; inspect policy and table selection |
-| Established with zero prefixes | Check inbound policy, max-prefix, advertised routes, and AFI/SAFI |
-| Active | TCP session is not completing; check routing, source, ACLs, and peer reachability |
-| Connect | TCP connection is in progress; check path and remote listener |
-| OpenSent/OpenConfirm | TCP works; check ASN, authentication, timers, capabilities, and logs |
-| Idle | Neighbor may be disabled, missing config, blocked by policy, or backoff timer |
+| Established com contagem de prefixos | A troca de rotas está ativa; inspecione a política e a seleção de tabela |
+| Established com zero prefixos | Verifique política de entrada, max-prefix, rotas anunciadas e AFI/SAFI |
+| Active | A sessão TCP não está completando; verifique roteamento, origem, ACLs e acessibilidade do peer |
+| Connect | A conexão TCP está em andamento; verifique o caminho e o listener remoto |
+| OpenSent/OpenConfirm | O TCP funciona; verifique ASN, autenticação, timers, capabilities e logs |
+| Idle | O vizinho pode estar desabilitado, sem config, bloqueado por política ou em timer de backoff |
 
-## Transport Checks
+## Verificações de Transporte
 
 ```text
 ping <peer> source <local-source>

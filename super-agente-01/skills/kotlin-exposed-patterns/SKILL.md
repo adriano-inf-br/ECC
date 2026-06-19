@@ -5,26 +5,26 @@ metadata:
   origin: ECC
 ---
 
-# Kotlin Exposed Patterns
+# Padrões do Kotlin Exposed
 
-Comprehensive patterns for database access with JetBrains Exposed ORM, including DSL queries, DAO, transactions, and production-ready configuration.
+Padrões abrangentes para acesso a banco de dados com o ORM JetBrains Exposed, incluindo consultas DSL, DAO, transações e configuração pronta para produção.
 
-## When to Use
+## Quando Usar
 
-- Setting up database access with Exposed
-- Writing SQL queries using Exposed DSL or DAO
-- Configuring connection pooling with HikariCP
-- Creating database migrations with Flyway
-- Implementing the repository pattern with Exposed
-- Handling JSON columns and complex queries
+- Configurar acesso a banco de dados com Exposed
+- Escrever consultas SQL usando o DSL ou DAO do Exposed
+- Configurar pool de conexões com HikariCP
+- Criar migrações de banco de dados com Flyway
+- Implementar o padrão repository com Exposed
+- Lidar com colunas JSON e consultas complexas
 
-## How It Works
+## Como Funciona
 
-Exposed provides two query styles: DSL for direct SQL-like expressions and DAO for entity lifecycle management. HikariCP manages a pool of reusable database connections configured via `HikariConfig`. Flyway runs versioned SQL migration scripts at startup to keep the schema in sync. All database operations run inside `newSuspendedTransaction` blocks for coroutine safety and atomicity. The repository pattern wraps Exposed queries behind an interface so business logic stays decoupled from the data layer and tests can use an in-memory H2 database.
+O Exposed oferece dois estilos de consulta: DSL para expressões diretas semelhantes a SQL e DAO para gerenciamento do ciclo de vida das entidades. O HikariCP gerencia um pool de conexões reutilizáveis de banco de dados configurado via `HikariConfig`. O Flyway executa scripts de migração SQL versionados na inicialização para manter o schema sincronizado. Todas as operações de banco de dados rodam dentro de blocos `newSuspendedTransaction` para segurança com coroutines e atomicidade. O padrão repository envolve as consultas do Exposed atrás de uma interface, de modo que a lógica de negócio permaneça desacoplada da camada de dados e os testes possam usar um banco de dados H2 em memória.
 
-## Examples
+## Exemplos
 
-### DSL Query
+### Consulta DSL
 
 ```kotlin
 suspend fun findUserById(id: UUID): UserRow? =
@@ -36,7 +36,7 @@ suspend fun findUserById(id: UUID): UserRow? =
     }
 ```
 
-### DAO Entity Usage
+### Uso de Entidade DAO
 
 ```kotlin
 suspend fun createUser(request: CreateUserRequest): User =

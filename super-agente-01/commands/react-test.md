@@ -1,31 +1,31 @@
 ---
-description: Enforce TDD workflow for React. Write React Testing Library tests first (behavior-focused, accessibility-first), then implement components. Detects Vitest or Jest and verifies coverage targets.
+description: Imponha o fluxo de trabalho de TDD para React. Escreva primeiro os testes em React Testing Library (focados em comportamento, com prioridade em acessibilidade), depois implemente os componentes. Detecta Vitest ou Jest e verifica as metas de cobertura.
 ---
 
-# React TDD Command
+# Comando TDD do React
 
-This command enforces test-driven development for React using React Testing Library plus Vitest or Jest, detected at runtime.
+Este comando impõe o desenvolvimento orientado a testes para React usando React Testing Library mais Vitest ou Jest, detectados em runtime.
 
-## What This Command Does
+## O Que Este Comando Faz
 
-1. **Define Component Signature**: Scaffold the component, prop type, and exports
-2. **Write Behavior Tests First**: RTL queries (role-first), `userEvent`, MSW for network — RED
-3. **Run Tests**: Verify they fail for the right reason
-4. **Implement Minimal Code**: Just enough to pass — GREEN
-5. **Refactor**: Improve while keeping tests green
-6. **Check Coverage**: Hit the targets in [rules/react/testing.md](../rules/react/testing.md)
+1. **Definir a Assinatura do Componente**: Esboça o componente, o tipo de prop e os exports
+2. **Escrever os Testes de Comportamento Primeiro**: Queries RTL (role-first), `userEvent`, MSW para rede — RED
+3. **Executar os Testes**: Verifica se falham pelo motivo certo
+4. **Implementar Código Mínimo**: Apenas o suficiente para passar — GREEN
+5. **Refatorar**: Melhora mantendo os testes verdes
+6. **Verificar a Cobertura**: Atinge as metas em [rules/react/testing.md](../rules/react/testing.md)
 
-## When to Use
+## Quando Usar
 
-Use `/react-test` when:
+Use `/react-test` quando:
 
-- Implementing a new React component or custom hook
-- Adding test coverage to an untested component
-- Fixing a bug (write failing test first that reproduces it)
-- Building forms, state machines, or accessibility-critical UI
-- Onboarding to RTL + Vitest/Jest workflow
+- Implementar um novo componente React ou hook customizado
+- Adicionar cobertura de testes a um componente sem testes
+- Corrigir um bug (escreva primeiro um teste que falha e que o reproduza)
+- Construir formulários, máquinas de estado ou UI crítica de acessibilidade
+- Ao se integrar ao fluxo de trabalho RTL + Vitest/Jest
 
-## TDD Cycle
+## Ciclo de TDD
 
 ```
 RED      -> Write failing test for the next behavior
@@ -34,16 +34,16 @@ REFACTOR -> Improve component, tests stay green
 REPEAT   -> Next behavior
 ```
 
-## Runner Detection
+## Detecção do Runner
 
 ```bash
 test -f vitest.config.ts -o -f vitest.config.js -o -f vite.config.ts   # Vitest
 grep -l '"jest"' package.json                                          # Jest
 ```
 
-Prefer Vitest for new Vite-based projects; respect Jest for existing setups.
+Prefira Vitest para novos projetos baseados em Vite; respeite o Jest em configurações existentes.
 
-## Example Session
+## Exemplo de Sessão
 
 ````text
 User: /react-test I need a SearchInput component with debounced search

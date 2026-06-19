@@ -1,74 +1,74 @@
 ---
-description: Extract reusable patterns from the current session and save them as candidate skills or guidance.
+description: Extrai padrões reutilizáveis da sessão atual e os salva como skills candidatas ou orientações.
 ---
 
-# /learn - Extract Reusable Patterns
+# /learn - Extrair Padrões Reutilizáveis
 
-Analyze the current session and extract any patterns worth saving as skills.
+Analise a sessão atual e extraia quaisquer padrões que valham a pena salvar como skills.
 
-## Trigger
+## Gatilho
 
-Run `/learn` at any point during a session when you've solved a non-trivial problem.
+Execute `/learn` em qualquer ponto de uma sessão quando você tiver resolvido um problema não trivial.
 
-## What to Extract
+## O Que Extrair
 
-Look for:
+Procure por:
 
-1. **Error Resolution Patterns**
-   - What error occurred?
-   - What was the root cause?
-   - What fixed it?
-   - Is this reusable for similar errors?
+1. **Padrões de Resolução de Erros**
+   - Qual erro ocorreu?
+   - Qual foi a causa raiz?
+   - O que o corrigiu?
+   - Isso é reutilizável para erros similares?
 
-2. **Debugging Techniques**
-   - Non-obvious debugging steps
-   - Tool combinations that worked
-   - Diagnostic patterns
+2. **Técnicas de Depuração**
+   - Passos de depuração não óbvios
+   - Combinações de ferramentas que funcionaram
+   - Padrões de diagnóstico
 
 3. **Workarounds**
-   - Library quirks
-   - API limitations
-   - Version-specific fixes
+   - Peculiaridades de bibliotecas
+   - Limitações de API
+   - Correções específicas de versão
 
-4. **Project-Specific Patterns**
-   - Codebase conventions discovered
-   - Architecture decisions made
-   - Integration patterns
+4. **Padrões Específicos do Projeto**
+   - Convenções da base de código descobertas
+   - Decisões de arquitetura tomadas
+   - Padrões de integração
 
-## Output Format
+## Formato de Saída
 
-Create a skill file at `~/.claude/skills/learned/[pattern-name].md`:
+Crie um arquivo de skill em `~/.claude/skills/learned/[pattern-name].md`:
 
 ```markdown
-# [Descriptive Pattern Name]
+# [Nome Descritivo do Padrão]
 
-**Extracted:** [Date]
-**Context:** [Brief description of when this applies]
+**Extraído:** [Data]
+**Contexto:** [Breve descrição de quando isto se aplica]
 
-## Problem
-[What problem this solves - be specific]
+## Problema
+[Qual problema isto resolve - seja específico]
 
-## Solution
-[The pattern/technique/workaround]
+## Solução
+[O padrão/técnica/workaround]
 
-## Example
-[Code example if applicable]
+## Exemplo
+[Exemplo de código, se aplicável]
 
-## When to Use
-[Trigger conditions - what should activate this skill]
+## Quando Usar
+[Condições de gatilho - o que deve ativar esta skill]
 ```
 
-## Process
+## Processo
 
-1. Review the session for extractable patterns
-2. Identify the most valuable/reusable insight
-3. Draft the skill file
-4. Ask user to confirm before saving
-5. Save to `~/.claude/skills/learned/`
+1. Revisar a sessão em busca de padrões extraíveis
+2. Identificar o insight mais valioso/reutilizável
+3. Esboçar o arquivo de skill
+4. Pedir ao usuário para confirmar antes de salvar
+5. Salvar em `~/.claude/skills/learned/`
 
-## Notes
+## Notas
 
-- Don't extract trivial fixes (typos, simple syntax errors)
-- Don't extract one-time issues (specific API outages, etc.)
-- Focus on patterns that will save time in future sessions
-- Keep skills focused - one pattern per skill
+- Não extraia correções triviais (erros de digitação, erros simples de sintaxe)
+- Não extraia problemas pontuais (quedas específicas de API, etc.)
+- Concentre-se em padrões que vão economizar tempo em sessões futuras
+- Mantenha as skills focadas - um padrão por skill

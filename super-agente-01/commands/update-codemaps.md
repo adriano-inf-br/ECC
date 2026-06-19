@@ -1,32 +1,32 @@
 ---
-description: Scan project structure and generate token-lean architecture codemaps.
+description: Escaneia a estrutura do projeto e gera codemaps de arquitetura econômicos em tokens.
 ---
 
 # Update Codemaps
 
-Analyze the codebase structure and generate token-lean architecture documentation.
+Analise a estrutura do código e gere documentação de arquitetura econômica em tokens.
 
-## Step 1: Scan Project Structure
+## Passo 1: Escaneie a estrutura do projeto
 
-1. Identify the project type (monorepo, single app, library, microservice)
-2. Find all source directories (src/, lib/, app/, packages/)
-3. Map entry points (main.ts, index.ts, app.py, main.go, etc.)
+1. Identifique o tipo de projeto (monorepo, app único, biblioteca, microsserviço)
+2. Encontre todos os diretórios de código-fonte (src/, lib/, app/, packages/)
+3. Mapeie os pontos de entrada (main.ts, index.ts, app.py, main.go, etc.)
 
-## Step 2: Generate Codemaps
+## Passo 2: Gere os codemaps
 
-Create or update codemaps in `docs/CODEMAPS/` (or `.reports/codemaps/`):
+Crie ou atualize codemaps em `docs/CODEMAPS/` (ou `.reports/codemaps/`):
 
-| File | Contents |
+| Arquivo | Conteúdo |
 |------|----------|
-| `architecture.md` | High-level system diagram, service boundaries, data flow |
-| `backend.md` | API routes, middleware chain, service → repository mapping |
-| `frontend.md` | Page tree, component hierarchy, state management flow |
-| `data.md` | Database tables, relationships, migration history |
-| `dependencies.md` | External services, third-party integrations, shared libraries |
+| `architecture.md` | Diagrama de sistema de alto nível, fronteiras de serviço, fluxo de dados |
+| `backend.md` | Rotas de API, cadeia de middleware, mapeamento service → repository |
+| `frontend.md` | Árvore de páginas, hierarquia de componentes, fluxo de gerenciamento de estado |
+| `data.md` | Tabelas de banco de dados, relacionamentos, histórico de migração |
+| `dependencies.md` | Serviços externos, integrações de terceiros, bibliotecas compartilhadas |
 
-### Codemap Format
+### Formato do codemap
 
-Each codemap should be token-lean — optimized for AI context consumption:
+Cada codemap deve ser econômico em tokens — otimizado para consumo de contexto por IA:
 
 ```markdown
 # Backend Architecture
@@ -45,15 +45,15 @@ src/repos/user.ts (database access, 80 lines)
 - Stripe (payment processing)
 ```
 
-## Step 3: Diff Detection
+## Passo 3: Detecção de diff
 
-1. If previous codemaps exist, calculate the diff percentage
-2. If changes > 30%, show the diff and request user approval before overwriting
-3. If changes <= 30%, update in place
+1. Se codemaps anteriores existirem, calcule o percentual de diferença
+2. Se as mudanças > 30%, mostre o diff e solicite a aprovação do usuário antes de sobrescrever
+3. Se as mudanças <= 30%, atualize no local
 
-## Step 4: Add Metadata
+## Passo 4: Adicione metadados
 
-Add a freshness header to each codemap:
+Adicione um cabeçalho de frescor a cada codemap:
 
 ```markdown
 <!-- Generated: 2026-02-11 | Files scanned: 142 | Token estimate: ~800 -->

@@ -1,158 +1,159 @@
-# Evaluator RAG Prototype
+# Protótipo de RAG Avaliador
 
-ECC 2.0 needs a self-improving harness loop that can learn from real work
-without blindly mutating a user's Claude, Codex, OpenCode, dmux, Zed, or
-terminal setup. This prototype defines the smallest read-only artifact set for
-that loop.
+O ECC 2.0 precisa de um loop de harness de auto-aperfeiçoamento que possa aprender com o
+trabalho real sem modificar cegamente a configuração de Claude, Codex, OpenCode, dmux, Zed
+ou terminal do usuário. Este protótipo define o menor conjunto de artefatos somente leitura
+para esse loop.
 
-The fixture set lives in
+O conjunto de fixtures vive em
 [`examples/evaluator-rag-prototype/`](../../examples/evaluator-rag-prototype/).
-It started with the May 2026 stale-PR cleanup and salvage lane because that
-lane has real inputs, real accepted work, and real rejected work. The corpus now
-also includes a billing/Marketplace readiness scenario so launch copy cannot
-treat dry-run release evidence or roadmap intent as live billing state. A
-CI-failure diagnosis scenario adds the log-first workflow needed before an
-agent proposes fixes for red checks. A harness-config quality scenario keeps
-MCP, plugin, hook, command, agent, and adapter recommendations tied to the
-adapter matrix before they mutate setup guidance. An AgentShield policy
-exception scenario gates security exceptions on SARIF/report evidence, owner
-fields, expiry state, and remediation-versus-exception decisions. A
-skill-quality evidence scenario requires observed failure or feedback evidence,
-working examples, reference-set gaps, and validation commands before a skill
-amendment can be promoted. A deep-analyzer evidence scenario requires analyzer
-corpus cases, expected-output comparisons, and risk-taxonomy proof before
-repository or commit-analysis behavior can change.
+Ele começou com o salvamento e a limpeza de PRs desatualizados de maio de 2026 porque essa
+rota tem entradas reais, trabalho aceito real e trabalho rejeitado real. O corpus agora
+também inclui um cenário de prontidão para cobrança/Marketplace, para que o texto de lançamento
+não trate evidências de release em execução seca ou intenção de roadmap como estado de cobrança
+ativo. Um cenário de diagnóstico de falhas de CI adiciona o fluxo de trabalho de log-first
+necessário antes que um agente proponha correções para verificações com falha. Um cenário de
+qualidade de configuração de harness mantém recomendações de MCP, plugin, hook, comando, agente
+e adaptador vinculadas à matriz de adaptadores antes de mutar a orientação de configuração. Um
+cenário de exceção de política do AgentShield bloqueia exceções de segurança em
+evidências SARIF/relatório, campos de proprietário, estado de vencimento e decisões de
+remediação versus exceção. Um cenário de evidência de qualidade de skill exige evidências de
+falha observada ou feedback, exemplos funcionais, lacunas no conjunto de referências e comandos
+de validação antes que uma emenda de skill possa ser promovida. Um cenário de evidência de
+analisador profundo exige casos de corpus de analisador, comparações de saída esperada e prova
+de taxonomia de risco antes que o comportamento de análise de repositório ou commit possa ser
+alterado.
 
-## Reference Pressure
+## Pressão de Referência
 
-- Meta-Harness: treat the harness itself as an experiment with scenario specs,
-  verifier results, and promoted playbooks.
-- Autocontext: store traces, reports, artifacts, and reusable improvements
-  before changing installed agent assets.
-- Claude HUD: expose context, tools, todos, agent activity, checks, and risk so
-  an evaluator can judge a run after the fact.
-- Hermes Agent: keep skills, memories, scheduler-like follow-ups, and terminal
-  gateway behavior explicit instead of hiding local commands.
-- dmux, Orca, Superset, and Ghast: preserve worktree/session state so parallel
-  agent work can be compared, resumed, or closed cleanly.
-- ECC Tools: route evaluator findings into PR comments, check runs, and Linear
-  backlog items without flooding GitHub.
+- Meta-Harness: tratar o próprio harness como um experimento com especificações de cenário,
+  resultados de verificador e playbooks promovidos.
+- Autocontext: armazenar rastreamentos, relatórios, artefatos e melhorias reutilizáveis antes
+  de alterar ativos de agentes instalados.
+- Claude HUD: expor contexto, ferramentas, tarefas, atividade de agentes, verificações e risco
+  para que um avaliador possa julgar uma execução após o fato.
+- Hermes Agent: manter skills, memórias, acompanhamentos semelhantes a agendadores e comportamento
+  de gateway de terminal explícitos em vez de ocultar comandos locais.
+- dmux, Orca, Superset e Ghast: preservar o estado de worktree/sessão para que o trabalho
+  paralelo de agentes possa ser comparado, retomado ou encerrado de forma limpa.
+- ECC Tools: rotear descobertas do avaliador em comentários de PR, execuções de verificação e
+  itens de backlog do Linear sem sobrecarregar o GitHub.
 
-## Artifact Contract
+## Contrato de Artefatos
 
-Every evaluator/RAG run is read-only until a verifier promotes a playbook.
+Cada execução do avaliador/RAG é somente leitura até que um verificador promova um playbook.
 
-| Artifact | Purpose | Fixture |
+| Artefato | Propósito | Fixture |
 | --- | --- | --- |
-| Scenario spec | Declares the objective, allowed evidence, forbidden actions, and pass/fail gates. | `scenario.json` |
-| Trace | Captures observation, retrieval, proposal, verification, and promotion events. | `trace.json` |
-| Report | Summarizes scores, evidence coverage, risks, and recommended next action. | `report.json` |
-| Candidate playbook | Describes the maintainer-owned workflow that could be reused later. | `candidate-playbook.md` |
-| Verifier result | Accepts or rejects candidates with concrete reasons and rollback notes. | `verifier-result.json` |
+| Especificação de cenário | Declara o objetivo, as evidências permitidas, as ações proibidas e os critérios de aprovação/falha. | `scenario.json` |
+| Rastreamento | Captura eventos de observação, recuperação, proposta, verificação e promoção. | `trace.json` |
+| Relatório | Resume pontuações, cobertura de evidências, riscos e a próxima ação recomendada. | `report.json` |
+| Playbook candidato | Descreve o fluxo de trabalho de propriedade do mantenedor que pode ser reutilizado posteriormente. | `candidate-playbook.md` |
+| Resultado do verificador | Aceita ou rejeita candidatos com razões concretas e notas de rollback. | `verifier-result.json` |
 
-The prototype deliberately separates retrieval from action. A run can retrieve
-closed PR diffs, Linear status, CI history, and local docs, but it cannot close,
-merge, publish, tag, or rewrite configs as part of the evaluator pass.
+O protótipo separa deliberadamente a recuperação da ação. Uma execução pode recuperar diffs de
+PRs fechados, status do Linear, histórico de CI e documentos locais, mas não pode fechar,
+mesclar, publicar, adicionar tags ou reescrever configurações como parte do passo do avaliador.
 
-## Phase Model
+## Modelo de Fases
 
-1. Observe the current queue, dirty worktrees, branch state, open PRs/issues,
-   discussions, CI state, and release gates.
-2. Retrieve relevant reference evidence: stale-salvage ledger rows, prior
-   maintainer PRs, current docs, analyzer findings, CI failures, and harness
-   adapter rules.
-3. Propose one or more playbooks with source attribution and expected
-   validation gates.
-4. Verify each playbook against explicit acceptance and rejection rules.
-5. Promote only the candidate that improves the scenario without widening blast
-   radius.
-6. Record rollback guidance and unresolved manual-review tails.
+1. Observar a fila atual, worktrees sujos, estado das branches, PRs/issues abertos,
+   discussões, estado de CI e gates de release.
+2. Recuperar evidências de referência relevantes: linhas do registro de salvamento de
+   desatualizados, PRs anteriores do mantenedor, documentos atuais, descobertas do analisador,
+   falhas de CI e regras do adaptador de harness.
+3. Propor um ou mais playbooks com atribuição de fonte e gates de validação esperados.
+4. Verificar cada playbook em relação a regras explícitas de aceitação e rejeição.
+5. Promover apenas o candidato que melhora o cenário sem ampliar o raio de explosão.
+6. Registrar orientações de rollback e pendências de revisão manual não resolvidas.
 
-## First Scenario
+## Primeiro Cenário
 
-The first scenario is `stale-pr-salvage-maintainer-branch`.
+O primeiro cenário é `stale-pr-salvage-maintainer-branch`.
 
-It models the rule Affaan set during the May 2026 cleanup: stale closure is
-queue hygiene, not loss of useful work. Useful closed PR work should be ported
-into maintainer-owned PRs with attribution/backlinks, while generated churn,
-bulk localization, and ambiguous translator work stay out of blind
-cherry-picks.
+Ele modela a regra que Affaan estabeleceu durante a limpeza de maio de 2026: encerramento
+por desatualização é higiene de fila, não perda de trabalho útil. O trabalho útil de PRs
+fechados deve ser portado para PRs de propriedade do mantenedor com atribuição/backlinks,
+enquanto a geração de ruído, a localização em massa e o trabalho ambíguo de tradutores ficam
+fora de cherry-picks cegos.
 
-The verifier accepts a maintainer salvage branch that:
+O verificador aceita uma branch de salvamento do mantenedor que:
 
-- credits source PRs;
-- avoids raw private context and personal paths;
-- does not import stale bulk localization without translator review;
-- records a durable ledger update;
-- runs the same validation gates as a normal code, docs, or catalog change;
-- leaves release publication actions approval-gated.
+- credita os PRs de origem;
+- evita contexto privado bruto e caminhos pessoais;
+- não importa localização em massa desatualizada sem revisão do tradutor;
+- registra uma atualização durável do registro;
+- executa os mesmos gates de validação que uma mudança normal de código, documentação ou
+  catálogo;
+- deixa as ações de publicação de release com aprovação obrigatória.
 
-The verifier rejects a blind cherry-pick proposal that:
+O verificador rejeita uma proposta de cherry-pick cego que:
 
-- imports stale translation/doc churn wholesale;
-- skips the current catalog/install architecture;
-- lacks attribution;
-- lacks tests or ledger updates;
-- mutates release or plugin publication state.
+- importa ruído de tradução/documentação desatualizado de forma completa;
+- ignora a arquitetura atual do catálogo/instalação;
+- falta atribuição;
+- falta testes ou atualizações do registro;
+- muta o estado de publicação do release ou do plugin.
 
-## Corpus Fixtures
+## Fixtures do Corpus
 
-The root fixture files preserve the original
-`stale-pr-salvage-maintainer-branch` prototype. Additional scenarios can live in
-subdirectories when they reuse the same five-artifact contract.
+Os arquivos de fixture raiz preservam o protótipo original
+`stale-pr-salvage-maintainer-branch`. Cenários adicionais podem residir em subdiretórios
+quando reutilizam o mesmo contrato de cinco artefatos.
 
-Current corpus:
+Corpus atual:
 
-- `stale-pr-salvage-maintainer-branch`: recovers useful closed PR work through
-  maintainer-owned branches with attribution and validation.
-- `billing-marketplace-readiness`: verifies billing, App, and Marketplace
-  launch claims before public copy says they are live.
-- `ci-failure-diagnosis`: requires failed-job logs, changed-file scope, and a
-  named regression command before a CI fix playbook can be promoted.
-- `harness-config-quality`: requires adapter state, install/onramp path,
-  verification commands, risk notes, and config-preservation behavior before a
-  harness setup recommendation can be promoted.
-- `agentshield-policy-exception`: requires AgentShield SARIF or report
-  evidence, policy-pack source, owner/ticket/scope/expiry fields, and expired
-  exception enforcement before a policy exception can be promoted.
-- `skill-quality-evidence`: requires focused skill scope, observed failure or
-  user-feedback evidence, examples/reference-set coverage, validation commands,
-  and publication safety before a skill amendment can be promoted.
-- `deep-analyzer-evidence`: requires maintained analyzer corpus cases,
-  expected-output comparisons, representative repository/commit histories, and
-  regression commands before deep-analysis behavior can be promoted.
+- `stale-pr-salvage-maintainer-branch`: recupera trabalho útil de PRs fechados por meio de
+  branches de propriedade do mantenedor com atribuição e validação.
+- `billing-marketplace-readiness`: verifica afirmações de lançamento de cobrança, App e
+  Marketplace antes que o texto público diga que estão ao vivo.
+- `ci-failure-diagnosis`: exige logs de jobs com falha, escopo de arquivos alterados e um
+  comando de regressão nomeado antes que um playbook de correção de CI possa ser promovido.
+- `harness-config-quality`: exige estado do adaptador, caminho de instalação/onramp,
+  comandos de verificação, notas de risco e comportamento de preservação de configuração
+  antes que uma recomendação de configuração de harness possa ser promovida.
+- `agentshield-policy-exception`: exige evidências SARIF ou de relatório do AgentShield,
+  fonte do pacote de políticas, campos de proprietário/ticket/escopo/vencimento e aplicação
+  de exceção expirada antes que uma exceção de política possa ser promovida.
+- `skill-quality-evidence`: exige escopo de skill focado, evidência de falha observada ou
+  feedback do usuário, cobertura de exemplos/conjunto de referências, comandos de validação e
+  segurança de publicação antes que uma emenda de skill possa ser promovida.
+- `deep-analyzer-evidence`: exige casos de corpus de analisador mantidos, comparações de
+  saída esperada, históricos de repositório/commit representativos e comandos de regressão
+  antes que o comportamento de análise profunda possa ser promovido.
 
-## ECC Tools Mapping
+## Mapeamento para ECC Tools
 
-ECC Tools already flags missing RAG/evaluator evidence for retrieval,
-embedding, ranking, and evaluator changes. This prototype gives those checks a
-target shape:
+O ECC Tools já sinaliza evidências ausentes de RAG/avaliador para mudanças de recuperação,
+embedding, classificação e avaliador. Este protótipo fornece a essas verificações um formato
+alvo:
 
-- `scenario.json` maps to analyzer corpus inputs.
-- `trace.json` maps to golden traces and run telemetry.
-- `report.json` maps to PR comment summaries and Linear backlog summaries.
-- `candidate-playbook.md` maps to the suggested follow-up PR body.
-- `verifier-result.json` maps to pass/fail check-run evidence.
+- `scenario.json` mapeia para entradas de corpus do analisador.
+- `trace.json` mapeia para rastreamentos dourados e telemetria de execução.
+- `report.json` mapeia para resumos de comentários de PR e resumos de backlog do Linear.
+- `candidate-playbook.md` mapeia para o corpo sugerido do PR de acompanhamento.
+- `verifier-result.json` mapeia para evidências de verificação de aprovação/falha.
 
-Future ECC Tools work should consume these artifacts as fixture shape before it
-adds hosted retrieval or model-backed judging. The local prototype is enough to
-prove the contract before any paid API or vector store is introduced.
+O trabalho futuro do ECC Tools deve consumir esses artefatos como formato de fixture antes de
+adicionar recuperação hospedada ou julgamento com suporte de modelo. O protótipo local é
+suficiente para provar o contrato antes que qualquer API paga ou armazenamento de vetores seja
+introduzido.
 
-## Promotion Rules
+## Regras de Promoção
 
-A candidate can be promoted only when:
+Um candidato só pode ser promovido quando:
 
-- the verifier result is `accepted`;
-- at least one rejected candidate proves the verifier can say no;
-- every source PR or reference artifact has attribution;
-- the proposed action is maintainer-owned and reversible;
-- validation commands are named;
-- unresolved translator, release, billing, or publication items remain blocked
-  until separately approved.
+- o resultado do verificador é `accepted`;
+- pelo menos um candidato rejeitado prova que o verificador pode dizer não;
+- cada PR de origem ou artefato de referência tem atribuição;
+- a ação proposta é de propriedade do mantenedor e reversível;
+- os comandos de validação estão nomeados;
+- itens pendentes de tradutor, release, cobrança ou publicação permanecem bloqueados
+  até aprovação separada.
 
-## Next Expansion
+## Próxima Expansão
 
-The local evaluator/RAG corpus now covers the current evidence buckets. Future
-work should consume these fixtures from ECC Tools before adding hosted
-retrieval, vector storage, model-backed judging, or automated check-run
-promotion.
+O corpus local de avaliador/RAG agora cobre os buckets de evidências atuais. O trabalho
+futuro deve consumir essas fixtures do ECC Tools antes de adicionar recuperação hospedada,
+armazenamento de vetores, julgamento com suporte de modelo ou promoção automatizada de
+execução de verificação.

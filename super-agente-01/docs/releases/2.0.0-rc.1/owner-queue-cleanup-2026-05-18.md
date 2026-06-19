@@ -1,65 +1,62 @@
-# Owner-Wide Queue Cleanup - 2026-05-18
+# Limpeza da Fila do Proprietário - 2026-05-18
 
-This note records the live GitHub queue cleanup outside the five ECC release
-repos tracked by `scripts/platform-audit.js`.
+Esta nota registra a limpeza ao vivo da fila do GitHub fora dos cinco repositórios de release do ECC
+rastreados por `scripts/platform-audit.js`.
 
-## Commands
+## Comandos
 
 ```bash
 gh search prs --owner affaan-m --state open --json repository,number,title,url,author,updatedAt --limit 100
 gh search issues --owner affaan-m --state open --json repository,number,title,url,updatedAt --limit 100
 ```
 
-## Result
+## Resultado
 
-- Owner-wide open PRs after cleanup: 0.
-- Owner-wide open issues after cleanup: 0.
-- Stale dependency-bot PRs closed: 24.
-- Stale legacy payments/0EM roadmap issues closed: 72.
-- Final stale/generated/manual-review PRs closed: 9.
-- Final legacy/outreach/placeholder issues closed: 5.
-- Archived repos temporarily unarchived for stale dependency PR closure and
-  restored to archived state:
+- PRs abertos em todo o proprietário após limpeza: 0.
+- Issues abertas em todo o proprietário após limpeza: 0.
+- PRs desatualizados de bot de dependência fechados: 24.
+- Issues desatualizadas de roadmap de pagamentos legados/0EM fechadas: 72.
+- PRs finais desatualizados/gerados/de revisão manual fechados: 9.
+- Issues finais legadas/de alcance/placeholder fechadas: 5.
+- Repositórios arquivados temporariamente desarquivados para fechamento de PRs de dependência desatualizados e
+  restaurados ao estado arquivado:
   `affaan-m/stoictradingAI`, `affaan-m/dprc-autotrader-v2`,
-  `affaan-m/polycule-secure`, and `affaan-m/pragmAItism_defAInce`.
-- The final archived-repo sweep temporarily unarchived and restored
-  `affaan-m/dprc-autotrader-v2` and `affaan-m/stoictradingAI`.
+  `affaan-m/polycule-secure` e `affaan-m/pragmAItism_defAInce`.
+- A varredura final de repositórios arquivados desarquivou temporariamente e restaurou
+  `affaan-m/dprc-autotrader-v2` e `affaan-m/stoictradingAI`.
 
-## Final PR Disposition
+## Disposição Final dos PRs
 
-- `affaan-m/dprc-autotrader-v2#5`: closed stale generated ECC bundle with
-  failing checks and dependency-update base.
-- `affaan-m/x-algorithm-score#2`: closed stale/conflicting external feature
-  PR with accidental local AI-tool directories noted in the PR body.
-- `affaan-m/dexploy#28`: closed stale generated ECC skill PR with requested
-  changes.
-- `affaan-m/zenith#5`: closed stale generated ECC skill PR.
-- `affaan-m/zenith#4`: closed test/noise PR whose diff only added a
-  non-actionable script comment.
-- `affaan-m/affaan-m#1`: closed stale/conflicting third-party README-card PR.
-- `affaan-m/affaanmustafa.com#1`: closed stale Cloudflare Worker-name PR with
-  requested changes.
-- `affaan-m/0em-payments-dashboard#11`: closed stale/conflicting Cloudflare
-  Worker-name PR.
-- `affaan-m/0em-payments-dashboard#3`: closed stale/conflicting Cloudflare
-  Worker-name PR.
+- `affaan-m/dprc-autotrader-v2#5`: fechado bundle ECC gerado desatualizado com
+  verificações com falha e base de atualização de dependência.
+- `affaan-m/x-algorithm-score#2`: fechado PR de recurso externo desatualizado/conflitante com diretórios de ferramentas de IA locais acidentais anotados no corpo do PR.
+- `affaan-m/dexploy#28`: fechado PR de skill ECC gerado desatualizado com
+  alterações solicitadas.
+- `affaan-m/zenith#5`: fechado PR de skill ECC gerado desatualizado.
+- `affaan-m/zenith#4`: fechado PR de teste/ruído cujo diff apenas adicionou um
+  comentário de script não acionável.
+- `affaan-m/affaan-m#1`: fechado PR de cartão README de terceiros desatualizado/conflitante.
+- `affaan-m/affaanmustafa.com#1`: fechado PR de nome do Cloudflare Worker desatualizado com
+  alterações solicitadas.
+- `affaan-m/0em-payments-dashboard#11`: fechado PR de nome do Cloudflare Worker desatualizado/conflitante.
+- `affaan-m/0em-payments-dashboard#3`: fechado PR de nome do Cloudflare Worker desatualizado/conflitante.
 
-## Final Issue Disposition
+## Disposição Final das Issues
 
-- `affaan-m/dprc-autotrader-v2#3`: closed public integration pitch as not
-  planned for the archived repo.
-- `affaan-m/stoictradingAI#20`: closed public outreach question as not planned
-  for the archived repo.
-- `affaan-m/dexploy#27`: closed stale internal skill-creator test issue.
-- `affaan-m/dexploy#25`: preserved useful deployment/localStorage and
-  Cloudflare findings in Linear `ITO-62`, then closed the stale GitHub issue.
-- `affaan-m/telegram-mcp-ts#1`: closed stale empty placeholder issue.
+- `affaan-m/dprc-autotrader-v2#3`: fechada proposta de integração pública como não
+  planejada para o repositório arquivado.
+- `affaan-m/stoictradingAI#20`: fechada pergunta de alcance público como não planejada
+  para o repositório arquivado.
+- `affaan-m/dexploy#27`: fechada issue interna de teste de criador de skill desatualizada.
+- `affaan-m/dexploy#25`: preservadas descobertas úteis de deployment/localStorage e
+  Cloudflare no Linear `ITO-62`, então a issue do GitHub desatualizada foi fechada.
+- `affaan-m/telegram-mcp-ts#1`: fechada issue placeholder vazia desatualizada.
 
-## Disposition
+## Disposição
 
-The closed dependency PRs were stale generated version bumps and should be
-regenerated from current bases if still needed. The closed generated ECC bundle
-PRs should be regenerated from the current ECC Tools flow if those repositories
-become active again. The closed legacy payments/0EM issues were old planning
-items superseded by the ECC Tools native-payments, hosted analysis,
-billing-readback, and Linear/project roadmap lanes.
+Os PRs de dependência fechados eram bumps de versão gerados desatualizados e devem ser
+regenerados a partir das bases atuais se ainda forem necessários. Os PRs de bundle ECC gerados fechados
+devem ser regenerados a partir do fluxo atual das ECC Tools se esses repositórios
+ficarem ativos novamente. As issues legadas de pagamentos/0EM fechadas eram itens de planejamento antigos
+substituídos pelas lanes de pagamentos nativos, análise hospedada,
+readback de faturamento e roadmap do Linear/projeto das ECC Tools.

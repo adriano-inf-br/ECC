@@ -1,78 +1,78 @@
-# patch_settings_cl_v2_simple.ps1 argv-dup bug workaround (2026-04-22)
+# Solução alternativa para o bug de argv duplicado em patch_settings_cl_v2_simple.ps1 (2026-04-22)
 
-## Summary
+## Resumo
 
-`docs/fixes/patch_settings_cl_v2_simple.ps1` is the minimal PowerShell
-helper that patches `~/.claude/settings.local.json` so the observer hook
-points at `observe-wrapper.sh`. It is the "simple" counterpart of
-`docs/fixes/install_hook_wrapper.ps1` (PR #1540): it never copies the
-wrapper script, it only rewrites the settings file.
+`docs/fixes/patch_settings_cl_v2_simple.ps1` é o helper PowerShell mínimo
+que corrige `~/.claude/settings.local.json` para que o Hook de observer
+aponte para `observe-wrapper.sh`. É o equivalente "simples" de
+`docs/fixes/install_hook_wrapper.ps1` (PR #1540): nunca copia o
+script wrapper, apenas reescreve o arquivo de configurações.
 
-The previous version of this helper registered the raw `observe.sh` path
-as the hook command, shared a single command string across `PreToolUse`
-and `PostToolUse`, and relied on `ConvertTo-Json` defaults that can emit
-CRLF line endings. Under Claude Code v2.1.116 the first argv token is
-duplicated, so the wrapper needs to be invoked with a specific shape and
-the two hook phases need distinct entries.
+A versão anterior deste helper registrava o caminho bruto do `observe.sh`
+como o command do Hook, compartilhava uma única string de command entre `PreToolUse`
+e `PostToolUse`, e dependia dos padrões do `ConvertTo-Json` que podem emitir
+terminações de linha CRLF. No Claude Code v2.1.116, o primeiro token de argv é
+duplicado, de modo que o wrapper precisa ser invocado com um formato específico e
+as duas fases do Hook precisam de entradas distintas.
 
-## What the fix does
+## O que a correção faz
 
-- First token is the PATH-resolved `bash` (no quoted `.exe` path), so the
-  argv-dup bug no longer passes a binary as a script. Matches PR #1524 and
-  PR #1540.
-- The wrapper path is normalized to forward slashes before it is embedded
-  in the hook command, avoiding MSYS backslash handling surprises.
-- `PreToolUse` and `PostToolUse` receive distinct commands with explicit
-  `pre` / `post` positional arguments.
-- The settings file is written UTF-8 (no BOM) with CRLF normalized to LF
-  so downstream JSON parsers never see mixed line endings.
-- Existing hooks (including legacy `observe.sh` entries and unrelated
-  third-party hooks) are preserved — the script only appends the new
-  wrapper entries when they are not already registered.
-- Idempotent on re-runs: a second invocation recognizes the canonical
-  command strings and logs `[SKIP]` instead of duplicating entries.
+- O primeiro token é o `bash` resolvido pelo PATH (sem caminho `.exe` com aspas), de modo que
+  o bug de argv duplicado não passa mais um binário como script. Corresponde ao PR #1524 e
+  ao PR #1540.
+- O caminho do wrapper é normalizado para barras antes de ser embutido
+  no command do Hook, evitando surpresas de tratamento de barra invertida do MSYS.
+- `PreToolUse` e `PostToolUse` recebem commands distintos com argumentos posicionais
+  explícitos `pre` / `post`.
+- O arquivo de configurações é escrito em UTF-8 (sem BOM) com CRLF normalizado para LF
+  para que os parsers JSON posteriores nunca vejam terminações de linha mistas.
+- Hooks existentes (incluindo entradas legadas do `observe.sh` e hooks de
+  terceiros não relacionados) são preservados — o script apenas adiciona as novas
+  entradas do wrapper quando elas ainda não estão registradas.
+- Idempotente em re-execuções: uma segunda invocação reconhece as strings de
+  command canônicas e registra `[SKIP]` em vez de duplicar entradas.
 
-## Resulting command shape
+## Formato resultante do command
 
 ```
-bash "C:/Users/<you>/.claude/skills/continuous-learning/hooks/observe-wrapper.sh" pre
-bash "C:/Users/<you>/.claude/skills/continuous-learning/hooks/observe-wrapper.sh" post
+bash "C:/Users/<você>/.claude/skills/continuous-learning/hooks/observe-wrapper.sh" pre
+bash "C:/Users/<você>/.claude/skills/continuous-learning/hooks/observe-wrapper.sh" post
 ```
 
-## Usage
+## Uso
 
 ```powershell
 pwsh -File docs/fixes/patch_settings_cl_v2_simple.ps1
-# Windows PowerShell 5.1 is also supported:
+# O Windows PowerShell 5.1 também é compatível:
 powershell -NoProfile -ExecutionPolicy Bypass -File docs/fixes/patch_settings_cl_v2_simple.ps1
 ```
 
-The script backs up the existing settings file to
-`settings.local.json.bak-<timestamp>` before writing.
+O script faz backup do arquivo de configurações existente para
+`settings.local.json.bak-<timestamp>` antes de gravar.
 
-## PowerShell 5.1 compatibility
+## Compatibilidade com PowerShell 5.1
 
-`ConvertFrom-Json -AsHashtable` is PowerShell 7+ only. The script tries
-`-AsHashtable` first and falls back to a manual `PSCustomObject` →
-`Hashtable` conversion on Windows PowerShell 5.1. Both hook buckets
-(`PreToolUse`, `PostToolUse`) and their inner `hooks` arrays are
-materialized as `System.Collections.ArrayList` before serialization, so
-PS 5.1's `ConvertTo-Json` cannot collapse single-element arrays into bare
-objects.
+`ConvertFrom-Json -AsHashtable` é exclusivo do PowerShell 7+. O script tenta
+`-AsHashtable` primeiro e recorre a uma conversão manual de `PSCustomObject` →
+`Hashtable` no Windows PowerShell 5.1. Ambos os buckets de Hook
+(`PreToolUse`, `PostToolUse`) e seus arrays internos `hooks` são
+materializados como `System.Collections.ArrayList` antes da serialização, para que
+o `ConvertTo-Json` do PS 5.1 não consiga colapsar arrays de elemento único em
+objetos simples.
 
-## Verified cases (dry-run)
+## Casos verificados (dry-run)
 
-1. Fresh install — no existing settings → creates canonical file.
-2. Idempotent re-run — existing canonical file → `[SKIP]` both phases,
-   file contents unchanged apart from the pre-write backup.
-3. Legacy `observe.sh` present → preserves the legacy entries and
-   appends the new `observe-wrapper.sh` entries alongside them.
+1. Instalação limpa — sem configurações existentes → cria arquivo canônico.
+2. Re-execução idempotente — arquivo canônico existente → `[SKIP]` em ambas as fases,
+   conteúdo do arquivo inalterado, exceto pelo backup pré-gravação.
+3. `observe.sh` legado presente → preserva as entradas legadas e
+   adiciona as novas entradas do `observe-wrapper.sh` ao lado delas.
 
-All three cases produce LF-only output and match the shape registered by
-PR #1524's manual fix to `settings.local.json`.
+Todos os três casos produzem saída apenas com LF e correspondem ao formato registrado pela
+correção manual do `settings.local.json` do PR #1524.
 
-## Related
+## Referências
 
-- PR #1524 — settings.local.json shape fix (same argv-dup root cause)
-- PR #1539 — locale-independent `detect-project.sh`
-- PR #1540 — `install_hook_wrapper.ps1` argv-dup fix (companion script)
+- PR #1524 — correção do formato de settings.local.json (mesma causa raiz de argv duplicado)
+- PR #1539 — `detect-project.sh` independente de locale
+- PR #1540 — correção de argv duplicado no `install_hook_wrapper.ps1` (script complementar)

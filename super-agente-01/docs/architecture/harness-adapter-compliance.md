@@ -1,58 +1,58 @@
-# Harness Adapter Compliance Matrix
+# Matriz de Conformidade do Adaptador de Harness
 
-This matrix is the public onramp for teams that want to use ECC across more
-than one coding harness. It turns the cross-harness architecture into a
-practical scorecard: what works today, what is instruction-only, what needs an
-adapter, and what evidence an operator should collect before trusting a setup.
+Esta matriz é o ponto de entrada público para equipes que desejam usar o ECC em mais de
+um harness de codificação. Ela transforma a arquitetura cross-harness em um scorecard
+prático: o que funciona hoje, o que é apenas instrução, o que precisa de um adaptador e
+quais evidências um operador deve coletar antes de confiar em uma configuração.
 
-ECC's durable units stay in shared sources:
+As unidades duráveis do ECC permanecem em fontes compartilhadas:
 
 - `skills/*/SKILL.md`
 - `rules/`
 - `commands/`
 - `hooks/hooks.json`
 - `scripts/hooks/`
-- MCP reference configs
-- session and observability contracts
+- configurações MCP de referência
+- contratos de sessão e observabilidade
 
-Harness-specific files should only adapt loading, event shape, command names,
-or platform limits.
+Os arquivos específicos do harness devem apenas adaptar o carregamento, o formato de eventos,
+os nomes de comandos ou os limites da plataforma.
 
-## Compliance States
+## Estados de Conformidade
 
-| State | Meaning |
+| Estado | Significado |
 | --- | --- |
-| Native | ECC can install or verify the surface directly for this harness. |
-| Adapter-backed | ECC has a thin adapter, plugin, or package surface, but parity differs by harness. |
-| Instruction-backed | ECC can provide the guidance and files, but the harness does not expose the runtime hook/session surface ECC needs for enforcement. |
-| Reference-only | The tool is useful as a design pressure or external runtime, but ECC does not yet ship a direct installer or adapter for it. |
+| Nativo | O ECC pode instalar ou verificar a superfície diretamente para este harness. |
+| Baseado em adaptador | O ECC tem um adaptador, plugin ou superfície de pacote fina, mas a paridade difere por harness. |
+| Baseado em instrução | O ECC pode fornecer a orientação e os arquivos, mas o harness não expõe a superfície de hook/sessão em tempo de execução que o ECC precisa para aplicação. |
+| Somente referência | A ferramenta é útil como pressão de design ou runtime externo, mas o ECC ainda não fornece um instalador ou adaptador direto para ela. |
 
-## Matrix
+## Matriz
 
-The matrix below is rendered from
-`scripts/lib/harness-adapter-compliance.js` and verified by
+A matriz abaixo é renderizada a partir de
+`scripts/lib/harness-adapter-compliance.js` e verificada por
 `npm run harness:adapters -- --check`.
 
 <!-- harness-adapter-compliance:matrix-start -->
-| Harness or runtime | State | Supported assets | Unsupported or different surfaces | Install or onramp | Verification command | Risk notes |
+| Harness ou runtime | Estado | Ativos suportados | Superfícies não suportadas ou diferentes | Instalação ou onramp | Comando de verificação | Notas de risco |
 | --- | --- | --- | --- | --- | --- | --- |
-| Claude Code | Native | Claude plugin assets; skills; commands; hooks; MCP config; local rules; statusline-oriented workflows | Claude-native hooks do not imply parity in other harnesses | `./install.sh --profile minimal --target claude`; Claude plugin install | `npm run harness:audit -- --format json`; `node scripts/session-inspect.js --list-adapters` | Avoid loading every skill by default; keep hooks opt-in and inspectable. |
-| Codex | Instruction-backed | `AGENTS.md`; Codex plugin metadata; skills; MCP reference config; command patterns | Native hook enforcement and Claude slash-command semantics are not equivalent | `./install.sh --profile minimal --target codex`; repo-local `AGENTS.md` review | `npm run harness:audit -- --format json` | Treat hooks as policy text unless a native Codex hook surface exists. |
-| OpenCode | Adapter-backed | OpenCode package/plugin metadata; shared skills; MCP config; event adapter patterns | Event names, plugin packaging, and command dispatch differ from Claude Code | OpenCode package or plugin surface from this repo | `node tests/scripts/build-opencode.test.js`; `npm run harness:audit -- --format json` | Keep hook logic in shared scripts and adapt only event shape at the edge. |
-| Cursor | Adapter-backed | Cursor rules; project-local skills; hook adapter; shared scripts | Cursor hook events and rule loading differ from Claude Code | `./install.sh --profile minimal --target cursor` | `node tests/lib/install-targets.test.js`; `npm run harness:audit -- --format json` | Cursor adapters must preserve existing project rules and avoid silent overwrite. |
-| Gemini | Instruction-backed | Gemini project-local instructions; shared skills; rules; compatibility docs | No full ECC hook parity; ecosystem ports must document drift from upstream ECC | `./install.sh --profile minimal --target gemini` | `node tests/lib/install-targets.test.js` | Treat Gemini ports as ecosystem adapters until validated end to end inside Gemini CLI. |
-| Zed | Adapter-backed | Zed project settings; flattened project rules; shared skills; commands; agents | Zed external agents and native Agent Panel permissions are not Claude hooks | `./install.sh --profile minimal --target zed` | `node tests/lib/install-targets.test.js`; `npm run harness:audit -- --format json` | Keep project settings conservative and do not copy BYOK/OpenRouter secrets into `.zed/`. |
-| dmux | Adapter-backed | session snapshots; tmux/worktree orchestration status; handoff exports | dmux is an orchestration runtime, not an install target for skills/rules | `node scripts/session-inspect.js --list-adapters`; dmux session target inspection | `node tests/lib/session-adapters.test.js` | Treat dmux events as session/runtime signals, not as a replacement for repo validation. |
-| Orca | Reference-only | worktree lifecycle; review state; notification; provider-identity design pressure | No ECC installer or direct adapter today | Use as a comparison target for worktree/session state requirements | `npm run observability:ready` | Do not import product-specific assumptions; convert lessons into ECC event fields. |
-| Superset | Reference-only | workspace presets; parallel-agent review loops; worktree isolation design pressure | No ECC installer or direct adapter today | Use as a comparison target for workspace preset taxonomy | `npm run observability:ready` | Keep ECC portable; do not require a desktop workspace to get basic value. |
-| Ghast | Reference-only | terminal-native pane grouping; cwd grouping; search; notifications | No ECC installer or direct adapter today | Use as a comparison target for terminal-first session grouping | `node scripts/session-inspect.js --list-adapters` | Preserve terminal ergonomics before adding visual UI assumptions. |
-| Terminal-only | Native | skills; rules; commands; scripts; harness audit; observability readiness; handoffs | No external UI, no automatic session control unless scripts are run explicitly | Clone repo; run commands directly; use minimal profile for project installs | `npm run harness:audit -- --format json`; `npm run observability:ready` | This is the fallback contract; every higher-level adapter should degrade to it. |
+| Claude Code | Nativo | Ativos de plugin do Claude; skills; comandos; hooks; configuração MCP; regras locais; fluxos de trabalho orientados a statusline | Hooks nativos do Claude não implicam paridade em outros harnesses | `./install.sh --profile minimal --target claude`; instalação do plugin do Claude | `npm run harness:audit -- --format json`; `node scripts/session-inspect.js --list-adapters` | Evitar carregar todas as skills por padrão; manter hooks opt-in e inspecionáveis. |
+| Codex | Baseado em instrução | `AGENTS.md`; metadados de plugin do Codex; skills; configuração MCP de referência; padrões de comandos | A aplicação nativa de hook e a semântica de comandos slash do Claude não são equivalentes | `./install.sh --profile minimal --target codex`; revisão do `AGENTS.md` local do repositório | `npm run harness:audit -- --format json` | Tratar hooks como texto de política a menos que exista uma superfície de hook nativa do Codex. |
+| OpenCode | Baseado em adaptador | Metadados de pacote/plugin do OpenCode; skills compartilhadas; configuração MCP; padrões de adaptador de eventos | Nomes de eventos, empacotamento de plugin e despacho de comandos diferem do Claude Code | Superfície de pacote ou plugin do OpenCode deste repositório | `node tests/scripts/build-opencode.test.js`; `npm run harness:audit -- --format json` | Manter a lógica de hook em scripts compartilhados e adaptar apenas o formato de evento na borda. |
+| Cursor | Baseado em adaptador | Regras do Cursor; skills locais do projeto; adaptador de hook; scripts compartilhados | Eventos de hook do Cursor e carregamento de regras diferem do Claude Code | `./install.sh --profile minimal --target cursor` | `node tests/lib/install-targets.test.js`; `npm run harness:audit -- --format json` | Adaptadores do Cursor devem preservar as regras existentes do projeto e evitar sobreescrita silenciosa. |
+| Gemini | Baseado em instrução | Instruções locais do projeto Gemini; skills compartilhadas; regras; documentos de compatibilidade | Sem paridade completa de hook do ECC; ports de ecossistema devem documentar a deriva do ECC upstream | `./install.sh --profile minimal --target gemini` | `node tests/lib/install-targets.test.js` | Tratar ports do Gemini como adaptadores de ecossistema até que sejam validados de ponta a ponta no Gemini CLI. |
+| Zed | Baseado em adaptador | Configurações de projeto do Zed; regras de projeto niveladas; skills compartilhadas; comandos; agentes | Agentes externos do Zed e permissões nativas do Agent Panel não são hooks do Claude | `./install.sh --profile minimal --target zed` | `node tests/lib/install-targets.test.js`; `npm run harness:audit -- --format json` | Manter as configurações do projeto conservadoras e não copiar segredos BYOK/OpenRouter para `.zed/`. |
+| dmux | Baseado em adaptador | Snapshots de sessão; status de orquestração tmux/worktree; exportações de handoff | dmux é um runtime de orquestração, não um alvo de instalação para skills/regras | `node scripts/session-inspect.js --list-adapters`; inspeção de alvo de sessão dmux | `node tests/lib/session-adapters.test.js` | Tratar eventos dmux como sinais de sessão/runtime, não como substituto para validação do repositório. |
+| Orca | Somente referência | Ciclo de vida de worktree; estado de revisão; notificação; pressão de design de identidade do provedor | Sem instalador ECC ou adaptador direto hoje | Usar como alvo de comparação para requisitos de estado de worktree/sessão | `npm run observability:ready` | Não importar suposições específicas do produto; converter lições em campos de evento do ECC. |
+| Superset | Somente referência | Presets de workspace; loops de revisão de agentes paralelos; pressão de design de isolamento de worktree | Sem instalador ECC ou adaptador direto hoje | Usar como alvo de comparação para taxonomia de presets de workspace | `npm run observability:ready` | Manter o ECC portátil; não exigir um workspace de desktop para obter valor básico. |
+| Ghast | Somente referência | Agrupamento de painéis nativo do terminal; agrupamento por cwd; busca; notificações | Sem instalador ECC ou adaptador direto hoje | Usar como alvo de comparação para agrupamento de sessão orientado ao terminal | `node scripts/session-inspect.js --list-adapters` | Preservar a ergonomia do terminal antes de adicionar suposições de UI visual. |
+| Somente terminal | Nativo | skills; regras; comandos; scripts; auditoria de harness; prontidão de observabilidade; handoffs | Sem UI externa, sem controle automático de sessão a menos que os scripts sejam executados explicitamente | Clonar repositório; executar comandos diretamente; usar perfil minimal para instalações de projeto | `npm run harness:audit -- --format json`; `npm run observability:ready` | Este é o contrato de fallback; todo adaptador de nível superior deve degradar para ele. |
 <!-- harness-adapter-compliance:matrix-end -->
 
-## Scorecard Onramp
+## Onramp do Scorecard
 
-Use this sequence before asking ECC to make a team or repo setup more
-autonomous:
+Use esta sequência antes de pedir ao ECC para tornar a configuração de uma equipe ou
+repositório mais autônoma:
 
 ```bash
 npm run harness:adapters -- --check
@@ -62,22 +62,22 @@ node scripts/session-inspect.js --list-adapters
 node scripts/loop-status.js --json --write-dir .ecc/loop-status
 ```
 
-Read the result as a setup scorecard, not a product badge:
+Leia o resultado como um scorecard de configuração, não como um badge de produto:
 
-- `harness:adapters -- --check` proves this public matrix still matches the
-  adapter source data and required evidence fields.
-- `harness:audit` scores tool coverage, context efficiency, quality gates,
-  memory persistence, eval coverage, security guardrails, and cost efficiency.
-- `observability:ready` proves the repo still exposes the local status,
-  session, tool-activity, risk-ledger, and release-onramp signals.
-- `session-inspect --list-adapters` shows which session surfaces are actually
-  inspectable in the current environment.
-- `loop-status --json` creates a machine-readable handoff/status payload for
-  longer autonomous runs.
+- `harness:adapters -- --check` prova que esta matriz pública ainda corresponde aos dados de
+  origem do adaptador e aos campos de evidência obrigatórios.
+- `harness:audit` pontua cobertura de ferramentas, eficiência de contexto, gates de qualidade,
+  persistência de memória, cobertura de evals, guardrails de segurança e eficiência de custo.
+- `observability:ready` prova que o repositório ainda expõe os sinais de status local,
+  sessão, atividade de ferramentas, registro de risco e onramp de release.
+- `session-inspect --list-adapters` mostra quais superfícies de sessão são realmente
+  inspecionáveis no ambiente atual.
+- `loop-status --json` cria um payload de handoff/status legível por máquina para
+  execuções autônomas mais longas.
 
-## Data-Backed Scorecard Contract
+## Contrato de Scorecard Baseado em Dados
 
-Each adapter record exposes:
+Cada registro de adaptador expõe:
 
 - `id`
 - `state`
@@ -90,16 +90,18 @@ Each adapter record exposes:
 - `owner`
 - `source_docs`
 
-The validator fails if a public adapter claim has no install path,
-verification command, risk note, owner, source doc, or verification date.
+O validador falha se uma afirmação pública do adaptador não tiver caminho de instalação,
+comando de verificação, nota de risco, proprietário, documento de origem ou data de
+verificação.
 
-## Operating Rules
+## Regras Operacionais
 
-- Prefer small, additive adapters over harness-specific forks of the same
-  workflow.
-- Do not call a harness native until the adapter has an install path and a
-  verification command.
-- Keep Codex, Gemini, and Zed surfaces honest when enforcement is
-  instruction-backed rather than runtime-backed.
-- Treat reference-only tools as design pressure until ECC has a direct adapter.
-- Keep the terminal-only path healthy; it is the portability floor.
+- Preferir adaptadores pequenos e aditivos em vez de forks específicos do harness do mesmo
+  fluxo de trabalho.
+- Não chamar um harness de nativo até que o adaptador tenha um caminho de instalação e um
+  comando de verificação.
+- Manter as superfícies do Codex, Gemini e Zed honestas quando a aplicação é baseada em
+  instrução em vez de em tempo de execução.
+- Tratar ferramentas somente de referência como pressão de design até que o ECC tenha um
+  adaptador direto.
+- Manter o caminho somente de terminal saudável; é o piso de portabilidade.

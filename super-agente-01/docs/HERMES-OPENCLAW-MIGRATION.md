@@ -1,135 +1,135 @@
-# Hermes / OpenClaw -> ECC Migration
+# Migração Hermes / OpenClaw -> ECC
 
-This document is the public migration guide for moving a Hermes or OpenClaw-style operator setup into the current ECC model.
+Este documento é o guia público de migração para mover uma configuração de operador no estilo Hermes ou OpenClaw para o modelo ECC atual.
 
-The goal is not to reproduce a private operator workspace byte-for-byte.
+O objetivo não é reproduzir um workspace de operador privado byte a byte.
 
-The goal is to preserve the useful workflow surface:
+O objetivo é preservar a superfície de fluxo de trabalho útil:
 
-- reusable skills
-- stable automation entrypoints
-- cross-harness portability
-- schedulers / reminders / dispatch
-- durable context and operator memory
+- skills reutilizáveis
+- pontos de entrada de automação estáveis
+- portabilidade cross-harness
+- agendadores / lembretes / dispatch
+- contexto durável e memória do operador
 
-while removing the parts that should stay private:
+enquanto remove as partes que devem permanecer privadas:
 
-- secrets
-- personal datasets
-- account tokens
-- local-only business artifacts
+- segredos
+- datasets pessoais
+- tokens de conta
+- artefatos de negócios somente locais
 
-## Migration Thesis
+## Tese de Migração
 
-Treat Hermes and OpenClaw as source systems, not as the final runtime.
+Tratar Hermes e OpenClaw como sistemas de origem, não como o runtime final.
 
-ECC is the durable public system:
+ECC é o sistema público durável:
 
 - skills
 - agents
-- commands
+- comandos
 - hooks
-- install surfaces
-- session adapters
-- ECC 2.0 control-plane work
+- superfícies de instalação
+- adaptadores de sessão
+- trabalho do plano de controle ECC 2.0
 
-Hermes and OpenClaw are useful inputs because they contain repeated operator workflows that can be distilled into ECC-native surfaces.
+Hermes e OpenClaw são entradas úteis porque contêm fluxos de trabalho de operador repetidos que podem ser destilados em superfícies nativas do ECC.
 
-That means the shortest safe path is:
+Isso significa que o caminho seguro mais curto é:
 
-1. extract the reusable behavior
-2. translate it into ECC-native skills, hooks, docs, or adapter work
-3. keep secrets and personal data outside the repo
+1. extrair o comportamento reutilizável
+2. traduzi-lo em skills, hooks, documentação ou trabalho de adaptador nativos do ECC
+3. manter segredos e dados pessoais fora do repositório
 
-## Current Workspace Model
+## Modelo de Workspace Atual
 
-Use the current workspace split consistently:
+Use a divisão de workspace atual de forma consistente:
 
-- live code work happens in cloned repos under `~/GitHub`
-- repo-specific active execution context lives in repo-level `WORKING-CONTEXT.md`
-- broader non-code context can live in KB/archive layers
-- durable cross-machine truth should prefer GitHub, Linear, and the knowledge base
+- trabalho de código ativo acontece em repositórios clonados em `~/GitHub`
+- contexto de execução ativo específico do repositório vive em `WORKING-CONTEXT.md` no nível do repositório
+- contexto mais amplo não relacionado a código pode viver em camadas de KB/arquivo
+- a verdade durável entre máquinas deve preferir GitHub, Linear e a base de conhecimento
 
-Do not rebuild a shadow private workspace inside the public repo.
+Não reconstrua um workspace privado paralelo dentro do repositório público.
 
-## Translation Map
+## Mapa de Tradução
 
-### 1. Scheduler / cron layer
+### 1. Camada de Agendador / cron
 
-Source examples:
+Exemplos de origem:
 
 - `cron/scheduler.py`
 - `jobs.py`
-- recurring readiness or accountability loops
+- loops recorrentes de prontidão ou accountability
 
-Translate into:
+Traduzir para:
 
-- Claude-native scheduling where available
-- ECC hook / command automation for local repeatability
-- ECC 2.0 scheduler work under issue `#1050`
+- agendamento nativo do Claude onde disponível
+- automação de hook / comando do ECC para repetibilidade local
+- trabalho de agendador do ECC 2.0 sob a issue `#1050`
 
-Today, the repo already has the right public framing:
+Hoje, o repositório já tem o enquadramento público correto:
 
-- hooks for low-latency repo-local automation
-- commands for explicit operator actions
-- ECC 2.0 as the future long-lived scheduling/control plane
+- hooks para automação de baixa latência local ao repositório
+- comandos para ações explícitas do operador
+- ECC 2.0 como o futuro plano de controle/agendamento de longa duração
 
-### 2. Gateway / dispatch layer
+### 2. Camada de Gateway / dispatch
 
-Source examples:
+Exemplos de origem:
 
-- Hermes gateway
-- mobile dispatch / remote nudges
-- operator routing between active sessions
+- gateway Hermes
+- dispatch móvel / nudges remotos
+- roteamento de operador entre sessões ativas
 
-Translate into:
+Traduzir para:
 
-- ECC session adapter and control-plane work
-- orchestration/session inspection commands
-- ECC 2.0 control-plane backlog under:
+- trabalho de adaptador de sessão e plano de controle do ECC
+- comandos de inspeção de orquestração/sessão
+- backlog do plano de controle do ECC 2.0 em:
   - `#1045`
   - `#1046`
   - `#1047`
   - `#1048`
 
-The public repo should describe the adapter boundary and control-plane model, not pretend the remote operator shell is already fully GA.
+O repositório público deve descrever o limite do adaptador e o modelo do plano de controle, não fingir que o shell de operador remoto já está totalmente em GA.
 
-### 3. Memory layer
+### 3. Camada de Memória
 
-Source examples:
+Exemplos de origem:
 
 - `memory_tool.py`
-- local operator memory
-- business / ops context stores
+- memória de operador local
+- armazenamentos de contexto de negócios/ops
 
-Translate into:
+Traduzir para:
 
 - `knowledge-ops`
-- repo `WORKING-CONTEXT.md`
-- GitHub / Linear / KB-backed durable context
-- future deep memory work under `#1049`
+- `WORKING-CONTEXT.md` do repositório
+- contexto durável suportado por GitHub / Linear / KB
+- trabalho de memória profunda futura em `#1049`
 
-The important distinction is:
+A distinção importante é:
 
-- repo execution context belongs near the repo
-- broader non-code memory belongs in KB/archive systems
-- the public repo should document the boundary, not store private memory dumps
+- o contexto de execução do repositório pertence próximo ao repositório
+- a memória mais ampla não relacionada a código pertence em sistemas KB/arquivo
+- o repositório público deve documentar o limite, não armazenar dumps de memória privada
 
-### 4. Skill layer
+### 4. Camada de Skill
 
-Source examples:
+Exemplos de origem:
 
-- Hermes skills
-- OpenClaw skills
-- generated operator playbooks
+- skills Hermes
+- skills OpenClaw
+- playbooks de operador gerados
 
-Translate into:
+Traduzir para:
 
-- ECC-native top-level skills when the workflow is reusable
-- docs/examples when the content is only a template
-- hooks or commands when the behavior is procedural rather than knowledge-shaped
+- skills nativas do ECC de nível superior quando o fluxo de trabalho é reutilizável
+- documentação/exemplos quando o conteúdo é apenas um template
+- hooks ou comandos quando o comportamento é procedural em vez de ter formato de conhecimento
 
-Recent examples already salvaged this way:
+Exemplos recentes já recuperados desta forma:
 
 - `knowledge-ops`
 - `github-ops`
@@ -142,48 +142,48 @@ Recent examples already salvaged this way:
 - `terminal-ops`
 - `ecc-tools-cost-audit`
 
-### 5. Tool / service layer
+### 5. Camada de Ferramenta / Serviço
 
-Source examples:
+Exemplos de origem:
 
-- custom service wrappers
-- API-key-backed local tools
-- browser automation glue
+- wrappers de serviço personalizados
+- ferramentas locais suportadas por chave API
+- cola de automação de navegador
 
-Translate into:
+Traduzir para:
 
-- MCP-backed surfaces when a connector exists
-- ECC-native operator skills when the workflow logic is the real asset
-- adapter/control-plane work when the missing piece is session/runtime coordination
+- superfícies suportadas por MCP quando existe um conector
+- skills nativas do ECC do operador quando a lógica do fluxo de trabalho é o ativo real
+- trabalho de adaptador/plano de controle quando a peça ausente é a coordenação de sessão/runtime
 
-Do not import opaque third-party runtimes into ECC just because a private workflow depended on them.
+Não importe runtimes opacos de terceiros para o ECC apenas porque um fluxo de trabalho privado dependia deles.
 
-If a workflow is valuable:
+Se um fluxo de trabalho é valioso:
 
-1. understand the behavior
-2. rebuild the minimum ECC-native version
-3. document the auth/connectors required locally
+1. entenda o comportamento
+2. reconstrua a versão mínima nativa do ECC
+3. documente o auth/conectores necessários localmente
 
-## What Already Exists Publicly
+## O que Já Existe Publicamente
 
-The current repo already covers meaningful parts of the migration:
+O repositório atual já cobre partes significativas da migração:
 
-- ECC 2.0 adapter/control-plane discovery docs
-- orchestration/session inspection substrate
-- operator workflow skills
-- cost / billing / workflow audit skills
-- cross-harness install surfaces
-- AgentShield for config and agent-surface scanning
+- documentação de descoberta de adaptadores/plano de controle do ECC 2.0
+- substrato de inspeção de orquestração/sessão
+- skills de fluxo de trabalho do operador
+- skills de auditoria de custo/faturamento/workflow
+- superfícies de instalação cross-harness
+- AgentShield para varredura de configuração e superfície de agent
 
-This means the migration problem is no longer "start from zero."
+Isso significa que o problema de migração não é mais "começar do zero."
 
-It is mostly:
+É principalmente:
 
-- distilling missing private workflows
-- clarifying public docs
-- continuing the ECC 2.0 operator/control-plane buildout
+- destilar fluxos de trabalho privados ausentes
+- esclarecer documentação pública
+- continuar o buildout de operador/plano de controle do ECC 2.0
 
-ECC 2.0 now ships a bounded migration audit entrypoint:
+O ECC 2.0 agora disponibiliza um ponto de entrada de auditoria de migração delimitado:
 
 - `ecc migrate audit --source ~/.hermes`
 - `ecc migrate plan --source ~/.hermes --output migration-plan.md`
@@ -196,44 +196,44 @@ ECC 2.0 now ships a bounded migration audit entrypoint:
 - `ecc migrate import-env --source ~/.hermes --dry-run`
 - `ecc migrate import-memory --source ~/.hermes`
 
-Use that first to inventory the legacy workspace and map detected surfaces onto the current ECC2 scheduler, remote dispatch, memory graph, templates, and manual-translation lanes.
+Use isso primeiro para inventariar o workspace legado e mapear as superfícies detectadas para o agendador atual do ECC2, dispatch remoto, grafo de memória, templates e faixas de tradução manual.
 
-## What Still Belongs In Backlog
+## O que Ainda Pertence ao Backlog
 
-The remaining large migration themes are already tracked:
+Os temas grandes de migração restantes já estão rastreados:
 
-- `#1051` Hermes/OpenClaw migration
-- `#1049` deep memory layer
-- `#1050` autonomous scheduling
-- `#1048` universal harness compatibility layer
-- `#1046` agent orchestrator
-- `#1045` multi-session TUI manager
-- `#1047` visual worktree manager
+- `#1051` Migração Hermes/OpenClaw
+- `#1049` camada de memória profunda
+- `#1050` agendamento autônomo
+- `#1048` camada de compatibilidade de harness universal
+- `#1046` orquestrador de agent
+- `#1045` gerenciador TUI multi-sessão
+- `#1047` gerenciador visual de worktree
 
-That is the right place for the unresolved control-plane work.
+Esse é o lugar certo para o trabalho não resolvido de plano de controle.
 
-Do not pretend the migration is "done" just because the public docs exist.
+Não finja que a migração está "concluída" apenas porque a documentação pública existe.
 
-## Recommended Bring-Up Order
+## Ordem de Inicialização Recomendada
 
-1. Keep the public ECC repo as the canonical reusable layer.
-2. Port reusable Hermes/OpenClaw workflows into ECC-native skills one lane at a time.
-3. Keep private auth and personal context outside the repo.
-4. Use GitHub / Linear / KB systems as durable truth.
-5. Treat ECC 2.0 as the path to a native operator shell, not as a finished product.
+1. Manter o repositório ECC público como a camada reutilizável canônica.
+2. Portar fluxos de trabalho reutilizáveis do Hermes/OpenClaw em skills nativas do ECC, uma faixa de cada vez.
+3. Manter auth privado e contexto pessoal fora do repositório.
+4. Usar sistemas GitHub / Linear / KB como verdade durável.
+5. Tratar o ECC 2.0 como o caminho para um shell de operador nativo, não como um produto finalizado.
 
-## Decision Rule
+## Regra de Decisão
 
-When reviewing a Hermes or OpenClaw artifact, ask:
+Ao revisar um artefato Hermes ou OpenClaw, pergunte:
 
-1. Is this reusable across operators or only personal?
-2. Is the asset mainly knowledge, procedure, or runtime behavior?
-3. Should it become:
-   - a skill
-   - a command
-   - a hook
-   - a doc/example
-   - a control-plane issue
-4. Does shipping it publicly leak secrets, private datasets, or personal operating state?
+1. Isso é reutilizável entre operadores ou apenas pessoal?
+2. O ativo é principalmente conhecimento, procedimento ou comportamento de runtime?
+3. Deve se tornar:
+   - uma skill
+   - um comando
+   - um hook
+   - uma documentação/exemplo
+   - uma issue de plano de controle
+4. Lançá-lo publicamente vaza segredos, datasets privados ou estado de operação pessoal?
 
-Only ship the reusable surface.
+Publique apenas a superfície reutilizável.

@@ -1,112 +1,111 @@
-# Legacy Artifact Inventory
+# Inventário de Artefatos Legados
 
-This inventory keeps legacy and stale-work cleanup from becoming implicit. Each
-artifact should be classified as landed, milestone-tracked, salvage branch, or
-archive/no-action before release work treats the queue as clean.
+Este inventário evita que a limpeza de artefatos legados e trabalhos obsoletos se torne implícita. Cada
+artefato deve ser classificado como entregue, rastreado por milestone, branch de salvamento ou
+arquivo/sem ação antes que o trabalho de lançamento trate a fila como limpa.
 
-## Classification States
+## Estados de Classificação
 
-| State | Meaning |
+| Estado | Significado |
 | --- | --- |
-| Landed | Useful work has already been ported to current `main` and verified. |
-| Milestone-tracked | Useful work remains, but belongs to a named roadmap milestone. |
-| Salvage branch | Useful work should be ported through a fresh maintainer branch with attribution. |
-| Translator/manual review | Content may be useful, but cannot be safely imported automatically. |
-| Archive/no-action | Artifact is intentionally retained or skipped; no active port is planned. |
+| Entregue | O trabalho útil já foi portado para o `main` atual e verificado. |
+| Rastreado por milestone | O trabalho útil permanece, mas pertence a um milestone nomeado do roadmap. |
+| Branch de salvamento | O trabalho útil deve ser portado através de um novo branch de mantenedor com atribuição. |
+| Revisão por tradutor/manual | O conteúdo pode ser útil, mas não pode ser importado automaticamente com segurança. |
+| Arquivo/sem ação | O artefato é intencionalmente retido ou ignorado; nenhum porte ativo está planejado. |
 
-## Current Repository Scan
+## Varredura Atual do Repositório
 
-As of 2026-05-12, the tracked repo has no `_legacy-documents-*` directories.
+Em 2026-05-12, o repositório rastreado não possui diretórios `_legacy-documents-*`.
 
-Fresh check:
+Verificação atualizada:
 
 ```sh
 find . -type d -name '_legacy-documents-*' -print
 ```
 
-Expected result: no output.
+Resultado esperado: sem saída.
 
-The only tracked legacy directory currently found by filename scan is
+O único diretório legado rastreado encontrado atualmente pela varredura de nome de arquivo é
 `legacy-command-shims/`.
 
-The umbrella ECC workspace also contains sibling legacy git repositories outside
-this tracked checkout. These are intentionally inventoried separately because
-they can contain raw operator context, local settings, private drafts, or
-untracked files that should not be copied into the public repo wholesale.
+O workspace ECC umbrella também contém repositórios git legados irmãos fora
+deste checkout rastreado. Eles são inventariados intencionalmente de forma separada porque
+podem conter contexto bruto de operador, configurações locais, rascunhos privados ou
+arquivos não rastreados que não devem ser copiados para o repositório público como um todo.
 
-Fresh workspace-level check from the ECC umbrella directory:
+Verificação atualizada no nível do workspace a partir do diretório umbrella do ECC:
 
 ```sh
 find .. -maxdepth 1 -type d -name '_legacy-documents-*' -print | sort
 ```
 
-Expected result:
+Resultado esperado:
 
 ```text
 ../_legacy-documents-ecc-context-2026-04-30
 ../_legacy-documents-ecc-everything-claude-code-2026-04-30
 ```
 
-## Inventory
+## Inventário
 
-| Artifact | State | Evidence | Action |
+| Artefato | Estado | Evidência | Ação |
 | --- | --- | --- | --- |
-| `_legacy-documents-*` directories | Archive/no-action | No matching directories exist in the tracked checkout as of 2026-05-12. | Re-run the scan before release. If any appear, add each directory to this table before publishing. |
-| `legacy-command-shims/` | Archive/no-action | `legacy-command-shims/README.md` states these retired short-name shims are opt-in and no longer loaded by the default plugin command surface. | Keep as an explicit compatibility archive. Do not move these back into the default plugin surface without a migration decision. |
-| Closed-stale PR salvage ledger | Landed | `docs/stale-pr-salvage-ledger.md` records useful stale work recovered through maintainer PRs. | Continue using the ledger pattern for future stale closures. |
-| #1687 zh-CN localization tail | Translator/manual review | Large safe subsets landed in #1746-#1752; remaining pieces are attached to Linear ITO-55 for language-owner review. | Do not blindly cherry-pick. Split by docs, commands, agents, and skills if a translator review lane opens; no automatic import remains release-blocking. |
-| #1609 Persian README translation | Translator/manual review | Recorded in the stale salvage ledger and attached to Linear ITO-55 for language-owner review. | Do not import stale README/version/count text without a Persian reviewer and a current catalog refresh. |
-| #1563 zh-TW README sync | Translator/manual review | Recorded in the stale salvage ledger and attached to Linear ITO-55 for language-owner review. | Do not import stale README/version/count text without a zh-TW reviewer and a current catalog refresh. |
-| #1564 Turkish README sync | Translator/manual review | Recorded in the stale salvage ledger and attached to Linear ITO-55 for language-owner review. | Do not import stale README/version/count text without a Turkish reviewer and a current catalog refresh. |
-| #1565 pt-BR README sync | Translator/manual review | Recorded in the stale salvage ledger and attached to Linear ITO-55 for language-owner review. | Do not import stale README/version/count text without a pt-BR reviewer and a current catalog refresh. |
+| Diretórios `_legacy-documents-*` | Arquivo/sem ação | Nenhum diretório correspondente existe no checkout rastreado em 2026-05-12. | Execute novamente a varredura antes do lançamento. Se algum aparecer, adicione cada diretório a esta tabela antes de publicar. |
+| `legacy-command-shims/` | Arquivo/sem ação | O `legacy-command-shims/README.md` afirma que esses shims de nome abreviado aposentados são opcionais e não são mais carregados pela superfície de command padrão do plugin. | Manter como um arquivo de compatibilidade explícito. Não mova estes de volta para a superfície padrão do plugin sem uma decisão de migração. |
+| Ledger de salvamento de PRs fechadas-obsoletas | Entregue | `docs/stale-pr-salvage-ledger.md` registra trabalho obsoleto útil recuperado através de PRs de mantenedores. | Continuar usando o padrão de ledger para futuros fechamentos de obsoletos. |
+| Cauda de localização zh-CN do #1687 | Revisão por tradutor/manual | Grandes subconjuntos seguros pousaram em #1746-#1752; as peças restantes estão vinculadas ao Linear ITO-55 para revisão do responsável pelo idioma. | Não faça cherry-pick cegamente. Divida por documentação, commands, agents e skills se uma rota de revisão por tradutor abrir; nenhuma importação automática permanece bloqueando o lançamento. |
+| Tradução do README em Persa do #1609 | Revisão por tradutor/manual | Registrado no ledger de salvamento de obsoletos e vinculado ao Linear ITO-55 para revisão do responsável pelo idioma. | Não importe texto obsoleto de README/versão/contagem sem um revisor de Persa e uma atualização atual do catálogo. |
+| Sincronização do README zh-TW do #1563 | Revisão por tradutor/manual | Registrado no ledger de salvamento de obsoletos e vinculado ao Linear ITO-55 para revisão do responsável pelo idioma. | Não importe texto obsoleto de README/versão/contagem sem um revisor de zh-TW e uma atualização atual do catálogo. |
+| Sincronização do README em Turco do #1564 | Revisão por tradutor/manual | Registrado no ledger de salvamento de obsoletos e vinculado ao Linear ITO-55 para revisão do responsável pelo idioma. | Não importe texto obsoleto de README/versão/contagem sem um revisor de Turco e uma atualização atual do catálogo. |
+| Sincronização do README pt-BR do #1565 | Revisão por tradutor/manual | Registrado no ledger de salvamento de obsoletos e vinculado ao Linear ITO-55 para revisão do responsável pelo idioma. | Não importe texto obsoleto de README/versão/contagem sem um revisor de pt-BR e uma atualização atual do catálogo. |
 
-## Workspace-Level Legacy Repos
+## Repositórios Legados no Nível do Workspace
 
-These sibling repositories live outside the tracked `everything-claude-code`
-checkout. They are source material for future salvage passes, not installable
-release assets.
+Esses repositórios irmãos residem fora do checkout rastreado de `everything-claude-code`.
+Eles são material de origem para futuras passagens de salvamento, não ativos de lançamento instaláveis.
 
-| Artifact | State | Evidence | Action |
+| Artefato | Estado | Evidência | Ação |
 | --- | --- | --- | --- |
-| `../_legacy-documents-ecc-everything-claude-code-2026-04-30` | Archive/no-action | Separate legacy checkout on `fix/configure-ecc-skill-copy-paths-1483` at `b78ddbd0`; useful configure-ecc and install-path concepts have been superseded by current install docs and tests. The checkout also has untracked localized project-guidelines examples and a Finder duplicate `skills/social-graph-ranker/SKILL 2.md`. | Do not import wholesale. If configure-ecc copy-root regressions reappear, use this branch only as source-attributed archaeology and port through a fresh maintainer branch. Leave Finder duplicates out of source control. |
-| `../_legacy-documents-ecc-context-2026-04-30` | Milestone-tracked | Archived `ECC-context` repo is four commits ahead of its origin and contains context, gameplan, knowledge, marketing, AgentShield, and ECC Tools planning material. It also contains local/private surfaces such as `.env` and local settings. | Keep as a sanitized extraction source for roadmap, launch, AgentShield, and ECC Tools work. Never copy raw context, secrets, personal paths, private settings, or unpublished drafts into this repo. Port only focused, public-safe content with attribution. |
+| `../_legacy-documents-ecc-everything-claude-code-2026-04-30` | Arquivo/sem ação | Checkout legado separado em `fix/configure-ecc-skill-copy-paths-1483` em `b78ddbd0`; conceitos úteis de configure-ecc e caminho de instalação foram substituídos pela documentação e testes de instalação atuais. O checkout também possui exemplos de project-guidelines localizados não rastreados e um `skills/social-graph-ranker/SKILL 2.md` duplicado do Finder. | Não importe como um todo. Se regressões de raiz de cópia do configure-ecc reaparecerem, use este branch apenas como arqueologia atribuída à fonte e porte através de um novo branch de mantenedor. Deixe duplicatas do Finder fora do controle de versão. |
+| `../_legacy-documents-ecc-context-2026-04-30` | Rastreado por milestone | O repositório `ECC-context` arquivado está quatro commits à frente de sua origem e contém material de contexto, gameplan, conhecimento, marketing, AgentShield e planejamento de ECC Tools. Também contém superfícies locais/privadas como `.env` e configurações locais. | Manter como fonte de extração sanitizada para trabalho de roadmap, lançamento, AgentShield e ECC Tools. Nunca copie contexto bruto, segredos, caminhos pessoais, configurações privadas ou rascunhos não publicados para este repositório. Porte apenas conteúdo focado e seguro para publicação, com atribuição. |
 
-## Workspace Legacy Import Rules
+## Regras de Importação de Legado do Workspace
 
-When mining workspace-level legacy repos:
+Ao minerar repositórios legados no nível do workspace:
 
-1. Do not read, print, stage, or copy `.env` files, tokens, OAuth secrets,
-   local settings, personal paths, or private operator context.
-2. Do not import raw marketing drafts, gameplans, or chat/context dumps.
-3. Extract only focused, public-safe ideas into current docs or code.
-4. Attribute the source legacy repo, branch, commit, or stale PR in the new PR.
-5. Validate the result with the same tests and release checks as native work.
+1. Não leia, imprima, prepare para commit ou copie arquivos `.env`, tokens, segredos OAuth,
+   configurações locais, caminhos pessoais ou contexto privado de operador.
+2. Não importe rascunhos brutos de marketing, gameplans ou dumps de chat/contexto.
+3. Extraia apenas ideias focadas e seguras para publicação para documentação ou código atuais.
+4. Atribua o repositório legado de origem, branch, commit ou PR obsoleta no novo PR.
+5. Valide o resultado com os mesmos testes e verificações de lançamento que o trabalho nativo.
 
-## Legacy Command Shim Contents
+## Conteúdo dos Shims de Command Legados
 
-The compatibility archive currently contains 12 retired command shims:
+O arquivo de compatibilidade contém atualmente 12 shims de command aposentados:
 
-| Shim | Preferred current direction |
+| Shim | Direção atual preferida |
 | --- | --- |
-| `agent-sort.md` | Use maintained command or skill routing where available. |
-| `claw.md` | Use maintained `scripts/claw.js` / `npm run claw` surfaces. |
-| `context-budget.md` | Use maintained token/context budgeting skills. |
-| `devfleet.md` | Use maintained agent/harness orchestration docs and skills. |
-| `docs.md` | Use current documentation and release checklist workflows. |
-| `e2e.md` | Use maintained E2E testing skills and test scripts. |
-| `eval.md` | Use eval-harness and verification-loop skills. |
-| `orchestrate.md` | Use maintained orchestration status and worktree scripts. |
-| `prompt-optimize.md` | Use prompt-optimizer skill. |
-| `rules-distill.md` | Use current rules and skill extraction workflows. |
-| `tdd.md` | Use tdd-workflow and language-specific testing skills. |
-| `verify.md` | Use verification-loop and package-specific verification skills. |
+| `agent-sort.md` | Use command mantido ou roteamento de skill onde disponível. |
+| `claw.md` | Use as superfícies mantidas `scripts/claw.js` / `npm run claw`. |
+| `context-budget.md` | Use skills mantidas de orçamento de token/contexto. |
+| `devfleet.md` | Use documentação e skills mantidas de orquestração de agent/harness. |
+| `docs.md` | Use fluxos de trabalho atuais de documentação e lista de verificação de lançamento. |
+| `e2e.md` | Use skills mantidas de teste E2E e scripts de teste. |
+| `eval.md` | Use skills de eval-harness e verification-loop. |
+| `orchestrate.md` | Use scripts mantidos de status de orquestração e worktree. |
+| `prompt-optimize.md` | Use a skill prompt-optimizer. |
+| `rules-distill.md` | Use fluxos de trabalho atuais de extração de rules e skills. |
+| `tdd.md` | Use tdd-workflow e skills de teste específicas de linguagem. |
+| `verify.md` | Use skills de verification-loop e verificação específica de pacote. |
 
-## Release Rule
+## Regra de Lançamento
 
-Before any GA or rc publication pass:
+Antes de qualquer passagem de publicação GA ou rc:
 
-1. Re-run the `_legacy-documents-*` scan.
-2. Re-run the closed-stale salvage ledger check.
-3. Confirm every newly discovered legacy artifact is represented in this file.
-4. Port useful work through fresh maintainer PRs with source attribution.
-5. Leave archive/no-action artifacts out of default install and plugin loading.
+1. Execute novamente a varredura de `_legacy-documents-*`.
+2. Execute novamente a verificação do ledger de salvamento de obsoletos fechados.
+3. Confirme que cada artefato legado recém-descoberto está representado neste arquivo.
+4. Porte trabalho útil através de novos PRs de mantenedores com atribuição de origem.
+5. Deixe artefatos de arquivo/sem ação fora da instalação padrão e do carregamento de plugins.

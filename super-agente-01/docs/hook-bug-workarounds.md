@@ -1,31 +1,31 @@
-# Hook Bug Workarounds
+# Soluções Alternativas para Bugs de Hook
 
-Community-tested workarounds for current Claude Code bugs that can affect ECC hook-heavy setups.
+Soluções alternativas testadas pela comunidade para bugs atuais do Claude Code que podem afetar configurações do ECC com uso intensivo de Hook.
 
-This page is intentionally narrow: it collects the highest-signal operational fixes from the longer troubleshooting surface without repeating speculative or unsupported configuration advice. These are upstream Claude Code behaviors, not ECC bugs.
+Esta página é intencionalmente estreita: ela reúne as correções operacionais de maior sinal da superfície de solução de problemas mais extensa sem repetir orientações de configuração especulativas ou sem suporte. Esses são comportamentos upstream do Claude Code, não bugs do ECC.
 
-## When To Use This Page
+## Quando Usar Esta Página
 
-Use this page when you are specifically debugging:
+Use esta página quando estiver depurando especificamente:
 
-- false `Hook Error` labels on otherwise successful hook runs
-- earlier-than-expected compaction
-- MCP connectors that look authenticated but fail after compaction
-- hook edits that do not hot-reload
-- repeated `529 Overloaded` responses under heavy hook/tool pressure
+- rótulos falsos de `Hook Error` em execuções de Hook que foram bem-sucedidas
+- compactação mais cedo do que o esperado
+- conectores MCP que parecem autenticados mas falham após a compactação
+- edições de Hook que não recarregam automaticamente
+- respostas repetidas de `529 Overloaded` sob pressão intensa de Hook/ferramenta
 
-For the fuller ECC troubleshooting surface, use [TROUBLESHOOTING.md](./TROUBLESHOOTING.md).
+Para a superfície de solução de problemas mais completa do ECC, use [TROUBLESHOOTING.md](./TROUBLESHOOTING.md).
 
-## High-Signal Workarounds
+## Soluções Alternativas de Alto Sinal
 
-### False `Hook Error` labels
+### Rótulos falsos de `Hook Error`
 
-What helps:
+O que ajuda:
 
-- Consume stdin at the start of shell hooks (`input=$(cat)`).
-- Keep stdout quiet for simple allow/block hooks unless your hook explicitly requires structured stdout.
-- Send human-readable diagnostics to stderr.
-- Use the correct exit codes: `0` allow, `2` block, other non-zero values are treated as errors.
+- Consumir stdin no início dos Hooks de shell (`input=$(cat)`).
+- Manter o stdout quieto para Hooks simples de permitir/bloquear, a menos que seu Hook exija explicitamente stdout estruturado.
+- Enviar diagnósticos legíveis por humanos para stderr.
+- Usar os códigos de saída corretos: `0` para permitir, `2` para bloquear, outros valores não-zero são tratados como erros.
 
 ```bash
 input=$(cat)
@@ -33,40 +33,40 @@ echo "[BLOCKED] Reason here" >&2
 exit 2
 ```
 
-### Earlier-than-expected compaction
+### Compactação mais cedo do que o esperado
 
-What helps:
+O que ajuda:
 
-- Remove `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE` if lowering it causes earlier compaction in your build.
-- Prefer manual `/compact` at natural task boundaries.
-- Use ECC's `strategic-compact` guidance instead of forcing a lower threshold.
+- Remover `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE` se reduzi-lo causar compactação mais cedo no seu build.
+- Preferir `/compact` manual em limites naturais de tarefa.
+- Usar a orientação de `strategic-compact` do ECC em vez de forçar um limite menor.
 
-### MCP auth looks live but fails after compaction
+### Autenticação MCP parece ativa mas falha após compactação
 
-What helps:
+O que ajuda:
 
-- Toggle the affected connector off and back on after compaction.
-- If your Claude Code build supports it, add a lightweight `PostCompact` reminder hook that tells you to re-check connector auth.
-- Treat this as a recovery reminder, not a permanent fix.
+- Desligar e religar o conector afetado após a compactação.
+- Se o seu build do Claude Code suportar, adicionar um Hook leve de lembrete `PostCompact` que avise para verificar novamente a autenticação do conector.
+- Tratar isso como um lembrete de recuperação, não uma correção permanente.
 
-### Hook edits do not hot-reload
+### Edições de Hook não recarregam automaticamente
 
-What helps:
+O que ajuda:
 
-- Restart the Claude Code session after changing hooks.
-- Advanced users sometimes use shell-local reload helpers, but ECC does not ship one because those approaches are shell- and platform-dependent.
+- Reiniciar a sessão do Claude Code após alterar Hooks.
+- Usuários avançados às vezes usam helpers de reload local via shell, mas o ECC não fornece um porque essas abordagens dependem do shell e da plataforma.
 
-### Repeated `529 Overloaded`
+### `529 Overloaded` repetido
 
-What helps:
+O que ajuda:
 
-- Reduce tool-definition pressure with `ENABLE_TOOL_SEARCH=auto:5` if your setup supports it.
-- Lower `MAX_THINKING_TOKENS` for routine work.
-- Route subagent work to a cheaper model such as `CLAUDE_CODE_SUBAGENT_MODEL=haiku` if your setup exposes that knob.
-- Disable unused MCP servers per project.
-- Compact manually at natural breakpoints instead of waiting for auto-compaction.
+- Reduzir a pressão de definição de ferramenta com `ENABLE_TOOL_SEARCH=auto:5` se sua configuração suportar.
+- Diminuir `MAX_THINKING_TOKENS` para trabalho de rotina.
+- Rotear trabalho de subagent para um modelo mais barato como `CLAUDE_CODE_SUBAGENT_MODEL=haiku` se sua configuração expuser esse controle.
+- Desabilitar servidores MCP não utilizados por projeto.
+- Compactar manualmente em pontos de parada naturais em vez de aguardar a compactação automática.
 
-## Related ECC Docs
+## Documentação Relacionada do ECC
 
 - [TROUBLESHOOTING.md](./TROUBLESHOOTING.md)
 - [token-optimization.md](./token-optimization.md)

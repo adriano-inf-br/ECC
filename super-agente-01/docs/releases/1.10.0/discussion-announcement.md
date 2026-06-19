@@ -1,16 +1,16 @@
-# ECC v1.10.0 is live
+# O ECC v1.10.0 está disponível
 
-ECC just crossed **140K stars**, and the public release surface had drifted too far from the actual repo.
+O ECC acabou de ultrapassar **140K estrelas**, e a superfície de lançamento pública havia se distanciado demais do repositório real.
 
-So v1.10.0 is a hard sync release:
+Então o v1.10.0 é um lançamento de sincronização completa:
 
 - **38 agents**
 - **156 skills**
 - **72 commands**
-- plugin/install metadata corrected
-- top-line docs and release surfaces brought back in line
+- metadados de plugin/instalação corrigidos
+- documentação principal e superfícies de lançamento realinhadas
 
-This release also folds in the operator/media lane that has been growing around the core harness system:
+Este lançamento também incorpora a rota de operador/mídia que vinha crescendo em torno do sistema de harness central:
 
 - `brand-voice`
 - `social-graph-ranker`
@@ -22,11 +22,11 @@ This release also folds in the operator/media lane that has been growing around 
 - `manim-video`
 - `remotion-video-creation`
 
-And on the 2.0 side:
+E no lado do 2.0:
 
-ECC 2.0 is now **real as an alpha control-plane surface** in-tree under `ecc2/`.
+O ECC 2.0 agora é **real como uma superfície alpha de plano de controle** na árvore sob `ecc2/`.
 
-It builds today and exposes:
+Ele compila hoje e expõe:
 
 - `dashboard`
 - `start`
@@ -36,20 +36,20 @@ It builds today and exposes:
 - `resume`
 - `daemon`
 
-That does **not** mean the full ECC 2.0 roadmap is done.
+Isso **não** significa que o roadmap completo do ECC 2.0 está concluído.
 
-It means the control-plane alpha is here, usable, and moving out of the “just a vision” category.
+Significa que o alpha do plano de controle está aqui, utilizável, e saindo da categoria "apenas uma visão".
 
-The shortest honest framing right now:
+O enquadramento mais honesto e conciso no momento:
 
-- ECC 1.x is the battle-tested harness/workflow layer shipping broadly today
-- ECC 2.0 is the alpha control-plane growing on top of it
+- ECC 1.x é a camada de harness/fluxo de trabalho testada em batalha com ampla distribuição hoje
+- ECC 2.0 é o alpha do plano de controle crescendo sobre ela
 
-If you have been waiting for:
+Se você estava esperando por:
 
-- cleaner install surfaces
-- stronger cross-harness parity
-- operator workflows instead of just coding primitives
-- a real control-plane direction instead of scattered notes
+- superfícies de instalação mais limpas
+- paridade mais forte entre harnesses
+- fluxos de trabalho de operador em vez de apenas primitivas de codificação
+- uma direção real de plano de controle em vez de notas espalhadas
 
-this is the release that makes the repo feel coherent again.
+este é o lançamento que faz o repositório parecer coerente novamente.

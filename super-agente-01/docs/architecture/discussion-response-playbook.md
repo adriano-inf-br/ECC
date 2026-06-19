@@ -1,90 +1,89 @@
-# Discussion Response Playbook
+# Playbook de Respostas a Discussões
 
-This playbook turns GitHub Discussions into the same operating queue as PRs,
-issues, Linear work, and release evidence. It is an operator guide, not a
-promise that every informational thread needs a public reply.
+Este playbook transforma as Discussões do GitHub na mesma fila de operação que PRs,
+issues, trabalho no Linear e evidências de release. É um guia do operador, não uma
+promessa de que todo thread informativo precisa de uma resposta pública.
 
-## Audit Loop
+## Loop de Auditoria
 
-Run these checks before a release, after a major merge batch, and when Linear
-ITO-59 is refreshed:
+Execute estas verificações antes de um release, após um lote significativo de merges e
+quando o ITO-59 do Linear for atualizado:
 
 ```bash
 npm run discussion:audit -- --json
 node scripts/platform-audit.js --json
 ```
 
-The queue is current only when:
+A fila está atualizada somente quando:
 
-- discussion fetch errors are explained or fixed;
-- `needsMaintainerTouch` is zero for support-like discussion categories;
-- answerable Q&A discussions either have an accepted answer or a clear routing
-  note; and
-- any product-scope thread is linked to a GitHub issue, Linear issue, roadmap
-  row, or explicit deferral.
+- os erros de busca de discussões estão explicados ou corrigidos;
+- `needsMaintainerTouch` é zero para categorias de discussão semelhantes a suporte;
+- discussões de Q&A respondíveis têm uma resposta aceita ou uma nota de roteamento clara; e
+- qualquer thread com escopo de produto está vinculado a uma issue do GitHub, issue do Linear,
+  linha do roadmap ou adiamento explícito.
 
-Informational threads such as announcements, references, show-and-tell, or
-maintainer-authored updates can remain visible without becoming response debt.
+Threads informativos, como anúncios, referências, show-and-tell ou atualizações de autoria do
+mantenedor, podem permanecer visíveis sem se tornarem dívida de resposta.
 
-## Categories
+## Categorias
 
-| Category | Route | Required readback |
+| Categoria | Rota | Leitura de retorno obrigatória |
 | --- | --- | --- |
-| Product support or install confusion | Reply with the exact command/doc path; mark accepted answer for Q&A when the fix is complete | Discussion URL plus accepted-answer URL when applicable |
-| Bug report | Ask for a minimal repro, version, harness, and logs; create or link a GitHub issue when reproducible | Issue URL or deferral reason |
-| Feature request | Acknowledge the desired outcome and link the closest roadmap issue; do not imply commitment unless scoped | Linear/GitHub roadmap link |
-| Security concern | Move exploit details and secrets to a private channel; keep the public reply short and non-operational | Private escalation note plus public safety reply |
-| Release or billing question | Answer from the release URL ledger and publication-readiness gates; do not claim unpublished URLs, billing readiness, or plugin availability | Evidence artifact or blocker link |
-| Show-and-tell, reference, or announcement | Leave as informational unless there is a direct question or a product-scope signal | Optional roadmap link if useful |
-| Stale or concluded thread | Summarize the current state and link the durable doc/issue; avoid reviving low-signal threads | Closure note or explicit no-action rationale |
+| Suporte ao produto ou confusão na instalação | Responder com o caminho exato do comando/documento; marcar resposta aceita para Q&A quando a correção estiver completa | URL da discussão mais URL da resposta aceita quando aplicável |
+| Relatório de bug | Solicitar uma reprodução mínima, versão, harness e logs; criar ou vincular uma issue do GitHub quando reproduzível | URL da issue ou motivo do adiamento |
+| Solicitação de recurso | Reconhecer o resultado desejado e vincular a issue de roadmap mais próxima; não implicar compromisso a menos que esteja no escopo | Link do roadmap Linear/GitHub |
+| Preocupação de segurança | Mover detalhes de exploração e segredos para um canal privado; manter a resposta pública curta e não operacional | Nota de escalonamento privado mais resposta pública de segurança |
+| Pergunta sobre release ou cobrança | Responder a partir do registro de URL de release e dos gates de prontidão de publicação; não alegar URLs não publicadas, prontidão de cobrança ou disponibilidade de plugin | Artefato de evidência ou link de bloqueador |
+| Show-and-tell, referência ou anúncio | Deixar como informativo, a menos que haja uma pergunta direta ou um sinal de escopo de produto | Link de roadmap opcional se útil |
+| Thread desatualizado ou concluído | Resumir o estado atual e vincular o documento/issue durável; evitar reviver threads de baixo sinal | Nota de encerramento ou justificativa explícita de sem ação |
 
 ## Templates
 
-### Public Support
+### Suporte Público
 
-Thanks for the report. The current supported path is:
+Obrigado pelo relatório. O caminho suportado atualmente é:
 
 ```bash
-<command>
+<comando>
 ```
 
-The relevant doc is `<doc path or URL>`. If this does not match your setup,
-please reply with the harness, OS, package manager, and the exact error text.
+O documento relevante é `<caminho do documento ou URL>`. Se isso não corresponder à sua
+configuração, por favor responda com o harness, SO, gerenciador de pacotes e o texto exato
+do erro.
 
-### Maintainer Coordination
+### Coordenação do Mantenedor
 
-I am routing this into `<issue or Linear key>` so it does not get lost in the
-discussion queue. The next decision is `<specific decision>`. Until that lands,
-the supported workaround is `<workaround or "none">`.
+Estou roteando isso para `<issue ou chave Linear>` para que não se perca na fila de
+discussões. A próxima decisão é `<decisão específica>`. Até que isso seja resolvido,
+a solução alternativa suportada é `<solução alternativa ou "nenhuma">`.
 
-### Stale Or Concluded
+### Desatualizado ou Concluído
 
-This thread looks resolved or superseded by `<doc/issue/release>`. I am leaving
-it visible for history, but it is no longer an active support queue item. New
-repro details should go to `<issue/discussion path>`.
+Este thread parece resolvido ou substituído por `<documento/issue/release>`. Estou
+deixando-o visível para histórico, mas ele não é mais um item ativo da fila de suporte.
+Novos detalhes de reprodução devem ir para `<caminho de issue/discussão>`.
 
-### Release Announcement
+### Anúncio de Release
 
-The current release status is `<rc/beta/GA state>`. Live URLs are recorded in
-`docs/releases/2.0.0-rc.1/release-url-ledger-2026-05-18.md`. Anything marked
-pending there should not be announced as shipped yet.
+O status atual do release é `<estado rc/beta/GA>`. As URLs ao vivo estão registradas em
+`docs/releases/2.0.0-rc.1/release-url-ledger-2026-05-18.md`. Qualquer coisa marcada como
+pendente ali não deve ser anunciada como entregue ainda.
 
-### Security Escalation
+### Escalonamento de Segurança
 
-Thanks for flagging this. Please do not post exploit steps, tokens, customer
-data, or secret values in the public thread. I am routing this through the
-security response path and will keep the public thread limited to safe status
-updates.
+Obrigado por sinalizar isso. Por favor, não publique etapas de exploração, tokens, dados de
+clientes ou valores secretos no thread público. Estou roteando isso pelo caminho de resposta
+de segurança e manterrei o thread público limitado a atualizações de status seguras.
 
-## Recording Outcomes
+## Registro de Resultados
 
-For each high-signal discussion, record one of these outcomes:
+Para cada discussão de alto sinal, registre um destes resultados:
 
-- replied publicly and accepted answer read back;
-- linked to a GitHub issue or Linear issue;
-- routed to the security response path;
-- classified as informational; or
-- explicitly deferred with a reason.
+- respondido publicamente e resposta aceita lida de volta;
+- vinculado a uma issue do GitHub ou issue do Linear;
+- roteado para o caminho de resposta de segurança;
+- classificado como informativo; ou
+- explicitamente adiado com um motivo.
 
-Mirror the summary into ITO-59 when the batch closes, and include the counts in
-the next operator dashboard or publication evidence refresh.
+Espelhe o resumo no ITO-59 quando o lote for encerrado e inclua as contagens no
+próximo painel do operador ou atualização de evidências de publicação.

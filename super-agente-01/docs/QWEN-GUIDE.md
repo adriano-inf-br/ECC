@@ -1,26 +1,26 @@
-# Qwen CLI Adapter Guide
+# Guia do Adapter Qwen CLI
 
-ECC can install its managed command, agent, skill, rule, and MCP surfaces into the Qwen CLI home directory.
+O ECC pode instalar suas superfícies gerenciadas de comando, agent, skill, regra e MCP no diretório home do Qwen CLI.
 
-## Install
+## Instalação
 
-From the ECC repository root:
+A partir da raiz do repositório ECC:
 
 ```bash
 ./install.sh --target qwen --profile minimal
 ```
 
-Preview a larger install before copying files:
+Visualize uma instalação maior antes de copiar os arquivos:
 
 ```bash
 ./install.sh --target qwen --profile full --dry-run
 ```
 
-The Qwen adapter writes into `~/.qwen/` and records managed file ownership in `~/.qwen/ecc-install-state.json`.
+O adapter Qwen escreve em `~/.qwen/` e registra a propriedade de arquivos gerenciados em `~/.qwen/ecc-install-state.json`.
 
-## Installed Layout
+## Layout da Instalação
 
-The managed install can populate:
+A instalação gerenciada pode preencher:
 
 ```text
 ~/.qwen/
@@ -33,22 +33,22 @@ The managed install can populate:
   ecc-install-state.json
 ```
 
-The installer preserves the source layout for rules, so language rule sets stay under paths such as `~/.qwen/rules/common/` and `~/.qwen/rules/typescript/`.
+O instalador preserva o layout de origem para regras, portanto os conjuntos de regras de linguagem ficam em caminhos como `~/.qwen/rules/common/` e `~/.qwen/rules/typescript/`.
 
-## Updating
+## Atualização
 
-Rerun the same install command after pulling ECC updates. The installer uses the install-state file to update ECC-managed files without claiming unrelated user files in `~/.qwen/`.
+Execute novamente o mesmo comando de instalação após puxar atualizações do ECC. O instalador usa o arquivo de estado de instalação para atualizar os arquivos gerenciados pelo ECC sem reivindicar arquivos de usuário não relacionados em `~/.qwen/`.
 
-## Uninstalling
+## Desinstalação
 
-Use the managed uninstall path rather than deleting the whole Qwen directory:
+Use o caminho de desinstalação gerenciado em vez de excluir todo o diretório Qwen:
 
 ```bash
 node scripts/uninstall.js --target qwen
 ```
 
-That removes files recorded in `~/.qwen/ecc-install-state.json` and leaves unrelated Qwen configuration alone.
+Isso remove os arquivos registrados em `~/.qwen/ecc-install-state.json` e deixa a configuração Qwen não relacionada intacta.
 
-## Scope
+## Escopo
 
-This target is intentionally narrower than stale PR #1352. It ports the maintainable Qwen install-target intent onto the current selective installer and avoids unverified hook-runtime claims until Qwen's hook/event contract is confirmed.
+Este target é intencionalmente mais estreito do que o PR obsoleto #1352. Ele transporta a intenção do target de instalação Qwen sustentável para o instalador seletivo atual e evita afirmações de hook-runtime não verificadas até que o contrato de hook/evento do Qwen seja confirmado.

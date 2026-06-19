@@ -1,52 +1,47 @@
-# ECC 2.0 Session Adapter Discovery
+# Descoberta de Adaptadores de Sessão ECC 2.0
 
-## Purpose
+## Propósito
 
-This document turns the March 11 ECC 2.0 control-plane direction into a
-concrete adapter and snapshot design grounded in the orchestration code that
-already exists in this repo.
+Este documento transforma a direção do plano de controle ECC 2.0 de 11 de março em um design concreto de adaptador e snapshot fundamentado no código de orquestração que já existe neste repositório.
 
-## Current Implemented Substrate
+## Substrato Implementado Atual
 
-The repo already has a real first-pass orchestration substrate:
+O repositório já possui um substrato de orquestração real de primeira passagem:
 
 - `scripts/lib/tmux-worktree-orchestrator.js`
-  provisions tmux panes plus isolated git worktrees
+  provisiona painéis tmux mais worktrees git isoladas
 - `scripts/orchestrate-worktrees.js`
-  is the current session launcher
+  é o iniciador de sessão atual
 - `scripts/lib/orchestration-session.js`
-  collects machine-readable session snapshots
+  coleta snapshots de sessão legíveis por máquina
 - `scripts/orchestration-status.js`
-  exports those snapshots from a session name or plan file
+  exporta esses snapshots de um nome de sessão ou arquivo de plano
 - `commands/sessions.md`
-  already exposes adjacent session-history concepts from Claude's local store
+  já expõe conceitos adjacentes de histórico de sessão do armazenamento local do Claude
 - `scripts/lib/session-adapters/canonical-session.js`
-  defines the canonical `ecc.session.v1` normalization layer
+  define a camada de normalização canônica `ecc.session.v1`
 - `scripts/lib/session-adapters/dmux-tmux.js`
-  wraps the current orchestration snapshot collector as adapter `dmux-tmux`
+  envolve o coletor atual de snapshot de orquestração como adaptador `dmux-tmux`
 - `scripts/lib/session-adapters/claude-history.js`
-  normalizes Claude local session history as a second adapter
+  normaliza o histórico de sessão local do Claude como um segundo adaptador
 - `scripts/lib/session-adapters/registry.js`
-  selects adapters from explicit targets and target types
+  seleciona adaptadores a partir de targets e tipos de target explícitos
 - `scripts/session-inspect.js`
-  emits canonical read-only session snapshots through the adapter registry
+  emite snapshots de sessão canônicos somente leitura pelo registro de adaptadores
 
-In practice, ECC can already answer:
+Na prática, o ECC já pode responder:
 
-- what workers exist in a tmux-orchestrated session
-- what pane each worker is attached to
-- what task, status, and handoff files exist for each worker
-- whether the session is active and how many panes/workers exist
-- what the most recent Claude local session looked like in the same canonical
-  snapshot shape as orchestration sessions
+- quais workers existem em uma sessão orquestrada por tmux
+- a qual painel cada worker está anexado
+- quais arquivos de tarefa, status e handoff existem para cada worker
+- se a sessão está ativa e quantos painéis/workers existem
+- como foi a sessão local do Claude mais recente no mesmo formato de snapshot canônico que as sessões de orquestração
 
-That is enough to prove the substrate. It is not yet enough to qualify as a
-general ECC 2.0 control plane.
+Isso é suficiente para provar o substrato. Ainda não é suficiente para se qualificar como um plano de controle geral do ECC 2.0.
 
-## What The Current Snapshot Actually Models
+## O que o Snapshot Atual Realmente Modela
 
-The current snapshot model coming out of `scripts/lib/orchestration-session.js`
-has these effective fields:
+O modelo de snapshot atual proveniente de `scripts/lib/orchestration-session.js` tem estes campos efetivos:
 
 ```json
 {
@@ -109,40 +104,37 @@ has these effective fields:
 }
 ```
 
-This is already a useful operator payload. The main limitation is that it is
-implicitly tied to one execution style:
+Este já é um payload de operador útil. A principal limitação é que está implicitamente vinculado a um estilo de execução:
 
-- tmux pane identity
-- worker slug equals pane title
-- markdown coordination files
-- plan-file or session-name lookup rules
+- identidade de painel tmux
+- slug do worker igual ao título do painel
+- arquivos de coordenação em markdown
+- regras de busca por arquivo de plano ou nome de sessão
 
-## Gap Between ECC 1.x And ECC 2.0
+## Lacuna Entre ECC 1.x e ECC 2.0
 
-ECC 1.x currently has two different "session" surfaces:
+O ECC 1.x atualmente tem duas "sessões" diferentes:
 
-1. Claude local session history
-2. Orchestration runtime/session snapshots
+1. Histórico de sessão local do Claude
+2. Snapshots de runtime/sessão de orquestração
 
-Those surfaces are adjacent but not unified.
+Essas superfícies são adjacentes mas não unificadas.
 
-The missing ECC 2.0 layer is a harness-neutral session adapter boundary that
-can normalize:
+A camada ausente do ECC 2.0 é um limite de adaptador de sessão neutro em relação a harness que pode normalizar:
 
-- tmux-orchestrated workers
-- plain Claude sessions
-- Codex worktree sessions
-- OpenCode sessions
-- future GitHub/App or remote-control sessions
+- workers orquestrados por tmux
+- sessões simples do Claude
+- sessões de worktree Codex
+- sessões OpenCode
+- futuras sessões GitHub/App ou de controle remoto
 
-Without that adapter layer, any future operator UI would be forced to read
-tmux-specific details and coordination markdown directly.
+Sem essa camada de adaptador, qualquer UI de operador futuro seria forçado a ler detalhes específicos do tmux e markdown de coordenação diretamente.
 
-## Adapter Boundary
+## Limite do Adaptador
 
-ECC 2.0 should introduce a canonical session adapter contract.
+O ECC 2.0 deve introduzir um contrato de adaptador de sessão canônico.
 
-Suggested minimal interface:
+Interface mínima sugerida:
 
 ```ts
 type SessionAdapter = {
@@ -158,9 +150,9 @@ type AdapterHandle = {
 };
 ```
 
-### Canonical Snapshot Shape
+### Formato de Snapshot Canônico
 
-Suggested first-pass canonical payload:
+Payload canônico sugerido de primeira passagem:
 
 ```json
 {
@@ -216,62 +208,59 @@ Suggested first-pass canonical payload:
 }
 ```
 
-This preserves the useful signal already present while removing tmux-specific
-details from the control-plane contract.
+Isso preserva o sinal útil já presente enquanto remove detalhes específicos do tmux do contrato do plano de controle.
 
-## First Adapters To Support
+## Primeiros Adaptadores a Suportar
 
 ### 1. `dmux-tmux`
 
-Wrap the logic already living in
+Envolver a lógica já existente em
 `scripts/lib/orchestration-session.js`.
 
-This is the easiest first adapter because the substrate is already real.
+Este é o primeiro adaptador mais fácil porque o substrato já é real.
 
 ### 2. `claude-history`
 
-Normalize the data that
+Normalizar os dados que
 `commands/sessions.md`
-and the existing session-manager utilities already expose:
+e os utilitários existentes de gerenciamento de sessão já expõem:
 
-- session id / alias
+- id de sessão / alias
 - branch
 - worktree
-- project path
-- recency / file size / item counts
+- caminho do projeto
+- recência / tamanho do arquivo / contagens de itens
 
-This provides a non-orchestrated baseline for ECC 2.0.
+Isso fornece uma linha de base não orquestrada para o ECC 2.0.
 
 ### 3. `codex-worktree`
 
-Use the same canonical shape, but back it with Codex-native execution metadata
-instead of tmux assumptions where available.
+Usar o mesmo formato canônico, mas suportá-lo com metadados de execução nativos do Codex em vez de suposições do tmux quando disponível.
 
 ### 4. `opencode`
 
-Use the same adapter boundary once OpenCode session metadata is stable enough to
-normalize.
+Usar o mesmo limite de adaptador assim que os metadados de sessão do OpenCode estiverem estáveis o suficiente para normalizar.
 
-## What Should Stay Out Of The Adapter Layer
+## O que Deve Ficar Fora da Camada do Adaptador
 
-The adapter layer should not own:
+A camada do adaptador não deve possuir:
 
-- business logic for merge sequencing
-- operator UI layout
-- pricing or monetization decisions
-- install profile selection
-- tmux lifecycle orchestration itself
+- lógica de negócios para sequenciamento de mesclagem
+- layout de UI do operador
+- decisões de preços ou monetização
+- seleção de perfil de instalação
+- orquestração do ciclo de vida do tmux em si
 
-Its job is narrower:
+Seu trabalho é mais estreito:
 
-- detect session targets
-- load normalized snapshots
-- optionally stream runtime events
-- optionally expose safe actions
+- detectar targets de sessão
+- carregar snapshots normalizados
+- opcionalmente transmitir eventos de runtime
+- opcionalmente expor ações seguras
 
-## Current File Layout
+## Layout Atual de Arquivos
 
-The adapter layer now lives in:
+A camada do adaptador agora reside em:
 
 ```text
 scripts/lib/session-adapters/
@@ -284,39 +273,30 @@ tests/lib/session-adapters.test.js
 tests/scripts/session-inspect.test.js
 ```
 
-The current orchestration snapshot parser is now being consumed as an adapter
-implementation rather than remaining the only product contract.
+O analisador de snapshot de orquestração atual está sendo consumido como uma implementação de adaptador em vez de permanecer o único contrato do produto.
 
-## Immediate Next Steps
+## Próximas Etapas Imediatas
 
-1. Add a third adapter, likely `codex-worktree`, so the abstraction moves
-   beyond tmux plus Claude-history.
-2. Decide whether canonical snapshots need separate `state` and `health`
-   fields before UI work starts.
-3. Decide whether event streaming belongs in v1 or stays out until after the
-   snapshot layer proves itself.
-4. Build operator-facing panels only on top of the adapter registry, not by
-   reading orchestration internals directly.
+1. Adicionar um terceiro adaptador, provavelmente `codex-worktree`, para que a abstração vá além do tmux mais histórico do Claude.
+2. Decidir se os snapshots canônicos precisam de campos separados `state` e `health` antes que o trabalho de UI comece.
+3. Decidir se o streaming de eventos pertence ao v1 ou fica de fora até que a camada de snapshot se prove.
+4. Construir painéis voltados ao operador somente em cima do registro de adaptadores, não lendo diretamente os internos de orquestração.
 
-## Open Questions
+## Questões Abertas
 
-1. Should worker identity be keyed by worker slug, branch, or stable UUID?
-2. Do we need separate `state` and `health` fields at the canonical layer?
-3. Should event streaming be part of v1, or should ECC 2.0 ship snapshot-only
-   first?
-4. How much path information should be redacted before snapshots leave the local
-   machine?
-5. Should the adapter registry live inside this repo long-term, or move into the
-   eventual ECC 2.0 control-plane app once the interface stabilizes?
+1. A identidade do worker deve ser indexada pelo slug do worker, branch ou UUID estável?
+2. Precisamos de campos separados `state` e `health` na camada canônica?
+3. O streaming de eventos deve fazer parte do v1, ou o ECC 2.0 deve ser lançado somente com snapshot primeiro?
+4. Quanto de informação de caminho deve ser redigido antes que os snapshots saiam da máquina local?
+5. O registro de adaptadores deve residir neste repositório a longo prazo, ou se mover para o eventual aplicativo de plano de controle do ECC 2.0 assim que a interface se estabilizar?
 
-## Recommendation
+## Recomendação
 
-Treat the current tmux/worktree implementation as adapter `0`, not as the final
-product surface.
+Tratar a implementação atual de tmux/worktree como adaptador `0`, não como a superfície final do produto.
 
-The shortest path to ECC 2.0 is:
+O caminho mais curto para o ECC 2.0 é:
 
-1. preserve the current orchestration substrate
-2. wrap it in a canonical session adapter contract
-3. add one non-tmux adapter
-4. only then start building operator panels on top
+1. preservar o substrato de orquestração atual
+2. envolvê-lo em um contrato de adaptador de sessão canônico
+3. adicionar um adaptador não-tmux
+4. somente então começar a construir painéis de operador sobre isso

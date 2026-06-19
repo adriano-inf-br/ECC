@@ -1,59 +1,59 @@
-# ECC v2.0.0-rc.1 Owner Approval Packet
+# Pacote de Aprovação do Proprietário ECC v2.0.0-rc.1
 
-Snapshot date: 2026-05-19.
+Data do snapshot: 2026-05-19.
 
-This packet is the final human decision sheet for the rc.1 public launch. It
-does not publish anything by itself. Use it to approve, defer, or block each
-release action after the final evidence commands are rerun from the intended
-release commit.
+Este pacote é a folha final de decisão humana para o lançamento público do rc.1. Ele
+não publica nada por si só. Use-o para aprovar, adiar ou bloquear cada
+ação de release após os comandos finais de evidência serem executados novamente a partir do commit
+de release pretendido.
 
-Source commit for the clean evidence baseline this packet extends:
+Commit de origem para a linha de base de evidências limpa que este pacote estende:
 `9819626459a662773be7d0b1c18d82c1316b8c36`.
 
-## Current Evidence
+## Evidências Atuais
 
-| Evidence | Current recorded state | Repeat before approval |
+| Evidência | Estado registrado atual | Repetir antes da aprovação |
 | --- | --- | --- |
-| Platform audit | ready true, 0 open PRs, 0 open issues, 0 discussion gaps, 0 dirty files | yes |
-| Preview pack smoke | ready true, digest `531328aaaa53`, 5/5 checks | yes |
-| Release approval gate | ready false, digest `ef8f49f727b7`, 4/6 checks pass; owner decisions and live URL readbacks pending | yes |
-| GitHub prerelease | live at <https://github.com/affaan-m/ECC/releases/tag/v2.0.0-rc.1>; prerelease true, draft false, published `2026-05-25T18:29:31Z` | yes |
-| npm `next` publish | live at <https://www.npmjs.com/package/ecc-universal/v/2.0.0-rc.1>; `next` points to `2.0.0-rc.1`, `latest` remains `1.10.0` | yes |
-| Video suite | ready true, 15/15 source assets, 13/13 suite artifacts, 12/12 publish candidates | yes |
-| Release surface tests | 28/28 passed after the May 26 URL/package refresh | yes |
-| Full local suite | 2568/2568 passed before PR #2013 merged; focused GateGuard regression passed 91/91 again before PR #2011 merged | yes |
-| GitHub CI | PR #1998, PR #1999, PR #2000, PR #2001, PR #2002, PR #2004, PR #2008, post-PR #2006 `main`, PR #2009, post-PR #2009 `main`, post-PR #2011 `main`, and post-PR #2013 `main` all merged or advanced after green required checks | verify current head |
+| Auditoria da plataforma | ready true, 0 PRs abertos, 0 issues abertas, 0 lacunas em discussions, 0 arquivos sujos | sim |
+| Smoke do preview pack | ready true, digest `531328aaaa53`, 5/5 verificações | sim |
+| Gate de aprovação de release | ready false, digest `ef8f49f727b7`, 4/6 verificações passaram; decisões do proprietário e readbacks de URL ao vivo pendentes | sim |
+| Prerelease do GitHub | ao vivo em <https://github.com/affaan-m/ECC/releases/tag/v2.0.0-rc.1>; prerelease true, draft false, publicado em `2026-05-25T18:29:31Z` | sim |
+| Publicação npm `next` | ao vivo em <https://www.npmjs.com/package/ecc-universal/v/2.0.0-rc.1>; `next` aponta para `2.0.0-rc.1`, `latest` permanece `1.10.0` | sim |
+| Suíte de vídeos | ready true, 15/15 ativos de origem, 13/13 artefatos da suíte, 12/12 candidatos à publicação | sim |
+| Testes de superfície de release | 28/28 passaram após a atualização de URL/pacote em 26 de maio | sim |
+| Suíte local completa | 2568/2568 passaram antes do merge do PR #2013; regressão focada do GateGuard passou 91/91 novamente antes do merge do PR #2011 | sim |
+| CI do GitHub | PR #1998, PR #1999, PR #2000, PR #2001, PR #2002, PR #2004, PR #2008, `main` pós-PR #2006, PR #2009, `main` pós-PR #2009, `main` pós-PR #2011 e `main` pós-PR #2013 todos foram mergeados ou avançaram após verificações obrigatórias verdes | verificar head atual |
 
-## Decision Register
+## Registro de Decisões
 
-| Decision | Approve / defer / block | Evidence required first | Notes |
+| Decisão | Aprovar / adiar / bloquear | Evidência necessária primeiro | Notas |
 | --- | --- | --- | --- |
-| GitHub prerelease | approve | live prerelease readback | Live at <https://github.com/affaan-m/ECC/releases/tag/v2.0.0-rc.1>. Remaining plugin/video/billing URLs stay approval-gated. |
-| npm `next` publish | approve | `npm pack --dry-run`, `npm publish --tag next`, registry dist-tag readback | `ecc-universal@2.0.0-rc.1` is published on `next`; `latest` remains `1.10.0` during rc.1. |
-| Claude plugin tag | defer | `claude plugin validate .claude-plugin/plugin.json`, `claude plugin tag .claude-plugin --dry-run` | Create and push the real tag only after release approval. |
-| Codex repo marketplace | defer | temp-home marketplace add smoke and current official Plugin Directory status | Claim repo-marketplace distribution only; do not claim official Plugin Directory listing without listing evidence. |
-| ECC Tools billing language | defer | live readiness readback for the target account and billing/product state | Do not announce native payments or Marketplace-managed Pro until the gate is live. |
-| Video upload | defer | owner selects primary launch cut plus short clips, self-eval stays clean | Upload only approved cuts; keep editable timeline/project output preserved. |
-| X, LinkedIn, GitHub Discussion, longform | defer | live release, npm, plugin, video, and billing URL ledger updates | Personal-account posts and outbound copy need explicit approval. |
-| Sponsor, partner, consulting, conference, podcast outreach | defer | final public URLs plus owner-approved outbound copy | Do not send drafts until the owner approves the exact batch. |
+| Prerelease do GitHub | aprovar | readback de prerelease ao vivo | Ao vivo em <https://github.com/affaan-m/ECC/releases/tag/v2.0.0-rc.1>. URLs restantes de plugin/vídeo/faturamento permanecem gateadas por aprovação. |
+| Publicação npm `next` | aprovar | `npm pack --dry-run`, `npm publish --tag next`, readback de dist-tag do registry | `ecc-universal@2.0.0-rc.1` está publicado em `next`; `latest` permanece `1.10.0` durante o rc.1. |
+| Tag do plugin Claude | adiar | `claude plugin validate .claude-plugin/plugin.json`, `claude plugin tag .claude-plugin --dry-run` | Criar e fazer push da tag real somente após aprovação de release. |
+| Repo-marketplace do Codex | adiar | smoke de marketplace add com home temporário e status atual do Plugin Directory oficial | Reivindicar apenas distribuição via repo-marketplace; não reivindicar listagem no Plugin Directory oficial sem evidência de listagem. |
+| Linguagem de faturamento das ECC Tools | adiar | readback de prontidão ao vivo para a conta alvo e estado de faturamento/produto | Não anunciar pagamentos nativos ou Marketplace gerenciado Pro até que o gate esteja ao vivo. |
+| Upload de vídeo | adiar | proprietário seleciona corte primário de lançamento mais clipes curtos, autoavaliação permanece limpa | Fazer upload apenas de cortes aprovados; manter saída de linha do tempo/projeto editável preservada. |
+| X, LinkedIn, Discussion do GitHub, longform | adiar | atualizações do ledger de URLs ao vivo de release, npm, plugin, vídeo e faturamento | Posts de conta pessoal e cópia de saída precisam de aprovação explícita. |
+| Alcance de patrocinador, parceiro, consultoria, conferência, podcast | adiar | URLs públicas finais mais cópia de saída aprovada pelo proprietário | Não enviar rascunhos até que o proprietário aprove o lote exato. |
 
-## Final URL Fill-In
+## Preenchimento Final de URLs
 
-Update these surfaces after the approved publication actions finish:
+Atualizar estas superfícies após as ações de publicação aprovadas serem concluídas:
 
-| Surface | Final value source | Update targets |
+| Superfície | Fonte do valor final | Alvos de atualização |
 | --- | --- | --- |
-| GitHub prerelease URL | `gh release view v2.0.0-rc.1 --repo affaan-m/ECC --json url` | release notes, URL ledger, social copy |
-| npm rc package URL | `npm view ecc-universal@2.0.0-rc.1 name version dist.tarball dist.integrity time --json` | URL ledger, quickstart, release notes |
-| Claude plugin tag URL | pushed `ecc--v2.0.0-rc.1` tag or marketplace readback | URL ledger, plugin docs, release notes |
-| Codex repo-marketplace evidence | temp-home `codex plugin marketplace add <local-checkout>` readback | URL ledger, publication readiness |
-| Primary launch video URL | uploaded owner-approved primary launch video | GitHub release, X, LinkedIn, longform |
-| Short clip URLs | uploaded approved clips | X thread, LinkedIn, partner/sponsor/talk pack |
-| ECC Tools billing/readiness URL | live readiness readback or explicit blocked status | sponsor copy, Pro copy, release notes |
+| URL de prerelease do GitHub | `gh release view v2.0.0-rc.1 --repo affaan-m/ECC --json url` | notas de release, ledger de URLs, cópia social |
+| URL do pacote rc do npm | `npm view ecc-universal@2.0.0-rc.1 name version dist.tarball dist.integrity time --json` | ledger de URLs, quickstart, notas de release |
+| URL da tag do plugin Claude | tag `ecc--v2.0.0-rc.1` enviada ou readback do marketplace | ledger de URLs, docs do plugin, notas de release |
+| Evidência de repo-marketplace do Codex | readback de `codex plugin marketplace add <local-checkout>` com home temporário | ledger de URLs, prontidão de publicação |
+| URL do vídeo de lançamento principal | vídeo de lançamento principal aprovado pelo proprietário enviado | release do GitHub, X, LinkedIn, longform |
+| URLs de clipes curtos | clipes aprovados enviados | thread X, LinkedIn, pacote de parceiro/patrocinador/palestra |
+| URL de faturamento/prontidão das ECC Tools | readback de prontidão ao vivo ou status bloqueado explícito | cópia de patrocinador, cópia Pro, notas de release |
 
-## Final Evidence Commands
+## Comandos Finais de Evidência
 
-Run these from the exact release commit before approving publication:
+Executar a partir do commit exato de release antes de aprovar a publicação:
 
 ```bash
 git status --short --branch
@@ -73,28 +73,27 @@ node tests/run-all.js
 cd ecc2 && cargo test
 ```
 
-## Approval Text
+## Texto de Aprovação
 
-Use short, explicit approvals. Example:
+Use aprovações curtas e explícitas. Exemplo:
 
 ```text
-Approved for rc.1 GitHub prerelease, npm next publish, Claude plugin tag, and
-release announcement after the final evidence commands pass from commit <sha>.
-Video uploads approved for <primary-video> and <shorts-list>.
-Outbound sponsor, partner, consulting, conference, and podcast messages remain
-blocked until I approve the exact batch.
+Aprovado para prerelease do GitHub rc.1, publicação npm next, tag do plugin Claude e
+anúncio de release após os comandos finais de evidência passarem a partir do commit <sha>.
+Uploads de vídeo aprovados para <video-primario> e <lista-de-shorts>.
+Mensagens de saída para patrocinador, parceiro, consultoria, conferência e podcast permanecem
+bloqueadas até que eu aprove o lote exato.
 ```
 
-## Do Not Approve If
+## Não Aprovar Se
 
-- The final branch is dirty or no longer matches the intended release commit.
-- Any required evidence command fails or is skipped without a written deferral.
-- The release copy claims live billing, plugin marketplace propagation, npm
-  `next`, or official Codex Plugin Directory listing before readback exists.
-- Announcement copy contains stale URLs, private paths, or unresolved live-link
-  decisions.
-- The selected video cut has black frames, missing audio, stale URLs, weak
-  product proof, or unreviewed captions.
-- The outbound batch has not been reviewed exactly as it will be sent.
+- O branch final estiver sujo ou não corresponder mais ao commit de release pretendido.
+- Qualquer comando de evidência obrigatório falhar ou for ignorado sem um adiamento por escrito.
+- A cópia de release reivindicar faturamento ao vivo, propagação do marketplace do plugin, npm
+  `next`, ou listagem oficial no Plugin Directory do Codex antes de existir um readback.
+- A cópia de anúncio contiver URLs desatualizadas, caminhos privados ou decisões de link ao vivo não resolvidas.
+- O corte de vídeo selecionado tiver quadros pretos, áudio ausente, URLs desatualizadas, prova fraca
+  do produto ou legendas não revisadas.
+- O lote de saída não tiver sido revisado exatamente como será enviado.
 
-No outbound email, personal-account post, package publish, plugin tag, or billing announcement is authorized by this packet alone.
+Nenhum e-mail de saída, post de conta pessoal, publicação de pacote, tag de plugin ou anúncio de faturamento é autorizado apenas por este pacote.

@@ -17,16 +17,16 @@ Analise o histórico do git do seu repositório para extrair padrões de código
 /skill-create --instincts        # Also generate instincts for continuous-learning-v2
 ```
 
-## What It Does
+## O que ele faz
 
-1. **Parses Git History** - Analyzes commits, file changes, and patterns
-2. **Detects Patterns** - Identifies recurring workflows and conventions
-3. **Generates SKILL.md** - Creates valid Claude Code skill files
-4. **Optionally Creates Instincts** - For the continuous-learning-v2 system
+1. **Analisa o histórico do Git** - Analisa commits, mudanças de arquivos e padrões
+2. **Detecta padrões** - Identifica fluxos de trabalho e convenções recorrentes
+3. **Gera SKILL.md** - Cria arquivos de skill válidos do Claude Code
+4. **Opcionalmente cria instincts** - Para o sistema continuous-learning-v2
 
-## Analysis Steps
+## Passos de análise
 
-### Step 1: Gather Git Data
+### Passo 1: Reúna os dados do Git
 
 ```bash
 # Get recent commits with file changes

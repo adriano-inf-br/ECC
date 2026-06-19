@@ -198,14 +198,14 @@ $ ./gradlew koverHtmlReport
 Coverage: 100.0% of statements
 ```
 
-✓ Coverage: 100%
+✓ Cobertura: 100%
 
-## TDD Complete!
+## TDD Concluído!
 ````
 
-## Test Patterns
+## Padrões de Teste
 
-### StringSpec (Simplest)
+### StringSpec (Mais Simples)
 
 ```kotlin
 class CalculatorTest : StringSpec({
@@ -227,7 +227,7 @@ class OrderServiceTest : BehaviorSpec({
 })
 ```
 
-### Data-Driven Tests
+### Testes Orientados a Dados
 
 ```kotlin
 class ParserTest : FunSpec({
@@ -239,7 +239,7 @@ class ParserTest : FunSpec({
 })
 ```
 
-### Coroutine Testing
+### Teste de Coroutines
 
 ```kotlin
 class AsyncServiceTest : FunSpec({

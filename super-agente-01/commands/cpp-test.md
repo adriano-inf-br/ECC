@@ -214,38 +214,38 @@ lcov --remove coverage.info '/usr/*' --output-file coverage.info
 genhtml coverage.info --output-directory coverage_html
 ```
 
-## Coverage Targets
+## Metas de Cobertura
 
-| Code Type | Target |
+| Tipo de Código | Meta |
 |-----------|--------|
-| Critical business logic | 100% |
-| Public APIs | 90%+ |
-| General code | 80%+ |
-| Generated code | Exclude |
+| Lógica de negócio crítica | 100% |
+| APIs públicas | 90%+ |
+| Código geral | 80%+ |
+| Código gerado | Excluir |
 
-## TDD Best Practices
+## Boas Práticas de TDD
 
-**DO:**
-- Write test FIRST, before any implementation
-- Run tests after each change
-- Use `EXPECT_*` (continues) over `ASSERT_*` (stops) when appropriate
-- Test behavior, not implementation details
-- Include edge cases (empty, null, max values, boundary conditions)
+**FAÇA:**
+- Escreva o teste PRIMEIRO, antes de qualquer implementação
+- Execute os testes após cada mudança
+- Use `EXPECT_*` (continua) em vez de `ASSERT_*` (para) quando apropriado
+- Teste comportamento, não detalhes de implementação
+- Inclua casos extremos (vazio, null, valores máximos, condições de fronteira)
 
-**DON'T:**
-- Write implementation before tests
-- Skip the RED phase
-- Test private methods directly (test through public API)
-- Use `sleep` in tests
-- Ignore flaky tests
+**NÃO FAÇA:**
+- Escrever a implementação antes dos testes
+- Pular a fase RED
+- Testar métodos privados diretamente (teste pela API pública)
+- Usar `sleep` nos testes
+- Ignorar testes instáveis (flaky)
 
-## Related Commands
+## Comandos Relacionados
 
-- `/cpp-build` - Fix build errors
-- `/cpp-review` - Review code after implementation
-- `verification-loop` skill - Run full verification loop
+- `/cpp-build` - Corrige erros de build
+- `/cpp-review` - Revisa o código após a implementação
+- skill `verification-loop` - Executa o loop de verificação completo
 
-## Related
+## Relacionados
 
 - Skill: `skills/cpp-testing/`
 - Skill: `skills/tdd-workflow/`

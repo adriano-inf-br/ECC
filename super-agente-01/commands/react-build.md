@@ -1,35 +1,35 @@
 ---
-description: Fix React build failures (Vite, webpack, Next.js, CRA, Parcel, esbuild, Bun) incrementally — JSX/TSX compile errors, hydration mismatches, server/client component boundary failures, missing types. Invokes the react-build-resolver agent for minimal, surgical fixes.
+description: Corrige falhas de build do React (Vite, webpack, Next.js, CRA, Parcel, esbuild, Bun) de forma incremental — erros de compilação JSX/TSX, divergências de hidratação, falhas de fronteira de componentes server/client, tipos faltando. Invoca o agent react-build-resolver para correções mínimas e cirúrgicas.
 ---
 
-# React Build and Fix
+# Build e Correção do React
 
-This command invokes the **react-build-resolver** agent to incrementally fix React build errors with minimal changes.
+Este comando invoca o agent **react-build-resolver** para corrigir incrementalmente erros de build do React com alterações mínimas.
 
-## What This Command Does
+## O Que Este Comando Faz
 
-1. **Detect Build System**: Identify Vite, webpack, Next.js, CRA, Parcel, esbuild, or Bun
-2. **Run Build**: Execute the project's build script
-3. **Parse Errors**: Group by layer (TypeScript / bundler config / runtime / hydration)
-4. **Fix Incrementally**: One error at a time, re-running build after each change
-5. **Report Summary**: Show what was fixed and what remains
+1. **Detectar o Sistema de Build**: Identifica Vite, webpack, Next.js, CRA, Parcel, esbuild ou Bun
+2. **Executar o Build**: Roda o script de build do projeto
+3. **Analisar os Erros**: Agrupa por camada (TypeScript / configuração do bundler / runtime / hidratação)
+4. **Corrigir Incrementalmente**: Um erro por vez, reexecutando o build após cada alteração
+5. **Reportar o Resumo**: Mostra o que foi corrigido e o que resta
 
-## When to Use
+## Quando Usar
 
-Use `/react-build` when:
+Use `/react-build` quando:
 
-- `npm run build` (or pnpm/yarn/bun equivalent) fails
-- JSX/TSX compile errors after a TypeScript or React upgrade
-- Next.js hydration mismatch errors at runtime
-- Server/Client Component boundary errors in App Router
-- After installing or upgrading `react`, `react-dom`, `@types/react`, or a bundler
-- Missing types or "module not found" errors involving React
+- `npm run build` (ou equivalente pnpm/yarn/bun) falhar
+- Erros de compilação JSX/TSX após uma atualização de TypeScript ou React
+- Erros de divergência de hidratação do Next.js em runtime
+- Erros de fronteira de Server/Client Component no App Router
+- Após instalar ou atualizar `react`, `react-dom`, `@types/react` ou um bundler
+- Tipos faltando ou erros de "module not found" envolvendo o React
 
-## Scope
+## Escopo
 
-This command owns **React build/bundler/runtime hydration** failures. For pure TypeScript type errors with no React involvement, use `/build-fix` (generic) instead.
+Este comando é responsável por falhas de **build/bundler/hidratação em runtime do React**. Para erros puros de tipo do TypeScript sem envolvimento do React, use `/build-fix` (genérico).
 
-## Diagnostic Commands Run
+## Comandos de Diagnóstico Executados
 
 ```bash
 # Project build script (preferred)

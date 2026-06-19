@@ -1,12 +1,12 @@
-> This file extends [common/patterns.md](../common/patterns.md) with web-specific patterns.
+> Este arquivo estende [common/patterns.md](../common/patterns.md) com padrões específicos de web.
 
-# Web Patterns
+# Padrões Web
 
-## Component Composition
+## Composição de Componentes
 
 ### Compound Components
 
-Use compound components when related UI shares state and interaction semantics:
+Use compound components quando uma UI relacionada compartilha estado e semântica de interação:
 
 ```tsx
 <Tabs defaultValue="overview">
@@ -19,61 +19,61 @@ Use compound components when related UI shares state and interaction semantics:
 </Tabs>
 ```
 
-- Parent owns state
-- Children consume via context
-- Prefer this over prop drilling for complex widgets
+- O pai é dono do estado
+- Os filhos consomem via context
+- Prefira isto a prop drilling para widgets complexos
 
 ### Render Props / Slots
 
-- Use render props or slot patterns when behavior is shared but markup must vary
-- Keep keyboard handling, ARIA, and focus logic in the headless layer
+- Use padrões de render props ou slots quando o comportamento é compartilhado mas a marcação precisa variar
+- Mantenha o tratamento de teclado, ARIA e lógica de focus na camada headless
 
-### Container / Presentational Split
+### Separação Container / Apresentacional
 
-- Container components own data loading and side effects
-- Presentational components receive props and render UI
-- Presentational components should stay pure
+- Componentes container são donos do carregamento de dados e dos efeitos colaterais
+- Componentes apresentacionais recebem props e renderizam a UI
+- Componentes apresentacionais devem permanecer puros
 
-## State Management
+## Gerenciamento de Estado
 
-Treat these separately:
+Trate estes separadamente:
 
-| Concern | Tooling |
+| Aspecto | Tooling |
 |---------|---------|
-| Server state | TanStack Query, SWR, tRPC |
-| Client state | Zustand, Jotai, signals |
-| URL state | search params, route segments |
-| Form state | React Hook Form or equivalent |
+| Estado de servidor | TanStack Query, SWR, tRPC |
+| Estado de cliente | Zustand, Jotai, signals |
+| Estado de URL | search params, segmentos de rota |
+| Estado de formulário | React Hook Form ou equivalente |
 
-- Do not duplicate server state into client stores
-- Derive values instead of storing redundant computed state
+- Não duplique o estado de servidor em stores de cliente
+- Derive valores em vez de armazenar estado computado redundante
 
-## URL As State
+## URL Como Estado
 
-Persist shareable state in the URL:
-- filters
-- sort order
-- pagination
-- active tab
-- search query
+Persista na URL o estado compartilhável:
+- filtros
+- ordem de classificação
+- paginação
+- aba ativa
+- query de busca
 
-## Data Fetching
+## Busca de Dados
 
 ### Stale-While-Revalidate
 
-- Return cached data immediately
-- Revalidate in the background
-- Prefer existing libraries instead of rolling this by hand
+- Retorne dados em cache imediatamente
+- Revalide em segundo plano
+- Prefira bibliotecas existentes em vez de implementar isto manualmente
 
-### Optimistic Updates
+### Atualizações Otimistas
 
-- Snapshot current state
-- Apply optimistic update
-- Roll back on failure
-- Emit visible error feedback when rolling back
+- Faça snapshot do estado atual
+- Aplique a atualização otimista
+- Reverta em caso de falha
+- Emita feedback de erro visível ao reverter
 
-### Parallel Loading
+### Carregamento Paralelo
 
-- Fetch independent data in parallel
-- Avoid parent-child request waterfalls
-- Prefetch likely next routes or states when justified
+- Busque dados independentes em paralelo
+- Evite cascatas de requisições pai-filho
+- Faça prefetch de rotas ou estados prováveis seguintes quando justificado

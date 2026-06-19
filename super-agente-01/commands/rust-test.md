@@ -248,7 +248,7 @@ proptest! {
 }
 ```
 
-## Coverage Commands
+## Comandos de Cobertura
 
 ```bash
 # Summary report
@@ -270,39 +270,39 @@ cargo test -- --nocapture
 cargo test --no-fail-fast
 ```
 
-## Coverage Targets
+## Metas de Cobertura
 
-| Code Type | Target |
+| Tipo de Código | Meta |
 |-----------|--------|
-| Critical business logic | 100% |
-| Public API | 90%+ |
-| General code | 80%+ |
-| Generated / FFI bindings | Exclude |
+| Lógica de negócio crítica | 100% |
+| API pública | 90%+ |
+| Código geral | 80%+ |
+| Bindings gerados / FFI | Excluir |
 
-## TDD Best Practices
+## Boas Práticas de TDD
 
-**DO:**
-- Write test FIRST, before any implementation
-- Run tests after each change
-- Use `assert_eq!` over `assert!` for better error messages
-- Use `?` in tests that return `Result` for cleaner output
-- Test behavior, not implementation
-- Include edge cases (empty, boundary, error paths)
+**FAÇA:**
+- Escreva o teste PRIMEIRO, antes de qualquer implementação
+- Rode os testes após cada alteração
+- Use `assert_eq!` em vez de `assert!` para mensagens de erro melhores
+- Use `?` em testes que retornam `Result` para uma saída mais limpa
+- Teste o comportamento, não a implementação
+- Inclua casos de borda (vazio, limites, caminhos de erro)
 
-**DON'T:**
-- Write implementation before tests
-- Skip the RED phase
-- Use `#[should_panic]` when `Result::is_err()` works
-- Use `sleep()` in tests — use channels or `tokio::time::pause()`
-- Mock everything — prefer integration tests when feasible
+**NÃO FAÇA:**
+- Escrever a implementação antes dos testes
+- Pular a fase RED
+- Usar `#[should_panic]` quando `Result::is_err()` funciona
+- Usar `sleep()` nos testes — use channels ou `tokio::time::pause()`
+- Mockar tudo — prefira testes de integração quando viável
 
-## Related Commands
+## Comandos Relacionados
 
-- `/rust-build` - Fix build errors
-- `/rust-review` - Review code after implementation
-- `verification-loop` skill - Run full verification loop
+- `/rust-build` - Corrija erros de build
+- `/rust-review` - Revise o código após a implementação
+- skill `verification-loop` - Execute o laço completo de verificação
 
-## Related
+## Relacionados
 
 - Skill: `skills/rust-testing/`
 - Skill: `skills/rust-patterns/`

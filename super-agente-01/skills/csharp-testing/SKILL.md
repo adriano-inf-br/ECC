@@ -135,10 +135,10 @@ public async Task GetOrderAsync_ReturnsNull_WhenNotFound()
 [Fact]
 public async Task PlaceOrderAsync_PersistsOrder()
 {
-    // Arrange
+    // Arrange (preparar)
     var request = ValidOrderRequest();
 
-    // Act
+    // Act (agir)
     await _sut.PlaceOrderAsync(request, CancellationToken.None);
 
     // Assert (verificar) — verifica que o repositório foi chamado
@@ -148,9 +148,9 @@ public async Task PlaceOrderAsync_PersistsOrder()
 }
 ```
 
-## ASP.NET Core Integration Tests
+## Testes de Integração do ASP.NET Core
 
-### WebApplicationFactory Setup
+### Configuração do WebApplicationFactory
 
 ```csharp
 public sealed class OrderApiTests : IClassFixture<WebApplicationFactory<Program>>
@@ -163,7 +163,7 @@ public sealed class OrderApiTests : IClassFixture<WebApplicationFactory<Program>
         {
             builder.ConfigureServices(services =>
             {
-                // Replace real DB with in-memory for tests
+                // Substitui o DB real por in-memory para os testes
                 services.RemoveAll<DbContextOptions<AppDbContext>>();
                 services.AddDbContext<AppDbContext>(options =>
                     options.UseInMemoryDatabase("TestDb"));

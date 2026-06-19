@@ -170,55 +170,55 @@ Esta auditoria é cara. Defina o escopo adequadamente:
 ### Divisão de agents recomendada para o app completo:
 
 ```
-Agent 1: Map ALL state stores (Step 1) — this is shared context for all other agents
+Agent 1: Mapear TODOS os state stores (Step 1) — este é o contexto compartilhado para todos os outros agents
 Agent 2: Dashboard (Tasks, Notes, Journal, Ideas)
 Agent 3: Chat (DanteChatColumn, JustChatPage)
 Agent 4: Emails (ThreadList, DraftArea, EmailsPage)
 Agent 5: Projects (ProjectsPage, ProjectOverviewTab, NewProjectWizard)
-Agent 6: CRM (all sub-tabs)
+Agent 6: CRM (todas as sub-abas)
 Agent 7: Profile, Settings, Vault, Notifications
-Agent 8: Management Suite (all pages)
+Agent 8: Management Suite (todas as páginas)
 ```
 
-Agent 1 MUST complete first. Its output is input for all other agents.
+O Agent 1 DEVE concluir primeiro. A saída dele é a entrada para todos os outros agents.
 
 ---
 
 ## When to Use
 
-- After systematic debugging finds "no bugs" but users report broken UI
-- After modifying any Zustand store action (check all callers)
-- After any refactor that touches shared state
-- Before release, on critical user flows
-- When a button "does nothing" — this is THE tool for that
+- Após o debugging sistemático não encontrar "nenhum bug", mas os usuários relatarem UI quebrada
+- Após modificar qualquer action de Zustand store (verifique todos os chamadores)
+- Após qualquer refatoração que toque estado compartilhado
+- Antes do release, em fluxos de usuário críticos
+- Quando um botão "não faz nada" — esta é A ferramenta para isso
 
 ## When NOT to Use
 
-- For API-level bugs (wrong response shape, missing endpoint) — use systematic-debugging
-- For styling/layout issues — visual inspection
-- For performance issues — profiling tools
+- Para bugs em nível de API (formato de resposta errado, endpoint ausente) — use systematic-debugging
+- Para problemas de estilização/layout — inspeção visual
+- Para problemas de performance — ferramentas de profiling
 
 ---
 
-## Integration with Other Skills
+## Integração com Outras Skills
 
-- Run AFTER `/superpowers:systematic-debugging` (which finds the other 54 bug types)
-- Run BEFORE `/superpowers:verification-before-completion` (which verifies fixes work)
-- Feeds into `/superpowers:test-driven-development` — every bug found here should get a test
+- Execute DEPOIS de `/superpowers:systematic-debugging` (que encontra os outros 54 tipos de bug)
+- Execute ANTES de `/superpowers:verification-before-completion` (que verifica se as correções funcionam)
+- Alimenta `/superpowers:test-driven-development` — todo bug encontrado aqui deve receber um teste
 
 ---
 
-## Example: The Bug That Inspired This Skill
+## Exemplo: O Bug Que Inspirou Esta Skill
 
-**ThreadList.tsx "New Email" button:**
+**Botão "New Email" do ThreadList.tsx:**
 ```
 onClick={() => {
-  useEmailStore.getState().setComposeMode(true)   // ✓ sets composeMode = true
-  useEmailStore.getState().selectThread(null)      // ✗ RESETS composeMode = false
+  useEmailStore.getState().setComposeMode(true)   // ✓ define composeMode = true
+  useEmailStore.getState().selectThread(null)      // ✗ REDEFINE composeMode = false
 }}
 ```
 
-Store definition:
+Definição do store:
 ```
 selectThread: (thread) => set({
   selectedThread: thread,
@@ -227,19 +227,19 @@ selectThread: (thread) => set({
   drafts: [],
   selectedDraft: null,
   summary: null,
-  composeMode: false,     // ← THIS silent reset killed the button
+  composeMode: false,     // ← ESTE reset silencioso matou o botão
   composeData: null,
   redraftOpen: false,
 })
 ```
 
-**Systematic debugging missed it** because:
-- The button has an onClick handler (not dead)
-- Both functions exist (no missing wiring)
-- Neither function crashes (no runtime error)
-- The data types are correct (no type mismatch)
+**O debugging sistemático não o detectou** porque:
+- O botão tem um handler onClick (não está morto)
+- Ambas as funções existem (sem ligação ausente)
+- Nenhuma função quebra (sem erro em tempo de execução)
+- Os tipos de dados estão corretos (sem incompatibilidade de tipo)
 
-**Click-path audit catches it** because:
-- Step 1 maps `selectThread` resets `composeMode`
-- Step 2 traces the handler: call 1 sets true, call 2 resets false
-- Verdict: Sequential Undo — final state contradicts button intent
+**A auditoria de click-path o detecta** porque:
+- O Step 1 mapeia que `selectThread` redefine `composeMode`
+- O Step 2 rastreia o handler: a chamada 1 define true, a chamada 2 redefine false
+- Veredito: Desfazer Sequencial — o estado final contradiz a intenção do botão

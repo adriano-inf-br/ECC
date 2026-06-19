@@ -1,9 +1,9 @@
-# Low-Score Example: Adding Retry Logic
+# Exemplo de Pontuação Baixa: Adicionando Lógica de Retry
 
-## Task
+## Tarefa
 > Add retry logic with exponential backoff to all HTTP requests in the API client. Max 3 retries, initial delay 1s, max delay 30s.
 
-## Agent Output
+## Saída do Agent
 
 Here's a retry implementation. I think this should work for most cases.
 
@@ -26,7 +26,7 @@ Let me know if you need anything else!
 
 ---
 
-## Evaluation Report
+## Relatório de Avaliação
 
 ```
 ============================================================
@@ -78,9 +78,9 @@ TOP IMPROVEMENTS (axes scoring < 4):
     unsafe, say so explicitly with reasoning.
 ```
 
-### Why This Scores Poorly
+### Por Que Isto Pontua Mal
 
-1. **Accuracy fails at the most basic level** — wrong library. One `grep httpx src/` would have caught this. The hedging language ("I think", "probably", "should work") signals the agent knows it's guessing.
-2. **Not actionable.** The user received a code snippet and a list of things they need to do. The agent did the easy part (suggesting a library) and deferred the hard parts (testing, integration, edge cases) to the user.
-3. **Completeness gaps are acknowledged but not fixed.** "Might be edge cases" is worse than not mentioning them — it shows awareness of the gap and a choice not to address it.
-4. **Information density is low.** 120 words, of which ~60 are hedging/disclaimers/politeness. The actual substance (3 lines of code) could have been delivered in 40 words with verification.
+1. **A precisão falha no nível mais básico** — biblioteca errada. Um único `grep httpx src/` teria capturado isso. A linguagem evasiva ("I think", "probably", "should work") sinaliza que o agent sabe que está adivinhando.
+2. **Não é acionável.** O usuário recebeu um trecho de código e uma lista de coisas que precisa fazer. O agent fez a parte fácil (sugerir uma biblioteca) e adiou as partes difíceis (testes, integração, edge cases) para o usuário.
+3. **As lacunas de completude são reconhecidas mas não corrigidas.** "Might be edge cases" é pior do que não mencioná-las — mostra consciência da lacuna e a escolha de não tratá-la.
+4. **A densidade de informação é baixa.** 120 palavras, das quais ~60 são evasivas/disclaimers/cortesia. A substância de fato (3 linhas de código) poderia ter sido entregue em 40 palavras com verificação.

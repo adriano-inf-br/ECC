@@ -48,11 +48,11 @@ JSONL, e o `node` é multiplataforma):
 node -e 'const fs=require("fs"),os=require("os"),p=require("path");const f=p.join(os.homedir(),".claude","metrics","costs.jsonl");console.log(fs.existsSync(f)?"cost log found":"cost log not found: "+f)'
 ```
 
-If the log is missing, do not fabricate usage data. Tell the user that cost
-tracking populates after the first session ends with the `stop:cost-tracker`
-hook enabled.
+Se o log estiver ausente, não fabrique dados de uso. Diga ao usuário que o rastreamento de
+custo é preenchido após o término da primeira sessão com o hook `stop:cost-tracker`
+habilitado.
 
-## Example — summary, by model, last 7 days
+## Exemplo — resumo, por modelo, últimos 7 dias
 
 ```bash
 node -e '

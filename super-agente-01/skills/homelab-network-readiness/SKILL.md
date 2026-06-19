@@ -1,169 +1,165 @@
 ---
 name: homelab-network-readiness
-description: Readiness checklist for homelab VLAN segmentation, local DNS filtering, and WireGuard-style remote access before changing router, firewall, DHCP, or VPN configuration.
+description: Lista de verificação de prontidão para segmentação VLAN em homelab, filtragem DNS local e acesso remoto estilo WireGuard antes de alterar a configuração de roteador, firewall, DHCP ou VPN.
 metadata:
   origin: community
 ---
 
-# Homelab Network Readiness
+# Prontidão de Rede em Homelab
 
-Use this skill before changing a home or small-lab network that mixes VLANs,
-Pi-hole or another local DNS resolver, firewall rules, and remote VPN access.
+Use esta skill antes de alterar uma rede doméstica ou de pequeno laboratório que mistura VLANs,
+Pi-hole ou outro resolvedor DNS local, regras de firewall e acesso VPN remoto.
 
-This is a planning and review skill. Do not turn it into copy-paste router,
-firewall, or VPN configuration unless the target platform, current topology,
-rollback path, console access, and maintenance window are all known.
+Esta é uma skill de planejamento e revisão. Não a transforme em configuração
+de roteador, firewall ou VPN copiada e colada, a menos que a plataforma de destino, a topologia
+atual, o caminho de rollback, o acesso ao console e a janela de manutenção sejam todos conhecidos.
 
-## When to Use
+## Quando Usar
 
-- Preparing to split a flat network into trusted, IoT, guest, server, or
-  management VLANs.
-- Moving DHCP clients to Pi-hole, AdGuard Home, Unbound, or another local DNS
-  resolver.
-- Adding WireGuard, Tailscale, ZeroTier, OpenVPN, or router-native VPN access.
-- Reviewing whether a homelab change can lock the operator out of the gateway,
-  switch, access point, DNS server, or VPN server.
-- Turning an informal home-network idea into a staged migration plan with
-  validation evidence.
+- Preparando-se para dividir uma rede plana em VLANs confiáveis, IoT, guest, servidor ou
+  de gerenciamento.
+- Movendo clientes DHCP para Pi-hole, AdGuard Home, Unbound ou outro resolvedor DNS local.
+- Adicionando WireGuard, Tailscale, ZeroTier, OpenVPN ou acesso VPN nativo do roteador.
+- Revisando se uma mudança em homelab pode bloquear o operador do gateway,
+  switch, ponto de acesso, servidor DNS ou servidor VPN.
+- Transformando uma ideia informal de rede doméstica em um plano de migração em etapas com
+  evidências de validação.
 
-## Safety Rules
+## Regras de Segurança
 
-- Keep the first answer read-only: inventory, risks, staged plan, validation,
-  and rollback.
-- Do not expose gateway admin panels, DNS resolvers, SSH, NAS consoles, or VPN
-  management UIs directly to the public internet.
-- Do not provide firewall, NAT, VLAN, DHCP, or VPN commands without a confirmed
-  platform and a rollback procedure.
-- Require out-of-band or same-room console access before changing management
-  VLANs, trunk ports, firewall default policies, or DHCP/DNS settings.
-- Keep a working path back to the internet before pointing the whole network at
-  a new DNS resolver or VPN route.
-- Treat IoT, guest, camera, and lab-server networks as different trust zones
-  until the operator explicitly chooses otherwise.
+- Mantenha a primeira resposta somente leitura: inventário, riscos, plano em etapas, validação
+  e rollback.
+- Não exponha painéis de administração do gateway, resolvedores DNS, SSH, consoles NAS ou UIs
+  de gerenciamento VPN diretamente à internet pública.
+- Não forneça comandos de firewall, NAT, VLAN, DHCP ou VPN sem uma plataforma confirmada
+  e um procedimento de rollback.
+- Exija acesso ao console out-of-band ou na mesma sala antes de alterar VLANs de gerenciamento,
+  portas trunk, políticas padrão de firewall ou configurações de DHCP/DNS.
+- Mantenha um caminho funcionando de volta à internet antes de apontar toda a rede para
+  um novo resolvedor DNS ou rota VPN.
+- Trate redes IoT, guest, câmeras e servidores de laboratório como zonas de confiança diferentes
+  até que o operador escolha explicitamente o contrário.
 
-## Required Inventory
+## Inventário Necessário
 
-Collect this before giving implementation steps:
+Colete isso antes de fornecer passos de implementação:
 
-| Area | Questions |
+| Área | Perguntas |
 | --- | --- |
-| Internet edge | What is the modem or ONT? Is the ISP router bridged or still routing? |
-| Gateway | What routes, firewalls, handles DHCP, and terminates VPNs? |
-| Switching | Which switch ports are uplinks, access ports, trunks, or unmanaged? |
-| Wi-Fi | Which SSIDs map to which networks, and are APs wired or mesh? |
-| Addressing | What subnets exist today, and which ranges conflict with VPN sites? |
-| DNS/DHCP | Which service currently hands out leases and resolver addresses? |
-| Management | How will the operator reach the gateway, switch, and AP after changes? |
-| Recovery | What can be reverted locally if DNS, DHCP, VLANs, or VPN routes break? |
+| Borda de internet | O que é o modem ou ONT? O roteador do ISP está em modo bridge ou ainda está roteando? |
+| Gateway | O que roteia, faz firewall, gerencia DHCP e termina VPNs? |
+| Switching | Quais portas do switch são uplinks, portas de acesso, trunks ou não gerenciadas? |
+| Wi-Fi | Quais SSIDs mapeiam para quais redes, e os APs são com fio ou mesh? |
+| Endereçamento | Quais sub-redes existem hoje, e quais intervalos conflitam com sites VPN? |
+| DNS/DHCP | Qual serviço distribui leases e endereços de resolvedor atualmente? |
+| Gerenciamento | Como o operador alcançará o gateway, switch e AP após as mudanças? |
+| Recuperação | O que pode ser revertido localmente se DNS, DHCP, VLANs ou rotas VPN quebrarem? |
 
-## VLAN And Trust-Zone Plan
+## Plano de VLAN e Zonas de Confiança
 
-Start with intent rather than vendor syntax.
+Comece com intenção em vez de sintaxe de fornecedor.
 
-| Zone | Typical contents | Default policy |
+| Zona | Conteúdo típico | Política padrão |
 | --- | --- | --- |
-| Trusted | Laptops, phones, admin workstations | Can reach shared services and management only when needed |
-| Servers | NAS, Home Assistant, lab hosts, DNS resolver | Accepts narrow inbound flows from trusted clients |
-| IoT | TVs, smart plugs, cameras, speakers | Internet access plus explicit exceptions only |
-| Guest | Visitor devices | Internet-only, no LAN reachability |
-| Management | Gateway, switches, APs, controllers | Reachable only from trusted admin devices |
-| VPN | Remote clients | Same or narrower access than trusted clients |
+| Confiável | Laptops, telefones, workstations de admin | Pode alcançar serviços compartilhados e gerenciamento somente quando necessário |
+| Servidores | NAS, Home Assistant, hosts de laboratório, resolvedor DNS | Aceita fluxos de entrada estreitos de clientes confiáveis |
+| IoT | TVs, plugues inteligentes, câmeras, alto-falantes | Acesso à internet mais exceções explícitas somente |
+| Guest | Dispositivos de visitantes | Somente internet, sem alcance à LAN |
+| Gerenciamento | Gateway, switches, APs, controladores | Alcançável somente por dispositivos admin confiáveis |
+| VPN | Clientes remotos | Mesmo acesso ou mais restrito que clientes confiáveis |
 
-Before recommending VLAN IDs or subnets, confirm:
+Antes de recomendar IDs ou sub-redes VLAN, confirme:
 
-1. The gateway supports inter-VLAN routing and firewall rules.
-2. The switch supports the required tagged and untagged port behavior.
-3. The APs can map SSIDs to VLANs.
-4. The operator knows which port they are connected through during the change.
-5. The management network remains reachable after trunk and SSID changes.
+1. O gateway suporta roteamento inter-VLAN e regras de firewall.
+2. O switch suporta o comportamento de porta tagged e untagged necessário.
+3. Os APs podem mapear SSIDs para VLANs.
+4. O operador sabe por qual porta está conectado durante a mudança.
+5. A rede de gerenciamento permanece alcançável após mudanças de trunk e SSID.
 
-## DNS Filtering Readiness
+## Prontidão de Filtragem DNS
 
-Pi-hole or another local resolver should be introduced as a dependency, not as a
-single point of failure.
+Pi-hole ou outro resolvedor local deve ser introduzido como uma dependência, não como um
+ponto único de falha.
 
-1. Give the resolver a reserved address before using it in DHCP options.
-2. Confirm it can resolve public DNS and local `home.arpa` names.
-3. Keep the gateway or a second resolver available as a temporary fallback.
-4. Test one client or one VLAN before changing every DHCP scope.
-5. Document which networks may bypass filtering and why.
-6. Check that blocking rules do not break captive portals, work VPNs, firmware
-   updates, or medical/security devices.
+1. Dê ao resolvedor um endereço reservado antes de usá-lo em opções DHCP.
+2. Confirme que ele pode resolver DNS público e nomes `home.arpa` locais.
+3. Mantenha o gateway ou um segundo resolvedor disponível como fallback temporário.
+4. Teste um cliente ou uma VLAN antes de alterar todos os escopos DHCP.
+5. Documente quais redes podem ignorar a filtragem e por quê.
+6. Verifique se as regras de bloqueio não quebram portais cativos, VPNs de trabalho, atualizações
+   de firmware ou dispositivos médicos/de segurança.
 
-Useful validation evidence:
+Evidências de validação úteis:
 
 ```text
-Client gets expected DHCP lease
-Client receives expected DNS resolver
-Public DNS lookup succeeds
-Local home.arpa lookup succeeds
-Blocked test domain is blocked only where intended
-Gateway and DNS admin interfaces are not reachable from guest or IoT networks
+Cliente obtém lease DHCP esperado
+Cliente recebe resolvedor DNS esperado
+Consulta DNS pública funciona
+Consulta DNS local home.arpa funciona
+Domínio de teste bloqueado está bloqueado apenas onde pretendido
+Interfaces de administração do gateway e DNS não são alcançáveis de redes guest ou IoT
 ```
 
-## Remote Access Readiness
+## Prontidão de Acesso Remoto
 
-For WireGuard-style access, decide what the VPN is allowed to reach before
-generating keys or opening ports.
+Para acesso estilo WireGuard, decida o que a VPN pode alcançar antes de
+gerar chaves ou abrir portas.
 
-| Mode | Use when | Risk notes |
+| Modo | Use quando | Notas de risco |
 | --- | --- | --- |
-| Split tunnel to one subnet | Remote admin for NAS or lab hosts | Keep route list narrow |
-| Split tunnel to trusted services | Access selected apps by IP or DNS | Requires precise firewall rules |
-| Full tunnel | Untrusted networks or travel | More bandwidth and DNS responsibility |
-| Overlay VPN | Simpler remote access with identity controls | Still needs ACL review |
+| Split tunnel para uma sub-rede | Admin remoto para NAS ou hosts de laboratório | Mantenha a lista de rotas estreita |
+| Split tunnel para serviços confiáveis | Acesse apps selecionados por IP ou DNS | Requer regras de firewall precisas |
+| Full tunnel | Redes não confiáveis ou viagens | Mais responsabilidade de largura de banda e DNS |
+| VPN overlay | Acesso remoto mais simples com controles de identidade | Ainda precisa de revisão de ACL |
 
-Do not recommend port forwarding until the operator confirms:
+Não recomende port forwarding até que o operador confirme:
 
-- The VPN endpoint is patched and actively maintained.
-- The forwarded port goes only to the VPN service, not an admin UI.
-- Dynamic DNS, public IP behavior, and ISP CGNAT status are understood.
-- Peer keys can be revoked without rebuilding the whole network.
-- Logs or connection status can verify who connected and when.
+- O endpoint VPN está atualizado e mantido ativamente.
+- A porta encaminhada vai apenas ao serviço VPN, não a uma UI de admin.
+- DNS dinâmico, comportamento de IP público e status de CGNAT do ISP são compreendidos.
+- Chaves de peer podem ser revogadas sem reconstruir toda a rede.
+- Logs ou status de conexão podem verificar quem conectou e quando.
 
-## Change Sequence
+## Sequência de Mudanças
 
-Prefer small, reversible changes:
+Prefira mudanças pequenas e reversíveis:
 
-1. Snapshot the current topology, IP plan, DHCP settings, DNS settings, and
-   firewall rules.
-2. Reserve infrastructure addresses for gateway, DNS, controller, APs, NAS, and
-   VPN endpoint.
-3. Create the new zone or VLAN without moving critical devices.
-4. Move one test client and validate DHCP, DNS, routing, internet, and block
-   behavior.
-5. Add narrow firewall exceptions for required flows.
-6. Move one low-risk device group.
-7. Add VPN access with the narrowest route and firewall policy that satisfies
-   the use case.
-8. Document final state, known exceptions, and rollback commands or UI steps.
+1. Faça snapshot da topologia atual, plano de IP, configurações DHCP, configurações DNS e
+   regras de firewall.
+2. Reserve endereços de infraestrutura para gateway, DNS, controlador, APs, NAS e
+   endpoint VPN.
+3. Crie a nova zona ou VLAN sem mover dispositivos críticos.
+4. Mova um cliente de teste e valide DHCP, DNS, roteamento, internet e comportamento
+   de bloqueio.
+5. Adicione exceções de firewall estreitas para fluxos necessários.
+6. Mova um grupo de dispositivos de baixo risco.
+7. Adicione acesso VPN com a rota mais estreita e política de firewall que satisfaça
+   o caso de uso.
+8. Documente o estado final, exceções conhecidas e comandos de rollback ou passos de UI.
 
-## Review Checklist
+## Lista de Verificação de Revisão
 
-- Each network has a reason to exist and a clear trust boundary.
-- No management interface is reachable from guest, IoT, or the public internet.
-- DNS failure does not take down the operator's ability to recover locally.
-- DHCP scope changes were tested on one client before broad rollout.
-- VPN clients receive only the routes and DNS settings they need.
-- Firewall rules are default-deny between zones, with named exceptions.
-- The operator can still reach gateway, switch, AP, DNS, and VPN admin surfaces.
-- Rollback is documented in the same vocabulary as the chosen platform UI or
-  CLI.
+- Cada rede tem uma razão de existir e uma fronteira de confiança clara.
+- Nenhuma interface de gerenciamento é alcançável de guest, IoT ou da internet pública.
+- A falha de DNS não impede a capacidade do operador de recuperar localmente.
+- Mudanças de escopo DHCP foram testadas em um cliente antes do rollout amplo.
+- Clientes VPN recebem apenas as rotas e configurações DNS que precisam.
+- Regras de firewall são default-deny entre zonas, com exceções nomeadas.
+- O operador ainda pode alcançar superfícies de admin do gateway, switch, AP, DNS e VPN.
+- O rollback está documentado no mesmo vocabulário que a UI ou CLI da plataforma escolhida.
 
-## Anti-Patterns
+## Anti-Padrões
 
-- Segmenting networks before knowing which switch ports and SSIDs carry which
-  VLANs.
-- Moving the admin workstation off the only reachable management network.
-- Pointing all DHCP scopes at a Pi-hole before testing fallback DNS.
-- Publishing NAS, DNS, router, or hypervisor management directly to the
-  internet.
-- Treating VPN access as equivalent to full trusted-LAN access.
-- Adding allow-all firewall rules temporarily and forgetting to remove them.
-- Copying commands from another vendor or firmware version without checking the
-  exact platform syntax.
+- Segmentar redes antes de saber quais portas de switch e SSIDs carregam quais VLANs.
+- Mover a workstation de admin para fora da única rede de gerenciamento alcançável.
+- Apontar todos os escopos DHCP para um Pi-hole antes de testar DNS de fallback.
+- Publicar gerenciamento de NAS, DNS, roteador ou hypervisor diretamente na internet.
+- Tratar acesso VPN como equivalente ao acesso de LAN confiável completo.
+- Adicionar regras de firewall allow-all temporariamente e esquecer de removê-las.
+- Copiar comandos de outro fornecedor ou versão de firmware sem verificar a
+  sintaxe exata da plataforma.
 
-## See Also
+## Veja Também
 
 - Skill: `homelab-network-setup`
 - Skill: `network-config-validation`

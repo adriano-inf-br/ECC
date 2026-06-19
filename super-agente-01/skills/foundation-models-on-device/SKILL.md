@@ -202,42 +202,42 @@ var body: some View {
 }
 ```
 
-## Key Design Decisions
+## Decisões-Chave de Design
 
-| Decision | Rationale |
+| Decisão | Justificativa |
 |----------|-----------|
-| On-device execution | Privacy — no data leaves the device; works offline |
-| 4,096 token limit | On-device model constraint; chunk large data across sessions |
-| Snapshot streaming (not deltas) | Structured output friendly; each snapshot is a complete partial state |
-| `@Generable` macro | Compile-time safety for structured generation; auto-generates `PartiallyGenerated` type |
-| Single request per session | `isResponding` prevents concurrent requests; create multiple sessions if needed |
-| `response.content` (not `.output`) | Correct API — always access results via `.content` property |
+| Execução on-device | Privacidade — nenhum dado sai do dispositivo; funciona offline |
+| Limite de 4.096 tokens | Restrição do modelo on-device; fragmente dados grandes entre sessões |
+| Streaming de snapshots (não deltas) | Amigável a saída estruturada; cada snapshot é um estado parcial completo |
+| Macro `@Generable` | Segurança em tempo de compilação para geração estruturada; auto-gera o tipo `PartiallyGenerated` |
+| Requisição única por sessão | `isResponding` previne requisições concorrentes; crie múltiplas sessões se necessário |
+| `response.content` (não `.output`) | API correta — sempre acesse os resultados via propriedade `.content` |
 
-## Best Practices
+## Boas Práticas
 
-- **Always check `model.availability`** before creating a session — handle all unavailability cases
-- **Use `instructions`** to guide model behavior — they take priority over prompts
-- **Check `isResponding`** before sending a new request — sessions handle one request at a time
-- **Access `response.content`** for results — not `.output`
-- **Break large inputs into chunks** — 4,096 token limit applies to instructions + prompt + output combined
-- **Use `@Generable`** for structured output — stronger guarantees than parsing raw strings
-- **Use `GenerationOptions(temperature:)`** to tune creativity (higher = more creative)
-- **Monitor with Instruments** — use Xcode Instruments to profile request performance
+- **Sempre verifique `model.availability`** antes de criar uma sessão — trate todos os casos de indisponibilidade
+- **Use `instructions`** para guiar o comportamento do modelo — elas têm prioridade sobre os prompts
+- **Verifique `isResponding`** antes de enviar uma nova requisição — sessões tratam uma requisição por vez
+- **Acesse `response.content`** para resultados — não `.output`
+- **Divida entradas grandes em chunks** — o limite de 4.096 tokens se aplica a instructions + prompt + output combinados
+- **Use `@Generable`** para saída estruturada — garantias mais fortes do que parsear strings brutas
+- **Use `GenerationOptions(temperature:)`** para ajustar criatividade (maior = mais criativo)
+- **Monitore com Instruments** — use o Xcode Instruments para perfilar o desempenho das requisições
 
-## Anti-Patterns to Avoid
+## Anti-Patterns a Evitar
 
-- Creating sessions without checking `model.availability` first
-- Sending inputs exceeding the 4,096 token context window
-- Attempting concurrent requests on a single session
-- Using `.output` instead of `.content` to access response data
-- Parsing raw string responses when `@Generable` structured output would work
-- Building complex multi-step logic in a single prompt — break into multiple focused prompts
-- Assuming the model is always available — device eligibility and settings vary
+- Criar sessões sem verificar `model.availability` primeiro
+- Enviar entradas que excedem a janela de contexto de 4.096 tokens
+- Tentar requisições concorrentes em uma única sessão
+- Usar `.output` em vez de `.content` para acessar os dados da resposta
+- Parsear respostas brutas em string quando a saída estruturada `@Generable` funcionaria
+- Construir lógica complexa de múltiplos passos em um único prompt — divida em múltiplos prompts focados
+- Assumir que o modelo está sempre disponível — elegibilidade do dispositivo e configurações variam
 
-## When to Use
+## Quando Usar
 
-- On-device text generation for privacy-sensitive apps
-- Structured data extraction from user input (forms, natural language commands)
-- AI-assisted features that must work offline
-- Streaming UI that progressively shows generated content
-- Domain-specific AI actions via tool calling (search, compute, lookup)
+- Geração de texto on-device para apps sensíveis à privacidade
+- Extração de dados estruturados de entrada do usuário (formulários, comandos em linguagem natural)
+- Recursos assistidos por IA que devem funcionar offline
+- UI de streaming que mostra progressivamente o conteúdo gerado
+- Ações de IA específicas do domínio via chamada de ferramentas (busca, cálculo, lookup)

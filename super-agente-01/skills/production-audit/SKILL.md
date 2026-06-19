@@ -1,58 +1,56 @@
 ---
 name: production-audit
-description: Local-evidence production readiness audit for shipped apps, pre-launch reviews, post-merge checks, and "what breaks in prod?" questions without sending repo data to an external audit service.
+description: Auditoria de prontidão para produção baseada em evidências locais para apps em produção, revisões pré-lançamento, verificações pós-merge e perguntas do tipo "o que quebra em prod?" sem enviar dados do repositório a um serviço de auditoria externo.
 metadata:
   origin: community
 ---
 
 # Production Audit
 
-Use this skill when the user asks whether an application is ready to ship, what
-could break in production, or what must be fixed before a launch. This is a
-maintainer-safe rewrite of the stale community production-audit idea: it keeps
-the useful production-readiness lens and removes unpinned external execution and
-third-party data sharing.
+Use esta skill quando o usuário perguntar se uma aplicação está pronta para ser entregue, o que
+poderia quebrar em produção, ou o que precisa ser corrigido antes de um lançamento. Esta é uma
+reescrita segura para mantenedores da ideia de auditoria de produção da comunidade: mantém a
+lente útil de prontidão para produção e remove a execução externa não fixada e o compartilhamento
+de dados com terceiros.
 
-## When to Use
+## Quando Usar
 
-- The user asks "is this production-ready", "what would break in prod", "what
-  did we miss", "audit this repo", or "ready to ship?"
-- A feature was merged and needs a pre-deploy or post-merge risk pass.
-- A public launch, demo, customer rollout, or investor walkthrough is close.
-- CI is green but the user wants production risk, not only test status.
-- A deployed URL, release branch, PR, or current checkout is available for
-  evidence gathering.
+- O usuário pergunta "está pronto para produção", "o que quebraria em prod", "o que perdemos",
+  "audite este repositório" ou "pronto para entregar?"
+- Uma feature foi mergeada e precisa de uma passagem de risco pré-deploy ou pós-merge.
+- Um lançamento público, demo, rollout de cliente ou apresentação para investidores está próximo.
+- O CI está verde, mas o usuário quer risco de produção, não apenas status de teste.
+- Uma URL implantada, branch de release, PR ou checkout atual está disponível para coleta de evidências.
 
-## When Not to Use
+## Quando Não Usar
 
-- During active implementation when the right lens is line-level secure coding;
-  use `security-review` first.
-- For pure libraries, templates, docs-only repos, or scaffolds unless the user
-  wants packaging/release readiness rather than application readiness.
-- When the user asks for a formal compliance audit. This skill is engineering
-  triage, not legal, financial, medical, or regulatory certification.
-- When the only available evidence is a product idea with no repo, deployment,
-  CI, or runtime surface.
+- Durante a implementação ativa quando a lente certa é a codificação segura em nível de linha;
+  use `security-review` primeiro.
+- Para bibliotecas puras, templates, repositórios somente de documentação ou scaffolds, a menos que o usuário
+  queira prontidão de empacotamento/release em vez de prontidão de aplicação.
+- Quando o usuário pede uma auditoria de compliance formal. Esta skill é triagem de engenharia,
+  não certificação legal, financeira, médica ou regulatória.
+- Quando a única evidência disponível é uma ideia de produto sem repositório, implantação,
+  CI ou superfície de runtime.
 
-## How It Works
+## Como Funciona
 
-Build the audit from local and user-authorized evidence. Do not run unpinned
-remote code, upload repository contents to third-party services, or call
-external scanners unless the user explicitly approves that specific tool and
-data flow.
+Construa a auditoria a partir de evidências locais e autorizadas pelo usuário. Não execute código
+remoto não fixado, não faça upload do conteúdo do repositório para serviços de terceiros, nem chame
+scanners externos, a menos que o usuário aprove explicitamente essa ferramenta específica e o fluxo de dados.
 
-Use this order:
+Use esta ordem:
 
-1. Establish the release surface.
-2. Read recent changes and current branch state.
-3. Inspect runtime, auth, data, payment, background-job, AI, and deployment
-   boundaries that actually exist in the repo.
-4. Check CI, tests, migrations, environment documentation, and rollback path.
-5. Produce a short ship/block recommendation with specific fixes.
+1. Estabeleça a superfície de release.
+2. Leia alterações recentes e o estado atual do branch.
+3. Inspecione os limites de runtime, auth, dados, pagamento, job em background, IA e implantação
+   que realmente existem no repositório.
+4. Verifique CI, testes, migrações, documentação de ambiente e caminho de rollback.
+5. Produza uma recomendação curta de entregar/bloquear com correções específicas.
 
-## Evidence Checklist
+## Lista de Verificação de Evidências
 
-Start with cheap, local signals:
+Comece com sinais baratos e locais:
 
 ```text
 git status --short --branch
@@ -60,145 +58,140 @@ git log --oneline --decorate -20
 git diff --stat origin/main...HEAD
 ```
 
-Then inspect the project-specific surface:
+Em seguida, inspecione a superfície específica do projeto:
 
-- Package scripts, CI workflows, release scripts, Docker files, and deployment
-  manifests.
-- API routes, webhooks, auth middleware, background workers, cron jobs, and
-  database migrations.
-- Environment variable documentation and startup checks.
-- Observability hooks, error reporting, logs, health checks, and dashboards.
-- Rollback, seed, migration, and backfill instructions.
-- E2E coverage for the user paths that matter most.
+- Scripts de pacote, workflows de CI, scripts de release, arquivos Docker e manifestos de implantação.
+- Rotas de API, webhooks, middleware de auth, workers em background, cron jobs e migrações de banco de dados.
+- Documentação de variáveis de ambiente e verificações de inicialização.
+- Hooks de observabilidade, relatório de erros, logs, health checks e dashboards.
+- Instruções de rollback, seed, migração e backfill.
+- Cobertura E2E para os caminhos de usuário mais importantes.
 
-If a deployed URL is in scope, use browser or HTTP checks only against that URL
-and avoid credentialed actions unless the user supplies a safe test account.
+Se uma URL implantada estiver no escopo, use verificações de browser ou HTTP apenas contra essa URL
+e evite ações credenciadas, a menos que o usuário forneça uma conta de teste segura.
 
-## Risk Lenses
+## Lentes de Risco
 
-### Security And Auth
+### Segurança e Auth
 
-- Are public routes, API routes, and admin routes clearly separated?
-- Are auth and authorization enforced server-side?
-- Are secrets kept out of client bundles, logs, example output, and checked-in
-  files?
-- Are rate limits, CSRF protections, CORS policy, and upload validation present
-  where the app needs them?
-- Does the AI or agent surface defend against prompt injection, tool abuse, and
-  untrusted content crossing into privileged actions?
+- Rotas públicas, rotas de API e rotas de admin estão claramente separadas?
+- Auth e autorização são aplicados no lado do servidor?
+- Segredos estão fora de bundles de cliente, logs, saída de exemplo e arquivos commitados?
+- Limites de taxa, proteções CSRF, política CORS e validação de upload estão presentes
+  onde a app precisa deles?
+- A superfície de IA ou agent se defende contra injeção de Prompt, abuso de ferramentas e
+  conteúdo não confiável cruzando para ações privilegiadas?
 
-### Data Integrity
+### Integridade de Dados
 
-- Do migrations run forward cleanly and have a rollback or recovery plan?
-- Are destructive migrations, backfills, and data imports staged safely?
-- Do database policies, grants, and service-role boundaries match the app's
-  tenancy model?
-- Are retries idempotent for writes, jobs, and webhook handlers?
+- As migrações executam corretamente para frente e têm um plano de rollback ou recuperação?
+- Migrações destrutivas, backfills e importações de dados são encenados com segurança?
+- As políticas de banco de dados, grants e limites de service-role correspondem ao modelo de
+  multilocação da app?
+- As tentativas são idempotentes para escritas, jobs e handlers de webhook?
 
-### Payments And Webhooks
+### Pagamentos e Webhooks
 
-- Are webhook signatures verified before parsing trusted payload fields?
-- Is each payment, subscription, or fulfillment webhook idempotent?
-- Are replay, duplicate delivery, and out-of-order delivery handled?
-- Are test-mode and live-mode credentials separated?
+- Assinaturas de webhook são verificadas antes de analisar campos de payload confiáveis?
+- Cada webhook de pagamento, assinatura ou fulfillment é idempotente?
+- Replay, entrega duplicada e entrega fora de ordem são tratados?
+- Credenciais de modo de teste e modo ao vivo estão separadas?
 
-### Operations
+### Operações
 
-- Can the app start from a clean checkout using documented commands?
-- Are required environment variables named, validated, and fail-fast?
-- Is there a health check that proves dependencies are reachable?
-- Are deploy, rollback, and incident-owner paths documented?
-- Are logs useful without leaking secrets or personal data?
+- A app pode iniciar a partir de um checkout limpo usando comandos documentados?
+- Variáveis de ambiente obrigatórias são nomeadas, validadas e falham rapidamente?
+- Existe um health check que prova que as dependências estão acessíveis?
+- Os caminhos de deploy, rollback e responsável por incidentes estão documentados?
+- Os logs são úteis sem vazar segredos ou dados pessoais?
 
-### User Experience
+### Experiência do Usuário
 
-- Are the launch-critical paths covered on desktop and mobile?
-- Are forms usable on mobile without input zoom, layout overlap, or blocked
-  submission states?
-- Do loading, empty, error, and permission-denied states tell the user what
-  happened?
-- Is there a support or recovery path when a critical operation fails?
+- Os caminhos críticos do lançamento são cobertos em desktop e mobile?
+- Os formulários são utilizáveis em mobile sem zoom de entrada, sobreposição de layout ou
+  estados de envio bloqueados?
+- Os estados de carregamento, vazio, erro e permissão negada informam ao usuário o que aconteceu?
+- Existe um caminho de suporte ou recuperação quando uma operação crítica falha?
 
-## Scoring
+## Pontuação
 
-Use scores to force prioritization, not to imply mathematical certainty.
+Use pontuações para forçar priorização, não para implicar certeza matemática.
 
-| Band | Score | Meaning |
+| Banda | Pontuação | Significado |
 | --- | --- | --- |
-| Blocked | 0-49 | Do not ship until the top risks are fixed |
-| Risky | 50-69 | Ship only behind a small rollout or internal beta |
-| Launchable With Caveats | 70-84 | Ship if owners accept the listed risks |
-| Strong | 85-100 | No obvious launch blockers from available evidence |
+| Bloqueado | 0-49 | Não entregue até que os principais riscos sejam corrigidos |
+| Arriscado | 50-69 | Entregue apenas com um rollout pequeno ou beta interno |
+| Lançável com Ressalvas | 70-84 | Entregue se os proprietários aceitarem os riscos listados |
+| Forte | 85-100 | Sem bloqueadores óbvios de lançamento a partir das evidências disponíveis |
 
-Cap the score at `69` if any of these are true:
+Limite a pontuação em `69` se qualquer um desses for verdadeiro:
 
-- Authentication or authorization is missing on sensitive data.
-- Payment or fulfillment webhooks are not idempotent.
-- Required migrations cannot be run safely.
-- Secrets are exposed in client bundles, logs, or committed files.
-- There is no rollback path for a high-impact release.
+- Autenticação ou autorização está faltando em dados sensíveis.
+- Webhooks de pagamento ou fulfillment não são idempotentes.
+- As migrações necessárias não podem ser executadas com segurança.
+- Segredos estão expostos em bundles de cliente, logs ou arquivos commitados.
+- Não há caminho de rollback para um release de alto impacto.
 
-Cap the score at `84` if CI is not green or the launch-critical path was not
-tested end to end.
+Limite a pontuação em `84` se o CI não estiver verde ou o caminho crítico do lançamento não tiver sido
+testado end-to-end.
 
-## Output Format
+## Formato de Saída
 
-Lead with one sentence:
+Comece com uma frase:
 
 ```text
-Production audit: 76/100, launchable with caveats, with webhook idempotency and rollback docs as the two risks to fix before public launch.
+Auditoria de produção: 76/100, lançável com ressalvas, com idempotência de webhook e documentação de rollback como os dois riscos a corrigir antes do lançamento público.
 ```
 
-Then list:
+Em seguida, liste:
 
-- `Blockers`: must-fix items before deploy.
-- `High-value fixes`: next fixes if the user wants to improve the score.
-- `Evidence checked`: files, commands, CI, deployed URL, or PRs inspected.
-- `Evidence missing`: what would change confidence if provided.
-- `Next action`: one concrete fix or verification step.
+- `Bloqueadores`: itens obrigatórios antes do deploy.
+- `Correções de alto valor`: próximas correções se o usuário quiser melhorar a pontuação.
+- `Evidências verificadas`: arquivos, comandos, CI, URL implantada ou PRs inspecionados.
+- `Evidências faltando`: o que mudaria a confiança se fornecido.
+- `Próxima ação`: uma correção concreta ou etapa de verificação.
 
-Keep strengths short. The user asked for readiness, so the useful answer is the
-remaining risk and the next action.
+Mantenha os pontos fortes curtos. O usuário perguntou sobre prontidão, portanto a resposta útil é o
+risco restante e a próxima ação.
 
-## Example
+## Exemplo
 
-User:
+Usuário:
 
 ```text
-is this ready to ship?
+isso está pronto para entregar?
 ```
 
-Response:
+Resposta:
 
 ```text
-Production audit: 68/100, risky, because Stripe webhooks are verified but not idempotent and there is no rollback note for the pending migration.
+Auditoria de produção: 68/100, arriscado, porque os webhooks do Stripe são verificados mas não são idempotentes e não há nota de rollback para a migração pendente.
 
-Blockers:
-- Add idempotency for `checkout.session.completed` before fulfilling orders.
-- Write and test the rollback path for `20260511_add_billing_state.sql`.
+Bloqueadores:
+- Adicionar idempotência para `checkout.session.completed` antes de cumprir pedidos.
+- Escrever e testar o caminho de rollback para `20260511_add_billing_state.sql`.
 
-High-value fixes:
-- Add a health check that verifies database and payment-provider reachability.
-- Add one E2E path for upgrade, webhook fulfillment, and billing-page refresh.
+Correções de alto valor:
+- Adicionar um health check que verifica a acessibilidade do banco de dados e do provedor de pagamento.
+- Adicionar um caminho E2E para upgrade, fulfillment de webhook e atualização da página de billing.
 
-Evidence checked:
+Evidências verificadas:
 - `api/stripe/webhook.ts`
 - `db/migrations/20260511_add_billing_state.sql`
-- GitHub Actions run for the release branch
+- Execução do GitHub Actions para o branch de release
 
-Next action: Want me to patch webhook idempotency first?
+Próxima ação: Quer que eu corrija a idempotência do webhook primeiro?
 ```
 
-## Anti-Patterns
+## Anti-Padrões
 
-- Running `npx <package>@latest` or a remote scanner as the default audit path.
-- Uploading source, secrets, customer data, or private topology to an external
-  audit service without explicit approval.
-- Producing a score without naming the evidence checked.
-- Treating green CI as production readiness.
-- Ending with a generic "let me know what you want to do."
+- Executar `npx <package>@latest` ou um scanner remoto como o caminho padrão de auditoria.
+- Fazer upload de código-fonte, segredos, dados de clientes ou topologia privada para um serviço de auditoria externo sem aprovação explícita.
+- Produzir uma pontuação sem nomear as evidências verificadas.
+- Tratar CI verde como prontidão para produção.
+- Terminar com um genérico "me diga o que você quer fazer."
 
-## See Also
+## Veja Também
 
 - Skill: `security-review`
 - Skill: `deployment-patterns`

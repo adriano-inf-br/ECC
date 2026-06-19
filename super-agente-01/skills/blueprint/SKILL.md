@@ -18,7 +18,7 @@ metadata:
 
 Transforme um objetivo de uma linha em um plano de construção passo a passo que qualquer agent de código possa executar do zero.
 
-## When to Use
+## Quando Usar
 
 - Quebrar uma feature grande em múltiplos PRs com ordem de dependência clara
 - Planejar uma refatoração ou migração que abrange múltiplas sessões
@@ -27,7 +27,7 @@ Transforme um objetivo de uma linha em um plano de construção passo a passo qu
 
 **Não use** para tarefas concluíveis em um único PR, em menos de 3 chamadas de ferramenta, ou quando o usuário diz "apenas faça".
 
-## How It Works
+## Como Funciona
 
 O Blueprint roda um pipeline de 5 fases:
 
@@ -39,7 +39,7 @@ O Blueprint roda um pipeline de 5 fases:
 
 O Blueprint detecta a disponibilidade de git/gh automaticamente. Com git + GitHub CLI, ele gera planos completos de workflow de branch/PR/CI. Sem eles, muda para o modo direto (edição in-place, sem branches).
 
-## Examples
+## Exemplos
 
 ### Uso básico
 
@@ -71,7 +71,7 @@ Produz um plano com passos paralelos onde possível (ex.: "implement Anthropic p
 - **Protocolo de mutação de plano** — Os passos podem ser divididos, inseridos, pulados, reordenados ou abandonados com protocolos formais e trilha de auditoria.
 - **Risco zero em tempo de execução** — Skill em Markdown puro. O repositório inteiro contém apenas arquivos `.md` — sem hooks, sem scripts de shell, sem código executável, sem `package.json`, sem etapa de build. Nada roda na instalação ou invocação além do carregador nativo de Skills em Markdown do Claude Code.
 
-## Installation
+## Instalação
 
 Esta Skill vem com o Everything Claude Code. Nenhuma instalação separada é necessária quando o ECC está instalado.
 
@@ -96,11 +96,11 @@ git checkout <reviewed-full-sha>          # pin to a specific reviewed commit
 
 Se você estiver vendorizando apenas esta Skill fora da instalação completa do ECC, copie o arquivo revisado do repositório do ECC para `~/.claude/skills/blueprint/SKILL.md`. Cópias vendorizadas não têm um remote git, então atualize-as recopiando o arquivo a partir de um commit revisado do ECC em vez de rodar `git pull`.
 
-## Requirements
+## Requisitos
 
 - Claude Code (para o comando `/blueprint`)
 - Git + GitHub CLI (opcional — habilita o workflow completo de branch/PR/CI; o Blueprint detecta a ausência e muda automaticamente para o modo direto)
 
-## Source
+## Fonte
 
 Inspirado em antbotlab/blueprint — projeto upstream e design de referência.

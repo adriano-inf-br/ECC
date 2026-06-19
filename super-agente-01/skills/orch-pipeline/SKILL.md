@@ -1,121 +1,121 @@
 ---
 name: orch-pipeline
-description: Shared orchestration engine for the orch-* skill family. Defines the gated Research-Plan-TDD-Review-Commit pipeline, the size classifier, the agent map, and the two human gates that the orch-* operation skills delegate to. Not usually invoked directly.
+description: Motor de orquestração compartilhado para a família de skills orch-*. Define o pipeline com gates de Pesquisa-Plano-TDD-Revisão-Commit, o classificador de tamanho, o mapa de agents e os dois gates humanos para os quais as skills de operação orch-* delegam. Normalmente não é invocado diretamente.
 metadata:
   origin: ECC
 ---
 
-# Orchestrator Pipeline (shared engine)
+# Pipeline do Orquestrador (motor compartilhado)
 
-The `orch-*` skills are thin wrappers. They do not re-implement any work — they
-classify the request, choose which phases of *this* pipeline run, and delegate
-each phase to an existing ECC agent or command. This file is that pipeline.
+As skills `orch-*` são wrappers finos. Elas não reimplementam nenhum trabalho — elas
+classificam a requisição, escolhem quais fases deste pipeline serão executadas e delegam
+cada fase a um agent ou comando ECC existente. Este arquivo é esse pipeline.
 
-> Invoke an operation skill (`orch-add-feature`, `orch-fix-defect`, …) rather
-> than this engine directly. This file is the reference they point at.
+> Invoque uma skill de operação (`orch-add-feature`, `orch-fix-defect`, …) em vez
+> deste motor diretamente. Este arquivo é a referência para a qual elas apontam.
 
-## When to Use
+## Quando Usar
 
-- Loaded indirectly whenever an `orch-*` operation skill runs.
-- Read directly only when adding a new operation to the family or tuning the
-  shared phases, gates, or agent map.
+- Carregado indiretamente sempre que uma skill `orch-*` de operação for executada.
+- Lido diretamente apenas ao adicionar uma nova operação à família ou ajustar as
+  fases, gates ou mapa de agents compartilhados.
 
-## The operation family
+## A família de operações
 
-| Skill | Operation | Trigger | First move |
+| Skill | Operação | Gatilho | Primeiro movimento |
 |-------|-----------|---------|------------|
-| `orch-add-feature` | feature | capability does not exist yet | research + plan a new slice |
-| `orch-change-feature` | tweak | works, but desired behavior differs | amend existing behavior *and its tests* |
-| `orch-fix-defect` | fix | broken; behavior is wrong | reproduce as a failing test, then fix |
-| `orch-refine-code` | refactor | behavior stays, structure improves | restructure while keeping tests green |
-| `orch-build-mvp` | mvp | bootstrap from a design/spec doc | ingest doc → vertical slices |
+| `orch-add-feature` | feature | capacidade ainda não existe | pesquisa + plano de uma nova fatia |
+| `orch-change-feature` | tweak | funciona, mas o comportamento desejado difere | alterar o comportamento existente *e seus testes* |
+| `orch-fix-defect` | fix | quebrado; o comportamento está errado | reproduzir como um teste com falha, depois corrigir |
+| `orch-refine-code` | refactor | comportamento permanece, estrutura melhora | reestruturar mantendo os testes verdes |
+| `orch-build-mvp` | mvp | bootstrap a partir de um doc de design/spec | ingerir doc → fatias verticais |
 
-> These wrappers **compose** existing ECC commands rather than replace them:
-> `/feature-dev`, `/plan`, `/code-review`, `/build-fix`, `/refactor-clean`, and
-> `/gan-build`, plus the `tdd-workflow` skill. The orch-* family adds the shared
-> size classifier and the two gates
-> on top of them, so one umbrella covers all five operations consistently.
+> Esses wrappers **compõem** comandos ECC existentes em vez de substituí-los:
+> `/feature-dev`, `/plan`, `/code-review`, `/build-fix`, `/refactor-clean` e
+> `/gan-build`, além da skill `tdd-workflow`. A família orch-* adiciona o classificador
+> de tamanho compartilhado e os dois gates sobre eles, para que um guarda-chuva
+> cubra todas as cinco operações de forma consistente.
 
-## Step 0 — Classify size (right-sizing)
+## Passo 0 — Classificar tamanho (dimensionamento correto)
 
-Ceremony scales to blast radius. Score the request on three signals, take the
-**highest** tier any signal reaches, and state the result in one line so the user
-can override:
+A cerimônia escala com o raio de impacto. Avalie a requisição em três sinais, tome o
+**nível mais alto** que qualquer sinal atingir e declare o resultado em uma linha para que o usuário
+possa substituir:
 
-| Tier | Files touched | New dependency / contract | Design ambiguity | Phases that run |
+| Nível | Arquivos tocados | Nova dependência / contrato | Ambiguidade de design | Fases executadas |
 |------|---------------|---------------------------|------------------|-----------------|
-| trivial | 1, a few lines | none | none — the change is obvious | 4 → 5 → 6 |
-| small | 1 file / 1 function | none | clear once you read the code | (1 light) → 4 → 5 → 6 |
-| standard | 2–5 files | maybe a new internal module | one real choice to make | 1 → 2 → 4 → 5 → 6 |
-| large | many / cross-cutting | new external dep, public API, or a spec doc | multiple open questions | 1 → 2 → (3) → 4 → 5 → 6 |
+| trivial | 1, poucas linhas | nenhuma | nenhuma — a mudança é óbvia | 4 → 5 → 6 |
+| small | 1 arquivo / 1 função | nenhuma | clara após ler o código | (1 leve) → 4 → 5 → 6 |
+| standard | 2–5 arquivos | talvez um novo módulo interno | uma escolha real a fazer | 1 → 2 → 4 → 5 → 6 |
+| large | muitos / transversal | nova dep externa, API pública ou doc de spec | múltiplas questões em aberto | 1 → 2 → (3) → 4 → 5 → 6 |
 
-Phase 0 (Intake) always runs and is omitted from the mask column above. The
-tie-breaker: anything touching a security trigger (below) or a public API /
-contract is **at least** standard, regardless of file count.
+O Passo 0 (Intake) sempre é executado e é omitido da coluna de máscara acima. O
+desempate: qualquer coisa que toque um gatilho de segurança (abaixo) ou uma API pública /
+contrato é **pelo menos** standard, independentemente da contagem de arquivos.
 
-## The phases
+## As fases
 
-Each phase delegates — it does not do the work inline.
+Cada fase delega — ela não faz o trabalho inline.
 
-- **0. Intake** — restate the request. For `orch-build-mvp`, read the spec/design
-  doc and extract scope, locked decisions, and a feature list.
-- **1. Research & Reuse** — per `rules/common/development-workflow.md`: `gh search repos` /
-  `gh search code`, then Context7 / vendor docs, then package registries, then
-  Exa. Prefer adopting a proven implementation over net-new code.
-- **2. Plan** — delegate to the `planner` agent (or `architect` /
-  `code-architect` for structural decisions). Output a `task_list` ordered as
-  thin vertical slices. → **GATE 1.**
-- **3. Scaffold** — `orch-build-mvp` only: stand up the first end-to-end slice.
-- **4. Implement (TDD)** — drive each task through the `tdd-guide` agent (or the `tdd-workflow` skill):
-  red → green → refactor. Honor the operation's first-move rule.
-- **5. Review** — `code-reviewer` agent / `/code-review`. Add `security-reviewer`
-  whenever the diff touches a security trigger (below).
-- **6. Commit** — conventional commits (`feat:` / `fix:` / `refactor:` / …), one
-  per logical chunk. → **GATE 2.**
+- **0. Intake** — restate a requisição. Para `orch-build-mvp`, leia o doc de spec/design
+  e extraia escopo, decisões bloqueadas e uma lista de funcionalidades.
+- **1. Pesquisa e Reuso** — conforme `rules/common/development-workflow.md`: `gh search repos` /
+  `gh search code`, depois Context7 / docs do fornecedor, depois registros de pacotes, depois
+  Exa. Prefira adotar uma implementação comprovada em vez de código novo do zero.
+- **2. Plano** — delegar ao agent `planner` (ou `architect` /
+  `code-architect` para decisões estruturais). Saída: `task_list` ordenada como
+  fatias verticais finas. → **GATE 1.**
+- **3. Scaffold** — apenas `orch-build-mvp`: construir a primeira fatia end-to-end.
+- **4. Implementar (TDD)** — conduzir cada tarefa pelo agent `tdd-guide` (ou pela skill `tdd-workflow`):
+  vermelho → verde → refatorar. Honre a regra de primeiro movimento da operação.
+- **5. Revisão** — agent `code-reviewer` / `/code-review`. Adicione `security-reviewer`
+  sempre que o diff tocar um gatilho de segurança (abaixo).
+- **6. Commit** — commits convencionais (`feat:` / `fix:` / `refactor:` / …), um
+  por chunk lógico. → **GATE 2.**
 
-## The two gates
+## Os dois gates
 
-This family is **gated, not autonomous**:
+Esta família é **com gates, não autônoma**:
 
-1. **GATE 1 — after Plan.** Present the `task_list`; do not write implementation
-   code until the user approves.
-2. **GATE 2 — before Commit.** Present the diff summary and proposed messages;
-   do not commit until the user confirms.
+1. **GATE 1 — após o Plano.** Apresente o `task_list`; não escreva código de implementação
+   até que o usuário aprove.
+2. **GATE 2 — antes do Commit.** Apresente o resumo do diff e as mensagens propostas;
+   não faça commit até que o usuário confirme.
 
-Everything between the gates flows without stopping.
+Tudo entre os gates flui sem parar.
 
-## Agent / command map
+## Mapa de agents / comandos
 
-| Phase | Primary | Fallback / escalation |
+| Fase | Primário | Fallback / escalada |
 |-------|---------|----------------------|
-| Intake / understand | `code-explorer` | trace existing paths before a tweak, fix, or refactor |
-| Plan | `planner` | `architect`, `code-architect` for structural calls |
-| Implement | `tdd-guide` (or `tdd-workflow` skill) | `build-error-resolver` / `/build-fix` on build breaks |
-| Review | `code-reviewer` / `/code-review` | language reviewer (`python-reviewer`, `typescript-reviewer`, …) |
-| Security | `security-reviewer` | — |
-| MVP inner loop | `/gan-build "<brief>" --skip-planner` | drives `gan-generator` → `gan-evaluator`; tune `--max-iterations` / `--pass-threshold` |
+| Intake / entender | `code-explorer` | rastrear caminhos existentes antes de um tweak, fix ou refactor |
+| Plano | `planner` | `architect`, `code-architect` para decisões estruturais |
+| Implementar | `tdd-guide` (ou skill `tdd-workflow`) | `build-error-resolver` / `/build-fix` em quebras de Build |
+| Revisão | `code-reviewer` / `/code-review` | revisor de linguagem (`python-reviewer`, `typescript-reviewer`, …) |
+| Segurança | `security-reviewer` | — |
+| Loop interno de MVP | `/gan-build "<brief>" --skip-planner` | conduz `gan-generator` → `gan-evaluator`; ajuste `--max-iterations` / `--pass-threshold` |
 
-Match the language reviewer to the repo (see the repo's own `CLAUDE.md`).
+Combine o revisor de linguagem com o repositório (veja o `CLAUDE.md` do próprio repositório).
 
-## Security-review trigger
+## Gatilho de revisão de segurança
 
-Pull in `security-reviewer` when the diff touches any of: authentication or
-authorization, user-input handling, database queries, file-system paths,
-external API calls, cryptography, or secrets / credentials. (Per `rules/common/security.md`.)
+Inclua `security-reviewer` quando o diff tocar qualquer um dos seguintes: autenticação ou
+autorização, manipulação de entrada do usuário, consultas de banco de dados, caminhos no sistema de arquivos,
+chamadas de API externas, criptografia ou segredos / credenciais. (Conforme `rules/common/security.md`.)
 
-## Handoff artifacts
+## Artefatos de handoff
 
-The pipeline carries no hidden state — the planning docs *are* the handoff:
+O pipeline não carrega estado oculto — os docs de planejamento *são* o handoff:
 
-- `task_list` (from Plan) drives the Implement loop.
-- Larger work may also emit PRD / architecture / system_design under the repo's
-  `docs/` per `rules/common/development-workflow.md`.
-- Review findings (CRITICAL / HIGH) must be resolved before Gate 2.
+- `task_list` (do Plano) conduz o loop de Implementação.
+- Trabalhos maiores também podem emitir PRD / arquitetura / system_design sob o
+  `docs/` do repositório conforme `rules/common/development-workflow.md`.
+- Descobertas de revisão (CRÍTICAS / ALTAS) devem ser resolvidas antes do Gate 2.
 
-## Verification
+## Verificação
 
-- size tier was stated and matched the work
-- Gate 1 (plan) and Gate 2 (commit) were both honored
-- `security-reviewer` ran iff a security trigger was touched
-- commits are conventional and scoped to one logical change
-- new / changed behavior has tests; coverage ≥ 80% per `rules/common/testing.md`
+- o nível de tamanho foi declarado e correspondeu ao trabalho
+- o Gate 1 (plano) e o Gate 2 (commit) foram ambos honrados
+- `security-reviewer` executou se e somente se um gatilho de segurança foi tocado
+- commits são convencionais e com escopo para uma mudança lógica
+- comportamento novo / alterado tem testes; cobertura ≥ 80% conforme `rules/common/testing.md`

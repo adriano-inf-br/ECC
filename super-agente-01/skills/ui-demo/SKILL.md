@@ -1,40 +1,40 @@
 ---
 name: ui-demo
-description: Record polished UI demo videos using Playwright. Use when the user asks to create a demo, walkthrough, screen recording, or tutorial video of a web application. Produces WebM videos with visible cursor, natural pacing, and professional feel.
+description: Grave vídeos de demonstração de UI polidos usando Playwright. Use quando o usuário pedir para criar uma demo, walkthrough, gravação de tela ou vídeo tutorial de uma aplicação web. Produz vídeos WebM com cursor visível, ritmo natural e aparência profissional.
 metadata:
   origin: ECC
 ---
 
-# UI Demo Video Recorder
+# Gravador de Vídeo de Demo de UI
 
-Record polished demo videos of web applications using Playwright's video recording with an injected cursor overlay, natural pacing, and storytelling flow.
+Grave vídeos de demonstração polidos de aplicações web usando a gravação de vídeo do Playwright com overlay de cursor injetado, ritmo natural e fluxo de narrativa.
 
-## When to Use
+## Quando Usar
 
-- User asks for a "demo video", "screen recording", "walkthrough", or "tutorial"
-- User wants to showcase a feature or workflow visually
-- User needs a video for documentation, onboarding, or stakeholder presentation
+- Usuário pede por um "vídeo de demo", "gravação de tela", "walkthrough" ou "tutorial"
+- Usuário quer mostrar uma funcionalidade ou fluxo de trabalho visualmente
+- Usuário precisa de um vídeo para documentação, onboarding ou apresentação para stakeholders
 
-## Three-Phase Process
+## Processo em Três Fases
 
-Every demo goes through three phases: **Discover -> Rehearse -> Record**. Never skip straight to recording.
+Cada demo passa por três fases: **Descobrir -> Ensaiar -> Gravar**. Nunca pule direto para a gravação.
 
 ---
 
-## Phase 1: Discover
+## Fase 1: Descobrir
 
-Before writing any script, explore the target pages to understand what is actually there.
+Antes de escrever qualquer script, explore as páginas alvo para entender o que realmente está lá.
 
-### Why
+### Por quê
 
-You cannot script what you have not seen. Fields may be `<input>` not `<textarea>`, dropdowns may be custom components not `<select>`, and comment boxes may support `@mentions` or `#tags`. Assumptions break recordings silently.
+Você não pode criar um script do que não viu. Campos podem ser `<input>` em vez de `<textarea>`, dropdowns podem ser componentes personalizados em vez de `<select>`, e caixas de comentário podem suportar `@mentions` ou `#tags`. Suposições quebram gravações silenciosamente.
 
-### How
+### Como
 
-Navigate to each page in the flow and dump its interactive elements:
+Navegue para cada página no fluxo e liste seus elementos interativos:
 
 ```javascript
-// Run this for each page in the flow BEFORE writing the demo script
+// Execute isso para cada página no fluxo ANTES de escrever o script de demo
 const fields = await page.evaluate(() => {
   const els = [];
   document.querySelectorAll('input, select, textarea, button, [contenteditable]').forEach(el => {
@@ -55,46 +55,46 @@ const fields = await page.evaluate(() => {
 console.log(JSON.stringify(fields, null, 2));
 ```
 
-### What to look for
+### O que procurar
 
-- **Form fields**: Are they `<select>`, `<input>`, custom dropdowns, or comboboxes?
-- **Select options**: Dump option values AND text. Placeholders often have `value="0"` or `value=""` which looks non-empty. Use `Array.from(el.options).map(o => ({ value: o.value, text: o.text }))`. Skip options where text includes "Select" or value is `"0"`.
-- **Rich text**: Does the comment box support `@mentions`, `#tags`, markdown, or emoji? Check placeholder text.
-- **Required fields**: Which fields block form submission? Check `required`, `*` in labels, and try submitting empty to see validation errors.
-- **Dynamic content**: Do fields appear after other fields are filled?
-- **Button labels**: Exact text such as `"Submit"`, `"Submit Request"`, or `"Send"`.
-- **Table column headers**: For table-driven modals, map each `input[type="number"]` to its column header instead of assuming all numeric inputs mean the same thing.
+- **Campos de formulário**: São `<select>`, `<input>`, dropdowns personalizados ou comboboxes?
+- **Opções de select**: Liste os valores E textos das opções. Placeholders frequentemente têm `value="0"` ou `value=""` que parecem não vazios. Use `Array.from(el.options).map(o => ({ value: o.value, text: o.text }))`. Ignore opções onde o texto inclui "Select" ou o valor é `"0"`.
+- **Texto rico**: A caixa de comentário suporta `@mentions`, `#tags`, markdown ou emoji? Verifique o texto do placeholder.
+- **Campos obrigatórios**: Quais campos bloqueiam o envio do formulário? Verifique `required`, `*` nos rótulos e tente enviar vazio para ver erros de validação.
+- **Conteúdo dinâmico**: Campos aparecem após outros campos serem preenchidos?
+- **Rótulos de botão**: Texto exato como `"Submit"`, `"Submit Request"` ou `"Send"`.
+- **Cabeçalhos de coluna de tabela**: Para modais baseados em tabela, mapeie cada `input[type="number"]` para seu cabeçalho de coluna em vez de assumir que todas as entradas numéricas significam a mesma coisa.
 
-### Output
+### Saída
 
-A field map for each page, used to write correct selectors in the script. Example:
+Um mapa de campos para cada página, usado para escrever seletores corretos no script. Exemplo:
 
 ```text
 /purchase-requests/new:
-  - Budget Code: <select> (first select on page, 4 options)
+  - Budget Code: <select> (primeiro select na página, 4 opções)
   - Desired Delivery: <input type="date">
-  - Context: <textarea> (not input)
-  - BOM table: inline-editable cells with span.cursor-pointer -> input pattern
+  - Context: <textarea> (não input)
+  - Tabela BOM: células editáveis inline com padrão span.cursor-pointer -> input
   - Submit: <button> text="Submit"
 
-/purchase-requests/N (detail):
-  - Comment: <input placeholder="Type a message..."> supports @user and #PR tags
-  - Send: <button> text="Send" (disabled until input has content)
+/purchase-requests/N (detalhe):
+  - Comment: <input placeholder="Type a message..."> suporta @user e #PR tags
+  - Send: <button> text="Send" (desabilitado até o input ter conteúdo)
 ```
 
 ---
 
-## Phase 2: Rehearse
+## Fase 2: Ensaiar
 
-Run through all steps without recording. Verify every selector resolves.
+Execute todos os passos sem gravar. Verifique se cada seletor resolve.
 
-### Why
+### Por quê
 
-Silent selector failures are the main reason demo recordings break. Rehearsal catches them before you waste a recording.
+Falhas silenciosas de seletor são o principal motivo pelo qual gravações de demo quebram. O ensaio as captura antes de você desperdiçar uma gravação.
 
-### How
+### Como
 
-Use `ensureVisible`, a wrapper that logs and fails loudly:
+Use `ensureVisible`, um wrapper que registra e falha em voz alta:
 
 ```javascript
 async function ensureVisible(page, locator, label) {
@@ -117,7 +117,7 @@ async function ensureVisible(page, locator, label) {
 }
 ```
 
-### Rehearsal script structure
+### Estrutura do script de ensaio
 
 ```javascript
 const steps = [
@@ -144,44 +144,44 @@ if (!allOk) {
 console.log('REHEARSAL PASSED - all selectors verified');
 ```
 
-### When rehearsal fails
+### Quando o ensaio falha
 
-1. Read the visible-element dump.
-2. Find the correct selector.
-3. Update the script.
-4. Re-run rehearsal.
-5. Only proceed when every selector passes.
+1. Leia o dump de elementos visíveis.
+2. Encontre o seletor correto.
+3. Atualize o script.
+4. Re-execute o ensaio.
+5. Só continue quando todos os seletores passarem.
 
 ---
 
-## Phase 3: Record
+## Fase 3: Gravar
 
-Only after discovery and rehearsal pass should you create the recording.
+Somente após descoberta e ensaio passarem você deve criar a gravação.
 
-### Recording Principles
+### Princípios de Gravação
 
-#### 1. Storytelling Flow
+#### 1. Fluxo de Narrativa
 
-Plan the video as a story. Follow user-specified order, or use this default:
+Planeje o vídeo como uma história. Siga a ordem especificada pelo usuário, ou use este padrão:
 
-- **Entry**: Login or navigate to the starting point
-- **Context**: Pan the surroundings so viewers orient themselves
-- **Action**: Perform the main workflow steps
-- **Variation**: Show a secondary feature such as settings, theme, or localization
-- **Result**: Show the outcome, confirmation, or new state
+- **Entrada**: Login ou navegue até o ponto de partida
+- **Contexto**: Panorâmica do ambiente para que os espectadores se orientem
+- **Ação**: Execute os passos principais do fluxo de trabalho
+- **Variação**: Mostre uma funcionalidade secundária como configurações, tema ou localização
+- **Resultado**: Mostre o resultado, confirmação ou novo estado
 
-#### 2. Pacing
+#### 2. Ritmo
 
-- After login: `4s`
-- After navigation: `3s`
-- After clicking a button: `2s`
-- Between major steps: `1.5-2s`
-- After the final action: `3s`
-- Typing delay: `25-40ms` per character
+- Após login: `4s`
+- Após navegação: `3s`
+- Após clicar em um botão: `2s`
+- Entre passos principais: `1,5-2s`
+- Após a ação final: `3s`
+- Delay de digitação: `25-40ms` por caractere
 
-#### 3. Cursor Overlay
+#### 3. Overlay de Cursor
 
-Inject an SVG arrow cursor that follows mouse movements:
+Injete um cursor de seta SVG que segue movimentos do mouse:
 
 ```javascript
 async function injectCursor(page) {
@@ -209,11 +209,11 @@ async function injectCursor(page) {
 }
 ```
 
-Call `injectCursor(page)` after every page navigation because the overlay is destroyed on navigate.
+Chame `injectCursor(page)` após cada navegação de página porque o overlay é destruído ao navegar.
 
-#### 4. Mouse Movement
+#### 4. Movimento do Mouse
 
-Never teleport the cursor. Move to the target before clicking:
+Nunca teletransporte o cursor. Mova até o alvo antes de clicar:
 
 ```javascript
 async function moveAndClick(page, locator, label, opts = {}) {
@@ -242,11 +242,11 @@ async function moveAndClick(page, locator, label, opts = {}) {
 }
 ```
 
-Every call should include a descriptive `label` for debugging.
+Cada chamada deve incluir um `label` descritivo para depuração.
 
-#### 5. Typing
+#### 5. Digitação
 
-Type visibly, not instant-fill:
+Digite visivelmente, não com preenchimento instantâneo:
 
 ```javascript
 async function typeSlowly(page, locator, text, label, charDelay = 35) {
@@ -264,18 +264,18 @@ async function typeSlowly(page, locator, text, label, charDelay = 35) {
 }
 ```
 
-#### 6. Scrolling
+#### 6. Rolagem
 
-Use smooth scroll instead of jumps:
+Use rolagem suave em vez de saltos:
 
 ```javascript
 await page.evaluate(() => window.scrollTo({ top: 400, behavior: 'smooth' }));
 await page.waitForTimeout(1500);
 ```
 
-#### 7. Dashboard Panning
+#### 7. Panorâmica de Dashboard
 
-When showing a dashboard or overview page, move the cursor across key elements:
+Ao mostrar um dashboard ou página de visão geral, mova o cursor pelos elementos principais:
 
 ```javascript
 async function panElements(page, selector, maxCount = 6) {
@@ -294,9 +294,9 @@ async function panElements(page, selector, maxCount = 6) {
 }
 ```
 
-#### 8. Subtitles
+#### 8. Legendas
 
-Inject a subtitle bar at the bottom of the viewport:
+Injete uma barra de legendas na parte inferior da viewport:
 
 ```javascript
 async function injectSubtitleBar(page) {
@@ -334,23 +334,23 @@ async function showSubtitle(page, text) {
 }
 ```
 
-Call `injectSubtitleBar(page)` alongside `injectCursor(page)` after every navigation.
+Chame `injectSubtitleBar(page)` junto com `injectCursor(page)` após cada navegação.
 
-Usage pattern:
+Padrão de uso:
 
 ```javascript
-await showSubtitle(page, 'Step 1 - Logging in');
-await showSubtitle(page, 'Step 2 - Dashboard overview');
+await showSubtitle(page, 'Passo 1 - Fazendo login');
+await showSubtitle(page, 'Passo 2 - Visão geral do dashboard');
 await showSubtitle(page, '');
 ```
 
-Guidelines:
+Diretrizes:
 
-- Keep subtitle text short, ideally under 60 characters.
-- Use `Step N - Action` format for consistency.
-- Clear the subtitle during long pauses where the UI can speak for itself.
+- Mantenha o texto da legenda curto, idealmente com menos de 60 caracteres.
+- Use o formato `Passo N - Ação` para consistência.
+- Limpe a legenda durante pausas longas onde a UI fala por si mesma.
 
-## Script Template
+## Template de Script
 
 ```javascript
 'use strict';
@@ -363,8 +363,8 @@ const VIDEO_DIR = path.join(__dirname, 'screenshots');
 const OUTPUT_NAME = 'demo-FEATURE.webm';
 const REHEARSAL = process.argv.includes('--rehearse');
 
-// Paste injectCursor, injectSubtitleBar, showSubtitle, moveAndClick,
-// typeSlowly, ensureVisible, and panElements here.
+// Cole aqui injectCursor, injectSubtitleBar, showSubtitle, moveAndClick,
+// typeSlowly, ensureVisible e panElements.
 
 (async () => {
   const browser = await chromium.launch({ headless: true });
@@ -372,7 +372,7 @@ const REHEARSAL = process.argv.includes('--rehearse');
   if (REHEARSAL) {
     const context = await browser.newContext({ viewport: { width: 1280, height: 720 } });
     const page = await context.newPage();
-    // Navigate through the flow and run ensureVisible for each selector.
+    // Navegue pelo fluxo e execute ensureVisible para cada seletor.
     await browser.close();
     return;
   }
@@ -387,20 +387,20 @@ const REHEARSAL = process.argv.includes('--rehearse');
     await injectCursor(page);
     await injectSubtitleBar(page);
 
-    await showSubtitle(page, 'Step 1 - Logging in');
-    // login actions
+    await showSubtitle(page, 'Passo 1 - Fazendo login');
+    // ações de login
 
     await page.goto(`${BASE_URL}/dashboard`);
     await injectCursor(page);
     await injectSubtitleBar(page);
-    await showSubtitle(page, 'Step 2 - Dashboard overview');
-    // pan dashboard
+    await showSubtitle(page, 'Passo 2 - Visão geral do dashboard');
+    // panorâmica do dashboard
 
-    await showSubtitle(page, 'Step 3 - Main workflow');
-    // action sequence
+    await showSubtitle(page, 'Passo 3 - Fluxo principal');
+    // sequência de ações
 
-    await showSubtitle(page, 'Step 4 - Result');
-    // final reveal
+    await showSubtitle(page, 'Passo 4 - Resultado');
+    // revelação final
     await showSubtitle(page, '');
   } catch (err) {
     console.error('DEMO ERROR:', err.message);
@@ -424,43 +424,43 @@ const REHEARSAL = process.argv.includes('--rehearse');
 })();
 ```
 
-Usage:
+Uso:
 
 ```bash
-# Phase 2: Rehearse
+# Fase 2: Ensaiar
 node demo-script.cjs --rehearse
 
-# Phase 3: Record
+# Fase 3: Gravar
 node demo-script.cjs
 ```
 
-## Checklist Before Recording
+## Lista de Verificação Antes de Gravar
 
-- [ ] Discovery phase completed
-- [ ] Rehearsal passes with all selectors OK
-- [ ] Headless mode enabled
-- [ ] Resolution set to `1280x720`
-- [ ] Cursor and subtitle overlays re-injected after every navigation
-- [ ] `showSubtitle(page, 'Step N - ...')` used at major transitions
-- [ ] `moveAndClick` used for all clicks with descriptive labels
-- [ ] `typeSlowly` used for visible input
-- [ ] No silent catches; helpers log warnings
-- [ ] Smooth scrolling used for content reveal
-- [ ] Key pauses are visible to a human viewer
-- [ ] Flow matches the requested story order
-- [ ] Script reflects the actual UI discovered in phase 1
+- [ ] Fase de descoberta concluída
+- [ ] Ensaio passou com todos os seletores OK
+- [ ] Modo headless ativado
+- [ ] Resolução definida como `1280x720`
+- [ ] Overlays de cursor e legenda re-injetados após cada navegação
+- [ ] `showSubtitle(page, 'Passo N - ...')` usado nas transições principais
+- [ ] `moveAndClick` usado para todos os cliques com labels descritivos
+- [ ] `typeSlowly` usado para entrada visível
+- [ ] Sem capturas silenciosas; helpers registram avisos
+- [ ] Rolagem suave usada para revelar conteúdo
+- [ ] Pausas principais são visíveis para um espectador humano
+- [ ] Fluxo corresponde à ordem de história solicitada
+- [ ] Script reflete a UI real descoberta na fase 1
 
-## Common Pitfalls
+## Armadilhas Comuns
 
-1. Cursor disappears after navigation - re-inject it.
-2. Video is too fast - add pauses.
-3. Cursor is a dot instead of an arrow - use the SVG overlay.
-4. Cursor teleports - move before clicking.
-5. Select dropdowns look wrong - show the move, then pick the option.
-6. Modals feel abrupt - add a read pause before confirming.
-7. Video file path is random - copy it to a stable output name.
-8. Selector failures are swallowed - never use silent catch blocks.
-9. Field types were assumed - discover them first.
-10. Features were assumed - inspect the actual UI before scripting.
-11. Placeholder select values look real - watch for `"0"` and `"Select..."`.
-12. Popups create separate videos - capture popup pages explicitly and merge later if needed.
+1. Cursor desaparece após navegação — re-injete-o.
+2. Vídeo está muito rápido — adicione pausas.
+3. Cursor é um ponto em vez de uma seta — use o overlay SVG.
+4. Cursor teletransporta — mova antes de clicar.
+5. Dropdowns select parecem errados — mostre o movimento, depois escolha a opção.
+6. Modais parecem abruptos — adicione uma pausa de leitura antes de confirmar.
+7. Caminho do arquivo de vídeo é aleatório — copie para um nome de saída estável.
+8. Falhas de seletor são engolidas — nunca use blocos catch silenciosos.
+9. Tipos de campo foram assumidos — descubra-os primeiro.
+10. Funcionalidades foram assumidas — inspecione a UI real antes de criar o script.
+11. Valores de select placeholder parecem reais — cuidado com `"0"` e `"Select..."`.
+12. Popups criam vídeos separados — capture páginas de popup explicitamente e mescle depois se necessário.

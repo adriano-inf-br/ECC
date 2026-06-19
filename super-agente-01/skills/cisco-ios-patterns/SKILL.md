@@ -11,7 +11,7 @@ Use esta skill ao revisar trechos de Cisco IOS ou IOS-XE, montar uma
 checklist de janela de mudança ou explicar como coletar evidências de um roteador ou
 switch sem agravar o incidente.
 
-## When to Use
+## Quando Usar
 
 - Revisar configuração IOS ou IOS-XE antes de uma mudança planejada.
 - Escolher comandos `show` somente leitura para troubleshooting.
@@ -19,7 +19,7 @@ switch sem agravar o incidente.
 - Explicar os modos de configuração global, de interface, de processo de roteamento e de linha.
 - Verificar se uma mudança chegou à running config e foi salva intencionalmente.
 
-## Operating Rules
+## Regras de Operação
 
 Trate os exemplos de IOS como padrões, não como mudanças prontas para colar em produção. Confirme a
 plataforma, os nomes das interfaces, a configuração atual, o caminho de rollback e o acesso out-of-band
@@ -33,7 +33,7 @@ Prefira este fluxo de trabalho:
 4. Aplique a menor mudança possível em uma janela de manutenção.
 5. Releia o estado, compare com a baseline e só então salve após a validação.
 
-## Mode Reference
+## Referência de Modos
 
 ```text
 Router> enable
@@ -51,7 +51,7 @@ Router# show running-config interface GigabitEthernet0/1
 Não salve uma mudança apenas porque um comando foi aceito; valide o comportamento
 primeiro e depois use `copy running-config startup-config` se a mudança for aprovada.
 
-## Read-Only Collection
+## Coleta Somente Leitura
 
 ```text
 show version
@@ -102,7 +102,7 @@ ip access-list extended WEB-IN
 Toda ACL tem um deny implícito no final. Adicione um deny explícito com log quando o
 objetivo operacional incluir observar matches negados, e confirme que o volume de logging é seguro.
 
-## ACL Placement Review
+## Revisão de Posicionamento de ACL
 
 Antes de aplicar uma ACL a uma interface, responda a estas perguntas:
 
@@ -116,7 +116,7 @@ Antes de aplicar uma ACL a uma interface, responda a estas perguntas:
 Não teste a alcançabilidade removendo proteções de firewall ou ACL. Leia primeiro os contadores,
 os logs e o estado de rotas.
 
-## Interface Hygiene
+## Higiene de Interface
 
 ```text
 interface GigabitEthernet0/1
@@ -131,7 +131,7 @@ Use descrições claras, switchport mode explícito e native VLANs documentadas.
 Em interfaces roteadas, confirme a máscara, o endereçamento do peer e o processo de roteamento
 antes de assumir que o estado do link significa que o encaminhamento está correto.
 
-## Change-Window Verification
+## Verificação em Janela de Mudança
 
 Use verificações de antes/depois que correspondam à mudança real.
 
@@ -147,7 +147,7 @@ Para mudanças de roteamento, capture também o estado dos neighbors e as tabela
 depois da mudança. Para mudanças de ACL, compare os contadores de hits a partir de uma fonte de teste
 planejada, em vez de depender de um ping genérico.
 
-## Anti-Patterns
+## Anti-Padrões
 
 - Aplicar uma configuração gerada sem um diff específico do dispositivo.
 - Salvar a configuração antes que as verificações pós-mudança passem.
@@ -156,7 +156,7 @@ planejada, em vez de depender de um ping genérico.
 - Fazer troubleshooting desativando ACLs, políticas de rota ou autenticação.
 - Colar configurações completas em ferramentas públicas sem sanitizar segredos e topologia.
 
-## See Also
+## Veja Também
 
 - Agent: `network-config-reviewer`
 - Agent: `network-troubleshooter`

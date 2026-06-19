@@ -1,31 +1,31 @@
 ---
 name: ui-to-vue
-description: Use when the user has UI screenshots or design exports that need batch conversion into Vue 3 components, especially with Vant, Element Plus, or Ant Design Vue.
+description: Use quando o usuário tiver screenshots de UI ou exportações de design que precisam de conversão em lote para componentes Vue 3, especialmente com Vant, Element Plus ou Ant Design Vue.
 metadata:
   origin: community
 ---
 
 # UI To Vue
 
-Batch-convert UI design screenshots into Vue 3 Composition API component code.
+Converta em lote screenshots de design de UI em código de componente Vue 3 Composition API.
 
-## When to Use
+## Quando Usar
 
-- The user provides a directory of design screenshots or design-export images.
-- The target application is Vue 3.
-- The user wants a first pass of page components, shared components, and router wiring.
-- The user specifies Vant, Element Plus, or Ant Design Vue as the component library.
+- O usuário fornece um diretório de screenshots de design ou imagens de exportação de design.
+- A aplicação alvo é Vue 3.
+- O usuário quer um primeiro passe de componentes de página, componentes compartilhados e fiação de roteador.
+- O usuário especifica Vant, Element Plus ou Ant Design Vue como biblioteca de componentes.
 
-## When Not to Use
+## Quando Não Usar
 
-- The user has only one screenshot and wants a bespoke component.
-- The target project is not Vue.
-- The design requires detailed interaction logic, data flow, or accessibility review.
-- The screenshots contain private customer data that cannot be sent to an external model API.
+- O usuário tem apenas um screenshot e quer um componente personalizado.
+- O projeto alvo não é Vue.
+- O design requer lógica de interação detalhada, fluxo de dados ou revisão de acessibilidade.
+- Os screenshots contêm dados privados de clientes que não podem ser enviados para uma API de modelo externo.
 
-## Inputs
+## Entradas
 
-Use an input directory that groups screenshots by module and page state:
+Use um diretório de entrada que agrupe screenshots por módulo e estado de página:
 
 ```text
 screenshots/
@@ -38,56 +38,56 @@ screenshots/
 `-- cut-images/
 ```
 
-Supported cut-image directory names include `assets`, `icons`, `sprites`, `cut`, `images`, and `cut-images`.
+Nomes de diretório de imagem cortada suportados incluem `assets`, `icons`, `sprites`, `cut`, `images` e `cut-images`.
 
-## Conversion Model
+## Modelo de Conversão
 
-- Page grouping: combine related screenshots into one page component when they represent list, detail, form, loading, or empty states.
-- UI library mapping: map native visual elements to Vant, Element Plus, or Ant Design Vue components where practical.
-- Cut-image priority: prefer page-level assets, then module-level assets, then global shared assets.
-- Component extraction: extract repeated UI regions into shared components when they appear more than once.
+- Agrupamento de página: combine screenshots relacionados em um componente de página quando representam estados de lista, detalhe, formulário, carregamento ou vazio.
+- Mapeamento de biblioteca UI: mapeie elementos visuais nativos para componentes Vant, Element Plus ou Ant Design Vue quando prático.
+- Prioridade de imagem cortada: prefira assets de nível de página, depois assets de nível de módulo, depois assets compartilhados globais.
+- Extração de componente: extraia regiões de UI repetidas em componentes compartilhados quando aparecerem mais de uma vez.
 
-## CLI Usage
+## Uso CLI
 
-Run the converter with `npx` so the documented command works without relying on a global binary:
+Execute o conversor com `npx` para que o comando documentado funcione sem depender de um binário global:
 
 ```bash
 export DASHSCOPE_API_KEY=your_key
 npx ui-to-vue-converter@1.0.2 --input ./screenshots --ui vant --output ./src
 ```
 
-For desktop UI libraries:
+Para bibliotecas UI de desktop:
 
 ```bash
 npx ui-to-vue-converter@1.0.2 --input ./designs --ui element-plus --output ./src
 npx ui-to-vue-converter@1.0.2 --input ./designs --ui antd-vue --output ./src
 ```
 
-If the package is installed globally, the `ui-to-vue` binary can be used directly:
+Se o pacote estiver instalado globalmente, o binário `ui-to-vue` pode ser usado diretamente:
 
 ```bash
 npm install -g ui-to-vue-converter@1.0.2
 ui-to-vue --input ./screenshots --ui vant --output ./src
 ```
 
-## Options
+## Opções
 
-| Option | Description | Default |
+| Opção | Descrição | Padrão |
 | --- | --- | --- |
-| `--input` | Design image directory | `./screenshots` |
-| `--ui` | UI library: `vant`, `element-plus`, or `antd-vue` | `vant` |
-| `--output` | Output directory | `./src` |
-| `--config` | Config file path | `./.ui-to-vue.config.json` |
+| `--input` | Diretório de imagens de design | `./screenshots` |
+| `--ui` | Biblioteca UI: `vant`, `element-plus` ou `antd-vue` | `vant` |
+| `--output` | Diretório de saída | `./src` |
+| `--config` | Caminho do arquivo de configuração | `./.ui-to-vue.config.json` |
 
-## API Key Handling
+## Tratamento de Chave de API
 
-The converter can read DashScope credentials from a config file or from the environment. Prefer an environment variable in repositories:
+O conversor pode ler credenciais DashScope de um arquivo de configuração ou do ambiente. Prefira uma variável de ambiente em repositórios:
 
 ```bash
 export DASHSCOPE_API_KEY=your_key
 ```
 
-If a local config file is required, keep it out of version control:
+Se um arquivo de configuração local for necessário, mantenha-o fora do controle de versão:
 
 ```json
 {
@@ -102,34 +102,34 @@ If a local config file is required, keep it out of version control:
 .ui-to-vue.config.json
 ```
 
-## Security and Privacy
+## Segurança e Privacidade
 
-- Treat design screenshots as source material that may be sent to an external model API.
-- Do not run this flow on private customer designs without permission.
-- Pin the converter version in repeatable workflows instead of using `@latest`.
-- Review generated Vue code before committing it.
-- Do not commit `.ui-to-vue.config.json`, API keys, generated secrets, or customer screenshots.
+- Trate screenshots de design como material de origem que pode ser enviado para uma API de modelo externo.
+- Não execute este fluxo em designs privados de clientes sem permissão.
+- Fixe a versão do conversor em fluxos de trabalho repetíveis em vez de usar `@latest`.
+- Revise o código Vue gerado antes de commitá-lo.
+- Não commite `.ui-to-vue.config.json`, chaves de API, segredos gerados ou screenshots de clientes.
 
-## Output Review Checklist
+## Lista de Verificação de Revisão de Saída
 
-- [ ] Page components were generated under `views/` or the chosen output directory.
-- [ ] Repeated UI regions were extracted into `components/` only when reuse is clear.
-- [ ] Router output is compatible with the target project's router style.
-- [ ] Generated components use the requested UI library consistently.
-- [ ] Generated CSS units match the design baseline.
-- [ ] The code passes the project's formatter, linter, type checker, and build.
-- [ ] Placeholder copy, mock data, and generated assets were reviewed before commit.
+- [ ] Componentes de página foram gerados em `views/` ou no diretório de saída escolhido.
+- [ ] Regiões de UI repetidas foram extraídas em `components/` apenas quando o reuso é claro.
+- [ ] A saída do roteador é compatível com o estilo de roteador do projeto alvo.
+- [ ] Componentes gerados usam a biblioteca UI solicitada de forma consistente.
+- [ ] Unidades CSS geradas correspondem à linha de base do design.
+- [ ] O código passa pelo formatador, linter, verificador de tipos e build do projeto.
+- [ ] Textos placeholder, dados Mock e assets gerados foram revisados antes do Commit.
 
-## Troubleshooting
+## Solução de Problemas
 
-| Issue | Check |
+| Problema | Verificar |
 | --- | --- |
-| `401` or authentication error | Confirm `DASHSCOPE_API_KEY` is set in the shell running the command. |
-| `command not found: ui-to-vue` | Use the `npx ui-to-vue-converter@1.0.2` form or install the package globally. |
-| Cut images are ignored | Confirm the asset directory name is supported and nested under the matching page or module. |
-| Components ignore the requested UI library | Re-run with an explicit `--ui` value and inspect the generated imports. |
-| Generated layout dimensions look wrong | Confirm the screenshot export width matches the target library baseline. |
+| Erro `401` ou de autenticação | Confirme que `DASHSCOPE_API_KEY` está definida no shell que executa o comando. |
+| `command not found: ui-to-vue` | Use a forma `npx ui-to-vue-converter@1.0.2` ou instale o pacote globalmente. |
+| Imagens cortadas são ignoradas | Confirme que o nome do diretório de assets é suportado e aninhado sob a página ou módulo correspondente. |
+| Componentes ignoram a biblioteca UI solicitada | Re-execute com um valor `--ui` explícito e inspecione os imports gerados. |
+| Dimensões de layout geradas parecem erradas | Confirme que a largura de exportação do screenshot corresponde à linha de base da biblioteca alvo. |
 
-## References
+## Referências
 
-- npm package: `ui-to-vue-converter`
+- pacote npm: `ui-to-vue-converter`

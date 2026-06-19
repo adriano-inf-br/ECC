@@ -1,32 +1,32 @@
 ---
-description: "Extract reusable patterns from the session, self-evaluate quality before saving, and determine the right save location (Global vs Project)."
+description: "Extrai padrões reutilizáveis da sessão, autoavalia a qualidade antes de salvar e determina o local de salvamento correto (Global vs Projeto)."
 ---
 
-# /learn-eval - Extract, Evaluate, then Save
+# /learn-eval - Extrair, Avaliar e então Salvar
 
-Extends `/learn` with a quality gate, save-location decision, and knowledge-placement awareness before writing any skill file.
+Estende `/learn` com um quality gate, decisão de local de salvamento e consciência de posicionamento de conhecimento antes de escrever qualquer arquivo de skill.
 
-## What to Extract
+## O Que Extrair
 
-Look for:
+Procure por:
 
-1. **Error Resolution Patterns** — root cause + fix + reusability
-2. **Debugging Techniques** — non-obvious steps, tool combinations
-3. **Workarounds** — library quirks, API limitations, version-specific fixes
-4. **Project-Specific Patterns** — conventions, architecture decisions, integration patterns
+1. **Padrões de Resolução de Erros** — causa raiz + correção + reutilização
+2. **Técnicas de Depuração** — passos não óbvios, combinações de ferramentas
+3. **Workarounds** — peculiaridades de bibliotecas, limitações de API, correções específicas de versão
+4. **Padrões Específicos do Projeto** — convenções, decisões de arquitetura, padrões de integração
 
-## Process
+## Processo
 
-1. Review the session for extractable patterns
-2. Identify the most valuable/reusable insight
+1. Revisar a sessão em busca de padrões extraíveis
+2. Identificar o insight mais valioso/reutilizável
 
-3. **Determine save location:**
-   - Ask: "Would this pattern be useful in a different project?"
-   - **Global** (`~/.claude/skills/learned/`): Generic patterns usable across 2+ projects (bash compatibility, LLM API behavior, debugging techniques, etc.)
-   - **Project** (`.claude/skills/learned/` in current project): Project-specific knowledge (quirks of a particular config file, project-specific architecture decisions, etc.)
-   - When in doubt, choose Global (moving Global → Project is easier than the reverse)
+3. **Determinar o local de salvamento:**
+   - Pergunte: "Este padrão seria útil em um projeto diferente?"
+   - **Global** (`~/.claude/skills/learned/`): Padrões genéricos usáveis em 2 ou mais projetos (compatibilidade de bash, comportamento de API de LLM, técnicas de depuração, etc.)
+   - **Projeto** (`.claude/skills/learned/` no projeto atual): Conhecimento específico do projeto (peculiaridades de um arquivo de configuração específico, decisões de arquitetura específicas do projeto, etc.)
+   - Na dúvida, escolha Global (mover de Global → Projeto é mais fácil que o inverso)
 
-4. Draft the skill file using this format:
+4. Esboçar o arquivo de skill usando este formato:
 
 ```markdown
 ---
@@ -51,66 +51,66 @@ origin: auto-extracted
 [Trigger conditions]
 ```
 
-5. **Quality gate — Checklist + Holistic verdict**
+5. **Quality gate — Checklist + Veredito holístico**
 
-   ### 5a. Required checklist (verify by actually reading files)
+   ### 5a. Checklist obrigatório (verifique lendo os arquivos de fato)
 
-   Execute **all** of the following before evaluating the draft:
+   Execute **todos** os itens a seguir antes de avaliar o rascunho:
 
-   - [ ] Grep `~/.claude/skills/` and relevant project `.claude/skills/` files by keyword to check for content overlap
-   - [ ] Check MEMORY.md (both project and global) for overlap
-   - [ ] Consider whether appending to an existing skill would suffice
-   - [ ] Confirm this is a reusable pattern, not a one-off fix
+   - [ ] Fazer grep em `~/.claude/skills/` e nos arquivos relevantes de `.claude/skills/` do projeto por palavra-chave para verificar sobreposição de conteúdo
+   - [ ] Verificar o MEMORY.md (tanto do projeto quanto global) em busca de sobreposição
+   - [ ] Considerar se acrescentar a uma skill existente seria suficiente
+   - [ ] Confirmar que é um padrão reutilizável, não uma correção pontual
 
-   ### 5b. Holistic verdict
+   ### 5b. Veredito holístico
 
-   Synthesize the checklist results and draft quality, then choose **one** of the following:
+   Sintetize os resultados do checklist e a qualidade do rascunho, depois escolha **um** dos seguintes:
 
-   | Verdict | Meaning | Next Action |
+   | Veredito | Significado | Próxima Ação |
    |---------|---------|-------------|
-   | **Save** | Unique, specific, well-scoped | Proceed to Step 6 |
-   | **Improve then Save** | Valuable but needs refinement | List improvements → revise → re-evaluate (once) |
-   | **Absorb into [X]** | Should be appended to an existing skill | Show target skill and additions → Step 6 |
-   | **Drop** | Trivial, redundant, or too abstract | Explain reasoning and stop |
+   | **Save** | Único, específico, bem delimitado | Avançar para o Passo 6 |
+   | **Improve then Save** | Valioso, mas precisa de refinamento | Listar melhorias → revisar → reavaliar (uma vez) |
+   | **Absorb into [X]** | Deve ser acrescentado a uma skill existente | Mostrar a skill alvo e as adições → Passo 6 |
+   | **Drop** | Trivial, redundante ou abstrato demais | Explicar o raciocínio e parar |
 
-**Guideline dimensions** (informing the verdict, not scored):
+**Dimensões de orientação** (que informam o veredito, sem pontuação):
 
-- **Specificity & Actionability**: Contains code examples or commands that are immediately usable
-- **Scope Fit**: Name, trigger conditions, and content are aligned and focused on a single pattern
-- **Uniqueness**: Provides value not covered by existing skills (informed by checklist results)
-- **Reusability**: Realistic trigger scenarios exist in future sessions
+- **Especificidade e Acionabilidade**: Contém exemplos de código ou comandos imediatamente usáveis
+- **Adequação de Escopo**: Nome, condições de gatilho e conteúdo estão alinhados e focados em um único padrão
+- **Unicidade**: Oferece valor não coberto pelas skills existentes (informado pelos resultados do checklist)
+- **Reutilização**: Existem cenários de gatilho realistas em sessões futuras
 
-6. **Verdict-specific confirmation flow**
+6. **Fluxo de confirmação específico por veredito**
 
-- **Improve then Save**: Present the required improvements + revised draft + updated checklist/verdict after one re-evaluation; if the revised verdict is **Save**, save after user confirmation, otherwise follow the new verdict
-- **Save**: Present save path + checklist results + 1-line verdict rationale + full draft → save after user confirmation
-- **Absorb into [X]**: Present target path + additions (diff format) + checklist results + verdict rationale → append after user confirmation
-- **Drop**: Show checklist results + reasoning only (no confirmation needed)
+- **Improve then Save**: Apresente as melhorias necessárias + rascunho revisado + checklist/veredito atualizados após uma reavaliação; se o veredito revisado for **Save**, salve após a confirmação do usuário, caso contrário siga o novo veredito
+- **Save**: Apresente o caminho de salvamento + resultados do checklist + justificativa do veredito em 1 linha + rascunho completo → salve após a confirmação do usuário
+- **Absorb into [X]**: Apresente o caminho alvo + adições (formato diff) + resultados do checklist + justificativa do veredito → acrescente após a confirmação do usuário
+- **Drop**: Mostre apenas os resultados do checklist + raciocínio (não é necessária confirmação)
 
-7. Save / Absorb to the determined location
+7. Salvar / Absorver no local determinado
 
-## Output Format for Step 5
+## Formato de Saída para o Passo 5
 
 ```
 ### Checklist
-- [x] skills/ grep: no overlap (or: overlap found → details)
-- [x] MEMORY.md: no overlap (or: overlap found → details)
-- [x] Existing skill append: new file appropriate (or: should append to [X])
-- [x] Reusability: confirmed (or: one-off → Drop)
+- [x] grep em skills/: sem sobreposição (ou: sobreposição encontrada → detalhes)
+- [x] MEMORY.md: sem sobreposição (ou: sobreposição encontrada → detalhes)
+- [x] Acréscimo a skill existente: novo arquivo apropriado (ou: deve acrescentar a [X])
+- [x] Reutilização: confirmada (ou: pontual → Drop)
 
-### Verdict: Save / Improve then Save / Absorb into [X] / Drop
+### Veredito: Save / Improve then Save / Absorb into [X] / Drop
 
-**Rationale:** (1-2 sentences explaining the verdict)
+**Justificativa:** (1-2 frases explicando o veredito)
 ```
 
-## Design Rationale
+## Justificativa de Design
 
-This version replaces the previous 5-dimension numeric scoring rubric (Specificity, Actionability, Scope Fit, Non-redundancy, Coverage scored 1-5) with a checklist-based holistic verdict system. Modern frontier models (Opus 4.6+) have strong contextual judgment — forcing rich qualitative signals into numeric scores loses nuance and can produce misleading totals. The holistic approach lets the model weigh all factors naturally, producing more accurate save/drop decisions while the explicit checklist ensures no critical check is skipped.
+Esta versão substitui a rubrica anterior de pontuação numérica de 5 dimensões (Especificidade, Acionabilidade, Adequação de Escopo, Não-redundância, Cobertura pontuadas de 1 a 5) por um sistema de veredito holístico baseado em checklist. Modelos frontier modernos (Opus 4.6+) têm forte julgamento contextual — forçar sinais qualitativos ricos em pontuações numéricas perde nuance e pode produzir totais enganosos. A abordagem holística permite que o modelo pondere todos os fatores naturalmente, produzindo decisões de salvar/descartar mais precisas, enquanto o checklist explícito garante que nenhuma verificação crítica seja pulada.
 
-## Notes
+## Notas
 
-- Don't extract trivial fixes (typos, simple syntax errors)
-- Don't extract one-time issues (specific API outages, etc.)
-- Focus on patterns that will save time in future sessions
-- Keep skills focused — one pattern per skill
-- When the verdict is Absorb, append to the existing skill rather than creating a new file
+- Não extraia correções triviais (erros de digitação, erros simples de sintaxe)
+- Não extraia problemas pontuais (quedas específicas de API, etc.)
+- Concentre-se em padrões que vão economizar tempo em sessões futuras
+- Mantenha as skills focadas — um padrão por skill
+- Quando o veredito for Absorb, acrescente à skill existente em vez de criar um novo arquivo

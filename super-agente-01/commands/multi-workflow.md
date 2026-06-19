@@ -1,43 +1,43 @@
 ---
-description: Run a full multi-model development workflow with research, planning, execution, optimization, and review.
+description: Executa um fluxo de trabalho de desenvolvimento multi-modelo completo com pesquisa, planejamento, execução, otimização e revisão.
 ---
 
-# Workflow - Multi-Model Collaborative Development
+# Workflow - Desenvolvimento Colaborativo Multi-Modelo
 
-Multi-model collaborative development workflow (Research → Ideation → Plan → Execute → Optimize → Review), with intelligent routing: Frontend → Gemini, Backend → Codex.
+Fluxo de trabalho de desenvolvimento colaborativo multi-modelo (Research → Ideation → Plan → Execute → Optimize → Review), com roteamento inteligente: Frontend → Gemini, Backend → Codex.
 
-> **Prerequisite:** Requires the external `ccg-workflow` runtime, which is **not** part of the base ECC install. Initialize it with `npx ccg-workflow` to provision `~/.claude/bin/codeagent-wrapper` and the `~/.claude/.ccg/prompts/*` role files this command depends on. Without that runtime, this command will not run correctly.
+> **Pré-requisito:** Requer o runtime externo `ccg-workflow`, que **não** faz parte da instalação base do ECC. Inicialize-o com `npx ccg-workflow` para provisionar `~/.claude/bin/codeagent-wrapper` e os arquivos de papel `~/.claude/.ccg/prompts/*` dos quais este comando depende. Sem esse runtime, este comando não funcionará corretamente.
 
-Structured development workflow with quality gates, MCP services, and multi-model collaboration.
+Fluxo de trabalho de desenvolvimento estruturado com portões de qualidade, serviços MCP e colaboração multi-modelo.
 
-## Usage
+## Uso
 
 ```bash
 /workflow <task description>
 ```
 
-## Context
+## Contexto
 
-- Task to develop: $ARGUMENTS
-- Structured 6-phase workflow with quality gates
-- Multi-model collaboration: Codex (backend) + Gemini (frontend) + Claude (orchestration)
-- MCP service integration (ace-tool, optional) for enhanced capabilities
+- Tarefa a desenvolver: $ARGUMENTS
+- Fluxo de trabalho estruturado de 6 fases com portões de qualidade
+- Colaboração multi-modelo: Codex (backend) + Gemini (frontend) + Claude (orquestração)
+- Integração de serviço MCP (ace-tool, opcional) para capacidades aprimoradas
 
-## Your Role
+## Seu Papel
 
-You are the **Orchestrator**, coordinating a multi-model collaborative system (Research → Ideation → Plan → Execute → Optimize → Review). Communicate concisely and professionally for experienced developers.
+Você é o **Orchestrator**, coordenando um sistema colaborativo multi-modelo (Research → Ideation → Plan → Execute → Optimize → Review). Comunique-se de forma concisa e profissional para desenvolvedores experientes.
 
-**Collaborative Models**:
-- **ace-tool MCP** (optional) – Code retrieval + Prompt enhancement
-- **Codex** – Backend logic, algorithms, debugging (**Backend authority, trustworthy**)
-- **Gemini** – Frontend UI/UX, visual design (**Frontend expert, backend opinions for reference only**)
-- **Claude (self)** – Orchestration, planning, execution, delivery
+**Modelos Colaborativos**:
+- **ace-tool MCP** (opcional) – Recuperação de código + Aprimoramento de prompt
+- **Codex** – Lógica de backend, algoritmos, debugging (**autoridade em backend, confiável**)
+- **Gemini** – UI/UX de frontend, design visual (**especialista em frontend, opiniões de backend apenas para referência**)
+- **Claude (self)** – Orquestração, planejamento, execução, entrega
 
 ---
 
-## Multi-Model Call Specification
+## Especificação de Chamada Multi-Modelo
 
-**Call syntax** (parallel: `run_in_background: true`, sequential: `false`):
+**Sintaxe de chamada** (paralelo: `run_in_background: true`, sequencial: `false`):
 
 ```
 # New session call
@@ -71,45 +71,45 @@ EOF",
 })
 ```
 
-**Model Parameter Notes**:
-- `{{GEMINI_MODEL_FLAG}}`: When using `--backend gemini`, replace with `--gemini-model gemini-3-pro-preview` (note trailing space); use empty string for codex
+**Notas sobre Parâmetros de Modelo**:
+- `{{GEMINI_MODEL_FLAG}}`: Ao usar `--backend gemini`, substitua por `--gemini-model gemini-3-pro-preview` (observe o espaço ao final); use string vazia para o codex
 
-**Role Prompts**:
+**Prompts de Papel**:
 
-| Phase | Codex | Gemini |
+| Fase | Codex | Gemini |
 |-------|-------|--------|
 | Analysis | `~/.claude/.ccg/prompts/codex/analyzer.md` | `~/.claude/.ccg/prompts/gemini/analyzer.md` |
 | Planning | `~/.claude/.ccg/prompts/codex/architect.md` | `~/.claude/.ccg/prompts/gemini/architect.md` |
 | Review | `~/.claude/.ccg/prompts/codex/reviewer.md` | `~/.claude/.ccg/prompts/gemini/reviewer.md` |
 
-**Session Reuse**: Each call returns `SESSION_ID: xxx`, use `resume xxx` subcommand for subsequent phases (note: `resume`, not `--resume`).
+**Reuso de Sessão**: Cada chamada retorna `SESSION_ID: xxx`, use o subcomando `resume xxx` para as fases subsequentes (observe: `resume`, não `--resume`).
 
-**Parallel Calls**: Use `run_in_background: true` to start, wait for results with `TaskOutput`. **Must wait for all models to return before proceeding to next phase**.
+**Chamadas Paralelas**: Use `run_in_background: true` para iniciar, aguarde os resultados com `TaskOutput`. **Deve aguardar todos os modelos retornarem antes de prosseguir para a próxima fase**.
 
-**Wait for Background Tasks** (use max timeout 600000ms = 10 minutes):
+**Aguardar Tarefas em Background** (use timeout máximo 600000ms = 10 minutos):
 
 ```
 TaskOutput({ task_id: "<task_id>", block: true, timeout: 600000 })
 ```
 
-**IMPORTANT**:
-- Must specify `timeout: 600000`, otherwise default 30 seconds will cause premature timeout.
-- If still incomplete after 10 minutes, continue polling with `TaskOutput`, **NEVER kill the process**.
-- If waiting is skipped due to timeout, **MUST call `AskUserQuestion` to ask user whether to continue waiting or kill task. Never kill directly.**
+**IMPORTANTE**:
+- Deve especificar `timeout: 600000`, caso contrário o padrão de 30 segundos causará timeout prematuro.
+- Se ainda estiver incompleto após 10 minutos, continue fazendo polling com `TaskOutput`, **NUNCA encerre o processo**.
+- Se a espera for pulada por timeout, **DEVE chamar `AskUserQuestion` para perguntar ao usuário se deve continuar aguardando ou encerrar a tarefa. Nunca encerre diretamente.**
 
 ---
 
-## Communication Guidelines
+## Diretrizes de Comunicação
 
-1. Start responses with mode label `[Mode: X]`, initial is `[Mode: Research]`.
-2. Follow strict sequence: `Research → Ideation → Plan → Execute → Optimize → Review`.
-3. Request user confirmation after each phase completion.
-4. Force stop when score < 7 or user does not approve.
-5. Use `AskUserQuestion` tool for user interaction when needed (e.g., confirmation/selection/approval).
+1. Inicie as respostas com o rótulo de modo `[Mode: X]`, sendo o inicial `[Mode: Research]`.
+2. Siga a sequência estrita: `Research → Ideation → Plan → Execute → Optimize → Review`.
+3. Solicite a confirmação do usuário após a conclusão de cada fase.
+4. Force a parada quando a pontuação < 7 ou o usuário não aprovar.
+5. Use a tool `AskUserQuestion` para interação com o usuário quando necessário (ex.: confirmação/seleção/aprovação).
 
-## When to Use External Orchestration
+## Quando Usar Orquestração Externa
 
-Use external tmux/worktree orchestration when the work must be split across parallel workers that need isolated git state, independent terminals, or separate build/test execution. Use in-process subagents for lightweight analysis, planning, or review where the main session remains the only writer.
+Use a orquestração externa via tmux/worktree quando o trabalho precisar ser dividido entre workers paralelos que necessitam de estado git isolado, terminais independentes ou execução separada de build/test. Use subagents em processo para análise, planejamento ou revisão leves, em que a sessão principal permanece como o único escritor.
 
 ```bash
 node scripts/orchestrate-worktrees.js .claude/plan/workflow-e2e-test.json --execute
@@ -117,81 +117,81 @@ node scripts/orchestrate-worktrees.js .claude/plan/workflow-e2e-test.json --exec
 
 ---
 
-## Execution Workflow
+## Fluxo de Trabalho de Execução
 
-**Task Description**: $ARGUMENTS
+**Descrição da Tarefa**: $ARGUMENTS
 
-### Phase 1: Research & Analysis
+### Fase 1: Pesquisa e Análise
 
-`[Mode: Research]` - Understand requirements and gather context:
+`[Mode: Research]` - Entenda os requisitos e reúna contexto:
 
-1. **Prompt Enhancement** (if ace-tool MCP available): Call `mcp__ace-tool__enhance_prompt`, **replace original $ARGUMENTS with enhanced result for all subsequent Codex/Gemini calls**. If unavailable, use `$ARGUMENTS` as-is.
-2. **Context Retrieval** (if ace-tool MCP available): Call `mcp__ace-tool__search_context`. If unavailable, use built-in tools: `Glob` for file discovery, `Grep` for symbol search, `Read` for context gathering, `Task` (Explore agent) for deeper exploration.
-3. **Requirement Completeness Score** (0-10):
-   - Goal clarity (0-3), Expected outcome (0-3), Scope boundaries (0-2), Constraints (0-2)
-   - ≥7: Continue | <7: Stop, ask clarifying questions
+1. **Aprimoramento de Prompt** (se a MCP ace-tool estiver disponível): Chame `mcp__ace-tool__enhance_prompt`, **substitua o $ARGUMENTS original pelo resultado aprimorado para todas as chamadas subsequentes ao Codex/Gemini**. Se indisponível, use `$ARGUMENTS` como está.
+2. **Recuperação de Contexto** (se a MCP ace-tool estiver disponível): Chame `mcp__ace-tool__search_context`. Se indisponível, use as tools embutidas: `Glob` para descoberta de arquivos, `Grep` para busca de símbolos, `Read` para reunir contexto, `Task` (agent Explore) para exploração mais profunda.
+3. **Pontuação de Completude do Requisito** (0-10):
+   - Clareza do objetivo (0-3), Resultado esperado (0-3), Limites de escopo (0-2), Restrições (0-2)
+   - ≥7: Continuar | <7: Parar, fazer perguntas de esclarecimento
 
-### Phase 2: Solution Ideation
+### Fase 2: Ideação de Solução
 
-`[Mode: Ideation]` - Multi-model parallel analysis:
+`[Mode: Ideation]` - Análise paralela multi-modelo:
 
-**Parallel Calls** (`run_in_background: true`):
-- Codex: Use analyzer prompt, output technical feasibility, solutions, risks
-- Gemini: Use analyzer prompt, output UI feasibility, solutions, UX evaluation
+**Chamadas Paralelas** (`run_in_background: true`):
+- Codex: Use o prompt analyzer, emita viabilidade técnica, soluções, riscos
+- Gemini: Use o prompt analyzer, emita viabilidade de UI, soluções, avaliação de UX
 
-Wait for results with `TaskOutput`. **Save SESSION_ID** (`CODEX_SESSION` and `GEMINI_SESSION`).
+Aguarde os resultados com `TaskOutput`. **Salve o SESSION_ID** (`CODEX_SESSION` e `GEMINI_SESSION`).
 
-**Follow the `IMPORTANT` instructions in `Multi-Model Call Specification` above**
+**Siga as instruções `IMPORTANTE` na `Especificação de Chamada Multi-Modelo` acima**
 
-Synthesize both analyses, output solution comparison (at least 2 options), wait for user selection.
+Sintetize ambas as análises, emita uma comparação de soluções (pelo menos 2 opções), aguarde a seleção do usuário.
 
-### Phase 3: Detailed Planning
+### Fase 3: Planejamento Detalhado
 
-`[Mode: Plan]` - Multi-model collaborative planning:
+`[Mode: Plan]` - Planejamento colaborativo multi-modelo:
 
-**Parallel Calls** (resume session with `resume <SESSION_ID>`):
-- Codex: Use architect prompt + `resume $CODEX_SESSION`, output backend architecture
-- Gemini: Use architect prompt + `resume $GEMINI_SESSION`, output frontend architecture
+**Chamadas Paralelas** (retome a sessão com `resume <SESSION_ID>`):
+- Codex: Use o prompt architect + `resume $CODEX_SESSION`, emita a arquitetura de backend
+- Gemini: Use o prompt architect + `resume $GEMINI_SESSION`, emita a arquitetura de frontend
 
-Wait for results with `TaskOutput`.
+Aguarde os resultados com `TaskOutput`.
 
-**Follow the `IMPORTANT` instructions in `Multi-Model Call Specification` above**
+**Siga as instruções `IMPORTANTE` na `Especificação de Chamada Multi-Modelo` acima**
 
-**Claude Synthesis**: Adopt Codex backend plan + Gemini frontend plan, save to `.claude/plan/task-name.md` after user approval.
+**Síntese do Claude**: Adote o plano de backend do Codex + o plano de frontend do Gemini, salve em `.claude/plan/task-name.md` após a aprovação do usuário.
 
-### Phase 4: Implementation
+### Fase 4: Implementação
 
-`[Mode: Execute]` - Code development:
+`[Mode: Execute]` - Desenvolvimento de código:
 
-- Strictly follow approved plan
-- Follow existing project code standards
-- Request feedback at key milestones
+- Siga estritamente o plano aprovado
+- Siga os padrões de código existentes do projeto
+- Solicite feedback em marcos importantes
 
-### Phase 5: Code Optimization
+### Fase 5: Otimização de Código
 
-`[Mode: Optimize]` - Multi-model parallel review:
+`[Mode: Optimize]` - Revisão paralela multi-modelo:
 
-**Parallel Calls**:
-- Codex: Use reviewer prompt, focus on security, performance, error handling
-- Gemini: Use reviewer prompt, focus on accessibility, design consistency
+**Chamadas Paralelas**:
+- Codex: Use o prompt reviewer, foque em segurança, desempenho, tratamento de erros
+- Gemini: Use o prompt reviewer, foque em acessibilidade, consistência de design
 
-Wait for results with `TaskOutput`. Integrate review feedback, execute optimization after user confirmation.
+Aguarde os resultados com `TaskOutput`. Integre o feedback da revisão, execute a otimização após a confirmação do usuário.
 
-**Follow the `IMPORTANT` instructions in `Multi-Model Call Specification` above**
+**Siga as instruções `IMPORTANTE` na `Especificação de Chamada Multi-Modelo` acima**
 
-### Phase 6: Quality Review
+### Fase 6: Revisão de Qualidade
 
-`[Mode: Review]` - Final evaluation:
+`[Mode: Review]` - Avaliação final:
 
-- Check completion against plan
-- Run tests to verify functionality
-- Report issues and recommendations
-- Request final user confirmation
+- Verifique a conclusão em relação ao plano
+- Execute testes para verificar a funcionalidade
+- Relate problemas e recomendações
+- Solicite a confirmação final do usuário
 
 ---
 
-## Key Rules
+## Regras Principais
 
-1. Phase sequence cannot be skipped (unless user explicitly instructs)
-2. External models have **zero filesystem write access**, all modifications by Claude
-3. **Force stop** when score < 7 or user does not approve
+1. A sequência de fases não pode ser pulada (a menos que o usuário instrua explicitamente)
+2. Os modelos externos têm **acesso zero de escrita ao sistema de arquivos**, todas as modificações são feitas pelo Claude
+3. **Force a parada** quando a pontuação < 7 ou o usuário não aprovar

@@ -1,38 +1,38 @@
 ---
-description: Orchestrate altering an existing, working feature to new desired behavior — update tests to the new spec, change impl, review, gated commit. Wrapper for the orch-change-feature skill.
+description: Orquestra a alteração de uma feature existente e funcional para um novo comportamento desejado — atualiza os testes para a nova spec, muda a implementação, revisa, commit com portão. Wrapper para a skill orch-change-feature.
 ---
 
 # /orch-change-feature
 
-Manually launch the **orch-change-feature** orchestrator: change behavior that
-already works to a new desired spec, tests-first.
+Inicia manualmente o orquestrador **orch-change-feature**: muda um comportamento que
+já funciona para uma nova spec desejada, com testes primeiro.
 
-## Usage
+## Uso
 
 ```
 /orch-change-feature <the new desired behavior>
 ```
 
-Examples:
+Exemplos:
 
 ```
 /orch-change-feature make nws-poller alert at 2 warnings instead of 3
 /orch-change-feature instead of sorting by date, sort by priority
 ```
 
-## What It Does
+## O Que Faz
 
-Invoke the `orch-change-feature` skill with `$ARGUMENTS` as the request. The skill
-(via the shared `orch-pipeline` engine) will:
+Invoca a skill `orch-change-feature` com `$ARGUMENTS` como a requisição. A skill
+(via o engine compartilhado `orch-pipeline`) irá:
 
-1. Classify size (default floor: small) and state the tier.
-2. Light plan only if the new behavior needs research. → **GATE 1** (approve changed-test plan).
-3. **Update the existing tests** to express the new behavior, then change the
-   implementation until green. (Changing the tests first is what makes this a
-   tweak, not a fix.)
-4. `code-reviewer` (+ `security-reviewer` on a security trigger), then commit. → **GATE 2**.
+1. Classificar o tamanho (piso padrão: pequeno) e declarar o nível.
+2. Plano leve apenas se o novo comportamento exigir pesquisa. → **PORTÃO 1** (aprovar o plano de testes alterados).
+3. **Atualizar os testes existentes** para expressar o novo comportamento, depois mudar a
+   implementação até ficar verde. (Mudar os testes primeiro é o que torna isto um
+   ajuste, não uma correção.)
+4. `code-reviewer` (+ `security-reviewer` em um gatilho de segurança), depois fazer commit. → **PORTÃO 2**.
 
-Use this only when the feature **works** but should behave differently — not for
-bugs (`/orch-fix-defect`) or net-new capability (`/orch-add-feature`).
+Use isto apenas quando a feature **funciona**, mas deve se comportar de forma diferente — não para
+bugs (`/orch-fix-defect`) ou capacidade totalmente nova (`/orch-add-feature`).
 
-If `$ARGUMENTS` is empty, ask the user what behavior should change.
+Se `$ARGUMENTS` estiver vazio, pergunte ao usuário qual comportamento deve mudar.

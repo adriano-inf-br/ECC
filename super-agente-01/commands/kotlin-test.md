@@ -252,7 +252,7 @@ class AsyncServiceTest : FunSpec({
 })
 ```
 
-## Coverage Commands
+## Comandos de Cobertura
 
 ```bash
 # Run tests with coverage
@@ -274,39 +274,39 @@ open build/reports/kover/html/index.html
 ./gradlew test --info
 ```
 
-## Coverage Targets
+## Metas de Cobertura
 
-| Code Type | Target |
+| Tipo de Código | Meta |
 |-----------|--------|
-| Critical business logic | 100% |
-| Public APIs | 90%+ |
-| General code | 80%+ |
-| Generated code | Exclude |
+| Lógica de negócio crítica | 100% |
+| APIs públicas | 90%+ |
+| Código geral | 80%+ |
+| Código gerado | Excluir |
 
-## TDD Best Practices
+## Boas Práticas de TDD
 
-**DO:**
-- Write test FIRST, before any implementation
-- Run tests after each change
-- Use Kotest matchers for expressive assertions
-- Use MockK's `coEvery`/`coVerify` for suspend functions
-- Test behavior, not implementation details
-- Include edge cases (empty, null, max values)
+**FAÇA:**
+- Escreva o teste PRIMEIRO, antes de qualquer implementação
+- Execute os testes após cada mudança
+- Use os matchers do Kotest para asserções expressivas
+- Use `coEvery`/`coVerify` do MockK para suspend functions
+- Teste o comportamento, não os detalhes de implementação
+- Inclua casos limite (vazio, null, valores máximos)
 
-**DON'T:**
-- Write implementation before tests
-- Skip the RED phase
-- Test private functions directly
-- Use `Thread.sleep()` in coroutine tests
-- Ignore flaky tests
+**NÃO FAÇA:**
+- Escrever a implementação antes dos testes
+- Pular a fase RED
+- Testar funções privadas diretamente
+- Usar `Thread.sleep()` em testes de coroutines
+- Ignorar testes instáveis (flaky)
 
-## Related Commands
+## Comandos Relacionados
 
-- `/kotlin-build` - Fix build errors
-- `/kotlin-review` - Review code after implementation
-- `verification-loop` skill - Run full verification loop
+- `/kotlin-build` - Corrigir erros de build
+- `/kotlin-review` - Revisar o código após a implementação
+- skill `verification-loop` - Executar o loop completo de verificação
 
-## Related
+## Relacionados
 
 - Skill: `skills/kotlin-testing/`
 - Skill: `skills/tdd-workflow/`

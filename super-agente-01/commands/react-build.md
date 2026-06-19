@@ -51,7 +51,7 @@ parcel build src/index.html         # Parcel
 bun build ./src/index.tsx --outdir=dist
 ```
 
-## Example Session
+## Exemplo de Sessão
 
 ````text
 User: /react-build
@@ -142,45 +142,45 @@ $ npm test
 Build Status: PASS: SUCCESS
 ````
 
-## Common Errors Fixed
+## Erros Comuns Corrigidos
 
-| Error | Typical Fix |
+| Erro | Correção Típica |
 |---|---|
-| `'React' is not defined` | Set `"jsx": "react-jsx"` in tsconfig (React 17+) |
-| Missing `@types/react` | `npm i -D @types/react @types/react-dom` |
-| `Unexpected token '<'` | Add `@vitejs/plugin-react` / `babel-loader` |
-| `You're importing a component that needs useState` (Next.js) | Add `"use client"` or move hook to a Client Component child |
-| `Module not found: Can't resolve 'fs'` (Next.js) | Remove `fs` import or move logic into Server Component / API route |
-| `Hydration failed because the initial UI does not match` | Move `Date.now()`/`Math.random()`/`window.*` to `useEffect` |
-| `Invalid hook call` | Multiple React copies — dedupe via `resolutions`/`overrides` |
-| `Element type is invalid` | Default vs named import mismatch |
+| `'React' is not defined` | Defina `"jsx": "react-jsx"` no tsconfig (React 17+) |
+| `@types/react` faltando | `npm i -D @types/react @types/react-dom` |
+| `Unexpected token '<'` | Adicione `@vitejs/plugin-react` / `babel-loader` |
+| `You're importing a component that needs useState` (Next.js) | Adicione `"use client"` ou mova o hook para um filho Client Component |
+| `Module not found: Can't resolve 'fs'` (Next.js) | Remova o import de `fs` ou mova a lógica para um Server Component / rota de API |
+| `Hydration failed because the initial UI does not match` | Mova `Date.now()`/`Math.random()`/`window.*` para `useEffect` |
+| `Invalid hook call` | Múltiplas cópias do React — desduplique via `resolutions`/`overrides` |
+| `Element type is invalid` | Divergência entre import default e nomeado |
 
-## Fix Strategy
+## Estratégia de Correção
 
-1. **Compile errors first** — code must build
-2. **Hydration errors second** — affects production correctness
-3. **Bundler config third** — restore plugin/loader correctness
-4. **One fix at a time** — verify each change
-5. **Minimal changes** — never `// @ts-ignore` without explanation
-6. **Re-run after each fix** — surface new errors immediately
+1. **Erros de compilação primeiro** — o código precisa fazer build
+2. **Erros de hidratação em segundo** — afetam a correção em produção
+3. **Configuração do bundler em terceiro** — restaure a correção de plugin/loader
+4. **Uma correção por vez** — verifique cada alteração
+5. **Alterações mínimas** — nunca `// @ts-ignore` sem explicação
+6. **Reexecute após cada correção** — exponha novos erros imediatamente
 
-## Stop Conditions
+## Condições de Parada
 
-The agent will stop and report if:
+O agent vai parar e reportar se:
 
-- Same error persists after 3 attempts
-- Fix introduces more errors than it resolves
-- Requires architectural change beyond build resolution (e.g., redesigning the RSC boundary)
-- Bundler version no longer supports the installed React major
+- O mesmo erro persistir após 3 tentativas
+- A correção introduzir mais erros do que resolve
+- Exigir alteração arquitetural além da resolução do build (ex.: redesenhar a fronteira RSC)
+- A versão do bundler não suportar mais a major instalada do React
 
-## Related Commands
+## Comandos Relacionados
 
-- `/react-test` — run tests after the build is green
-- `/react-review` — review code quality after the build succeeds
-- `/build-fix` — generic build fixer (non-React)
-- `verification-loop` skill — full verification loop
+- `/react-test` — execute os testes após o build ficar verde
+- `/react-review` — revise a qualidade do código após o build ter sucesso
+- `/build-fix` — corretor de build genérico (não React)
+- skill `verification-loop` — laço completo de verificação
 
-## Related
+## Relacionados
 
 - Agent: `agents/react-build-resolver.md`
 - Skills: `skills/react-patterns/`, `skills/frontend-patterns/`

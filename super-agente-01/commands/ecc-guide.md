@@ -4,9 +4,9 @@ description: Navigate ECC's current agents, skills, commands, hooks, install pro
 
 # /ecc-guide
 
-Use this command as a conversational map of Everything Claude Code. It should help the user discover the right ECC surface for their task without dumping the entire README or stale catalog counts.
+Use este comando como um mapa conversacional do Everything Claude Code. Ele deve ajudar o usuário a descobrir a superfície correta do ECC para sua tarefa sem despejar o README inteiro ou contagens de catálogo desatualizadas.
 
-## Usage
+## Uso
 
 ```text
 /ecc-guide
@@ -19,75 +19,75 @@ Use this command as a conversational map of Everything Claude Code. It should he
 /ecc-guide <feature-or-file-name>
 ```
 
-## Operating Rules
+## Regras de Operação
 
-1. Read current repository files before answering when the checkout is available.
-2. Prefer current filesystem/catalog data over hard-coded counts.
-3. Keep the first answer short, then offer specific drill-down paths.
-4. Link users to canonical files instead of copying long sections.
-5. Do not invent commands, skills, agents, or install profiles that are not present.
+1. Leia os arquivos atuais do repositório antes de responder quando o checkout estiver disponível.
+2. Prefira dados atuais do sistema de arquivos/catálogo a contagens hardcoded.
+3. Mantenha a primeira resposta curta, depois ofereça caminhos específicos de aprofundamento.
+4. Direcione os usuários a arquivos canônicos em vez de copiar seções longas.
+5. Não invente comandos, skills, agents ou perfis de instalação que não existam.
 
-## What To Inspect
+## O Que Inspecionar
 
-Use these files as the canonical map:
+Use estes arquivos como o mapa canônico:
 
-- `README.md` for install paths, reset/uninstall guidance, and high-level positioning
-- `AGENTS.md` for contributor and project-structure guidance
-- `agent.yaml` for exported agent and command surface
-- `commands/` for maintained slash-command shims
-- `skills/*/SKILL.md` for reusable skill workflows
-- `agents/*.md` for delegated agent roles
-- `hooks/README.md` and `hooks/hooks.json` for hook behavior
-- `manifests/install-*.json` for selective install modules, components, and profiles
-- `scripts/ci/catalog.js --json` for live catalog counts when running inside ECC
+- `README.md` para caminhos de instalação, orientação de reset/desinstalação e posicionamento de alto nível
+- `AGENTS.md` para orientação de contribuição e estrutura do projeto
+- `agent.yaml` para a superfície exportada de agent e comando
+- `commands/` para os shims de slash-command mantidos
+- `skills/*/SKILL.md` para fluxos de trabalho reutilizáveis de skill
+- `agents/*.md` para papéis de agent delegados
+- `hooks/README.md` e `hooks/hooks.json` para o comportamento dos hooks
+- `manifests/install-*.json` para módulos, componentes e perfis de instalação seletiva
+- `scripts/ci/catalog.js --json` para contagens de catálogo ao vivo quando executado dentro do ECC
 
-## Response Patterns
+## Padrões de Resposta
 
-### No Arguments
+### Sem Argumentos
 
-Give a compact menu:
+Apresente um menu compacto:
 
-- setup and install
-- choosing skills
-- command compatibility shims
-- agents and delegation
-- hooks and safety
-- troubleshooting an install
-- finding a specific feature
+- setup e instalação
+- escolha de skills
+- shims de compatibilidade de comando
+- agents e delegação
+- hooks e segurança
+- solução de problemas de uma instalação
+- encontrar uma feature específica
 
-Then ask what they want to do next.
+Depois pergunte o que ele quer fazer em seguida.
 
-### Topic Lookup
+### Consulta por Tópico
 
-For topics like `skills`, `commands`, `hooks`, `install`, or `agents`:
+Para tópicos como `skills`, `commands`, `hooks`, `install` ou `agents`:
 
-1. Summarize the current surface in 3-6 bullets.
-2. Point to the canonical directories/files.
-3. Suggest one or two commands that can verify the state.
-4. Avoid exhaustive lists unless the user asks for one.
+1. Resuma a superfície atual em 3-6 bullets.
+2. Aponte para os diretórios/arquivos canônicos.
+3. Sugira um ou dois comandos que possam verificar o estado.
+4. Evite listas exaustivas a menos que o usuário peça uma.
 
-### Search Mode
+### Modo de Busca
 
-For `find: <query>`:
+Para `find: <query>`:
 
-1. Search the relevant files with `rg`.
-2. Group results by surface: skills, commands, agents, rules, docs, hooks.
-3. Return the strongest matches first with file paths.
-4. Recommend the next action for each match.
+1. Pesquise os arquivos relevantes com `rg`.
+2. Agrupe os resultados por superfície: skills, commands, agents, rules, docs, hooks.
+3. Retorne primeiro as correspondências mais fortes com os caminhos de arquivo.
+4. Recomende a próxima ação para cada correspondência.
 
-### Feature Lookup
+### Consulta de Feature
 
-For a specific feature name:
+Para um nome específico de feature:
 
-1. Check exact paths first, such as `skills/<name>/SKILL.md`, `commands/<name>.md`, and `agents/<name>.md`.
-2. If exact lookup fails, search with `rg`.
-3. Explain what the feature does, when to use it, and what file is canonical.
-4. Mention adjacent features only when they reduce confusion.
+1. Verifique primeiro os caminhos exatos, como `skills/<name>/SKILL.md`, `commands/<name>.md` e `agents/<name>.md`.
+2. Se a busca exata falhar, pesquise com `rg`.
+3. Explique o que a feature faz, quando usá-la e qual arquivo é o canônico.
+4. Mencione features adjacentes apenas quando reduzirem a confusão.
 
-## Related Commands
+## Comandos Relacionados
 
-- `/project-init` for stack-aware ECC onboarding of a target project
-- `/harness-audit` for deterministic repo readiness scoring
-- `/skill-health` for skill quality checks
-- `/skill-create` for extracting a new skill from local git history
-- `/security-scan` for Claude/OpenCode configuration security review
+- `/project-init` para onboarding do ECC consciente da stack em um projeto-alvo
+- `/harness-audit` para pontuação determinística de prontidão do repositório
+- `/skill-health` para checagens de qualidade de skill
+- `/skill-create` para extrair uma nova skill do histórico local do git
+- `/security-scan` para revisão de segurança de configuração do Claude/OpenCode

@@ -39,21 +39,21 @@ git log --oneline -n 200 --name-only | grep -v "^$" | grep -v "^[a-f0-9]" | sort
 git log --oneline -n 200 | cut -d' ' -f2- | head -50
 ```
 
-### Step 2: Detect Patterns
+### Passo 2: Detecte padrões
 
-Look for these pattern types:
+Procure por estes tipos de padrão:
 
-| Pattern | Detection Method |
+| Padrão | Método de detecção |
 |---------|-----------------|
-| **Commit conventions** | Regex on commit messages (feat:, fix:, chore:) |
-| **File co-changes** | Files that always change together |
-| **Workflow sequences** | Repeated file change patterns |
-| **Architecture** | Folder structure and naming conventions |
-| **Testing patterns** | Test file locations, naming, coverage |
+| **Convenções de commit** | Regex nas mensagens de commit (feat:, fix:, chore:) |
+| **Co-mudanças de arquivos** | Arquivos que sempre mudam juntos |
+| **Sequências de fluxo de trabalho** | Padrões repetidos de mudança de arquivos |
+| **Arquitetura** | Estrutura de pastas e convenções de nomenclatura |
+| **Padrões de teste** | Localização, nomenclatura e cobertura de arquivos de teste |
 
-### Step 3: Generate SKILL.md
+### Passo 3: Gere o SKILL.md
 
-Output format:
+Formato de saída:
 
 ```markdown
 ---
@@ -79,9 +79,9 @@ analyzed_commits: {count}
 {detected test conventions}
 ```
 
-### Step 4: Generate Instincts (if --instincts)
+### Passo 4: Gere instincts (se --instincts)
 
-For continuous-learning-v2 integration:
+Para integração com continuous-learning-v2:
 
 ```yaml
 ---
@@ -102,9 +102,9 @@ Prefix commits with: feat:, fix:, chore:, docs:, test:, refactor:
 - {percentage}% follow conventional commit format
 ```
 
-## Example Output
+## Exemplo de saída
 
-Running `/skill-create` on a TypeScript project might produce:
+Executar `/skill-create` em um projeto TypeScript pode produzir:
 
 ```markdown
 ---
@@ -155,20 +155,20 @@ src/
 - Framework: Vitest
 ```
 
-## GitHub App Integration
+## Integração com o GitHub App
 
-For advanced features (10k+ commits, team sharing, auto-PRs), use the [Skill Creator GitHub App](https://github.com/apps/skill-creator):
+Para recursos avançados (10k+ commits, compartilhamento em equipe, auto-PRs), use o [Skill Creator GitHub App](https://github.com/apps/skill-creator):
 
-- Install: [github.com/apps/skill-creator](https://github.com/apps/skill-creator)
-- Comment `/skill-creator analyze` on any issue
-- Receives PR with generated skills
+- Instale: [github.com/apps/skill-creator](https://github.com/apps/skill-creator)
+- Comente `/skill-creator analyze` em qualquer issue
+- Recebe um PR com as skills geradas
 
-## Related Commands
+## Comandos relacionados
 
-- `/instinct-import` - Import generated instincts
-- `/instinct-status` - View learned instincts
-- `/evolve` - Cluster instincts into skills/agents
+- `/instinct-import` - Importa instincts gerados
+- `/instinct-status` - Visualiza instincts aprendidos
+- `/evolve` - Agrupa instincts em skills/agents
 
 ---
 
-*Part of [Everything Claude Code](https://github.com/affaan-m/everything-claude-code)*
+*Parte do [Everything Claude Code](https://github.com/affaan-m/everything-claude-code)*

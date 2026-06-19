@@ -39,7 +39,7 @@ final class Loading<T> extends AsyncState<T> {}
 final class Success<T> extends AsyncState<T> { final T data; const Success(this.data); }
 final class Failure<T> extends AsyncState<T> { final Object error; const Failure(this.error); }
 
-// GoRouter with reactive auth redirect
+// GoRouter com redirecionamento de auth reativo
 final router = GoRouter(
   refreshListenable: GoRouterRefreshStream(authCubit.stream),
   redirect: (context, state) {
@@ -50,7 +50,7 @@ final router = GoRouter(
   routes: [...],
 );
 
-// Riverpod derived provider with safe firstWhereOrNull
+// Provider derivado do Riverpod com firstWhereOrNull seguro
 @riverpod
 double cartTotal(Ref ref) {
   final cart = ref.watch(cartNotifierProvider);

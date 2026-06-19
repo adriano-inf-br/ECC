@@ -54,7 +54,7 @@ class ItemListViewModel(
 }
 ```
 
-### Collecting State in Compose
+### Coletando Estado no Compose
 
 ```kotlin
 @Composable
@@ -72,13 +72,13 @@ private fun ItemListContent(
     state: ItemListState,
     onSearch: (String) -> Unit
 ) {
-    // Stateless composable — easy to preview and test
+    // Composable sem estado — fácil de fazer preview e testar
 }
 ```
 
-### Event Sink Pattern
+### Padrão Event Sink
 
-For complex screens, use a sealed interface for events instead of multiple callback lambdas:
+Para telas complexas, use uma sealed interface para eventos em vez de múltiplas lambdas de callback:
 
 ```kotlin
 sealed interface ItemListEvent {

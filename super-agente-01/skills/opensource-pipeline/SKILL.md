@@ -182,12 +182,12 @@ gh repo create "{github_org}/{github_repo}" --public --source=. --push --descrip
 
 ### /opensource verify PROJECT
 
-Run sanitizer independently. Resolve path: if PROJECT contains `/`, treat as a path. Otherwise check `$HOME/opensource-staging/PROJECT`, then `$HOME/PROJECT`, then current directory.
+Roda o sanitizer de forma independente. Resolva o caminho: se PROJECT contiver `/`, trate como um caminho. Caso contrário, verifique `$HOME/opensource-staging/PROJECT`, depois `$HOME/PROJECT` e então o diretório atual.
 
 ```
 Agent(
   subagent_type="opensource-sanitizer",
-  prompt="Verify sanitization of: {resolved_path}. Run all 6 scan categories and generate SANITIZATION_REPORT.md."
+  prompt="Verifique a sanitização de: {resolved_path}. Rode todas as 6 categorias de varredura e gere SANITIZATION_REPORT.md."
 )
 ```
 
@@ -195,12 +195,12 @@ Agent(
 
 ### /opensource package PROJECT
 
-Run packager independently. Ask for "License?" and "Description?", then:
+Roda o packager de forma independente. Pergunte "Licença?" e "Descrição?", então:
 
 ```
 Agent(
   subagent_type="opensource-packager",
-  prompt="Package: {resolved_path} ..."
+  prompt="Empacote: {resolved_path} ..."
 )
 ```
 
@@ -212,7 +212,7 @@ Agent(
 ls -d $HOME/opensource-staging/*/
 ```
 
-Show each project with pipeline progress (FORK_REPORT.md, SANITIZATION_REPORT.md, CLAUDE.md presence).
+Mostre cada projeto com o progresso do pipeline (presença de FORK_REPORT.md, SANITIZATION_REPORT.md, CLAUDE.md).
 
 ---
 

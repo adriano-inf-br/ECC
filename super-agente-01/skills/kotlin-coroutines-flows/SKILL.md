@@ -270,16 +270,16 @@ class FakeItemRepository : ItemRepository {
 }
 ```
 
-## Anti-Patterns to Avoid
+## Anti-Padrões a Evitar
 
-- Using `GlobalScope` — leaks coroutines, no structured cancellation
-- Collecting Flows in `init {}` without a scope — use `viewModelScope.launch`
-- Using `MutableStateFlow` with mutable collections — always use immutable copies: `_state.update { it.copy(list = it.list + newItem) }`
-- Catching `CancellationException` — let it propagate for proper cancellation
-- Using `flowOn(Dispatchers.Main)` to collect — collection dispatcher is the caller's dispatcher
-- Creating `Flow` in `@Composable` without `remember` — recreates the flow every recomposition
+- Usar `GlobalScope` — vaza coroutines, sem cancelamento estruturado
+- Coletar Flows em `init {}` sem um escopo — use `viewModelScope.launch`
+- Usar `MutableStateFlow` com coleções mutáveis — sempre use cópias imutáveis: `_state.update { it.copy(list = it.list + newItem) }`
+- Capturar `CancellationException` — deixe propagar para um cancelamento adequado
+- Usar `flowOn(Dispatchers.Main)` para coletar — o dispatcher de coleta é o do chamador
+- Criar `Flow` em `@Composable` sem `remember` — recria o flow a cada recomposição
 
-## References
+## Referências
 
-See skill: `compose-multiplatform-patterns` for UI consumption of Flows.
-See skill: `android-clean-architecture` for where coroutines fit in layers.
+Veja a skill: `compose-multiplatform-patterns` para consumo de Flows na UI.
+Veja a skill: `android-clean-architecture` para onde as coroutines se encaixam nas camadas.

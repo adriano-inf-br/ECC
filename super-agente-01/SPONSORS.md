@@ -1,32 +1,32 @@
-# Sponsors
+# Patrocinadores
 
-Thank you to everyone funding ECC's open-source work. Your sponsorship is what lets the OSS layer stay free while the GitHub App, hosted security scans, and continuous improvements ship every week.
+Obrigado a todos que financiam o trabalho open-source do ECC. Seu patrocínio é o que permite que a camada de OSS permaneça gratuita enquanto o GitHub App, as varreduras de segurança hospedadas e as melhorias contínuas são entregues toda semana.
 
 ## Strategic Sponsors — $2,500/mo
 
-*Become a [Strategic sponsor](https://github.com/sponsors/affaan-m) to be featured here.*
+*Torne-se um [Strategic sponsor](https://github.com/sponsors/affaan-m) para ser destacado aqui.*
 
 ## Business Sponsors
 
-| Sponsor | Logo | Since |
+| Patrocinador | Logo | Desde |
 |---------|------|-------|
 | [**CodeRabbit**](https://www.coderabbit.ai) | <img src="assets/images/sponsors/coderabbit.png" width="60" alt="CodeRabbit logo" /> | 2026 |
 | [**Greptile**](https://www.greptile.com/go/ecc) | <img src="assets/images/sponsors/greptile.png" width="60" alt="Greptile logo" /> | 2026 |
 | [**Atlas Cloud**](https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=ECC) | <img src="assets/images/sponsors/atlascloud.png" width="60" alt="Atlas Cloud logo" /> | 2026 |
 
-*[Become a Business sponsor](https://github.com/sponsors/affaan-m) to get README sponsor placement + SPONSORS.md listing. Current Business tier is $500/mo. No seats, SLA, custom development, or preferential technical placement is bundled unless separately agreed.*
+*[Torne-se um Business sponsor](https://github.com/sponsors/affaan-m) para obter posicionamento de patrocinador no README + listagem em SPONSORS.md. O nível Business atual é $500/mo. Nenhum assento, SLA, desenvolvimento personalizado ou posicionamento técnico preferencial está incluído, salvo acordo separado.*
 
 ## Team Sponsors — $200/mo
 
-| Sponsor | Since |
+| Patrocinador | Desde |
 |---------|-------|
 | [Mike Morgan](https://github.com/mikejmorgan-ai) | 2026 |
 
-*[Become a Team sponsor](https://github.com/sponsors/affaan-m) to be listed in SPONSORS.md.*
+*[Torne-se um Team sponsor](https://github.com/sponsors/affaan-m) para ser listado em SPONSORS.md.*
 
 ## Pro Sponsors — $50/mo
 
-*[Become a Pro sponsor](https://github.com/sponsors/affaan-m) to support the project and be listed here.*
+*[Torne-se um Pro sponsor](https://github.com/sponsors/affaan-m) para apoiar o projeto e ser listado aqui.*
 
 ## Builder Sponsors — $25/mo
 
@@ -35,43 +35,43 @@ Thank you to everyone funding ECC's open-source work. Your sponsorship is what l
 - @massimotodaro (grandfathered at $10)
 - @meadmccabe (grandfathered at $10)
 
-*[Become a Builder sponsor](https://github.com/sponsors/affaan-m) to support the project and get your name in this list.*
+*[Torne-se um Builder sponsor](https://github.com/sponsors/affaan-m) para apoiar o projeto e ter seu nome nesta lista.*
 
 ## Supporters — $5/mo
 
-*[Become a Supporter](https://github.com/sponsors/affaan-m) to back the project with a profile badge and a thank-you in release notes.*
+*[Torne-se um Supporter](https://github.com/sponsors/affaan-m) para apoiar o projeto com um badge de perfil e um agradecimento nas notas de release.*
 
 ---
 
-## Sponsorship Tiers
+## Níveis de Patrocínio
 
-| Tier | Monthly | Perks |
+| Nível | Mensal | Vantagens |
 |------|--------:|-------|
-| Supporter | $5 | Sponsor badge on profile, thank-you in release notes |
-| Builder | $25 | Above + name in SPONSORS.md |
-| Pro Sponsor | $50 | Above + listed in SPONSORS.md |
-| Team Sponsor | $200 | SPONSORS.md listing |
-| Business Sponsor | $500 | README sponsor placement + SPONSORS.md listing |
-| Strategic Sponsor | $2,500 | Premium sponsor placement + sponsor placement call |
+| Supporter | $5 | Badge de patrocinador no perfil, agradecimento nas notas de release |
+| Builder | $25 | O acima + nome em SPONSORS.md |
+| Pro Sponsor | $50 | O acima + listado em SPONSORS.md |
+| Team Sponsor | $200 | Listagem em SPONSORS.md |
+| Business Sponsor | $500 | Posicionamento de patrocinador no README + listagem em SPONSORS.md |
+| Strategic Sponsor | $2,500 | Posicionamento premium de patrocinador + chamada de posicionamento de patrocinador |
 
-[**Become a Sponsor →**](https://github.com/sponsors/affaan-m)
+[**Torne-se um Patrocinador →**](https://github.com/sponsors/affaan-m)
 
-For corporate sponsorship inquiries, custom partnerships, or PR integrations, email **[affaan@ecc.tools](mailto:affaan@ecc.tools)** with your company name and intended tier.
+Para consultas de patrocínio corporativo, parcerias personalizadas ou integrações de PR, envie um e-mail para **[affaan@ecc.tools](mailto:affaan@ecc.tools)** com o nome da sua empresa e o nível pretendido.
 
 ---
 
-## Why Sponsor?
+## Por Que Patrocinar?
 
-Your sponsorship directly funds:
+Seu patrocínio financia diretamente:
 
-- **OSS work that stays free** — the core repo, AgentShield, install scripts, and skills library remain MIT
-- **Weekly releases** — full-time work on the harness, not a side project
-- **Independent maintenance** — no acquisition pressure, no rug pulls, no enshittification
-- **Sponsor-funded roadmap** — paid sponsors fund ongoing work without turning unpaid README placement into a supply-chain risk
+- **Trabalho de OSS que permanece gratuito** — o repositório central, o AgentShield, os scripts de instalação e a biblioteca de skills permanecem MIT
+- **Releases semanais** — trabalho em tempo integral no Harness, não um projeto paralelo
+- **Manutenção independente** — sem pressão de aquisição, sem rug pulls, sem enshittification
+- **Roadmap financiado por patrocinadores** — patrocinadores pagantes financiam o trabalho contínuo sem transformar o posicionamento não pago no README em um risco de cadeia de suprimentos
 
-## Existing Sponsors Are Grandfathered
+## Patrocinadores Existentes São Grandfathered
 
-If you sponsored before May 2026, you keep your original perks at your original price. New tiers apply to new sponsors only.
+Se você patrocinou antes de maio de 2026, mantém suas vantagens originais ao seu preço original. Os novos níveis se aplicam apenas a novos patrocinadores.
 
 ---
 

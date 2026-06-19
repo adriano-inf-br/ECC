@@ -1,10 +1,10 @@
-# Angular CLI Guide for Agents
+# Guia do Angular CLI para Agents
 
-The Angular CLI (`ng`) is the primary tool for managing an Angular workspace. Always prefer CLI commands over manual file creation or generic `npm` commands when modifying project structure or adding Angular-specific dependencies.
+O Angular CLI (`ng`) é a principal ferramenta para gerenciar um workspace Angular. Sempre prefira comandos da CLI em vez de criação manual de arquivos ou comandos `npm` genéricos ao modificar a estrutura do projeto ou adicionar dependências específicas do Angular.
 
-## 1. Managing Dependencies
+## 1. Gerenciando Dependências
 
-**ALWAYS use `ng add` for Angular libraries** instead of `npm install`. `ng add` installs the package AND runs initialization schematics (e.g., configuring `angular.json`, updating root providers).
+**SEMPRE use `ng add` para bibliotecas Angular** em vez de `npm install`. O `ng add` instala o pacote E executa os schematics de inicialização (ex.: configurar o `angular.json`, atualizar os providers raiz).
 
 ```bash
 ng add @angular/material
@@ -12,46 +12,46 @@ ng add tailwindcss
 ng add @angular/fire
 ```
 
-To update the application and its dependencies (which automatically runs code migrations):
+Para atualizar a aplicação e suas dependências (o que executa automaticamente as migrações de código):
 
 ```bash
 ng update @angular/core@<latest or specific version> @angular/cli<latest or specific version>
 ```
 
-## 2. Generating Code (`ng generate` or `ng g`)
+## 2. Gerando Código (`ng generate` ou `ng g`)
 
-Always use the CLI to generate code to ensure it adheres to Angular standards and updates necessary configuration files automatically.
+Sempre use a CLI para gerar código a fim de garantir que ele siga os padrões do Angular e atualize automaticamente os arquivos de configuração necessários.
 
-| Target       | Command               | Notes                                                                                          |
+| Alvo         | Comando               | Notas                                                                                          |
 | :----------- | :-------------------- | :--------------------------------------------------------------------------------------------- |
-| Component    | `ng g c path/to/name` | Generates a component. Use `--inline-style` (`-s`) or `--inline-template` (`-t`) if requested. |
-| Service      | `ng g s path/to/name` | Generates an `@Injectable({providedIn: 'root'})` service.                                      |
-| Directive    | `ng g d path/to/name` | Generates a directive.                                                                         |
-| Pipe         | `ng g p path/to/name` | Generates a pipe.                                                                              |
-| Guard        | `ng g g path/to/name` | Generates a functional route guard.                                                            |
-| Environments | `ng g environments`   | Scaffolds `src/environments/` and updates `angular.json` with file replacements.               |
+| Component    | `ng g c path/to/name` | Gera um componente. Use `--inline-style` (`-s`) ou `--inline-template` (`-t`) se solicitado.   |
+| Service      | `ng g s path/to/name` | Gera um serviço `@Injectable({providedIn: 'root'})`.                                           |
+| Directive    | `ng g d path/to/name` | Gera uma diretiva.                                                                             |
+| Pipe         | `ng g p path/to/name` | Gera um pipe.                                                                                  |
+| Guard        | `ng g g path/to/name` | Gera um route guard funcional.                                                                |
+| Environments | `ng g environments`   | Faz scaffold de `src/environments/` e atualiza o `angular.json` com substituições de arquivos. |
 
-_Note: There is no command to generate a single route definition. Generate a component, then manually add it to the `Routes` array in `app.routes.ts`._
+_Nota: Não há comando para gerar uma única definição de rota. Gere um componente e depois adicione-o manualmente ao array `Routes` em `app.routes.ts`._
 
-## 3. Development Server & Proxying
+## 3. Servidor de Desenvolvimento e Proxy
 
-Start the local development server with hot-module replacement (HMR):
+Inicie o servidor de desenvolvimento local com hot-module replacement (HMR):
 
 ```bash
 ng serve
 ```
 
-### Backend API Proxying
+### Proxy de API de Backend
 
-To proxy API requests during development (e.g., rerouting `/api` to a local Node server):
+Para fazer proxy de requisições de API durante o desenvolvimento (ex.: redirecionar `/api` para um servidor Node local):
 
-1. Create `src/proxy.conf.json`:
+1. Crie `src/proxy.conf.json`:
    ```json
    {
      "/api/**": {"target": "http://localhost:3000", "secure": false}
    }
    ```
-2. Update `angular.json` under the `serve` target:
+2. Atualize o `angular.json` no target `serve`:
    ```json
    "serve": {
      "builder": "@angular/build:dev-server",
@@ -59,28 +59,28 @@ To proxy API requests during development (e.g., rerouting `/api` to a local Node
    }
    ```
 
-## 4. Building the Application
+## 4. Fazendo o Build da Aplicação
 
-Compile the application into an output directory (default: `dist/<project-name>/browser`). Modern Angular uses the `@angular/build:application` builder (esbuild-based).
+Compile a aplicação em um diretório de saída (padrão: `dist/<project-name>/browser`). O Angular moderno usa o builder `@angular/build:application` (baseado em esbuild).
 
 ```bash
 ng build
 ```
 
-- `ng build` defaults to the production configuration, which enables Ahead-of-Time (AOT) compilation, minification, and tree-shaking.
-- Target specific configurations defined in `angular.json` using `--configuration`: `ng build --configuration=staging`.
+- `ng build` usa por padrão a configuração de produção, que habilita compilação Ahead-of-Time (AOT), minificação e tree-shaking.
+- Direcione configurações específicas definidas no `angular.json` usando `--configuration`: `ng build --configuration=staging`.
 
-## 5. Testing
+## 5. Testes
 
-- **Unit Tests**: Run `ng test` to execute unit tests via the configured test runner (e.g., Karma or Vitest).
-- **End-to-End (E2E)**: Run `ng e2e`. If no E2E framework is configured, the CLI will prompt to install one (Cypress, Playwright, Puppeteer, etc.).
+- **Testes Unitários**: Execute `ng test` para rodar os testes unitários via test runner configurado (ex.: Karma ou Vitest).
+- **End-to-End (E2E)**: Execute `ng e2e`. Se nenhum framework de E2E estiver configurado, a CLI solicitará a instalação de um (Cypress, Playwright, Puppeteer, etc.).
 
-## 6. Deployment
+## 6. Deploy
 
-To deploy an application, you must first add a deployment builder, then run the deploy command:
+Para fazer deploy de uma aplicação, você deve primeiro adicionar um builder de deploy e depois executar o comando de deploy:
 
 ```bash
-# Example for Firebase
+# Exemplo para Firebase
 ng add @angular/fire
 ng deploy
 ```

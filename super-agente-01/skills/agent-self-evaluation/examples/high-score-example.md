@@ -1,18 +1,18 @@
-# High-Score Example: Adding Retry Logic
+# Exemplo de Pontuação Alta: Adicionando Lógica de Retry
 
-## Task
+## Tarefa
 > Add retry logic with exponential backoff to all HTTP requests in the API client. Max 3 retries, initial delay 1s, max delay 30s.
 
-## Agent Output
+## Saída do Agent
 
-### Summary
-Added `httpx.HTTPTransport` with retry configuration to the shared `ApiClient` class. All HTTP methods (GET, POST, PUT, DELETE) now retry on 429, 5xx, and connection errors with exponential backoff. 42 tests pass. Single PR ready to merge.
+### Resumo
+Adicionado `httpx.HTTPTransport` com configuração de retry à classe compartilhada `ApiClient`. Todos os métodos HTTP (GET, POST, PUT, DELETE) agora fazem retry em 429, 5xx e erros de conexão com exponential backoff. 42 testes passam. PR único pronto para merge.
 
-### Files Changed
-- `src/api_client.py` — Added `RetryTransport` wrapper with `httpx.HTTPTransport(retries=3)` and exponential backoff configured via `httpx.Limits`
-- `tests/test_api_client.py` — Added 8 tests: happy path, retry on 429, retry on 503, max retries exhausted, timeout, backoff timing assertion, idempotent GET retry, no-retry on 4xx (except 429)
+### Arquivos Alterados
+- `src/api_client.py` — Adicionado o wrapper `RetryTransport` com `httpx.HTTPTransport(retries=3)` e exponential backoff configurado via `httpx.Limits`
+- `tests/test_api_client.py` — Adicionados 8 testes: happy path, retry em 429, retry em 503, máximo de retries esgotado, timeout, asserção de tempo do backoff, retry de GET idempotente, sem retry em 4xx (exceto 429)
 
-### Verification
+### Verificação
 ```
 $ pytest tests/test_api_client.py -v
 42 passed in 2.34s
@@ -25,18 +25,18 @@ $ python -c "from src.api_client import ApiClient; c = ApiClient(); print(type(c
 <class 'src.api_client.RetryTransport'>
 ```
 
-### Edge Cases Handled
-- Connection timeouts (retry with backoff)
-- Rate limiting (429 → retry after delay)
-- Server errors (5xx → retry)
-- Client errors except 429 (no retry — 4xx means the request is bad)
-- Idempotency: GET, PUT, DELETE retry; POST does not (configurable)
+### Edge Cases Tratados
+- Timeouts de conexão (retry com backoff)
+- Limitação de taxa (429 → retry após o delay)
+- Erros de servidor (5xx → retry)
+- Erros de cliente exceto 429 (sem retry — 4xx significa que a requisição está incorreta)
+- Idempotência: GET, PUT, DELETE fazem retry; POST não (configurável)
 
 ### Merge: [PR #423](https://github.com/example/pr/423)
 
 ---
 
-## Evaluation Report
+## Relatório de Avaliação
 
 ```
 ============================================================
@@ -79,9 +79,9 @@ TOP IMPROVEMENTS:
   No axes below 4. Strong output across all dimensions.
 ```
 
-### Why This Scores Well
+### Por Que Isto Pontua Bem
 
-1. **Accuracy pinned to tool output.** Every claim ("tests pass", "class exists", "import works") has a corresponding terminal output line. No "should work" or "probably fine."
-2. **Completeness is explicit about what's covered AND what's not.** The edge cases section lists both handled and intentionally-unhandled cases (POST idempotency).
-3. **Actionability is single-step.** The user only needs to merge one PR. No follow-up tasks, no "then configure X."
-4. **Concision is tight.** The output is ~250 words. The information density is high — every sentence carries weight.
+1. **Precisão fixada na saída de tool.** Toda afirmação ("os testes passam", "a classe existe", "o import funciona") tem uma linha de saída de terminal correspondente. Nada de "deveria funcionar" ou "provavelmente está ok."
+2. **A completude é explícita sobre o que está coberto E o que não está.** A seção de edge cases lista tanto os casos tratados quanto os intencionalmente não tratados (idempotência de POST).
+3. **A acionabilidade é de etapa única.** O usuário só precisa fazer o merge de um PR. Sem tarefas de acompanhamento, sem "então configure X."
+4. **A concisão é enxuta.** A saída tem ~250 palavras. A densidade de informação é alta — cada frase carrega peso.

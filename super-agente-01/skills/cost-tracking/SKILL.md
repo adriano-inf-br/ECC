@@ -1,48 +1,48 @@
 ---
 name: cost-tracking
-description: Track and report Claude Code token usage, spending, and budgets from the local ECC cost-tracker metrics log. Use when the user asks about costs, spending, usage, tokens, budgets, or cost breakdowns by model, session, or date.
+description: Rastreie e relate o uso de tokens, gastos e orçamentos do Claude Code a partir do log de métricas local do cost-tracker do ECC. Use quando o usuário perguntar sobre custos, gastos, uso, tokens, orçamentos ou detalhamentos de custo por modelo, sessão ou data.
 metadata:
   origin: community
 ---
 
 # Cost Tracking
 
-Use this skill to analyze Claude Code cost and usage history from the metrics log
-that ECC's `stop:cost-tracker` hook writes.
+Use esta skill para analisar o histórico de custo e uso do Claude Code a partir do log de métricas
+que o hook `stop:cost-tracker` do ECC grava.
 
-## Where the data lives
+## Onde os dados ficam
 
-The tracker appends one JSON object per session-stop to
-`~/.claude/metrics/costs.jsonl`. Each row is a **cumulative snapshot for that
-session**, so to total spend you take the **latest row per `session_id`** and
-sum across sessions — summing every row multiply-counts.
+O tracker anexa um objeto JSON por encerramento de sessão em
+`~/.claude/metrics/costs.jsonl`. Cada linha é um **snapshot cumulativo daquela
+sessão**, então, para totalizar o gasto, você pega a **linha mais recente por `session_id`** e
+soma entre as sessões — somar todas as linhas conta valores em duplicidade.
 
-Row schema:
+Esquema da linha:
 
-| Field | Meaning |
+| Campo | Significado |
 | --- | --- |
-| `timestamp` | ISO timestamp of the snapshot |
-| `session_id` | Claude Code session identifier |
-| `transcript_path` | Path to the session transcript |
-| `model` | Model used |
-| `input_tokens` / `output_tokens` | Token counts |
-| `cache_write_tokens` / `cache_read_tokens` | Prompt-cache token counts |
-| `estimated_cost_usd` | Precomputed cumulative cost in USD for the session |
+| `timestamp` | Timestamp ISO do snapshot |
+| `session_id` | Identificador da sessão do Claude Code |
+| `transcript_path` | Caminho para a transcrição da sessão |
+| `model` | Modelo usado |
+| `input_tokens` / `output_tokens` | Contagens de tokens |
+| `cache_write_tokens` / `cache_read_tokens` | Contagens de tokens de prompt-cache |
+| `estimated_cost_usd` | Custo cumulativo pré-calculado em USD para a sessão |
 
-Prefer `estimated_cost_usd` over hand-calculating pricing — model and cache
-prices change, and the tracker is the source of truth.
+Prefira `estimated_cost_usd` em vez de calcular preços à mão — os preços de modelo e de cache
+mudam, e o tracker é a fonte da verdade.
 
-## When to Use
+## Quando Usar
 
-- The user asks "how much have I spent?", "what did this session cost?", or
-  "what is my token usage?"
-- The user mentions budgets, spending limits, overruns, or cost controls.
-- The user wants a cost breakdown by model, session, or date, or a CSV export.
+- O usuário pergunta "quanto eu gastei?", "quanto custou esta sessão?" ou
+  "qual é o meu uso de tokens?"
+- O usuário menciona orçamentos, limites de gasto, estouros ou controles de custo.
+- O usuário quer um detalhamento de custo por modelo, sessão ou data, ou uma exportação CSV.
 
-## How It Works
+## Como Funciona
 
-First verify the log exists (use `node`, not `sqlite3` — the tracker writes
-JSONL, and `node` is cross-platform):
+Primeiro verifique se o log existe (use `node`, não `sqlite3` — o tracker grava
+JSONL, e o `node` é multiplataforma):
 
 ```bash
 node -e 'const fs=require("fs"),os=require("os"),p=require("path");const f=p.join(os.homedir(),".claude","metrics","costs.jsonl");console.log(fs.existsSync(f)?"cost log found":"cost log not found: "+f)'

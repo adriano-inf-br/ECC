@@ -26,25 +26,25 @@ Selecione automaticamente modelos mais baratos para tarefas simples, reservando 
 MODEL_SONNET = "claude-sonnet-4-6"
 MODEL_HAIKU = "claude-haiku-4-5-20251001"
 
-_SONNET_TEXT_THRESHOLD = 10_000  # chars
-_SONNET_ITEM_THRESHOLD = 30     # items
+_SONNET_TEXT_THRESHOLD = 10_000  # caracteres
+_SONNET_ITEM_THRESHOLD = 30     # itens
 
 def select_model(
     text_length: int,
     item_count: int,
     force_model: str | None = None,
 ) -> str:
-    """Select model based on task complexity."""
+    """Seleciona o modelo com base na complexidade da tarefa."""
     if force_model is not None:
         return force_model
     if text_length >= _SONNET_TEXT_THRESHOLD or item_count >= _SONNET_ITEM_THRESHOLD:
-        return MODEL_SONNET  # Complex task
-    return MODEL_HAIKU  # Simple task (3-4x cheaper)
+        return MODEL_SONNET  # Tarefa complexa
+    return MODEL_HAIKU  # Tarefa simples (3-4x mais barata)
 ```
 
-### 2. Immutable Cost Tracking
+### 2. Rastreamento de Custo Imutável
 
-Track cumulative spend with frozen dataclasses. Each API call returns a new tracker — never mutates state.
+Rastreie o gasto cumulativo com dataclasses congeladas. Cada chamada de API retorna um novo tracker — nunca muta o estado.
 
 ```python
 from dataclasses import dataclass
@@ -62,7 +62,7 @@ class CostTracker:
     records: tuple[CostRecord, ...] = ()
 
     def add(self, record: CostRecord) -> "CostTracker":
-        """Return new tracker with added record (never mutates self)."""
+        """Retorna um novo tracker com o registro adicionado (nunca muta self)."""
         return CostTracker(
             budget_limit=self.budget_limit,
             records=(*self.records, record),
@@ -77,9 +77,9 @@ class CostTracker:
         return self.total_cost > self.budget_limit
 ```
 
-### 3. Narrow Retry Logic
+### 3. Lógica de Retry Restrita
 
-Retry only on transient errors. Fail fast on authentication or bad request errors.
+Faça retry apenas em erros transitórios. Falhe rápido em erros de autenticação ou de requisição inválida.
 
 ```python
 from anthropic import (
@@ -92,20 +92,20 @@ _RETRYABLE_ERRORS = (APIConnectionError, RateLimitError, InternalServerError)
 _MAX_RETRIES = 3
 
 def call_with_retry(func, *, max_retries: int = _MAX_RETRIES):
-    """Retry only on transient errors, fail fast on others."""
+    """Faz retry apenas em erros transitórios, falha rápido nos demais."""
     for attempt in range(max_retries):
         try:
             return func()
         except _RETRYABLE_ERRORS:
             if attempt == max_retries - 1:
                 raise
-            time.sleep(2 ** attempt)  # Exponential backoff
-    # AuthenticationError, BadRequestError etc. → raise immediately
+            time.sleep(2 ** attempt)  # Backoff exponencial
+    # AuthenticationError, BadRequestError etc. → lança imediatamente
 ```
 
 ### 4. Prompt Caching
 
-Cache long system prompts to avoid resending them on every request.
+Faça cache de prompts de sistema longos para evitar reenviá-los a cada requisição.
 
 ```python
 messages = [
@@ -115,70 +115,70 @@ messages = [
             {
                 "type": "text",
                 "text": system_prompt,
-                "cache_control": {"type": "ephemeral"},  # Cache this
+                "cache_control": {"type": "ephemeral"},  # Faz cache disto
             },
             {
                 "type": "text",
-                "text": user_input,  # Variable part
+                "text": user_input,  # Parte variável
             },
         ],
     }
 ]
 ```
 
-## Composition
+## Composição
 
-Combine all four techniques in a single pipeline function:
+Combine todas as quatro técnicas em uma única função de pipeline:
 
 ```python
 def process(text: str, config: Config, tracker: CostTracker) -> tuple[Result, CostTracker]:
-    # 1. Route model
+    # 1. Roteia o modelo
     model = select_model(len(text), estimated_items, config.force_model)
 
-    # 2. Check budget
+    # 2. Verifica o orçamento
     if tracker.over_budget:
         raise BudgetExceededError(tracker.total_cost, tracker.budget_limit)
 
-    # 3. Call with retry + caching
+    # 3. Chama com retry + caching
     response = call_with_retry(lambda: client.messages.create(
         model=model,
         messages=build_cached_messages(system_prompt, text),
     ))
 
-    # 4. Track cost (immutable)
+    # 4. Rastreia o custo (imutável)
     record = CostRecord(model=model, input_tokens=..., output_tokens=..., cost_usd=...)
     tracker = tracker.add(record)
 
     return parse_result(response), tracker
 ```
 
-## Pricing Reference (2025-2026)
+## Referência de Preços (2025-2026)
 
-| Model | Input ($/1M tokens) | Output ($/1M tokens) | Relative Cost |
+| Modelo | Entrada ($/1M tokens) | Saída ($/1M tokens) | Custo Relativo |
 |-------|---------------------|----------------------|---------------|
 | Haiku 4.5 | $0.80 | $4.00 | 1x |
 | Sonnet 4.6 | $3.00 | $15.00 | ~4x |
 | Opus 4.5 | $15.00 | $75.00 | ~19x |
 
-## Best Practices
+## Boas Práticas
 
-- **Start with the cheapest model** and only route to expensive models when complexity thresholds are met
-- **Set explicit budget limits** before processing batches — fail early rather than overspend
-- **Log model selection decisions** so you can tune thresholds based on real data
-- **Use prompt caching** for system prompts over 1024 tokens — saves both cost and latency
-- **Never retry on authentication or validation errors** — only transient failures (network, rate limit, server error)
+- **Comece com o modelo mais barato** e só roteie para modelos caros quando os limiares de complexidade forem atingidos
+- **Defina limites de orçamento explícitos** antes de processar lotes — falhe cedo em vez de gastar demais
+- **Registre as decisões de seleção de modelo** para que você possa ajustar os limiares com base em dados reais
+- **Use prompt caching** para prompts de sistema acima de 1024 tokens — economiza tanto custo quanto latência
+- **Nunca faça retry em erros de autenticação ou validação** — apenas em falhas transitórias (rede, rate limit, erro de servidor)
 
-## Anti-Patterns to Avoid
+## Anti-Padrões a Evitar
 
-- Using the most expensive model for all requests regardless of complexity
-- Retrying on all errors (wastes budget on permanent failures)
-- Mutating cost tracking state (makes debugging and auditing difficult)
-- Hardcoding model names throughout the codebase (use constants or config)
-- Ignoring prompt caching for repetitive system prompts
+- Usar o modelo mais caro para todas as requisições independentemente da complexidade
+- Fazer retry em todos os erros (desperdiça orçamento em falhas permanentes)
+- Mutar o estado de rastreamento de custo (dificulta depuração e auditoria)
+- Codificar nomes de modelo embutidos por todo o código (use constantes ou config)
+- Ignorar prompt caching para prompts de sistema repetitivos
 
-## When to Use
+## Quando Usar
 
-- Any application calling Claude, OpenAI, or similar LLM APIs
-- Batch processing pipelines where cost adds up quickly
-- Multi-model architectures that need intelligent routing
-- Production systems that need budget guardrails
+- Qualquer aplicação que chame Claude, OpenAI ou APIs de LLM semelhantes
+- Pipelines de processamento em lote onde o custo se acumula rapidamente
+- Arquiteturas multi-modelo que precisam de roteamento inteligente
+- Sistemas de produção que precisam de proteções de orçamento

@@ -1,45 +1,45 @@
-# Sponsoring ECC
+# Patrocinando o ECC
 
-ECC is maintained as an open-source agent harness operating system across Claude Code, Cursor, OpenCode, Codex, Gemini, Zed, and other agent workflows.
+O ECC é mantido como um sistema operacional de Harness de agent open-source que opera no Claude Code, Cursor, OpenCode, Codex, Gemini, Zed e outros fluxos de trabalho de agent.
 
-## Why Sponsor
+## Por Que Patrocinar
 
-Sponsorship directly funds:
+O patrocínio financia diretamente:
 
-- Faster bug-fix and release cycles
-- Cross-platform parity work across harnesses
-- Public docs, skills, and reliability tooling that remain free for the community
+- Ciclos mais rápidos de correção de bugs e de release
+- Trabalho de paridade multiplataforma entre harnesses
+- Documentação pública, skills e ferramentas de confiabilidade que permanecem gratuitas para a comunidade
 
-## Sponsorship Tiers
+## Níveis de Patrocínio
 
-These are practical public starting points. Sponsorship funds the public OSS layer and sponsor visibility, not private implementation work.
+Estes são pontos de partida públicos e práticos. O patrocínio financia a camada pública de OSS e a visibilidade do patrocinador, não trabalho de implementação privada.
 
-| Tier | Price | Best For | Includes |
+| Nível | Preço | Ideal Para | Inclui |
 |------|-------|----------|----------|
-| Team Sponsor | $200/mo | Teams that want visible OSS support without README placement | Company name/logo/link in SPONSORS.md |
-| Business Sponsor | $800/mo | Companies that want README sponsor visibility | Featured README sponsor area + SPONSORS.md listing + one sponsor-placement review |
-| Strategic Sponsor | $3,700/mo | Ecosystem partners that want top placement and tighter coordination | Top README sponsor placement + SPONSORS.md listing + one 30-minute placement call + optional launch mention if the integration is genuinely useful |
+| Team Sponsor | $200/mo | Times que querem suporte visível ao OSS sem posicionamento no README | Nome/logo/link da empresa em SPONSORS.md |
+| Business Sponsor | $800/mo | Empresas que querem visibilidade de patrocinador no README | Área de patrocinador em destaque no README + listagem em SPONSORS.md + uma revisão de posicionamento de patrocinador |
+| Strategic Sponsor | $3,700/mo | Parceiros do ecossistema que querem posicionamento no topo e coordenação mais próxima | Posicionamento de patrocinador no topo do README + listagem em SPONSORS.md + uma chamada de posicionamento de 30 minutos + menção opcional de lançamento se a integração for genuinamente útil |
 
-No public tier includes seats, support SLA, custom development, a dedicated channel, or guaranteed case study unless separately agreed in writing.
+Nenhum nível público inclui assentos, SLA de suporte, desenvolvimento personalizado, um canal dedicado ou estudo de caso garantido, salvo acordo separado por escrito.
 
-## Sponsor Reporting
+## Relatórios para Patrocinadores
 
-Metrics shared monthly can include:
+As métricas compartilhadas mensalmente podem incluir:
 
-- npm downloads (`ecc-universal`, `ecc-agentshield`)
-- Repository adoption (stars, forks, contributors)
-- GitHub App install trend
-- Release cadence and reliability milestones
+- Downloads do npm (`ecc-universal`, `ecc-agentshield`)
+- Adoção do repositório (stars, forks, contribuidores)
+- Tendência de instalações do GitHub App
+- Cadência de release e marcos de confiabilidade
 
-For exact command snippets and a repeatable pull process, see [`docs/business/metrics-and-sponsorship.md`](docs/business/metrics-and-sponsorship.md).
+Para snippets exatos de comando e um processo repetível de extração, veja [`docs/business/metrics-and-sponsorship.md`](docs/business/metrics-and-sponsorship.md).
 
-## Expectations and Scope
+## Expectativas e Escopo
 
-- Sponsorship supports maintenance and acceleration; it does not transfer project ownership.
-- Feature requests are prioritized based on sponsor tier, ecosystem impact, and maintenance risk.
-- Security and reliability fixes take precedence over net-new features.
+- O patrocínio apoia manutenção e aceleração; ele não transfere a propriedade do projeto.
+- Solicitações de recursos são priorizadas com base no nível do patrocinador, no impacto no ecossistema e no risco de manutenção.
+- Correções de segurança e confiabilidade têm precedência sobre recursos totalmente novos.
 
-## Sponsor Here
+## Patrocine Aqui
 
 - GitHub Sponsors: [https://github.com/sponsors/affaan-m](https://github.com/sponsors/affaan-m)
-- Project site: [https://ecc.tools](https://ecc.tools)
+- Site do projeto: [https://ecc.tools](https://ecc.tools)

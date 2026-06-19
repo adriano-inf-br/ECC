@@ -3,34 +3,34 @@ paths:
   - "**/*.ets"
   - "**/*.ts"
 ---
-# HarmonyOS / ArkTS Patterns
+# Padrões do HarmonyOS / ArkTS
 
 > This file extends [common/patterns.md](../common/patterns.md) with HarmonyOS and ArkTS-specific patterns.
 
-## State Management: V2 Only
+## Gerenciamento de Estado: Apenas V2
 
-**MUST use** ArkUI State Management V2. V1 decorators are deprecated and must not be used.
+**DEVE usar** o ArkUI State Management V2. Os decorators V1 estão obsoletos e não devem ser usados.
 
-### V2 Decorators
+### Decorators V2
 
-| Decorator | Purpose |
+| Decorator | Propósito |
 |-----------|---------|
-| `@ComponentV2` | Marks a struct as a V2 component |
-| `@Local` | Local state within a component |
-| `@Param` | Props received from parent (read-only) |
-| `@Event` | Callback events from child to parent |
-| `@Provider` | Provides state to descendant components |
-| `@Consumer` | Consumes state from ancestor `@Provider` |
-| `@Monitor` | Watches for state changes (replaces V1 `@Watch`) |
-| `@Computed` | Derived/computed values |
-| `@ObservedV2` | Makes a class observable for V2 state management |
-| `@Trace` | Marks observable properties in `@ObservedV2` classes |
+| `@ComponentV2` | Marca um struct como um componente V2 |
+| `@Local` | Estado local dentro de um componente |
+| `@Param` | Props recebidas do pai (somente leitura) |
+| `@Event` | Eventos de callback do filho para o pai |
+| `@Provider` | Fornece estado a componentes descendentes |
+| `@Consumer` | Consome estado de um `@Provider` ancestral |
+| `@Monitor` | Observa mudanças de estado (substitui o `@Watch` da V1) |
+| `@Computed` | Valores derivados/computados |
+| `@ObservedV2` | Torna uma classe observável para o gerenciamento de estado V2 |
+| `@Trace` | Marca propriedades observáveis em classes `@ObservedV2` |
 
-### Prohibited V1 Decorators
+### Decorators V1 Proibidos
 
-Never use: `@State`, `@Prop`, `@Link`, `@ObjectLink`, `@Observed`, `@Provide`, `@Consume`, `@Watch`, `@Component` (use `@ComponentV2` instead).
+Nunca use: `@State`, `@Prop`, `@Link`, `@ObjectLink`, `@Observed`, `@Provide`, `@Consume`, `@Watch`, `@Component` (use `@ComponentV2` em vez disso).
 
-### V2 Component Example
+### Exemplo de Componente V2
 
 ```typescript
 @ObservedV2
@@ -57,7 +57,7 @@ struct UserCard {
 }
 ```
 
-### State Synchronization
+### Sincronização de Estado
 
 ```typescript
 @ComponentV2
@@ -66,7 +66,7 @@ struct ParentPage {
 
   build() {
     Column() {
-      ChildComponent()  // automatically receives @Consumer('userState')
+      ChildComponent()  // recebe automaticamente @Consumer('userState')
     }
   }
 }
@@ -81,11 +81,11 @@ struct ChildComponent {
 }
 ```
 
-## Routing: Navigation Only
+## Roteamento: Apenas Navigation
 
-**MUST use** `Navigation` component with `NavPathStack`. Never use `@ohos.router`.
+**DEVE usar** o componente `Navigation` com `NavPathStack`. Nunca use `@ohos.router`.
 
-### Navigation Setup
+### Configuração de Navigation
 
 ```typescript
 @ComponentV2
@@ -94,7 +94,7 @@ struct MainPage {
 
   build() {
     Navigation(this.navPathStack) {
-      // Home content
+      // Conteúdo da Home
     }
     .navDestination(this.routerMap)
   }
@@ -110,23 +110,23 @@ struct MainPage {
 }
 ```
 
-### Page Navigation
+### Navegação entre Páginas
 
 ```typescript
-// Push a new page
+// Empilhar uma nova página
 this.navPathStack.pushPath({ name: 'detail', param: { id: '123' } })
 
-// Replace current page
+// Substituir a página atual
 this.navPathStack.replacePath({ name: 'settings' })
 
-// Pop back
+// Voltar (pop)
 this.navPathStack.pop()
 
-// Pop to root
+// Voltar à raiz
 this.navPathStack.clear()
 ```
 
-### NavDestination Sub-page
+### Subpágina NavDestination
 
 ```typescript
 @ComponentV2
@@ -142,26 +142,26 @@ struct DetailPage {
 }
 ```
 
-## Architecture Pattern: MVVM
+## Padrão de Arquitetura: MVVM
 
-Recommended architecture for HarmonyOS applications:
+Arquitetura recomendada para aplicações HarmonyOS:
 
 ```
 feature/
-  |-- model/           # Data models (@ObservedV2 classes)
-  |-- viewmodel/       # Business logic (ViewModel classes)
-  |-- view/            # UI components (@ComponentV2 structs)
-  |-- service/         # API calls, data access
+  |-- model/           # Modelos de dados (classes @ObservedV2)
+  |-- viewmodel/       # Lógica de negócio (classes ViewModel)
+  |-- view/            # Componentes de UI (structs @ComponentV2)
+  |-- service/         # Chamadas de API, acesso a dados
 ```
 
-- **View**: Only rendering logic, no business logic in `build()`
-- **ViewModel**: All business logic encapsulated here
-- **Model**: Pure data classes with `@ObservedV2` and `@Trace`
-- **Service**: Network requests, database operations, file I/O
+- **View**: Apenas lógica de renderização, sem lógica de negócio em `build()`
+- **ViewModel**: Toda a lógica de negócio encapsulada aqui
+- **Model**: Classes de dados puras com `@ObservedV2` e `@Trace`
+- **Service**: Requisições de rede, operações de banco de dados, I/O de arquivos
 
-## ArkUI Animation Patterns
+## Padrões de Animação do ArkUI
 
-### State-Driven Animation
+### Animação Orientada por Estado
 
 ```typescript
 @ComponentV2
@@ -171,7 +171,7 @@ struct AnimatedCard {
 
   build() {
     Column() {
-      // Content
+      // Conteúdo
     }
     .scale({ x: this.cardScale, y: this.cardScale })
     .animation({ duration: 300, curve: Curve.EaseInOut })
@@ -183,18 +183,18 @@ struct AnimatedCard {
 }
 ```
 
-### Animation Rules
+### Regras de Animação
 
-- Prefer native HarmonyOS animation APIs and advanced templates
-- Use declarative UI with state-driven animations (change state variables to trigger animations)
-- Set `renderGroup(true)` for complex sub-component animations to reduce render batches
-- **NEVER** frequently change `width`, `height`, `padding`, `margin` during animations - severe performance impact
-- Use `animateTo` for explicit animation control
-- Prefer `transform` (translate, scale, rotate) and `opacity` for performant animations
+- Prefira as APIs de animação nativas do HarmonyOS e templates avançados
+- Use UI declarativa com animações orientadas por estado (altere variáveis de estado para disparar animações)
+- Defina `renderGroup(true)` para animações complexas de subcomponentes para reduzir lotes de renderização
+- **NUNCA** altere com frequência `width`, `height`, `padding`, `margin` durante animações - impacto severo no desempenho
+- Use `animateTo` para controle explícito de animação
+- Prefira `transform` (translate, scale, rotate) e `opacity` para animações de bom desempenho
 
-## Performance Patterns
+## Padrões de Desempenho
 
-### LazyForEach for Large Lists
+### LazyForEach para Listas Grandes
 
 ```typescript
 @ComponentV2
@@ -213,23 +213,23 @@ struct LargeList {
 }
 ```
 
-### Component Reuse
+### Reuso de Componentes
 
-- Extract reusable components into separate files
-- Use `@Builder` for lightweight UI fragments within a component
-- Use `@Param` for configurable components
+- Extraia componentes reutilizáveis para arquivos separados
+- Use `@Builder` para fragmentos de UI leves dentro de um componente
+- Use `@Param` para componentes configuráveis
 
-## Resource References
+## Referências de Recursos
 
-Always define UI constants as resources and reference via `$r()`:
+Sempre defina constantes de UI como recursos e referencie via `$r()`:
 
 ```typescript
-// BAD: hardcoded values
+// RUIM: valores hardcoded
 Text('Hello')
   .fontSize(16)
   .fontColor('#333333')
 
-// GOOD: resource references
+// BOM: referências de recurso
 Text($r('app.string.greeting'))
   .fontSize($r('app.float.font_size_body'))
   .fontColor($r('app.color.text_primary'))

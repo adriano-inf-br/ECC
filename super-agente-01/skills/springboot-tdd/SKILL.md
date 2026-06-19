@@ -1,28 +1,28 @@
 ---
 name: springboot-tdd
-description: Test-driven development for Spring Boot using JUnit 5, Mockito, MockMvc, Testcontainers, and JaCoCo. Use when adding features, fixing bugs, or refactoring.
+description: Desenvolvimento orientado a testes para Spring Boot usando JUnit 5, Mockito, MockMvc, Testcontainers e JaCoCo. Use ao adicionar recursos, corrigir bugs ou refatorar.
 metadata:
   origin: ECC
 ---
 
-# Spring Boot TDD Workflow
+# Fluxo de Trabalho TDD com Spring Boot
 
-TDD guidance for Spring Boot services with 80%+ coverage (unit + integration).
+Orientação de TDD para serviços Spring Boot com cobertura de 80%+ (unitária + integração).
 
-## When to Use
+## Quando Usar
 
-- New features or endpoints
-- Bug fixes or refactors
-- Adding data access logic or security rules
+- Novos recursos ou endpoints
+- Correções de bugs ou refatorações
+- Adicionar lógica de acesso a dados ou regras de segurança
 
-## Workflow
+## Fluxo de Trabalho
 
-1) Write tests first (they should fail)
-2) Implement minimal code to pass
-3) Refactor with tests green
-4) Enforce coverage (JaCoCo)
+1) Escreva os testes primeiro (eles devem falhar)
+2) Implemente o código mínimo para passar
+3) Refatore com os testes passando
+4) Aplique cobertura (JaCoCo)
 
-## Unit Tests (JUnit 5 + Mockito)
+## Testes Unitários (JUnit 5 + Mockito)
 
 ```java
 @ExtendWith(MockitoExtension.class)
@@ -43,12 +43,12 @@ class MarketServiceTest {
 }
 ```
 
-Patterns:
+Padrões:
 - Arrange-Act-Assert
-- Avoid partial mocks; prefer explicit stubbing
-- Use `@ParameterizedTest` for variants
+- Evite mocks parciais; prefira stubbing explícito
+- Use `@ParameterizedTest` para variantes
 
-## Web Layer Tests (MockMvc)
+## Testes da Camada Web (MockMvc)
 
 ```java
 @WebMvcTest(MarketController.class)
@@ -67,7 +67,7 @@ class MarketControllerTest {
 }
 ```
 
-## Integration Tests (SpringBootTest)
+## Testes de Integração (SpringBootTest)
 
 ```java
 @SpringBootTest
@@ -88,7 +88,7 @@ class MarketIntegrationTest {
 }
 ```
 
-## Persistence Tests (DataJpaTest)
+## Testes de Persistência (DataJpaTest)
 
 ```java
 @DataJpaTest
@@ -111,12 +111,12 @@ class MarketRepositoryTest {
 
 ## Testcontainers
 
-- Use reusable containers for Postgres/Redis to mirror production
-- Wire via `@DynamicPropertySource` to inject JDBC URLs into Spring context
+- Use containers reutilizáveis para Postgres/Redis para espelhar a produção
+- Injete via `@DynamicPropertySource` para inserir URLs JDBC no contexto do Spring
 
-## Coverage (JaCoCo)
+## Cobertura (JaCoCo)
 
-Maven snippet:
+Trecho Maven:
 ```xml
 <plugin>
   <groupId>org.jacoco</groupId>
@@ -135,13 +135,13 @@ Maven snippet:
 </plugin>
 ```
 
-## Assertions
+## Asserções
 
-- Prefer AssertJ (`assertThat`) for readability
-- For JSON responses, use `jsonPath`
-- For exceptions: `assertThatThrownBy(...)`
+- Prefira AssertJ (`assertThat`) para legibilidade
+- Para respostas JSON, use `jsonPath`
+- Para exceções: `assertThatThrownBy(...)`
 
-## Test Data Builders
+## Builders de Dados de Teste
 
 ```java
 class MarketBuilder {
@@ -151,9 +151,9 @@ class MarketBuilder {
 }
 ```
 
-## CI Commands
+## Comandos CI
 
-- Maven: `mvn -T 4 test` or `mvn verify`
+- Maven: `mvn -T 4 test` ou `mvn verify`
 - Gradle: `./gradlew test jacocoTestReport`
 
-**Remember**: Keep tests fast, isolated, and deterministic. Test behavior, not implementation details.
+**Lembre-se**: Mantenha os testes rápidos, isolados e determinísticos. Teste comportamento, não detalhes de implementação.

@@ -1,30 +1,30 @@
 ---
 name: laravel-verification
-description: "Verification loop for Laravel projects: env checks, linting, static analysis, tests with coverage, security scans, and deployment readiness."
+description: "Loop de verificação para projetos Laravel: verificações de ambiente, linting, análise estática, testes com cobertura, varreduras de segurança e prontidão para deploy."
 metadata:
   origin: ECC
 ---
 
-# Laravel Verification Loop
+# Loop de Verificação Laravel
 
-Run before PRs, after major changes, and pre-deploy.
+Execute antes de PRs, após grandes mudanças e antes do deploy.
 
-## When to Use
+## Quando Usar
 
-- Before opening a pull request for a Laravel project
-- After major refactors or dependency upgrades
-- Pre-deployment verification for staging or production
-- Running full lint -> test -> security -> deploy readiness pipeline
+- Antes de abrir um pull request para um projeto Laravel
+- Após grandes refatorações ou atualizações de dependências
+- Verificação pré-deploy para staging ou produção
+- Executar o pipeline completo de lint -> teste -> segurança -> prontidão para deploy
 
-## How It Works
+## Como Funciona
 
-- Run phases sequentially from environment checks through deployment readiness so each layer builds on the last.
-- Environment and Composer checks gate everything else; stop immediately if they fail.
-- Linting/static analysis should be clean before running full tests and coverage.
-- Security and migration reviews happen after tests so you verify behavior before data or release steps.
-- Build/deploy readiness and queue/scheduler checks are final gates; any failure blocks release.
+- Execute as fases sequencialmente, desde as verificações de ambiente até a prontidão para deploy, para que cada camada se construa sobre a anterior.
+- As verificações de ambiente e Composer bloqueiam tudo mais; pare imediatamente se falharem.
+- Linting/análise estática deve estar limpo antes de executar testes completos e cobertura.
+- Revisões de segurança e migration acontecem após os testes para que você verifique o comportamento antes das etapas de dados ou release.
+- A prontidão de build/deploy e as verificações de fila/scheduler são os portões finais; qualquer falha bloqueia o release.
 
-## Phase 1: Environment Checks
+## Fase 1: Verificações de Ambiente
 
 ```bash
 php -v
@@ -32,50 +32,50 @@ composer --version
 php artisan --version
 ```
 
-- Verify `.env` is present and required keys exist
-- Confirm `APP_DEBUG=false` for production environments
-- Confirm `APP_ENV` matches the target deployment (`production`, `staging`)
+- Verifique se `.env` está presente e as chaves obrigatórias existem
+- Confirme `APP_DEBUG=false` para ambientes de produção
+- Confirme que `APP_ENV` corresponde ao deploy alvo (`production`, `staging`)
 
-If using Laravel Sail locally:
+Se estiver usando Laravel Sail localmente:
 
 ```bash
 ./vendor/bin/sail php -v
 ./vendor/bin/sail artisan --version
 ```
 
-## Phase 1.5: Composer and Autoload
+## Fase 1.5: Composer e Autoload
 
 ```bash
 composer validate
 composer dump-autoload -o
 ```
 
-## Phase 2: Linting and Static Analysis
+## Fase 2: Linting e Análise Estática
 
 ```bash
 vendor/bin/pint --test
 vendor/bin/phpstan analyse
 ```
 
-If your project uses Psalm instead of PHPStan:
+Se o projeto usar Psalm em vez do PHPStan:
 
 ```bash
 vendor/bin/psalm
 ```
 
-## Phase 3: Tests and Coverage
+## Fase 3: Testes e Cobertura
 
 ```bash
 php artisan test
 ```
 
-Coverage (CI):
+Cobertura (CI):
 
 ```bash
 XDEBUG_MODE=coverage php artisan test --coverage
 ```
 
-CI example (format -> static analysis -> tests):
+Exemplo de CI (formatação -> análise estática -> testes):
 
 ```bash
 vendor/bin/pint --test
@@ -83,25 +83,25 @@ vendor/bin/phpstan analyse
 XDEBUG_MODE=coverage php artisan test --coverage
 ```
 
-## Phase 4: Security and Dependency Checks
+## Fase 4: Verificações de Segurança e Dependências
 
 ```bash
 composer audit
 ```
 
-## Phase 5: Database and Migrations
+## Fase 5: Banco de Dados e Migrations
 
 ```bash
 php artisan migrate --pretend
 php artisan migrate:status
 ```
 
-- Review destructive migrations carefully
-- Ensure migration filenames follow `Y_m_d_His_*` (e.g., `2025_03_14_154210_create_orders_table.php`) and describe the change clearly
-- Ensure rollbacks are possible
-- Verify `down()` methods and avoid irreversible data loss without explicit backups
+- Revise migrations destrutivas com cuidado
+- Garanta que os nomes de arquivo de migration sigam `Y_m_d_His_*` (ex.: `2025_03_14_154210_create_orders_table.php`) e descrevam a mudança claramente
+- Garanta que rollbacks sejam possíveis
+- Verifique os métodos `down()` e evite perda irreversível de dados sem backups explícitos
 
-## Phase 6: Build and Deployment Readiness
+## Fase 6: Prontidão de Build e Deploy
 
 ```bash
 php artisan optimize:clear
@@ -110,43 +110,43 @@ php artisan route:cache
 php artisan view:cache
 ```
 
-- Ensure cache warmups succeed in production configuration
-- Verify queue workers and scheduler are configured
-- Confirm `storage/` and `bootstrap/cache/` are writable in the target environment
+- Garanta que os warmups de cache funcionem na configuração de produção
+- Verifique se workers de fila e o scheduler estão configurados
+- Confirme que `storage/` e `bootstrap/cache/` são graváveis no ambiente alvo
 
-## Phase 7: Queue and Scheduler Checks
+## Fase 7: Verificações de Fila e Scheduler
 
 ```bash
 php artisan schedule:list
 php artisan queue:failed
 ```
 
-If Horizon is used:
+Se o Horizon for usado:
 
 ```bash
 php artisan horizon:status
 ```
 
-If `queue:monitor` is available, use it to check backlog without processing jobs:
+Se `queue:monitor` estiver disponível, use-o para verificar o backlog sem processar jobs:
 
 ```bash
 php artisan queue:monitor default --max=100
 ```
 
-Active verification (staging only): dispatch a no-op job to a dedicated queue and run a single worker to process it (ensure a non-`sync` queue connection is configured).
+Verificação ativa (somente staging): despache um job no-op para uma fila dedicada e execute um único worker para processá-lo (garanta que uma conexão de fila não-`sync` esteja configurada).
 
 ```bash
 php artisan tinker --execute="dispatch((new App\\Jobs\\QueueHealthcheck())->onQueue('healthcheck'))"
 php artisan queue:work --once --queue=healthcheck
 ```
 
-Verify the job produced the expected side effect (log entry, healthcheck table row, or metric).
+Verifique se o job produziu o efeito colateral esperado (entrada de log, linha na tabela de healthcheck ou métrica).
 
-Only run this on non-production environments where processing a test job is safe.
+Execute isso apenas em ambientes não produtivos onde processar um job de teste é seguro.
 
-## Examples
+## Exemplos
 
-Minimal flow:
+Fluxo mínimo:
 
 ```bash
 php -v
@@ -162,7 +162,7 @@ php artisan config:cache
 php artisan queue:failed
 ```
 
-CI-style pipeline:
+Pipeline estilo CI:
 
 ```bash
 composer validate

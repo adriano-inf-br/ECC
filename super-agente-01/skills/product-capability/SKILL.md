@@ -1,105 +1,105 @@
 ---
 name: product-capability
-description: Translate PRD intent, roadmap asks, or product discussions into an implementation-ready capability plan that exposes constraints, invariants, interfaces, and unresolved decisions before multi-service work starts. Use when the user needs an ECC-native PRD-to-SRS lane instead of vague planning prose.
+description: Traduz a intenção de um PRD, solicitações de roadmap ou discussões de produto em um plano de capacidade pronto para implementação que expõe restrições, invariantes, interfaces e decisões não resolvidas antes que o trabalho multi-serviço comece. Use quando o usuário precisar de uma rota PRD-para-SRS nativa do ECC em vez de prosa de planejamento vaga.
 metadata:
   origin: ECC
 ---
 
 # Product Capability
 
-This skill turns product intent into explicit engineering constraints.
+Esta skill transforma a intenção do produto em restrições de engenharia explícitas.
 
-Use it when the gap is not "what should we build?" but "what exactly must be true before implementation starts?"
+Use quando a lacuna não é "o que devemos construir?" mas "o que deve ser verdadeiro exatamente antes que a implementação comece?"
 
-## When to Use
+## Quando Usar
 
-- A PRD, roadmap item, discussion, or founder note exists, but the implementation constraints are still implicit
-- A feature crosses multiple services, repos, or teams and needs a capability contract before coding
-- Product intent is clear, but architecture, data, lifecycle, or policy implications are still fuzzy
-- Senior engineers keep restating the same hidden assumptions during review
-- You need a reusable artifact that can survive across harnesses and sessions
+- Existe um PRD, item de roadmap, discussão ou nota do fundador, mas as restrições de implementação ainda são implícitas
+- Uma feature cruza múltiplos serviços, repositórios ou equipes e precisa de um contrato de capacidade antes de codificar
+- A intenção do produto é clara, mas as implicações de arquitetura, dados, ciclo de vida ou política ainda são nebulosas
+- Engenheiros sênior continuam reafirmando as mesmas suposições ocultas durante a revisão
+- Você precisa de um artefato reutilizável que possa sobreviver entre harnesses e sessões
 
-## Canonical Artifact
+## Artefato Canônico
 
-If the repo has a durable product-context file such as `PRODUCT.md`, `docs/product/`, or a program-spec directory, update it there.
+Se o repositório tiver um arquivo de contexto de produto durável como `PRODUCT.md`, `docs/product/` ou um diretório de especificação de programa, atualize-o lá.
 
-If no capability manifest exists yet, create one using the template at:
+Se ainda não existir um manifesto de capacidade, crie um usando o template em:
 
 - `docs/examples/product-capability-template.md`
 
-The goal is not to create another planning stack. The goal is to make hidden capability constraints durable and reusable.
+O objetivo não é criar outra pilha de planejamento. O objetivo é tornar as restrições de capacidade ocultas duráveis e reutilizáveis.
 
-## Non-Negotiable Rules
+## Regras Não Negociáveis
 
-- Do not invent product truth. Mark unresolved questions explicitly.
-- Separate user-visible promises from implementation details.
-- Call out what is fixed policy, what is architecture preference, and what is still open.
-- If the request conflicts with existing repo constraints, say so clearly instead of smoothing it over.
-- Prefer one reusable capability artifact over scattered ad hoc notes.
+- Não invente verdades sobre o produto. Marque questões não resolvidas explicitamente.
+- Separe as promessas visíveis ao usuário dos detalhes de implementação.
+- Identifique o que é política fixa, o que é preferência de arquitetura e o que ainda está em aberto.
+- Se a solicitação conflitar com as restrições existentes do repositório, diga isso claramente em vez de suavizar.
+- Prefira um artefato de capacidade reutilizável a notas ad hoc dispersas.
 
-## Inputs
+## Entradas
 
-Read only what is needed:
+Leia apenas o que for necessário:
 
-1. Product intent
-   - issue, discussion, PRD, roadmap note, founder message
-2. Current architecture
-   - relevant repo docs, contracts, schemas, routes, existing workflows
-3. Existing capability context
-   - `PRODUCT.md`, design docs, RFCs, migration notes, operating-model docs
-4. Delivery constraints
-   - auth, billing, compliance, rollout, backwards compatibility, performance, review policy
+1. Intenção do produto
+   - issue, discussão, PRD, nota de roadmap, mensagem do fundador
+2. Arquitetura atual
+   - documentos relevantes do repositório, contratos, schemas, rotas, fluxos de trabalho existentes
+3. Contexto de capacidade existente
+   - `PRODUCT.md`, documentos de design, RFCs, notas de migração, documentos de modelo operacional
+4. Restrições de entrega
+   - auth, billing, compliance, rollout, compatibilidade retroativa, performance, política de revisão
 
-## Core Workflow
+## Fluxo de Trabalho Principal
 
-### 1. Restate the capability
+### 1. Reafirmar a capacidade
 
-Compress the ask into one precise statement:
+Comprima a solicitação em uma declaração precisa:
 
-- who the user or operator is
-- what new capability exists after this ships
-- what outcome changes because of it
+- quem é o usuário ou operador
+- qual nova capacidade existe após isso ser entregue
+- qual resultado muda por causa disso
 
-If this statement is weak, the implementation will drift.
+Se esta declaração for fraca, a implementação irá derivar.
 
-### 2. Resolve capability constraints
+### 2. Resolver as restrições de capacidade
 
-Extract the constraints that must hold before implementation:
+Extraia as restrições que devem ser mantidas antes da implementação:
 
-- business rules
-- scope boundaries
-- invariants
-- trust boundaries
-- data ownership
-- lifecycle transitions
-- rollout / migration requirements
-- failure and recovery expectations
+- regras de negócio
+- limites de escopo
+- invariantes
+- limites de confiança
+- propriedade de dados
+- transições de ciclo de vida
+- requisitos de rollout / migração
+- expectativas de falha e recuperação
 
-These are the things that often live only in senior-engineer memory.
+Essas são as coisas que frequentemente vivem apenas na memória de engenheiros sênior.
 
-### 3. Define the implementation-facing contract
+### 3. Definir o contrato voltado para implementação
 
-Produce an SRS-style capability plan with:
+Produza um plano de capacidade no estilo SRS com:
 
-- capability summary
-- explicit non-goals
-- actors and surfaces
-- required states and transitions
-- interfaces / inputs / outputs
-- data model implications
-- security / billing / policy constraints
-- observability and operator requirements
-- open questions blocking implementation
+- resumo da capacidade
+- não-objetivos explícitos
+- atores e superfícies
+- estados e transições necessários
+- interfaces / entradas / saídas
+- implicações do modelo de dados
+- restrições de segurança / billing / política
+- requisitos de observabilidade e operador
+- questões abertas que bloqueiam a implementação
 
-### 4. Translate into execution
+### 4. Traduzir para execução
 
-End with the exact handoff:
+Termine com a transferência exata:
 
-- ready for direct implementation
-- needs architecture review first
-- needs product clarification first
+- pronto para implementação direta
+- precisa de revisão de arquitetura primeiro
+- precisa de esclarecimento de produto primeiro
 
-If useful, point to the next ECC-native lane:
+Se útil, aponte para a próxima rota nativa do ECC:
 
 - `project-flow-ops`
 - `workspace-surface-audit`
@@ -108,35 +108,35 @@ If useful, point to the next ECC-native lane:
 - `tdd-workflow`
 - `verification-loop`
 
-## Output Format
+## Formato de Saída
 
-Return the result in this order:
+Retorne o resultado nesta ordem:
 
 ```text
-CAPABILITY
-- one-paragraph restatement
+CAPACIDADE
+- reafirmação em um parágrafo
 
-CONSTRAINTS
-- fixed rules, invariants, and boundaries
+RESTRIÇÕES
+- regras fixas, invariantes e limites
 
-IMPLEMENTATION CONTRACT
-- actors
-- surfaces
-- states and transitions
-- interface/data implications
+CONTRATO DE IMPLEMENTAÇÃO
+- atores
+- superfícies
+- estados e transições
+- implicações de interface/dados
 
-NON-GOALS
-- what this lane explicitly does not own
+NÃO-OBJETIVOS
+- o que esta rota explicitamente não possui
 
-OPEN QUESTIONS
-- blockers or product decisions still required
+QUESTÕES ABERTAS
+- bloqueadores ou decisões de produto ainda necessários
 
-HANDOFF
-- what should happen next and which ECC lane should take it
+TRANSFERÊNCIA
+- o que deve acontecer a seguir e qual rota ECC deve assumir
 ```
 
-## Good Outcomes
+## Bons Resultados
 
-- Product intent is now concrete enough to implement without rediscovering hidden constraints mid-PR.
-- Engineering review has a durable artifact instead of relying on memory or Slack context.
-- The resulting plan is reusable across Claude Code, Codex, Cursor, OpenCode, and ECC 2.0 planning surfaces.
+- A intenção do produto agora é concreta o suficiente para implementar sem redescobrir restrições ocultas no meio de um PR.
+- A revisão de engenharia tem um artefato durável em vez de depender de memória ou contexto do Slack.
+- O plano resultante é reutilizável no Claude Code, Codex, Cursor, OpenCode e nas superfícies de planejamento do ECC 2.0.

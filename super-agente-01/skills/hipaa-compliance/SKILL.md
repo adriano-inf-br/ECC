@@ -1,76 +1,76 @@
 ---
 name: hipaa-compliance
-description: HIPAA-specific entrypoint for healthcare privacy and security work. Use when a task is explicitly framed around HIPAA, PHI handling, covered entities, BAAs, breach posture, or US healthcare compliance requirements.
+description: Ponto de entrada específico para HIPAA em trabalhos de privacidade e segurança em saúde. Use quando uma tarefa for explicitamente enquadrada em torno de HIPAA, tratamento de PHI, entidades cobertas, BAAs, postura de violação ou requisitos de conformidade de saúde nos EUA.
 metadata:
   origin: ECC direct-port adaptation
 version: "1.0.0"
 ---
 
-# HIPAA Compliance
+# Conformidade HIPAA
 
-Use this as the HIPAA-specific entrypoint when a task is clearly about US healthcare compliance. This skill intentionally stays thin and canonical:
+Use este como o ponto de entrada específico para HIPAA quando uma tarefa for claramente sobre conformidade de saúde nos EUA. Esta skill intencionalmente permanece enxuta e canônica:
 
-- `healthcare-phi-compliance` remains the primary implementation skill for PHI/PII handling, data classification, audit logging, encryption, and leak prevention.
-- `healthcare-reviewer` remains the specialized reviewer when code, architecture, or product behavior needs a healthcare-aware second pass.
-- `security-review` still applies for general auth, input-handling, secrets, API, and deployment hardening.
+- `healthcare-phi-compliance` continua sendo a skill de implementação primária para tratamento de PHI/PII, classificação de dados, logging de auditoria, criptografia e prevenção de vazamentos.
+- `healthcare-reviewer` continua sendo o revisor especializado quando código, arquitetura ou comportamento de produto precisam de uma segunda passagem com consciência de saúde.
+- `security-review` ainda se aplica para autenticação geral, tratamento de entrada, segredos, API e hardening de implantação.
 
-## When to Use
+## Quando Usar
 
-- The request explicitly mentions HIPAA, PHI, covered entities, business associates, or BAAs
-- Building or reviewing US healthcare software that stores, processes, exports, or transmits PHI
-- Assessing whether logging, analytics, LLM prompts, storage, or support workflows create HIPAA exposure
-- Designing patient-facing or clinician-facing systems where minimum necessary access and auditability matter
+- A solicitação menciona explicitamente HIPAA, PHI, entidades cobertas, associados de negócios ou BAAs
+- Construindo ou revisando software de saúde dos EUA que armazena, processa, exporta ou transmite PHI
+- Avaliando se logging, analytics, Prompts de LLM, armazenamento ou fluxos de trabalho de suporte criam exposição HIPAA
+- Projetando sistemas voltados ao paciente ou ao clínico onde acesso mínimo necessário e auditabilidade importam
 
-## How It Works
+## Como Funciona
 
-Treat HIPAA as an overlay on top of the broader healthcare privacy skill:
+Trate o HIPAA como uma camada sobreposta ao skill mais amplo de privacidade em saúde:
 
-1. Start with `healthcare-phi-compliance` for the concrete implementation rules.
-2. Apply HIPAA-specific decision gates:
-   - Is this data PHI?
-   - Is this actor a covered entity or business associate?
-   - Does a vendor or model provider require a BAA before touching the data?
-   - Is access limited to the minimum necessary scope?
-   - Are read/write/export events auditable?
-3. Escalate to `healthcare-reviewer` if the task affects patient safety, clinical workflows, or regulated production architecture.
+1. Comece com `healthcare-phi-compliance` para as regras concretas de implementação.
+2. Aplique portões de decisão específicos do HIPAA:
+   - Este dado é PHI?
+   - Este ator é uma entidade coberta ou associado de negócios?
+   - Um fornecedor ou provedor de modelo requer um BAA antes de tocar os dados?
+   - O acesso está limitado ao escopo mínimo necessário?
+   - Eventos de leitura/escrita/exportação são auditáveis?
+3. Escale para `healthcare-reviewer` se a tarefa afeta segurança do paciente, fluxos de trabalho clínicos ou arquitetura de produção regulamentada.
 
-## HIPAA-Specific Guardrails
+## Salvaguardas Específicas do HIPAA
 
-- Never place PHI in logs, analytics events, crash reports, prompts, or client-visible error strings.
-- Never expose PHI in URLs, browser storage, screenshots, or copied example payloads.
-- Require authenticated access, scoped authorization, and audit trails for PHI reads and writes.
-- Treat third-party SaaS, observability, support tooling, and LLM providers as blocked-by-default until BAA status and data boundaries are clear.
-- Follow minimum necessary access: the right user should only see the smallest PHI slice needed for the task.
-- Prefer opaque internal IDs over names, MRNs, phone numbers, addresses, or other identifiers.
+- Nunca coloque PHI em logs, eventos de analytics, relatórios de crash, Prompts ou strings de erro visíveis ao cliente.
+- Nunca exponha PHI em URLs, armazenamento do navegador, screenshots ou payloads de exemplo copiados.
+- Exija acesso autenticado, autorização com escopo e trilhas de auditoria para leituras e escritas de PHI.
+- Trate SaaS de terceiros, observabilidade, ferramentas de suporte e provedores de LLM como bloqueados por padrão até que o status do BAA e as fronteiras de dados estejam claros.
+- Siga o acesso mínimo necessário: o usuário certo deve ver apenas a menor fatia de PHI necessária para a tarefa.
+- Prefira IDs internos opacos em vez de nomes, MRNs, números de telefone, endereços ou outros identificadores.
 
-## Examples
+## Exemplos
 
-### Example 1: Product request framed as HIPAA
+### Exemplo 1: Solicitação de produto enquadrada como HIPAA
 
-User request:
+Solicitação do usuário:
 
-> Add AI-generated visit summaries to our clinician dashboard. We serve US clinics and need to stay HIPAA compliant.
+> Adicione resumos de consultas gerados por IA ao nosso dashboard de clínicos. Servimos clínicas nos EUA e precisamos manter conformidade HIPAA.
 
-Response pattern:
+Padrão de resposta:
 
-- Activate `hipaa-compliance`
-- Use `healthcare-phi-compliance` to review PHI movement, logging, storage, and prompt boundaries
-- Verify whether the summarization provider is covered by a BAA before any PHI is sent
-- Escalate to `healthcare-reviewer` if the summaries influence clinical decisions
+- Ativar `hipaa-compliance`
+- Usar `healthcare-phi-compliance` para revisar movimentação de PHI, logging, armazenamento e fronteiras de Prompt
+- Verificar se o provedor de sumarização está coberto por um BAA antes de enviar qualquer PHI
+- Escalar para `healthcare-reviewer` se os resumos influenciarem decisões clínicas
 
-### Example 2: Vendor/tooling decision
+### Exemplo 2: Decisão de fornecedor/ferramentas
 
-User request:
+Solicitação do usuário:
 
-> Can we send support transcripts and patient messages into our analytics stack?
+> Podemos enviar transcrições de suporte e mensagens de pacientes para nossa stack de analytics?
 
-Response pattern:
+Padrão de resposta:
 
-- Assume those messages may contain PHI
-- Block the design unless the analytics vendor is approved for HIPAA-bound workloads and the data path is minimized
-- Require redaction or a non-PHI event model when possible
+- Assumir que essas mensagens podem conter PHI
+- Bloquear o design a menos que o fornecedor de analytics seja aprovado para cargas de trabalho vinculadas ao HIPAA e o caminho de dados seja minimizado
+- Exigir redação ou um modelo de evento sem PHI quando possível
 
-## Related Skills
+## Skills Relacionadas
 
 - `healthcare-phi-compliance`
 - `healthcare-reviewer`

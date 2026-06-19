@@ -10,14 +10,14 @@ version: "1.0.0"
 
 Padrões críticos de vulnerabilidade e implementações endurecidas para contratos AMM em Solidity, cofres de LP e funções de swap.
 
-## When to Use
+## Quando Usar
 
 - Escrever ou auditar um contrato AMM ou de pool de liquidez em Solidity
 - Implementar fluxos de swap, depósito, saque, mint ou burn que mantêm saldos de token
 - Revisar qualquer contrato que usa `token.balanceOf(address(this))` em aritmética de share ou de reserva
 - Adicionar setters de fee, pausers, atualizações de oráculo ou outras funções de admin a um protocolo DeFi
 
-## How It Works
+## Como Funciona
 
 Use isto como uma biblioteca de checklist mais padrões. Revise cada ponto de entrada de usuário em relação às categorias abaixo e prefira os exemplos endurecidos em vez de variantes feitas à mão.
 
@@ -27,9 +27,9 @@ Os comandos de shell nesta skill são exemplos de auditoria local. Execute-os ap
 
 Nunca inclua segredos, chaves privadas, seed phrases, tokens de API ou credenciais de assinatura de mainnet em exemplos de comando, logs ou relatórios.
 
-## Examples
+## Exemplos
 
-### Reentrância: imponha a ordem CEI
+### Reentrância: Imponha a Ordem CEI
 
 Vulnerável:
 
@@ -58,7 +58,7 @@ function withdraw(uint256 amount) external nonReentrant {
 
 Não escreva seu próprio guard quando existe uma biblioteca endurecida.
 
-### Ataques de doação ou inflação
+### Ataques de Doação ou Inflação
 
 Usar `token.balanceOf(address(this))` diretamente para aritmética de share permite que atacantes manipulem o denominador enviando tokens ao contrato fora do caminho pretendido.
 
@@ -86,7 +86,7 @@ function deposit(uint256 assets) external nonReentrant returns (uint256 shares) 
 
 Rastreie a contabilidade interna e meça os tokens realmente recebidos.
 
-### Manipulação de oráculo
+### Manipulação de Oráculo
 
 Preços spot são manipuláveis por flash loan. Prefira TWAP.
 
@@ -101,7 +101,7 @@ int24 twapTick = int24(
 uint160 sqrtPriceX96 = TickMath.getSqrtRatioAtTick(twapTick);
 ```
 
-### Proteção de slippage
+### Proteção de Slippage
 
 Todo caminho de swap precisa de slippage fornecido pelo chamador e de um deadline.
 
@@ -118,7 +118,7 @@ function swap(
 }
 ```
 
-### Aritmética de reserva segura
+### Aritmética de Reserva Segura
 
 ```solidity
 import {FullMath} from "@uniswap/v3-core/contracts/libraries/FullMath.sol";
@@ -128,7 +128,7 @@ uint256 result = FullMath.mulDiv(a, b, c);
 
 Para aritmética de reserva grande, evite o ingênuo `a * b / c` quando houver risco de overflow.
 
-### Controles de admin
+### Controles de Admin
 
 ```solidity
 import {Ownable2Step} from "@openzeppelin/contracts/access/Ownable2Step.sol";

@@ -8,7 +8,7 @@ tools: Read, Write, Edit, Bash, Grep, Glob
 
 # Blender Motion State Inspection
 
-## When to Use
+## Quando Usar
 
 - Um personagem do Blender parece torcido, espelhado, achatado, deslocado ou deslizando os pés (foot-sliding) em uma animação.
 - Um usuário pergunta se um avatar importado, armature ou movimento retargetado corresponde a uma pose esperada.
@@ -21,7 +21,7 @@ Não julgue assets 3D animados apenas por capturas de tela. Capturas de tela sã
 
 Primeiro extraia o estado estruturado do Blender, depois use capturas de tela do viewport ou renders para confirmar o que os fatos implicam.
 
-## How It Works
+## Como Funciona
 
 1. Estabeleça a cena limpa e a linha de base do asset antes de julgar o movimento.
 2. Extraia fatos estruturados do Blender usando um exportador ou rodando Blender Python dentro do próprio interpretador do Blender.
@@ -103,7 +103,7 @@ Primeiro extraia o estado estruturado do Blender, depois use capturas de tela do
 - Render readiness:
 ```
 
-## Examples
+## Exemplos
 
 ### Ciclo de Caminhada Com Deslizamento de Pé
 
@@ -152,7 +152,7 @@ Veredito: provavelmente importação invertida ou incompatibilidade do eixo forw
 - Trate inversões de ordem de lado do tornozelo esquerdo/direito durante movimento invertido no ar como risco de cruzamento de pernas, mesmo que se recupere depois.
 - Trate saltos de heading do root acima de 30 graus por quadro como suspeitos, a menos que o movimento de origem inclua uma virada brusca.
 
-## Anti-Patterns
+## Anti-Padrões
 
 - Não modifique as proporções do corpo para forçar a correspondência de pose, a menos que a tarefa seja explicitamente reparo de malha.
 - Não faça bake da linha de base limpa antes de registrá-la.

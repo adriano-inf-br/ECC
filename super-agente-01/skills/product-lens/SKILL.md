@@ -1,93 +1,93 @@
 ---
 name: product-lens
-description: Use this skill to validate the "why" before building, run product diagnostics, and pressure-test product direction before the request becomes an implementation contract.
+description: Use esta skill para validar o "porquê" antes de construir, executar diagnósticos de produto e testar a direção do produto sob pressão antes que a solicitação se torne um contrato de implementação.
 metadata:
   origin: ECC
 ---
 
-# Product Lens — Think Before You Build
+# Product Lens — Pense Antes de Construir
 
-This lane owns product diagnosis, not implementation-ready specification writing.
+Esta rota é responsável pelo diagnóstico de produto, não pela escrita de especificações prontas para implementação.
 
-If the user needs a durable PRD-to-SRS or capability-contract artifact, hand off to `product-capability`.
+Se o usuário precisar de um artefato PRD-para-SRS ou contrato de capacidade duráveis, transfira para `product-capability`.
 
-## When to Use
+## Quando Usar
 
-- Before starting any feature — validate the "why"
-- Weekly product review — are we building the right thing?
-- When stuck choosing between features
-- Before a launch — sanity check the user journey
-- When converting a vague idea into a product brief before engineering planning starts
+- Antes de iniciar qualquer feature — valide o "porquê"
+- Revisão semanal de produto — estamos construindo a coisa certa?
+- Quando preso entre features para escolher
+- Antes de um lançamento — verificação de sanidade da jornada do usuário
+- Ao converter uma ideia vaga em um briefing de produto antes que o planejamento de engenharia comece
 
-## How It Works
+## Como Funciona
 
-### Mode 1: Product Diagnostic
+### Modo 1: Diagnóstico de Produto
 
-Like YC office hours but automated. Asks the hard questions:
-
-```
-1. Who is this for? (specific person, not "developers")
-2. What's the pain? (quantify: how often, how bad, what do they do today?)
-3. Why now? (what changed that makes this possible/necessary?)
-4. What's the 10-star version? (if money/time were unlimited)
-5. What's the MVP? (smallest thing that proves the thesis)
-6. What's the anti-goal? (what are you explicitly NOT building?)
-7. How do you know it's working? (metric, not vibes)
-```
-
-Output: a `PRODUCT-BRIEF.md` with answers, risks, and a go/no-go recommendation.
-
-If the result is "yes, build this," the next lane is `product-capability`, not more founder-theater.
-
-### Mode 2: Founder Review
-
-Reviews your current project through a founder lens:
+Como o escritório do YC, mas automatizado. Faz as perguntas difíceis:
 
 ```
-1. Read README, CLAUDE.md, package.json, recent commits
-2. Infer: what is this trying to be?
-3. Score: product-market fit signals (0-10)
-   - Usage growth trajectory
-   - Retention indicators (repeat contributors, return users)
-   - Revenue signals (pricing page, billing code, Stripe integration)
-   - Competitive moat (what's hard to copy?)
-4. Identify: the one thing that would 10x this
-5. Flag: things you're building that don't matter
+1. Para quem é isso? (pessoa específica, não "desenvolvedores")
+2. Qual é a dor? (quantifique: com que frequência, quão grave, o que fazem hoje?)
+3. Por que agora? (o que mudou que torna isso possível/necessário?)
+4. Qual é a versão de 10 estrelas? (se dinheiro/tempo fossem ilimitados)
+5. Qual é o MVP? (menor coisa que prova a tese)
+6. Qual é o anti-objetivo? (o que você explicitamente NÃO está construindo?)
+7. Como você sabe que está funcionando? (métrica, não intuição)
 ```
 
-### Mode 3: User Journey Audit
+Saída: um `PRODUCT-BRIEF.md` com respostas, riscos e uma recomendação de ir/não ir.
 
-Maps the actual user experience:
+Se o resultado for "sim, construa isso", a próxima rota é `product-capability`, não mais teatro de fundador.
 
-```
-1. Clone/install the product as a new user
-2. Document every friction point (confusing steps, errors, missing docs)
-3. Time each step
-4. Compare to competitor onboarding
-5. Score: time-to-value (how long until the user gets their first win?)
-6. Recommend: top 3 fixes for onboarding
-```
+### Modo 2: Revisão do Fundador
 
-### Mode 4: Feature Prioritization
-
-When you have 10 ideas and need to pick 2:
+Revisa o seu projeto atual através de uma lente de fundador:
 
 ```
-1. List all candidate features
-2. Score each on: impact (1-5) × confidence (1-5) ÷ effort (1-5)
-3. Rank by ICE score
-4. Apply constraints: runway, team size, dependencies
-5. Output: prioritized roadmap with rationale
+1. Leia README, CLAUDE.md, package.json, commits recentes
+2. Infira: o que isso está tentando ser?
+3. Pontue: sinais de product-market fit (0-10)
+   - Trajetória de crescimento de uso
+   - Indicadores de retenção (contribuidores repetidos, usuários recorrentes)
+   - Sinais de receita (página de preços, código de billing, integração Stripe)
+   - Vantagem competitiva (o que é difícil de copiar?)
+4. Identifique: a única coisa que multiplicaria isso por 10
+5. Sinalize: coisas que você está construindo e que não importam
 ```
 
-## Output
+### Modo 3: Auditoria da Jornada do Usuário
 
-All modes output actionable docs, not essays. Every recommendation has a specific next step.
+Mapeia a experiência real do usuário:
 
-## Integration
+```
+1. Clone/instale o produto como um novo usuário
+2. Documente cada ponto de atrito (etapas confusas, erros, documentação faltando)
+3. Cronometre cada etapa
+4. Compare com o onboarding do concorrente
+5. Pontue: tempo-para-valor (quanto tempo até o usuário ter sua primeira vitória?)
+6. Recomende: os 3 principais ajustes para onboarding
+```
 
-Pair with:
-- `/browser-qa` to verify the user journey audit findings
-- `/design-system audit` for visual polish assessment
-- `/canary-watch` for post-launch monitoring
-- `product-capability` when the product brief needs to become an implementation-ready capability plan
+### Modo 4: Priorização de Features
+
+Quando você tem 10 ideias e precisa escolher 2:
+
+```
+1. Liste todas as features candidatas
+2. Pontue cada uma em: impacto (1-5) × confiança (1-5) ÷ esforço (1-5)
+3. Classifique pela pontuação ICE
+4. Aplique restrições: runway, tamanho da equipe, dependências
+5. Saída: roadmap priorizado com justificativa
+```
+
+## Saída
+
+Todos os modos geram documentos acionáveis, não ensaios. Cada recomendação tem um próximo passo específico.
+
+## Integração
+
+Combine com:
+- `/browser-qa` para verificar as descobertas da auditoria da jornada do usuário
+- `/design-system audit` para avaliação do polimento visual
+- `/canary-watch` para monitoramento pós-lançamento
+- `product-capability` quando o briefing de produto precisar se tornar um plano de capacidade pronto para implementação

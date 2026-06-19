@@ -10,7 +10,7 @@ version: "1.0.0"
 
 Incompatibilidades silenciosas de casas decimais são uma das formas mais fáceis de entregar saldos ou valores em USD errados por ordens de magnitude sem disparar nenhum erro.
 
-## When to Use
+## Quando Usar
 
 - Ler saldos ERC-20 em Python, TypeScript ou Solidity
 - Calcular valores em moeda fiduciária a partir de saldos on-chain
@@ -18,13 +18,13 @@ Incompatibilidades silenciosas de casas decimais são uma das formas mais fácei
 - Lidar com ativos transferidos por bridge
 - Construir rastreadores de portfólio, bots ou agregadores
 
-## How It Works
+## Como Funciona
 
 Nunca assuma que stablecoins usam as mesmas casas decimais em todos os lugares. Consulte `decimals()` em tempo de execução, faça cache por `(chain_id, token_address)` e use matemática segura para decimais nos cálculos de valor.
 
-## Examples
+## Exemplos
 
-### Consultar decimais em tempo de execução
+### Consultar Decimais em Tempo de Execução
 
 ```python
 from decimal import Decimal
@@ -50,7 +50,7 @@ def get_token_balance(w3: Web3, token_address: str, wallet: str) -> Decimal:
 
 Não cravar `1_000_000` só porque um símbolo normalmente tem 6 casas decimais em algum outro lugar.
 
-### Fazer cache por chain e token
+### Fazer Cache por Chain e Token
 
 ```python
 from functools import lru_cache
@@ -65,7 +65,7 @@ def get_decimals(chain_id: int, token_address: str) -> int:
     return contract.functions.decimals().call()
 ```
 
-### Lidar com tokens atípicos de forma defensiva
+### Lidar com Tokens Atípicos de Forma Defensiva
 
 ```python
 try:
@@ -81,7 +81,7 @@ except Exception:
 
 Registre o fallback e mantenha-o visível. Tokens antigos ou fora do padrão ainda existem.
 
-### Normalizar para WAD de 18 casas decimais em Solidity
+### Normalizar para WAD de 18 Casas Decimais em Solidity
 
 ```solidity
 interface IERC20Metadata {
@@ -116,13 +116,13 @@ async function getBalance(provider: any, tokenAddress: string, wallet: string): 
 }
 ```
 
-### Verificação rápida on-chain
+### Verificação Rápida On-Chain
 
 ```bash
 cast call <token_address> "decimals()(uint8)" --rpc-url <rpc>
 ```
 
-## Rules
+## Regras
 
 - Sempre consulte `decimals()` em tempo de execução
 - Faça cache por chain mais endereço do token, não por símbolo

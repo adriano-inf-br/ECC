@@ -1,155 +1,155 @@
 ---
 name: benchmark-methodology
 description: >-
-  Use after competitive-platform-analysis has produced a tiered competitor set.
-  Scores each competitor across nine weighted dimensions (positioning, voice,
-  visual craft, offer packaging, evidence, enterprise-readiness, thought
-  leadership, pricing, client's strategic tension) with explicit 1–5 rubrics
-  and a tension-plot. Precedes competitive-report-structure.
+  Use após competitive-platform-analysis ter produzido um conjunto de concorrentes em camadas (tiers).
+  Pontua cada concorrente em nove dimensões ponderadas (posicionamento, voz,
+  qualidade visual, empacotamento da oferta, evidência, prontidão para enterprise, liderança
+  de pensamento, preços, tensão estratégica do cliente) com rubricas explícitas de 1–5
+  e um gráfico de tensão. Precede competitive-report-structure.
 ---
 
 # Benchmark Methodology
 
-Use this skill to turn a scoped competitor set into **comparable, defensible
-scores**. Each competitor is assessed on the same nine dimensions, with
-explicit 1–5 rubrics, then captured in a uniform profile card. Consistency is
-the point: scores are only useful if the same evidence would earn the same
-number for any competitor.
+Use esta Skill para transformar um conjunto delimitado de concorrentes em **pontuações
+comparáveis e defensáveis**. Cada concorrente é avaliado nas mesmas nove dimensões, com
+rubricas explícitas de 1–5, e então capturado em um cartão de perfil uniforme. A consistência é
+o ponto central: pontuações só são úteis se a mesma evidência renderia o mesmo
+número para qualquer concorrente.
 
 ## When to Activate
 
-- A scoped, tiered competitor set from competitive-platform-analysis is ready to score.
-- Need comparable, evidence-anchored scores across competitors — not gut-feel rankings.
-- Client's strategic tension (the paired axes defining their target white-space) has been established.
-- Preparing to produce profile cards for assembly in competitive-report-structure.
+- Um conjunto delimitado e em camadas de concorrentes vindo de competitive-platform-analysis está pronto para ser pontuado.
+- Necessidade de pontuações comparáveis e ancoradas em evidência entre concorrentes — não rankings por intuição.
+- A tensão estratégica do cliente (os eixos pareados que definem o seu espaço-em-branco alvo) foi estabelecida.
+- Preparando-se para produzir cartões de perfil para montagem em competitive-report-structure.
 
-## Client positioning brief (establish first)
+## Brief de posicionamento do cliente (estabeleça primeiro)
 
-Before scoring, establish the client's positioning brief. It supplies:
+Antes de pontuar, estabeleça o brief de posicionamento do cliente. Ele fornece:
 
-- **Strategic tension** — the two axes (e.g., memorability × hireability) whose
-  intersection marks the client's target white-space. Dimension 9 is always
-  the client's named tension; report both poles separately, never averaged.
-- **Differentiator** — what makes the client's moat. This informs which
-  dimensions matter most for the client's positioning argument.
-- **Brand balance** — the intended mix of distinct strategic emphases. Strategic
-  recommendations must not break this balance without flagging it.
+- **Tensão estratégica** — os dois eixos (ex.: memorabilidade × empregabilidade) cuja
+  interseção marca o espaço-em-branco alvo do cliente. A Dimensão 9 é sempre
+  a tensão nomeada do cliente; reporte ambos os polos separadamente, nunca a média.
+- **Diferenciador** — o que constitui o fosso (moat) do cliente. Isso informa quais
+  dimensões mais importam para o argumento de posicionamento do cliente.
+- **Equilíbrio de marca** — a mistura pretendida de ênfases estratégicas distintas. Recomendações
+  estratégicas não devem quebrar esse equilíbrio sem sinalizá-lo.
 
-## Why these dimensions
+## Por que estas dimensões
 
-The client competes on a **specific tension held across two poles**, not on
-service breadth. The dimensions are weighted to reflect that moat. Two
-dimensions — the tension poles — are scored **separately and never averaged
-together**, because the client's strategic question is precisely whether a rival
-achieves both simultaneously.
+O cliente compete por uma **tensão específica mantida entre dois polos**, e não por
+amplitude de serviços. As dimensões são ponderadas para refletir esse fosso. Duas
+dimensões — os polos da tensão — são pontuadas **separadamente e nunca têm a média
+calculada em conjunto**, porque a pergunta estratégica do cliente é precisamente se um rival
+alcança ambos simultaneamente.
 
-## The nine dimensions (with weights)
+## As nove dimensões (com pesos)
 
-Weights guide synthesis emphasis, not a single blended score (avoid a false
-composite — see Bias controls). Sum = 100%.
+Os pesos guiam a ênfase da síntese, não uma única pontuação combinada (evite um falso
+composto — veja Controles de viés). Soma = 100%.
 
-1. **Positioning clarity & distinctiveness** (18%) — Is the studio's position
-   sharp, ownable, and instantly legible? Or generic?
-2. **Brand voice / verbal distinctiveness** (15%) — Does the copy have an
-   ownable register, or is it interchangeable agency-speak?
-3. **Visual identity & site craft** (15%) — Quality and ownership of the visual
-   system; site as proof-of-craft.
-4. **Service offer & packaging** (12%) — Productized and legible (named
-   sprints/audits) vs vague. Packaging maturity.
-5. **Evidence & credibility** (12%) — Named clients, quantified outcomes,
-   case-study depth. Proof beyond assertion.
-6. **Enterprise-readiness / commercial maturity** (10%) — Signals they can land
-   and hold SaaS/fintech/B2B/enterprise work (process, logos, scale, contracts).
-7. **Thought leadership / content presence** (8%) — Owned POV: writing, talks,
-   newsletters, frameworks. Depth over volume.
-8. **Pricing transparency & engagement model** (5%) — Is pricing/engagement
-   legible? Productized vs bespoke vs opaque.
-9. **[Client's strategic tension]** (5% as a flag; **score BOTH poles,
-   report separately**) — Read the tension name and axis descriptions from the
-   client's positioning brief. Plot both; the gap is the insight. The client's
-   target quadrant is the single most important finding: who else is already
-   there?
+1. **Clareza e distinção de posicionamento** (18%) — A posição do estúdio é
+   nítida, apropriável e instantaneamente legível? Ou genérica?
+2. **Voz de marca / distinção verbal** (15%) — O texto tem um
+   registro apropriável, ou é jargão de agência intercambiável?
+3. **Identidade visual e qualidade do site** (15%) — Qualidade e propriedade do sistema
+   visual; o site como prova de qualidade.
+4. **Oferta de serviço e empacotamento** (12%) — Produtizado e legível (sprints/auditorias
+   nomeadas) vs vago. Maturidade do empacotamento.
+5. **Evidência e credibilidade** (12%) — Clientes nomeados, resultados quantificados,
+   profundidade de estudos de caso. Prova além da afirmação.
+6. **Prontidão para enterprise / maturidade comercial** (10%) — Sinais de que conseguem fechar
+   e manter trabalho de SaaS/fintech/B2B/enterprise (processo, logos, escala, contratos).
+7. **Liderança de pensamento / presença de conteúdo** (8%) — POV próprio: escrita, palestras,
+   newsletters, frameworks. Profundidade acima de volume.
+8. **Transparência de preços e modelo de engajamento** (5%) — Os preços/engajamento são
+   legíveis? Produtizado vs sob medida vs opaco.
+9. **[Tensão estratégica do cliente]** (5% como flag; **pontue AMBOS os polos,
+   reporte separadamente**) — Leia o nome da tensão e as descrições dos eixos no
+   brief de posicionamento do cliente. Plote ambos; a lacuna é o insight. O quadrante
+   alvo do cliente é o achado mais importante de todos: quem mais já está
+   lá?
 
-## Scoring rubric (1–5, applies to dimensions 1–8)
+## Rubrica de pontuação (1–5, aplica-se às dimensões 1–8)
 
-Anchor every score to observable evidence. Generic descriptors below; adapt the
-specifics per dimension but keep the level meaning constant.
+Ancore cada pontuação a evidências observáveis. Descritores genéricos abaixo; adapte os
+detalhes por dimensão, mas mantenha o significado de cada nível constante.
 
-- **1 — Absent / generic.** No discernible position or craft; indistinguishable
-  from a template. Active liability.
-- **2 — Below par.** Some intent but inconsistent, derivative, or unconvincing.
-  Wouldn't survive a side-by-side.
-- **3 — Competent / table-stakes.** Solid, professional, unremarkable. Meets
-  expectation, ownable by nobody.
-- **4 — Strong / distinctive.** Clearly above peers; a real strength a buyer
-  would notice and cite.
-- **5 — Category-defining.** Best-in-class, ownable, hard to imitate. Sets the
-  bar others react to.
+- **1 — Ausente / genérico.** Nenhuma posição ou qualidade perceptível; indistinguível
+  de um template. Passivo ativo.
+- **2 — Abaixo do esperado.** Alguma intenção, mas inconsistente, derivativa ou pouco convincente.
+  Não sobreviveria a uma comparação lado a lado.
+- **3 — Competente / requisito básico.** Sólido, profissional, sem destaque. Atende à
+  expectativa, não apropriável por ninguém.
+- **4 — Forte / distintivo.** Claramente acima dos pares; uma força real que um comprador
+  notaria e citaria.
+- **5 — Define a categoria.** Melhor da classe, apropriável, difícil de imitar. Define o
+  padrão ao qual os outros reagem.
 
-### Tension axes (dimension 9) — score each 1–5
+### Eixos de tensão (dimensão 9) — pontue cada um de 1–5
 
-Read the axis labels and their 1/3/5 anchors from the client's positioning
-brief. Example anchors for a memorability × credibility tension:
+Leia os rótulos dos eixos e seus âncoras de 1/3/5 no brief de posicionamento do
+cliente. Exemplo de âncoras para uma tensão memorabilidade × credibilidade:
 
-- **Memorability** — 1: forgotten instantly · 3: recognizable in context ·
-  5: unforgettable, talked-about, distinctively owned.
-- **Credibility** — 1: feels risky/amateur · 3: safe, competent,
-  unexciting · 5: enterprise-trusted, obvious safe choice.
+- **Memorabilidade** — 1: esquecido instantaneamente · 3: reconhecível no contexto ·
+  5: inesquecível, comentado, distintivamente apropriado.
+- **Credibilidade** — 1: parece arriscado/amador · 3: seguro, competente,
+  sem entusiasmo · 5: confiável para enterprise, escolha segura óbvia.
 
-Plot competitors on the tension 2×2. The client's target quadrant is named in
-the positioning brief. Who else occupies that quadrant is the single most
-important finding of the benchmark.
+Plote os concorrentes no 2×2 da tensão. O quadrante alvo do cliente é nomeado no
+brief de posicionamento. Quem mais ocupa esse quadrante é o achado mais
+importante do benchmark.
 
-## How to collect the data
+## Como coletar os dados
 
-For each competitor, work the dimensions in this order (cheapest signal first):
+Para cada concorrente, trabalhe as dimensões nesta ordem (sinal mais barato primeiro):
 
-1. **Competitor's own site** — positioning, voice, offer packaging, pricing
-   posture, named clients, manifesto/POV. Screenshot the homepage + one case
-   study.
-2. **Case studies / work** — evidence depth, quantified outcomes, client names.
-   Distinguish *asserted* ("we delivered X") from *proven* (metrics, named,
-   verifiable).
-3. **Review directories** — corroborate clients, project size, engagement model
-   → credibility & enterprise-readiness (e.g. Clutch.co or the niche equivalent).
-4. **LinkedIn** — team size/model, founder narrative, content cadence →
-   thought leadership, model.
-5. **Portfolio / craft platforms** — craft register (use the showcase native to
-   the niche: design boards, showreels, published samples, etc.).
-6. **Content channels** — newsletter/talks/writing → thought-leadership depth.
+1. **Site do próprio concorrente** — posicionamento, voz, empacotamento da oferta, postura de
+   preços, clientes nomeados, manifesto/POV. Capture a homepage + um estudo de
+   caso.
+2. **Estudos de caso / trabalho** — profundidade da evidência, resultados quantificados, nomes de clientes.
+   Distinga o *afirmado* ("entregamos X") do *provado* (métricas, nomeado,
+   verificável).
+3. **Diretórios de avaliações** — corrobore clientes, tamanho de projeto, modelo de engajamento
+   → credibilidade e prontidão para enterprise (ex.: Clutch.co ou o equivalente do nicho).
+4. **LinkedIn** — tamanho/modelo da equipe, narrativa do fundador, cadência de conteúdo →
+   liderança de pensamento, modelo.
+5. **Plataformas de portfólio / craft** — registro de qualidade (use a vitrine nativa do
+   nicho: boards de design, showreels, amostras publicadas, etc.).
+6. **Canais de conteúdo** — newsletter/palestras/escrita → profundidade da liderança de pensamento.
 
-**What to record per dimension:** the score, one-line justification, and the
-source link/screenshot that earned it. No score without evidence.
+**O que registrar por dimensão:** a pontuação, uma justificativa de uma linha e o
+link/captura de tela da fonte que a embasou. Sem pontuação sem evidência.
 
-## Bias controls
+## Controles de viés
 
-- **No single composite score.** Report dimension scores and the tension plot
-  separately. A weighted average hides the asymmetry that matters.
-- **Asserted vs proven.** Downgrade credibility/evidence scores for
-  self-reported claims with no corroboration. Site copy is marketing, not fact.
-- **Aesthetic affinity bias.** Reviewers may over-score studios whose aesthetic
-  they share and under-score rivals' commercial strength. Score craft and
-  credibility independently; a "boring" site may be winning bigger clients.
-- **Recency / flashiness bias.** Award-winning, showpiece work dazzles but may
-  lack commercial depth — verify with directories/clients before scoring
-  credibility.
-- **Survivorship.** The visible, well-marketed studios aren't the whole market;
-  note strong-but-quiet operators found via directories/reviews.
-- **Calibrate across the set, not in isolation.** Before finalizing, re-read
-  scores side-by-side — a "4" must mean the same thing for every competitor.
-  Adjust outliers.
+- **Sem pontuação composta única.** Reporte as pontuações das dimensões e o gráfico de tensão
+  separadamente. Uma média ponderada esconde a assimetria que importa.
+- **Afirmado vs provado.** Rebaixe as pontuações de credibilidade/evidência para
+  afirmações autodeclaradas sem corroboração. O texto do site é marketing, não fato.
+- **Viés de afinidade estética.** Revisores podem superpontuar estúdios cuja estética
+  compartilham e subpontuar a força comercial dos rivais. Pontue qualidade e
+  credibilidade independentemente; um site "chato" pode estar ganhando clientes maiores.
+- **Viés de recência / espalhafato.** Trabalho premiado e de vitrine deslumbra, mas pode
+  carecer de profundidade comercial — verifique com diretórios/clientes antes de pontuar
+  credibilidade.
+- **Viés de sobrevivência.** Os estúdios visíveis e bem comercializados não são o mercado inteiro;
+  anote os operadores fortes-mas-quietos encontrados via diretórios/avaliações.
+- **Calibre ao longo do conjunto, não isoladamente.** Antes de finalizar, releia as
+  pontuações lado a lado — um "4" deve significar a mesma coisa para todo concorrente.
+  Ajuste os outliers.
 
-## Competitor profile card (output format)
+## Cartão de perfil do concorrente (formato de saída)
 
-Produce one card per profiled competitor — the atomic unit the report assembles
-from:
+Produza um cartão por concorrente perfilado — a unidade atômica a partir da qual o relatório
+se monta:
 
 ```
-## <Competitor name>
-- **Profile / Tier:** <positioning stance · specialization · size band> / <Direct | Adjacent | Aspirational>
-- **One-liner:** <how they position themselves, in their words>
-- **Model / size / geography:** <solo|micro|boutique> · <region> · <pricing/engagement model>
-- **Notable clients / evidence:** <named, with proven/asserted tag>
+## <Nome do concorrente>
+- **Profile / Tier:** <postura de posicionamento · especialização · faixa de tamanho> / <Direct | Adjacent | Aspirational>
+- **One-liner:** <como se posicionam, nas próprias palavras>
+- **Model / size / geography:** <solo|micro|boutique> · <região> · <modelo de preços/engajamento>
+- **Notable clients / evidence:** <nomeados, com tag de provado/afirmado>
 
 ### Dimension scores
 | Dimension | Score (1–5) | Justification (1 line) | Source |
@@ -164,8 +164,8 @@ from:
 | Pricing transparency & engagement model | | | |
 
 ### Tension plot
-- **[Axis 1 from positioning brief]:** <1–5> — <why>
-- **[Axis 2 from positioning brief]:** <1–5> — <why>
+- **[Eixo 1 do brief de posicionamento]:** <1–5> — <por quê>
+- **[Eixo 2 do brief de posicionamento]:** <1–5> — <por quê>
 - **Quadrant:** <high/high | high-1/low-2 | low-1/high-2 | low/low>
 
 ### Read for [client]
@@ -174,17 +174,17 @@ from:
 - **Threat to [client]:** <…>
 ```
 
-Hand the completed cards plus the tension plot to `competitive-report-structure`.
+Entregue os cartões concluídos mais o gráfico de tensão a `competitive-report-structure`.
 
 ## Anti-Patterns
 
-- **Averaging the tension axes.** The two poles of the client's strategic tension must be scored and reported separately. Averaging destroys the insight — the gap between poles is the finding.
-- **Scoring without evidence.** Every score requires a one-line justification and a source link. A score without evidence is an opinion, not a benchmark.
-- **Creating a single composite score.** Report dimension scores individually. A weighted average hides the asymmetric strengths that matter for positioning.
-- **Applying generic rubric anchors without adapting.** The 1–5 anchors must be calibrated to the specific dimension and competitor set. The generic descriptions are a starting point, not a fixed standard.
-- **Running before the competitor set is scoped.** Use competitive-platform-analysis first to produce a tiered, pruned set. Scoring an unscoped list wastes effort on irrelevant competitors.
+- **Calcular a média dos eixos de tensão.** Os dois polos da tensão estratégica do cliente devem ser pontuados e reportados separadamente. A média destrói o insight — a lacuna entre os polos é o achado.
+- **Pontuar sem evidência.** Toda pontuação requer uma justificativa de uma linha e um link de fonte. Uma pontuação sem evidência é uma opinião, não um benchmark.
+- **Criar uma única pontuação composta.** Reporte as pontuações das dimensões individualmente. Uma média ponderada esconde as forças assimétricas que importam para o posicionamento.
+- **Aplicar âncoras genéricas de rubrica sem adaptar.** As âncoras de 1–5 devem ser calibradas para a dimensão específica e o conjunto de concorrentes. As descrições genéricas são um ponto de partida, não um padrão fixo.
+- **Rodar antes de o conjunto de concorrentes estar delimitado.** Use competitive-platform-analysis primeiro para produzir um conjunto em camadas e podado. Pontuar uma lista não delimitada desperdiça esforço em concorrentes irrelevantes.
 
 ## Related Skills
 
-- `competitive-platform-analysis` — the prerequisite; produces the tiered competitor set this skill scores.
-- `competitive-report-structure` — the next step; assembles the scored profile cards into a client-deliverable report.
+- `competitive-platform-analysis` — o pré-requisito; produz o conjunto de concorrentes em camadas que esta Skill pontua.
+- `competitive-report-structure` — o próximo passo; monta os cartões de perfil pontuados em um relatório entregável ao cliente.

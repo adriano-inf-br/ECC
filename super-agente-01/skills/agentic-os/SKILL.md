@@ -1,50 +1,50 @@
 ---
 name: agentic-os
-description: Build persistent multi-agent operating systems on Claude Code. Covers kernel architecture, specialist agents, slash commands, file-based memory, scheduled automation, and state management without external databases.
+description: Construa sistemas operacionais multiagente persistentes no Claude Code. Cobre arquitetura de kernel, agents especialistas, comandos de barra, memória baseada em arquivos, automação agendada e gerenciamento de estado sem bancos de dados externos.
 metadata:
   origin: ECC
 ---
 
 # Agentic OS
 
-Treat Claude Code as a persistent runtime / operating system rather than a chat session. This skill codifies the architecture used by production agentic setups: a kernel config that routes tasks to specialist agents, persistent file-based memory, scheduled automation, and a JSON/markdown data layer.
+Trate o Claude Code como um runtime / sistema operacional persistente em vez de uma sessão de chat. Esta skill codifica a arquitetura usada por configurações agentic de produção: uma config de kernel que roteia tarefas para agents especialistas, memória persistente baseada em arquivos, automação agendada e uma camada de dados JSON/markdown.
 
-## When to Activate
+## Quando Ativar
 
-- Building a multi-agent workflow inside Claude Code
-- Setting up persistent Claude Code automation that survives session restarts
-- Creating a "personal OS" or "agentic OS" for recurring tasks
-- User says "agentic OS", "personal OS", "multi-agent", "agent coordinator", "persistent agent"
-- Structuring long-running projects where context must survive across sessions
+- Construir um fluxo de trabalho multiagente dentro do Claude Code
+- Configurar automação persistente do Claude Code que sobrevive a reinícios de sessão
+- Criar um "OS pessoal" ou "agentic OS" para tarefas recorrentes
+- O usuário diz "agentic OS", "OS pessoal", "multiagente", "coordenador de agents", "agent persistente"
+- Estruturar projetos de longa duração onde o contexto deve sobreviver entre sessões
 
-## Architecture Overview
+## Visão Geral da Arquitetura
 
-The Agentic OS has four layers. Each layer is a directory in your project root.
+O Agentic OS tem quatro camadas. Cada camada é um diretório na raiz do seu projeto.
 
 ```
 project-root/
-├── CLAUDE.md          # Kernel: identity, routing rules, agent registry
-├── agents/            # Specialist agent definitions (markdown prompts)
-├── .claude/commands/  # Slash commands: user-facing CLI
-├── scripts/           # Daemon scripts: scheduled or event-driven tasks
-└── data/              # State: JSON/markdown filesystem, no external DB
+├── CLAUDE.md          # Kernel: identidade, regras de roteamento, registro de agents
+├── agents/            # Definições de agents especialistas (prompts em markdown)
+├── .claude/commands/  # Comandos de barra: CLI voltada ao usuário
+├── scripts/           # Scripts daemon: tarefas agendadas ou orientadas a eventos
+└── data/              # Estado: sistema de arquivos JSON/markdown, sem DB externo
 ```
 
-### Layer Responsibilities
+### Responsabilidades das Camadas
 
-| Layer | Purpose | Persistence |
+| Camada | Propósito | Persistência |
 |---|---|---|
-| Kernel (`CLAUDE.md`) | Identity, routing, model policies, agent registry | Git-tracked |
-| Agents (`agents/`) | Specialist identities with scoped tools and memory | Git-tracked |
-| Commands (`.claude/commands/`) | User-facing slash commands (`/daily-sync`, `/outreach`) | Git-tracked |
-| Scripts (`scripts/`) | Python/JS daemons triggered by cron or webhooks | Git-tracked |
-| State (`data/`) | Append-only logs, project state, decision records | Git-ignored or tracked |
+| Kernel (`CLAUDE.md`) | Identidade, roteamento, políticas de modelo, registro de agents | Rastreado pelo Git |
+| Agents (`agents/`) | Identidades especialistas com tools e memória de escopo definido | Rastreado pelo Git |
+| Comandos (`.claude/commands/`) | Comandos de barra voltados ao usuário (`/daily-sync`, `/outreach`) | Rastreado pelo Git |
+| Scripts (`scripts/`) | Daemons Python/JS disparados por cron ou webhooks | Rastreado pelo Git |
+| Estado (`data/`) | Logs append-only, estado de projeto, registros de decisão | Ignorado ou rastreado pelo Git |
 
-## The Kernel
+## O Kernel
 
-`CLAUDE.md` is the kernel. It acts as the COO / orchestrator. Claude reads it at session start and uses it to route work.
+`CLAUDE.md` é o kernel. Ele atua como o COO / orquestrador. O Claude o lê no início da sessão e o usa para rotear o trabalho.
 
-### Kernel Structure
+### Estrutura do Kernel
 
 ```markdown
 # CLAUDE.md - Agentic OS Kernel
@@ -76,15 +76,15 @@ You never write code directly. You delegate to the right agent and synthesize re
 - Cost ceiling: warn before exceeding the project's configured spend threshold.
 ```
 
-### Key Principle
+### Princípio-Chave
 
-The kernel should be **small and declarative**. Routing logic lives in plain markdown tables, not code. This makes the system inspectable and editable without debugging.
+O kernel deve ser **pequeno e declarativo**. A lógica de roteamento vive em tabelas markdown simples, não em código. Isso torna o sistema inspecionável e editável sem depuração.
 
-## Specialist Agents
+## Agents Especialistas
 
-Each agent is a standalone markdown file in `agents/`. Claude loads the relevant agent file when routing a task.
+Cada agent é um arquivo markdown autônomo em `agents/`. O Claude carrega o arquivo de agent relevante ao rotear uma tarefa.
 
-### Agent Definition Format
+### Formato de Definição de Agent
 
 ```markdown
 # @dev - Software Engineer
@@ -111,9 +111,9 @@ You prefer simple solutions. You ask clarifying questions when requirements are 
 - Keep functions under 50 lines when possible
 ```
 
-### Multi-Agent Collaboration Pattern
+### Padrão de Colaboração Multiagente
 
-When a task spans multiple agents, the kernel runs them sequentially or in parallel:
+Quando uma tarefa abrange múltiplos agents, o kernel os roda sequencialmente ou em paralelo:
 
 ```
 User: "Build a landing page and write the launch blog post"
@@ -124,13 +124,13 @@ Kernel routing:
 3. Kernel synthesizes both outputs into a unified response
 ```
 
-For parallel execution, use Claude Code's background task capability or shell scripts that invoke Claude Code with specific agent contexts.
+Para execução paralela, use a capacidade de tarefas em background do Claude Code ou scripts de shell que invocam o Claude Code com contextos de agent específicos.
 
-## Commands and Daily Workflows
+## Comandos e Fluxos de Trabalho Diários
 
-Slash commands are markdown files in `.claude/commands/`. They define reusable workflows.
+Comandos de barra são arquivos markdown em `.claude/commands/`. Eles definem fluxos de trabalho reutilizáveis.
 
-### Command Structure
+### Estrutura de Comando
 
 ```markdown
 # /daily-sync
@@ -144,39 +144,39 @@ Run the morning briefing:
 5. Append the briefing to `data/logs/daily/<date>.md`
 ```
 
-### Standard Command Set
+### Conjunto Padrão de Comandos
 
-| Command | Purpose |
+| Comando | Propósito |
 |---|---|
-| `/daily-sync` | Morning briefing: status, blockers, priorities |
-| `/outreach` | Run outreach workflow (email, LinkedIn, etc.) |
-| `/research <topic>` | Deep research with citation tracking |
-| `/apply-jobs` | Tailor resume + cover letter for a target role |
-| `/analytics` | Pull metrics from Stripe, GitHub, or custom sources |
-| `/interview-prep` | Generate flashcards or mock interview questions |
-| `/decision <topic>` | Log a decision with pros/cons and chosen path |
+| `/daily-sync` | Briefing matinal: status, bloqueadores, prioridades |
+| `/outreach` | Roda o fluxo de trabalho de prospecção (email, LinkedIn, etc.) |
+| `/research <topic>` | Pesquisa profunda com rastreamento de citações |
+| `/apply-jobs` | Personaliza currículo + carta de apresentação para uma vaga-alvo |
+| `/analytics` | Puxa métricas do Stripe, GitHub ou fontes customizadas |
+| `/interview-prep` | Gera flashcards ou perguntas de entrevista simulada |
+| `/decision <topic>` | Registra uma decisão com prós/contras e o caminho escolhido |
 
-### Activating Commands
+### Ativando Comandos
 
-Place command files in `.claude/commands/<command-name>.md`. Claude Code auto-discovers them. Users invoke them with `/<command-name>`.
+Coloque os arquivos de comando em `.claude/commands/<command-name>.md`. O Claude Code os descobre automaticamente. Os usuários os invocam com `/<command-name>`.
 
-## Persistent Memory
+## Memória Persistente
 
-Memory is file-based. No vector DB, no Redis, no PostgreSQL. JSON and markdown files in `data/` are the database.
+A memória é baseada em arquivos. Sem DB vetorial, sem Redis, sem PostgreSQL. Arquivos JSON e markdown em `data/` são o banco de dados.
 
-### Memory Directory Structure
+### Estrutura do Diretório de Memória
 
 ```
 data/
-├── daily-logs/         # Append-only daily activity logs
-├── projects/           # Per-project context files
-├── decisions/          # Architectural and business decisions (ADR format)
-├── inbox/              # New tasks or ideas awaiting triage
-├── contacts/           # People, companies, relationship notes
-└── templates/          # Reusable prompts and formats
+├── daily-logs/         # Logs de atividade diária append-only
+├── projects/           # Arquivos de contexto por projeto
+├── decisions/          # Decisões de arquitetura e negócio (formato ADR)
+├── inbox/              # Novas tarefas ou ideias aguardando triagem
+├── contacts/           # Pessoas, empresas, notas de relacionamento
+└── templates/          # Prompts e formatos reutilizáveis
 ```
 
-### Daily Log Format
+### Formato de Log Diário
 
 ```markdown
 # 2026-04-22 - Daily Log
@@ -196,9 +196,9 @@ data/
 - [ ] Send investor update for review
 ```
 
-### Auto-Reflection Pattern
+### Padrão de Autorreflexão
 
-At the end of each session, the kernel appends a reflection:
+Ao final de cada sessão, o kernel anexa uma reflexão:
 
 ```markdown
 ## Reflection - Session 3
@@ -207,11 +207,11 @@ At the end of each session, the kernel appends a reflection:
 - What to change: Add `source-tier` field to research notes (A/B/C credibility)
 ```
 
-This creates a feedback loop that improves the system over time without code changes.
+Isso cria um loop de feedback que melhora o sistema ao longo do tempo sem mudanças de código.
 
-## Scheduled Automation
+## Automação Agendada
 
-Agentic OS tasks run on a schedule using external cron, not Claude Code's built-in cron (which dies when the session ends).
+As tarefas do Agentic OS rodam em um agendamento usando cron externo, não o cron embutido do Claude Code (que morre quando a sessão termina).
 
 ### macOS: LaunchAgent
 
@@ -269,7 +269,7 @@ Persistent=true
 WantedBy=timers.target
 ```
 
-### Cross-Platform: pm2
+### Multiplataforma: pm2
 
 ```bash
 # ecosystem.config.js
@@ -284,11 +284,11 @@ module.exports = {
 };
 ```
 
-## Data Layer
+## Camada de Dados
 
-The data layer is your filesystem. Use JSON for structured data and markdown for narrative content.
+A camada de dados é o seu sistema de arquivos. Use JSON para dados estruturados e markdown para conteúdo narrativo.
 
-### JSON for Structured State
+### JSON para Estado Estruturado
 
 ```json
 // data/projects/website-v2.json
@@ -308,13 +308,13 @@ The data layer is your filesystem. Use JSON for structured data and markdown for
 }
 ```
 
-### Markdown for Narrative
+### Markdown para Narrativa
 
-Use markdown for anything a human reads: decisions, logs, research notes, contact records.
+Use markdown para qualquer coisa que um humano leia: decisões, logs, notas de pesquisa, registros de contatos.
 
-### Schema Evolution
+### Evolução de Schema
 
-Never rename existing fields. Add new fields and mark old ones deprecated:
+Nunca renomeie campos existentes. Adicione novos campos e marque os antigos como depreciados:
 
 ```json
 {
@@ -326,63 +326,63 @@ Never rename existing fields. Add new fields and mark old ones deprecated:
 }
 ```
 
-This keeps historical data readable without migration scripts.
+Isso mantém os dados históricos legíveis sem scripts de migração.
 
-## Anti-Patterns
+## Anti-Padrões
 
-### Monolithic Single Agent
+### Agent Único Monolítico
 
 ```markdown
 # BAD - One agent does everything
 You are a full-stack developer, writer, researcher, and DevOps engineer.
 ```
 
-Split into specialist agents. The kernel handles routing.
+Divida em agents especialistas. O kernel cuida do roteamento.
 
-### Stateless Sessions
+### Sessões Stateless
 
 ```markdown
 # BAD - No memory between sessions
 Starting fresh every time Claude Code opens.
 ```
 
-Always read `data/` at session start and write back at session end.
+Sempre leia `data/` no início da sessão e escreva de volta ao final dela.
 
-### Hardcoded Credentials
+### Credenciais Hardcoded
 
 ```markdown
 # BAD - API keys in agent files or CLAUDE.md
 Your OpenAI API key is sk-xxxxxxxx
 ```
 
-Use environment variables or a `.env` file loaded by scripts. Agents reference `process.env.API_KEY`.
+Use variáveis de ambiente ou um arquivo `.env` carregado por scripts. Os agents referenciam `process.env.API_KEY`.
 
-### External Database for Simple State
+### Banco de Dados Externo para Estado Simples
 
 ```markdown
 # BAD - PostgreSQL for a solo user's agentic OS
 ```
 
-Use JSON/markdown files until you have multiple concurrent users or GBs of data.
+Use arquivos JSON/markdown até você ter múltiplos usuários concorrentes ou GBs de dados.
 
-### Over-Engineered Routing
+### Roteamento Superengenheirado
 
 ```markdown
 # BAD - Routing logic in code instead of markdown tables
 if (intent.includes('deploy')) { agent = opsAgent; }
 ```
 
-Keep routing declarative in `CLAUDE.md` markdown tables. It is inspectable, editable, and debuggable.
+Mantenha o roteamento declarativo em tabelas markdown no `CLAUDE.md`. Ele é inspecionável, editável e depurável.
 
-## Best Practices
+## Boas Práticas
 
-- [ ] `CLAUDE.md` is under 200 lines and fits in context window
-- [ ] Each agent file is under 100 lines and focused on one domain
-- [ ] `data/` is git-ignored for sensitive logs, git-tracked for decisions and specs
-- [ ] Commands use imperative names: `/daily-sync`, not `/run-daily-sync`
-- [ ] Logs are append-only; never edit past daily logs
-- [ ] Every agent has a `Memory Scope` section defining what files it reads
-- [ ] Reflections are written at the end of every session
-- [ ] Scheduled tasks use external cron (LaunchAgent, systemd, pm2), not Claude Code's session cron
-- [ ] Cost tracking: log API spend per session in `data/logs/<date>-costs.json`
-- [ ] One project = one Agentic OS. Do not share a single `CLAUDE.md` across unrelated projects.
+- [ ] `CLAUDE.md` tem menos de 200 linhas e cabe na janela de contexto
+- [ ] Cada arquivo de agent tem menos de 100 linhas e foca em um domínio
+- [ ] `data/` é ignorado pelo git para logs sensíveis, rastreado pelo git para decisões e specs
+- [ ] Os comandos usam nomes imperativos: `/daily-sync`, não `/run-daily-sync`
+- [ ] Os logs são append-only; nunca edite logs diários passados
+- [ ] Todo agent tem uma seção `Memory Scope` definindo quais arquivos ele lê
+- [ ] As reflexões são escritas ao final de cada sessão
+- [ ] As tarefas agendadas usam cron externo (LaunchAgent, systemd, pm2), não o cron de sessão do Claude Code
+- [ ] Rastreamento de custo: registre o gasto de API por sessão em `data/logs/<date>-costs.json`
+- [ ] Um projeto = um Agentic OS. Não compartilhe um único `CLAUDE.md` entre projetos não relacionados.

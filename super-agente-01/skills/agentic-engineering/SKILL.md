@@ -1,64 +1,64 @@
 ---
 name: agentic-engineering
-description: Operate as an agentic engineer using eval-first execution, decomposition, and cost-aware model routing.
+description: Opere como um engenheiro agentic usando execução eval-first, decomposição e roteamento de modelos ciente de custo.
 metadata:
   origin: ECC
 ---
 
-# Agentic Engineering
+# Engenharia Agentic
 
-Use this skill for engineering workflows where AI agents perform most implementation work and humans enforce quality and risk controls.
+Use esta skill para fluxos de trabalho de engenharia onde agents de IA realizam a maior parte do trabalho de implementação e humanos impõem controles de qualidade e risco.
 
-## Operating Principles
+## Princípios de Operação
 
-1. Define completion criteria before execution.
-2. Decompose work into agent-sized units.
-3. Route model tiers by task complexity.
-4. Measure with evals and regression checks.
+1. Defina critérios de conclusão antes da execução.
+2. Decomponha o trabalho em unidades do tamanho de um agent.
+3. Roteie os tiers de modelo pela complexidade da tarefa.
+4. Meça com evals e verificações de regressão.
 
-## Eval-First Loop
+## Loop Eval-First
 
-1. Define capability eval and regression eval.
-2. Run baseline and capture failure signatures.
-3. Execute implementation.
-4. Re-run evals and compare deltas.
+1. Defina o eval de capacidade e o eval de regressão.
+2. Rode o baseline e capture as assinaturas de falha.
+3. Execute a implementação.
+4. Re-rode os evals e compare os deltas.
 
-## Task Decomposition
+## Decomposição de Tarefas
 
-Apply the 15-minute unit rule:
-- each unit should be independently verifiable
-- each unit should have a single dominant risk
-- each unit should expose a clear done condition
+Aplique a regra da unidade de 15 minutos:
+- cada unidade deve ser verificável de forma independente
+- cada unidade deve ter um único risco dominante
+- cada unidade deve expor uma condição de conclusão clara
 
-## Model Routing
+## Roteamento de Modelos
 
-- Haiku: classification, boilerplate transforms, narrow edits
-- Sonnet: implementation and refactors
-- Opus: architecture, root-cause analysis, multi-file invariants
+- Haiku: classificação, transformações de boilerplate, edições estreitas
+- Sonnet: implementação e refatorações
+- Opus: arquitetura, análise de causa raiz, invariantes multi-arquivo
 
-## Session Strategy
+## Estratégia de Sessão
 
-- Continue session for closely-coupled units.
-- Start fresh session after major phase transitions.
-- Compact after milestone completion, not during active debugging.
+- Continue a sessão para unidades fortemente acopladas.
+- Inicie uma sessão nova após transições de fase importantes.
+- Compacte após a conclusão de um marco, não durante depuração ativa.
 
-## Review Focus for AI-Generated Code
+## Foco de Revisão para Código Gerado por IA
 
-Prioritize:
-- invariants and edge cases
-- error boundaries
-- security and auth assumptions
-- hidden coupling and rollout risk
+Priorize:
+- invariantes e edge cases
+- fronteiras de erro
+- suposições de segurança e auth
+- acoplamento oculto e risco de rollout
 
-Do not waste review cycles on style-only disagreements when automated format/lint already enforce style.
+Não desperdice ciclos de revisão em divergências apenas de estilo quando format/lint automatizados já impõem o estilo.
 
-## Cost Discipline
+## Disciplina de Custo
 
-Track per task:
-- model
-- token estimate
+Acompanhe por tarefa:
+- modelo
+- estimativa de tokens
 - retries
-- wall-clock time
-- success/failure
+- tempo de relógio
+- sucesso/falha
 
-Escalate model tier only when lower tier fails with a clear reasoning gap.
+Escale o tier de modelo apenas quando o tier inferior falhar com uma lacuna clara de raciocínio.

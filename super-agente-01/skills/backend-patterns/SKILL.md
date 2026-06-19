@@ -1,45 +1,45 @@
 ---
 name: backend-patterns
-description: Backend architecture patterns, API design, database optimization, and server-side best practices for Node.js, Express, and Next.js API routes.
+description: Padrões de arquitetura de backend, design de API, otimização de banco de dados e melhores práticas server-side para Node.js, Express e API routes do Next.js.
 metadata:
   origin: ECC
 ---
 
-# Backend Development Patterns
+# Padrões de Desenvolvimento Backend
 
-Backend architecture patterns and best practices for scalable server-side applications.
+Padrões de arquitetura de backend e melhores práticas para aplicações server-side escaláveis.
 
 ## When to Activate
 
-- Designing REST or GraphQL API endpoints
-- Implementing repository, service, or controller layers
-- Optimizing database queries (N+1, indexing, connection pooling)
-- Adding caching (Redis, in-memory, HTTP cache headers)
-- Setting up background jobs or async processing
-- Structuring error handling and validation for APIs
-- Building middleware (auth, logging, rate limiting)
+- Projetar endpoints de API REST ou GraphQL
+- Implementar camadas de repository, service ou controller
+- Otimizar queries de banco de dados (N+1, indexação, connection pooling)
+- Adicionar cache (Redis, em memória, cabeçalhos de cache HTTP)
+- Configurar background jobs ou processamento assíncrono
+- Estruturar tratamento de erros e validação para APIs
+- Construir middleware (auth, logging, rate limiting)
 
-## API Design Patterns
+## Padrões de Design de API
 
-### RESTful API Structure
+### Estrutura de API RESTful
 
 ```typescript
-// PASS: Resource-based URLs
-GET    /api/markets                 # List resources
-GET    /api/markets/:id             # Get single resource
-POST   /api/markets                 # Create resource
-PUT    /api/markets/:id             # Replace resource
-PATCH  /api/markets/:id             # Update resource
-DELETE /api/markets/:id             # Delete resource
+// PASS: URLs baseadas em recursos
+GET    /api/markets                 # Listar recursos
+GET    /api/markets/:id             # Obter um único recurso
+POST   /api/markets                 # Criar recurso
+PUT    /api/markets/:id             # Substituir recurso
+PATCH  /api/markets/:id             # Atualizar recurso
+DELETE /api/markets/:id             # Excluir recurso
 
-// PASS: Query parameters for filtering, sorting, pagination
+// PASS: Parâmetros de query para filtragem, ordenação, paginação
 GET /api/markets?status=active&sort=volume&limit=20&offset=0
 ```
 
-### Repository Pattern
+### Padrão Repository
 
 ```typescript
-// Abstract data access logic
+// Abstrai a lógica de acesso a dados
 interface MarketRepository {
   findAll(filters?: MarketFilters): Promise<Market[]>
   findById(id: string): Promise<Market | null>
@@ -66,26 +66,26 @@ class SupabaseMarketRepository implements MarketRepository {
     return data
   }
 
-  // Other methods...
+  // Outros métodos...
 }
 ```
 
-### Service Layer Pattern
+### Padrão de Camada de Service
 
 ```typescript
-// Business logic separated from data access
+// Lógica de negócio separada do acesso a dados
 class MarketService {
   constructor(private marketRepo: MarketRepository) {}
 
   async searchMarkets(query: string, limit: number = 10): Promise<Market[]> {
-    // Business logic
+    // Lógica de negócio
     const embedding = await generateEmbedding(query)
     const results = await this.vectorSearch(embedding, limit)
 
-    // Fetch full data
+    // Busca os dados completos
     const markets = await this.marketRepo.findByIds(results.map(r => r.id))
 
-    // Sort by similarity
+    // Ordena por similaridade
     return markets.sort((a, b) => {
       const scoreA = results.find(r => r.id === a.id)?.score || 0
       const scoreB = results.find(r => r.id === b.id)?.score || 0
@@ -94,15 +94,15 @@ class MarketService {
   }
 
   private async vectorSearch(embedding: number[], limit: number) {
-    // Vector search implementation
+    // Implementação da busca vetorial
   }
 }
 ```
 
-### Middleware Pattern
+### Padrão Middleware
 
 ```typescript
-// Request/response processing pipeline
+// Pipeline de processamento de requisição/resposta
 export function withAuth(handler: NextApiHandler): NextApiHandler {
   return async (req, res) => {
     const token = req.headers.authorization?.replace('Bearer ', '')
@@ -121,18 +121,18 @@ export function withAuth(handler: NextApiHandler): NextApiHandler {
   }
 }
 
-// Usage
+// Uso
 export default withAuth(async (req, res) => {
-  // Handler has access to req.user
+  // O handler tem acesso a req.user
 })
 ```
 
-## Database Patterns
+## Padrões de Banco de Dados
 
-### Query Optimization
+### Otimização de Query
 
 ```typescript
-// PASS: GOOD: Select only needed columns
+// PASS: BOM: Selecione apenas as colunas necessárias
 const { data } = await supabase
   .from('markets')
   .select('id, name, status, volume')
@@ -140,22 +140,22 @@ const { data } = await supabase
   .order('volume', { ascending: false })
   .limit(10)
 
-// FAIL: BAD: Select everything
+// FAIL: RUIM: Selecionar tudo
 const { data } = await supabase
   .from('markets')
   .select('*')
 ```
 
-### N+1 Query Prevention
+### Prevenção de Query N+1
 
 ```typescript
-// FAIL: BAD: N+1 query problem
+// FAIL: RUIM: Problema de query N+1
 const markets = await getMarkets()
 for (const market of markets) {
   market.creator = await getUser(market.creator_id)  // N queries
 }
 
-// PASS: GOOD: Batch fetch
+// PASS: BOM: Busca em lote
 const markets = await getMarkets()
 const creatorIds = markets.map(m => m.creator_id)
 const creators = await getUsers(creatorIds)  // 1 query
@@ -166,14 +166,14 @@ markets.forEach(market => {
 })
 ```
 
-### Transaction Pattern
+### Padrão de Transação
 
 ```typescript
 async function createMarketWithPosition(
   marketData: CreateMarketDto,
   positionData: CreatePositionDto
 ) {
-  // Use Supabase transaction
+  // Usa transação do Supabase
   const { data, error } = await supabase.rpc('create_market_with_position', {
     market_data: marketData,
     position_data: positionData
@@ -183,7 +183,7 @@ async function createMarketWithPosition(
   return data
 }
 
-// SQL function in Supabase
+// Função SQL no Supabase
 CREATE OR REPLACE FUNCTION create_market_with_position(
   market_data jsonb,
   position_data jsonb
@@ -192,21 +192,21 @@ RETURNS jsonb
 LANGUAGE plpgsql
 AS $$
 BEGIN
-  -- Start transaction automatically
+  -- A transação começa automaticamente
   INSERT INTO markets VALUES (market_data);
   INSERT INTO positions VALUES (position_data);
   RETURN jsonb_build_object('success', true);
 EXCEPTION
   WHEN OTHERS THEN
-    -- Rollback happens automatically
+    -- O rollback acontece automaticamente
     RETURN jsonb_build_object('success', false, 'error', SQLERRM);
 END;
 $$;
 ```
 
-## Caching Strategies
+## Estratégias de Cache
 
-### Redis Caching Layer
+### Camada de Cache Redis
 
 ```typescript
 class CachedMarketRepository implements MarketRepository {
@@ -216,18 +216,18 @@ class CachedMarketRepository implements MarketRepository {
   ) {}
 
   async findById(id: string): Promise<Market | null> {
-    // Check cache first
+    // Verifica o cache primeiro
     const cached = await this.redis.get(`market:${id}`)
 
     if (cached) {
       return JSON.parse(cached)
     }
 
-    // Cache miss - fetch from database
+    // Cache miss - busca do banco de dados
     const market = await this.baseRepo.findById(id)
 
     if (market) {
-      // Cache for 5 minutes
+      // Mantém em cache por 5 minutos
       await this.redis.setex(`market:${id}`, 300, JSON.stringify(market))
     }
 
@@ -240,31 +240,31 @@ class CachedMarketRepository implements MarketRepository {
 }
 ```
 
-### Cache-Aside Pattern
+### Padrão Cache-Aside
 
 ```typescript
 async function getMarketWithCache(id: string): Promise<Market> {
   const cacheKey = `market:${id}`
 
-  // Try cache
+  // Tenta o cache
   const cached = await redis.get(cacheKey)
   if (cached) return JSON.parse(cached)
 
-  // Cache miss - fetch from DB
+  // Cache miss - busca do BD
   const market = await db.markets.findUnique({ where: { id } })
 
   if (!market) throw new Error('Market not found')
 
-  // Update cache
+  // Atualiza o cache
   await redis.setex(cacheKey, 300, JSON.stringify(market))
 
   return market
 }
 ```
 
-## Error Handling Patterns
+## Padrões de Tratamento de Erros
 
-### Centralized Error Handler
+### Tratador de Erros Centralizado
 
 ```typescript
 class ApiError extends Error {
@@ -294,7 +294,7 @@ export function errorHandler(error: unknown, req: Request): Response {
     }, { status: 400 })
   }
 
-  // Log unexpected errors
+  // Loga erros inesperados
   console.error('Unexpected error:', error)
 
   return NextResponse.json({
@@ -303,7 +303,7 @@ export function errorHandler(error: unknown, req: Request): Response {
   }, { status: 500 })
 }
 
-// Usage
+// Uso
 export async function GET(request: Request) {
   try {
     const data = await fetchData()
@@ -314,7 +314,7 @@ export async function GET(request: Request) {
 }
 ```
 
-### Retry with Exponential Backoff
+### Retry com Backoff Exponencial
 
 ```typescript
 async function fetchWithRetry<T>(
@@ -330,7 +330,7 @@ async function fetchWithRetry<T>(
       lastError = error as Error
 
       if (i < maxRetries - 1) {
-        // Exponential backoff: 1s, 2s, 4s
+        // Backoff exponencial: 1s, 2s, 4s
         const delay = Math.pow(2, i) * 1000
         await new Promise(resolve => setTimeout(resolve, delay))
       }
@@ -340,13 +340,13 @@ async function fetchWithRetry<T>(
   throw lastError!
 }
 
-// Usage
+// Uso
 const data = await fetchWithRetry(() => fetchFromAPI())
 ```
 
-## Authentication & Authorization
+## Autenticação e Autorização
 
-### JWT Token Validation
+### Validação de Token JWT
 
 ```typescript
 import jwt from 'jsonwebtoken'
@@ -376,7 +376,7 @@ export async function requireAuth(request: Request) {
   return verifyToken(token)
 }
 
-// Usage in API route
+// Uso em uma API route
 export async function GET(request: Request) {
   const user = await requireAuth(request)
 
@@ -386,7 +386,7 @@ export async function GET(request: Request) {
 }
 ```
 
-### Role-Based Access Control
+### Controle de Acesso Baseado em Papel (RBAC)
 
 ```typescript
 type Permission = 'read' | 'write' | 'delete' | 'admin'
@@ -420,10 +420,10 @@ export function requirePermission(permission: Permission) {
   }
 }
 
-// Usage - HOF wraps the handler
+// Uso - a HOF envolve o handler
 export const DELETE = requirePermission('delete')(
   async (request: Request, user: User) => {
-    // Handler receives authenticated user with verified permission
+    // O handler recebe o usuário autenticado com permissão verificada
     return new Response('Deleted', { status: 200 })
   }
 )
@@ -431,18 +431,18 @@ export const DELETE = requirePermission('delete')(
 
 ## Rate Limiting
 
-Rate limiting must use a shared store such as Redis, a gateway, or the
-platform's native limiter. Do not use per-process in-memory counters for
-production APIs: they reset on deploy, split across replicas, and fail open in
-serverless or multi-instance environments.
+O rate limiting deve usar um armazenamento compartilhado, como Redis, um gateway ou
+o limitador nativo da plataforma. Não use contadores em memória por processo para
+APIs de produção: eles são zerados a cada deploy, ficam fragmentados entre réplicas e falham em modo aberto em
+ambientes serverless ou de múltiplas instâncias.
 
-Keep the backend layer responsible for choosing the integration point and error
-shape; use `api-design` for the HTTP contract and `security-review` for abuse
-case review.
+Mantenha a camada de backend responsável por escolher o ponto de integração e o formato
+do erro; use `api-design` para o contrato HTTP e `security-review` para a revisão de
+casos de abuso.
 
-## Background Jobs & Queues
+## Background Jobs e Filas
 
-### Simple Queue Pattern
+### Padrão de Fila Simples
 
 ```typescript
 class JobQueue<T> {
@@ -474,11 +474,11 @@ class JobQueue<T> {
   }
 
   private async execute(job: T): Promise<void> {
-    // Job execution logic
+    // Lógica de execução do job
   }
 }
 
-// Usage for indexing markets
+// Uso para indexar markets
 interface IndexJob {
   marketId: string
 }
@@ -488,16 +488,16 @@ const indexQueue = new JobQueue<IndexJob>()
 export async function POST(request: Request) {
   const { marketId } = await request.json()
 
-  // Add to queue instead of blocking
+  // Adiciona à fila em vez de bloquear
   await indexQueue.add({ marketId })
 
   return NextResponse.json({ success: true, message: 'Job queued' })
 }
 ```
 
-## Logging & Monitoring
+## Logging e Monitoramento
 
-### Structured Logging
+### Logging Estruturado
 
 ```typescript
 interface LogContext {
@@ -539,7 +539,7 @@ class Logger {
 
 const logger = new Logger()
 
-// Usage
+// Uso
 export async function GET(request: Request) {
   const requestId = crypto.randomUUID()
 
@@ -559,4 +559,4 @@ export async function GET(request: Request) {
 }
 ```
 
-**Remember**: Backend patterns enable scalable, maintainable server-side applications. Choose patterns that fit your complexity level.
+**Lembre-se**: padrões de backend permitem aplicações server-side escaláveis e fáceis de manter. Escolha padrões que se ajustem ao seu nível de complexidade.

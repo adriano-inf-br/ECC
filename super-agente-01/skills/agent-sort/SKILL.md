@@ -1,66 +1,66 @@
 ---
 name: agent-sort
-description: Build an evidence-backed ECC install plan for a specific repo by sorting skills, commands, rules, hooks, and extras into DAILY vs LIBRARY buckets using parallel repo-aware review passes. Use when ECC should be trimmed to what a project actually needs instead of loading the full bundle.
+description: Construa um plano de instalação ECC embasado em evidências para um repositório específico classificando skills, comandos, regras, hooks e extras em baldes DAILY vs LIBRARY usando passagens de revisão paralelas e cientes do repositório. Use quando a ECC deve ser enxugada para o que um projeto de fato precisa em vez de carregar o bundle completo.
 metadata:
   origin: ECC
 ---
 
 # Agent Sort
 
-Use this skill when a repo needs a project-specific ECC surface instead of the default full install.
+Use esta skill quando um repositório precisa de uma superfície ECC específica do projeto em vez da instalação completa padrão.
 
-The goal is not to guess what "feels useful." The goal is to classify ECC components with evidence from the actual codebase.
+O objetivo não é adivinhar o que "parece útil". O objetivo é classificar componentes ECC com evidências da base de código real.
 
 ## When to Use
 
-- A project only needs a subset of ECC and full installs are too noisy
-- The repo stack is clear, but nobody wants to hand-curate skills one by one
-- A team wants a repeatable install decision backed by grep evidence instead of opinion
-- You need to separate always-loaded daily workflow surfaces from searchable library/reference surfaces
-- A repo has drifted into the wrong language, rule, or hook set and needs cleanup
+- Um projeto só precisa de um subconjunto da ECC e as instalações completas são ruidosas demais
+- A stack do repositório é clara, mas ninguém quer curar skills manualmente uma a uma
+- Uma equipe quer uma decisão de instalação repetível embasada em evidências de grep em vez de opinião
+- Você precisa separar as superfícies de fluxo de trabalho diário sempre carregadas das superfícies de biblioteca/referência pesquisáveis
+- Um repositório derivou para o conjunto errado de linguagem, regra ou hook e precisa de limpeza
 
-## Non-Negotiable Rules
+## Regras Inegociáveis
 
-- Use the current repository as the source of truth, not generic preferences
-- Every DAILY decision must cite concrete repo evidence
-- LIBRARY does not mean "delete"; it means "keep accessible without loading by default"
-- Do not install hooks, rules, or scripts that the current repo cannot use
-- Prefer ECC-native surfaces; do not introduce a second install system
+- Use o repositório atual como fonte da verdade, não preferências genéricas
+- Toda decisão DAILY deve citar evidência concreta do repositório
+- LIBRARY não significa "apagar"; significa "manter acessível sem carregar por padrão"
+- Não instale hooks, regras ou scripts que o repositório atual não consegue usar
+- Prefira superfícies nativas da ECC; não introduza um segundo sistema de instalação
 
-## Outputs
+## Saídas
 
-Produce these artifacts in order:
+Produza estes artefatos em ordem:
 
-1. DAILY inventory
-2. LIBRARY inventory
-3. install plan
-4. verification report
-5. optional `skill-library` router if the project wants one
+1. inventário DAILY
+2. inventário LIBRARY
+3. plano de instalação
+4. relatório de verificação
+5. roteador `skill-library` opcional, se o projeto quiser um
 
-## Classification Model
+## Modelo de Classificação
 
-Use two buckets only:
+Use apenas dois baldes:
 
 - `DAILY`
-  - should load every session for this repo
-  - strongly matched to the repo's language, framework, workflow, or operator surface
+  - deve carregar em toda sessão para este repositório
+  - fortemente combinado com a linguagem, framework, fluxo de trabalho ou superfície de operador do repositório
 - `LIBRARY`
-  - useful to retain, but not worth loading by default
-  - should remain reachable through search, router skill, or selective manual use
+  - útil de manter, mas não vale a pena carregar por padrão
+  - deve permanecer alcançável por busca, skill roteadora ou uso manual seletivo
 
-## Evidence Sources
+## Fontes de Evidência
 
-Use repo-local evidence before making any classification:
+Use evidência local do repositório antes de fazer qualquer classificação:
 
-- file extensions
-- package managers and lockfiles
-- framework configs
-- CI and hook configs
-- build/test scripts
-- imports and dependency manifests
-- repo docs that explicitly describe the stack
+- extensões de arquivo
+- gerenciadores de pacotes e lockfiles
+- configs de framework
+- configs de CI e hook
+- scripts de build/test
+- imports e manifestos de dependências
+- docs do repositório que descrevem explicitamente a stack
 
-Useful commands include:
+Comandos úteis incluem:
 
 ```bash
 rg --files
@@ -72,50 +72,50 @@ cat pubspec.yaml
 cat go.mod
 ```
 
-## Parallel Review Passes
+## Passagens de Revisão Paralelas
 
-If parallel subagents are available, split the review into these passes:
+Se sub-agents paralelos estiverem disponíveis, divida a revisão nestas passagens:
 
 1. Agents
-   - classify `agents/*`
+   - classifique `agents/*`
 2. Skills
-   - classify `skills/*`
-3. Commands
-   - classify `commands/*`
-4. Rules
-   - classify `rules/*`
-5. Hooks and scripts
-   - classify hook surfaces, MCP health checks, helper scripts, and OS compatibility
+   - classifique `skills/*`
+3. Comandos
+   - classifique `commands/*`
+4. Regras
+   - classifique `rules/*`
+5. Hooks e scripts
+   - classifique superfícies de hook, verificações de saúde de MCP, scripts auxiliares e compatibilidade de SO
 6. Extras
-   - classify contexts, examples, MCP configs, templates, and guidance docs
+   - classifique contextos, exemplos, configs de MCP, templates e docs de orientação
 
-If subagents are not available, run the same passes sequentially.
+Se os sub-agents não estiverem disponíveis, rode as mesmas passagens sequencialmente.
 
-## Core Workflow
+## Fluxo de Trabalho Central
 
-### 1. Read the repo
+### 1. Leia o repositório
 
-Establish the real stack before classifying anything:
+Estabeleça a stack real antes de classificar qualquer coisa:
 
-- languages in use
-- frameworks in use
-- primary package manager
-- test stack
-- lint/format stack
-- deployment/runtime surface
-- operator integrations already present
+- linguagens em uso
+- frameworks em uso
+- gerenciador de pacotes primário
+- stack de testes
+- stack de lint/format
+- superfície de deploy/runtime
+- integrações de operador já presentes
 
-### 2. Build the evidence table
+### 2. Construa a tabela de evidências
 
-For every candidate surface, record:
+Para cada superfície candidata, registre:
 
-- component path
-- component type
-- proposed bucket
-- repo evidence
-- short justification
+- caminho do componente
+- tipo do componente
+- balde proposto
+- evidência do repositório
+- justificativa curta
 
-Use this format:
+Use este formato:
 
 ```text
 skills/frontend-patterns | skill | DAILY | 84 .tsx files, next.config.ts present | core frontend stack
@@ -124,79 +124,79 @@ rules/typescript/*       | rules | DAILY | package.json + tsconfig.json         
 rules/python/*           | rules | LIBRARY | zero Python source files             | keep accessible only
 ```
 
-### 3. Decide DAILY vs LIBRARY
+### 3. Decida DAILY vs LIBRARY
 
-Promote to `DAILY` when:
+Promova para `DAILY` quando:
 
-- the repo clearly uses the matching stack
-- the component is general enough to help every session
-- the repo already depends on the corresponding runtime or workflow
+- o repositório claramente usa a stack correspondente
+- o componente é geral o suficiente para ajudar em toda sessão
+- o repositório já depende do runtime ou fluxo de trabalho correspondente
 
-Demote to `LIBRARY` when:
+Rebaixe para `LIBRARY` quando:
 
-- the component is off-stack
-- the repo might need it later, but not every day
-- it adds context overhead without immediate relevance
+- o componente está fora da stack
+- o repositório pode precisar dele depois, mas não todo dia
+- ele adiciona overhead de contexto sem relevância imediata
 
-### 4. Build the install plan
+### 4. Construa o plano de instalação
 
-Translate the classification into action:
+Traduza a classificação em ação:
 
-- DAILY skills -> install or keep in `.claude/skills/`
-- DAILY commands -> keep as explicit shims only if still useful
-- DAILY rules -> install only matching language sets
-- DAILY hooks/scripts -> keep only compatible ones
-- LIBRARY surfaces -> keep accessible through search or `skill-library`
+- skills DAILY -> instale ou mantenha em `.claude/skills/`
+- comandos DAILY -> mantenha como shims explícitos apenas se ainda forem úteis
+- regras DAILY -> instale apenas os conjuntos de linguagem correspondentes
+- hooks/scripts DAILY -> mantenha apenas os compatíveis
+- superfícies LIBRARY -> mantenha acessíveis por busca ou `skill-library`
 
-If the repo already uses selective installs, update that plan instead of creating another system.
+Se o repositório já usa instalações seletivas, atualize aquele plano em vez de criar outro sistema.
 
-### 5. Create the optional library router
+### 5. Crie o roteador de biblioteca opcional
 
-If the project wants a searchable library surface, create:
+Se o projeto quiser uma superfície de biblioteca pesquisável, crie:
 
 - `.claude/skills/skill-library/SKILL.md`
 
-That router should contain:
+Esse roteador deve conter:
 
-- a short explanation of DAILY vs LIBRARY
-- grouped trigger keywords
-- where the library references live
+- uma explicação curta de DAILY vs LIBRARY
+- palavras-chave de gatilho agrupadas
+- onde ficam as referências da biblioteca
 
-Do not duplicate every skill body inside the router.
+Não duplique o corpo de cada skill dentro do roteador.
 
-### 6. Verify the result
+### 6. Verifique o resultado
 
-After the plan is applied, verify:
+Após o plano ser aplicado, verifique:
 
-- every DAILY file exists where expected
-- stale language rules were not left active
-- incompatible hooks were not installed
-- the resulting install actually matches the repo stack
+- todo arquivo DAILY existe onde esperado
+- regras de linguagem obsoletas não foram deixadas ativas
+- hooks incompatíveis não foram instalados
+- a instalação resultante de fato corresponde à stack do repositório
 
-Return a compact report with:
+Retorne um relatório compacto com:
 
-- DAILY count
-- LIBRARY count
-- removed stale surfaces
-- open questions
+- contagem DAILY
+- contagem LIBRARY
+- superfícies obsoletas removidas
+- questões em aberto
 
 ## Handoffs
 
-If the next step is interactive installation or repair, hand off to:
+Se o próximo passo for instalação ou reparo interativo, faça handoff para:
 
 - `configure-ecc`
 
-If the next step is overlap cleanup or catalog review, hand off to:
+Se o próximo passo for limpeza de sobreposição ou revisão de catálogo, faça handoff para:
 
 - `skill-stocktake`
 
-If the next step is broader context trimming, hand off to:
+Se o próximo passo for enxugamento de contexto mais amplo, faça handoff para:
 
 - `strategic-compact`
 
-## Output Format
+## Formato de Saída
 
-Return the result in this order:
+Retorne o resultado nesta ordem:
 
 ```text
 STACK

@@ -358,17 +358,17 @@ GROUP BY cohort, month, months_since_signup
 ORDER BY cohort, months_since_signup;
 ```
 
-## Data Pipeline Patterns
+## Padrões de Pipeline de Dados
 
-### ETL Pattern
+### Padrão ETL
 
 ```typescript
 // Extract, Transform, Load
 async function etlPipeline() {
-  // 1. Extract from source
+  // 1. Extrair da fonte
   const rawData = await extractFromPostgres()
 
-  // 2. Transform
+  // 2. Transformar
   const transformed = rawData.map(row => ({
     date: new Date(row.created_at).toISOString().split('T')[0],
     market_id: row.market_slug,
@@ -376,18 +376,18 @@ async function etlPipeline() {
     trades: parseInt(row.trade_count)
   }))
 
-  // 3. Load to ClickHouse
+  // 3. Carregar no ClickHouse
   await bulkInsertToClickHouse(transformed)
 }
 
-// Run periodically
-setInterval(etlPipeline, 60 * 60 * 1000)  // Every hour
+// Executar periodicamente
+setInterval(etlPipeline, 60 * 60 * 1000)  // A cada hora
 ```
 
 ### Change Data Capture (CDC)
 
 ```typescript
-// Listen to PostgreSQL changes and sync to ClickHouse
+// Escutar mudanças do PostgreSQL e sincronizar com o ClickHouse
 import { Client } from 'pg'
 
 const pgClient = new Client({ connectionString: process.env.DATABASE_URL })
@@ -410,31 +410,31 @@ pgClient.on('notification', async (msg) => {
 
 ## Best Practices
 
-### 1. Partitioning Strategy
-- Partition by time (usually month or day)
-- Avoid too many partitions (performance impact)
-- Use DATE type for partition key
+### 1. Estratégia de Particionamento
+- Particione por tempo (geralmente mês ou dia)
+- Evite partições em excesso (impacto na performance)
+- Use o tipo DATE para a chave de partição
 
-### 2. Ordering Key
-- Put most frequently filtered columns first
-- Consider cardinality (high cardinality first)
-- Order impacts compression
+### 2. Chave de Ordenação
+- Coloque primeiro as colunas filtradas com mais frequência
+- Considere a cardinalidade (alta cardinalidade primeiro)
+- A ordem impacta a compressão
 
-### 3. Data Types
-- Use smallest appropriate type (UInt32 vs UInt64)
-- Use LowCardinality for repeated strings
-- Use Enum for categorical data
+### 3. Tipos de Dados
+- Use o menor tipo apropriado (UInt32 vs UInt64)
+- Use LowCardinality para strings repetidas
+- Use Enum para dados categóricos
 
-### 4. Avoid
-- SELECT * (specify columns)
-- FINAL (merge data before query instead)
-- Too many JOINs (denormalize for analytics)
-- Small frequent inserts (batch instead)
+### 4. Evite
+- SELECT * (especifique as colunas)
+- FINAL (em vez disso, faça o merge dos dados antes da consulta)
+- JOINs em excesso (desnormalize para analytics)
+- Inserts pequenos e frequentes (faça em lote)
 
-### 5. Monitoring
-- Track query performance
-- Monitor disk usage
-- Check merge operations
-- Review slow query log
+### 5. Monitoramento
+- Acompanhe a performance das consultas
+- Monitore o uso de disco
+- Verifique as operações de merge
+- Revise o log de consultas lentas
 
-**Remember**: ClickHouse excels at analytical workloads. Design tables for your query patterns, batch inserts, and leverage materialized views for real-time aggregations.
+**Lembre-se**: O ClickHouse se destaca em cargas analíticas. Projete tabelas para seus padrões de consulta, faça inserts em lote e aproveite materialized views para agregações em tempo real.

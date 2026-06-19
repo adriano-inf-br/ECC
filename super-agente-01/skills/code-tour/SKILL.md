@@ -1,115 +1,115 @@
 ---
 name: code-tour
-description: Create CodeTour `.tour` files — persona-targeted, step-by-step walkthroughs with real file and line anchors. Use for onboarding tours, architecture walkthroughs, PR tours, RCA tours, and structured "explain how this works" requests.
+description: Crie arquivos `.tour` do CodeTour — passo a passos direcionados a personas, com âncoras reais de arquivo e linha. Use para tours de onboarding, walkthroughs de arquitetura, tours de PR, tours de RCA e pedidos estruturados de "explique como isto funciona".
 metadata:
   origin: ECC
 ---
 
 # Code Tour
 
-Create **CodeTour** `.tour` files for codebase walkthroughs that open directly to real files and line ranges. Tours live in `.tours/` and are meant for the CodeTour format, not ad hoc Markdown notes.
+Crie arquivos `.tour` do **CodeTour** para walkthroughs de código que abrem diretamente em arquivos e intervalos de linha reais. Os tours ficam em `.tours/` e são destinados ao formato CodeTour, não a notas Markdown ad hoc.
 
-A good tour is a narrative for a specific reader:
-- what they are looking at
-- why it matters
-- what path they should follow next
+Um bom tour é uma narrativa para um leitor específico:
+- o que ele está vendo
+- por que isso importa
+- qual caminho ele deve seguir em seguida
 
-Only create `.tour` JSON files. Do not modify source code as part of this skill.
+Crie apenas arquivos JSON `.tour`. Não modifique o código-fonte como parte desta skill.
 
 ## When to Use
 
-Use this skill when:
-- the user asks for a code tour, onboarding tour, architecture walkthrough, or PR tour
-- the user says "explain how X works" and wants a reusable guided artifact
-- the user wants a ramp-up path for a new engineer or reviewer
-- the task is better served by a guided sequence than a flat summary
+Use esta skill quando:
+- o usuário pede um code tour, tour de onboarding, walkthrough de arquitetura ou tour de PR
+- o usuário diz "explique como X funciona" e quer um artefato guiado reutilizável
+- o usuário quer um caminho de ramp-up para um novo engenheiro ou revisor
+- a tarefa é melhor atendida por uma sequência guiada do que por um resumo plano
 
-Examples:
-- onboarding a new maintainer
-- architecture tour for one service or package
-- PR-review walk-through anchored to changed files
-- RCA tour showing the failure path
-- security review tour of trust boundaries and key checks
+Exemplos:
+- onboarding de um novo mantenedor
+- tour de arquitetura para um serviço ou pacote
+- walkthrough de revisão de PR ancorado nos arquivos alterados
+- tour de RCA mostrando o caminho da falha
+- tour de revisão de segurança das fronteiras de confiança e verificações-chave
 
 ## When NOT to Use
 
-| Instead of code-tour | Use |
+| Em vez de code-tour | Use |
 | --- | --- |
-| A one-off explanation in chat is enough | answer directly |
-| The user wants prose docs, not a `.tour` artifact | `documentation-lookup` or repo docs editing |
-| The task is implementation or refactoring | do the implementation work |
-| The task is broad codebase onboarding without a tour artifact | `codebase-onboarding` |
+| Uma explicação pontual no chat é suficiente | responda diretamente |
+| O usuário quer documentação em prosa, não um artefato `.tour` | `documentation-lookup` ou edição de docs do repositório |
+| A tarefa é implementação ou refatoração | faça o trabalho de implementação |
+| A tarefa é onboarding amplo do código sem um artefato de tour | `codebase-onboarding` |
 
-## Workflow
+## Fluxo de trabalho
 
-### 1. Discover
+### 1. Descobrir
 
-Explore the repo before writing anything:
-- README and package/app entry points
-- folder structure
-- relevant config files
-- the changed files if the tour is PR-focused
+Explore o repositório antes de escrever qualquer coisa:
+- README e pontos de entrada de pacote/app
+- estrutura de pastas
+- arquivos de configuração relevantes
+- os arquivos alterados, se o tour é focado em PR
 
-Do not start writing steps before you understand the shape of the code.
+Não comece a escrever passos antes de entender o formato do código.
 
-### 2. Infer the reader
+### 2. Inferir o leitor
 
-Decide the persona and depth from the request.
+Decida a persona e a profundidade a partir do pedido.
 
-| Request shape | Persona | Suggested depth |
+| Formato do pedido | Persona | Profundidade sugerida |
 | --- | --- | --- |
-| "onboarding", "new joiner" | `new-joiner` | 9-13 steps |
-| "quick tour", "vibe check" | `vibecoder` | 5-8 steps |
-| "architecture" | `architect` | 14-18 steps |
-| "tour this PR" | `pr-reviewer` | 7-11 steps |
-| "why did this break" | `rca-investigator` | 7-11 steps |
-| "security review" | `security-reviewer` | 7-11 steps |
-| "explain how this feature works" | `feature-explainer` | 7-11 steps |
-| "debug this path" | `bug-fixer` | 7-11 steps |
+| "onboarding", "new joiner" | `new-joiner` | 9-13 passos |
+| "quick tour", "vibe check" | `vibecoder` | 5-8 passos |
+| "architecture" | `architect` | 14-18 passos |
+| "tour this PR" | `pr-reviewer` | 7-11 passos |
+| "why did this break" | `rca-investigator` | 7-11 passos |
+| "security review" | `security-reviewer` | 7-11 passos |
+| "explain how this feature works" | `feature-explainer` | 7-11 passos |
+| "debug this path" | `bug-fixer` | 7-11 passos |
 
-### 3. Read and verify anchors
+### 3. Ler e verificar âncoras
 
-Every file path and line anchor must be real:
-- confirm the file exists
-- confirm the line numbers are in range
-- if using a selection, verify the exact block
-- if the file is volatile, prefer a pattern-based anchor
+Todo caminho de arquivo e âncora de linha deve ser real:
+- confirme que o arquivo existe
+- confirme que os números de linha estão no intervalo
+- se usar uma seleção, verifique o bloco exato
+- se o arquivo é volátil, prefira uma âncora baseada em padrão
 
-Never guess line numbers.
+Nunca adivinhe números de linha.
 
-### 4. Write the `.tour`
+### 4. Escrever o `.tour`
 
-Write to:
+Escreva em:
 
 ```text
 .tours/<persona>-<focus>.tour
 ```
 
-Keep the path deterministic and readable.
+Mantenha o caminho determinístico e legível.
 
-### 5. Validate
+### 5. Validar
 
-Before finishing:
-- every referenced path exists
-- every line or selection is valid
-- the first step is anchored to a real file or directory
-- the tour tells a coherent story rather than listing files
+Antes de finalizar:
+- todo caminho referenciado existe
+- toda linha ou seleção é válida
+- o primeiro passo está ancorado em um arquivo ou diretório real
+- o tour conta uma história coerente em vez de listar arquivos
 
-## Step Types
+## Tipos de Passo
 
 ### Content
 
-Use sparingly, usually only for a closing step:
+Use com moderação, geralmente apenas para um passo de encerramento:
 
 ```json
 { "title": "Next Steps", "description": "You can now trace the request path end to end." }
 ```
 
-Do not make the first step content-only.
+Não faça o primeiro passo ser somente conteúdo.
 
 ### Directory
 
-Use to orient the reader to a module:
+Use para orientar o leitor sobre um módulo:
 
 ```json
 { "directory": "src/services", "title": "Service Layer", "description": "The core orchestration logic lives here." }
@@ -117,7 +117,7 @@ Use to orient the reader to a module:
 
 ### File + line
 
-This is the default step type:
+Este é o tipo de passo padrão:
 
 ```json
 { "file": "src/auth/middleware.ts", "line": 42, "title": "Auth Gate", "description": "Every protected request passes here first." }
@@ -125,7 +125,7 @@ This is the default step type:
 
 ### Selection
 
-Use when one code block matters more than the whole file:
+Use quando um bloco de código importa mais do que o arquivo inteiro:
 
 ```json
 {
@@ -141,7 +141,7 @@ Use when one code block matters more than the whole file:
 
 ### Pattern
 
-Use when exact lines may drift:
+Use quando as linhas exatas podem mudar de posição:
 
 ```json
 { "file": "src/app.ts", "pattern": "export default class App", "title": "Application Entry" }
@@ -149,32 +149,32 @@ Use when exact lines may drift:
 
 ### URI
 
-Use for PRs, issues, or docs when helpful:
+Use para PRs, issues ou docs quando for útil:
 
 ```json
 { "uri": "https://github.com/org/repo/pull/456", "title": "The PR" }
 ```
 
-## Writing Rule: SMIG
+## Regra de Escrita: SMIG
 
-Each description should answer:
-- **Situation**: what the reader is looking at
-- **Mechanism**: how it works
-- **Implication**: why it matters for this persona
-- **Gotcha**: what a smart reader might miss
+Cada descrição deve responder:
+- **Situation**: o que o leitor está vendo
+- **Mechanism**: como funciona
+- **Implication**: por que importa para esta persona
+- **Gotcha**: o que um leitor atento pode deixar passar
 
-Keep descriptions compact, specific, and grounded in the actual code.
+Mantenha as descrições compactas, específicas e fundamentadas no código real.
 
-## Narrative Shape
+## Formato Narrativo
 
-Use this arc unless the task clearly needs something different:
-1. orientation
-2. module map
-3. core execution path
-4. edge case or gotcha
-5. closing / next move
+Use este arco, a menos que a tarefa claramente exija algo diferente:
+1. orientação
+2. mapa de módulos
+3. caminho de execução principal
+4. caso de borda ou gotcha
+5. encerramento / próximo movimento
 
-The tour should feel like a path, not an inventory.
+O tour deve parecer um caminho, não um inventário.
 
 ## Example
 
@@ -182,29 +182,29 @@ The tour should feel like a path, not an inventory.
 {
   "$schema": "https://aka.ms/codetour-schema",
   "title": "API Service Tour",
-  "description": "Walkthrough of the request path for the payments service.",
+  "description": "Walkthrough do caminho de requisição do serviço de pagamentos.",
   "ref": "main",
   "steps": [
     {
       "directory": "src",
       "title": "Source Root",
-      "description": "All runtime code for the service starts here."
+      "description": "Todo o código de runtime do serviço começa aqui."
     },
     {
       "file": "src/server.ts",
       "line": 12,
       "title": "Entry Point",
-      "description": "The server boots here and wires middleware before any route is reached."
+      "description": "O servidor inicializa aqui e conecta o middleware antes de qualquer rota ser alcançada."
     },
     {
       "file": "src/routes/payments.ts",
       "line": 8,
       "title": "Payment Routes",
-      "description": "Every payments request enters through this router before hitting service logic."
+      "description": "Toda requisição de pagamentos entra por este router antes de chegar à lógica do serviço."
     },
     {
       "title": "Next Steps",
-      "description": "You can now follow any payment request end to end with the main anchors in place."
+      "description": "Você agora consegue seguir qualquer requisição de pagamento de ponta a ponta com as âncoras principais no lugar."
     }
   ]
 }
@@ -212,26 +212,26 @@ The tour should feel like a path, not an inventory.
 
 ## Anti-Patterns
 
-| Anti-pattern | Fix |
+| Anti-pattern | Correção |
 | --- | --- |
-| Flat file listing | Tell a story with dependency between steps |
-| Generic descriptions | Name the concrete code path or pattern |
-| Guessed anchors | Verify every file and line first |
-| Too many steps for a quick tour | Cut aggressively |
-| First step is content-only | Anchor the first step to a real file or directory |
-| Persona mismatch | Write for the actual reader, not a generic engineer |
+| Listagem plana de arquivos | Conte uma história com dependência entre os passos |
+| Descrições genéricas | Nomeie o caminho de código ou padrão concreto |
+| Âncoras adivinhadas | Verifique cada arquivo e linha primeiro |
+| Passos demais para um tour rápido | Corte agressivamente |
+| O primeiro passo é somente conteúdo | Ancore o primeiro passo em um arquivo ou diretório real |
+| Persona incompatível | Escreva para o leitor real, não para um engenheiro genérico |
 
 ## Best Practices
 
-- keep step count proportional to repo size and persona depth
-- use directory steps for orientation, file steps for substance
-- for PR tours, cover changed files first
-- for monorepos, scope to the relevant packages instead of touring everything
-- close with what the reader can now do, not a recap
+- mantenha a contagem de passos proporcional ao tamanho do repositório e à profundidade da persona
+- use passos de diretório para orientação, passos de arquivo para substância
+- para tours de PR, cubra primeiro os arquivos alterados
+- para monorepos, restrinja o escopo aos pacotes relevantes em vez de percorrer tudo
+- encerre com o que o leitor agora consegue fazer, não com uma recapitulação
 
 ## Related Skills
 
 - `codebase-onboarding`
 - `coding-standards`
 - `council`
-- official upstream format: `microsoft/codetour`
+- formato oficial upstream: `microsoft/codetour`

@@ -1,5 +1,5 @@
 ---
-description: Enforce TDD workflow for Go. Write table-driven tests first, then implement. Verify 80%+ coverage with go test -cover.
+description: Aplica o fluxo de trabalho de TDD para Go. Escreva primeiro testes orientados a tabela (table-driven), depois implemente. Verifique 80%+ de cobertura com go test -cover.
 ---
 
 # Comando de TDD para Go

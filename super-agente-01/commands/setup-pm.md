@@ -1,13 +1,13 @@
 ---
-description: Configure your preferred package manager (npm/pnpm/yarn/bun)
+description: Configura seu gerenciador de pacotes preferido (npm/pnpm/yarn/bun)
 disable-model-invocation: true
 ---
 
 # Package Manager Setup
 
-Configure your preferred package manager for this project or globally.
+Configure seu gerenciador de pacotes preferido para este projeto ou globalmente.
 
-## Usage
+## Uso
 
 ```bash
 # Detect current package manager
@@ -23,20 +23,20 @@ node scripts/setup-package-manager.js --project bun
 node scripts/setup-package-manager.js --list
 ```
 
-## Detection Priority
+## Prioridade de detecção
 
-When determining which package manager to use, the following order is checked:
+Ao determinar qual gerenciador de pacotes usar, a seguinte ordem é verificada:
 
-1. **Environment variable**: `CLAUDE_PACKAGE_MANAGER`
-2. **Project config**: `.claude/package-manager.json`
-3. **package.json**: `packageManager` field
-4. **Lock file**: Presence of package-lock.json, yarn.lock, pnpm-lock.yaml, or bun.lockb
-5. **Global config**: `~/.claude/package-manager.json`
-6. **Fallback**: First available package manager (pnpm > bun > yarn > npm)
+1. **Variável de ambiente**: `CLAUDE_PACKAGE_MANAGER`
+2. **Configuração do projeto**: `.claude/package-manager.json`
+3. **package.json**: campo `packageManager`
+4. **Lock file**: presença de package-lock.json, yarn.lock, pnpm-lock.yaml ou bun.lockb
+5. **Configuração global**: `~/.claude/package-manager.json`
+6. **Fallback**: primeiro gerenciador de pacotes disponível (pnpm > bun > yarn > npm)
 
-## Configuration Files
+## Arquivos de configuração
 
-### Global Configuration
+### Configuração global
 ```json
 // ~/.claude/package-manager.json
 {
@@ -44,7 +44,7 @@ When determining which package manager to use, the following order is checked:
 }
 ```
 
-### Project Configuration
+### Configuração do projeto
 ```json
 // .claude/package-manager.json
 {
@@ -59,9 +59,9 @@ When determining which package manager to use, the following order is checked:
 }
 ```
 
-## Environment Variable
+## Variável de ambiente
 
-Set `CLAUDE_PACKAGE_MANAGER` to override all other detection methods:
+Defina `CLAUDE_PACKAGE_MANAGER` para sobrepor todos os outros métodos de detecção:
 
 ```bash
 # Windows (PowerShell)
@@ -71,9 +71,9 @@ $env:CLAUDE_PACKAGE_MANAGER = "pnpm"
 export CLAUDE_PACKAGE_MANAGER=pnpm
 ```
 
-## Run the Detection
+## Executar a detecção
 
-To see current package manager detection results, run:
+Para ver os resultados atuais da detecção do gerenciador de pacotes, execute:
 
 ```bash
 node scripts/setup-package-manager.js --detect

@@ -71,70 +71,70 @@ Use `/kotlin-review` quando:
 User: /kotlin-review
 
 Agent:
-# Kotlin Code Review Report
+# Relatório de Revisão de Código Kotlin
 
-## Files Reviewed
-- src/main/kotlin/com/example/service/UserService.kt (modified)
-- src/main/kotlin/com/example/routes/UserRoutes.kt (modified)
+## Arquivos Revisados
+- src/main/kotlin/com/example/service/UserService.kt (modificado)
+- src/main/kotlin/com/example/routes/UserRoutes.kt (modificado)
 
-## Static Analysis Results
-✓ Build: Successful
-✓ detekt: No issues
-WARNING: ktlint: 2 formatting warnings
+## Resultados da Análise Estática
+✓ Build: Bem-sucedido
+✓ detekt: Nenhum problema
+WARNING: ktlint: 2 avisos de formatação
 
-## Issues Found
+## Problemas Encontrados
 
-[CRITICAL] Force-Unwrap Null Safety
-File: src/main/kotlin/com/example/service/UserService.kt:28
-Issue: Using !! on nullable repository result
+[CRITICAL] Null Safety com Force-Unwrap
+Arquivo: src/main/kotlin/com/example/service/UserService.kt:28
+Problema: Uso de !! no resultado anulável do repository
 ```kotlin
 val user = repository.findById(id)!!  // NPE risk
 ```
-Fix: Use safe call with error handling
+Correção: Usar chamada segura com tratamento de erro
 ```kotlin
 val user = repository.findById(id)
     ?: throw UserNotFoundException("User $id not found")
 ```
 
-[HIGH] GlobalScope Usage
-File: src/main/kotlin/com/example/routes/UserRoutes.kt:45
-Issue: Using GlobalScope breaks structured concurrency
+[HIGH] Uso de GlobalScope
+Arquivo: src/main/kotlin/com/example/routes/UserRoutes.kt:45
+Problema: Usar GlobalScope quebra a concorrência estruturada
 ```kotlin
 GlobalScope.launch {
     notificationService.sendWelcome(user)
 }
 ```
-Fix: Use the call's coroutine scope
+Correção: Usar o coroutine scope da chamada
 ```kotlin
 launch {
     notificationService.sendWelcome(user)
 }
 ```
 
-## Summary
+## Resumo
 - CRITICAL: 1
 - HIGH: 1
 - MEDIUM: 0
 
-Recommendation: FAIL: Block merge until CRITICAL issue is fixed
+Recomendação: FAIL: Bloquear o merge até o problema CRITICAL ser corrigido
 ````
 
-## Approval Criteria
+## Critérios de Aprovação
 
-| Status | Condition |
+| Status | Condição |
 |--------|-----------|
-| PASS: Approve | No CRITICAL or HIGH issues |
-| WARNING: Warning | Only MEDIUM issues (merge with caution) |
-| FAIL: Block | CRITICAL or HIGH issues found |
+| PASS: Aprovar | Nenhum problema CRITICAL ou HIGH |
+| WARNING: Aviso | Apenas problemas MEDIUM (merge com cautela) |
+| FAIL: Bloquear | Problemas CRITICAL ou HIGH encontrados |
 
-## Integration with Other Commands
+## Integração com Outros Comandos
 
-- Use `/kotlin-test` first to ensure tests pass
-- Use `/kotlin-build` if build errors occur
-- Use `/kotlin-review` before committing
-- Use `/code-review` for non-Kotlin-specific concerns
+- Use `/kotlin-test` primeiro para garantir que os testes passem
+- Use `/kotlin-build` se ocorrerem erros de build
+- Use `/kotlin-review` antes de commitar
+- Use `/code-review` para questões não específicas de Kotlin
 
-## Related
+## Relacionados
 
 - Agent: `agents/kotlin-reviewer.md`
 - Skills: `skills/kotlin-patterns/`, `skills/kotlin-testing/`

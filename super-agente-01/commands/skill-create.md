@@ -1,14 +1,14 @@
 ---
 name: skill-create
-description: Analyze local git history to extract coding patterns and generate SKILL.md files. Local version of the Skill Creator GitHub App.
+description: Analisa o histórico local do git para extrair padrões de código e gerar arquivos SKILL.md. Versão local do Skill Creator GitHub App.
 allowed_tools: ["Bash", "Read", "Write", "Grep", "Glob"]
 ---
 
-# /skill-create - Local Skill Generation
+# /skill-create - Geração local de skills
 
-Analyze your repository's git history to extract coding patterns and generate SKILL.md files that teach Claude your team's practices.
+Analise o histórico do git do seu repositório para extrair padrões de código e gerar arquivos SKILL.md que ensinam ao Claude as práticas da sua equipe.
 
-## Usage
+## Uso
 
 ```bash
 /skill-create                    # Analyze current repo

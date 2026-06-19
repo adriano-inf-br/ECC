@@ -1,28 +1,28 @@
 ---
 name: promote
-description: Promote project-scoped instincts to global scope
+description: Promove instintos de escopo de projeto para escopo global
 command: true
 ---
 
-# Promote Command
+# Comando Promote
 
-Promote instincts from project scope to global scope in continuous-learning-v2.
+Promove instintos de escopo de projeto para escopo global no continuous-learning-v2.
 
-## Implementation
+## Implementação
 
-Run the instinct CLI using the plugin root path:
+Rode o CLI de instintos usando o caminho da raiz do plugin:
 
 ```bash
 python3 "${CLAUDE_PLUGIN_ROOT}/skills/continuous-learning-v2/scripts/instinct-cli.py" promote [instinct-id] [--force] [--dry-run]
 ```
 
-Or if `CLAUDE_PLUGIN_ROOT` is not set (manual installation):
+Ou, se `CLAUDE_PLUGIN_ROOT` não estiver definido (instalação manual):
 
 ```bash
 python3 ~/.claude/skills/continuous-learning-v2/scripts/instinct-cli.py promote [instinct-id] [--force] [--dry-run]
 ```
 
-## Usage
+## Uso
 
 ```bash
 /promote                      # Auto-detect promotion candidates
@@ -31,11 +31,11 @@ python3 ~/.claude/skills/continuous-learning-v2/scripts/instinct-cli.py promote 
 /promote grep-before-edit     # Promote one specific instinct from current project
 ```
 
-## What to Do
+## O Que Fazer
 
-1. Detect current project
-2. If `instinct-id` is provided, promote only that instinct (if present in current project)
-3. Otherwise, find cross-project candidates that:
-   - Appear in at least 2 projects
-   - Meet confidence threshold
-4. Write promoted instincts to `~/.claude/homunculus/instincts/personal/` with `scope: global`
+1. Detecte o projeto atual
+2. Se `instinct-id` for fornecido, promova apenas esse instinto (se presente no projeto atual)
+3. Caso contrário, encontre candidatos entre projetos que:
+   - Apareçam em pelo menos 2 projetos
+   - Atinjam o limiar de confiança
+4. Escreva os instintos promovidos em `~/.claude/homunculus/instincts/personal/` com `scope: global`

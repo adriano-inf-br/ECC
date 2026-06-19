@@ -1,81 +1,81 @@
 ---
-description: "Quick commit with natural language file targeting — describe what to commit in plain English"
-argument-hint: "[target description] (blank = all changes)"
+description: "Commit rápido com alvo de arquivos em linguagem natural — descreva o que commitar em português simples"
+argument-hint: "[descrição do alvo] (vazio = todas as mudanças)"
 ---
 
 # Smart Commit
 
-> Adapted from PRPs-agentic-eng by Wirasm. Part of the PRP workflow series.
+> Adaptado de PRPs-agentic-eng por Wirasm. Parte da série de fluxo de trabalho PRP.
 
-**Input**: $ARGUMENTS
+**Entrada**: $ARGUMENTS
 
 ---
 
-## Phase 1 — ASSESS
+## Fase 1 — ASSESS
 
 ```bash
 git status --short
 ```
 
-If output is empty → stop: "Nothing to commit."
+Se a saída estiver vazia → pare: "Nothing to commit."
 
-Show the user a summary of what's changed (added, modified, deleted, untracked).
+Mostre ao usuário um resumo do que mudou (adicionado, modificado, excluído, untracked).
 
 ---
 
-## Phase 2 — INTERPRET & STAGE
+## Fase 2 — INTERPRET & STAGE
 
-Interpret `$ARGUMENTS` to determine what to stage:
+Interprete `$ARGUMENTS` para determinar o que colocar em stage:
 
-| Input | Interpretation | Git Command |
+| Entrada | Interpretação | Comando Git |
 |---|---|---|
-| *(blank / empty)* | Stage everything | `git add -A` |
-| `staged` | Use whatever is already staged | *(no git add)* |
-| `*.ts` or `*.py` etc. | Stage matching glob | `git add '*.ts'` |
-| `except tests` | Stage all, then unstage tests | `git add -A && git reset -- '**/*.test.*' '**/*.spec.*' '**/test_*' 2>/dev/null \|\| true` |
-| `only new files` | Stage untracked files only | `git ls-files --others --exclude-standard \| grep . && git ls-files --others --exclude-standard \| xargs git add` |
-| `the auth changes` | Interpret from status/diff — find auth-related files | `git add <matched files>` |
-| Specific filenames | Stage those files | `git add <files>` |
+| *(em branco / vazio)* | Coloca tudo em stage | `git add -A` |
+| `staged` | Usa o que já está em stage | *(sem git add)* |
+| `*.ts` ou `*.py` etc. | Coloca em stage o glob correspondente | `git add '*.ts'` |
+| `except tests` | Stage de tudo, depois remove os tests do stage | `git add -A && git reset -- '**/*.test.*' '**/*.spec.*' '**/test_*' 2>/dev/null \|\| true` |
+| `only new files` | Coloca em stage apenas arquivos untracked | `git ls-files --others --exclude-standard \| grep . && git ls-files --others --exclude-standard \| xargs git add` |
+| `the auth changes` | Interpreta a partir do status/diff — encontra arquivos relacionados a auth | `git add <matched files>` |
+| Nomes de arquivo específicos | Coloca esses arquivos em stage | `git add <files>` |
 
-For natural language inputs (like "the auth changes"), cross-reference the `git status` output and `git diff` to identify relevant files. Show the user which files you're staging and why.
+Para entradas em linguagem natural (como "the auth changes"), cruze a saída de `git status` e o `git diff` para identificar os arquivos relevantes. Mostre ao usuário quais arquivos você está colocando em stage e por quê.
 
 ```bash
 git add <determined files>
 ```
 
-After staging, verify:
+Após colocar em stage, verifique:
 ```bash
 git diff --cached --stat
 ```
 
-If nothing staged, stop: "No files matched your description."
+Se nada foi colocado em stage, pare: "No files matched your description."
 
 ---
 
-## Phase 3 — COMMIT
+## Fase 3 — COMMIT
 
-Craft a single-line commit message in imperative mood:
+Elabore uma mensagem de commit de linha única no modo imperativo:
 
 ```
 {type}: {description}
 ```
 
-Types:
-- `feat` — New feature or capability
-- `fix` — Bug fix
-- `refactor` — Code restructuring without behavior change
-- `docs` — Documentation changes
-- `test` — Adding or updating tests
-- `chore` — Build, config, dependencies
-- `perf` — Performance improvement
-- `ci` — CI/CD changes
+Tipos:
+- `feat` — Nova funcionalidade ou capacidade
+- `fix` — Correção de bug
+- `refactor` — Reestruturação de código sem mudança de comportamento
+- `docs` — Mudanças de documentação
+- `test` — Adição ou atualização de testes
+- `chore` — Build, config, dependências
+- `perf` — Melhoria de performance
+- `ci` — Mudanças de CI/CD
 
-Rules:
-- Imperative mood ("add feature" not "added feature")
-- Lowercase after the type prefix
-- No period at the end
-- Under 72 characters
-- Describe WHAT changed, not HOW
+Regras:
+- Modo imperativo ("add feature" e não "added feature")
+- Minúsculas após o prefixo de tipo
+- Sem ponto no final
+- Abaixo de 72 caracteres
+- Descreva O QUE mudou, não COMO
 
 ```bash
 git commit -m "{type}: {description}"
@@ -83,9 +83,9 @@ git commit -m "{type}: {description}"
 
 ---
 
-## Phase 4 — OUTPUT
+## Fase 4 — OUTPUT
 
-Report to user:
+Reporte ao usuário:
 
 ```
 Committed: {hash_short}
@@ -100,13 +100,13 @@ Next steps:
 
 ---
 
-## Examples
+## Exemplos
 
-| You say | What happens |
+| Você diz | O que acontece |
 |---|---|
-| `/prp-commit` | Stages all, auto-generates message |
-| `/prp-commit staged` | Commits only what's already staged |
-| `/prp-commit *.ts` | Stages all TypeScript files, commits |
-| `/prp-commit except tests` | Stages everything except test files |
-| `/prp-commit the database migration` | Finds DB migration files from status, stages them |
-| `/prp-commit only new files` | Stages untracked files only |
+| `/prp-commit` | Coloca tudo em stage, gera a mensagem automaticamente |
+| `/prp-commit staged` | Commita apenas o que já está em stage |
+| `/prp-commit *.ts` | Coloca todos os arquivos TypeScript em stage e commita |
+| `/prp-commit except tests` | Coloca tudo em stage exceto os arquivos de teste |
+| `/prp-commit the database migration` | Encontra os arquivos de migração de DB pelo status, coloca-os em stage |
+| `/prp-commit only new files` | Coloca em stage apenas arquivos untracked |

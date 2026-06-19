@@ -161,53 +161,53 @@ Recommendation: FAIL: Block merge until CRITICAL issue is fixed
 Run: `black app/routes/user.py app/services/auth.py`
 ```
 
-## Approval Criteria
+## Critérios de Aprovação
 
-| Status | Condition |
+| Status | Condição |
 |--------|-----------|
-| PASS: Approve | No CRITICAL or HIGH issues |
-| WARNING: Warning | Only MEDIUM issues (merge with caution) |
-| FAIL: Block | CRITICAL or HIGH issues found |
+| PASS: Approve | Nenhum problema CRITICAL ou HIGH |
+| WARNING: Warning | Apenas problemas MEDIUM (mesclar com cautela) |
+| FAIL: Block | Problemas CRITICAL ou HIGH encontrados |
 
-## Integration with Other Commands
+## Integração com Outros Comandos
 
-- Use the `tdd-workflow` skill first to ensure tests pass
-- Use `/code-review` for non-Python specific concerns
-- Use `/python-review` before committing
-- Use `/build-fix` if static analysis tools fail
+- Use primeiro a skill `tdd-workflow` para garantir que os testes passem
+- Use `/code-review` para questões não específicas de Python
+- Use `/python-review` antes de fazer commit
+- Use `/build-fix` se as ferramentas de análise estática falharem
 
-## Framework-Specific Reviews
+## Revisões Específicas de Framework
 
-### Django Projects
-The reviewer checks for:
-- N+1 query issues (use `select_related` and `prefetch_related`)
-- Missing migrations for model changes
-- Raw SQL usage when ORM could work
-- Missing `transaction.atomic()` for multi-step operations
+### Projetos Django
+O reviewer verifica:
+- Problemas de query N+1 (use `select_related` e `prefetch_related`)
+- Migrações faltando para alterações de modelo
+- Uso de SQL bruto quando o ORM poderia funcionar
+- Falta de `transaction.atomic()` para operações de múltiplas etapas
 
-### FastAPI Projects
-The reviewer checks for:
-- CORS misconfiguration
-- Pydantic models for request validation
-- Response models correctness
-- Proper async/await usage
-- Dependency injection patterns
+### Projetos FastAPI
+O reviewer verifica:
+- Configuração incorreta de CORS
+- Modelos Pydantic para validação de requisição
+- Correção dos modelos de resposta
+- Uso adequado de async/await
+- Padrões de injeção de dependência
 
-### Flask Projects
-The reviewer checks for:
-- Context management (app context, request context)
-- Proper error handling
-- Blueprint organization
-- Configuration management
+### Projetos Flask
+O reviewer verifica:
+- Gerenciamento de contexto (app context, request context)
+- Tratamento adequado de erros
+- Organização de Blueprints
+- Gerenciamento de configuração
 
-## Related
+## Relacionados
 
 - Agent: `agents/python-reviewer.md`
 - Skills: `skills/python-patterns/`, `skills/python-testing/`
 
-## Common Fixes
+## Correções Comuns
 
-### Add Type Hints
+### Adicionar Type Hints
 ```python
 # Before
 def calculate(x, y):
@@ -220,7 +220,7 @@ def calculate(x: Union[int, float], y: Union[int, float]) -> Union[int, float]:
     return x + y
 ```
 
-### Use Context Managers
+### Usar Context Managers
 ```python
 # Before
 f = open("file.txt")
@@ -232,7 +232,7 @@ with open("file.txt") as f:
     data = f.read()
 ```
 
-### Use List Comprehensions
+### Usar List Comprehensions
 ```python
 # Before
 result = []
@@ -244,7 +244,7 @@ for item in items:
 result = [item.name for item in items if item.active]
 ```
 
-### Fix Mutable Defaults
+### Corrigir Argumentos Padrão Mutáveis
 ```python
 # Before
 def append(value, items=[]):
@@ -259,7 +259,7 @@ def append(value, items=None):
     return items
 ```
 
-### Use f-strings (Python 3.6+)
+### Usar f-strings (Python 3.6+)
 ```python
 # Before
 name = "Alice"
@@ -270,7 +270,7 @@ greeting2 = "Hello, {}".format(name)
 greeting = f"Hello, {name}!"
 ```
 
-### Fix String Concatenation in Loops
+### Corrigir Concatenação de Strings em Laços
 ```python
 # Before
 result = ""
@@ -281,17 +281,17 @@ for item in items:
 result = "".join(str(item) for item in items)
 ```
 
-## Python Version Compatibility
+## Compatibilidade de Versão do Python
 
-The reviewer notes when code uses features from newer Python versions:
+O reviewer aponta quando o código usa recursos de versões mais novas do Python:
 
-| Feature | Minimum Python |
+| Recurso | Python Mínimo |
 |---------|----------------|
 | Type hints | 3.5+ |
 | f-strings | 3.6+ |
-| Walrus operator (`:=`) | 3.8+ |
-| Position-only parameters | 3.8+ |
-| Match statements | 3.10+ |
-| Type unions (&#96;x &#124; None&#96;) | 3.10+ |
+| Operador walrus (`:=`) | 3.8+ |
+| Parâmetros somente-posicionais | 3.8+ |
+| Instruções match | 3.10+ |
+| Uniões de tipo (&#96;x &#124; None&#96;) | 3.10+ |
 
-Ensure your project's `pyproject.toml` or `setup.py` specifies the correct minimum Python version.
+Garanta que o `pyproject.toml` ou `setup.py` do seu projeto especifique a versão mínima correta do Python.

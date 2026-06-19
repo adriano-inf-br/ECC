@@ -1,5 +1,5 @@
 ---
-description: Fix Gradle build errors for Android and KMP projects
+description: Corrige erros de build do Gradle para projetos Android e KMP
 ---
 
 # Correção de Build Gradle

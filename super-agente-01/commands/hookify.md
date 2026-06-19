@@ -1,5 +1,5 @@
 ---
-description: Create hooks to prevent unwanted behaviors from conversation analysis or explicit instructions
+description: Cria hooks para prevenir comportamentos indesejados a partir de análise de conversa ou instruções explícitas
 ---
 
 Crie regras de hook para prevenir comportamentos indesejados do Claude Code analisando padrões de conversa ou instruções explícitas do usuário.

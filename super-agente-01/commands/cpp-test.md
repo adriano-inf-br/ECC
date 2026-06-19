@@ -2,29 +2,29 @@
 description: Enforce TDD workflow for C++. Write GoogleTest tests first, then implement. Verify coverage with gcov/lcov.
 ---
 
-# C++ TDD Command
+# Comando TDD C++
 
-This command enforces test-driven development methodology for C++ code using GoogleTest/GoogleMock with CMake/CTest.
+Este comando impõe a metodologia de desenvolvimento orientado a testes (TDD) para código C++ usando GoogleTest/GoogleMock com CMake/CTest.
 
-## What This Command Does
+## O Que Este Comando Faz
 
-1. **Define Interfaces**: Scaffold class/function signatures first
-2. **Write Tests**: Create comprehensive GoogleTest test cases (RED)
-3. **Run Tests**: Verify tests fail for the right reason
-4. **Implement Code**: Write minimal code to pass (GREEN)
-5. **Refactor**: Improve while keeping tests green
-6. **Check Coverage**: Ensure 80%+ coverage
+1. **Define Interfaces**: Cria primeiro o esqueleto das assinaturas de classe/função
+2. **Escreve Testes**: Cria casos de teste GoogleTest abrangentes (RED)
+3. **Executa os Testes**: Verifica se os testes falham pelo motivo certo
+4. **Implementa o Código**: Escreve o código mínimo para passar (GREEN)
+5. **Refatora**: Melhora mantendo os testes verdes
+6. **Verifica a Cobertura**: Garante 80%+ de cobertura
 
-## When to Use
+## Quando Usar
 
-Use `/cpp-test` when:
-- Implementing new C++ functions or classes
-- Adding test coverage to existing code
-- Fixing bugs (write failing test first)
-- Building critical business logic
-- Learning TDD workflow in C++
+Use `/cpp-test` quando:
+- Implementar novas funções ou classes C++
+- Adicionar cobertura de teste a código existente
+- Corrigir bugs (escreva primeiro o teste que falha)
+- Construir lógica de negócio crítica
+- Aprender o fluxo de trabalho TDD em C++
 
-## TDD Cycle
+## Ciclo TDD
 
 ```
 RED     → Write failing GoogleTest test
@@ -33,7 +33,7 @@ REFACTOR → Improve code, tests stay green
 REPEAT  → Next test case
 ```
 
-## Example Session
+## Exemplo de Sessão
 
 ````
 User: /cpp-test I need a function to validate email addresses
@@ -156,9 +156,9 @@ validator/email.cpp     | 100%
 ## TDD Complete!
 ````
 
-## Test Patterns
+## Padrões de Teste
 
-### Basic Tests
+### Testes Básicos
 ```cpp
 TEST(SuiteName, TestName) {
     EXPECT_EQ(add(2, 3), 5);
@@ -168,7 +168,7 @@ TEST(SuiteName, TestName) {
 }
 ```
 
-### Fixtures
+### Fixtures (Fixtures)
 ```cpp
 class DatabaseTest : public ::testing::Test {
 protected:
@@ -183,7 +183,7 @@ TEST_F(DatabaseTest, InsertsRecord) {
 }
 ```
 
-### Parameterized Tests
+### Testes Parametrizados
 ```cpp
 class PrimeTest : public ::testing::TestWithParam<std::pair<int, bool>> {};
 
@@ -199,7 +199,7 @@ INSTANTIATE_TEST_SUITE_P(Primes, PrimeTest, ::testing::Values(
 ));
 ```
 
-## Coverage Commands
+## Comandos de Cobertura
 
 ```bash
 # Build with coverage

@@ -1,5 +1,5 @@
 ---
-description: Enable or disable hookify rules interactively
+description: Habilita ou desabilita regras do hookify interativamente
 ---
 
 Habilite ou desabilite interativamente regras hookify existentes.

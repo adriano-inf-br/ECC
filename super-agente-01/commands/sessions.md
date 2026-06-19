@@ -290,27 +290,27 @@ if (aliases.length === 0) {
 "
 ```
 
-## Operator Notes
+## Notas do operador
 
-- Session files persist `Project`, `Branch`, and `Worktree` in the header so `/sessions info` can disambiguate parallel tmux/worktree runs.
-- For command-center style monitoring, combine `/sessions info`, `git diff --stat`, and the cost metrics emitted by `scripts/hooks/cost-tracker.js`.
+- Os arquivos de sessão persistem `Project`, `Branch` e `Worktree` no cabeçalho para que `/sessions info` possa desambiguar execuções paralelas de tmux/worktree.
+- Para monitoramento estilo central de comando, combine `/sessions info`, `git diff --stat` e as métricas de custo emitidas por `scripts/hooks/cost-tracker.js`.
 
-## Arguments
+## Argumentos
 
 $ARGUMENTS:
-- `list [options]` - List sessions
-  - `--limit <n>` - Max sessions to show (default: 50)
-  - `--date <YYYY-MM-DD>` - Filter by date
-  - `--search <pattern>` - Search in session ID
-- `load <id|alias>` - Load session content
-- `alias <id> <name>` - Create alias for session
+- `list [options]` - Lista sessões
+  - `--limit <n>` - Máximo de sessões a mostrar (padrão: 50)
+  - `--date <YYYY-MM-DD>` - Filtra por data
+  - `--search <pattern>` - Busca no ID da sessão
+- `load <id|alias>` - Carrega o conteúdo da sessão
+- `alias <id> <name>` - Cria alias para a sessão
 - `alias --remove <name>` - Remove alias
-- `unalias <name>` - Same as `--remove`
-- `info <id|alias>` - Show session statistics
-- `aliases` - List all aliases
-- `help` - Show this help
+- `unalias <name>` - Mesmo que `--remove`
+- `info <id|alias>` - Mostra estatísticas da sessão
+- `aliases` - Lista todos os aliases
+- `help` - Mostra esta ajuda
 
-## Examples
+## Exemplos
 
 ```bash
 # List all sessions
@@ -332,9 +332,9 @@ $ARGUMENTS:
 /sessions aliases
 ```
 
-## Notes
+## Notas
 
-- Sessions are stored as markdown files in `~/.claude/session-data/` with legacy reads from `~/.claude/sessions/`
-- Aliases are stored in `~/.claude/session-aliases.json`
-- Session IDs can be shortened (first 4-8 characters usually unique enough)
-- Use aliases for frequently referenced sessions
+- As sessões são armazenadas como arquivos markdown em `~/.claude/session-data/` com leituras legadas de `~/.claude/sessions/`
+- Os aliases são armazenados em `~/.claude/session-aliases.json`
+- Os IDs de sessão podem ser encurtados (os primeiros 4-8 caracteres geralmente são únicos o suficiente)
+- Use aliases para sessões referenciadas com frequência

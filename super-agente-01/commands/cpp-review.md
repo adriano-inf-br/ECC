@@ -61,7 +61,7 @@ cppcheck --enable=all --suppress=missingIncludeSystem src/
 cmake --build build -- -Wall -Wextra -Wpedantic
 ```
 
-## Example Usage
+## Exemplo de Uso
 
 ```text
 User: /cpp-review
@@ -111,22 +111,22 @@ void processUser(const User& user) {
 Recommendation: FAIL: Block merge until CRITICAL issue is fixed
 ```
 
-## Approval Criteria
+## Critérios de Aprovação
 
-| Status | Condition |
+| Status | Condição |
 |--------|-----------|
-| PASS: Approve | No CRITICAL or HIGH issues |
-| WARNING: Warning | Only MEDIUM issues (merge with caution) |
-| FAIL: Block | CRITICAL or HIGH issues found |
+| PASS: Aprovar | Nenhum problema CRITICAL ou HIGH |
+| WARNING: Aviso | Apenas problemas MEDIUM (merge com cautela) |
+| FAIL: Bloquear | Problemas CRITICAL ou HIGH encontrados |
 
-## Integration with Other Commands
+## Integração com Outros Comandos
 
-- Use `/cpp-test` first to ensure tests pass
-- Use `/cpp-build` if build errors occur
-- Use `/cpp-review` before committing
-- Use `/code-review` for non-C++ specific concerns
+- Use `/cpp-test` primeiro para garantir que os testes passem
+- Use `/cpp-build` se ocorrerem erros de build
+- Use `/cpp-review` antes de commitar
+- Use `/code-review` para questões não específicas de C++
 
-## Related
+## Relacionados
 
 - Agent: `agents/cpp-reviewer.md`
 - Skills: `skills/cpp-coding-standards/`, `skills/cpp-testing/`

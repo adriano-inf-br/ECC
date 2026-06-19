@@ -1,5 +1,5 @@
 ---
-description: Get help with the hookify system
+description: Obtenha ajuda com o sistema hookify
 ---
 
 Exibe a documentação completa do hookify.

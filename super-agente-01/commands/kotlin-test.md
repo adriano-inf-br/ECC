@@ -1,30 +1,30 @@
 ---
-description: Enforce TDD workflow for Kotlin. Write Kotest tests first, then implement. Verify 80%+ coverage with Kover.
+description: Aplica o fluxo de trabalho de TDD para Kotlin. Escreva os testes Kotest primeiro, depois implemente. Verifique 80%+ de cobertura com Kover.
 ---
 
-# Kotlin TDD Command
+# Comando Kotlin TDD
 
-This command enforces test-driven development methodology for Kotlin code using Kotest, MockK, and Kover.
+Este comando aplica a metodologia de desenvolvimento orientado a testes para código Kotlin usando Kotest, MockK e Kover.
 
-## What This Command Does
+## O Que Este Comando Faz
 
-1. **Define Types/Interfaces**: Scaffold function signatures first
-2. **Write Kotest Tests**: Create comprehensive test specs (RED)
-3. **Run Tests**: Verify tests fail for the right reason
-4. **Implement Code**: Write minimal code to pass (GREEN)
-5. **Refactor**: Improve while keeping tests green
-6. **Check Coverage**: Ensure 80%+ coverage with Kover
+1. **Definir Tipos/Interfaces**: Esboça as assinaturas das funções primeiro
+2. **Escrever Testes Kotest**: Cria specs de teste abrangentes (RED)
+3. **Executar Testes**: Verifica se os testes falham pelo motivo certo
+4. **Implementar o Código**: Escreve o código mínimo para passar (GREEN)
+5. **Refatorar**: Melhora mantendo os testes verdes
+6. **Verificar Cobertura**: Garante 80%+ de cobertura com Kover
 
-## When to Use
+## Quando Usar
 
-Use `/kotlin-test` when:
-- Implementing new Kotlin functions or classes
-- Adding test coverage to existing Kotlin code
-- Fixing bugs (write failing test first)
-- Building critical business logic
-- Learning TDD workflow in Kotlin
+Use `/kotlin-test` quando:
+- Implementando novas funções ou classes Kotlin
+- Adicionando cobertura de testes a código Kotlin existente
+- Corrigindo bugs (escreva o teste que falha primeiro)
+- Construindo lógica de negócio crítica
+- Aprendendo o fluxo de trabalho de TDD em Kotlin
 
-## TDD Cycle
+## Ciclo de TDD
 
 ```
 RED     -> Write failing Kotest test
@@ -33,15 +33,15 @@ REFACTOR -> Improve code, tests stay green
 REPEAT  -> Next test case
 ```
 
-## Example Session
+## Sessão de Exemplo
 
 ````text
 User: /kotlin-test I need a function to validate user registration requests
 
 Agent:
-# TDD Session: Registration Validator
+# Sessão de TDD: Validador de Registro
 
-## Step 1: Define Interface
+## Passo 1: Definir a Interface
 
 ```kotlin
 // validator/RegistrationValidator.kt
@@ -63,7 +63,7 @@ fun validateRegistration(request: RegistrationRequest): ValidationResult {
 }
 ```
 
-## Step 2: Write Kotest Tests (RED)
+## Passo 2: Escrever Testes Kotest (RED)
 
 ```kotlin
 // validator/RegistrationValidatorTest.kt
@@ -140,7 +140,7 @@ class RegistrationValidatorTest : FunSpec({
 })
 ```
 
-## Step 3: Run Tests - Verify FAIL
+## Passo 3: Executar Testes - Verificar FALHA
 
 ```bash
 $ ./gradlew test
@@ -151,9 +151,9 @@ RegistrationValidatorTest > valid registration returns Valid FAILED
 FAILED (5 tests, 0 passed, 5 failed)
 ```
 
-✓ Tests fail as expected (NotImplementedError).
+✓ Os testes falham como esperado (NotImplementedError).
 
-## Step 4: Implement Minimal Code (GREEN)
+## Passo 4: Implementar o Código Mínimo (GREEN)
 
 ```kotlin
 // validator/RegistrationValidator.kt
@@ -174,7 +174,7 @@ fun validateRegistration(request: RegistrationRequest): ValidationResult {
 }
 ```
 
-## Step 5: Run Tests - Verify PASS
+## Passo 5: Executar Testes - Verificar APROVAÇÃO
 
 ```bash
 $ ./gradlew test
@@ -188,9 +188,9 @@ RegistrationValidatorTest > multiple errors returns all errors PASSED
 PASSED (5 tests, 5 passed, 0 failed)
 ```
 
-✓ All tests passing!
+✓ Todos os testes passando!
 
-## Step 6: Check Coverage
+## Passo 6: Verificar a Cobertura
 
 ```bash
 $ ./gradlew koverHtmlReport

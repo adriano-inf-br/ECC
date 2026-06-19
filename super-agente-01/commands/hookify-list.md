@@ -1,5 +1,5 @@
 ---
-description: List all configured hookify rules
+description: Lista todas as regras do hookify configuradas
 ---
 
 Encontre e exiba todas as regras hookify em uma tabela formatada.

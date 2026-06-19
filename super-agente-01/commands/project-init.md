@@ -1,12 +1,12 @@
 ---
-description: Detect a project's stack and produce a dry-run ECC onboarding plan using the repository's install manifests and stack mappings.
+description: Detecta a stack de um projeto e produz um plano de onboarding ECC em modo dry-run usando os manifestos de instalação e mapeamentos de stack do repositório.
 ---
 
 # /project-init
 
-Create a safe, reviewable ECC onboarding plan for the current project. This command should start in dry-run mode and only write files after explicit user approval.
+Cria um plano de onboarding ECC seguro e revisável para o projeto atual. Este comando deve começar em modo dry-run e só escrever arquivos após aprovação explícita do usuário.
 
-## Usage
+## Uso
 
 ```text
 /project-init
@@ -17,70 +17,70 @@ Create a safe, reviewable ECC onboarding plan for the current project. This comm
 /project-init --config ecc-install.json
 ```
 
-## Safety Rules
+## Regras de Segurança
 
-1. Default to dry-run. Do not modify `CLAUDE.md`, settings files, rules, skills, or install state until the user approves the concrete plan.
-2. Preserve existing project guidance. If `CLAUDE.md`, `.claude/settings.local.json`, `.cursor/`, `.codex/`, `.gemini/`, `.opencode/`, `.codebuddy/`, `.joycode/`, or `.qwen/` already exists, inspect it and propose a merge/append plan instead of overwriting.
-3. Use ECC's installer and manifest tooling. Do not hand-copy files or clone arbitrary remotes as an install shortcut.
-4. Keep permissions narrow. Any generated settings should match detected build/test/lint tools and avoid broad shell access.
-5. Report exactly what would change before applying anything.
+1. Comece sempre em dry-run. Não modifique `CLAUDE.md`, arquivos de settings, rules, skills ou o estado de instalação até o usuário aprovar o plano concreto.
+2. Preserve as orientações existentes do projeto. Se `CLAUDE.md`, `.claude/settings.local.json`, `.cursor/`, `.codex/`, `.gemini/`, `.opencode/`, `.codebuddy/`, `.joycode/` ou `.qwen/` já existir, inspecione-o e proponha um plano de merge/append em vez de sobrescrever.
+3. Use as ferramentas de installer e de manifesto do ECC. Não copie arquivos manualmente nem clone remotos arbitrários como atalho de instalação.
+4. Mantenha as permissões restritas. Quaisquer settings gerados devem corresponder às ferramentas de build/test/lint detectadas e evitar acesso amplo ao shell.
+5. Reporte exatamente o que mudaria antes de aplicar qualquer coisa.
 
-## Detection Inputs
+## Entradas de Detecção
 
-Read the current project root and detect stack signals from:
+Leia a raiz do projeto atual e detecte sinais de stack a partir de:
 
-- package manager files: `package.json`, `package-lock.json`, `pnpm-lock.yaml`, `yarn.lock`, `bun.lockb`
-- language manifests: `pyproject.toml`, `requirements.txt`, `go.mod`, `Cargo.toml`, `pom.xml`, `build.gradle`, `build.gradle.kts`
-- framework files: `next.config.*`, `vite.config.*`, `tailwind.config.*`, `Dockerfile`, `docker-compose.yml`
-- ECC config: `ecc-install.json`
-- optional stack map: `config/project-stack-mappings.json` in the ECC repo
+- arquivos de gerenciador de pacotes: `package.json`, `package-lock.json`, `pnpm-lock.yaml`, `yarn.lock`, `bun.lockb`
+- manifestos de linguagem: `pyproject.toml`, `requirements.txt`, `go.mod`, `Cargo.toml`, `pom.xml`, `build.gradle`, `build.gradle.kts`
+- arquivos de framework: `next.config.*`, `vite.config.*`, `tailwind.config.*`, `Dockerfile`, `docker-compose.yml`
+- config do ECC: `ecc-install.json`
+- mapa de stack opcional: `config/project-stack-mappings.json` no repositório ECC
 
-When the ECC checkout is available, use `config/project-stack-mappings.json` as the stack-to-rules/skills reference. If the file is unavailable, fall back to the installed ECC manifests and explicit user choices.
+Quando o checkout do ECC estiver disponível, use `config/project-stack-mappings.json` como a referência de stack-para-rules/skills. Se o arquivo estiver indisponível, recorra aos manifestos ECC instalados e às escolhas explícitas do usuário.
 
-## Planning Flow
+## Fluxo de Planejamento
 
-1. Identify the target harness. Default to `claude` unless the user asks for `cursor`, `codex`, `gemini`, `opencode`, `codebuddy`, `joycode`, or `qwen`.
-2. Detect stacks from project files and show the evidence for each match.
-3. Resolve the smallest useful ECC plan:
-   - project has an `ecc-install.json`: `node scripts/install-plan.js --config ecc-install.json --json`
-   - user named a profile: `node scripts/install-plan.js --profile <profile> --target <target> --json`
-   - user named skills: `node scripts/install-plan.js --skills <skill-ids> --target <target> --json`
-   - only language stacks are detected: use the legacy language install dry-run with those language names
-4. Run a dry-run apply command before writing:
+1. Identifique o harness alvo. Use `claude` por padrão, a menos que o usuário peça `cursor`, `codex`, `gemini`, `opencode`, `codebuddy`, `joycode` ou `qwen`.
+2. Detecte as stacks a partir dos arquivos do projeto e mostre a evidência de cada correspondência.
+3. Resolva o menor plano ECC útil:
+   - o projeto tem um `ecc-install.json`: `node scripts/install-plan.js --config ecc-install.json --json`
+   - o usuário nomeou um profile: `node scripts/install-plan.js --profile <profile> --target <target> --json`
+   - o usuário nomeou skills: `node scripts/install-plan.js --skills <skill-ids> --target <target> --json`
+   - apenas stacks de linguagem foram detectadas: use o dry-run de instalação de linguagem legado com esses nomes de linguagem
+4. Rode um comando de apply em dry-run antes de escrever:
 
 ```bash
 node scripts/install-apply.js --target <target> --dry-run --json <language-or-profile-args>
 ```
 
-5. Summarize detected stacks, selected modules/components/skills, target paths, skipped unsupported modules, and files that would be changed.
-6. Ask for approval before applying the non-dry-run command.
+5. Resuma as stacks detectadas, os módulos/componentes/skills selecionados, os caminhos alvo, os módulos não suportados ignorados e os arquivos que seriam alterados.
+6. Peça aprovação antes de aplicar o comando que não é dry-run.
 
-## Output Contract
+## Contrato de Saída
 
-Return:
+Retorne:
 
-1. detected stack evidence
-2. proposed target harness
-3. exact dry-run command used
-4. exact apply command to run after approval
-5. files/directories that would be created or changed
-6. warnings about existing files, broad permissions, missing scripts, or unsupported targets
+1. evidência da stack detectada
+2. harness alvo proposto
+3. comando dry-run exato utilizado
+4. comando de apply exato a rodar após a aprovação
+5. arquivos/diretórios que seriam criados ou alterados
+6. avisos sobre arquivos existentes, permissões amplas, scripts ausentes ou alvos não suportados
 
-## CLAUDE.md Guidance
+## Orientações para o CLAUDE.md
 
-If the user wants a `CLAUDE.md` starter, generate it separately from the installer plan and keep it minimal:
+Se o usuário quiser um `CLAUDE.md` inicial, gere-o separadamente do plano do installer e mantenha-o mínimo:
 
-- build command, if detected
-- test command, if detected
-- lint/typecheck command, if detected
-- dev server command, if detected
-- repo-specific notes from existing package scripts or manifests
+- comando de build, se detectado
+- comando de test, se detectado
+- comando de lint/typecheck, se detectado
+- comando de servidor de dev, se detectado
+- notas específicas do repositório a partir dos scripts de package ou manifestos existentes
 
-Never replace an existing `CLAUDE.md` without showing a diff and receiving approval.
+Nunca substitua um `CLAUDE.md` existente sem mostrar um diff e receber aprovação.
 
-## Related
+## Relacionados
 
-- `config/project-stack-mappings.json` for stack-to-surface hints
-- `scripts/install-plan.js` for deterministic plan resolution
-- `scripts/install-apply.js` for dry-run and apply operations
-- `/ecc-guide` for interactive feature discovery before installing
+- `config/project-stack-mappings.json` para dicas de stack-para-surface
+- `scripts/install-plan.js` para resolução determinística de plano
+- `scripts/install-apply.js` para operações de dry-run e apply
+- `/ecc-guide` para descoberta interativa de funcionalidades antes de instalar

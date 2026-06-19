@@ -1,53 +1,53 @@
 ---
-description: Review Flutter/Dart code for idiomatic patterns, widget best practices, state management, performance, accessibility, and security. Invokes the flutter-reviewer agent.
+description: Revisa código Flutter/Dart quanto a padrões idiomáticos, boas práticas de widgets, gerenciamento de estado, performance, acessibilidade e segurança. Invoca o agent flutter-reviewer.
 ---
 
 # Flutter Code Review
 
-This command invokes the **flutter-reviewer** agent to review Flutter/Dart code changes.
+Este comando invoca o agent **flutter-reviewer** para revisar mudanças de código Flutter/Dart.
 
-## What This Command Does
+## O Que Este Comando Faz
 
-1. **Gather Context**: Review `git diff --staged` and `git diff`
-2. **Inspect Project**: Check `pubspec.yaml`, `analysis_options.yaml`, state management solution
-3. **Security Pre-scan**: Check for hardcoded secrets and critical security issues
-4. **Full Review**: Apply the complete review checklist
-5. **Report Findings**: Output issues grouped by severity with fix guidance
+1. **Reunir Contexto**: Revisa `git diff --staged` e `git diff`
+2. **Inspecionar o Projeto**: Verifica `pubspec.yaml`, `analysis_options.yaml`, solução de gerenciamento de estado
+3. **Pré-varredura de Segurança**: Verifica segredos hardcoded e questões críticas de segurança
+4. **Revisão Completa**: Aplica o checklist completo de revisão
+5. **Reportar Achados**: Apresenta as questões agrupadas por severidade com orientação de correção
 
-## Prerequisites
+## Pré-requisitos
 
-Before running `/flutter-review`, ensure:
-1. **Build passes** — run `/flutter-build` first; a review on broken code is incomplete
-2. **Tests pass** — run `/flutter-test` to confirm no regressions
-3. **No merge conflicts** — resolve all conflicts so the diff reflects only intentional changes
-4. **`flutter analyze` is clean** — fix analyzer warnings before review
+Antes de executar `/flutter-review`, garanta que:
+1. **O build passa** — execute `/flutter-build` primeiro; uma revisão sobre código quebrado é incompleta
+2. **Os testes passam** — execute `/flutter-test` para confirmar que não há regressões
+3. **Sem conflitos de merge** — resolva todos os conflitos para que o diff reflita apenas mudanças intencionais
+4. **`flutter analyze` está limpo** — corrija os warnings do analisador antes da revisão
 
-## When to Use
+## Quando Usar
 
-Use `/flutter-review` when:
-- Before submitting a PR with Flutter/Dart changes (after build and tests pass)
-- After implementing a new feature to catch issues early
-- When reviewing someone else's Flutter code
-- To audit a widget, state management component, or service class
-- Before a production release
+Use `/flutter-review` quando:
+- Antes de submeter um PR com mudanças Flutter/Dart (após o build e os testes passarem)
+- Após implementar uma nova funcionalidade para detectar problemas cedo
+- Ao revisar o código Flutter de outra pessoa
+- Para auditar um widget, componente de gerenciamento de estado ou classe de serviço
+- Antes de um release de produção
 
-## Review Areas
+## Áreas de Revisão
 
-| Area | Severity |
+| Área | Severidade |
 |------|----------|
-| Hardcoded secrets, cleartext HTTP | CRITICAL |
-| Architecture violations, state management anti-patterns | CRITICAL |
-| Widget rebuild issues, resource leaks | HIGH |
-| Missing `dispose()`, `BuildContext` after await | HIGH |
-| Dart null safety, missing error/loading states | HIGH |
-| Const propagation, widget composition | HIGH |
-| Performance: expensive work in `build()` | HIGH |
-| Accessibility, semantic labels | MEDIUM |
-| Missing tests for state transitions | HIGH |
-| Hardcoded strings (l10n) | MEDIUM |
-| Pub dependency hygiene | LOW |
+| Segredos hardcoded, HTTP em texto puro | CRITICAL |
+| Violações de arquitetura, anti-padrões de gerenciamento de estado | CRITICAL |
+| Problemas de rebuild de widgets, vazamentos de recursos | HIGH |
+| `dispose()` ausente, `BuildContext` após await | HIGH |
+| Null safety do Dart, estados de erro/carregamento ausentes | HIGH |
+| Propagação de const, composição de widgets | HIGH |
+| Performance: trabalho custoso em `build()` | HIGH |
+| Acessibilidade, labels semânticos | MEDIUM |
+| Testes ausentes para transições de estado | HIGH |
+| Strings hardcoded (l10n) | MEDIUM |
+| Higiene de dependências pub | LOW |
 
-## Example Session
+## Exemplo de Sessão
 
 ````text
 User: /flutter-review
@@ -98,18 +98,18 @@ Fix: Use the project's l10n accessor: `Text(context.l10n.loginButton)`.
 Verdict: BLOCK — HIGH issues must be fixed before merge.
 ````
 
-## Approval Criteria
+## Critérios de Aprovação
 
-- **Approve**: No CRITICAL or HIGH issues
-- **Block**: Any CRITICAL or HIGH issues must be fixed before merge
+- **Aprovar**: Nenhuma questão CRITICAL ou HIGH
+- **Bloquear**: Qualquer questão CRITICAL ou HIGH deve ser corrigida antes do merge
 
-## Related Commands
+## Comandos Relacionados
 
-- `/flutter-build` — Fix build errors first
-- `/flutter-test` — Run tests before reviewing
-- `/code-review` — General code review (language-agnostic)
+- `/flutter-build` — Corrige erros de build primeiro
+- `/flutter-test` — Executa testes antes de revisar
+- `/code-review` — Revisão de código geral (agnóstica de linguagem)
 
-## Related
+## Relacionados
 
 - Agent: `agents/flutter-reviewer.md`
 - Skill: `skills/flutter-dart-code-review/`

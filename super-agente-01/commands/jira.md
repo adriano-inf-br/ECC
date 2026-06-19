@@ -1,35 +1,35 @@
 ---
-description: Retrieve a Jira ticket, analyze requirements, update status, or add comments. Uses the jira-integration skill and MCP or REST API.
+description: Recupera um ticket do Jira, analisa requisitos, atualiza status ou adiciona comentários. Usa a skill jira-integration e MCP ou REST API.
 ---
 
-# Jira Command
+# Comando Jira
 
-Interact with Jira tickets directly from your workflow — fetch tickets, analyze requirements, add comments, and transition status.
+Interaja com tickets do Jira diretamente do seu fluxo de trabalho — busque tickets, analise requisitos, adicione comentários e altere o status.
 
-## Usage
+## Uso
 
 ```
-/jira get <TICKET-KEY>          # Fetch and analyze a ticket
-/jira comment <TICKET-KEY>      # Add a progress comment
-/jira transition <TICKET-KEY>   # Change ticket status
-/jira search <JQL>              # Search issues with JQL
+/jira get <TICKET-KEY>          # Busca e analisa um ticket
+/jira comment <TICKET-KEY>      # Adiciona um comentário de progresso
+/jira transition <TICKET-KEY>   # Altera o status do ticket
+/jira search <JQL>              # Pesquisa issues com JQL
 ```
 
-## What This Command Does
+## O Que Este Comando Faz
 
-1. **Get & Analyze** — Fetch a Jira ticket and extract requirements, acceptance criteria, test scenarios, and dependencies
-2. **Comment** — Add structured progress updates to a ticket
-3. **Transition** — Move a ticket through workflow states (To Do → In Progress → Done)
-4. **Search** — Find issues using JQL queries
+1. **Buscar e Analisar** — Busca um ticket do Jira e extrai requisitos, critérios de aceitação, cenários de teste e dependências
+2. **Comentar** — Adiciona atualizações de progresso estruturadas a um ticket
+3. **Transicionar** — Move um ticket pelos estados do fluxo de trabalho (To Do → In Progress → Done)
+4. **Pesquisar** — Encontra issues usando consultas JQL
 
-## How It Works
+## Como Funciona
 
 ### `/jira get <TICKET-KEY>`
 
-1. Fetch the ticket from Jira (via MCP `jira_get_issue` or REST API)
-2. Extract all fields: summary, description, acceptance criteria, priority, labels, linked issues
-3. Optionally fetch comments for additional context
-4. Produce a structured analysis:
+1. Buscar o ticket no Jira (via MCP `jira_get_issue` ou REST API)
+2. Extrair todos os campos: resumo, descrição, critérios de aceitação, prioridade, labels, issues vinculadas
+3. Opcionalmente buscar comentários para contexto adicional
+4. Produzir uma análise estruturada:
 
 ```
 Ticket: PROJ-1234

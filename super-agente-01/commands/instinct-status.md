@@ -40,7 +40,7 @@ python3 "$ECC_ROOT/skills/continuous-learning-v2/scripts/instinct-cli.py" status
 
 ```
 ============================================================
-  INSTINCT STATUS - 12 total
+  STATUS DOS INSTINTOS - 12 no total
 ============================================================
 
   Projeto: my-app (a1b2c3d4e5f6)

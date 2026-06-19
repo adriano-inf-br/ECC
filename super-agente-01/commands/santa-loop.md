@@ -1,53 +1,53 @@
 ---
-description: Adversarial dual-review convergence loop — two independent model reviewers must both approve before code ships.
+description: Loop de convergência de revisão dupla adversarial — dois revisores de modelos independentes devem ambos aprovar antes de o código seguir.
 ---
 
 # Santa Loop
 
-Adversarial dual-review convergence loop using the santa-method skill. Two independent reviewers — different models, no shared context — must both return NICE before code ships.
+Loop de convergência de revisão dupla adversarial usando a skill santa-method. Dois revisores independentes — modelos diferentes, sem contexto compartilhado — devem ambos retornar NICE antes de o código seguir.
 
-## Purpose
+## Propósito
 
-Run two independent reviewers (Claude Opus + an external model) against the current task output. Both must return NICE before the code is pushed. If either returns NAUGHTY, fix all flagged issues, commit, and re-run fresh reviewers — up to 3 rounds.
+Execute dois revisores independentes (Claude Opus + um modelo externo) contra a saída da tarefa atual. Ambos devem retornar NICE antes de o código ser enviado. Se qualquer um retornar NAUGHTY, corrija todos os problemas sinalizados, faça o commit e re-execute revisores novos — até 3 rodadas.
 
-## Usage
+## Uso
 
 ```
 /santa-loop [file-or-glob | description]
 ```
 
-## Workflow
+## Fluxo de trabalho
 
-### Step 1: Identify What to Review
+### Passo 1: Identifique o que revisar
 
-Determine the scope from `$ARGUMENTS` or fall back to uncommitted changes:
+Determine o escopo a partir de `$ARGUMENTS` ou recorra às mudanças não commitadas:
 
 ```bash
 git diff --name-only HEAD
 ```
 
-Read all changed files to build the full review context. If `$ARGUMENTS` specifies a path, file, or description, use that as the scope instead.
+Leia todos os arquivos alterados para construir o contexto completo da revisão. Se `$ARGUMENTS` especificar um caminho, arquivo ou descrição, use isso como escopo.
 
-### Step 2: Build the Rubric
+### Passo 2: Construa a rubrica
 
-Construct a rubric appropriate to the file types under review. Every criterion must have an objective PASS/FAIL condition. Include at minimum:
+Construa uma rubrica apropriada aos tipos de arquivo em revisão. Todo critério deve ter uma condição objetiva de PASS/FAIL. Inclua no mínimo:
 
-| Criterion | Pass Condition |
+| Critério | Condição de aprovação |
 |-----------|---------------|
-| Correctness | Logic is sound, no bugs, handles edge cases |
-| Security | No secrets, injection, XSS, or OWASP Top 10 issues |
-| Error handling | Errors handled explicitly, no silent swallowing |
-| Completeness | All requirements addressed, no missing cases |
-| Internal consistency | No contradictions between files or sections |
-| No regressions | Changes don't break existing behavior |
+| Correção | Lógica sólida, sem bugs, trata casos extremos |
+| Segurança | Sem segredos, injeção, XSS ou problemas do OWASP Top 10 |
+| Tratamento de erros | Erros tratados explicitamente, sem engolir silenciosamente |
+| Completude | Todos os requisitos atendidos, sem casos faltando |
+| Consistência interna | Sem contradições entre arquivos ou seções |
+| Sem regressões | Mudanças não quebram o comportamento existente |
 
-Add domain-specific criteria based on file types (e.g., type safety for TS, memory safety for Rust, migration safety for SQL).
+Adicione critérios específicos do domínio com base nos tipos de arquivo (ex.: segurança de tipos para TS, segurança de memória para Rust, segurança de migração para SQL).
 
-### Step 3: Dual Independent Review
+### Passo 3: Revisão dupla independente
 
-Launch two reviewers **in parallel** using the Agent tool (both in a single message for concurrent execution). Both must complete before proceeding to the verdict gate.
+Inicie dois revisores **em paralelo** usando a ferramenta Agent (ambos em uma única mensagem para execução concorrente). Ambos devem concluir antes de prosseguir ao portão de veredito.
 
-Each reviewer evaluates every rubric criterion as PASS or FAIL, then returns structured JSON:
+Cada revisor avalia cada critério da rubrica como PASS ou FAIL e então retorna JSON estruturado:
 
 ```json
 {
@@ -60,25 +60,25 @@ Each reviewer evaluates every rubric criterion as PASS or FAIL, then returns str
 }
 ```
 
-The verdict gate (Step 4) maps these to NICE/NAUGHTY: both PASS → NICE, either FAIL → NAUGHTY.
+O portão de veredito (Passo 4) mapeia isso para NICE/NAUGHTY: ambos PASS → NICE, qualquer FAIL → NAUGHTY.
 
-#### Reviewer A: Claude Agent (always runs)
+#### Revisor A: Claude Agent (sempre executa)
 
-Launch an Agent (subagent_type: `code-reviewer`, model: `opus`) with the full rubric + all files under review. The prompt must include:
-- The complete rubric
-- All file contents under review
+Inicie um Agent (subagent_type: `code-reviewer`, model: `opus`) com a rubrica completa + todos os arquivos em revisão. O prompt deve incluir:
+- A rubrica completa
+- Todo o conteúdo dos arquivos em revisão
 - "You are an independent quality reviewer. You have NOT seen any other review. Your job is to find problems, not to approve."
-- Return the structured JSON verdict above
+- Retornar o veredito JSON estruturado acima
 
-#### Reviewer B: External Model (Claude fallback only if no external CLI installed)
+#### Revisor B: Modelo externo (fallback para Claude apenas se nenhum CLI externo estiver instalado)
 
-First, detect which CLIs are available:
+Primeiro, detecte quais CLIs estão disponíveis:
 ```bash
 command -v codex >/dev/null 2>&1 && echo "codex" || true
 command -v gemini >/dev/null 2>&1 && echo "gemini" || true
 ```
 
-Build the reviewer prompt (identical rubric + instructions as Reviewer A) and write it to a unique temp file:
+Construa o prompt do revisor (rubrica + instruções idênticas às do Revisor A) e escreva-o em um arquivo temporário único:
 ```bash
 PROMPT_FILE=$(mktemp /tmp/santa-reviewer-b-XXXXXX.txt)
 cat > "$PROMPT_FILE" << 'EOF'
@@ -86,42 +86,42 @@ cat > "$PROMPT_FILE" << 'EOF'
 EOF
 ```
 
-Use the first available CLI:
+Use o primeiro CLI disponível:
 
-**Codex CLI** (if installed)
+**Codex CLI** (se instalado)
 ```bash
 codex exec --sandbox read-only -m gpt-5.4 -C "$(pwd)" - < "$PROMPT_FILE"
 rm -f "$PROMPT_FILE"
 ```
 
-**Gemini CLI** (if installed and codex is not)
+**Gemini CLI** (se instalado e codex não)
 ```bash
 gemini -p "$(cat "$PROMPT_FILE")" -m gemini-2.5-pro
 rm -f "$PROMPT_FILE"
 ```
 
-**Claude Agent fallback** (only if neither `codex` nor `gemini` is installed)
-Launch a second Claude Agent (subagent_type: `code-reviewer`, model: `opus`). Log a warning that both reviewers share the same model family — true model diversity was not achieved but context isolation is still enforced.
+**Fallback para Claude Agent** (apenas se nem `codex` nem `gemini` estiverem instalados)
+Inicie um segundo Claude Agent (subagent_type: `code-reviewer`, model: `opus`). Registre um aviso de que ambos os revisores compartilham a mesma família de modelo — a verdadeira diversidade de modelo não foi alcançada, mas o isolamento de contexto ainda é aplicado.
 
-In all cases, the reviewer must return the same structured JSON verdict as Reviewer A.
+Em todos os casos, o revisor deve retornar o mesmo veredito JSON estruturado do Revisor A.
 
-### Step 4: Verdict Gate
+### Passo 4: Portão de veredito
 
-- **Both PASS** → **NICE** — proceed to Step 6 (push)
-- **Either FAIL** → **NAUGHTY** — merge all critical issues from both reviewers, deduplicate, proceed to Step 5
+- **Ambos PASS** → **NICE** — prossiga para o Passo 6 (push)
+- **Qualquer FAIL** → **NAUGHTY** — mescle todos os problemas críticos de ambos os revisores, deduplique, prossiga para o Passo 5
 
-### Step 5: Fix Cycle (NAUGHTY path)
+### Passo 5: Ciclo de correção (caminho NAUGHTY)
 
-1. Display all critical issues from both reviewers
-2. Fix every flagged issue — change only what was flagged, no drive-by refactors
-3. Commit all fixes in a single commit:
+1. Exiba todos os problemas críticos de ambos os revisores
+2. Corrija cada problema sinalizado — altere apenas o que foi sinalizado, sem refatorações oportunistas
+3. Faça o commit de todas as correções em um único commit:
    ```
    fix: address santa-loop review findings (round N)
    ```
-4. Re-run Step 3 with **fresh reviewers** (no memory of previous rounds)
-5. Repeat until both return PASS
+4. Re-execute o Passo 3 com **revisores novos** (sem memória de rodadas anteriores)
+5. Repita até ambos retornarem PASS
 
-**Maximum 3 iterations.** If still NAUGHTY after 3 rounds, stop and present remaining issues:
+**Máximo de 3 iterações.** Se ainda NAUGHTY após 3 rodadas, pare e apresente os problemas restantes:
 
 ```
 SANTA LOOP ESCALATION (exceeded 3 iterations)
@@ -132,21 +132,21 @@ Remaining issues after 3 rounds:
 Manual review required before proceeding.
 ```
 
-Do NOT push.
+NÃO faça push.
 
-### Step 6: Push (NICE path)
+### Passo 6: Push (caminho NICE)
 
-When both reviewers return PASS:
+Quando ambos os revisores retornarem PASS:
 
 ```bash
 git push -u origin HEAD
 ```
 
-### Step 7: Final Report
+### Passo 7: Relatório final
 
-Print the output report (see Output section below).
+Imprima o relatório de saída (veja a seção Saída abaixo).
 
-## Output
+## Saída
 
 ```
 SANTA VERDICT: [NICE / NAUGHTY (escalated)]
@@ -163,13 +163,13 @@ Iterations: [N]/3
 Result:     [PUSHED / ESCALATED TO USER]
 ```
 
-## Notes
+## Notas
 
-- Reviewer A (Claude Opus) always runs — guarantees at least one strong reviewer regardless of tooling.
-- Model diversity is the goal for Reviewer B. GPT-5.4 or Gemini 2.5 Pro gives true independence — different training data, different biases, different blind spots. The Claude-only fallback still provides value via context isolation but loses model diversity.
-- Strongest available models are used: Opus for Reviewer A, GPT-5.4 or Gemini 2.5 Pro for Reviewer B.
-- External reviewers run with `--sandbox read-only` (Codex) to prevent repo mutation during review.
-- Fresh reviewers each round prevents anchoring bias from prior findings.
-- The rubric is the most important input. Tighten it if reviewers rubber-stamp or flag subjective style issues.
-- Commits happen on NAUGHTY rounds so fixes are preserved even if the loop is interrupted.
-- Push only happens after NICE — never mid-loop.
+- O Revisor A (Claude Opus) sempre executa — garante pelo menos um revisor forte independentemente do ferramental.
+- A diversidade de modelo é o objetivo do Revisor B. GPT-5.4 ou Gemini 2.5 Pro dá independência real — dados de treinamento diferentes, vieses diferentes, pontos cegos diferentes. O fallback apenas com Claude ainda agrega valor via isolamento de contexto, mas perde a diversidade de modelo.
+- São usados os modelos mais fortes disponíveis: Opus para o Revisor A, GPT-5.4 ou Gemini 2.5 Pro para o Revisor B.
+- Revisores externos executam com `--sandbox read-only` (Codex) para evitar mutação do repositório durante a revisão.
+- Revisores novos a cada rodada evitam o viés de ancoragem dos achados anteriores.
+- A rubrica é a entrada mais importante. Aperte-a se os revisores carimbarem aprovações sem critério ou sinalizarem questões subjetivas de estilo.
+- Os commits acontecem nas rodadas NAUGHTY para que as correções sejam preservadas mesmo que o loop seja interrompido.
+- O push só acontece após NICE — nunca no meio do loop.

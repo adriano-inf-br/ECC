@@ -1,11 +1,11 @@
-# X Thread Draft - ECC v1.8.0
+# Rascunho de Thread no X - ECC v1.8.0
 
-1/ ECC v1.8.0 is live. This release is about one thing: better agent harness performance.
+1/ O ECC v1.8.0 está no ar. Este lançamento é sobre uma coisa: melhor desempenho do harness de agent.
 
-2/ We shipped hook reliability fixes, loop operations commands, and stronger eval workflows.
+2/ Entregamos correções de confiabilidade de hooks, comandos de operações de loop e fluxos de trabalho de eval mais robustos.
 
-3/ NanoClaw v2 now supports model routing, skill hot-load, branching, search, compaction, export, and metrics.
+3/ O NanoClaw v2 agora suporta roteamento de modelo, hot-load de skill, branching, busca, compactação, exportação e métricas.
 
-4/ If your agents are underperforming, start with `/harness-audit` and tighten quality gates.
+4/ Se seus agents estão com desempenho abaixo do esperado, comece com `/harness-audit` e ajuste os quality gates.
 
-5/ Cross-harness parity remains a priority: Claude Code, Cursor, OpenCode, Codex.
+5/ A paridade entre harnesses continua sendo uma prioridade: Claude Code, Cursor, OpenCode, Codex.

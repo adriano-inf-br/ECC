@@ -1,5 +1,5 @@
-# X Quote Draft - Plankton / De-slop Workflow
+# Rascunho de Citação para o X - Fluxo de Trabalho Plankton / De-slop
 
-The quality gate model matters.
+O modelo de quality gate importa.
 
-In v1.8.0 we pushed harder on write-time quality enforcement, deterministic checks, and cleaner loop recovery so agents converge faster with less noise.
+No v1.8.0 avançamos mais na aplicação de qualidade no momento da escrita, verificações determinísticas e recuperação de loop mais limpa para que os agents convirjam mais rapidamente com menos ruído.

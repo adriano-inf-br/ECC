@@ -1,18 +1,18 @@
-# X Thread Draft — ECC v1.10.0
+# Rascunho de Thread no X — ECC v1.10.0
 
-ECC crossed 140K stars and the public surface had drifted too far from the actual repo.
+O ECC ultrapassou 140K estrelas e a superfície pública havia se afastado demais do repositório real.
 
-so v1.10.0 is the sync release.
+então o v1.10.0 é o lançamento de sincronização.
 
 38 agents
 156 skills
-72 commands
+72 comandos
 
-plugin metadata fixed
-install surfaces corrected
-docs and release story brought back in line with the live repo
+metadados do plugin corrigidos
+superfícies de instalação corrigidas
+docs e narrativa de lançamento trazidos de volta em linha com o repositório ativo
 
-also shipped the operator / media lane that grew out of real usage:
+também entregou a faixa de operador / mídia que cresceu a partir do uso real:
 
 - brand-voice
 - social-graph-ranker
@@ -24,11 +24,11 @@ also shipped the operator / media lane that grew out of real usage:
 - manim-video
 - remotion-video-creation
 
-and most importantly:
+e o mais importante:
 
-ECC 2.0 is no longer just roadmap talk.
+O ECC 2.0 não é mais apenas conversa de roteiro.
 
-the `ecc2/` control-plane alpha is in-tree, builds today, and already exposes:
+o alfa do plano de controle `ecc2/` está na árvore, compila hoje, e já expõe:
 
 - dashboard
 - start
@@ -38,8 +38,8 @@ the `ecc2/` control-plane alpha is in-tree, builds today, and already exposes:
 - resume
 - daemon
 
-not calling it GA yet.
+não estou chamando isso de disponibilidade geral ainda.
 
-calling it what it is:
+estou chamando pelo que é:
 
-an actual alpha control plane sitting on top of the harness/workflow layer we’ve been building in public.
+um plano de controle alfa real sentado em cima da camada de harness/fluxo de trabalho que temos construído em público.

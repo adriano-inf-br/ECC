@@ -1,17 +1,17 @@
-# ECC v1.10.0 Release Notes
+# Notas de Lançamento do ECC v1.10.0
 
-## Positioning
+## Posicionamento
 
-ECC v1.10.0 is a surface-sync and operator-lane release.
+O ECC v1.10.0 é um lançamento de sincronização de superfície e de faixa de operador.
 
-The goal was to make the public repo, plugin metadata, install paths, and ecosystem story reflect the actual live state of the project again, while continuing to ship the operator workflows and media tooling that grew around the core harness layer.
+O objetivo foi fazer com que o repositório público, os metadados do plugin, os caminhos de instalação e a narrativa do ecossistema voltassem a refletir o estado real e ativo do projeto, enquanto continuamos entregando os fluxos de trabalho de operador e as ferramentas de mídia que cresceram em torno da camada central do harness.
 
-## What Changed
+## O Que Mudou
 
-- Synced the live OSS surface to **38 agents, 156 skills, and 72 commands**.
-- Updated the Claude plugin, Codex plugin, OpenCode package metadata, and release-facing docs to **1.10.0**.
-- Refreshed top-line repo metrics to match the live public repo (**140K+ stars**, **21K+ forks**, **170+ contributors**).
-- Expanded the operator/workflow lane with:
+- Sincronizou a superfície OSS ativa para **38 agents, 156 skills e 72 comandos**.
+- Atualizou o plugin do Claude, o plugin do Codex, os metadados do pacote OpenCode e a documentação voltada para o lançamento para **1.10.0**.
+- Atualizou as métricas principais do repositório para corresponder ao repositório público ativo (**140K+ estrelas**, **21K+ forks**, **170+ contribuidores**).
+- Expandiu a faixa de operador/fluxo de trabalho com:
   - `brand-voice`
   - `social-graph-ranker`
   - `connections-optimizer`
@@ -19,20 +19,20 @@ The goal was to make the public repo, plugin metadata, install paths, and ecosys
   - `google-workspace-ops`
   - `project-flow-ops`
   - `workspace-surface-audit`
-- Expanded the media lane with:
+- Expandiu a faixa de mídia com:
   - `manim-video`
   - `remotion-video-creation`
-- Added and stabilized more framework/domain coverage, including `nestjs-patterns`.
+- Adicionou e estabilizou mais cobertura de framework/domínio, incluindo `nestjs-patterns`.
 
-## ECC 2.0 Status
+## Status do ECC 2.0
 
-ECC 2.0 is **real and usable as an alpha**, but it is **not general-availability complete**.
+O ECC 2.0 é **real e utilizável como alfa**, mas **não está completo para disponibilidade geral**.
 
-What exists today:
+O que existe hoje:
 
-- `ecc2/` Rust control-plane codebase in the main repo
-- `cargo build --manifest-path ecc2/Cargo.toml` passes
-- `ecc-tui` commands currently available:
+- Código-fonte do plano de controle Rust `ecc2/` no repositório principal
+- `cargo build --manifest-path ecc2/Cargo.toml` passa com sucesso
+- Comandos `ecc-tui` atualmente disponíveis:
   - `dashboard`
   - `start`
   - `sessions`
@@ -41,30 +41,30 @@ What exists today:
   - `resume`
   - `daemon`
 
-What this means:
+O que isso significa:
 
-- You can experiment with the control-plane surface now.
-- You should not describe the full ECC 2.0 roadmap as finished.
-- The right framing today is **ECC 2.0 alpha / control-plane preview**, not GA.
+- Você pode experimentar a superfície do plano de controle agora.
+- Você não deve descrever o roteiro completo do ECC 2.0 como concluído.
+- O enquadramento correto hoje é **ECC 2.0 alfa / prévia do plano de controle**, não disponibilidade geral.
 
-## Install Guidance
+## Orientação de Instalação
 
-Current install surfaces:
+Superfícies de instalação atuais:
 
-- Claude Code plugin
-- `ecc-universal` on npm
-- Codex plugin manifest
-- OpenCode package/plugin surface
-- AgentShield CLI + npm + GitHub Marketplace action
+- Plugin do Claude Code
+- `ecc-universal` no npm
+- Manifesto do plugin do Codex
+- Superfície de pacote/plugin do OpenCode
+- CLI do AgentShield + npm + ação do GitHub Marketplace
 
-Important nuance:
+Nuance importante:
 
-- The Claude plugin remains constrained by platform-level `rules` distribution limits.
-- The selective install / OSS path is still the most reliable full install for teams that want the complete ECC surface.
+- O plugin do Claude permanece limitado pelos limites de distribuição de `rules` no nível da plataforma.
+- O caminho de instalação seletiva / OSS ainda é a instalação completa mais confiável para equipes que querem a superfície ECC completa.
 
-## Recommended Upgrade Path
+## Caminho de Atualização Recomendado
 
-1. Refresh to the latest plugin/install metadata.
-2. Prefer the selective install / OSS path when you need full rules coverage.
-3. Use AgentShield for guardrails and repo scanning.
-4. Treat ECC 2.0 as an alpha control-plane surface until the open P0/P1 roadmap is materially burned down.
+1. Atualize para os metadados mais recentes de plugin/instalação.
+2. Prefira o caminho de instalação seletiva / OSS quando precisar de cobertura completa de rules.
+3. Use o AgentShield para guardrails e escaneamento de repositório.
+4. Trate o ECC 2.0 como uma superfície alfa de plano de controle até que o roteiro aberto de P0/P1 seja substancialmente concluído.

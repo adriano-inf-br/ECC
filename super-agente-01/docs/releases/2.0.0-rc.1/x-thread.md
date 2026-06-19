@@ -1,115 +1,115 @@
-# X Thread Draft - ECC v2.0.0-rc.1
+# Rascunho da Thread X - ECC v2.0.0-rc.1
 
-1/ ECC v2.0.0-rc.1 is the first release-candidate pass at the 2.0 direction.
+1/ ECC v2.0.0-rc.1 é a primeira passagem de release-candidate na direção 2.0.
 
-The repo is moving from a Claude Code config pack into a meta-harness for
-agentic work.
+O repositório está migrando de um pacote de configuração do Claude Code para um
+meta-harness para trabalho agentic.
 
-2/ The important split:
+2/ A divisão importante:
 
-ECC is the reusable substrate.
-Hermes is the operator shell that can run on top.
+ECC é o substrato reutilizável.
+Hermes é o shell do operador que pode rodar sobre ele.
 
-Skills, hooks, MCP configs, rules, and workflow packs live in ECC.
+Skills, hooks, configurações MCP, rules e pacotes de fluxo de trabalho vivem no ECC.
 
-3/ A meta-harness matters because the agent layer is fragmenting.
+3/ Um meta-harness importa porque a camada de agent está se fragmentando.
 
-Claude Code, Codex, OpenCode, Cursor, Gemini, Zed, Copilot, and terminal
-workflows all need similar operating primitives:
+Claude Code, Codex, OpenCode, Cursor, Gemini, Zed, Copilot e fluxos de trabalho
+de terminal todos precisam de primitivas operacionais semelhantes:
 
-- context
-- tools
-- memory
+- contexto
+- ferramentas
+- memória
 - gates
-- evaluation
-- release evidence
-- security checks
+- avaliação
+- evidência de lançamento
+- verificações de segurança
 
-4/ ECC gives those primitives a shared shape instead of leaving every workflow
-stuck inside one client.
+4/ O ECC dá a essas primitivas uma forma compartilhada em vez de deixar cada fluxo
+de trabalho preso dentro de um cliente.
 
-Use the harness you like. Keep the workflow layer portable.
+Use o harness que preferir. Mantenha a camada de fluxo de trabalho portável.
 
-5/ Since v1.10.0, the work also picked up the operator layer:
+5/ Desde a v1.10.0, o trabalho também incorporou a camada de operador:
 
-PR/issue/discussion audits, Linear progress sync, release evidence, observability checks, and a generated readiness dashboard.
+Auditorias de PR/issue/discussão, sincronização de progresso do Linear, evidência de lançamento, verificações de observabilidade e um painel de prontidão gerado.
 
-6/ The security posture changed too.
+6/ A postura de segurança também mudou.
 
-The Mini Shai-Hulud/TanStack campaign forced a real supply-chain loop:
+A campanha Mini Shai-Hulud/TanStack forçou um loop real de cadeia de suprimentos:
 
-- IOC scanning
-- no-lifecycle CI installs
-- advisory-source refresh
-- npm audit/signature checks
-- AI-tool persistence targets
+- varredura de IOC
+- instalações de CI sem lifecycle
+- atualização de fonte de advisory
+- verificações de audit/assinatura do npm
+- alvos de persistência de ferramentas de AI
 
-7/ The rc.1 surface ships the public pieces:
+7/ A superfície do rc.1 disponibiliza as peças públicas:
 
-- Hermes setup guide
-- release notes
-- launch checklist
-- cross-harness architecture doc
-- Hermes import guidance
-- preview-pack smoke gate
-- X, LinkedIn, and article drafts
+- Guia de configuração do Hermes
+- notas de lançamento
+- checklist de lançamento
+- documento de arquitetura cross-harness
+- orientação de importação do Hermes
+- gate de smoke do preview-pack
+- rascunhos para X, LinkedIn e artigo
 
-8/ It also adds the public teaser surface for the Itô prediction-market skill
-pack.
+8/ Ele também adiciona a superfície de teaser público para o pacote de skills de
+mercado de predição Itô.
 
-That is separate from ECC Tools billing and Itô remains a separate business.
+Isso é separado do faturamento do ECC Tools e o Itô permanece como um negócio separado.
 
-The public skills are research, comparison, planning, and risk review.
+As skills públicas são pesquisa, comparação, planejamento e revisão de risco.
 
-9/ Important boundary:
+9/ Fronteira importante:
 
-No investment advice.
-No default live trading.
-No private keys.
-No Itô-backed call without explicit gated API access.
+Sem conselhos de investimento.
+Sem negociação automática ao vivo por padrão.
+Sem chaves privadas.
+Sem chamada suportada pelo Itô sem acesso API explicitamente aprovado.
 
-Useful workflow shape first, gated data access second.
+Forma de fluxo de trabalho útil primeiro, acesso a dados aprovado depois.
 
-10/ It does not ship private workspace state.
+10/ Não disponibiliza estado privado do workspace.
 
-No secrets.
-No OAuth tokens.
-No raw local exports.
-No personal datasets.
+Sem secrets.
+Sem tokens OAuth.
+Sem exportações locais brutas.
+Sem conjuntos de dados pessoais.
 
-The point is to publish the reusable system shape.
+O objetivo é publicar a forma reutilizável do sistema.
 
-11/ Why Hermes matters:
+11/ Por que o Hermes importa:
 
-Most agent systems fail in the daily operating loop.
+A maioria dos sistemas de agent falha no loop diário de operação.
 
-They can code, but they do not keep research, content, handoffs, reminders, and execution in one measurable surface.
+Eles conseguem programar, mas não mantêm pesquisa, conteúdo, handoffs, lembretes e execução em uma única superfície mensurável.
 
-12/ ECC gives the reusable layer.
+12/ O ECC fornece a camada reutilizável.
 
-Hermes gives the operator shell.
+O Hermes fornece o shell do operador.
 
-Together they make the work feel less like scattered chat windows and more like a system you can run.
+Juntos fazem o trabalho parecer menos janelas de chat dispersas e mais um sistema que você pode operar.
 
-13/ This is still a release candidate.
+13/ Este ainda é um release candidate.
 
-The public docs and reusable surfaces are ready for review.
+Os documentos públicos e as superfícies reutilizáveis estão prontos para revisão.
 
-The deeper local integrations stay local until they are sanitized. The GitHub prerelease and npm `next` package are live; plugin, video, billing, and final outbound URLs still stay behind the approval gate.
+As integrações locais mais profundas ficam locais até serem sanitizadas. O GitHub prerelease e o pacote npm `next` estão ao vivo; URLs de plugin, vídeo, faturamento e saída final ainda ficam atrás do gate de aprovação.
 
-14/ Start here:
+14/ Comece aqui:
 
-Repo:
+Repositório:
 <https://github.com/affaan-m/ECC>
 
-Hermes x ECC setup:
+Configuração Hermes x ECC:
 <https://github.com/affaan-m/ECC/blob/main/docs/HERMES-SETUP.md>
 
-15/ Release notes:
+15/ Notas de lançamento:
 <https://github.com/affaan-m/ECC/blob/main/docs/releases/2.0.0-rc.1/release-notes.md>
 
-Itô skill pack boundary:
+Fronteira do pacote de skills Itô:
 <https://github.com/affaan-m/ECC/blob/main/docs/releases/2.0.0-rc.1/ito-prediction-market-skill-pack.md>
 
-URL ledger:
+Registro de URLs:
 <https://github.com/affaan-m/ECC/blob/main/docs/releases/2.0.0-rc.1/release-url-ledger-2026-05-19.md>

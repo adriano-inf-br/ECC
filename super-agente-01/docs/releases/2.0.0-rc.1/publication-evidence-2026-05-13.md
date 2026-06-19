@@ -1,60 +1,59 @@
-# ECC v2.0.0-rc.1 Publication Evidence - 2026-05-13
+# ECC v2.0.0-rc.1 Evidência de Publicação - 2026-05-13
 
-This is release-readiness evidence only. It does not create a GitHub release,
-npm publication, plugin tag, marketplace submission, or announcement post.
+Esta é apenas uma evidência de prontidão para lançamento. Ela não cria um lançamento no GitHub,
+publicação no npm, tag de plugin, submissão ao marketplace ou post de anúncio.
 
-## Source Commit
+## Commit de Origem
 
-| Field | Evidence |
+| Campo | Evidência |
 | --- | --- |
-| Upstream main base | `797f283036904128bb1b348ae62019eb9f08cf39` |
-| Evidence branch | `docs/release-readiness-20260513` |
-| Evidence scope | Current `main` after PR #1846 plus markdownlint-only zh-CN CLAUDE list-marker normalization |
-| Git remote | `https://github.com/affaan-m/everything-claude-code.git` |
-| Local status caveat | Working tree had the unrelated untracked `docs/drafts/` directory |
+| Base upstream main | `797f283036904128bb1b348ae62019eb9f08cf39` |
+| Branch de evidência | `docs/release-readiness-20260513` |
+| Escopo da evidência | `main` atual após PR #1846 mais normalização de marcadores de lista zh-CN CLAUDE somente via markdownlint |
+| Remote Git | `https://github.com/affaan-m/everything-claude-code.git` |
+| Ressalva sobre status local | A árvore de trabalho tinha o diretório não rastreado sem relação `docs/drafts/` |
 
-The actual release operator should repeat these checks from the final release
-commit with a clean checkout before publishing.
+O operador real do lançamento deve repetir estas verificações a partir do commit de lançamento
+final com um checkout limpo antes de publicar.
 
-## Queue And Release State
+## Estado da Fila e Lançamento
 
-| Surface | Command | Result |
+| Superfície | Comando | Resultado |
 | --- | --- | --- |
-| GitHub PRs and issues | `gh pr list` / `gh issue list` across trunk, AgentShield, JARVIS, ECC-Tools, ECC-website | 0 open PRs and 0 open issues across tracked repos |
-| Trunk discussions | GraphQL discussion sweep for `affaan-m/everything-claude-code` | Latest 100 discussions were closed; no open discussion backlog found |
-| npm audit signature gate | PR #1846 | Merged as `797f283`; workflows that run `npm audit` now need `npm audit signatures` |
+| PRs e issues do GitHub | `gh pr list` / `gh issue list` nos repos trunk, AgentShield, JARVIS, ECC-Tools, ECC-website | 0 PRs abertos e 0 issues abertos nos repos rastreados |
+| Discussões do trunk | Varredura de discussões GraphQL para `affaan-m/everything-claude-code` | As últimas 100 discussões estavam fechadas; nenhum backlog de discussão aberta encontrado |
+| Gate de assinatura de auditoria npm | PR #1846 | Mergeado como `797f283`; workflows que executam `npm audit` agora precisam de `npm audit signatures` |
 
-## Required Command Evidence
+## Evidência dos Comandos Obrigatórios
 
-| Evidence | Command | Result |
+| Evidência | Comando | Resultado |
 | --- | --- | --- |
-| Harness audit | `npm run harness:audit -- --format json` | `overall_score: 70`, `max_score: 70`, no top actions |
-| Adapter scorecard | `npm run harness:adapters -- --check` | `Harness Adapter Compliance: PASS`; 11 adapters |
-| Observability readiness | `npm run observability:ready -- --format json` | `overall_score: 16`, `max_score: 16`, `ready: true`, no top actions |
-| Root suite | `node tests/run-all.js` | `2376` passed, `0` failed |
-| Markdown lint | `npx markdownlint-cli '**/*.md' --ignore node_modules` | Passed after normalizing two zh-CN CLAUDE docs from asterisk bullets to dash bullets |
-| Package surface | `node tests/scripts/npm-publish-surface.test.js` | Passed `2/2`; package surface still excludes Python bytecode/cache artifacts |
-| Release surface | `node tests/docs/ecc2-release-surface.test.js` | Passed `18/18` |
-| Rust surface | `cd ecc2 && cargo test` | Passed `462/462`; warnings only for unused functions/fields |
+| Auditoria do harness | `npm run harness:audit -- --format json` | `overall_score: 70`, `max_score: 70`, sem ações principais |
+| Scorecard do adaptador | `npm run harness:adapters -- --check` | `Harness Adapter Compliance: PASS`; 11 adaptadores |
+| Prontidão de observabilidade | `npm run observability:ready -- --format json` | `overall_score: 16`, `max_score: 16`, `ready: true`, sem ações principais |
+| Suíte raiz | `node tests/run-all.js` | `2376` passados, `0` falhas |
+| Lint de Markdown | `npx markdownlint-cli '**/*.md' --ignore node_modules` | Passou após normalizar dois documentos zh-CN CLAUDE de marcadores asterisco para marcadores traço |
+| Superfície de pacote | `node tests/scripts/npm-publish-surface.test.js` | Passaram `2/2`; a superfície de pacote ainda exclui artefatos de bytecode/cache Python |
+| Superfície de lançamento | `node tests/docs/ecc2-release-surface.test.js` | Passaram `18/18` |
+| Superfície Rust | `cd ecc2 && cargo test` | Passaram `462/462`; apenas avisos para funções/campos não utilizados |
 
-## Security Gate Evidence
+## Evidência do Gate de Segurança
 
-| Surface | Command or check | Result |
+| Superfície | Comando ou verificação | Resultado |
 | --- | --- | --- |
-| Local npm signature audit | `npm audit signatures` before PR #1846 | 241 verified registry signatures and 30 verified attestations |
-| Local npm vulnerability audit | `npm audit --audit-level=high` before PR #1846 | 0 vulnerabilities |
-| Workflow security validator | `node scripts/ci/validate-workflow-security.js` | Validated 7 workflow files |
-| Workflow validator tests | `node tests/ci/validate-workflow-security.test.js` | Passed `11/11`, including the new signature-gate cases |
-| GitHub CI for #1846 | Current-head PR checks | Full OS/package-manager matrix passed, including `windows-latest / Node 18.x / pnpm` |
+| Auditoria local de assinaturas npm | `npm audit signatures` antes do PR #1846 | 241 assinaturas de registro verificadas e 30 atestados verificados |
+| Auditoria local de vulnerabilidades npm | `npm audit --audit-level=high` antes do PR #1846 | 0 vulnerabilidades |
+| Validador de segurança de workflow | `node scripts/ci/validate-workflow-security.js` | Validados 7 arquivos de workflow |
+| Testes do validador de workflow | `node tests/ci/validate-workflow-security.test.js` | Passaram `11/11`, incluindo os novos casos de gate de assinatura |
+| GitHub CI para #1846 | Verificações atuais de PR no head | Matriz completa de SO/gerenciador de pacotes passou, incluindo `windows-latest / Node 18.x / pnpm` |
 
-## Blockers Still Requiring Approval Or External Action
+## Bloqueadores Que Ainda Requerem Aprovação ou Ação Externa
 
-- Create or verify GitHub prerelease `v2.0.0-rc.1`.
-- Publish `ecc-universal@2.0.0-rc.1` with npm dist-tag `next`.
-- Create and push the Claude plugin tag only after explicit approval.
-- Confirm the live Claude/Codex/OpenCode marketplace submission path or record
-  the manual submission owner and status.
-- Verify ECC Tools billing/App/Marketplace claims before using them in launch
-  copy.
-- Refresh announcement copy with live URLs after release and package/plugin
-  URLs exist.
+- Criar ou verificar o pré-lançamento `v2.0.0-rc.1` no GitHub.
+- Publicar `ecc-universal@2.0.0-rc.1` com a dist-tag npm `next`.
+- Criar e enviar a tag do plugin Claude somente após aprovação explícita.
+- Confirmar o caminho de submissão ao marketplace ao vivo Claude/Codex/OpenCode ou registrar
+  o proprietário e status da submissão manual.
+- Verificar as alegações de faturamento/App/Marketplace das ECC Tools antes de usá-las no
+  texto de lançamento.
+- Atualizar o texto de anúncio com URLs ao vivo após o lançamento e após as URLs de pacote/plugin existirem.

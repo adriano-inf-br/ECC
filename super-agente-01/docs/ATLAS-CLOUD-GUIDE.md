@@ -1,36 +1,36 @@
-# Atlas Cloud — LLM Provider Guide
+# Atlas Cloud — Guia de Provedor LLM
 
-[Atlas Cloud](https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=everything-claude-code) is a full-modal AI inference platform providing an OpenAI-compatible API for 59+ LLM models, image generation, and video generation.
+[Atlas Cloud](https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=everything-claude-code) é uma plataforma de inferência de IA full-modal que fornece uma API compatível com OpenAI para 59+ modelos LLM, geração de imagens e geração de vídeo.
 
-## Configuration
+## Configuração
 
-Set the following environment variables to use Atlas Cloud as your LLM backend:
+Defina as seguintes variáveis de ambiente para usar o Atlas Cloud como seu backend LLM:
 
 ```bash
-ATLAS_API_KEY=<your-atlascloud-api-key>
+ATLAS_API_KEY=<sua-chave-api-atlascloud>
 ATLAS_BASE_URL=https://api.atlascloud.ai/v1
 ```
 
-Or copy from `.env.example`:
+Ou copie de `.env.example`:
 
 ```bash
 cp .env.example .env
-# Then fill in ATLAS_API_KEY
+# Então preencha ATLAS_API_KEY
 ```
 
-## Install
+## Instalação
 
-ECC can install its managed surfaces into any OpenAI-compatible backend. To use Atlas Cloud with Claude Code (or any ECC-managed harness), set the base URL and API key:
+O ECC pode instalar suas superfícies gerenciadas em qualquer backend compatível com OpenAI. Para usar o Atlas Cloud com o Claude Code (ou qualquer harness gerenciado pelo ECC), defina a URL base e a chave API:
 
 ```bash
-export ATLAS_API_KEY=your-key-here
+export ATLAS_API_KEY=sua-chave-aqui
 export ATLAS_BASE_URL=https://api.atlascloud.ai/v1
 ```
 
-## Available Models
+## Modelos Disponíveis
 
 <details>
-<summary>All Atlas Cloud LLM models (59+)</summary>
+<summary>Todos os modelos LLM do Atlas Cloud (59+)</summary>
 
 - **Anthropic**: `anthropic/claude-haiku-4.5-20251001`, `anthropic/claude-opus-4.8`, `anthropic/claude-sonnet-4.6`
 - **OpenAI**: `openai/gpt-5.4`, `openai/gpt-5.5`
@@ -42,11 +42,11 @@ export ATLAS_BASE_URL=https://api.atlascloud.ai/v1
 - **MiniMax**: `MiniMaxAI/MiniMax-M2`, `minimaxai/minimax-m2.1`, `minimaxai/minimax-m2.5`, `minimaxai/minimax-m2.7`
 - **xAI**: `xai/grok-4.3`
 - **KAT**: `kwaipilot/kat-coder-pro-v2`
-- **Other**: `owl`
+- **Outros**: `owl`
 
 </details>
 
-## Usage Example
+## Exemplo de Uso
 
 ```python
 from openai import OpenAI
@@ -64,6 +64,6 @@ response = client.chat.completions.create(
 print(response.choices[0].message.content)
 ```
 
-## Get API Credits
+## Obter Créditos de API
 
-Visit [Atlas Cloud Coding Plan](https://www.atlascloud.ai/console/coding-plan) for API credits.
+Visite o [Plano de Codificação do Atlas Cloud](https://www.atlascloud.ai/console/coding-plan) para créditos de API.

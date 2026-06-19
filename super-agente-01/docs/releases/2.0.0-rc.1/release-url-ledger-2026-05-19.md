@@ -1,45 +1,46 @@
-# ECC v2.0.0-rc.1 Release URL Ledger
+# Registro de URLs da Versão ECC v2.0.0-rc.1
 
-This ledger separates links that are already public from links that only become
-valid after the remaining approval-gated plugin, video, billing, and
-announcement steps. Regenerate it from the final release commit before posting
-any public announcement.
+Este registro separa os links que já são públicos dos links que só se tornam
+válidos após as etapas restantes de aprovação de plugin, vídeo, faturamento e
+anúncio. Regenere-o a partir do commit final de lançamento antes de publicar
+qualquer anúncio público.
 
-Refreshed on 2026-05-26 after the GitHub prerelease and npm `next` package
-readbacks succeeded. Remaining plugin, video, billing, and outbound surfaces
-must still be checked from the exact release commit before publication.
+Atualizado em 2026-05-26 após o GitHub prerelease e as leituras de retorno do
+pacote npm `next` terem sido bem-sucedidas. As superfícies restantes de plugin,
+vídeo, faturamento e saída ainda precisam ser verificadas a partir do commit
+exato de lançamento antes da publicação.
 
-## Live Now
+## Disponível Agora
 
-| Surface | URL | Verification |
+| Superfície | URL | Verificação |
 | --- | --- | --- |
-| Repository | <https://github.com/affaan-m/ECC> | `git remote get-url origin` returns `https://github.com/affaan-m/ECC.git` |
-| GitHub prerelease URL | <https://github.com/affaan-m/ECC/releases/tag/v2.0.0-rc.1> | `gh release view v2.0.0-rc.1 --repo affaan-m/ECC --json tagName,url,isPrerelease,isDraft,publishedAt` returned prerelease `true`, draft `false`, published `2026-05-25T18:29:31Z` |
-| Release pack folder | <https://github.com/affaan-m/ECC/tree/main/docs/releases/2.0.0-rc.1> | In-tree release pack |
-| Release notes draft | <https://github.com/affaan-m/ECC/blob/main/docs/releases/2.0.0-rc.1/release-notes.md> | In-tree release copy |
-| Hermes setup guide | <https://github.com/affaan-m/ECC/blob/main/docs/HERMES-SETUP.md> | In-tree sanitized Hermes guide |
-| May 19 evidence snapshot | <https://github.com/affaan-m/ECC/blob/main/docs/releases/2.0.0-rc.1/publication-evidence-2026-05-19.md> | Current strongest identity, video, growth, and CI readiness evidence |
-| May 18 evidence snapshot | <https://github.com/affaan-m/ECC/blob/main/docs/releases/2.0.0-rc.1/publication-evidence-2026-05-18.md> | Previous supply-chain and publication-path readiness evidence |
-| May 18 operator dashboard | <https://github.com/affaan-m/ECC/blob/main/docs/releases/2.0.0-rc.1/operator-readiness-dashboard-2026-05-18.md> | Previous prompt-to-artifact dashboard |
-| May 19 operator dashboard | <https://github.com/affaan-m/ECC/blob/main/docs/releases/2.0.0-rc.1/operator-readiness-dashboard-2026-05-19.md> | Previous prompt-to-artifact dashboard with hypergrowth, video, and outbound lanes |
-| May 20 operator dashboard | <https://github.com/affaan-m/ECC/blob/main/docs/releases/2.0.0-rc.1/operator-readiness-dashboard-2026-05-20.md> | Current prompt-to-artifact dashboard with Marketplace Pro release-gate sync |
-| npm package page | <https://www.npmjs.com/package/ecc-universal> | `npm view ecc-universal name version dist-tags versions --json` returned `latest: 1.10.0`, `next: 2.0.0-rc.1`, and included `2.0.0-rc.1` in `versions` |
-| npm rc package URL | <https://www.npmjs.com/package/ecc-universal/v/2.0.0-rc.1> | `npm view ecc-universal@2.0.0-rc.1 name version dist.tarball dist.integrity time --json` returned version `2.0.0-rc.1`, tarball `https://registry.npmjs.org/ecc-universal/-/ecc-universal-2.0.0-rc.1.tgz`, and published time `2026-05-26T00:36:22.940Z` |
-| Codex marketplace CLI docs | <https://developers.openai.com/codex/cli/reference#codex-plugin-marketplace> | Official docs list `codex plugin marketplace add` for GitHub shorthand, Git URLs, SSH URLs, and local marketplace roots |
-| Codex official Plugin Directory status | <https://developers.openai.com/codex/plugins/build#publish-official-public-plugins> | Official docs say public Plugin Directory publishing and self-serve management are coming soon |
+| Repositório | <https://github.com/affaan-m/ECC> | `git remote get-url origin` retorna `https://github.com/affaan-m/ECC.git` |
+| URL do GitHub prerelease | <https://github.com/affaan-m/ECC/releases/tag/v2.0.0-rc.1> | `gh release view v2.0.0-rc.1 --repo affaan-m/ECC --json tagName,url,isPrerelease,isDraft,publishedAt` retornou prerelease `true`, rascunho `false`, publicado em `2026-05-25T18:29:31Z` |
+| Pasta do pacote de lançamento | <https://github.com/affaan-m/ECC/tree/main/docs/releases/2.0.0-rc.1> | Pacote de lançamento no repositório |
+| Rascunho das notas de lançamento | <https://github.com/affaan-m/ECC/blob/main/docs/releases/2.0.0-rc.1/release-notes.md> | Cópia de lançamento no repositório |
+| Guia de configuração do Hermes | <https://github.com/affaan-m/ECC/blob/main/docs/HERMES-SETUP.md> | Guia do Hermes sanitizado no repositório |
+| Snapshot de evidências de 19 de maio | <https://github.com/affaan-m/ECC/blob/main/docs/releases/2.0.0-rc.1/publication-evidence-2026-05-19.md> | Evidência atual mais forte de identidade, vídeo, crescimento e prontidão de CI |
+| Snapshot de evidências de 18 de maio | <https://github.com/affaan-m/ECC/blob/main/docs/releases/2.0.0-rc.1/publication-evidence-2026-05-18.md> | Evidência anterior de prontidão da cadeia de suprimentos e do caminho de publicação |
+| Painel do operador de 18 de maio | <https://github.com/affaan-m/ECC/blob/main/docs/releases/2.0.0-rc.1/operator-readiness-dashboard-2026-05-18.md> | Painel anterior de prompt para artefato |
+| Painel do operador de 19 de maio | <https://github.com/affaan-m/ECC/blob/main/docs/releases/2.0.0-rc.1/operator-readiness-dashboard-2026-05-19.md> | Painel anterior de prompt para artefato com trilhas de hipercrescimento, vídeo e saída |
+| Painel do operador de 20 de maio | <https://github.com/affaan-m/ECC/blob/main/docs/releases/2.0.0-rc.1/operator-readiness-dashboard-2026-05-20.md> | Painel atual de prompt para artefato com sincronização do gate de lançamento do Marketplace Pro |
+| Página do pacote npm | <https://www.npmjs.com/package/ecc-universal> | `npm view ecc-universal name version dist-tags versions --json` retornou `latest: 1.10.0`, `next: 2.0.0-rc.1`, e incluiu `2.0.0-rc.1` em `versions` |
+| URL do pacote rc no npm | <https://www.npmjs.com/package/ecc-universal/v/2.0.0-rc.1> | `npm view ecc-universal@2.0.0-rc.1 name version dist.tarball dist.integrity time --json` retornou a versão `2.0.0-rc.1`, tarball `https://registry.npmjs.org/ecc-universal/-/ecc-universal-2.0.0-rc.1.tgz`, e hora de publicação `2026-05-26T00:36:22.940Z` |
+| Documentação CLI do marketplace Codex | <https://developers.openai.com/codex/cli/reference#codex-plugin-marketplace> | Documentação oficial lista `codex plugin marketplace add` para abreviação do GitHub, URLs Git, URLs SSH e roots de marketplace locais |
+| Status do Diretório Oficial de Plugins Codex | <https://developers.openai.com/codex/plugins/build#publish-official-public-plugins> | Documentação oficial diz que a publicação no Diretório de Plugins público e o gerenciamento self-serve estão chegando em breve |
 
-## Approval-Gated URLs
+## URLs com Aprovação Pendente
 
-| Surface | Intended URL or command | Gate before use |
+| Superfície | URL ou comando pretendido | Gate antes de usar |
 | --- | --- | --- |
-| Claude plugin tag | `claude plugin tag .claude-plugin --dry-run`, then real tag only after approval | Clean release commit and plugin tag/push approval |
-| Codex repo marketplace install | `codex plugin marketplace add affaan-m/ECC --ref v2.0.0-rc.1` | GitHub tag must exist; official Plugin Directory submission remains separate |
-| ECC Tools native-payments announcement | ECC Tools Marketplace/App URL plus selected-target billing readiness readback through the operator bearer path | Marketplace-managed selected target returned `announcementGate.ready === true` on 2026-05-20; repeat immediately before publication |
-| Public announcements | X, LinkedIn, GitHub release, and longform URLs | Remaining plugin, video, and billing URLs must resolve or be explicitly marked blocked; exact outbound copy still needs owner approval |
+| Tag de plugin Claude | `claude plugin tag .claude-plugin --dry-run`, depois tag real somente após aprovação | Commit de lançamento limpo e aprovação de tag/push do plugin |
+| Instalação via marketplace de repositório Codex | `codex plugin marketplace add affaan-m/ECC --ref v2.0.0-rc.1` | Tag do GitHub deve existir; envio ao Diretório Oficial de Plugins permanece separado |
+| Anúncio de pagamentos nativos do ECC Tools | URL do Marketplace/App do ECC Tools mais leitura de retorno de prontidão de faturamento do alvo selecionado pelo caminho bearer do operador | Alvo selecionado gerenciado pelo Marketplace retornou `announcementGate.ready === true` em 2026-05-20; repita imediatamente antes da publicação |
+| Anúncios públicos | URLs de X, LinkedIn, GitHub release e longform | URLs restantes de plugin, vídeo e faturamento devem resolver ou ser explicitamente marcadas como bloqueadas; cópia de saída exata ainda precisa de aprovação do proprietário |
 
-## Pre-Post Check
+## Verificação Pré-Publicação
 
-Run these immediately before publication:
+Execute estes imediatamente antes da publicação:
 
 ```bash
 git status --short --branch
@@ -52,6 +53,6 @@ npm run preview-pack:smoke
 npm run release:approval-gate -- --format json
 ```
 
-Do not claim plugin propagation, official Codex Plugin Directory listing, video
-upload, ECC Tools billing/native payments, or final outbound readiness until the
-remaining approval-gated URLs above resolve from a clean release commit.
+Não alegue propagação de plugin, listagem no Diretório Oficial de Plugins Codex, upload
+de vídeo, faturamento/pagamentos nativos do ECC Tools, ou prontidão final de saída até que
+as URLs com aprovação pendente acima resolvam a partir de um commit de lançamento limpo.

@@ -1,42 +1,42 @@
-# Hermes x ECC Demo Prompts
+# Prompts de Demonstração Hermes x ECC
 
-## Prompt 1: ECC Builds ECC
+## Prompt 1: ECC Constrói o ECC
 
-Use the current ECC repo and the public release pack at `docs/releases/2.0.0-rc.1/`.
+Use o repositório ECC atual e o pacote de lançamento público em `docs/releases/2.0.0-rc.1/`.
 
-Do 4 things in order:
+Faça 4 coisas em ordem:
 
-1. Inspect git status and the current repo diff, then give me a concise ECC v2.0.0-rc.1 PR or release summary that proves ECC is being used to build ECC itself.
-2. Finalize one strong X thread.
-3. Finalize one strong LinkedIn post.
-4. Tell me the exact 3 recordings I should do next plus what Hermes can generate automatically after I record.
+1. Inspecione o status do git e o diff atual do repositório, depois me dê um resumo conciso do PR ou lançamento do ECC v2.0.0-rc.1 que comprove que o ECC está sendo usado para construir o próprio ECC.
+2. Finalize uma thread forte para o X.
+3. Finalize um post forte para o LinkedIn.
+4. Me diga exatamente as 3 gravações que devo fazer a seguir, mais o que o Hermes pode gerar automaticamente depois que eu gravar.
 
-Keep it decisive and practical.
+Seja decisivo e prático.
 
-## Prompt 2: Turn Recording Into Assets
+## Prompt 2: Transformar Gravação em Assets
 
-Assume I just recorded:
+Suponha que acabei de gravar:
 
-- one face-camera hook
-- one screen capture of Hermes using ECC to ship ECC v2.0.0-rc.1
-- one setup walkthrough of the Hermes x ECC workspace
+- um hook de câmera frontal
+- uma captura de tela do Hermes usando o ECC para entregar o ECC v2.0.0-rc.1
+- um tutorial de configuração do workspace Hermes x ECC
 
-Give me:
+Me dê:
 
-1. a short-form edit plan for X, LinkedIn, TikTok, and YouTube Shorts
-2. a voiceover script if I want to re-record clean audio
-3. the exact repo-relative filenames and folders I should use for raw footage
-4. the assets Hermes can generate automatically after I drop the files in place
+1. um plano de edição em formato curto para X, LinkedIn, TikTok e YouTube Shorts
+2. um script de locução caso eu queira regravar o áudio limpo
+3. os nomes de arquivo e pastas exatos relativos ao repositório que devo usar para as filmagens brutas
+4. os assets que o Hermes pode gerar automaticamente depois que eu colocar os arquivos no lugar
 
-Keep it operational.
+Seja operacional.
 
-## Prompt 3: Public Launch Push
+## Prompt 3: Push de Lançamento Público
 
-Using the ECC v2.0.0-rc.1 release pack, give me:
+Usando o pacote de lançamento do ECC v2.0.0-rc.1, me dê:
 
-1. one release tweet
-2. one follow-up tweet
-3. one LinkedIn comment I can paste under the post
-4. one short Telegram handoff I can send to Hermes later to keep distributing this launch across channels
+1. um tweet de lançamento
+2. um tweet de acompanhamento
+3. um comentário no LinkedIn que posso colar sob o post
+4. um handoff curto para o Telegram que posso enviar ao Hermes depois para continuar distribuindo este lançamento pelos canais
 
-Make it sound like an operator shipping real work, not a launch thread cliche.
+Faça soar como um operador entregando trabalho real, não um clichê de thread de lançamento.

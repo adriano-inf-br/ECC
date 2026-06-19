@@ -1,28 +1,28 @@
-# Mega Plan Repo Prompt List — March 12, 2026
+# Lista de Prompts do Mega Plano por Repositório — 12 de março de 2026
 
-## Purpose
+## Objetivo
 
-Use these prompts to split the remaining March 11 mega-plan work by repo.
-They are written for parallel agents and assume the March 12 orchestration and
-Windows CI lane is already merged via `#417`.
+Use estes prompts para dividir o trabalho restante do mega plano de 11 de março por repositório.
+Eles foram escritos para agents paralelos e assumem que a orquestração de 12 de março e
+a trilha de CI do Windows já foram mescladas via `#417`.
 
-## Current Snapshot
+## Situação Atual
 
-- `everything-claude-code` has finished the orchestration, Codex baseline, and
-  Windows CI recovery lane.
-- The next open ECC Phase 1 items are:
-  - review `#399`
-  - convert recurring discussion pressure into tracked issues
-  - define selective-install architecture
-  - write the ECC 2.0 discovery doc
-- `agentshield`, `ECC-website`, and `skill-creator-app` all have dirty
-  `main` worktrees and should not be edited directly on `main`.
-- `applications/` is not a standalone git repo. It lives inside the parent
-  workspace repo at `<ECC_ROOT>`.
+- `everything-claude-code` finalizou a orquestração, a linha de base do Codex e
+  a trilha de recuperação do CI do Windows.
+- Os próximos itens abertos da Fase 1 do ECC são:
+  - revisar `#399`
+  - converter pressão recorrente de discussões em issues rastreadas
+  - definir a arquitetura de instalação seletiva
+  - escrever o documento de descoberta do ECC 2.0
+- `agentshield`, `ECC-website` e `skill-creator-app` têm árvores de trabalho de
+  `main` com alterações pendentes e não devem ser editados diretamente em `main`.
+- `applications/` não é um repositório git independente. Ele reside dentro do repositório
+  workspace pai em `<ECC_ROOT>`.
 
-## Repo: `everything-claude-code`
+## Repositório: `everything-claude-code`
 
-### Prompt A — PR `#399` Review and Merge Readiness
+### Prompt A — Revisão e Prontidão para Merge do PR `#399`
 
 ```text
 Work in: <ECC_ROOT>/everything-claude-code
@@ -55,7 +55,7 @@ Deliverables:
 - test commands run
 ```
 
-### Prompt B — Roadmap Issues Extraction
+### Prompt B — Extração de Issues do Roadmap
 
 ```text
 Work in: <ECC_ROOT>/everything-claude-code
@@ -88,7 +88,7 @@ Deliverables:
 - duplication notes against existing issues
 ```
 
-### Prompt C — ECC 2.0 Discovery and Adapter Spec
+### Prompt C — Descoberta e Especificação de Adapter do ECC 2.0
 
 ```text
 Work in: <ECC_ROOT>/everything-claude-code
@@ -120,9 +120,9 @@ Deliverables:
 - unresolved questions list
 ```
 
-## Repo: `agentshield`
+## Repositório: `agentshield`
 
-### Prompt — False Positive Audit and Regression Plan
+### Prompt — Auditoria de Falsos Positivos e Plano de Regressão
 
 ```text
 Work in: <ECC_ROOT>/agentshield
@@ -160,9 +160,9 @@ Deliverables:
 - remaining edge cases
 ```
 
-## Repo: `ECC-website`
+## Repositório: `ECC-website`
 
-### Prompt — Landing Rewrite and Product Framing
+### Prompt — Reescrita da Landing Page e Posicionamento do Produto
 
 ```text
 Work in: <ECC_ROOT>/ECC-website
@@ -204,9 +204,9 @@ Deliverables:
 - deployment readiness notes
 ```
 
-## Repo: `skill-creator-app`
+## Repositório: `skill-creator-app`
 
-### Prompt — Skill Import Pipeline and Product Fit
+### Prompt — Pipeline de Importação de Skills e Adequação ao Produto
 
 ```text
 Work in: <ECC_ROOT>/skill-creator-app
@@ -242,9 +242,9 @@ Deliverables:
 - code changes if they are small and clearly justified
 ```
 
-## Repo: `ECC` Workspace (`applications/`, `knowledge/`, `tasks/`)
+## Workspace `ECC` (`applications/`, `knowledge/`, `tasks/`)
 
-### Prompt — Example Apps and Workflow Reliability Proofs
+### Prompt — Aplicações de Exemplo e Provas de Confiabilidade de Fluxo de Trabalho
 
 ```text
 Work in: <ECC_ROOT>
@@ -276,11 +276,11 @@ Deliverables:
 - follow-up branch/worktree plan
 ```
 
-## Local Continuation
+## Continuação Local
 
-The current worktree should stay on ECC-native Phase 1 work that does not touch
-the existing dirty skill-file changes here. The best next local tasks are:
+A árvore de trabalho atual deve permanecer focada em trabalho nativo da Fase 1 do ECC que não toque
+nas alterações existentes de arquivos de skill aqui. As melhores tarefas locais seguintes são:
 
-1. selective-install architecture
-2. ECC 2.0 discovery doc
-3. PR `#399` review
+1. arquitetura de instalação seletiva
+2. documento de descoberta do ECC 2.0
+3. revisão do PR `#399`

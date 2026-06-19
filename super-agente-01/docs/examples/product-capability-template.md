@@ -1,84 +1,84 @@
-# Product Capability Template
+# Template de Capacidade de Produto
 
-Use this when product intent exists but the implementation constraints are still implicit.
+Use este template quando a intenção do produto existir, mas as restrições de implementação ainda estiverem implícitas.
 
-The purpose is to create a durable capability contract, not another vague planning doc.
+O objetivo é criar um contrato de capacidade durável, não mais um documento de planejamento vago.
 
-## Capability
+## Capacidade
 
-- **Capability name:**
-- **Source:** PRD / issue / discussion / roadmap / founder note
-- **Primary actor:**
-- **Outcome after ship:**
-- **Success signal:**
+- **Nome da capacidade:**
+- **Fonte:** PRD / issue / discussão / roadmap / nota do fundador
+- **Ator principal:**
+- **Resultado após o lançamento:**
+- **Sinal de sucesso:**
 
-## Product Intent
+## Intenção do Produto
 
-Describe the user-visible promise in one short paragraph.
+Descreva a promessa visível ao usuário em um parágrafo curto.
 
-## Constraints
+## Restrições
 
-List the rules that must be true before implementation starts:
+Liste as regras que devem ser verdadeiras antes do início da implementação:
 
-- business rules
-- scope boundaries
-- invariants
-- rollout constraints
-- migration constraints
-- backwards compatibility constraints
-- billing / auth / compliance constraints
+- regras de negócio
+- limites de escopo
+- invariantes
+- restrições de lançamento gradual
+- restrições de migração
+- restrições de compatibilidade retroativa
+- restrições de cobrança / autenticação / conformidade
 
-## Actors and Surfaces
+## Atores e Superfícies
 
-- actor(s)
-- UI surfaces
-- API surfaces
-- automation / operator surfaces
-- reporting / dashboard surfaces
+- ator(es)
+- superfícies de UI
+- superfícies de API
+- superfícies de automação / operador
+- superfícies de relatórios / dashboard
 
-## States and Transitions
+## Estados e Transições
 
-Describe the lifecycle in terms of explicit states and allowed transitions.
+Descreva o ciclo de vida em termos de estados explícitos e transições permitidas.
 
-Example:
+Exemplo:
 
-- `draft -> active -> paused -> completed`
-- `pending -> approved -> provisioned -> revoked`
+- `rascunho -> ativo -> pausado -> concluído`
+- `pendente -> aprovado -> provisionado -> revogado`
 
-## Interface Contract
+## Contrato de Interface
 
-- inputs
-- outputs
-- required side effects
-- failure states
-- retries / recovery
-- idempotency expectations
+- entradas
+- saídas
+- efeitos colaterais obrigatórios
+- estados de falha
+- novas tentativas / recuperação
+- expectativas de idempotência
 
-## Data Implications
+## Implicações de Dados
 
-- source of truth
-- new entities or fields
-- ownership boundaries
-- retention / deletion expectations
+- fonte da verdade
+- novas entidades ou campos
+- limites de propriedade
+- expectativas de retenção / exclusão
 
-## Security and Policy
+## Segurança e Política
 
-- trust boundaries
-- permission requirements
-- abuse paths
-- policy / governance requirements
+- limites de confiança
+- requisitos de permissão
+- caminhos de abuso
+- requisitos de política / governança
 
-## Non-Goals
+## Não-Objetivos
 
-List what this capability explicitly does not own.
+Liste o que esta capacidade explicitamente não possui.
 
-## Open Questions
+## Questões em Aberto
 
-Capture the unresolved decisions blocking implementation.
+Registre as decisões não resolvidas que bloqueiam a implementação.
 
 ## Handoff
 
-- **Ready for implementation?**
-- **Needs architecture review?**
-- **Needs product clarification?**
-- **Next ECC lane:** `project-flow-ops` / `tdd-workflow` / `verification-loop` / other
+- **Pronto para implementação?**
+- **Precisa de revisão de arquitetura?**
+- **Precisa de esclarecimento do produto?**
+- **Próxima rota ECC:** `project-flow-ops` / `tdd-workflow` / `verification-loop` / outra

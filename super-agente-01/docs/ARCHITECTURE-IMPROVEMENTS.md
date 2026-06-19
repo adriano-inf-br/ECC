@@ -1,146 +1,146 @@
-# Architecture Improvement Recommendations
+# Recomendações de Melhoria de Arquitetura
 
-This document captures architect-level improvements for the Everything Claude Code (ECC) project. It is written from the perspective of a Claude Code coding architect aiming to improve maintainability, consistency, and long-term quality.
-
----
-
-## 1. Documentation and Single Source of Truth
-
-### 1.1 Agent / Command / Skill Count Sync
-
-**Issue:** AGENTS.md states "13 specialized agents, 50+ skills, 33 commands" while the repo has **16 agents**, **65+ skills**, and **40 commands**. README and other docs also vary. This causes confusion for contributors and users.
-
-**Recommendation:**
-
-- **Single source of truth:** Derive counts (and optionally tables) from the filesystem or a small manifest. Options:
-  - **Option A:** Add a script (e.g. `scripts/ci/catalog.js`) that scans `agents/*.md`, `commands/*.md`, and `skills/*/SKILL.md` and outputs JSON/Markdown. CI and docs can consume this.
-  - **Option B:** Maintain one `docs/catalog.json` (or YAML) that lists agents, commands, and skills with metadata; scripts and docs read from it. Requires discipline to update on add/remove.
-- **Short-term:** Manually sync AGENTS.md, README.md, and CLAUDE.md with actual counts and list any new agents (e.g. chief-of-staff, loop-operator, harness-optimizer) in the agent table.
-
-**Impact:** High — affects first impression and contributor trust.
+Este documento registra melhorias em nível de arquiteto para o projeto Everything Claude Code (ECC). Ele é escrito da perspectiva de um arquiteto de código Claude Code que busca melhorar a manutenibilidade, consistência e qualidade a longo prazo.
 
 ---
 
-### 1.2 Command → Agent / Skill Map
+## 1. Documentação e Fonte Única de Verdade
 
-**Issue:** There is no single machine- or human-readable map of "which command uses which agent(s) or skill(s)." This lives in README tables and individual command `.md` files, which can drift.
+### 1.1 Sincronização de Contagem de Agents / Comandos / Skills
 
-**Recommendation:**
+**Problema:** AGENTS.md afirma "13 agents especializados, 50+ skills, 33 comandos" enquanto o repositório tem **16 agents**, **65+ skills** e **40 comandos**. README e outros documentos também variam. Isso causa confusão para colaboradores e usuários.
 
-- Add a **command registry** (e.g. in `docs/` or as frontmatter in command files) that lists for each command: name, description, primary agent(s), skills referenced. Can be generated from command file content or maintained by hand.
-- Expose a "map" in docs (e.g. `docs/COMMAND-AGENT-MAP.md`) or in the generated catalog for discoverability and for tooling (e.g. "which commands use tdd-guide?").
+**Recomendação:**
 
-**Impact:** Medium — improves discoverability and refactoring safety.
+- **Fonte única de verdade:** Derive contagens (e opcionalmente tabelas) do sistema de arquivos ou de um pequeno manifesto. Opções:
+  - **Opção A:** Adicione um script (ex.: `scripts/ci/catalog.js`) que varre `agents/*.md`, `commands/*.md` e `skills/*/SKILL.md` e gera JSON/Markdown. CI e documentação podem consumir isso.
+  - **Opção B:** Mantenha um `docs/catalog.json` (ou YAML) que lista agents, comandos e skills com metadados; scripts e documentação leem a partir dele. Requer disciplina para atualizar ao adicionar/remover.
+- **Curto prazo:** Sincronize manualmente AGENTS.md, README.md e CLAUDE.md com as contagens reais e liste quaisquer novos agents (ex.: chief-of-staff, loop-operator, harness-optimizer) na tabela de agents.
 
----
-
-## 2. Testing and Quality
-
-### 2.1 Test Discovery vs Hardcoded List
-
-**Issue:** `tests/run-all.js` uses a **hardcoded list** of test files. New test files are not run unless someone updates `run-all.js`, so coverage can be incomplete by omission.
-
-**Recommendation:**
-
-- **Glob-based discovery:** Discover test files by pattern (e.g. `**/*.test.js` under `tests/`) and run them, with an optional allowlist/denylist for special cases. This makes new tests automatically part of the suite.
-- Keep a single entry point (`tests/run-all.js`) that runs discovered tests and aggregates results.
-
-**Impact:** High — prevents regression where new tests exist but are never executed.
+**Impacto:** Alto — afeta a primeira impressão e a confiança dos colaboradores.
 
 ---
 
-### 2.2 Test Coverage Metrics
+### 1.2 Mapa de Comando → Agent / Skill
 
-**Issue:** There is no coverage tool (e.g. nyc/c8/istanbul). The project cannot assert "80%+ coverage" for its own scripts; coverage is implicit.
+**Problema:** Não há um mapa legível por máquina ou humano de "qual comando usa qual(is) agent(s) ou skill(s)." Isso vive em tabelas do README e nos arquivos `.md` individuais de comandos, o que pode se desviar.
 
-**Recommendation:**
+**Recomendação:**
 
-- Introduce a coverage tool for Node scripts (e.g. `c8` or `nyc`) and run it in CI. Start with a baseline (e.g. 60%) and raise over time; or at least report coverage in CI without failing so the team can see trends.
-- Focus on `scripts/` (lib + hooks + ci) as the primary target; exclude one-off scripts if needed.
+- Adicione um **registro de comandos** (ex.: em `docs/` ou como frontmatter nos arquivos de comandos) que liste para cada comando: nome, descrição, agent(s) primário(s), skills referenciadas. Pode ser gerado a partir do conteúdo dos arquivos de comando ou mantido manualmente.
+- Exponha um "mapa" na documentação (ex.: `docs/COMMAND-AGENT-MAP.md`) ou no catálogo gerado para descoberta e para ferramentas (ex.: "quais comandos usam tdd-guide?").
 
-**Impact:** Medium — aligns the project with its own AGENTS.md guidance (80%+ coverage) and surfaces untested paths.
-
----
-
-## 3. Schema and Validation
-
-### 3.1 Use Hooks JSON Schema in CI
-
-**Issue:** `schemas/hooks.schema.json` exists and defines the hook configuration shape, but `scripts/ci/validate-hooks.js` does **not** use it. Validation is duplicated (VALID_EVENTS, structure) and can drift from the schema.
-
-**Recommendation:**
-
-- Use a JSON Schema validator (e.g. `ajv`) in `validate-hooks.js` to validate `hooks/hooks.json` against `schemas/hooks.schema.json`. Keep the validator as the single source of truth for structure; retain only hook-specific checks (e.g. inline JS syntax) in the script.
-- Ensures schema and validator stay in sync and allows IDE/editor validation via `$schema` in hooks.json.
-
-**Impact:** Medium — reduces drift and improves contributor experience when editing hooks.
+**Impacto:** Médio — melhora a descoberta e a segurança de refatoração.
 
 ---
 
-## 4. Cross-Harness and i18n
+## 2. Testes e Qualidade
 
-### 4.1 Skill/Agent Subset Sync (.agents/skills, .cursor/skills)
+### 2.1 Descoberta de Testes vs. Lista Codificada
 
-**Issue:** `.agents/skills/` (Codex) and `.cursor/skills/` are subsets of `skills/`. Adding or removing a skill in the main repo requires manually updating these subsets, which can be forgotten.
+**Problema:** `tests/run-all.js` usa uma **lista codificada** de arquivos de teste. Novos arquivos de teste não são executados a menos que alguém atualize `run-all.js`, então a cobertura pode ser incompleta por omissão.
 
-**Recommendation:**
+**Recomendação:**
 
-- Document in CONTRIBUTING.md that adding a skill may require updating `.agents/skills` and `.cursor/skills` (and how to do it).
-- Optionally: a CI check or script that compares `skills/` to the subsets and fails or warns if a skill is in one set but not the other when it should be (e.g. by convention or by a small manifest).
+- **Descoberta baseada em Glob:** Descubra arquivos de teste por padrão (ex.: `**/*.test.js` em `tests/`) e execute-os, com uma lista de permissões/exclusões opcional para casos especiais. Isso torna novos testes automaticamente parte da suíte.
+- Mantenha um único ponto de entrada (`tests/run-all.js`) que execute os testes descobertos e agregue os resultados.
 
-**Impact:** Low–Medium — reduces cross-harness drift.
-
----
-
-### 4.2 Translation Drift (docs/ zh-CN, zh-TW, ja-JP)
-
-**Issue:** Translations in `docs/` duplicate agents, commands, skills. As the English source evolves, translations can become outdated without clear process or tooling.
-
-**Recommendation:**
-
-- Document a **translation process:** when to update (e.g. on release), who owns each locale, and how to detect stale content (e.g. diff file lists or key sections).
-- Consider: translation status file (e.g. `docs/i18n-status.md`) or CI that checks translation file existence/timestamps and warns if English was updated more recently than a translation.
-- Long-term: consider extraction/placeholder format (e.g. i18n keys) so translations reference the same structure as the English source.
-
-**Impact:** Medium — improves experience for non-English users and reduces confusion from outdated translations.
+**Impacto:** Alto — previne regressões onde novos testes existem mas nunca são executados.
 
 ---
 
-## 5. Hooks and Scripts
+### 2.2 Métricas de Cobertura de Testes
 
-### 5.1 Hook Runtime Consistency
+**Problema:** Não há ferramenta de cobertura (ex.: nyc/c8/istanbul). O projeto não pode afirmar "80%+ de cobertura" para seus próprios scripts; a cobertura é implícita.
 
-**Issue:** Hooks should keep a consistent Node-mode dispatch surface. Continuous-learning observation now dispatches through `run-with-flags.js` and `observe-runner.js`, which delegates to the existing `observe.sh` implementation without exposing a shell-mode hook entry.
+**Recomendação:**
 
-**Recommendation:**
+- Introduza uma ferramenta de cobertura para scripts Node (ex.: `c8` ou `nyc`) e execute-a no CI. Comece com uma linha de base (ex.: 60%) e aumente ao longo do tempo; ou pelo menos relate a cobertura no CI sem falhar para que a equipe possa ver as tendências.
+- Foque em `scripts/` (lib + hooks + ci) como target primário; exclua scripts avulsos se necessário.
 
-- Prefer Node for new hooks when possible (cross-platform, single runtime). If shell is required, document why and keep the surface small.
-- Ensure `ECC_HOOK_PROFILE` and `ECC_DISABLED_HOOKS` are respected in all code paths (including shell) so behavior is consistent.
-
-**Impact:** Low — maintains current design; improves if more hooks migrate to Node.
+**Impacto:** Médio — alinha o projeto com sua própria orientação de AGENTS.md (80%+ de cobertura) e expõe caminhos não testados.
 
 ---
 
-## 6. Summary Table
+## 3. Schema e Validação
 
-| Area              | Improvement                          | Priority | Effort  |
+### 3.1 Usar o Schema JSON de Hooks no CI
+
+**Problema:** `schemas/hooks.schema.json` existe e define o formato de configuração de hooks, mas `scripts/ci/validate-hooks.js` **não o usa**. A validação está duplicada (VALID_EVENTS, estrutura) e pode divergir do schema.
+
+**Recomendação:**
+
+- Use um validador JSON Schema (ex.: `ajv`) em `validate-hooks.js` para validar `hooks/hooks.json` contra `schemas/hooks.schema.json`. Mantenha o validador como fonte única de verdade para a estrutura; retenha apenas verificações específicas de hooks (ex.: sintaxe JS inline) no script.
+- Garante que o schema e o validador permaneçam sincronizados e permite validação em IDE/editor via `$schema` em hooks.json.
+
+**Impacto:** Médio — reduz o desvio e melhora a experiência do colaborador ao editar hooks.
+
+---
+
+## 4. Cross-Harness e i18n
+
+### 4.1 Sincronização de Subconjunto de Skill/Agent (.agents/skills, .cursor/skills)
+
+**Problema:** `.agents/skills/` (Codex) e `.cursor/skills/` são subconjuntos de `skills/`. Adicionar ou remover uma skill no repositório principal requer atualização manual desses subconjuntos, o que pode ser esquecido.
+
+**Recomendação:**
+
+- Documente em CONTRIBUTING.md que adicionar uma skill pode exigir atualização de `.agents/skills` e `.cursor/skills` (e como fazê-lo).
+- Opcionalmente: uma verificação de CI ou script que compare `skills/` com os subconjuntos e falhe ou avise se uma skill está em um conjunto mas não no outro quando deveria estar (ex.: por convenção ou por um pequeno manifesto).
+
+**Impacto:** Baixo–Médio — reduz o desvio cross-harness.
+
+---
+
+### 4.2 Desvio de Tradução (docs/ zh-CN, zh-TW, ja-JP)
+
+**Problema:** As traduções em `docs/` duplicam agents, comandos e skills. À medida que o fonte em inglês evolui, as traduções podem ficar desatualizadas sem um processo ou ferramentas claras.
+
+**Recomendação:**
+
+- Documente um **processo de tradução:** quando atualizar (ex.: a cada versão), quem é responsável por cada localidade e como detectar conteúdo obsoleto (ex.: diff de listas de arquivos ou seções-chave).
+- Considere: arquivo de status de tradução (ex.: `docs/i18n-status.md`) ou CI que verifica a existência/timestamps dos arquivos de tradução e avisa se o inglês foi atualizado mais recentemente que uma tradução.
+- Longo prazo: considere formato de extração/placeholder (ex.: chaves i18n) para que as traduções referenciem a mesma estrutura que o fonte em inglês.
+
+**Impacto:** Médio — melhora a experiência para usuários que não falam inglês e reduz confusão por traduções desatualizadas.
+
+---
+
+## 5. Hooks e Scripts
+
+### 5.1 Consistência de Runtime de Hook
+
+**Problema:** Os hooks devem manter uma superfície de dispatch no modo Node consistente. A observação de aprendizado contínuo agora é despachada por `run-with-flags.js` e `observe-runner.js`, que delega para a implementação existente `observe.sh` sem expor um ponto de entrada de hook no modo shell.
+
+**Recomendação:**
+
+- Prefira Node para novos hooks quando possível (multiplataforma, runtime único). Se shell for necessário, documente o motivo e mantenha a superfície pequena.
+- Certifique-se de que `ECC_HOOK_PROFILE` e `ECC_DISABLED_HOOKS` sejam respeitados em todos os caminhos de código (incluindo shell) para que o comportamento seja consistente.
+
+**Impacto:** Baixo — mantém o design atual; melhora se mais hooks migrarem para Node.
+
+---
+
+## 6. Tabela Resumo
+
+| Área              | Melhoria                          | Prioridade | Esforço  |
 |-------------------|--------------------------------------|----------|---------|
-| Doc sync          | Sync AGENTS.md/README counts & table | High     | Low     |
-| Single source     | Catalog script or manifest           | High     | Medium  |
-| Test discovery    | Glob-based test runner               | High     | Low     |
-| Coverage          | Add c8/nyc and CI coverage           | Medium   | Medium  |
-| Hook schema in CI | Validate hooks.json via schema       | Medium   | Low     |
-| Command map       | Command → agent/skill registry       | Medium   | Medium  |
-| Subset sync       | Document/CI for .agents/.cursor       | Low–Med  | Low–Med |
-| Translations      | Process + stale detection             | Medium   | Medium  |
-| Hook runtime      | Prefer Node; document shell use       | Low      | Low     |
+| Sincronização de doc | Sincronizar contagens e tabela de AGENTS.md/README | Alta | Baixo |
+| Fonte única | Script de catálogo ou manifesto | Alta | Médio |
+| Descoberta de testes | Runner de testes baseado em Glob | Alta | Baixo |
+| Cobertura | Adicionar c8/nyc e cobertura no CI | Médio | Médio |
+| Schema de hook no CI | Validar hooks.json via schema | Médio | Baixo |
+| Mapa de comandos | Registro de comando → agent/skill | Médio | Médio |
+| Sincronização de subconjunto | Documentar/CI para .agents/.cursor | Baixo–Médio | Baixo–Médio |
+| Traduções | Processo + detecção de obsolescência | Médio | Médio |
+| Runtime de hook | Preferir Node; documentar uso de shell | Baixo | Baixo |
 
 ---
 
-## 7. Quick Wins (Immediate)
+## 7. Vitórias Rápidas (Imediatas)
 
-1. **Update AGENTS.md:** Set agent count to 16; add chief-of-staff, loop-operator, harness-optimizer to the agent table; align skill/command counts with repo.
-2. **Test discovery:** Change `run-all.js` to discover `**/*.test.js` under `tests/` (with optional allowlist) so new tests are always run.
-3. **Wire hooks schema:** In `validate-hooks.js`, validate `hooks/hooks.json` against `schemas/hooks.schema.json` using ajv (or similar) and keep only hook-specific checks in the script.
+1. **Atualizar AGENTS.md:** Definir contagem de agents como 16; adicionar chief-of-staff, loop-operator, harness-optimizer à tabela de agents; alinhar contagens de skills/comandos com o repositório.
+2. **Descoberta de testes:** Alterar `run-all.js` para descobrir `**/*.test.js` em `tests/` (com lista de permissões opcional) para que novos testes sejam sempre executados.
+3. **Conectar schema de hooks:** Em `validate-hooks.js`, validar `hooks/hooks.json` contra `schemas/hooks.schema.json` usando ajv (ou similar) e manter apenas verificações específicas de hooks no script.
 
-These three can be done in one or two sessions and materially improve consistency and reliability.
+Esses três podem ser feitos em uma ou duas sessões e melhoram materialmente a consistência e a confiabilidade.

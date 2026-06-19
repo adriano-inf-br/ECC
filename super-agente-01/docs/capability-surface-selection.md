@@ -1,140 +1,140 @@
-# Capability Surface Selection
+# Seleção de Superfície de Capacidade
 
-Use this as the routing guide when deciding whether a capability belongs in a rule, a skill, an MCP server, or a plain CLI/API workflow.
+Use este documento como guia de roteamento ao decidir se uma capacidade pertence a uma rule, uma skill, um servidor MCP ou um fluxo de trabalho simples de CLI/API.
 
-ECC does not treat these surfaces as interchangeable. The goal is to put each capability in the narrowest surface that preserves correctness, keeps token cost under control, and does not create unnecessary runtime or supply-chain drag.
+O ECC não trata essas superfícies como intercambiáveis. O objetivo é colocar cada capacidade na superfície mais estreita que preserve a corretude, mantenha o custo de Token sob controle e não crie sobrecarga desnecessária de tempo de execução ou de cadeia de suprimentos.
 
-## The Short Version
+## A Versão Resumida
 
-- `rules/` are for deterministic, always-on constraints that should be injected when a path or event matches.
-- `skills/` are for on-demand workflows, richer playbooks, and token-expensive guidance that should load only when relevant.
-- `MCP` is for interactive structured capabilities that benefit from a long-lived tool/resource surface across sessions or clients.
-- local `CLI` or repo scripts are for simple deterministic actions that do not need a persistent server.
-- direct `API` calls inside a skill are for narrow remote actions where a full MCP server would be heavier than the problem.
+- `rules/` são para restrições determinísticas e sempre ativas que devem ser injetadas quando um caminho ou evento corresponder.
+- `skills/` são para fluxos de trabalho sob demanda, playbooks mais ricos e orientações que consomem muitos tokens e devem carregar apenas quando relevantes.
+- `MCP` é para capacidades estruturadas e interativas que se beneficiam de uma superfície de ferramenta/recurso de longa duração entre sessões ou clientes.
+- `CLI` local ou scripts de repositório são para ações determinísticas simples que não precisam de um servidor persistente.
+- chamadas diretas de `API` dentro de uma skill são para ações remotas estreitas onde um servidor MCP completo seria mais pesado do que o problema.
 
-## Decision Order
+## Ordem de Decisão
 
-Ask these questions in order:
+Faça estas perguntas em ordem:
 
-1. Should this happen every time a path or event matches, with no model judgment involved?
-   - Use a `rule`.
-2. Is this mostly a playbook, workflow, or advisory layer that should load only when the task actually needs it?
-   - Use a `skill`.
-3. Does the capability need a structured interactive tool/resource interface that multiple harnesses or clients should call repeatedly?
+1. Isto deve acontecer toda vez que um caminho ou evento corresponder, sem envolvimento de julgamento do modelo?
+   - Use uma `rule`.
+2. Isto é principalmente um playbook, fluxo de trabalho ou camada de orientação que deve carregar apenas quando a tarefa realmente precisar?
+   - Use uma `skill`.
+3. A capacidade precisa de uma interface de ferramenta/recurso estruturada e interativa que múltiplos harnesses ou clientes devam chamar repetidamente?
    - Use `MCP`.
-4. Is it a simple local action that can run as a script without keeping a server alive?
-   - Use a local `CLI` entrypoint or repo script, then wrap it with a skill if needed.
-5. Is it just one narrow remote integration step inside a larger workflow?
-   - Call the external `API` directly from the skill or script.
+4. É uma ação local simples que pode ser executada como um script sem manter um servidor ativo?
+   - Use um ponto de entrada `CLI` local ou script de repositório e, se necessário, envolva-o com uma skill.
+5. É apenas uma etapa estreita de integração remota dentro de um fluxo de trabalho maior?
+   - Chame a `API` externa diretamente a partir da skill ou script.
 
-## Surface-by-Surface Guidance
+## Orientação por Superfície
 
 ### Rules
 
-Use rules for:
+Use rules para:
 
-- path-scoped coding invariants
-- safety floors and permission constraints
-- harness/runtime constraints that should always apply
-- deterministic reminders that should not depend on model discretion
+- invariantes de codificação com escopo de caminho
+- pisos de segurança e restrições de permissão
+- restrições de harness/tempo de execução que devem sempre se aplicar
+- lembretes determinísticos que não devem depender da discrição do modelo
 
-Do not use rules for:
+Não use rules para:
 
-- large playbooks that would bloat every matching edit
-- optional workflows
-- expensive domain context that only matters some of the time
+- playbooks extensos que sobrecarregariam toda edição correspondente
+- fluxos de trabalho opcionais
+- contexto de domínio caro que só importa às vezes
 
 ### Skills
 
-Use skills for:
+Use skills para:
 
-- multi-step workflows
-- judgment-heavy guidance
-- domain playbooks that are expensive enough to load only on demand
-- orchestration across scripts, APIs, MCP tools, and adjacent skills
+- fluxos de trabalho de múltiplas etapas
+- orientação que exige julgamento
+- playbooks de domínio suficientemente caros para carregar apenas sob demanda
+- orquestração entre scripts, APIs, ferramentas MCP e skills adjacentes
 
-Do not use skills as a dumping ground for static invariants that really want deterministic routing.
+Não use skills como depósito de invariantes estáticos que realmente desejam roteamento determinístico.
 
 ### MCP
 
-Use MCP when the capability benefits from:
+Use MCP quando a capacidade se beneficiar de:
 
-- structured tool inputs/outputs
-- reusable resources or prompts
-- repeated cross-client usage
-- a stable interface that should work across Claude Code, Codex, Cursor, OpenCode, and related harnesses
-- a long-lived server process being worth the operational overhead
+- entradas/saídas de ferramentas estruturadas
+- recursos ou prompts reutilizáveis
+- uso repetido entre clientes
+- uma interface estável que deve funcionar em Claude Code, Codex, Cursor, OpenCode e harnesses relacionados
+- um processo de servidor de longa duração que justifique a sobrecarga operacional
 
-Avoid MCP when:
+Evite MCP quando:
 
-- the job is a one-shot local command
-- the only thing the server would do is shell out once
-- the server adds more install/runtime burden than product value
+- o trabalho é um comando local de uso único
+- a única coisa que o servidor faria é executar um shell uma vez
+- o servidor adiciona mais carga de instalação/tempo de execução do que valor de produto
 
-### CLI / Repo Scripts
+### CLI / Scripts de Repositório
 
-Prefer a local script or CLI when:
+Prefira um script local ou CLI quando:
 
-- the action is deterministic
-- startup is cheap
-- the workflow is mostly local
-- there is no benefit to exposing a persistent tool/resource surface
+- a ação é determinística
+- a inicialização é barata
+- o fluxo de trabalho é principalmente local
+- não há benefício em expor uma superfície de ferramenta/recurso persistente
 
-This is often the right choice for:
+Esta é frequentemente a escolha certa para:
 
-- lint/test/build wrappers
-- local transforms
-- small installers
-- content generation that runs once per invocation
+- wrappers de lint/test/build
+- transformações locais
+- pequenos instaladores
+- geração de conteúdo que é executada uma vez por invocação
 
-### Direct API Calls
+### Chamadas Diretas de API
 
-Prefer direct API calls inside an existing skill or script when:
+Prefira chamadas diretas de API dentro de uma skill ou script existente quando:
 
-- the integration is narrow
-- the remote action is part of a larger workflow
-- you do not need a reusable transport surface yet
+- a integração é estreita
+- a ação remota faz parte de um fluxo de trabalho maior
+- você ainda não precisa de uma superfície de transporte reutilizável
 
-If the same remote integration becomes central, repeated, and multi-client, that is the signal to graduate it into an MCP surface.
+Se a mesma integração remota se tornar central, repetida e multi-cliente, esse é o sinal para promovê-la a uma superfície MCP.
 
-## Cost and Reliability Bias
+## Viés de Custo e Confiabilidade
 
-When two options are both viable:
+Quando duas opções são igualmente viáveis:
 
-- prefer the smaller runtime surface
-- prefer the lower token overhead
-- prefer the path with fewer external moving parts
-- prefer ECC-native packaging over introducing another third-party dependency
+- prefira a superfície de tempo de execução menor
+- prefira a menor sobrecarga de Token
+- prefira o caminho com menos partes móveis externas
+- prefira o empacotamento nativo do ECC em vez de introduzir outra dependência de terceiros
 
-Do not normalize external plugin or package dependencies as first-class ECC surfaces unless the capability is clearly worth the maintenance, security, and install burden.
+Não normalize dependências externas de plugin ou pacote como superfícies ECC de primeira classe a menos que a capacidade justifique claramente a manutenção, segurança e carga de instalação.
 
-## Repo Policy
+## Política do Repositório
 
-When bringing in ideas from external repos:
+Ao trazer ideias de repositórios externos:
 
-- copy the underlying idea, not the external dependency
-- repackage it as an ECC-native rule, skill, script, or MCP surface
-- rename it if the functionality has been materially expanded or reshaped for ECC
-- avoid shipping instructions that require users to install unrelated third-party packages unless that dependency is intentional, audited, and central to the workflow
+- copie a ideia subjacente, não a dependência externa
+- reempacote-a como uma rule, skill, script ou superfície MCP nativa do ECC
+- renomeie se a funcionalidade tiver sido materialmente expandida ou reformulada para o ECC
+- evite entregar instruções que exijam que os usuários instalem pacotes de terceiros não relacionados, a menos que essa dependência seja intencional, auditada e central para o fluxo de trabalho
 
-## Examples
+## Exemplos
 
-- A backend auth invariant that should always apply to `api/**` edits:
+- Um invariante de autenticação de backend que deve sempre se aplicar a edições em `api/**`:
   - `rule`
-- A deeper API design and pagination playbook:
+- Um playbook mais aprofundado de design de API e paginação:
   - `skill`
-- A reusable remote search surface used across multiple harnesses:
+- Uma superfície de busca remota reutilizável usada entre múltiplos harnesses:
   - `MCP`
-- A one-shot repo analyzer that reads local files and writes a report:
-  - local `CLI` or script, optionally wrapped by a `skill`
-- A single billing-portal session creation step inside a broader customer-ops workflow:
-  - direct `API` call inside the workflow
+- Um analisador de repositório de uso único que lê arquivos locais e escreve um relatório:
+  - `CLI` local ou script, opcionalmente envolvido por uma `skill`
+- Uma única etapa de criação de sessão no portal de cobrança dentro de um fluxo de trabalho mais amplo de operações de clientes:
+  - chamada direta de `API` dentro do fluxo de trabalho
 
-## Practical Heuristic
+## Heurística Prática
 
-If you are unsure, start smaller:
+Se você não tiver certeza, comece menor:
 
-- start with a `rule` for deterministic invariants
-- start with a `skill` for guidance/workflow
-- start with a script for one-shot execution
-- promote to `MCP` only when the structured server boundary is clearly paying for itself
+- comece com uma `rule` para invariantes determinísticos
+- comece com uma `skill` para orientação/fluxo de trabalho
+- comece com um script para execução de uso único
+- promova para `MCP` somente quando o limite estruturado do servidor estiver claramente se pagando

@@ -1,52 +1,51 @@
-# LinkedIn Draft - ECC v2.0.0-rc.1
+# Rascunho para o LinkedIn - ECC v2.0.0-rc.1
 
-ECC v2.0.0-rc.1 is ready for final release review as the first release-candidate pass at the 2.0 direction.
+ECC v2.0.0-rc.1 está pronto para revisão final de release como o primeiro passo de release-candidate na direção do 2.0.
 
-The practical shift is simple: ECC is no longer framed as only a Claude Code plugin or config bundle.
+A mudança prática é simples: ECC não é mais enquadrado apenas como um plugin do Claude Code ou pacote de configuração.
 
-It is becoming a meta-harness for agentic work: the portable layer above the
-individual AI coding clients.
+Está se tornando um meta-harness para trabalho agêntico: a camada portátil acima dos
+clientes individuais de codificação por IA.
 
-- reusable skills instead of one-off prompts
-- hooks and tests instead of manual discipline
-- MCP-backed access to docs, code, browser automation, and research
-- Codex, OpenCode, Cursor, Gemini, Zed, and Claude Code surfaces that share the same core workflow layer
-- Hermes as the operator shell for chat, cron, handoffs, and daily work routing
+- skills reutilizáveis em vez de prompts avulsos
+- hooks e testes em vez de disciplina manual
+- acesso respaldado por MCP a docs, código, automação de browser e pesquisa
+- superfícies Codex, OpenCode, Cursor, Gemini, Zed e Claude Code que compartilham a mesma camada central de fluxo de trabalho
+- Hermes como o shell do operador para chat, cron, handoffs e roteamento de trabalho diário
 
-For this release-candidate surface, I kept the repo honest.
+Para esta superfície de release-candidate, mantive o repositório honesto.
 
-I did not publish private workspace state. I shipped the reusable layer:
+Não publiquei o estado privado do workspace. Enviei a camada reutilizável:
 
-- sanitized Hermes setup documentation
-- release notes and launch collateral
-- cross-harness architecture notes
-- Hermes import guidance for turning local operator patterns into public ECC skills
-- release-readiness gates for PRs, issues, discussions, Linear progress, legacy tails, observability, and supply-chain checks
-- a deterministic preview-pack smoke test so the public pack can be verified before a release action
-- a gated Itô prediction-market skill pack for research, comparison, planning,
-  and risk review, with Itô API access kept separate from ECC Tools and
-  approval-based
+- documentação sanitizada de configuração do Hermes
+- notas de release e material de lançamento
+- notas de arquitetura cross-harness
+- orientações de importação do Hermes para transformar padrões de operador locais em skills públicas do ECC
+- gates de prontidão para release para PRs, issues, discussions, progresso no Linear, caudas legadas, observabilidade e verificações de cadeia de suprimentos
+- um smoke test determinístico de preview-pack para que o pacote público possa ser verificado antes de uma ação de release
+- um pacote de skills de mercado de predição Itô gateado para pesquisa, comparação, planejamento,
+  e revisão de riscos, com acesso à API Itô mantido separado das ECC Tools e
+  baseado em aprovação
 
-The leverage is not just better prompting.
+O alavancamento não é apenas melhores prompts.
 
-It is reducing the number of isolated surfaces, turning repeated workflows into
-reusable skills, and making the operating system around the agent measurable.
+É reduzir o número de superfícies isoladas, transformar fluxos de trabalho repetidos em
+skills reutilizáveis e tornar o sistema operacional ao redor do agent mensurável.
 
-That is the reason I like the phrase meta-harness. The goal is not to replace
-the harness. The goal is to make the workflow layer above the harness portable,
-auditable, and useful across teams.
+É por isso que gosto da frase meta-harness. O objetivo não é substituir
+o harness. O objetivo é tornar a camada de fluxo de trabalho acima do harness portátil,
+auditável e útil entre equipes.
 
-The supply-chain work became part of the release story too. After the Mini
-Shai-Hulud/TanStack campaign, rc.1 now includes IOC scanning, no-lifecycle CI
-installs, advisory-source refresh, npm audit/signature checks, and AI-tool
-persistence coverage.
+O trabalho de cadeia de suprimentos também se tornou parte da história do release. Após a campanha
+Mini Shai-Hulud/TanStack, o rc.1 agora inclui varredura de IOC, instalações de CI sem ciclo de vida,
+atualização de fontes de advisory, verificações de npm audit/assinaturas e cobertura de
+persistência de ferramentas de IA.
 
-There is still more to harden before GA, especially around packaging, installers, and the `ecc2/` control plane. But rc.1 is enough to show the shape clearly.
+Ainda há mais a endurecer antes do GA, especialmente em torno de empacotamento, instaladores e o plano de controle `ecc2/`. Mas o rc.1 é suficiente para mostrar o formato com clareza.
 
-The GitHub prerelease and npm `next` package are live now. Public publication
-still stays approval-gated for the plugin path, video URLs, final outbound URLs,
-and any billing/native-payments claim that has not been freshly rechecked.
+O prerelease do GitHub e o pacote `next` do npm estão disponíveis agora. A publicação
+pública ainda permanece gateada por aprovação para o caminho do plugin, URLs de vídeo, URLs de saída finais
+e qualquer declaração de faturamento/pagamentos nativos que não tenha sido verificada recentemente.
 
-The release URL ledger now separates links that already resolve from links that
-must wait for the remaining approval-gated plugin, video, billing, and outbound
-checks.
+O ledger de URLs do release agora separa links que já resolvem dos links que
+devem aguardar as verificações restantes de aprovação de plugin, vídeo, faturamento e saída.

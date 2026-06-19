@@ -1,35 +1,35 @@
-# Phase 1 Issue Bundle — March 12, 2026
+# Pacote de Issues da Fase 1 — 12 de março de 2026
 
 ## Status
 
-These issue drafts were prepared from the March 11 mega plan plus the March 12
-handoff. I attempted to open them directly in GitHub, but issue creation was
-blocked by missing GitHub authentication in the MCP session.
+Esses rascunhos de issues foram preparados a partir do mega plano de 11 de março mais o
+handoff de 12 de março. Tentei abri-los diretamente no GitHub, mas a criação de issues foi
+bloqueada por falta de autenticação do GitHub na sessão MCP.
 
-## GitHub Status
+## Status do GitHub
 
-These drafts were later posted via `gh`:
+Esses rascunhos foram posteriormente publicados via `gh`:
 
-- `#423` Implement manifest-driven selective install profiles for ECC
-- `#421` Add ECC install-state plus uninstall / doctor / repair lifecycle
-- `#424` Define canonical session adapter contract for ECC 2.0 control plane
-- `#422` Define generated skill placement and provenance policy
-- `#425` Define governance and visibility past the tool call
+- `#423` Implementar perfis de instalação seletiva baseados em manifesto para o ECC
+- `#421` Adicionar estado de instalação do ECC mais ciclo de vida de desinstalação / doctor / repair
+- `#424` Definir contrato canônico de adapter de sessão para o plano de controle do ECC 2.0
+- `#422` Definir política de posicionamento e proveniência de skills geradas
+- `#425` Definir governança e visibilidade além da chamada de ferramenta
 
-The bodies below are preserved as the local source bundle used to create the
+Os corpos abaixo são preservados como o pacote de origem local usado para criar as
 issues.
 
 ## Issue 1
 
-### Title
+### Título
 
-Implement manifest-driven selective install profiles for ECC
+Implementar perfis de instalação seletiva baseados em manifesto para o ECC
 
 ### Labels
 
 - `enhancement`
 
-### Body
+### Corpo
 
 ```md
 ## Problem
@@ -83,15 +83,15 @@ Add first-pass support for:
 
 ## Issue 2
 
-### Title
+### Título
 
-Add ECC install-state plus uninstall / doctor / repair lifecycle
+Adicionar estado de instalação do ECC mais ciclo de vida de desinstalação / doctor / repair
 
 ### Labels
 
 - `enhancement`
 
-### Body
+### Corpo
 
 ```md
 ## Problem
@@ -154,15 +154,15 @@ The state file should capture at minimum:
 
 ## Issue 3
 
-### Title
+### Título
 
-Define canonical session adapter contract for ECC 2.0 control plane
+Definir contrato canônico de adapter de sessão para o plano de controle do ECC 2.0
 
 ### Labels
 
 - `enhancement`
 
-### Body
+### Corpo
 
 ```md
 ## Problem
@@ -219,15 +219,15 @@ Suggested deliverables:
 
 ## Issue 4
 
-### Title
+### Título
 
-Define generated skill placement and provenance policy
+Definir política de posicionamento e proveniência de skills geradas
 
 ### Labels
 
 - `enhancement`
 
-### Body
+### Corpo
 
 ```md
 ## Problem

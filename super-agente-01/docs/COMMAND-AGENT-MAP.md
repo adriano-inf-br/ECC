@@ -1,67 +1,67 @@
-# Command → Agent / Skill Map
+# Mapa de Comando → Agent / Skill
 
-This document lists each slash command and the primary agent(s) or skills it invokes, plus notable direct-invoke agents. Use it to discover which commands use which agents and to keep refactoring consistent.
+Este documento lista cada comando de barra e os agent(s) ou skills primários que ele invoca, além de agents de invocação direta notáveis. Use-o para descobrir quais comandos usam quais agents e para manter a refatoração consistente.
 
-| Command | Primary agent(s) | Notes |
+| Comando | Agent(s) primário(s) | Notas |
 |---------|------------------|--------|
-| `/plan` | planner | Implementation planning before code |
-| `/tdd` | tdd-guide | Test-driven development |
-| `/code-review` | code-reviewer | Quality and security review |
-| `/build-fix` | build-error-resolver | Fix build/type errors |
-| `/e2e` | e2e-runner | Playwright E2E tests |
-| `/refactor-clean` | refactor-cleaner | Dead code removal |
-| `/update-docs` | doc-updater | Documentation sync |
-| `/update-codemaps` | doc-updater | Codemaps / architecture docs |
-| `/go-review` | go-reviewer | Go code review |
-| `/go-test` | tdd-guide | Go TDD workflow |
-| `/go-build` | go-build-resolver | Fix Go build errors |
-| `/python-review` | python-reviewer | Python code review |
-| `/harness-audit` | — | Harness scorecard (no single agent) |
-| `/loop-start` | loop-operator | Start autonomous loop |
-| `/loop-status` | loop-operator | Inspect loop status |
-| `/quality-gate` | — | Quality pipeline (hook-like) |
-| `/model-route` | — | Model recommendation (no agent) |
-| `/orchestrate` | planner, tdd-guide, code-reviewer, security-reviewer, architect | Multi-agent handoff |
-| `/multi-plan` | architect (Codex/Gemini prompts) | Multi-model planning |
-| `/multi-execute` | architect / frontend prompts | Multi-model execution |
-| `/multi-backend` | architect | Backend multi-service |
-| `/multi-frontend` | architect | Frontend multi-service |
-| `/multi-workflow` | architect | General multi-service |
-| `/learn` | — | continuous-learning skill, instincts |
-| `/learn-eval` | — | continuous-learning-v2, evaluate then save |
+| `/plan` | planner | Planejamento de implementação antes do código |
+| `/tdd` | tdd-guide | Desenvolvimento orientado a testes |
+| `/code-review` | code-reviewer | Revisão de qualidade e segurança |
+| `/build-fix` | build-error-resolver | Corrigir erros de build/tipo |
+| `/e2e` | e2e-runner | Testes E2E com Playwright |
+| `/refactor-clean` | refactor-cleaner | Remoção de código morto |
+| `/update-docs` | doc-updater | Sincronização de documentação |
+| `/update-codemaps` | doc-updater | Codemaps / documentação de arquitetura |
+| `/go-review` | go-reviewer | Revisão de código Go |
+| `/go-test` | tdd-guide | Fluxo de trabalho TDD em Go |
+| `/go-build` | go-build-resolver | Corrigir erros de build em Go |
+| `/python-review` | python-reviewer | Revisão de código Python |
+| `/harness-audit` | — | Scorecard de harness (sem agent único) |
+| `/loop-start` | loop-operator | Iniciar loop autônomo |
+| `/loop-status` | loop-operator | Inspecionar status do loop |
+| `/quality-gate` | — | Pipeline de qualidade (semelhante a hook) |
+| `/model-route` | — | Recomendação de modelo (sem agent) |
+| `/orchestrate` | planner, tdd-guide, code-reviewer, security-reviewer, architect | Handoff multi-agent |
+| `/multi-plan` | architect (prompts Codex/Gemini) | Planejamento multi-modelo |
+| `/multi-execute` | architect / prompts de frontend | Execução multi-modelo |
+| `/multi-backend` | architect | Backend multi-serviço |
+| `/multi-frontend` | architect | Frontend multi-serviço |
+| `/multi-workflow` | architect | Workflow multi-serviço geral |
+| `/learn` | — | skill de continuous-learning, instincts |
+| `/learn-eval` | — | continuous-learning-v2, avaliar e salvar |
 | `/instinct-status` | — | continuous-learning-v2 |
 | `/instinct-import` | — | continuous-learning-v2 |
 | `/instinct-export` | — | continuous-learning-v2 |
-| `/evolve` | — | continuous-learning-v2, cluster instincts |
+| `/evolve` | — | continuous-learning-v2, agrupar instincts |
 | `/promote` | — | continuous-learning-v2 |
 | `/projects` | — | continuous-learning-v2 |
-| `/skill-create` | — | skill-create-output script, git history |
-| `/checkpoint` | — | verification-loop skill |
-| `/verify` | — | verification-loop skill |
-| `/eval` | — | eval-harness skill |
-| `/test-coverage` | — | Coverage analysis |
-| `/sessions` | — | Session history |
-| `/setup-pm` | — | Package manager setup script |
-| `/claw` | — | NanoClaw CLI (scripts/claw.js) |
-| `/pm2` | — | PM2 service lifecycle |
-| `/security-scan` | security-reviewer (skill) | AgentShield via security-scan skill |
+| `/skill-create` | — | script skill-create-output, histórico git |
+| `/checkpoint` | — | skill verification-loop |
+| `/verify` | — | skill verification-loop |
+| `/eval` | — | skill eval-harness |
+| `/test-coverage` | — | Análise de cobertura |
+| `/sessions` | — | Histórico de sessões |
+| `/setup-pm` | — | Script de configuração de gerenciador de pacotes |
+| `/claw` | — | CLI NanoClaw (scripts/claw.js) |
+| `/pm2` | — | Ciclo de vida de serviço PM2 |
+| `/security-scan` | security-reviewer (skill) | AgentShield via skill security-scan |
 
-## Direct-Use Agents
+## Agents de Uso Direto
 
-| Direct agent | Purpose | Scope | Notes |
+| Agent direto | Propósito | Escopo | Notas |
 |--------------|---------|-------|-------|
-| `typescript-reviewer` | TypeScript/JavaScript code review | TypeScript/JavaScript projects | Invoke the agent directly when a review needs TS/JS-specific findings and there is no dedicated slash command yet. |
+| `typescript-reviewer` | Revisão de código TypeScript/JavaScript | Projetos TypeScript/JavaScript | Invoque o agent diretamente quando uma revisão precisar de descobertas específicas de TS/JS e ainda não houver um comando de barra dedicado. |
 
-## Skills referenced by commands
+## Skills referenciadas por comandos
 
 - **continuous-learning**, **continuous-learning-v2**: `/learn`, `/learn-eval`, `/instinct-*`, `/evolve`, `/promote`, `/projects`
 - **verification-loop**: `/checkpoint`, `/verify`
 - **eval-harness**: `/eval`
-- **security-scan**: `/security-scan` (runs AgentShield)
-- **strategic-compact**: suggested at compaction points (hooks)
+- **security-scan**: `/security-scan` (executa AgentShield)
+- **strategic-compact**: sugerido em pontos de compactação (hooks)
 
-## How to use this map
+## Como usar este mapa
 
-- **Discoverability:** Find which command triggers which agent (e.g. “use `/code-review` for code-reviewer”).
-- **Refactoring:** When renaming or removing an agent, search this doc and the command files for references.
-- **CI/docs:** The catalog script (`node scripts/ci/catalog.js`) outputs agent/command/skill counts; this map complements it with command–agent relationships.
+- **Descoberta:** Encontre qual comando aciona qual agent (ex.: "use `/code-review` para code-reviewer").
+- **Refatoração:** Ao renomear ou remover um agent, pesquise este documento e os arquivos de comandos por referências.
+- **CI/docs:** O script de catálogo (`node scripts/ci/catalog.js`) gera contagens de agents/comandos/skills; este mapa complementa com os relacionamentos entre comandos e agents.

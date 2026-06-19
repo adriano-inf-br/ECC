@@ -1,47 +1,47 @@
-# Project Guidelines Template
+# Template de Diretrizes de Projeto
 
-This is a project-specific skill template that was previously shipped as a live ECC skill.
+Este é um template de skill específico de projeto que foi enviado anteriormente como uma skill ECC ativa.
 
-It now lives in `docs/examples/` because it is reference material, not a reusable cross-project skill.
+Agora reside em `docs/examples/` porque é material de referência, não uma skill reutilizável entre projetos.
 
-This is an example of a project-specific skill. Use this as a template for your own projects.
+Este é um exemplo de uma skill específica de projeto. Use este template para seus próprios projetos.
 
-Based on a real production application: [Zenith](https://zenith.chat) - AI-powered customer discovery platform.
+Baseado em uma aplicação real de produção: [Zenith](https://zenith.chat) - plataforma de descoberta de clientes com IA.
 
-## When to Use
+## Quando Usar
 
-Reference this skill when working on the specific project it's designed for. Project skills contain:
-- Architecture overview
-- File structure
-- Code patterns
-- Testing requirements
-- Deployment workflow
+Referencie esta skill ao trabalhar no projeto específico para o qual ela foi projetada. Skills de projeto contêm:
+- Visão geral da arquitetura
+- Estrutura de arquivos
+- Padrões de código
+- Requisitos de teste
+- Fluxo de trabalho de implantação
 
 ---
 
-## Architecture Overview
+## Visão Geral da Arquitetura
 
-**Tech Stack:**
+**Stack Tecnológico:**
 - **Frontend**: Next.js 15 (App Router), TypeScript, React
-- **Backend**: FastAPI (Python), Pydantic models
-- **Database**: Supabase (PostgreSQL)
-- **AI**: Claude API with tool calling and structured output
-- **Deployment**: Google Cloud Run
-- **Testing**: Playwright (E2E), pytest (backend), React Testing Library
+- **Backend**: FastAPI (Python), modelos Pydantic
+- **Banco de dados**: Supabase (PostgreSQL)
+- **IA**: Claude API com chamadas de ferramentas e saída estruturada
+- **Implantação**: Google Cloud Run
+- **Testes**: Playwright (E2E), pytest (backend), React Testing Library
 
-**Services:**
+**Serviços:**
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                         Frontend                            │
 │  Next.js 15 + TypeScript + TailwindCSS                     │
-│  Deployed: Vercel / Cloud Run                              │
+│  Implantado: Vercel / Cloud Run                            │
 └─────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────┐
 │                         Backend                             │
 │  FastAPI + Python 3.11 + Pydantic                          │
-│  Deployed: Cloud Run                                       │
+│  Implantado: Cloud Run                                     │
 └─────────────────────────────────────────────────────────────┘
                               │
               ┌───────────────┼───────────────┐
@@ -54,44 +54,44 @@ Reference this skill when working on the specific project it's designed for. Pro
 
 ---
 
-## File Structure
+## Estrutura de Arquivos
 
 ```
 project/
 ├── frontend/
 │   └── src/
-│       ├── app/              # Next.js app router pages
-│       │   ├── api/          # API routes
-│       │   ├── (auth)/       # Auth-protected routes
-│       │   └── workspace/    # Main app workspace
-│       ├── components/       # React components
-│       │   ├── ui/           # Base UI components
-│       │   ├── forms/        # Form components
-│       │   └── layouts/      # Layout components
-│       ├── hooks/            # Custom React hooks
-│       ├── lib/              # Utilities
-│       ├── types/            # TypeScript definitions
-│       └── config/           # Configuration
+│       ├── app/              # Páginas do app router do Next.js
+│       │   ├── api/          # Rotas de API
+│       │   ├── (auth)/       # Rotas protegidas por autenticação
+│       │   └── workspace/    # Workspace principal do app
+│       ├── components/       # Componentes React
+│       │   ├── ui/           # Componentes de UI base
+│       │   ├── forms/        # Componentes de formulário
+│       │   └── layouts/      # Componentes de layout
+│       ├── hooks/            # Hooks React personalizados
+│       ├── lib/              # Utilitários
+│       ├── types/            # Definições TypeScript
+│       └── config/           # Configuração
 │
 ├── backend/
-│   ├── routers/              # FastAPI route handlers
-│   ├── models.py             # Pydantic models
-│   ├── main.py               # FastAPI app entry
-│   ├── auth_system.py        # Authentication
-│   ├── database.py           # Database operations
-│   ├── services/             # Business logic
-│   └── tests/                # pytest tests
+│   ├── routers/              # Handlers de rota FastAPI
+│   ├── models.py             # Modelos Pydantic
+│   ├── main.py               # Ponto de entrada do app FastAPI
+│   ├── auth_system.py        # Autenticação
+│   ├── database.py           # Operações de banco de dados
+│   ├── services/             # Lógica de negócio
+│   └── tests/                # Testes pytest
 │
-├── deploy/                   # Deployment configs
-├── docs/                     # Documentation
-└── scripts/                  # Utility scripts
+├── deploy/                   # Configurações de implantação
+├── docs/                     # Documentação
+└── scripts/                  # Scripts utilitários
 ```
 
 ---
 
-## Code Patterns
+## Padrões de Código
 
-### API Response Format (FastAPI)
+### Formato de Resposta da API (FastAPI)
 
 ```python
 from pydantic import BaseModel
@@ -113,7 +113,7 @@ class ApiResponse(BaseModel, Generic[T]):
         return cls(success=False, error=error)
 ```
 
-### Frontend API Calls (TypeScript)
+### Chamadas de API no Frontend (TypeScript)
 
 ```typescript
 interface ApiResponse<T> {
@@ -146,7 +146,7 @@ async function fetchApi<T>(
 }
 ```
 
-### Claude AI Integration (Structured Output)
+### Integração com IA Claude (Saída Estruturada)
 
 ```python
 from anthropic import Anthropic
@@ -172,7 +172,7 @@ async def analyze_with_claude(content: str) -> AnalysisResult:
         tool_choice={"type": "tool", "name": "provide_analysis"}
     )
 
-    # Extract tool use result
+    # Extrair resultado do uso de ferramenta
     tool_use = next(
         block for block in response.content
         if block.type == "tool_use"
@@ -181,7 +181,7 @@ async def analyze_with_claude(content: str) -> AnalysisResult:
     return AnalysisResult(**tool_use.input)
 ```
 
-### Custom Hooks (React)
+### Hooks Personalizados (React)
 
 ```typescript
 import { useState, useCallback } from 'react'
@@ -219,22 +219,22 @@ export function useApi<T>(
 
 ---
 
-## Testing Requirements
+## Requisitos de Teste
 
 ### Backend (pytest)
 
 ```bash
-# Run all tests
+# Executar todos os testes
 poetry run pytest tests/
 
-# Run with coverage
+# Executar com cobertura
 poetry run pytest tests/ --cov=. --cov-report=html
 
-# Run specific test file
+# Executar arquivo de teste específico
 poetry run pytest tests/test_auth.py -v
 ```
 
-**Test structure:**
+**Estrutura de teste:**
 ```python
 import pytest
 from httpx import AsyncClient
@@ -255,28 +255,28 @@ async def test_health_check(client: AsyncClient):
 ### Frontend (React Testing Library)
 
 ```bash
-# Run tests
+# Executar testes
 npm run test
 
-# Run with coverage
+# Executar com cobertura
 npm run test -- --coverage
 
-# Run E2E tests
+# Executar testes E2E
 npm run test:e2e
 ```
 
-**Test structure:**
+**Estrutura de teste:**
 ```typescript
 import { render, screen, fireEvent } from '@testing-library/react'
 import { WorkspacePanel } from './WorkspacePanel'
 
 describe('WorkspacePanel', () => {
-  it('renders workspace correctly', () => {
+  it('renderiza o workspace corretamente', () => {
     render(<WorkspacePanel />)
     expect(screen.getByRole('main')).toBeInTheDocument()
   })
 
-  it('handles session creation', async () => {
+  it('lida com a criação de sessão', async () => {
     render(<WorkspacePanel />)
     fireEvent.click(screen.getByText('New Session'))
     expect(await screen.findByText('Session created')).toBeInTheDocument()
@@ -286,30 +286,30 @@ describe('WorkspacePanel', () => {
 
 ---
 
-## Deployment Workflow
+## Fluxo de Trabalho de Implantação
 
-### Pre-Deployment Checklist
+### Lista de Verificação Pré-Implantação
 
-- [ ] All tests passing locally
-- [ ] `npm run build` succeeds (frontend)
-- [ ] `poetry run pytest` passes (backend)
-- [ ] No hardcoded secrets
-- [ ] Environment variables documented
-- [ ] Database migrations ready
+- [ ] Todos os testes passando localmente
+- [ ] `npm run build` bem-sucedido (frontend)
+- [ ] `poetry run pytest` passa (backend)
+- [ ] Sem segredos embutidos no código
+- [ ] Variáveis de ambiente documentadas
+- [ ] Migrações de banco de dados prontas
 
-### Deployment Commands
+### Comandos de Implantação
 
 ```bash
-# Build and deploy frontend
+# Build e implantação do frontend
 cd frontend && npm run build
 gcloud run deploy frontend --source .
 
-# Build and deploy backend
+# Build e implantação do backend
 cd backend
 gcloud run deploy backend --source .
 ```
 
-### Environment Variables
+### Variáveis de Ambiente
 
 ```bash
 # Frontend (.env.local)
@@ -326,22 +326,22 @@ SUPABASE_KEY=eyJ...
 
 ---
 
-## Critical Rules
+## Regras Críticas
 
-1. **No emojis** in code, comments, or documentation
-2. **Immutability** - never mutate objects or arrays
-3. **TDD** - write tests before implementation
-4. **80% coverage** minimum
-5. **Many small files** - 200-400 lines typical, 800 max
-6. **No console.log** in production code
-7. **Proper error handling** with try/catch
-8. **Input validation** with Pydantic/Zod
+1. **Sem emojis** em código, comentários ou documentação
+2. **Imutabilidade** - nunca mute objetos ou arrays
+3. **TDD** - escreva testes antes da implementação
+4. **80% de cobertura** mínima
+5. **Muitos arquivos pequenos** - 200-400 linhas típico, 800 máximo
+6. **Sem console.log** em código de produção
+7. **Tratamento adequado de erros** com try/catch
+8. **Validação de entrada** com Pydantic/Zod
 
 ---
 
-## Related Skills
+## Skills Relacionadas
 
-- `coding-standards.md` - General coding best practices
-- `backend-patterns.md` - API and database patterns
-- `frontend-patterns.md` - React and Next.js patterns
-- `tdd-workflow/` - Test-driven development methodology
+- `coding-standards.md` - Melhores práticas gerais de codificação
+- `backend-patterns.md` - Padrões de API e banco de dados
+- `frontend-patterns.md` - Padrões de React e Next.js
+- `tdd-workflow/` - Metodologia de desenvolvimento orientado a testes

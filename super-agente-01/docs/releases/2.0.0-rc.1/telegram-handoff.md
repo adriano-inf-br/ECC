@@ -1,9 +1,9 @@
-# Telegram Handoff For Hermes
+# Handoff do Telegram para o Hermes
 
-Send this to Hermes when you want it to help package the launch workflow.
+Envie isto ao Hermes quando quiser que ele ajude a empacotar o fluxo de trabalho de lançamento.
 
 ```text
-Use the public ECC release pack in the repo:
+Use o pacote de lançamento público do ECC no repositório:
 
 - docs/releases/2.0.0-rc.1/release-notes.md
 - docs/releases/2.0.0-rc.1/x-thread.md
@@ -16,15 +16,15 @@ Use the public ECC release pack in the repo:
 - docs/HERMES-SETUP.md
 - docs/architecture/cross-harness.md
 
-Task:
+Tarefa:
 
-1. Finalize one strong X thread for ECC v2.0.0-rc.1.
-2. Finalize one strong LinkedIn post for ECC v2.0.0-rc.1.
-3. Give me one 30-60 second Hermes x ECC video script and one 15-30 second variant.
-4. Tell me exactly what to record now with screen capture, face camera, and voice lines.
-5. Tell me what Hermes can generate automatically after I record.
-6. Keep every public claim release-candidate framed until live release/npm/plugin URLs exist.
-7. End with a minimal checklist of the assets or logins still needed.
+1. Finalize uma thread X forte para o ECC v2.0.0-rc.1.
+2. Finalize um post LinkedIn forte para o ECC v2.0.0-rc.1.
+3. Forneça um roteiro de vídeo Hermes x ECC de 30-60 segundos e uma variante de 15-30 segundos.
+4. Diga-me exatamente o que gravar agora com captura de tela, câmera frontal e falas em voz.
+5. Diga-me o que o Hermes pode gerar automaticamente após eu gravar.
+6. Mantenha todas as afirmações públicas com enquadramento de release-candidate até que existam URLs de lançamento/npm/plugin ao vivo.
+7. Finalize com uma checklist mínima dos assets ou logins ainda necessários.
 
-Be decisive. Return final drafts plus a practical recording checklist.
+Seja decisivo. Retorne rascunhos finais mais uma checklist prática de gravação.
 ```

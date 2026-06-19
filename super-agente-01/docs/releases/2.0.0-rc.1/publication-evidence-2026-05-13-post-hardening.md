@@ -1,98 +1,92 @@
-# ECC v2.0.0-rc.1 Publication Evidence - 2026-05-13 Post-Hardening
+# ECC v2.0.0-rc.1 Evidência de Publicação - 2026-05-13 Pós-Hardening
 
-This is release-readiness evidence only. It does not create a GitHub release,
-npm publication, plugin tag, marketplace submission, or announcement post.
+Esta é apenas uma evidência de prontidão para lançamento. Ela não cria um lançamento no GitHub,
+publicação no npm, tag de plugin, submissão ao marketplace ou post de anúncio.
 
-## Source Commit
+## Commit de Origem
 
-| Field | Evidence |
+| Campo | Evidência |
 | --- | --- |
-| Upstream main base | `209abd403b7eaa968c6d4fa67be82e04b55706d6` |
-| Evidence branch | `docs/post-hardening-release-evidence-20260513` |
-| Evidence scope | Current `main` after PR #1850 and PR #1851 |
-| Git remote | `https://github.com/affaan-m/everything-claude-code.git` |
-| Local status caveat | Working tree had the unrelated untracked `docs/drafts/` directory |
+| Base upstream main | `209abd403b7eaa968c6d4fa67be82e04b55706d6` |
+| Branch de evidência | `docs/post-hardening-release-evidence-20260513` |
+| Escopo da evidência | `main` atual após PR #1850 e PR #1851 |
+| Remote Git | `https://github.com/affaan-m/everything-claude-code.git` |
+| Ressalva sobre status local | A árvore de trabalho tinha o diretório não rastreado sem relação `docs/drafts/` |
 
-The actual release operator should repeat these checks from the final release
-commit with a clean checkout before publishing.
+O operador real do lançamento deve repetir estas verificações a partir do commit de lançamento
+final com um checkout limpo antes de publicar.
 
-## Queue And Release State
+## Estado da Fila e Lançamento
 
-| Surface | Command | Result |
+| Superfície | Comando | Resultado |
 | --- | --- | --- |
-| GitHub PRs and issues | `gh pr list` / `gh issue list` across trunk, AgentShield, and JARVIS | 0 open PRs and 0 open issues on accessible `affaan-m` repos |
-| Trunk discussions | GraphQL discussion count for `affaan-m/everything-claude-code` | 0 open discussions |
-| Dependabot alerts | Dependabot alert API for trunk, AgentShield, and JARVIS | 0 open alerts |
-| Release state | `gh release view v2.0.0-rc.1` | Still not created; release remains approval-gated |
+| PRs e issues do GitHub | `gh pr list` / `gh issue list` nos repos trunk, AgentShield e JARVIS | 0 PRs abertos e 0 issues abertos nos repos acessíveis `affaan-m` |
+| Discussões do trunk | Contagem de discussões GraphQL para `affaan-m/everything-claude-code` | 0 discussões abertas |
+| Alertas do Dependabot | API de alertas do Dependabot para trunk, AgentShield e JARVIS | 0 alertas abertos |
+| Estado do lançamento | `gh release view v2.0.0-rc.1` | Ainda não criado; o lançamento permanece aguardando aprovação |
 
-ECC-Tools organization repo counts were not rechecked through the current
-GraphQL token in this pass because the token cannot resolve those org repos.
-The prior post-#42 local checkout handoff recorded both ECC-Tools repos at
-0 open PRs and 0 open issues.
+Os contadores de repos da organização ECC-Tools não foram reverificados pelo token
+GraphQL atual nesta passagem porque o token não consegue resolver esses repos da org.
+O handoff anterior de checkout local pós-#42 registrou ambos os repos ECC-Tools com
+0 PRs abertos e 0 issues abertos.
 
-## Hardening Landed Since Previous Evidence
+## Hardening Aplicado Desde a Evidência Anterior
 
-| PR | Merge commit | Evidence |
+| PR | Commit de merge | Evidência |
 | --- | --- | --- |
-| #1850 | `248673271455e9dc85b8add2a6ab76107b718639` | Removed `Bash` tool access from read-only analyzer agents and zh-CN copies; AgentShield high findings on that surface dropped 21 -> 18 with no new high findings |
-| #1851 | `209abd403b7eaa968c6d4fa67be82e04b55706d6` | Disabled `actions/checkout` credential persistence in write-permission workflows and added a workflow-security validator rule to keep that guard in place |
+| #1850 | `248673271455e9dc85b8add2a6ab76107b718639` | Removido acesso à ferramenta `Bash` dos agents analisadores somente leitura e cópias zh-CN; descobertas altas do AgentShield nessa superfície caíram de 21 -> 18 sem novas descobertas altas |
+| #1851 | `209abd403b7eaa968c6d4fa67be82e04b55706d6` | Desativada a persistência de credenciais do `actions/checkout` em workflows com permissão de escrita e adicionada uma regra de validador de segurança de workflow para manter essa proteção em vigor |
 
-## Required Command Evidence
+## Evidência dos Comandos Obrigatórios
 
-| Evidence | Command | Result |
+| Evidência | Comando | Resultado |
 | --- | --- | --- |
-| Harness audit | `npm run harness:audit -- --format json` | `overall_score: 70`, `max_score: 70`, no top actions |
-| Adapter scorecard | `npm run harness:adapters -- --check` | `Harness Adapter Compliance: PASS`; 11 adapters |
-| Observability readiness | `npm run observability:ready -- --format json` | `overall_score: 21`, `max_score: 21`, `ready: true`, no top actions; includes Release Safety 3/3 |
-| Workflow security validator | `node scripts/ci/validate-workflow-security.js` | Validated 7 workflow files |
-| Workflow validator tests | `node tests/ci/validate-workflow-security.test.js` | Passed 14/14 |
-| Release surface | `node tests/docs/ecc2-release-surface.test.js` | Passed 18/18 |
-| Package surface | `node tests/scripts/npm-publish-surface.test.js` | Passed 2/2 |
-| Root suite | `node tests/run-all.js` | Passed 2381/2381, 0 failed |
-| Markdown lint | `npx markdownlint-cli '**/*.md' --ignore node_modules --ignore docs/drafts` | Passed |
-| Rust surface | `cd ecc2 && cargo test` | Passed 462/462; warnings only for unused functions/fields |
-| GitGuardian Security Checks | GitHub check on post-hardening security PRs | Passed before merge |
+| Auditoria do harness | `npm run harness:audit -- --format json` | `overall_score: 70`, `max_score: 70`, sem ações principais |
+| Scorecard do adaptador | `npm run harness:adapters -- --check` | `Harness Adapter Compliance: PASS`; 11 adaptadores |
+| Prontidão de observabilidade | `npm run observability:ready -- --format json` | `overall_score: 21`, `max_score: 21`, `ready: true`, sem ações principais; inclui Release Safety 3/3 |
+| Validador de segurança de workflow | `node scripts/ci/validate-workflow-security.js` | Validados 7 arquivos de workflow |
+| Testes do validador de workflow | `node tests/ci/validate-workflow-security.test.js` | Passaram 14/14 |
+| Superfície de lançamento | `node tests/docs/ecc2-release-surface.test.js` | Passaram 18/18 |
+| Superfície de pacote | `node tests/scripts/npm-publish-surface.test.js` | Passaram 2/2 |
+| Suíte raiz | `node tests/run-all.js` | Passaram 2381/2381, 0 falhas |
+| Lint de Markdown | `npx markdownlint-cli '**/*.md' --ignore node_modules --ignore docs/drafts` | Passou |
+| Superfície Rust | `cd ecc2 && cargo test` | Passaram 462/462; apenas avisos para funções/campos não utilizados |
+| Verificações de Segurança do GitGuardian | Verificação do GitHub nos PRs de segurança pós-hardening | Passou antes do merge |
 
-## Supply-Chain Evidence
+## Evidência da Cadeia de Suprimentos
 
-| Surface | Command or check | Result |
+| Superfície | Comando ou verificação | Resultado |
 | --- | --- | --- |
-| Local npm vulnerability audit | `npm audit --json` | 0 vulnerabilities |
-| Local npm signature audit | `npm audit signatures` | 241 verified registry signatures and 30 verified attestations |
-| Rust advisory audit | `cd ecc2 && cargo audit -q` | Passed silently |
-| TanStack / Mini Shai-Hulud IOC check | Grep for affected package namespaces, payload filenames, and known commit marker | No runtime or lockfile dependency on affected packages; no worm IOC matches |
-| GitGuardian Security Checks | GitHub check on post-hardening security PRs | Passed before merge |
+| Auditoria local de vulnerabilidades npm | `npm audit --json` | 0 vulnerabilidades |
+| Auditoria local de assinaturas npm | `npm audit signatures` | 241 assinaturas de registro verificadas e 30 atestados verificados |
+| Auditoria de avisos Rust | `cd ecc2 && cargo audit -q` | Passou silenciosamente |
+| Verificação de IOC TanStack / Mini Shai-Hulud | Grep para namespaces de pacotes afetados, nomes de arquivos de payload e marcador de commit conhecido | Sem dependência de runtime ou lockfile nos pacotes afetados; sem correspondências de IOC do worm |
+| Verificações de Segurança do GitGuardian | Verificação do GitHub nos PRs de segurança pós-hardening | Passou antes do merge |
 
-## External Advisory Mapping
+## Mapeamento de Avisos Externos
 
-The May 2026 TanStack incident maps to ECC release risk through three workflow
-classes:
+O incidente TanStack de maio de 2026 mapeia para o risco de lançamento do ECC através de três
+classes de workflow:
 
-- `pull_request_target` workflows that execute or checkout untrusted PR code;
-- shared dependency caches crossing fork, base, and release workflow trust
-  boundaries;
-- release jobs with writable tokens or OIDC tokens exposed to subsequent
-  process execution.
+- workflows `pull_request_target` que executam ou fazem checkout de código de PR não confiável;
+- caches de dependência compartilhados cruzando fronteiras de confiança entre fork, base e workflow de lançamento;
+- jobs de lançamento com tokens graváveis ou tokens OIDC expostos a execução de processos subsequentes.
 
-ECC's current guardrails cover those classes through:
+As proteções atuais do ECC cobrem essas classes através de:
 
-- rejection of untrusted checkout refs in `workflow_run` and
-  `pull_request_target` workflows;
-- rejection of shared caches in `pull_request_target` and `id-token: write`
-  workflows;
-- mandatory `npm audit signatures` when workflows run `npm audit`;
-- mandatory `npm ci --ignore-scripts` in workflows with write permissions;
-- mandatory `persist-credentials: false` on `actions/checkout` in workflows
-  with write permissions.
+- rejeição de refs de checkout não confiáveis em workflows `workflow_run` e `pull_request_target`;
+- rejeição de caches compartilhados em workflows `pull_request_target` e `id-token: write`;
+- obrigatoriedade de `npm audit signatures` quando workflows executam `npm audit`;
+- obrigatoriedade de `npm ci --ignore-scripts` em workflows com permissões de escrita;
+- obrigatoriedade de `persist-credentials: false` no `actions/checkout` em workflows com permissões de escrita.
 
-## Blockers Still Requiring Approval Or External Action
+## Bloqueadores Que Ainda Requerem Aprovação ou Ação Externa
 
-- Create or verify GitHub prerelease `v2.0.0-rc.1`.
-- Publish `ecc-universal@2.0.0-rc.1` with npm dist-tag `next`.
-- Create and push the Claude plugin tag only after explicit approval.
-- Confirm the live Claude/Codex/OpenCode marketplace submission path or record
-  the manual submission owner and status.
-- Verify ECC Tools billing/App/Marketplace claims before using them in launch
-  copy.
-- Refresh announcement copy with live URLs after release and package/plugin
-  URLs exist.
+- Criar ou verificar o pré-lançamento `v2.0.0-rc.1` no GitHub.
+- Publicar `ecc-universal@2.0.0-rc.1` com a dist-tag npm `next`.
+- Criar e enviar a tag do plugin Claude somente após aprovação explícita.
+- Confirmar o caminho de submissão ao marketplace ao vivo Claude/Codex/OpenCode ou registrar
+  o proprietário e status da submissão manual.
+- Verificar as alegações de faturamento/App/Marketplace das ECC Tools antes de usá-las no
+  texto de lançamento.
+- Atualizar o texto de anúncio com URLs ao vivo após o lançamento e após as URLs de pacote/plugin existirem.

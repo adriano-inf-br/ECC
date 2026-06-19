@@ -1,34 +1,34 @@
-# ECC 2.0 Video Suite Production Manifest
+# Manifesto de Produção da Suite de Vídeos ECC 2.0
 
-Snapshot date: 2026-05-19.
+Data do snapshot: 2026-05-19.
 
-This is the production contract for the ECC 2.0 release video suite. It keeps
-the public release story, local source inventory, render outputs, and self-eval
-gate in one place without committing raw footage, private transcript exports, or
-absolute local paths.
+Este é o contrato de produção para a suite de vídeos do lançamento ECC 2.0. Ele mantém
+a história pública do lançamento, o inventário de fontes locais, os outputs de renderização e o
+gate de autoavaliação em um único lugar, sem comprometer imagens brutas, exportações
+privadas de transcrição ou caminhos locais absolutos.
 
-## Claim
+## Afirmação
 
-ECC 2.0 is the harness-native operator system for agentic work.
+ECC 2.0 é o sistema operador nativo do harness para trabalho agentic.
 
-The videos should prove that claim directly:
+Os vídeos devem provar essa afirmação diretamente:
 
-- one reusable layer across Claude Code, Codex, OpenCode, Cursor, Gemini, Zed,
-  GitHub Copilot, and terminal workflows;
-- reusable skills, rules, hooks, agents, MCP conventions, release gates, and
-  operator workflows;
-- `ecc2/` as the alpha control-plane/TUI direction, not the whole product;
-- AgentShield and supply-chain gates as the enterprise trust layer;
-- OSS stays free, with GitHub Sponsors, ECC Tools Pro, and consulting as the
-  funding surface.
+- uma camada reutilizável entre Claude Code, Codex, OpenCode, Cursor, Gemini, Zed,
+  GitHub Copilot e fluxos de trabalho de terminal;
+- skills reutilizáveis, rules, hooks, agents, convenções MCP, gates de lançamento e
+  fluxos de trabalho de operador;
+- `ecc2/` como a direção alpha de control-plane/TUI, não o produto inteiro;
+- AgentShield e gates de cadeia de suprimentos como a camada de confiança empresarial;
+- OSS permanece gratuito, com GitHub Sponsors, ECC Tools Pro e consultoria como a
+  superfície de financiamento.
 
-Do not frame the launch as a rename, pivot, config pack, or Claude-only package.
+Não enquadre o lançamento como uma renomeação, pivô, pacote de configuração ou pacote exclusivo do Claude.
 
-## Private Inputs
+## Entradas Privadas
 
-Do not commit raw footage, transcript JSON, or timeline exports.
+Não faça commit de imagens brutas, transcrições JSON ou exportações de timeline.
 
-Operators should point the validator at local media using environment variables:
+Os operadores devem apontar o validador para mídia local usando variáveis de ambiente:
 
 ```bash
 ECC_VIDEO_SOURCE_ROOT=/path/to/ecc_2_raws \
@@ -36,61 +36,61 @@ ECC_VIDEO_RELEASE_SUITE_ROOT=/path/to/ecc_2_release_suite \
 npm run release:video-suite -- --format json
 ```
 
-`ECC_VIDEO_SOURCE_ROOT` should contain proof images and may contain an `_edited/`
-subdirectory with edited source clips. `ECC_VIDEO_RELEASE_SUITE_ROOT` should
-contain `edl/`, `segments/`, `renders/`, `timelines/`, and `transcripts/`.
+`ECC_VIDEO_SOURCE_ROOT` deve conter imagens de prova e pode conter um subdiretório `_edited/`
+com clipes de fonte editados. `ECC_VIDEO_RELEASE_SUITE_ROOT` deve conter `edl/`, `segments/`,
+`renders/`, `timelines/` e `transcripts/`.
 
-## Source Inventory
+## Inventário de Fontes
 
-These basenames are the required local inputs for the release suite validator.
+Estes basenames são as entradas locais obrigatórias para o validador da suite de lançamento.
 
-| Asset | Lane | Proof |
+| Asset | Trilha | Prova |
 | --- | --- | --- |
-| `longform-full-wide.mp4` | Primary launch video | operator system, control-plane direction, closing proof |
-| `sf-longform-full.mp4` | Primary launch video | structured context opener |
-| `sf-thread-2-whatisecc.mp4` | What is ECC | category clarity and GitHub App explanation |
-| `sf-thread-4-security.mp4` | Security proof | AgentShield, hooks, MCP, permission risk |
-| `thread-2-ghapp-money.mp4` | Money/proof clip | OSS plus paid hosting and services |
-| `architecture-2-wide.mp4` | B-roll | harness-native architecture |
-| `terminal-scan-2-wide.mp4` | Install proof | terminal workflow and install confidence |
-| `new_site_raw.mp4` | B-roll | site and product surface |
-| `coverage-montage-wide.mp4` | Coverage/social proof | distribution and social proof |
-| `metrics-ticker-2-wide.mp4` | Money/proof clip | traction and funnel proof |
-| `growth-timeline-2-wide.mp4` | Coverage/social proof | release momentum timeline |
-| `gh_app_1.png` | Money/proof clip | hosted GitHub App surface |
-| `star_history.png` | Coverage/social proof | OSS adoption chart |
-| `x_analytics.png` | Coverage/social proof | social distribution proof |
-| `100k.png` | Coverage/social proof | reach milestone proof |
+| `longform-full-wide.mp4` | Vídeo principal de lançamento | sistema operador, direção de control-plane, prova de fechamento |
+| `sf-longform-full.mp4` | Vídeo principal de lançamento | abertura de contexto estruturado |
+| `sf-thread-2-whatisecc.mp4` | O que é ECC | clareza de categoria e explicação do GitHub App |
+| `sf-thread-4-security.mp4` | Prova de segurança | AgentShield, hooks, MCP, risco de permissão |
+| `thread-2-ghapp-money.mp4` | Clipe de dinheiro/prova | OSS mais hospedagem e serviços pagos |
+| `architecture-2-wide.mp4` | B-roll | arquitetura nativa do harness |
+| `terminal-scan-2-wide.mp4` | Prova de instalação | fluxo de trabalho de terminal e confiança na instalação |
+| `new_site_raw.mp4` | B-roll | site e superfície do produto |
+| `coverage-montage-wide.mp4` | Cobertura/prova social | distribuição e prova social |
+| `metrics-ticker-2-wide.mp4` | Clipe de dinheiro/prova | prova de tração e funil |
+| `growth-timeline-2-wide.mp4` | Cobertura/prova social | timeline de impulso do lançamento |
+| `gh_app_1.png` | Clipe de dinheiro/prova | superfície do GitHub App hospedado |
+| `star_history.png` | Cobertura/prova social | gráfico de adoção OSS |
+| `x_analytics.png` | Cobertura/prova social | prova de distribuição social |
+| `100k.png` | Cobertura/prova social | prova de marco de alcance |
 
-## Deliverables
+## Entregáveis
 
-| Deliverable | Length | Aspect | Output |
+| Entregável | Duração | Proporção | Output |
 | --- | ---: | --- | --- |
-| Primary launch video | 90-150s | 16:9 | `ecc-2-primary-launch.mp4` |
-| Install proof clip | 25-35s | 16:9 and 9:16 | `ecc-2-install-proof-*` |
-| What is ECC clip | 45-60s | 16:9 and 9:16 | `ecc-2-what-is-ecc-*` |
-| Security proof clip | 45-60s | 16:9 and 9:16 | `ecc-2-security-proof-*` |
-| Money/proof clip | 30-45s | 16:9 and 9:16 | `ecc-2-money-proof-*` |
-| Coverage/social proof clip | 30-45s | 16:9 and 9:16 | `ecc-2-social-proof-*` |
+| Vídeo principal de lançamento | 90-150s | 16:9 | `ecc-2-primary-launch.mp4` |
+| Clipe de prova de instalação | 25-35s | 16:9 e 9:16 | `ecc-2-install-proof-*` |
+| Clipe "O que é ECC" | 45-60s | 16:9 e 9:16 | `ecc-2-what-is-ecc-*` |
+| Clipe de prova de segurança | 45-60s | 16:9 e 9:16 | `ecc-2-security-proof-*` |
+| Clipe de dinheiro/prova | 30-45s | 16:9 e 9:16 | `ecc-2-money-proof-*` |
+| Clipe de cobertura/prova social | 30-45s | 16:9 e 9:16 | `ecc-2-social-proof-*` |
 
-## Primary Launch Video
+## Vídeo Principal de Lançamento
 
-The rough v1 primary launch assembly is the current spine. It should stay
-speech-led, with product proof covering jump cuts and older wording.
+O assembly bruto v1 do vídeo principal de lançamento é a espinha atual. Deve permanecer
+liderado pela fala, com prova do produto cobrindo cortes abruptos e falas antigas.
 
-| Order | Source | In | Out | Use |
+| Ordem | Fonte | Entrada | Saída | Uso |
 | --- | --- | ---: | ---: | --- |
-| 01 | `sf-longform-full.mp4` | 161.12 | 177.68 | Cleaner opener: ECC as structured context with skills, commands, agents, hooks, and project setup. |
-| 02 | `thread-2-ghapp-money.mp4` | 21.84 | 30.40 | Direct product thesis: agentic harness optimization. |
-| 03 | `thread-2-ghapp-money.mp4` | 41.00 | 59.72 | Not another harness; ECC is the layer and tooling on top of harnesses. |
-| 04 | `longform-full-wide.mp4` | 254.60 | 271.20 | Agentic IDE, observability, tracing, and multi-agent control-plane direction. |
-| 05 | `sf-thread-2-whatisecc.mp4` | 40.08 | 60.60 | GitHub App analyzes repos and injects project-specific skills, prompts, and hooks. |
-| 06 | `sf-thread-4-security.mp4` | 17.60 | 32.72 | Security risk setup: hooks, MCP servers, permissions. |
-| 07 | `sf-thread-4-security.mp4` | 37.28 | 51.32 | AgentShield proof: rules, categories, grades, secrets, injection, exfiltration. |
-| 08 | `thread-2-ghapp-money.mp4` | 59.72 | 75.96 | OSS-first business model plus managed GitHub App surface. |
-| 09 | `longform-full-wide.mp4` | 507.34 | 525.62 | Close on workflows, tested shipping, and secure daily agent work. |
+| 01 | `sf-longform-full.mp4` | 161.12 | 177.68 | Abertura mais limpa: ECC como contexto estruturado com skills, commands, agents, hooks e configuração de projeto. |
+| 02 | `thread-2-ghapp-money.mp4` | 21.84 | 30.40 | Tese direta do produto: otimização de harness agentic. |
+| 03 | `thread-2-ghapp-money.mp4` | 41.00 | 59.72 | Não é mais um harness; ECC é a camada e as ferramentas sobre os harnesses. |
+| 04 | `longform-full-wide.mp4` | 254.60 | 271.20 | IDE agentic, observabilidade, rastreamento e direção de control-plane multi-agent. |
+| 05 | `sf-thread-2-whatisecc.mp4` | 40.08 | 60.60 | GitHub App analisa repositórios e injeta skills, prompts e hooks específicos do projeto. |
+| 06 | `sf-thread-4-security.mp4` | 17.60 | 32.72 | Configuração de risco de segurança: hooks, servidores MCP, permissões. |
+| 07 | `sf-thread-4-security.mp4` | 37.28 | 51.32 | Prova do AgentShield: rules, categorias, notas, secrets, injeção, exfiltração. |
+| 08 | `thread-2-ghapp-money.mp4` | 59.72 | 75.96 | Modelo de negócios OSS-first mais superfície do GitHub App gerenciado. |
+| 09 | `longform-full-wide.mp4` | 507.34 | 525.62 | Fechar com fluxos de trabalho, envio testado e trabalho diário seguro com agent. |
 
-Required local rough v1 artifacts:
+Artefatos locais obrigatórios do rough v1:
 
 - `edl/primary-launch.edl.md`
 - `timelines/primary-launch-v1.timeline.json`
@@ -106,67 +106,67 @@ Required local rough v1 artifacts:
 - `segments/primary-launch-v1/08-oss-paid-model.mp4`
 - `segments/primary-launch-v1/09-close-shipping-system.mp4`
 
-## Publish-Candidate Outputs
+## Outputs dos Candidatos a Publicação
 
-The release validator also expects the current publish-candidate set under
-`renders/publish-candidates/`. These are still local review files, not public
-uploads or committed media.
+O validador de lançamento também espera o conjunto atual de candidatos a publicação em
+`renders/publish-candidates/`. Estes ainda são arquivos de revisão local, não uploads
+públicos ou mídia com commit.
 
-| Output | Target |
+| Output | Alvo |
 | --- | --- |
-| `ecc-2-primary-launch.mp4` | 90-150s, 1920x1080, audio |
-| `ecc-2-primary-launch.captions.srt` | primary captions |
-| `ecc-2-install-proof-wide.mp4` | 25-35s, 1920x1080, audio |
-| `ecc-2-install-proof-vertical.mp4` | 25-35s, 1080x1920, audio |
-| `ecc-2-what-is-ecc-wide.mp4` | 45-60s, 1920x1080, audio |
-| `ecc-2-what-is-ecc-vertical.mp4` | 45-60s, 1080x1920, audio |
-| `ecc-2-security-proof-wide.mp4` | 45-60s, 1920x1080, audio |
-| `ecc-2-security-proof-vertical.mp4` | 45-60s, 1080x1920, audio |
-| `ecc-2-money-proof-wide.mp4` | 30-45s, 1920x1080, audio |
-| `ecc-2-money-proof-vertical.mp4` | 30-45s, 1080x1920, audio |
-| `ecc-2-social-proof-wide.mp4` | 30-45s, 1920x1080, audio |
-| `ecc-2-social-proof-vertical.mp4` | 30-45s, 1080x1920, audio |
+| `ecc-2-primary-launch.mp4` | 90-150s, 1920x1080, áudio |
+| `ecc-2-primary-launch.captions.srt` | legendas principais |
+| `ecc-2-install-proof-wide.mp4` | 25-35s, 1920x1080, áudio |
+| `ecc-2-install-proof-vertical.mp4` | 25-35s, 1080x1920, áudio |
+| `ecc-2-what-is-ecc-wide.mp4` | 45-60s, 1920x1080, áudio |
+| `ecc-2-what-is-ecc-vertical.mp4` | 45-60s, 1080x1920, áudio |
+| `ecc-2-security-proof-wide.mp4` | 45-60s, 1920x1080, áudio |
+| `ecc-2-security-proof-vertical.mp4` | 45-60s, 1080x1920, áudio |
+| `ecc-2-money-proof-wide.mp4` | 30-45s, 1920x1080, áudio |
+| `ecc-2-money-proof-vertical.mp4` | 30-45s, 1080x1920, áudio |
+| `ecc-2-social-proof-wide.mp4` | 30-45s, 1920x1080, áudio |
+| `ecc-2-social-proof-vertical.mp4` | 30-45s, 1080x1920, áudio |
 
-## video-use compatible workflow
+## Fluxo de trabalho compatível com video-use
 
-Use the same production shape as Video Use while keeping the ECC-specific media
-stack intact:
+Use a mesma forma de produção do Video Use mantendo a pilha de mídia específica do ECC
+intacta:
 
-1. Treat transcript and timeline data as the editing surface.
-2. Keep visual inspection on demand: filmstrips, waveform/timeline composites,
-   or frame samples only at ambiguous cut points.
-3. Propose the edit strategy and EDL before rendering.
-4. Cut deterministically with FFmpeg.
-5. Add proof overlays with Remotion or Manim where product claims need visual
-   evidence.
-6. Export the MP4 plus editable timeline and caption state.
-7. Run cut-boundary, audio, caption, black-frame, and product-claim self-eval
-   before any upload or social post.
+1. Trate dados de transcrição e timeline como a superfície de edição.
+2. Mantenha a inspeção visual sob demanda: tiras de filme, composições de forma de onda/timeline,
+   ou amostras de quadros apenas em pontos de corte ambíguos.
+3. Proponha a estratégia de edição e o EDL antes de renderizar.
+4. Corte deterministicamente com FFmpeg.
+5. Adicione sobreposições de prova com Remotion ou Manim onde as afirmações do produto
+   precisam de evidência visual.
+6. Exporte o MP4 mais o estado editável de timeline e legenda.
+7. Execute autoavaliação de limite de corte, áudio, legenda, quadro preto e afirmação
+   do produto antes de qualquer upload ou post social.
 
-Do not dump frames into the repo. Frame samples used for self-eval belong in the
-local release suite workspace.
+Não despeje quadros no repositório. Amostras de quadros usadas para autoavaliação pertencem
+ao workspace local da suite de lançamento.
 
-## Browser Capture Plan
+## Plano de Captura do Navegador
 
-Use Browser or equivalent desktop capture only for proof footage that must be
-current on release day:
+Use o Browser ou captura de área de trabalho equivalente apenas para imagens de prova que
+devem estar atualizadas no dia do lançamento:
 
-| Surface | Capture |
+| Superfície | Captura |
 | --- | --- |
-| GitHub repo | README hero, install block, sponsor links, release notes |
-| Codex plugin | repo marketplace install path and local plugin README |
-| OpenCode package | package install and plugin banner |
-| ECC Tools Pro | billing/product page only after live readback confirms claims |
-| AgentShield | CLI output, policy category view, supply-chain gate |
-| `ecc2/` | alpha control-plane/TUI surface with alpha framing |
+| Repositório GitHub | README hero, bloco de instalação, links de sponsor, notas de lançamento |
+| Plugin Codex | caminho de instalação via marketplace do repositório e README local do plugin |
+| Pacote OpenCode | instalação do pacote e banner do plugin |
+| ECC Tools Pro | página de faturamento/produto somente após a leitura de retorno ao vivo confirmar as afirmações |
+| AgentShield | output CLI, visualização de categoria de política, gate de cadeia de suprimentos |
+| `ecc2/` | superfície de control-plane/TUI alpha com enquadramento alpha |
 
-If a surface is not live, use a local browser capture and label it as local or
-release-candidate proof. Do not claim marketplace, billing, or official
-directory availability before evidence exists.
+Se uma superfície não estiver ao vivo, use uma captura local do navegador e rotule-a como
+prova local ou release-candidate. Não afirme disponibilidade de marketplace, faturamento
+ou diretório oficial antes de existir evidência.
 
-## Self-Eval Gate
+## Gate de Autoavaliação
 
-Run the validator:
+Execute o validador:
 
 ```bash
 ECC_VIDEO_SOURCE_ROOT=/path/to/ecc_2_raws \
@@ -174,29 +174,29 @@ ECC_VIDEO_RELEASE_SUITE_ROOT=/path/to/ecc_2_release_suite \
 npm run release:video-suite -- --format json
 ```
 
-Then manually check the final render for:
+Depois verifique manualmente a renderização final para:
 
-- validator self-eval passes for the primary render: 90-150 seconds, at least
-  1280x720, video stream present, audio stream present, and non-empty output;
-- validator self-eval passes for the publish-candidate set: primary MP4 plus
-  captions and five short clips in both wide and vertical formats;
-- validator visual QA reports zero detected black-frame segments for every
-  publish-candidate MP4;
-- no blank frames or accidental desktop exposure;
-- no stale repo name, pivot, rename, or Claude-only framing in captions;
-- no captions that rewrite speech into a false claim;
-- no stale URLs, old install commands, or pre-rename repository links;
-- no internal MRR numbers unless the post explicitly needs them;
-- audio continuity across every cut;
-- first 10 seconds clearly say what ECC is;
-- final CTA routes to repo, sponsor, Pro, or consulting without clutter.
+- a autoavaliação do validador passa para a renderização principal: 90-150 segundos, pelo menos
+  1280x720, stream de vídeo presente, stream de áudio presente e output não vazio;
+- a autoavaliação do validador passa para o conjunto de candidatos a publicação: MP4 principal mais
+  legendas e cinco clipes curtos em formatos wide e vertical;
+- o QA visual do validador reporta zero segmentos de quadro preto detectados para cada
+  MP4 candidato a publicação;
+- nenhum quadro em branco ou exposição acidental da área de trabalho;
+- nenhum nome de repositório desatualizado, pivô, renomeação ou enquadramento exclusivo do Claude nas legendas;
+- nenhuma legenda que reescreva a fala em uma afirmação falsa;
+- nenhuma URL desatualizada, comandos de instalação antigos ou links de repositório pré-renomeação;
+- nenhum número interno de MRR a menos que o post explicitamente precise deles;
+- continuidade de áudio em todos os cortes;
+- os primeiros 10 segundos dizem claramente o que é ECC;
+- o CTA final encaminha para o repositório, sponsor, Pro ou consultoria sem desordem.
 
-## Do Not Publish If
+## Não Publique Se
 
-- `npm run release:video-suite` is not ready for the local source roots.
-- The primary launch render is outside the 90-150 second target.
-- Captions mention the old repository name.
-- Product proof relies on private screens, secrets, customer data, or raw local
-  paths.
-- The release URL, npm, plugin, billing, or marketplace claims outrun the
-  evidence in `publication-readiness.md`.
+- `npm run release:video-suite` não estiver pronto para os roots de fonte locais.
+- A renderização principal de lançamento estiver fora da meta de 90-150 segundos.
+- As legendas mencionarem o nome antigo do repositório.
+- A prova do produto depender de telas privadas, secrets, dados de clientes ou caminhos
+  locais brutos.
+- As afirmações de URL de lançamento, npm, plugin, faturamento ou marketplace superarem as
+  evidências em `publication-readiness.md`.

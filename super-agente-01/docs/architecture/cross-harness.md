@@ -1,137 +1,152 @@
-# Cross-Harness Architecture
+# Arquitetura Cross-Harness
 
-ECC is the reusable workflow layer. Harnesses are execution surfaces.
+ECC é a camada de fluxo de trabalho reutilizável. Harnesses são superfícies de execução.
 
-The goal is to keep the durable parts of agentic work in one repo:
+O objetivo é manter as partes duráveis do trabalho agêntico em um único repositório:
 
 - skills
-- rules and instructions
-- hooks where the harness supports them
-- MCP configuration
-- install manifests
-- session and orchestration patterns
+- regras e instruções
+- hooks onde o harness os suporta
+- configuração MCP
+- manifestos de instalação
+- padrões de sessão e orquestração
 
-Claude Code, Codex, OpenCode, Cursor, Gemini, and future harnesses should adapt those assets at the edge instead of requiring a new workflow model for every tool.
+Claude Code, Codex, OpenCode, Cursor, Gemini e harnesses futuros devem adaptar esses ativos
+na borda, em vez de exigir um novo modelo de fluxo de trabalho para cada ferramenta.
 
-For the operator-facing support matrix and scorecard workflow, see
+Para a matriz de suporte voltada ao operador e o fluxo de trabalho de scorecard, veja
 [Harness Adapter Compliance Matrix](harness-adapter-compliance.md).
-For the full-stack platform framing and product-integration loop, see
+Para o enquadramento da plataforma full-stack e o loop de integração de produto, veja
 [ECC Platform Value Loop](platform-value-loop.md).
 
-## Portability Model
+## Modelo de Portabilidade
 
-| Surface | Shared Source | Harness Adapter | Current Status |
+| Superfície | Fonte Compartilhada | Adaptador de Harness | Status Atual |
 |---------|---------------|-----------------|----------------|
-| Skills | `skills/*/SKILL.md` | Claude plugin, Codex plugin, `.agents/skills`, Cursor skill copies, OpenCode plugin/config | Supported with harness-specific packaging |
-| Rules and instructions | `rules/`, `AGENTS.md`, translated docs | Claude rules install, Codex `AGENTS.md`, Cursor rules, OpenCode instructions | Supported, but not identical across harnesses |
-| Hooks | `hooks/hooks.json`, `scripts/hooks/` | Claude native hooks, OpenCode plugin events, Cursor hook adapter | Hook-backed in Claude/OpenCode/Cursor; instruction-backed in Codex |
-| MCPs | `.mcp.json`, `mcp-configs/` | Native MCP config import per harness | Supported where the harness exposes MCP |
-| Commands | `commands/`, CLI scripts | Claude slash commands, compatibility shims, CLI entrypoints | Supported, but command semantics vary |
-| Sessions | `ecc2/`, session adapters, orchestration scripts | TUI/daemon, tmux/worktree orchestration, harness-specific runners | Alpha |
+| Skills | `skills/*/SKILL.md` | Plugin do Claude, plugin do Codex, `.agents/skills`, cópias de skill do Cursor, plugin/config do OpenCode | Suportado com empacotamento específico por harness |
+| Regras e instruções | `rules/`, `AGENTS.md`, docs traduzidos | Instalação de regras do Claude, `AGENTS.md` do Codex, regras do Cursor, instruções do OpenCode | Suportado, mas não idêntico entre harnesses |
+| Hooks | `hooks/hooks.json`, `scripts/hooks/` | Hooks nativos do Claude, eventos de plugin do OpenCode, adaptador de hook do Cursor | Baseado em hook no Claude/OpenCode/Cursor; baseado em instrução no Codex |
+| MCPs | `.mcp.json`, `mcp-configs/` | Importação de configuração MCP nativa por harness | Suportado onde o harness expõe MCP |
+| Comandos | `commands/`, scripts CLI | Comandos slash do Claude, shims de compatibilidade, entrypoints CLI | Suportado, mas a semântica de comandos varia |
+| Sessões | `ecc2/`, adaptadores de sessão, scripts de orquestração | TUI/daemon, orquestração tmux/worktree, runners específicos por harness | Alpha |
 
-## What Travels Unchanged
+## O Que Viaja Sem Alterações
 
-`SKILL.md` is the most portable unit.
+`SKILL.md` é a unidade mais portátil.
 
-A good ECC skill should:
+Uma boa skill ECC deve:
 
-- use YAML frontmatter with `name`, `description`, and `origin`
-- describe when to use the skill
-- state required tools or connectors without embedding secrets
-- keep examples repo-relative or generic
-- avoid harness-only command assumptions unless the section is clearly labeled
+- usar frontmatter YAML com `name`, `description` e `origin`
+- descrever quando usar a skill
+- declarar ferramentas ou conectores necessários sem embutir segredos
+- manter os exemplos relativos ao repositório ou genéricos
+- evitar suposições de comandos exclusivos do harness, a menos que a seção esteja claramente rotulada
 
-The same source skill can be installed into multiple harnesses because it is mostly instructions, constraints, and workflow shape.
+A mesma skill fonte pode ser instalada em múltiplos harnesses porque consiste principalmente
+em instruções, restrições e formato de fluxo de trabalho.
 
-## What Gets Adapted
+## O Que é Adaptado
 
-Each harness has different loading and enforcement behavior:
+Cada harness tem comportamento diferente de carregamento e aplicação:
 
-- Claude Code loads plugin assets and has native hook execution.
-- Codex reads `AGENTS.md`, plugin metadata, skills, and MCP config, but hook parity is instruction-driven.
-- OpenCode has a plugin/event system that can reuse ECC hook logic through an adapter layer.
-- Cursor uses its own rule and hook layout, so ECC maintains translated surfaces under `.cursor/`.
-- Gemini support is install/instruction oriented and should be treated as a compatibility surface, not as full hook parity.
+- Claude Code carrega ativos de plugin e tem execução nativa de hook.
+- Codex lê `AGENTS.md`, metadados de plugin, skills e configuração MCP, mas a paridade de hook é
+  orientada por instrução.
+- OpenCode tem um sistema de plugin/eventos que pode reutilizar a lógica de hook do ECC por meio
+  de uma camada de adaptador.
+- Cursor usa seu próprio layout de regras e hooks, por isso o ECC mantém superfícies traduzidas
+  em `.cursor/`.
+- O suporte ao Gemini é orientado por instalação/instrução e deve ser tratado como uma superfície
+  de compatibilidade, não como paridade completa de hook.
 
-Adapters should stay thin. The shared behavior belongs in `skills/`, `rules/`, `hooks/`, `scripts/`, and `mcp-configs/`.
+Os adaptadores devem permanecer finos. O comportamento compartilhado pertence a `skills/`,
+`rules/`, `hooks/`, `scripts/` e `mcp-configs/`.
 
-## Hermes Boundary
+## Fronteira Hermes
 
-Hermes is not the public ECC runtime.
+Hermes não é o runtime público do ECC.
 
-Hermes is an operator shell that can consume ECC assets:
+Hermes é um shell de operador que pode consumir ativos do ECC:
 
-- import selected ECC skills into a Hermes skills directory
-- use ECC MCP conventions for tool access
-- route chat, CLI, cron, and handoff workflows through reusable ECC patterns
-- distill repeated local operator work back into sanitized ECC skills
+- importar skills selecionadas do ECC para um diretório de skills do Hermes
+- usar convenções MCP do ECC para acesso a ferramentas
+- rotear fluxos de trabalho de chat, CLI, cron e handoff por meio de padrões ECC reutilizáveis
+- destilar o trabalho local repetido do operador de volta em skills ECC higienizadas
 
-The public repo should ship reusable patterns, not local Hermes state.
+O repositório público deve fornecer padrões reutilizáveis, não estado local do Hermes.
 
-Do ship:
+Deve ser fornecido:
 
-- sanitized setup docs
-- repo-relative demo prompts
-- general operator skills
-- examples that do not depend on private credentials
+- documentação de configuração higienizada
+- prompts de demonstração relativos ao repositório
+- skills gerais de operador
+- exemplos que não dependem de credenciais privadas
 
-Do not ship:
+Não deve ser fornecido:
 
-- OAuth tokens or API keys
-- raw `~/.hermes` exports
-- personal workspace memory
-- private datasets
-- local-only automation packs that have not been reviewed
+- tokens OAuth ou chaves de API
+- exportações brutas de `~/.hermes`
+- memória de workspace pessoal
+- conjuntos de dados privados
+- pacotes de automação apenas locais que não foram revisados
 
-## Worked Example
+## Exemplo Trabalhado
 
-Use `skills/hermes-imports/SKILL.md` as the same skill source across harnesses.
+Use `skills/hermes-imports/SKILL.md` como a mesma fonte de skill entre harnesses.
 
-The workflow is:
+O fluxo de trabalho é:
 
-1. Author the durable behavior once in `skills/hermes-imports/SKILL.md`.
-2. Keep secrets, local paths, and raw operator memory out of the skill.
-3. Let each harness adapt how the skill is loaded.
-4. Test the source skill and the harness-facing metadata separately.
+1. Criar o comportamento durável uma vez em `skills/hermes-imports/SKILL.md`.
+2. Manter segredos, caminhos locais e memória bruta do operador fora da skill.
+3. Deixar cada harness adaptar como a skill é carregada.
+4. Testar a skill fonte e os metadados voltados ao harness separadamente.
 
-Claude Code gets the skill through the Claude plugin surface and can enforce related hooks natively.
+Claude Code obtém a skill pela superfície de plugin do Claude e pode aplicar hooks
+relacionados nativamente.
 
-Codex reads the repo instructions, `.codex-plugin/plugin.json`, and the MCP reference config. The same skill source still describes the workflow, but hook parity is instruction-backed unless Codex adds a native hook surface.
+Codex lê as instruções do repositório, `.codex-plugin/plugin.json` e a configuração MCP de
+referência. A mesma fonte de skill ainda descreve o fluxo de trabalho, mas a paridade de hook
+é baseada em instrução, a menos que o Codex adicione uma superfície de hook nativa.
 
-OpenCode gets the skill through the OpenCode package/plugin surface. Event handling can reuse ECC hook logic through the adapter layer, while the skill text stays unchanged.
+OpenCode obtém a skill pela superfície de pacote/plugin do OpenCode. O tratamento de eventos
+pode reutilizar a lógica de hook do ECC pela camada de adaptador, enquanto o texto da skill
+permanece inalterado.
 
-If a change requires editing three harness copies of the same workflow, the shared source is in the wrong place. Put the workflow back in `skills/`, then adapt only loading, event shape, or command routing at the harness edge.
+Se uma mudança exigir editar três cópias do mesmo fluxo de trabalho em diferentes harnesses,
+a fonte compartilhada está no lugar errado. Coloque o fluxo de trabalho de volta em `skills/`,
+depois adapte apenas o carregamento, o formato de evento ou o roteamento de comandos na borda
+do harness.
 
-## Today vs Later
+## Hoje vs. Mais Tarde
 
-Supported today:
+Suportado hoje:
 
-- shared skill source in `skills/`
-- Claude Code plugin packaging
-- Codex plugin metadata and MCP reference config
-- OpenCode package/plugin surface
-- Cursor-adapted rules, hooks, and skills
-- `ecc2/` as an alpha Rust control plane
+- fonte de skill compartilhada em `skills/`
+- empacotamento de plugin do Claude Code
+- metadados de plugin do Codex e configuração MCP de referência
+- superfície de pacote/plugin do OpenCode
+- regras, hooks e skills adaptados para Cursor
+- `ecc2/` como um plano de controle Rust em alpha
 
-Still maturing:
+Ainda em maturação:
 
-- exact hook parity across all harnesses
-- automated skill sync into Hermes
-- release packaging for `ecc2/`
-- cross-harness session resume semantics
-- deeper memory and operator planning layers
-- the full platform loop where external products contribute skill packs,
-  gated APIs, evals, and case studies back into ECC
+- paridade exata de hook entre todos os harnesses
+- sincronização automatizada de skill para Hermes
+- empacotamento de release para `ecc2/`
+- semânticas de retomada de sessão cross-harness
+- camadas mais profundas de memória e planejamento do operador
+- o loop completo da plataforma onde produtos externos contribuem com pacotes de skills,
+  APIs controladas, evals e estudos de caso de volta ao ECC
 
-## Rule For New Work
+## Regra para Novos Trabalhos
 
-When adding a workflow, put the durable behavior in ECC first.
+Ao adicionar um fluxo de trabalho, coloque o comportamento durável no ECC primeiro.
 
-Use harness-specific files only for:
+Use arquivos específicos do harness apenas para:
 
-- loading the shared asset
-- adapting event shapes
-- mapping command names
-- handling platform limits
+- carregar o ativo compartilhado
+- adaptar formatos de eventos
+- mapear nomes de comandos
+- lidar com limites da plataforma
 
-If a workflow only works in one harness, document that boundary directly.
+Se um fluxo de trabalho funcionar apenas em um harness, documente essa fronteira diretamente.

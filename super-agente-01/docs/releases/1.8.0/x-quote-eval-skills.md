@@ -1,5 +1,5 @@
-# X Quote Draft - Eval Skills Post
+# Rascunho de Citação para o X - Post sobre Eval Skills
 
-Strong eval skills are now built deeper into ECC.
+Skills de eval robustas agora estão mais profundamente integradas ao ECC.
 
-v1.8.0 expands eval-harness patterns, pass@k guidance, and release-level verification loops so teams can measure reliability, not guess it.
+O v1.8.0 expande os padrões de eval-harness, a orientação de pass@k e os loops de verificação em nível de lançamento para que as equipes possam medir a confiabilidade em vez de adivinhá-la.

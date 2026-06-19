@@ -1,12 +1,12 @@
-# Plan-PRD Pattern: Markdown-Staged Planning Flow
+# Padrão Plan-PRD: Fluxo de Planejamento Baseado em Staging com Markdown
 
-A lightweight, SDLC-aligned planning workflow where each phase of the lifecycle produces a committable markdown **staging file** that the next command consumes.
+Um fluxo de trabalho de planejamento leve e alinhado ao SDLC onde cada fase do ciclo de vida produz um **arquivo de staging** em markdown commitável que o próximo comando consome.
 
-> Short version: `/plan-prd` writes a PRD, `/plan` writes a plan, the `tdd-workflow` skill implements it, and `/pr` ships it. Each arrow is a file on disk, not a conversation in memory.
+> Versão curta: `/plan-prd` escreve um PRD, `/plan` escreve um plano, a skill `tdd-workflow` implementa, e `/pr` entrega. Cada seta é um arquivo em disco, não uma conversa na memória.
 
-## Feature: Markdown Staging Files
+## Funcionalidade: Arquivos de Staging em Markdown
 
-Every planning artifact is a plain `.md` file under `.claude/`:
+Cada artefato de planejamento é um arquivo `.md` simples em `.claude/`:
 
 ```
 .claude/
@@ -15,14 +15,14 @@ Every planning artifact is a plain `.md` file under `.claude/`:
   reviews/   # Code review artifacts from /code-review
 ```
 
-These files are:
+Esses arquivos são:
 
-- **Plain markdown** — readable by humans, diffable in PRs, grep-able at CLI.
-- **Committable** — check them in alongside code so the intent travels with the implementation.
-- **Composable** — each command accepts the previous stage's file as its `$ARGUMENTS`, so the toolchain composes via paths rather than in-context state.
-- **Resumable** — close the session, open a new one tomorrow, pass the file path back in.
+- **Markdown simples** — legíveis por humanos, comparáveis em PRs, pesquisáveis via CLI.
+- **Commitáveis** — faça check-in junto com o código para que a intenção viaje com a implementação.
+- **Combináveis** — cada comando aceita o arquivo da etapa anterior como seu `$ARGUMENTS`, então o conjunto de ferramentas se combina por caminhos em vez de estado em contexto.
+- **Retomáveis** — feche a sessão, abra uma nova amanhã, passe o caminho do arquivo de volta.
 
-## Flow
+## Fluxo
 
 ```
 ┌───────────────────────────┐
@@ -49,46 +49,46 @@ These files are:
 └───────────────────────────┘
 ```
 
-Each box is a **gate**. You can:
+Cada caixa é um **portão**. Você pode:
 
-- Stop between gates — the artifact persists.
-- Restart from any gate using the artifact path.
-- Skip gates for small work — feed `/plan` free-form text and ignore `/plan-prd`.
-- Run a gate standalone — `/plan "refactor X"` produces a conversational plan with no artifact.
+- Parar entre portões — o artefato persiste.
+- Reiniciar a partir de qualquer portão usando o caminho do artefato.
+- Pular portões para trabalhos pequenos — passe texto livre para `/plan` e ignore `/plan-prd`.
+- Executar um portão isoladamente — `/plan "refatorar X"` produz um plano conversacional sem artefato.
 
-## Why `/plan-prd` Is Additional to `/plan`
+## Por que `/plan-prd` é Adicional ao `/plan`
 
-They answer different questions. Mixing them causes scope creep.
+Eles respondem a perguntas diferentes. Misturá-los causa expansão de escopo.
 
-| Command | Answers | SDLC Phase | Artifact |
+| Comando | Responde | Fase do SDLC | Artefato |
 |---|---|---|---|
-| `/plan-prd` | *What problem? For whom? How do we know we're done?* | Requirements | `.claude/prds/{name}.prd.md` |
-| `/plan` | *What files, patterns, and tasks satisfy the requirement?* | Design + Implementation strategy | `.claude/plans/{name}.plan.md` (PRD mode) or inline (text mode) |
+| `/plan-prd` | *Qual problema? Para quem? Como sabemos que terminamos?* | Requisitos | `.claude/prds/{name}.prd.md` |
+| `/plan` | *Quais arquivos, padrões e tarefas satisfazem o requisito?* | Estratégia de design + implementação | `.claude/plans/{name}.plan.md` (modo PRD) ou inline (modo texto) |
 
-### Why not combine them?
+### Por que não combiná-los?
 
-- **Separation of concerns.** PRDs ask *why*; plans ask *how*. Bundling them creates one oversized command that does both poorly, as the old `/prp-prd` → `/prp-plan` pair demonstrated (8-phase interrogation with implementation-phase tables mixed into requirements).
-- **Different audiences.** A stakeholder reviewing a PRD does not care about file paths or type-check commands. An engineer reading a plan does not need the market-research phase.
-- **Different lifespans.** A PRD can remain stable while its plan is rewritten multiple times as implementation assumptions change.
-- **Optional step.** Many changes (bug fixes, small refactors, single-file additions) don't need a PRD. `/plan` alone is enough. Forcing a PRD on every change is bureaucracy.
+- **Separação de responsabilidades.** PRDs perguntam *por quê*; planos perguntam *como*. Agrupá-los cria um comando superdimensionado que faz os dois mal, como o antigo par `/prp-prd` → `/prp-plan` demonstrou (interrogação em 8 fases com tabelas da fase de implementação misturadas nos requisitos).
+- **Públicos diferentes.** Um stakeholder revisando um PRD não se importa com caminhos de arquivo ou comandos de verificação de tipo. Um engenheiro lendo um plano não precisa da fase de pesquisa de mercado.
+- **Durações de vida diferentes.** Um PRD pode permanecer estável enquanto seu plano é reescrito várias vezes conforme as premissas de implementação mudam.
+- **Etapa opcional.** Muitas mudanças (correções de bugs, pequenas refatorações, adições de um único arquivo) não precisam de um PRD. `/plan` sozinho é suficiente. Forçar um PRD em cada mudança é burocracia.
 
-### When to use each
+### Quando usar cada um
 
-Use `/plan-prd` when:
+Use `/plan-prd` quando:
 
-- Scope is unclear or contested.
-- Multiple stakeholders need to align on the problem before solutioning.
-- The change is large enough that writing down the hypothesis is cheaper than relitigating scope mid-implementation.
+- O escopo é incerto ou contestado.
+- Vários stakeholders precisam alinhar sobre o problema antes de buscar soluções.
+- A mudança é grande o suficiente para que escrever a hipótese seja mais barato do que rediscutir o escopo no meio da implementação.
 
-Use `/plan` directly when:
+Use `/plan` diretamente quando:
 
-- Requirements are already clear (a bug report, a scoped refactor, a known migration).
-- The work is small enough that a conversational plan + confirmation gate is sufficient.
-- You already have a PRD — pass it to `/plan` and skip `/plan-prd`.
+- Os requisitos já estão claros (um relatório de bug, uma refatoração com escopo definido, uma migração conhecida).
+- O trabalho é pequeno o suficiente para que um plano conversacional com portão de confirmação seja suficiente.
+- Você já tem um PRD — passe-o para `/plan` e pule `/plan-prd`.
 
-## Usage
+## Uso
 
-### Full flow (feature with unclear scope)
+### Fluxo completo (funcionalidade com escopo incerto)
 
 ```bash
 # 1. Draft the PRD
@@ -112,7 +112,7 @@ Use the tdd-workflow skill
 # → PR body auto-references .claude/prds/... and .claude/plans/...
 ```
 
-### Quick flow (scope already clear)
+### Fluxo rápido (escopo já definido)
 
 ```bash
 /plan "Add retry with exponential backoff to the notifier"
@@ -120,35 +120,35 @@ Use the tdd-workflow skill
 # Confirm, then use the tdd-workflow skill.
 ```
 
-### Reference an existing PRD from elsewhere
+### Referenciar um PRD existente de outro lugar
 
 ```bash
 # PRD was written by someone else, lives in your repo
 /plan docs/rfcs/0042-rate-limiting.prd.md
 ```
 
-`/plan` detects any `.prd.md` path and switches to artifact mode, parsing the Delivery Milestones table.
+`/plan` detecta qualquer caminho `.prd.md` e muda para o modo de artefato, analisando a tabela de Marcos de Entrega.
 
-## Why staging files beat in-context state
+## Por que arquivos de staging superam o estado em contexto
 
-- **Transferable**: drop the PRD path into a fresh session and you're caught up — no replaying a long conversation.
-- **Auditable**: the PR reviewer sees *what you intended* next to *what you built*.
-- **Versioned**: the staging file evolves in git history, same as code.
-- **Machine-parseable**: `/plan` programmatically picks the next pending milestone; `/pr` programmatically links artifacts in the PR body. No prompt engineering required.
+- **Transferíveis**: coloque o caminho do PRD em uma sessão nova e você está atualizado — sem reproduzir uma longa conversa.
+- **Auditáveis**: o revisor do PR vê *o que você pretendia* ao lado de *o que você construiu*.
+- **Versionados**: o arquivo de staging evolui no histórico do git, igual ao código.
+- **Parseáveis por máquina**: `/plan` seleciona programaticamente o próximo marco pendente; `/pr` vincula artefatos programaticamente no corpo do PR. Sem engenharia de Prompt necessária.
 
-## Related commands
+## Comandos relacionados
 
-- `/plan-prd` — requirements (this pattern entry point).
-- `/plan` — planning (consumes PRDs or free-form text).
-- `tdd-workflow` skill — test-first implementation.
-- `/pr` — open a PR that references PRDs and plans.
-- `/code-review` — reviews local diffs or PRs; auto-detects `.claude/prds/` and `.claude/plans/` as context.
+- `/plan-prd` — requisitos (ponto de entrada deste padrão).
+- `/plan` — planejamento (consome PRDs ou texto livre).
+- skill `tdd-workflow` — implementação test-first.
+- `/pr` — abrir um PR que referencia PRDs e planos.
+- `/code-review` — revisa diffs locais ou PRs; detecta automaticamente `.claude/prds/` e `.claude/plans/` como contexto.
 
-## Compatibility
+## Compatibilidade
 
-This pattern adds ECC-native staging-file commands alongside the existing `prp-*` command set. The legacy PRP commands remain available for deeper PRP workflows and for users who already have `.claude/PRPs/` artifacts.
+Este padrão adiciona comandos de arquivo de staging nativos do ECC ao lado do conjunto de comandos `prp-*` existente. Os comandos PRP legados continuam disponíveis para fluxos de trabalho PRP mais profundos e para usuários que já têm artefatos `.claude/PRPs/`.
 
-- `/plan-prd` is the lean requirements entry point for `.claude/prds/`.
-- `/plan` can consume `.prd.md` files and produce `.claude/plans/` artifacts without requiring the legacy PRP directory layout.
-- `/pr` is the ECC-native PR creation command and can reference `.claude/prds/` and `.claude/plans/`.
-- `/prp-prd`, `/prp-plan`, `/prp-implement`, `/prp-commit`, and `/prp-pr` remain valid legacy/deep workflow commands.
+- `/plan-prd` é o ponto de entrada de requisitos simples para `.claude/prds/`.
+- `/plan` pode consumir arquivos `.prd.md` e produzir artefatos `.claude/plans/` sem exigir o layout de diretório PRP legado.
+- `/pr` é o comando de criação de PR nativo do ECC e pode referenciar `.claude/prds/` e `.claude/plans/`.
+- `/prp-prd`, `/prp-plan`, `/prp-implement`, `/prp-commit` e `/prp-pr` continuam sendo comandos válidos de fluxo de trabalho legado/profundo.

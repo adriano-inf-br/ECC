@@ -1,373 +1,377 @@
-# AgentShield Enterprise Research Roadmap
+# Roteiro de Pesquisa Empresarial do AgentShield
 
-Generated: 2026-05-12; refreshed with May 18 AgentShield fleet-ticket and
-Mini Shai-Hulud IOC evidence.
+Gerado em: 2026-05-12; atualizado com evidências de ticket de frota do AgentShield de 18 de maio e
+IOC do Mini Shai-Hulud.
 
-This is a planning artifact for the next AgentShield enterprise iteration. It
-does not modify AgentShield code. The goal is to turn the current scanner,
-policy gate, corpus, and reporting surface into a security control plane for
-teams running AI coding agents across multiple harnesses.
+Este é um artefato de planejamento para a próxima iteração empresarial do AgentShield. Ele
+não modifica o código do AgentShield. O objetivo é transformar o scanner, o gate de políticas,
+o corpus e a superfície de relatórios atuais em um plano de controle de segurança para
+equipes que executam agentes de codificação de IA em múltiplos harnesses.
 
-## Evidence Reviewed
+## Evidências Revisadas
 
-Current AgentShield repository state:
+Estado atual do repositório AgentShield:
 
-- AgentShield checkout on clean `main`.
-- `README.md`, `API.md`, `package.json`, `.github/workflows/*`, and
-  `src/`/`tests/` module layout.
-- Current supported user surfaces: `agentshield scan`, `agentshield init`,
-  `agentshield miniclaw start`, scanner JSON, MiniClaw API, GitHub Action,
-  HTML, SARIF, markdown, terminal, and JSON reports.
-- Current enterprise-like surfaces: policy packs, GitHub Action policy
-  enforcement, SARIF policy violations, supply-chain provenance, corpus
-  benchmark, HTML executive reports, and exception lifecycle audit.
+- Checkout do AgentShield na branch `main` limpa.
+- Layout dos módulos `README.md`, `API.md`, `package.json`, `.github/workflows/*` e
+  `src/`/`tests/`.
+- Superfícies de usuário suportadas atualmente: `agentshield scan`, `agentshield init`,
+  `agentshield miniclaw start`, JSON do scanner, MiniClaw API, GitHub Action,
+  relatórios HTML, SARIF, markdown, terminal e JSON.
+- Superfícies de nível empresarial atuais: pacotes de políticas, aplicação de políticas via
+  GitHub Action, violações de políticas SARIF, proveniência de cadeia de suprimentos, benchmark
+  de corpus, relatórios executivos em HTML e ciclo de vida de auditoria de exceções.
 
-External references checked from official GitHub repos or README sources:
+Referências externas verificadas em repos oficiais do GitHub ou fontes do README:
 
-- [stablyai/orca](https://github.com/stablyai/orca): multi-agent IDE,
-  worktree isolation, live agent status, GitHub integration, diff review, and
-  notifications.
-- [superset-sh/superset](https://github.com/superset-sh/superset): AI-agent
-  editor with worktree orchestration, built-in diff review, workspace presets,
-  and universal CLI-agent compatibility.
-- [standardagents/dmux](https://github.com/standardagents/dmux): tmux/worktree
-  multiplexer with lifecycle hooks, multi-agent launches, pane visibility, and
-  merge/PR workflows.
-- [jarrodwatts/claude-hud](https://github.com/jarrodwatts/claude-hud): Claude
-  Code statusline, context health, tool activity, agent tracking, todo
-  progress, transcript parsing, and usage telemetry.
+- [stablyai/orca](https://github.com/stablyai/orca): IDE multi-agente,
+  isolamento de worktree, status de agente ao vivo, integração com GitHub, revisão de diff e
+  notificações.
+- [superset-sh/superset](https://github.com/superset-sh/superset): editor de agente de IA
+  com orquestração de worktree, revisão de diff integrada, presets de workspace
+  e compatibilidade universal com CLI-agent.
+- [standardagents/dmux](https://github.com/standardagents/dmux): multiplexador tmux/worktree
+  com hooks de ciclo de vida, lançamentos multi-agente, visibilidade de painéis e
+  fluxos de trabalho de merge/PR.
+- [jarrodwatts/claude-hud](https://github.com/jarrodwatts/claude-hud): statusline do Claude
+  Code, saúde do contexto, atividade de ferramentas, rastreamento de agentes, progresso de tarefas,
+  análise de transcrições e telemetria de uso.
 - [stanford-iris-lab/meta-harness](https://github.com/stanford-iris-lab/meta-harness):
-  harness optimization through repeatable tasks, logged proposer interactions,
-  and evaluated scaffold changes.
+  otimização de harness por meio de tarefas repetíveis, interações de propositor registradas
+  e mudanças de scaffold avaliadas.
 - [greyhaven-ai/autocontext](https://github.com/greyhaven-ai/autocontext):
-  recursive improvement loop with traces, scored generations, playbooks,
-  persisted knowledge, scenario evaluation, and optional production traces.
+  loop de melhoria recursiva com rastreamentos, gerações pontuadas, playbooks,
+  conhecimento persistido, avaliação de cenários e rastreamentos de produção opcionais.
 - [NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent):
-  self-improving skills, memory, session search, multi-platform gateway,
-  scheduled automation, terminal backends, and trajectory generation.
+  skills de auto-aperfeiçoamento, memória, busca de sessões, gateway multiplataforma,
+  automação agendada, backends de terminal e geração de trajetórias.
 - [anthropics/claude-code](https://github.com/anthropics/claude-code):
-  terminal, IDE, GitHub, plugin, permission, MCP, and data-retention surfaces.
-- [anomalyco/opencode](https://github.com/anomalyco/opencode): provider-agnostic
-  open-source coding agent with build/plan agents, desktop beta,
-  client/server architecture, and LSP support.
-- [opencode-ai/opencode](https://github.com/opencode-ai/opencode): earlier
-  archived Go-based terminal agent with sessions, providers, LSP, file change
-  tracking, custom commands, and auto-compact.
-- [zed-industries/zed](https://github.com/zed-industries/zed): high-performance
-  multiplayer editor with strict license/compliance CI expectations.
-- [aidenybai/ghast](https://github.com/aidenybai/ghast): native terminal
-  multiplexer built around Ghostty, workspace grouping, split panes, drag/drop,
-  notifications, and terminal search.
+  superfícies de terminal, IDE, GitHub, plugin, permissão, MCP e retenção de dados.
+- [anomalyco/opencode](https://github.com/anomalyco/opencode): agente de codificação
+  open-source agnóstico de provedor com agentes de build/plano, beta para desktop,
+  arquitetura cliente/servidor e suporte a LSP.
+- [opencode-ai/opencode](https://github.com/opencode-ai/opencode): agente de terminal
+  baseado em Go arquivado anteriormente, com sessões, provedores, LSP, rastreamento de
+  alterações de arquivos, comandos personalizados e compactação automática.
+- [zed-industries/zed](https://github.com/zed-industries/zed): editor multiplayer de alto
+  desempenho com expectativas rigorosas de CI para licença/conformidade.
+- [aidenybai/ghast](https://github.com/aidenybai/ghast): multiplexador de terminal nativo
+  construído em torno do Ghostty, agrupamento de workspace, painéis divididos, arrastar/soltar,
+  notificações e busca no terminal.
 
-Local Claude Code source inspection:
+Inspeção local do código-fonte do Claude Code:
 
-- Reviewed only non-secret local file/module shape from a private Claude Code
-  source snapshot.
-- Relevant surfaces observed: `tools/`, `utils/permissions/`, `utils/mcp/`,
+- Revisado apenas o formato de arquivos/módulos locais não secretos de um snapshot privado do
+  código-fonte do Claude Code.
+- Superfícies relevantes observadas: `tools/`, `utils/permissions/`, `utils/mcp/`,
   `utils/hooks/`, `utils/plugins/`, `types/permissions.ts`,
   `types/plugin.ts`, `remote/`, `tasks/`, `assistant/sessionHistory.ts`,
-  and session/history utilities.
-- No code was copied. The takeaway is that AgentShield should track permissions,
-  plugins, MCP, hooks, remote sessions, task/subagent activity, and history as
-  first-class audit domains rather than treating a `.claude/` tree as the only
-  source of truth.
+  e utilitários de sessão/histórico.
+- Nenhum código foi copiado. A conclusão é que o AgentShield deve rastrear permissões,
+  plugins, MCP, hooks, sessões remotas, atividade de tarefas/subagentes e histórico como
+  domínios de auditoria de primeira classe, em vez de tratar uma árvore `.claude/` como a única
+  fonte de verdade.
 
-## Current AgentShield Position
+## Posição Atual do AgentShield
 
-AgentShield is already more than a static lint tool:
+O AgentShield já é mais do que uma ferramenta de lint estático:
 
-- Rule coverage spans secrets, permissions, hooks, MCP servers, agent configs,
-  prompt injection, supply chain, taint analysis, sandbox execution, policy
-  evaluation, runtime repair/status, corpus validation, MiniClaw, and Opus
-  analysis.
-- Reports are usable by humans and machines: terminal, JSON, markdown, HTML,
-  SARIF, scan logs, and GitHub Action outputs.
-- Enterprise hooks exist: policy packs, exception metadata, expiring/expired
-  exception reporting, SARIF code scanning, and job-summary output.
-- Accuracy work is active: `runtimeConfidence`, template/example weighting,
-  docs-example downgrades, installed Claude plugin-cache confidence,
-  hook-manifest resolution, false-positive audit guidance, and corpus readiness.
-- Evidence-pack consumption is now first-class enough for downstream tools:
-  `agentshield evidence-pack inspect` verifies a bundle and emits compact
-  JSON/text summaries for report score, finding counts, runtime confidence,
-  policy, baseline, supply-chain, CI context, remediation, and malformed
-  artifact errors.
-- Fleet-level evidence-pack consumption now has a local routing primitive:
-  `agentshield evidence-pack fleet <dirs...> [--json]` aggregates multiple
-  inspected bundles into ready, security-blocker, policy-review,
-  baseline-regression, supply-chain-review, and invalid routes.
-- ECC-Tools now consumes that fleet primitive in hosted security review:
-  `agentshield-evidence/fleet-summary.json` routes invalid packs, security
-  blockers, policy reviews, baseline regressions, and supply-chain reviews into
-  hosted findings.
+- A cobertura de regras abrange segredos, permissões, hooks, servidores MCP, configurações
+  de agentes, injeção de Prompt, cadeia de suprimentos, análise de contaminação, execução em
+  sandbox, avaliação de políticas, reparo/status em tempo de execução, validação de corpus,
+  MiniClaw e análise Opus.
+- Os relatórios são utilizáveis por humanos e máquinas: terminal, JSON, markdown, HTML,
+  SARIF, logs de scan e saídas do GitHub Action.
+- Hooks empresariais existem: pacotes de políticas, metadados de exceções, relatórios de
+  exceções expiradas/a vencer, verificação de código SARIF e saída de resumo de job.
+- O trabalho de precisão está ativo: `runtimeConfidence`, ponderação de template/exemplo,
+  downgrades de exemplos em docs, confiança no cache de plugins instalados do Claude,
+  resolução de manifesto de hooks, orientação de auditoria de falsos positivos e prontidão
+  do corpus.
+- O consumo de pacotes de evidências agora é suficientemente de primeira classe para ferramentas
+  downstream: `agentshield evidence-pack inspect` verifica um bundle e emite resumos compactos
+  em JSON/texto para pontuação do relatório, contagens de descobertas, confiança em tempo de
+  execução, política, baseline, cadeia de suprimentos, contexto de CI, remediação e erros de
+  artefatos malformados.
+- O consumo de pacotes de evidências em nível de frota agora tem uma primitiva de roteamento
+  local: `agentshield evidence-pack fleet <dirs...> [--json]` agrega múltiplos bundles
+  inspecionados em rotas prontas, bloqueadores de segurança, revisão de políticas,
+  regressão de baseline, revisão de cadeia de suprimentos e inválidas.
+- O ECC-Tools agora consome essa primitiva de frota na revisão de segurança hospedada:
+  `agentshield-evidence/fleet-summary.json` direciona pacotes inválidos, bloqueadores de
+  segurança, revisões de políticas, regressões de baseline e revisões de cadeia de suprimentos
+  para descobertas hospedadas.
 
-May 16 update: AgentShield PR #87 merged as
-`26bb44650663816d07180e0d20c1895e431a326c`. It classifies installed Claude
-plugin cache content as `runtimeConfidence: plugin-cache`, keeps non-secret
-plugin-cache score impact at `0.5x`, avoids downgrading repository-local
-non-Claude `plugins/cache` paths, and makes plugin-cache classification win
-before cached hook implementations would otherwise appear as active `hook-code`.
-AgentShield PR #88 merged as
-`65ed6e2a87545dc99d962b58413f49096a4d70ec`. It adds
-`agentshield evidence-pack inspect <dir> [--json]`, validates the bundle before
-readback, summarizes every consumer-facing evidence artifact, and keeps
-malformed-but-valid JSON artifacts from crashing inspection.
-AgentShield PR #89 merged as
-`521ada9091bb6d818511ab8589ae675b920c106a`. It adds
-`agentshield evidence-pack fleet <dirs...> [--json]`, verifies each pack through
-the inspect path, aggregates finding, policy, baseline, supply-chain, and
-remediation totals, and assigns each pack to a deterministic fleet route.
-AgentShield commit `840952a7a07f820f24081c43df656d7f7295f23b` adds
-Linear/operator-ready fleet review ticket payloads with priority, labels,
-titles, and Markdown bodies. The same commit expands current Mini
-Shai-Hulud/TanStack IOC coverage for the in-cluster Vault endpoint and
-temporary lockfile breadcrumb, with local typecheck, lint, full tests,
-`git diff --check`, and GitHub CI/Self-Scan/Action-test evidence.
+Atualização de 16 de maio: PR #87 do AgentShield mesclado como
+`26bb44650663816d07180e0d20c1895e431a326c`. Ele classifica o conteúdo do cache de plugins
+instalados do Claude como `runtimeConfidence: plugin-cache`, mantém o impacto de pontuação
+de cache de plugins não secretos em `0.5x`, evita rebaixar caminhos `plugins/cache` locais
+do repositório que não sejam do Claude, e faz a classificação de cache de plugins ganhar
+antes que implementações de hooks em cache apareçam como `hook-code` ativo.
+PR #88 do AgentShield mesclado como
+`65ed6e2a87545dc99d962b58413f49096a4d70ec`. Ele adiciona
+`agentshield evidence-pack inspect <dir> [--json]`, valida o bundle antes da leitura,
+resume cada artefato de evidência voltado ao consumidor e evita que artefatos JSON malformados
+mas válidos travem a inspeção.
+PR #89 do AgentShield mesclado como
+`521ada9091bb6d818511ab8589ae675b920c106a`. Ele adiciona
+`agentshield evidence-pack fleet <dirs...> [--json]`, verifica cada pacote pelo caminho de
+inspeção, agrega totais de descobertas, políticas, baselines, cadeia de suprimentos e remediação,
+e atribui cada pacote a uma rota de frota determinística.
+O commit `840952a7a07f820f24081c43df656d7f7295f23b` do AgentShield adiciona
+payloads de tickets de revisão de frota prontos para Linear/operador, com prioridade, rótulos,
+títulos e corpos em Markdown. O mesmo commit expande a cobertura de IOC atual do Mini
+Shai-Hulud/TanStack para o endpoint Vault no cluster e o rastro de lockfile temporário,
+com typecheck local, lint, testes completos, `git diff --check` e evidências de CI/Self-Scan/Action-test
+do GitHub.
 
-The next iteration after fleet routing should not be "add more regex rules" by
-default. ECC-Tools follow-up routing now consumes fleet summaries and surfaces
-source evidence paths in hosted findings, and the first cross-harness policy
-slice now links AgentShield fleet route target paths to harness-owner review.
-AgentShield fleet output now also emits `reviewItems` with source evidence paths
-and owner-ready recommendations plus copy-ready ticket payloads for routed
-packs. The higher leverage move is durable operator approval/readback and
-workflow automation for routed fleet findings.
+A próxima iteração após o roteamento de frota não deve ser "adicionar mais regras de regex"
+por padrão. O roteamento de acompanhamento do ECC-Tools agora consome resumos de frota e
+expõe caminhos de evidências fonte em descobertas hospedadas, e o primeiro slice de política
+cross-harness agora vincula caminhos alvo da rota de frota do AgentShield à revisão do
+proprietário do harness. A saída de frota do AgentShield agora também emite `reviewItems`
+com caminhos de evidências fonte e recomendações prontas para proprietários, além de payloads
+de tickets prontos para uso em pacotes roteados. O movimento de maior alavancagem é a
+aprovação/leitura durável de operadores e a automação de fluxo de trabalho para descobertas
+de frota roteadas.
 
-## Enterprise Gaps
+## Lacunas Empresariais
 
-### 1. Organization Baselines And Drift
+### 1. Baselines de Organização e Deriva
 
-Enterprise buyers need to know whether a repo, team, or agent fleet is getting
-safer or riskier over time. AgentShield has scan logs and baseline comparison
-modules, and PR #63 now exposes that drift through GitHub Action inputs,
-outputs, annotations, and job-summary evidence. PR #64 adds first-class
-baseline snapshot creation through `agentshield baseline write`. The remaining
-product surface should make CLI drift summaries, evidence packs, and
-owner-ready deltas explicit.
+Compradores empresariais precisam saber se um repositório, equipe ou frota de agentes está
+ficando mais seguro ou mais arriscado ao longo do tempo. O AgentShield tem módulos de logs
+de scan e comparação de baseline, e o PR #63 agora expõe essa deriva por meio de entradas,
+saídas, anotações e evidências de resumo de job do GitHub Action. O PR #64 adiciona a criação
+de snapshot de baseline de primeira classe por meio de `agentshield baseline write`. A
+superfície de produto restante deve tornar explícitos os resumos de deriva da CLI, os pacotes
+de evidências e os deltas prontos para proprietários.
 
-Target capability:
+Capacidade alvo:
 
 - `agentshield baseline write --path .claude --output agentshield-baseline.json`
 - `agentshield scan --baseline agentshield-baseline.json`
-- Report sections for new, fixed, unchanged, suppressed, and policy-excepted
-  findings.
-- GitHub Action output that posts "security posture changed" rather than only a
-  point-in-time grade.
+- Seções do relatório para descobertas novas, corrigidas, inalteradas, suprimidas e
+  com exceção de política.
+- Saída do GitHub Action que publica "postura de segurança alterada" em vez de apenas uma
+  nota pontual.
 
-### 2. Multi-Harness Security Adapters
+### 2. Adaptadores de Segurança Multi-Harness
 
-The market is moving toward many parallel agent harnesses, not one tool. Orca,
-Superset, dmux, OpenCode, Claude Code, Codex, Gemini, Zed, and terminal
-multiplexers all create different security surfaces.
+O mercado está migrando para muitos harnesses de agentes paralelos, não para uma única
+ferramenta. Orca, Superset, dmux, OpenCode, Claude Code, Codex, Gemini, Zed e
+multiplexadores de terminal criam superfícies de segurança diferentes.
 
-Target capability:
+Capacidade alvo:
 
-- A small adapter registry for `claude-code`, `opencode`, `codex`, `gemini`,
-  `zed`, `dmux`, `orca`, `superset`, and `generic-terminal`.
-- Each adapter declares config paths, permission concepts, plugin surfaces,
-  MCP/tooling conventions, history/session surfaces, and CI evidence.
-- Report output groups findings by harness and confidence, so template/docs
-  findings do not look like active runtime exposure.
+- Um pequeno registro de adaptadores para `claude-code`, `opencode`, `codex`, `gemini`,
+  `zed`, `dmux`, `orca`, `superset` e `generic-terminal`.
+- Cada adaptador declara caminhos de configuração, conceitos de permissão, superfícies de
+  plugins, convenções MCP/ferramentas, superfícies de histórico/sessão e evidências de CI.
+- A saída do relatório agrupa descobertas por harness e confiança, para que descobertas de
+  template/documentação não pareçam exposição ativa em tempo de execução.
 
-### 3. Session And Worktree Awareness
+### 3. Consciência de Sessão e Worktree
 
-Worktree-native orchestrators change the risk model. A team can run many agents
-in parallel, each with its own branch, shell, MCP config, and local state.
+Os orquestradores nativos de worktree mudam o modelo de risco. Uma equipe pode executar
+muitos agentes em paralelo, cada um com sua própria branch, shell, configuração de MCP e
+estado local.
 
-Target capability:
+Capacidade alvo:
 
-- Optional scan metadata for branch, worktree path, agent name, session id,
-  provider, and orchestrator.
-- A scan-history table that answers: which worktree introduced a new permission,
-  which agent run added a risky MCP, which branch relaxed policy, and whether
-  the final merged branch fixed it.
-- A compact "security HUD" summary usable by statuslines, GitHub checks, and
-  local dashboards.
+- Metadados de scan opcionais para branch, caminho do worktree, nome do agente, ID de sessão,
+  provedor e orquestrador.
+- Uma tabela de histórico de scans que responde: qual worktree introduziu uma nova permissão,
+  qual execução de agente adicionou um MCP arriscado, qual branch relaxou a política e se
+  a branch mesclada final a corrigiu.
+- Um resumo compacto de "HUD de segurança" utilizável por statuslines, checks do GitHub e
+  dashboards locais.
 
-### 4. Evidence Packs For Buyers And Auditors
+### 4. Pacotes de Evidências para Compradores e Auditores
 
-HTML reports are the right buyer-facing artifact today; native PDF is deferred.
-The deeper need is a portable evidence bundle that can be attached to audits,
-security reviews, and customer questionnaires.
+Os relatórios HTML são o artefato correto voltado ao comprador hoje; PDF nativo está adiado.
+A necessidade mais profunda é um bundle de evidências portátil que pode ser anexado a
+auditorias, revisões de segurança e questionários de clientes.
 
-Target capability:
+Capacidade alvo:
 
 - `agentshield scan --evidence-pack out/agentshield-evidence`
-- Bundle includes JSON report, HTML report, SARIF, policy evaluation,
-  exception audit, baseline diff, dependency/provenance summary, and a short
-  README explaining how to interpret the artifacts.
-- Optional redaction mode for secrets, local paths, usernames, and project names.
+- O bundle inclui relatório JSON, relatório HTML, SARIF, avaliação de políticas,
+  auditoria de exceções, diff de baseline, resumo de dependências/proveniência e um
+  README curto explicando como interpretar os artefatos.
+- Modo de redação opcional para segredos, caminhos locais, nomes de usuário e nomes de projetos.
 
-### 5. Regression Corpus And Reference Sets
+### 5. Corpus de Regressão e Conjuntos de Referência
 
-Meta-Harness and Autocontext point to the same lesson: improvements need scored
-scenarios, traces, and playbooks. AgentShield already has a corpus benchmark,
-but enterprise trust needs a curated reference set for false positives,
-false negatives, and policy regressions.
+Meta-Harness e Autocontext apontam para a mesma lição: melhorias precisam de cenários
+pontuados, rastreamentos e playbooks. O AgentShield já tem um benchmark de corpus,
+mas a confiança empresarial precisa de um conjunto de referência curado para falsos positivos,
+falsos negativos e regressões de políticas.
 
-Target capability:
+Capacidade alvo:
 
-- Versioned scenario fixtures for critical rules, false-positive suppressions,
-  policy exceptions, template/docs examples, plugin manifests, and hook-code
-  resolution.
-- Per-category precision/coverage reporting, not just aggregate readiness.
-- A "no accuracy regression" gate that must pass before releases.
-- Playbook notes for why a suppression exists and when it should expire.
+- Fixtures de cenários versionados para regras críticas, supressões de falsos positivos,
+  exceções de políticas, exemplos de template/documentação, manifestos de plugins e
+  resolução de código de hook.
+- Relatórios de precisão/cobertura por categoria, não apenas prontidão agregada.
+- Um gate de "sem regressão de precisão" que deve passar antes dos releases.
+- Notas de playbook sobre por que uma supressão existe e quando ela deve expirar.
 
-### 6. Remediation Workflow
+### 6. Fluxo de Trabalho de Remediação
 
-Security tools become enterprise-grade when they turn findings into accountable
-work without flooding maintainers.
+Ferramentas de segurança tornam-se de nível empresarial quando transformam descobertas em
+trabalho responsável sem sobrecarregar os mantenedores.
 
-Target capability:
+Capacidade alvo:
 
-- One-click or CLI-generated remediation branch for safe transforms.
-- Policy comments that group findings by owner and risk rather than by file
-  order.
-- GitHub App support for check-run annotations, issue caps, Linear sync, and
-  deferred backlog export.
-- Finding fingerprints that avoid duplicate issues across repeated scans.
+- Branch de remediação gerada com um clique ou via CLI para transformações seguras.
+- Comentários de política que agrupam descobertas por proprietário e risco, em vez de por
+  ordem de arquivo.
+- Suporte a GitHub App para anotações de check-run, limites de issues, sincronização com
+  Linear e exportação de backlog adiada.
+- Impressões digitais de descobertas que evitam issues duplicadas entre scans repetidos.
 
-### 7. Threat Intelligence And Package Reputation
+### 7. Inteligência de Ameaças e Reputação de Pacotes
 
-Agent security depends on MCP packages, plugin repositories, action bundles,
-and rapidly changing CLI ecosystems. Static checks need a maintained external
-reputation layer.
+A segurança de agentes depende de pacotes MCP, repositórios de plugins, bundles de actions
+e ecossistemas de CLI em rápida mudança. As verificações estáticas precisam de uma camada
+de reputação externa mantida.
 
-Target capability:
+Capacidade alvo:
 
-- A local-first threat-intel cache for known MCP/package risks, CVEs, malware
-  package names, suspicious install scripts, mutable git dependencies, and
-  known-good packages.
-- Offline deterministic mode remains available.
-- Online enrichment is opt-in and produces clear provenance for every external
-  claim.
+- Um cache de threat-intel local para riscos conhecidos de MCP/pacotes, CVEs, nomes de
+  pacotes maliciosos, scripts de instalação suspeitos, dependências git mutáveis e
+  pacotes conhecidos como seguros.
+- O modo determinístico offline permanece disponível.
+- O enriquecimento online é opt-in e produz proveniência clara para cada afirmação externa.
 
-### 8. Commercial And Team Controls
+### 8. Controles Comerciais e de Equipe
 
-AgentShield is already connected conceptually to the ECC Tools GitHub App.
-Native GitHub payments make the product path more concrete: free local scans,
-paid org policy gates, paid evidence bundles, and paid drift/history.
+O AgentShield já está conceitualmente conectado ao GitHub App do ECC Tools.
+Os pagamentos nativos do GitHub tornam o caminho do produto mais concreto: scans locais gratuitos,
+gates de política organizacional pagos, bundles de evidências pagos e deriva/histórico pagos.
 
-Target capability:
+Capacidade alvo:
 
-- Tier-aware GitHub App checks: free static scan, paid org policy enforcement,
-  paid evidence packs, paid historical drift, and paid deep analysis.
-- Seat/team mapping for policy owners and exception approvers.
-- Billing readiness checks shared with ECC-Tools so payment state never changes
-  enforcement behavior silently.
+- Verificações do GitHub App com consciência de tier: scan estático gratuito, aplicação de
+  política organizacional paga, pacotes de evidências pagos, deriva histórica paga e análise
+  profunda paga.
+- Mapeamento de assentos/equipes para proprietários de políticas e aprovadores de exceções.
+- Verificações de prontidão de cobrança compartilhadas com o ECC-Tools para que o estado
+  de pagamento nunca altere o comportamento de aplicação silenciosamente.
 
-## Recommended Build Order
+## Ordem de Build Recomendada
 
-### Slice 1: Baseline Drift MVP
+### Slice 1: MVP de Deriva de Baseline
 
-Implement the smallest enterprise control-plane primitive: compare this scan to
-the last accepted baseline.
+Implementar a menor primitiva de plano de controle empresarial: comparar este scan com
+o último baseline aceito.
 
-Artifacts:
+Artefatos:
 
-- Baseline JSON schema.
-- Baseline writer and comparator.
-- Terminal and JSON report sections for new/fixed/unchanged findings.
-- Tests covering stable fingerprints, fixed findings, new findings, and policy
-  exception carry-forward.
+- Esquema JSON de baseline.
+- Escritor e comparador de baseline.
+- Seções de relatório de terminal e JSON para descobertas novas/corrigidas/inalteradas.
+- Testes cobrindo impressões digitais estáveis, descobertas corrigidas, novas descobertas e
+  carry-forward de exceção de política.
 
-Why first:
+Por que primeiro:
 
-- It reuses existing scan output.
-- It improves CLI, GitHub Action, and GitHub App value at once.
-- It does not require a hosted service.
+- Reutiliza a saída de scan existente.
+- Melhora o valor da CLI, do GitHub Action e do GitHub App de uma só vez.
+- Não requer um serviço hospedado.
 
-### Slice 2: Evidence Pack Bundle
+### Slice 2: Bundle de Pacote de Evidências
 
-Bundle the existing machine and human reports into a portable audit artifact.
+Agrupar os relatórios de máquina e humanos existentes em um artefato de auditoria portátil.
 
-Artifacts:
+Artefatos:
 
-- `--evidence-pack <dir>` CLI flag.
-- Redacted bundle README.
-- HTML, JSON, SARIF, policy, exception, and baseline diff files.
-- Tests for file layout, redaction, and deterministic output names.
+- Flag `--evidence-pack <dir>` da CLI.
+- README do bundle com redação.
+- Arquivos HTML, JSON, SARIF, política, exceção e diff de baseline.
+- Testes para layout de arquivos, redação e nomes de saída determinísticos.
 
-Why second:
+Por que segundo:
 
-- It converts existing reporting work into buyer-ready proof.
-- It keeps native PDF deferred while still meeting audit handoff needs.
+- Converte o trabalho de relatório existente em prova pronta para compradores.
+- Mantém o PDF nativo adiado enquanto ainda atende às necessidades de entrega de auditoria.
 
-### Slice 3: Harness Adapter Registry
+### Slice 3: Registro de Adaptadores de Harness
 
-Make harness support explicit instead of implicit.
+Tornar o suporte a harness explícito em vez de implícito.
 
-Artifacts:
+Artefatos:
 
-- Adapter metadata for Claude Code, OpenCode, Codex, Gemini, dmux, generic
-  terminal, and project-local templates.
-- Discovery output that reports which adapters matched and why.
-- Report grouping by adapter.
-- Tests using fixture directories for each adapter.
+- Metadados de adaptadores para Claude Code, OpenCode, Codex, Gemini, dmux, terminal
+  genérico e templates locais do projeto.
+- Saída de descoberta que relata quais adaptadores foram correspondidos e por quê.
+- Agrupamento de relatório por adaptador.
+- Testes usando diretórios de fixtures para cada adaptador.
 
-Why third:
+Por que terceiro:
 
-- It aligns AgentShield with ECC's harness-agnostic positioning.
-- It creates a stable surface for future Zed, Orca, Superset, and Hermes
-  integration without pretending all harnesses share Claude's config model.
+- Alinha o AgentShield com o posicionamento agnóstico de harness do ECC.
+- Cria uma superfície estável para futura integração com Zed, Orca, Superset e Hermes
+  sem fingir que todos os harnesses compartilham o modelo de configuração do Claude.
 
-### Slice 4: Corpus Accuracy Gate
+### Slice 4: Gate de Precisão do Corpus
 
-Promote the corpus from a benchmark into a release gate.
+Promover o corpus de benchmark para gate de release.
 
-Artifacts:
+Artefatos:
 
-- Per-category corpus report.
-- Required category thresholds.
-- Regression snapshots for known false-positive suppressions.
-- Release checklist entry requiring corpus readiness before publish.
+- Relatório de corpus por categoria.
+- Limites obrigatórios por categoria.
+- Snapshots de regressão para supressões conhecidas de falsos positivos.
+- Entrada de checklist de release exigindo prontidão do corpus antes da publicação.
 
-Why fourth:
+Por que quarto:
 
-- It prevents enterprise credibility from degrading as rules expand.
-- It creates a durable route for Meta-Harness/Autocontext-style improvement
-  loops later.
+- Evita que a credibilidade empresarial se degrade à medida que as regras se expandem.
+- Cria uma rota durável para loops de melhoria no estilo Meta-Harness/Autocontext
+  posteriormente.
 
-### Slice 5: GitHub App And Linear Sync Wiring
+### Slice 5: Cabeamento do GitHub App e Sincronização com Linear
 
-Connect AgentShield findings to ECC-Tools follow-up routing.
+Conectar as descobertas do AgentShield ao roteamento de acompanhamento do ECC-Tools.
 
-Artifacts:
+Artefatos:
 
-- Finding fingerprints compatible with ECC-Tools issue caps.
-- Linear-ready backlog export for baseline drift and policy violations.
-- Check-run annotations grouped by owner/risk.
-- Tests that ensure repeated scans do not spam duplicate issues.
+- Impressões digitais de descobertas compatíveis com limites de issues do ECC-Tools.
+- Exportação de backlog pronta para Linear para deriva de baseline e violações de políticas.
+- Anotações de check-run agrupadas por proprietário/risco.
+- Testes que garantem que scans repetidos não criem spam de issues duplicadas.
 
-Why fifth:
+Por que quinto:
 
-- It needs the baseline/fingerprint work from Slice 1.
-- It is the bridge from local CLI to paid team workflow.
+- Precisa do trabalho de baseline/impressão digital do Slice 1.
+- É a ponte entre a CLI local e o fluxo de trabalho de equipe pago.
 
-## Non-Goals For This Iteration
+## Não-Objetivos para Esta Iteração
 
-- Native PDF generation, unless buyer/compliance workflows explicitly require
-  generated PDF instead of HTML plus print-to-PDF.
-- Hosted dashboards before the local baseline/evidence/fingerprint contracts are
-  stable.
-- Fine-tuning or model training before deterministic corpus gates and reference
-  traces exist.
-- Broad automated code rewrites for risky findings without explicit,
-  reviewable transforms and tests.
+- Geração nativa de PDF, a menos que os fluxos de trabalho do comprador/conformidade exijam
+  explicitamente PDF gerado em vez de HTML com impressão para PDF.
+- Dashboards hospedados antes que os contratos locais de baseline/evidência/impressão digital
+  estejam estáveis.
+- Ajuste fino ou treinamento de modelo antes que os gates de corpus determinísticos e os
+  rastreamentos de referência existam.
+- Amplas reescritas automáticas de código para descobertas arriscadas sem transformações e
+  testes explícitos e revisáveis.
 
-## Acceptance Gates
+## Gates de Aceitação
 
-The AgentShield enterprise iteration is not complete until these are true:
+A iteração empresarial do AgentShield não está completa até que o seguinte seja verdadeiro:
 
-- Local `npm run typecheck`, `npm run lint`, `npm test`, and `npm run build`
-  pass from the AgentShield repository root.
-- Built CLI smoke tests cover the new flags or report modes.
-- GitHub Action self-test covers the new CI-visible output.
-- Documentation names the free/local path and the paid/team path separately.
-- Runtime-confidence changes include live scan evidence proving lower-confidence
-  plugin/package surfaces stay visible instead of being suppressed.
-- Evidence produced by the feature is deterministic enough for CI diffing.
-- ECC-Tools can consume the finding fingerprints or backlog export without
-  exceeding GitHub/Linear object caps.
-- The GA roadmap and Linear project status link to the merged AgentShield PRs.
+- Os testes locais `npm run typecheck`, `npm run lint`, `npm test` e `npm run build`
+  passam a partir da raiz do repositório AgentShield.
+- Os testes de smoke de CLI compilados cobrem os novos flags ou modos de relatório.
+- O autoteste do GitHub Action cobre a nova saída visível para CI.
+- A documentação nomeia o caminho gratuito/local e o caminho pago/equipe separadamente.
+- As mudanças de confiança em tempo de execução incluem evidências de scan ao vivo provando
+  que as superfícies de plugin/pacote de menor confiança permanecem visíveis em vez de serem
+  suprimidas.
+- As evidências produzidas pelo recurso são determinísticas o suficiente para diff de CI.
+- O ECC-Tools pode consumir as impressões digitais de descobertas ou a exportação de backlog
+  sem exceder os limites de objetos do GitHub/Linear.
+- O roteiro de GA e o status do projeto Linear vinculam-se aos PRs mesclados do AgentShield.

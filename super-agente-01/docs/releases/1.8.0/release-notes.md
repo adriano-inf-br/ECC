@@ -1,20 +1,20 @@
-# ECC v1.8.0 Release Notes
+# Notas de Lançamento do ECC v1.8.0
 
-## Positioning
+## Posicionamento
 
-ECC v1.8.0 positions the project as an agent harness performance system, not just a config bundle.
+O ECC v1.8.0 posiciona o projeto como um sistema de desempenho de harness de agent, não apenas um pacote de configuração.
 
-## Key Improvements
+## Principais Melhorias
 
-- Stabilized hooks and lifecycle behavior.
-- Expanded eval and loop operations surface.
-- Upgraded NanoClaw for operational use.
-- Improved cross-harness parity (Claude Code, Cursor, OpenCode, Codex).
+- Estabilizou hooks e comportamento do ciclo de vida.
+- Expandiu a superfície de operações de eval e loop.
+- Atualizou o NanoClaw para uso operacional.
+- Melhorou a paridade entre harnesses (Claude Code, Cursor, OpenCode, Codex).
 
-## Upgrade Focus
+## Foco da Atualização
 
-1. Validate hook profile defaults in your environment.
-2. Run `/harness-audit` to baseline your project.
-3. Use `/quality-gate` and updated eval workflows to enforce consistency.
-4. Review attribution and licensing notes for referenced ecosystems: [reference-attribution.md](./reference-attribution.md).
-5. For partner/sponsor optics, use live distribution metrics and talking points: [../business/metrics-and-sponsorship.md](../../business/metrics-and-sponsorship.md).
+1. Valide os padrões de perfil de hook no seu ambiente.
+2. Execute `/harness-audit` para estabelecer a linha de base do seu projeto.
+3. Use `/quality-gate` e os fluxos de trabalho de eval atualizados para garantir consistência.
+4. Revise as notas de atribuição e licenciamento para ecossistemas referenciados: [reference-attribution.md](./reference-attribution.md).
+5. Para visibilidade com parceiros/patrocinadores, use métricas de distribuição ao vivo e pontos de discussão: [../business/metrics-and-sponsorship.md](../../business/metrics-and-sponsorship.md).

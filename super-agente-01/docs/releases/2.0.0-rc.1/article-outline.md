@@ -1,78 +1,78 @@
-# Article Outline - ECC v2.0.0-rc.1
+# Esboço de Artigo - ECC v2.0.0-rc.1
 
-## Working Title
+## Título de Trabalho
 
-Turning ECC Into a Cross-Harness Operating System
+Transformando o ECC em um Sistema Operacional Cross-Harness
 
-## Core Argument
+## Argumento Central
 
-Most agentic work breaks down because the tools stay isolated.
+A maior parte do trabalho agêntico falha porque as ferramentas permanecem isoladas.
 
-The leverage comes from treating the harness, reusable workflow layer, and operator shell as one system:
+A alavancagem vem de tratar o harness, a camada de fluxo de trabalho reutilizável e o shell de operador como um único sistema:
 
-- skills for repeatable work
-- hooks and tests for enforcement
-- MCPs for tool access
-- memory and handoffs for continuity
-- one operator shell that can route daily execution
+- skills para trabalho repetível
+- hooks e testes para aplicação
+- MCPs para acesso a ferramentas
+- memória e handoffs para continuidade
+- um shell de operador que pode rotear a execução diária
 
-## Structure
+## Estrutura
 
-### 1. The Problem
+### 1. O Problema
 
-- too many chat windows
-- too many tool-specific workflows
-- too much context living in personal habit instead of reusable system shape
+- janelas de chat demais
+- fluxos de trabalho específicos por ferramenta demais
+- contexto demais vivendo em hábito pessoal em vez de forma de sistema reutilizável
 
-### 2. What ECC Already Solved
+### 2. O Que o ECC Já Resolveu
 
-- reusable skill format
-- cross-harness install surfaces
-- hooks and verification discipline
-- security and review patterns
-- operator workflow skills around content, research, and business ops
-- queue, discussion, Linear, legacy, and release-evidence checks that make the
-  operating state inspectable
-- supply-chain IOC scanning and no-lifecycle install hardening after the
-  Mini Shai-Hulud/TanStack campaign
+- formato de skill reutilizável
+- superfícies de instalação cross-harness
+- disciplina de hooks e verificação
+- padrões de segurança e revisão
+- skills de fluxo de trabalho de operador para conteúdo, pesquisa e operações de negócios
+- verificações de fila, discussão, Linear, legado e evidência de lançamento que tornam o
+  estado operacional inspecionável
+- escaneamento de IOC na cadeia de suprimentos e endurecimento de instalação sem ciclo de vida após a
+  campanha Mini Shai-Hulud/TanStack
 
-### 3. Why Hermes Is the Operator Layer
+### 3. Por Que o Hermes É a Camada de Operador
 
-- chat, CLI, TUI, cron, and handoffs can sit above the reusable ECC layer
-- business and content work can run next to engineering work
-- the daily loop becomes easier to inspect and improve
+- chat, CLI, TUI, cron e handoffs podem estar acima da camada ECC reutilizável
+- trabalho de negócios e conteúdo pode rodar ao lado do trabalho de engenharia
+- o loop diário se torna mais fácil de inspecionar e melhorar
 
-### 4. What Ships in rc.1
+### 4. O Que É Entregue no rc.1
 
-- sanitized Hermes setup guide
-- release and distribution collateral
-- cross-harness architecture doc
-- Hermes import guidance
-- clearer 2.0 positioning in the repo
-- preview-pack smoke gate
-- launch drafts for GitHub release copy, X, LinkedIn, article, Telegram/Hermes
-  handoff, and demo prompts
+- guia de configuração sanitizado do Hermes
+- material de lançamento e distribuição
+- documento de arquitetura cross-harness
+- orientação de importação do Hermes
+- posicionamento mais claro do 2.0 no repositório
+- gate de smoke do preview-pack
+- rascunhos de lançamento para cópia de lançamento no GitHub, X, LinkedIn, artigo, handoff
+  Telegram/Hermes e prompts de demonstração
 
-### 5. What Changed Since v1.10.0
+### 5. O Que Mudou Desde o v1.10.0
 
-- Claude Code remains the core target, but ECC now treats Codex, OpenCode,
-  Cursor, Gemini, Zed, and terminal-only workflows as shared execution surfaces.
-- The release process now has repeatable platform, discussion, observability,
-  supply-chain, Linear progress, and preview-pack checks.
-- AgentShield and ECC Tools work is mirrored into the roadmap so enterprise
-  security, hosted review, policy promotion, and billing-readiness lanes do not
-  drift away from the main release.
+- O Claude Code continua sendo o alvo principal, mas o ECC agora trata Codex, OpenCode,
+  Cursor, Gemini, Zed e fluxos de trabalho apenas em terminal como superfícies de execução compartilhadas.
+- O processo de lançamento agora tem verificações repetíveis de plataforma, discussão, observabilidade,
+  cadeia de suprimentos, progresso no Linear e preview-pack.
+- O trabalho do AgentShield e das ECC Tools é espelhado no roteiro para que as faixas de
+  segurança empresarial, revisão hospedada, promoção de políticas e prontidão de faturamento não
+  se afastem do lançamento principal.
 
-### 6. What Stays Local
+### 6. O Que Permanece Local
 
-- secrets and auth
-- raw workspace exports
-- personal datasets
-- operator-specific automations that have not been sanitized
-- deeper CRM, finance, and Google Workspace playbooks
+- segredos e autenticação
+- exportações brutas do workspace
+- conjuntos de dados pessoais
+- automações específicas de operador que não foram sanitizadas
+- playbooks mais profundos de CRM, finanças e Google Workspace
 
-### 7. Closing Point
+### 7. Ponto de Encerramento
 
-The goal is not to copy one exact stack.
+O objetivo não é copiar uma stack exata.
 
-The goal is to build an operating system around the agent that turns repeated work into reusable, measurable surfaces.
+O objetivo é construir um sistema operacional em torno do agent que transforma trabalho repetido em superfícies reutilizáveis e mensuráveis.

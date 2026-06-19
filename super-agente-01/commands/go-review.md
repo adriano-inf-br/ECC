@@ -2,54 +2,54 @@
 description: Comprehensive Go code review for idiomatic patterns, concurrency safety, error handling, and security. Invokes the go-reviewer agent.
 ---
 
-# Go Code Review
+# Revisão de Código Go
 
-This command invokes the **go-reviewer** agent for comprehensive Go-specific code review.
+Este comando invoca o agent **go-reviewer** para uma revisão de código abrangente e específica de Go.
 
-## What This Command Does
+## O Que Este Comando Faz
 
-1. **Identify Go Changes**: Find modified `.go` files via `git diff`
-2. **Run Static Analysis**: Execute `go vet`, `staticcheck`, and `golangci-lint`
-3. **Security Scan**: Check for SQL injection, command injection, race conditions
-4. **Concurrency Review**: Analyze goroutine safety, channel usage, mutex patterns
-5. **Idiomatic Go Check**: Verify code follows Go conventions and best practices
-6. **Generate Report**: Categorize issues by severity
+1. **Identificar Mudanças em Go**: Encontra arquivos `.go` modificados via `git diff`
+2. **Executar Análise Estática**: Executa `go vet`, `staticcheck` e `golangci-lint`
+3. **Varredura de Segurança**: Verifica injeção de SQL, injeção de comando, condições de corrida
+4. **Revisão de Concorrência**: Analisa segurança de goroutines, uso de channels, padrões de mutex
+5. **Verificação de Go Idiomático**: Confirma que o código segue as convenções e boas práticas de Go
+6. **Gerar Relatório**: Categoriza os problemas por severidade
 
-## When to Use
+## Quando Usar
 
-Use `/go-review` when:
-- After writing or modifying Go code
-- Before committing Go changes
-- Reviewing pull requests with Go code
-- Onboarding to a new Go codebase
-- Learning idiomatic Go patterns
+Use `/go-review` quando:
+- Após escrever ou modificar código Go
+- Antes de fazer commit de mudanças em Go
+- Revisar pull requests com código Go
+- Fazer onboarding em uma nova base de código Go
+- Aprender padrões idiomáticos de Go
 
-## Review Categories
+## Categorias de Revisão
 
-### CRITICAL (Must Fix)
-- SQL/Command injection vulnerabilities
-- Race conditions without synchronization
-- Goroutine leaks
-- Hardcoded credentials
-- Unsafe pointer usage
-- Ignored errors in critical paths
+### CRITICAL (Deve Corrigir)
+- Vulnerabilidades de injeção de SQL/Comando
+- Condições de corrida sem sincronização
+- Vazamentos de goroutines
+- Credenciais hardcoded
+- Uso inseguro de ponteiros
+- Erros ignorados em caminhos críticos
 
-### HIGH (Should Fix)
-- Missing error wrapping with context
-- Panic instead of error returns
-- Context not propagated
-- Unbuffered channels causing deadlocks
-- Interface not satisfied errors
-- Missing mutex protection
+### HIGH (Deveria Corrigir)
+- Falta de encapsulamento de erro com contexto
+- Panic em vez de retorno de erro
+- Context não propagado
+- Channels sem buffer causando deadlocks
+- Erros de interface não satisfeita
+- Falta de proteção com mutex
 
-### MEDIUM (Consider)
-- Non-idiomatic code patterns
-- Missing godoc comments on exports
-- Inefficient string concatenation
-- Slice not preallocated
-- Table-driven tests not used
+### MEDIUM (Considerar)
+- Padrões de código não idiomáticos
+- Falta de comentários godoc em exports
+- Concatenação de strings ineficiente
+- Slice não pré-alocado
+- Testes orientados a tabela (table-driven) não utilizados
 
-## Automated Checks Run
+## Verificações Automatizadas Executadas
 
 ```bash
 # Static analysis
@@ -66,7 +66,7 @@ go build -race ./...
 govulncheck ./...
 ```
 
-## Example Usage
+## Exemplo de Uso
 
 ```text
 User: /go-review
@@ -127,22 +127,22 @@ return fmt.Errorf("get user %s: %w", userID, err)
 Recommendation: FAIL: Block merge until CRITICAL issue is fixed
 ```
 
-## Approval Criteria
+## Critérios de Aprovação
 
-| Status | Condition |
+| Status | Condição |
 |--------|-----------|
-| PASS: Approve | No CRITICAL or HIGH issues |
-| WARNING: Warning | Only MEDIUM issues (merge with caution) |
-| FAIL: Block | CRITICAL or HIGH issues found |
+| PASS: Aprovar | Sem problemas CRITICAL ou HIGH |
+| WARNING: Aviso | Apenas problemas MEDIUM (mesclar com cautela) |
+| FAIL: Bloquear | Problemas CRITICAL ou HIGH encontrados |
 
-## Integration with Other Commands
+## Integração com Outros Comandos
 
-- Use `/go-test` first to ensure tests pass
-- Use `/go-build` if build errors occur
-- Use `/go-review` before committing
-- Use `/code-review` for non-Go specific concerns
+- Use `/go-test` primeiro para garantir que os testes passam
+- Use `/go-build` se ocorrerem erros de build
+- Use `/go-review` antes de fazer commit
+- Use `/code-review` para preocupações não específicas de Go
 
-## Related
+## Relacionados
 
 - Agent: `agents/go-reviewer.md`
 - Skills: `skills/golang-patterns/`, `skills/golang-testing/`

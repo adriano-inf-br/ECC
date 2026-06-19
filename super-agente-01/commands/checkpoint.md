@@ -1,41 +1,41 @@
 ---
-description: Create, verify, or list workflow checkpoints after running verification checks.
+description: Cria, verifica ou lista checkpoints de fluxo de trabalho após executar checagens de verificação.
 ---
 
-# Checkpoint Command
+# Comando Checkpoint
 
-Create or verify a checkpoint in your workflow.
+Cria ou verifica um checkpoint no seu fluxo de trabalho.
 
-## Usage
+## Uso
 
 `/checkpoint [create|verify|list] [name]`
 
-## Create Checkpoint
+## Criar Checkpoint
 
-When creating a checkpoint:
+Ao criar um checkpoint:
 
-1. Run `/verify quick` to ensure current state is clean
-2. Create a git stash or commit with checkpoint name
-3. Log checkpoint to `.claude/checkpoints.log`:
+1. Execute `/verify quick` para garantir que o estado atual está limpo
+2. Crie um git stash ou commit com o nome do checkpoint
+3. Registre o checkpoint em `.claude/checkpoints.log`:
 
 ```bash
 echo "$(date +%Y-%m-%d-%H:%M) | $CHECKPOINT_NAME | $(git rev-parse --short HEAD)" >> .claude/checkpoints.log
 ```
 
-4. Report checkpoint created
+4. Reporte o checkpoint criado
 
-## Verify Checkpoint
+## Verificar Checkpoint
 
-When verifying against a checkpoint:
+Ao verificar em relação a um checkpoint:
 
-1. Read checkpoint from log
-2. Compare current state to checkpoint:
-   - Files added since checkpoint
-   - Files modified since checkpoint
-   - Test pass rate now vs then
-   - Coverage now vs then
+1. Leia o checkpoint do log
+2. Compare o estado atual com o checkpoint:
+   - Arquivos adicionados desde o checkpoint
+   - Arquivos modificados desde o checkpoint
+   - Taxa de aprovação dos testes agora vs. antes
+   - Cobertura agora vs. antes
 
-3. Report:
+3. Reporte:
 ```
 CHECKPOINT COMPARISON: $NAME
 ============================
@@ -45,17 +45,17 @@ Coverage: +X% / -Y%
 Build: [PASS/FAIL]
 ```
 
-## List Checkpoints
+## Listar Checkpoints
 
-Show all checkpoints with:
-- Name
+Mostre todos os checkpoints com:
+- Nome
 - Timestamp
-- Git SHA
-- Status (current, behind, ahead)
+- SHA do git
+- Status (atual, atrás, à frente)
 
-## Workflow
+## Fluxo de trabalho
 
-Typical checkpoint flow:
+Fluxo típico de checkpoint:
 
 ```
 [Start] --> /checkpoint create "feature-start"
@@ -69,10 +69,10 @@ Typical checkpoint flow:
 [PR] --> /checkpoint verify "feature-start"
 ```
 
-## Arguments
+## Argumentos
 
 $ARGUMENTS:
-- `create <name>` - Create named checkpoint
-- `verify <name>` - Verify against named checkpoint
-- `list` - Show all checkpoints
-- `clear` - Remove old checkpoints (keeps last 5)
+- `create <name>` - Cria checkpoint nomeado
+- `verify <name>` - Verifica em relação a checkpoint nomeado
+- `list` - Mostra todos os checkpoints
+- `clear` - Remove checkpoints antigos (mantém os últimos 5)

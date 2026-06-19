@@ -1,29 +1,29 @@
 ---
-description: Fix Dart analyzer errors and Flutter build failures incrementally. Invokes the dart-build-resolver agent for minimal, surgical fixes.
+description: Corrige erros do analisador Dart e falhas de build do Flutter incrementalmente. Invoca o agent dart-build-resolver para correções mínimas e cirúrgicas.
 ---
 
 # Flutter Build and Fix
 
-This command invokes the **dart-build-resolver** agent to incrementally fix Dart/Flutter build errors with minimal changes.
+Este comando invoca o agent **dart-build-resolver** para corrigir incrementalmente erros de build Dart/Flutter com mudanças mínimas.
 
-## What This Command Does
+## O Que Este Comando Faz
 
-1. **Run Diagnostics**: Execute `flutter analyze`, `flutter pub get`
-2. **Parse Errors**: Group by file and sort by severity
-3. **Fix Incrementally**: One error at a time
-4. **Verify Each Fix**: Re-run analysis after each change
-5. **Report Summary**: Show what was fixed and what remains
+1. **Executar Diagnósticos**: Executa `flutter analyze`, `flutter pub get`
+2. **Analisar Erros**: Agrupa por arquivo e ordena por severidade
+3. **Corrigir Incrementalmente**: Um erro por vez
+4. **Verificar Cada Correção**: Reexecuta a análise após cada mudança
+5. **Reportar Resumo**: Mostra o que foi corrigido e o que resta
 
-## When to Use
+## Quando Usar
 
-Use `/flutter-build` when:
-- `flutter analyze` reports errors
-- `flutter build` fails for any platform
-- `dart pub get` / `flutter pub get` fails with version conflicts
-- `build_runner` fails to generate code
-- After pulling changes that break the build
+Use `/flutter-build` quando:
+- `flutter analyze` reporta erros
+- `flutter build` falha em qualquer plataforma
+- `dart pub get` / `flutter pub get` falha com conflitos de versão
+- `build_runner` falha ao gerar código
+- Após puxar mudanças que quebram o build
 
-## Diagnostic Commands Run
+## Comandos de Diagnóstico Executados
 
 ```bash
 # Analysis
@@ -40,7 +40,7 @@ flutter build apk 2>&1
 flutter build web 2>&1
 ```
 
-## Example Session
+## Exemplo de Sessão
 
 ````text
 User: /flutter-build
@@ -125,40 +125,40 @@ All tests passed.
 Build Status: PASS ✓
 ````
 
-## Common Errors Fixed
+## Erros Comuns Corrigidos
 
-| Error | Typical Fix |
+| Erro | Correção Típica |
 |-------|-------------|
-| `A value of type 'X?' can't be assigned to 'X'` | Add `?? default` or null guard |
-| `The name 'X' isn't defined` | Add import or fix typo |
-| `Non-nullable instance field must be initialized` | Add initializer or `late` |
-| `Version solving failed` | Adjust version constraints in pubspec.yaml |
-| `Missing concrete implementation of 'X'` | Implement missing interface method |
-| `build_runner: Part of X expected` | Delete stale `.g.dart` and rebuild |
+| `A value of type 'X?' can't be assigned to 'X'` | Adicionar `?? default` ou null guard |
+| `The name 'X' isn't defined` | Adicionar import ou corrigir erro de digitação |
+| `Non-nullable instance field must be initialized` | Adicionar inicializador ou `late` |
+| `Version solving failed` | Ajustar restrições de versão em pubspec.yaml |
+| `Missing concrete implementation of 'X'` | Implementar método de interface ausente |
+| `build_runner: Part of X expected` | Apagar `.g.dart` obsoleto e refazer o build |
 
-## Fix Strategy
+## Estratégia de Correção
 
-1. **Analysis errors first** — code must be error-free
-2. **Warning triage second** — fix warnings that could cause runtime bugs
-3. **pub conflicts third** — fix dependency resolution
-4. **One fix at a time** — verify each change
-5. **Minimal changes** — don't refactor, just fix
+1. **Erros de análise primeiro** — o código deve estar livre de erros
+2. **Triagem de warnings em segundo** — corrija warnings que possam causar bugs em runtime
+3. **Conflitos de pub em terceiro** — corrija a resolução de dependências
+4. **Uma correção por vez** — verifique cada mudança
+5. **Mudanças mínimas** — não refatore, apenas corrija
 
-## Stop Conditions
+## Condições de Parada
 
-The agent will stop and report if:
-- Same error persists after 3 attempts
-- Fix introduces more errors
-- Requires architectural changes
-- Package upgrade conflicts need user decision
+O agent vai parar e reportar se:
+- O mesmo erro persistir após 3 tentativas
+- A correção introduzir mais erros
+- For necessária uma mudança arquitetural
+- Conflitos de upgrade de pacote precisarem de decisão do usuário
 
-## Related Commands
+## Comandos Relacionados
 
-- `/flutter-test` — Run tests after build succeeds
-- `/flutter-review` — Review code quality
-- `verification-loop` skill — Full verification loop
+- `/flutter-test` — Executa testes após o build ter sucesso
+- `/flutter-review` — Revisa a qualidade do código
+- skill `verification-loop` — Loop de verificação completo
 
-## Related
+## Relacionados
 
 - Agent: `agents/dart-build-resolver.md`
 - Skill: `skills/flutter-dart-code-review/`

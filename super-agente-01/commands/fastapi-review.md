@@ -1,28 +1,28 @@
 ---
-description: Review a FastAPI application for architecture, async correctness, dependency injection, Pydantic schemas, security, performance, and testability.
+description: Revisa uma aplicação FastAPI quanto a arquitetura, correção assíncrona, injeção de dependências, schemas Pydantic, segurança, performance e testabilidade.
 ---
 
 # FastAPI Review
 
-Invoke the `fastapi-reviewer` agent for a focused FastAPI review.
+Invoca o agent `fastapi-reviewer` para uma revisão FastAPI focada.
 
-## Usage
+## Uso
 
 ```text
 /fastapi-review [file-or-directory]
 ```
 
-## Review Areas
+## Áreas de Revisão
 
-- App factory, router boundaries, middleware, and exception handlers.
-- Pydantic request and response schema separation.
-- Dependency injection for database sessions, auth, pagination, and settings.
-- Async database and external HTTP patterns.
-- CORS, auth, rate limits, logging, and secret handling.
-- OpenAPI metadata and documented response models.
-- Test client setup and dependency overrides.
+- App factory, fronteiras de router, middleware e exception handlers.
+- Separação de schemas Pydantic de request e response.
+- Injeção de dependências para sessões de banco de dados, auth, paginação e settings.
+- Padrões de banco de dados assíncrono e HTTP externo.
+- CORS, auth, rate limits, logging e tratamento de segredos.
+- Metadados OpenAPI e modelos de response documentados.
+- Configuração de test client e overrides de dependências.
 
-## Expected Output
+## Saída Esperada
 
 ```text
 [SEVERITY] Short issue title
@@ -31,9 +31,9 @@ Issue: What is wrong and why it matters.
 Fix: Concrete change to make.
 ```
 
-## Related
+## Relacionados
 
 - Agent: `fastapi-reviewer`
 - Skill: `fastapi-patterns`
-- Command: `/python-review`
+- Comando: `/python-review`
 - Skill: `security-scan`

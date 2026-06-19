@@ -36,9 +36,9 @@ são traduzidos.
 | Fase | Conteúdo | Arquivos | Status |
 |------|----------|----------|--------|
 | 0 | Cópia-base funcional + fundação (glossário, progresso) | — | ✅ Concluída |
-| 1 | Docs de topo (README, CLAUDE, AGENTS, CONTRIBUTING, guias...) | ~17 | 🔄 Em andamento |
-| 2 | `agents/` (descrições e prosa) | 67 | ⬜ Pendente |
-| 3 | `commands/` | 92 | ⬜ Pendente |
+| 1 | Docs de topo (README, CLAUDE, AGENTS, CONTRIBUTING, guias...) | ~17 | ✅ Concluída |
+| 2 | `agents/` (descrições e prosa) | 67 | ✅ Concluída |
+| 3 | `commands/` | 92 | 🔄 Em andamento |
 | 4 | `rules/` | 114 | ⬜ Pendente |
 | 5 | `skills/` | 441 | ⬜ Pendente |
 | 6 | `docs/` (restante em inglês) | ~900 | ⬜ Pendente |
@@ -52,6 +52,15 @@ são traduzidos.
 3. Traduza os arquivos da fase, marque o progresso e faça commit.
 4. Rode os testes do projeto antes de finalizar lotes que tocam código.
 
+## Pendências de QA (normalização final)
+
+- Traduzir o bloco repetido **"Prompt Defense Baseline"** (mantido em inglês pelos
+  tradutores) de forma padronizada em todos os arquivos.
+- Revisar blocos de template dentro de code fences (ex.: `agents/planner.md`,
+  `agents/opensource-packager.md`) que contêm prosa em inglês.
+- Verificar âncoras de índice (TOC) após tradução de títulos (ex.: `CONTRIBUTING.md`).
+
 ## Registro de sessões
 
-- **Sessão 1 (2026-06-19):** Fase 0 concluída (cópia-base + fundação). Fase 1 iniciada.
+- **Sessão 1 (2026-06-19):** Fases 0, 1 e 2 concluídas (cópia-base, docs de topo,
+  `agents/`). Fase 3 (`commands/`) iniciada.

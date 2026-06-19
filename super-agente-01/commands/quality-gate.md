@@ -1,51 +1,51 @@
 ---
-description: Run the ECC formatter quality gate for a single file and report remediation steps.
+description: Executa o quality gate do formatador da ECC para um único arquivo e reporta os passos de remediação.
 ---
 
-# Quality Gate Command
+# Comando Quality Gate
 
-Operator entry point for the formatter quality gate that normally runs as the
-`post:quality-gate` PostToolUse hook (`scripts/hooks/quality-gate.js`).
+Ponto de entrada do operador para o quality gate do formatador que normalmente roda como o
+hook PostToolUse `post:quality-gate` (`scripts/hooks/quality-gate.js`).
 
-## How it actually works
+## Como funciona na prática
 
-The gate is a single-file formatter check driven by hook input, not CLI flags:
+O gate é uma verificação de formatador de arquivo único, conduzida pela entrada do hook, não por flags de CLI:
 
-- The script reads the target from the hook's stdin JSON
-  (`tool_input.file_path`); it does not take a path argument.
-- Behavior toggles are environment variables:
-  - `ECC_QUALITY_GATE_FIX=true` - apply formatting fixes instead of check-only
-  - `ECC_QUALITY_GATE_STRICT=true` - log formatter failures as gate failures
-- Coverage by file type:
-  - `.ts/.tsx/.js/.jsx/.json/.md` - Biome `check` or Prettier `--check`,
-    whichever the project ships (JS/TS under Biome is skipped here because
-    `post-edit-format` already runs `biome check --write`)
+- O script lê o alvo a partir do JSON de stdin do hook
+  (`tool_input.file_path`); ele não recebe um argumento de caminho.
+- As alternâncias de comportamento são variáveis de ambiente:
+  - `ECC_QUALITY_GATE_FIX=true` - aplica correções de formatação em vez de apenas verificar
+  - `ECC_QUALITY_GATE_STRICT=true` - registra falhas do formatador como falhas do gate
+- Cobertura por tipo de arquivo:
+  - `.ts/.tsx/.js/.jsx/.json/.md` - Biome `check` ou Prettier `--check`,
+    o que o projeto fornecer (JS/TS sob o Biome é pulado aqui porque
+    `post-edit-format` já executa `biome check --write`)
   - `.go` - `gofmt`
   - `.py` - `ruff format`
-- Lint and type checks are not part of this gate. Use the `verification-loop`
-  skill or the language verification skills for lint/type/test pipelines.
+- Verificações de Lint e de tipos não fazem parte deste gate. Use a skill `verification-loop`
+  ou as skills de verificação de linguagem para os pipelines de lint/tipos/testes.
 
-## Usage
+## Uso
 
-To run the gate manually against one file, pipe hook-style JSON into the
-script (set the env toggles first if you want fix or strict behavior):
+Para executar o gate manualmente contra um arquivo, encaminhe via pipe um JSON no estilo de hook para o
+script (defina primeiro as alternâncias de ambiente se quiser comportamento de correção ou estrito):
 
 ```bash
 echo '{"tool_input":{"file_path":"src/example.ts"}}' \
   | ECC_QUALITY_GATE_FIX=true node scripts/hooks/quality-gate.js
 ```
 
-Then report formatter findings and concrete remediation steps.
+Em seguida, reporte as descobertas do formatador e os passos concretos de remediação.
 
-## Notes
+## Notas
 
-Hook wiring lives in `hooks/hooks.json` (`post:quality-gate`, profiles
+A ligação do hook fica em `hooks/hooks.json` (`post:quality-gate`, perfis
 `standard`/`strict` via `run-with-flags.js`).
 
-## Arguments
+## Argumentos
 
 $ARGUMENTS:
 
-- `[path]` optional file to check. The script itself takes no CLI
-  arguments - when a path is given, substitute it as `tool_input.file_path`
-  in the stdin JSON shown above before running the command
+- `[path]` arquivo opcional a verificar. O próprio script não recebe argumentos
+  de CLI - quando um caminho é fornecido, substitua-o como `tool_input.file_path`
+  no JSON de stdin mostrado acima antes de executar o comando

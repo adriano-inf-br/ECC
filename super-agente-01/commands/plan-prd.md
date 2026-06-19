@@ -1,80 +1,80 @@
 ---
-description: "Generate a lean, problem-first PRD and hand off to /plan for implementation planning."
-argument-hint: "[product/feature idea] (blank = start with questions)"
+description: "Gera um PRD enxuto, focado no problema, e repassa para /plan para o planejamento de implementação."
+argument-hint: "[ideia de produto/funcionalidade] (vazio = começar com perguntas)"
 ---
 
-# PRD Command
+# Comando PRD
 
-Produces a **Product Requirements Document** — the requirements-phase artifact of the SDLC. Captures *what* must be true for success and *why*, and stops before *how*. Implementation decomposition is delegated to `/plan`.
+Produz um **Product Requirements Document** (Documento de Requisitos do Produto) — o artefato da fase de requisitos do SDLC. Captura *o que* precisa ser verdade para o sucesso e *por quê*, e para antes do *como*. A decomposição da implementação é delegada a `/plan`.
 
-**Input**: `$ARGUMENTS`
+**Entrada**: `$ARGUMENTS`
 
-## Scope of this command
+## Escopo deste comando
 
-| This command does | This command does NOT do |
+| Este comando faz | Este comando NÃO faz |
 |---|---|
-| Frame the problem and users | Design the architecture |
-| Capture success criteria and scope | Pick files or write patterns |
-| List open questions and risks | Enumerate implementation tasks |
-| Write `.claude/prds/{name}.prd.md` | Produce an implementation plan — that's `/plan` |
+| Enquadrar o problema e os usuários | Projetar a arquitetura |
+| Capturar critérios de sucesso e escopo | Escolher arquivos ou escrever padrões |
+| Listar questões em aberto e riscos | Enumerar tarefas de implementação |
+| Escrever `.claude/prds/{name}.prd.md` | Produzir um plano de implementação — isso é o `/plan` |
 
-If you find yourself writing implementation detail, stop and cut it. It belongs in `/plan`.
+Se você se pegar escrevendo detalhe de implementação, pare e corte. Isso pertence ao `/plan`.
 
-**Anti-fluff rule**: When information is missing, write `TBD — needs validation via {method}`. Never invent plausible-sounding requirements.
+**Regra anti-encheção**: Quando faltar informação, escreva `TBD — needs validation via {method}`. Nunca invente requisitos de aparência plausível.
 
-## Workflow
+## Fluxo de trabalho
 
-Four phases. Each phase is a single gate — ask the questions, wait for the user, then move on. No nested loops, no parallel research ceremony.
+Quatro fases. Cada fase é um único gate — faça as perguntas, espere o usuário, depois siga adiante. Sem loops aninhados, sem cerimônia de pesquisa paralela.
 
-### Phase 1 — FRAME
+### Fase 1 — FRAME
 
-If `$ARGUMENTS` is empty, ask:
+Se `$ARGUMENTS` estiver vazio, pergunte:
 
-> What do you want to build? One or two sentences.
+> O que você quer construir? Uma ou duas frases.
 
-If provided, restate in one sentence and ask:
+Se fornecido, reformule em uma frase e pergunte:
 
-> I understand: *{restated}*. Correct, or should I adjust?
+> Eu entendi: *{restated}*. Correto, ou devo ajustar?
 
-Then ask the framing questions in a single set:
+Depois faça as perguntas de enquadramento em um único conjunto:
 
-> 1. **Who** has this problem? (specific role or segment)
-> 2. **What** is the observable pain? (describe behavior, not assumed needs)
-> 3. **Why** can't they solve it with what exists today?
-> 4. **Why now?** — what changed that makes this worth doing?
+> 1. **Quem** tem esse problema? (papel ou segmento específico)
+> 2. **Qual** é a dor observável? (descreva o comportamento, não necessidades presumidas)
+> 3. **Por que** não conseguem resolver com o que existe hoje?
+> 4. **Por que agora?** — o que mudou que torna isso digno de ser feito?
 
-Wait for the user. Do not proceed without answers (or explicit "skip").
+Espere o usuário. Não prossiga sem respostas (ou um "pular" explícito).
 
-### Phase 2 — GROUND
+### Fase 2 — GROUND
 
-Ask for evidence. This is the shortest phase and the most load-bearing:
+Peça evidências. Esta é a fase mais curta e a mais decisiva:
 
-> What evidence do you have that this problem is real and worth solving? (user quotes, support tickets, metrics, observed behavior, failed workarounds — anything concrete)
+> Que evidência você tem de que esse problema é real e vale a pena resolver? (citações de usuários, tickets de suporte, métricas, comportamento observado, contornos que falharam — qualquer coisa concreta)
 
-If the user has none, record the PRD's Evidence section as `Assumption — needs validation via {user research | analytics | prototype}`. This keeps the PRD honest.
+Se o usuário não tiver nenhuma, registre a seção de Evidência do PRD como `Assumption — needs validation via {user research | analytics | prototype}`. Isso mantém o PRD honesto.
 
-### Phase 3 — DECIDE
+### Fase 3 — DECIDE
 
-Scope and hypothesis in a single set:
+Escopo e hipótese em um único conjunto:
 
-> 1. **Hypothesis** — Complete: *We believe **{capability}** will **{solve problem}** for **{users}**. We'll know we're right when **{measurable outcome}**.*
-> 2. **MVP** — The minimum needed to test the hypothesis?
-> 3. **Out of scope** — What are you explicitly **not** building (even if users ask)?
-> 4. **Open questions** — Uncertainties that could change the approach?
+> 1. **Hipótese** — Complete: *Acreditamos que **{capability}** vai **{solve problem}** para **{users}**. Saberemos que estamos certos quando **{measurable outcome}**.*
+> 2. **MVP** — O mínimo necessário para testar a hipótese?
+> 3. **Fora de escopo** — O que você explicitamente **não** vai construir (mesmo que os usuários peçam)?
+> 4. **Questões em aberto** — Incertezas que poderiam mudar a abordagem?
 
-Wait for responses.
+Espere as respostas.
 
-### Phase 4 — GENERATE & HAND OFF
+### Fase 4 — GENERATE & HAND OFF
 
-Create the directory if needed, write the PRD, and report.
+Crie o diretório se necessário, escreva o PRD e reporte.
 
 ```bash
 mkdir -p .claude/prds
 ```
 
-**Output path**: `.claude/prds/{kebab-case-name}.prd.md`
+**Caminho de saída**: `.claude/prds/{kebab-case-name}.prd.md`
 
-#### PRD Template
+#### Template de PRD
 
 ```markdown
 # {Product / Feature Name}
@@ -125,7 +125,7 @@ We'll know we're right when **{measurable outcome}**.
 *Status: DRAFT — requirements only. Implementation planning pending via /plan.*
 ```
 
-#### Report to user
+#### Reporte ao usuário
 
 ```
 PRD created: .claude/prds/{name}.prd.md
@@ -145,16 +145,16 @@ Next step: /plan .claude/prds/{name}.prd.md
   → /plan will pick the next pending milestone and produce an implementation plan.
 ```
 
-## Integration
+## Integração
 
-- `/plan <prd-path>` — consume the PRD and produce an implementation plan for the next pending milestone.
-- `tdd-workflow` skill — implement the plan test-first.
-- `/pr` — open a PR that references the PRD and plan.
+- `/plan <prd-path>` — consome o PRD e produz um plano de implementação para o próximo marco pendente.
+- skill `tdd-workflow` — implementa o plano test-first.
+- `/pr` — abre um PR que referencia o PRD e o plano.
 
-## Success criteria
+## Critérios de sucesso
 
-- **PROBLEM_CLEAR**: problem is specific and evidenced (or flagged as assumption).
-- **USER_CONCRETE**: primary user is a specific role, not "users".
-- **HYPOTHESIS_TESTABLE**: measurable outcome included.
-- **SCOPE_BOUNDED**: explicit MVP and explicit out-of-scope.
-- **NO_IMPLEMENTATION_DETAIL**: file paths, libraries, or task breakdowns are absent — if they appeared, move them to the `/plan` step.
+- **PROBLEM_CLEAR**: o problema é específico e evidenciado (ou sinalizado como suposição).
+- **USER_CONCRETE**: o usuário primário é um papel específico, não "usuários".
+- **HYPOTHESIS_TESTABLE**: resultado mensurável incluído.
+- **SCOPE_BOUNDED**: MVP explícito e fora-de-escopo explícito.
+- **NO_IMPLEMENTATION_DETAIL**: caminhos de arquivo, bibliotecas ou divisões de tarefa estão ausentes — se apareceram, mova-os para a etapa do `/plan`.

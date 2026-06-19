@@ -1,22 +1,22 @@
 ---
-description: Sweep blocked epic issues and reopen anything whose dependencies are closed.
+description: Varre issues de épicos bloqueadas e reabre qualquer uma cujas dependências estejam fechadas.
 ---
 
 # /epic-unblock
 
-Sweep blocked epics whose declared dependencies are complete.
+Varre épicos bloqueados cujas dependências declaradas estejam concluídas.
 
 ```bash
 node scripts/github-coordination.js unblock --repo <owner/repo>
 ```
 
-What this does:
+O que isto faz:
 
-1. Scans epic issues in the repository.
-2. Checks each blocked epic's dependency list.
-3. Moves fully unblocked epics to ready.
-4. Updates labels, comments, and local snapshots.
+1. Escaneia as issues de épicos no repositório.
+2. Verifica a lista de dependências de cada épico bloqueado.
+3. Move épicos totalmente desbloqueados para o estado pronto.
+4. Atualiza labels, comentários e snapshots locais.
 
-Compatibility aliases:
+Aliases de compatibilidade:
 
 - `/loop-status`

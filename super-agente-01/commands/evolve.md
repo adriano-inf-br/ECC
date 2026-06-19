@@ -1,94 +1,94 @@
 ---
 name: evolve
-description: Analyze instincts and suggest or generate evolved structures
+description: Analisa instintos e sugere ou gera estruturas evoluídas
 command: true
 ---
 
-# Evolve Command
+# Comando Evolve
 
-## Implementation
+## Implementação
 
-Run the instinct CLI using the plugin root path:
+Execute a CLI de instintos usando o caminho raiz do plugin:
 
 ```bash
 python3 "${CLAUDE_PLUGIN_ROOT}/skills/continuous-learning-v2/scripts/instinct-cli.py" evolve [--generate]
 ```
 
-Or if `CLAUDE_PLUGIN_ROOT` is not set (manual installation):
+Ou, se `CLAUDE_PLUGIN_ROOT` não estiver definido (instalação manual):
 
 ```bash
 python3 ~/.claude/skills/continuous-learning-v2/scripts/instinct-cli.py evolve [--generate]
 ```
 
-Analyzes instincts and clusters related ones into higher-level structures:
-- **Commands**: When instincts describe user-invoked actions
-- **Skills**: When instincts describe auto-triggered behaviors
-- **Agents**: When instincts describe complex, multi-step processes
+Analisa instintos e agrupa os relacionados em estruturas de nível mais alto:
+- **Comandos**: Quando os instintos descrevem ações invocadas pelo usuário
+- **Skills**: Quando os instintos descrevem comportamentos disparados automaticamente
+- **Agents**: Quando os instintos descrevem processos complexos de várias etapas
 
-## Usage
+## Uso
 
 ```
-/evolve                    # Analyze all instincts and suggest evolutions
-/evolve --generate         # Also generate files under evolved/{skills,commands,agents}
+/evolve                    # Analisa todos os instintos e sugere evoluções
+/evolve --generate         # Também gera arquivos em evolved/{skills,commands,agents}
 ```
 
-## Evolution Rules
+## Regras de Evolução
 
-### → Command (User-Invoked)
-When instincts describe actions a user would explicitly request:
-- Multiple instincts about "when user asks to..."
-- Instincts with triggers like "when creating a new X"
-- Instincts that follow a repeatable sequence
+### → Comando (Invocado pelo Usuário)
+Quando os instintos descrevem ações que um usuário solicitaria explicitamente:
+- Múltiplos instintos sobre "quando o usuário pede para..."
+- Instintos com gatilhos como "ao criar um novo X"
+- Instintos que seguem uma sequência repetível
 
-Example:
-- `new-table-step1`: "when adding a database table, create migration"
-- `new-table-step2`: "when adding a database table, update schema"
-- `new-table-step3`: "when adding a database table, regenerate types"
+Exemplo:
+- `new-table-step1`: "ao adicionar uma tabela de banco de dados, criar migration"
+- `new-table-step2`: "ao adicionar uma tabela de banco de dados, atualizar schema"
+- `new-table-step3`: "ao adicionar uma tabela de banco de dados, regenerar types"
 
-→ Creates: **new-table** command
+→ Cria: comando **new-table**
 
-### → Skill (Auto-Triggered)
-When instincts describe behaviors that should happen automatically:
-- Pattern-matching triggers
-- Error handling responses
-- Code style enforcement
+### → Skill (Disparada Automaticamente)
+Quando os instintos descrevem comportamentos que devem acontecer automaticamente:
+- Gatilhos de correspondência de padrões
+- Respostas de tratamento de erros
+- Aplicação de estilo de código
 
-Example:
-- `prefer-functional`: "when writing functions, prefer functional style"
-- `use-immutable`: "when modifying state, use immutable patterns"
-- `avoid-classes`: "when designing modules, avoid class-based design"
+Exemplo:
+- `prefer-functional`: "ao escrever funções, prefira estilo funcional"
+- `use-immutable`: "ao modificar estado, use padrões imutáveis"
+- `avoid-classes`: "ao projetar módulos, evite design baseado em classes"
 
-→ Creates: `functional-patterns` skill
+→ Cria: skill `functional-patterns`
 
-### → Agent (Needs Depth/Isolation)
-When instincts describe complex, multi-step processes that benefit from isolation:
-- Debugging workflows
-- Refactoring sequences
-- Research tasks
+### → Agent (Precisa de Profundidade/Isolamento)
+Quando os instintos descrevem processos complexos de várias etapas que se beneficiam de isolamento:
+- Fluxos de trabalho de depuração
+- Sequências de refatoração
+- Tarefas de pesquisa
 
-Example:
-- `debug-step1`: "when debugging, first check logs"
-- `debug-step2`: "when debugging, isolate the failing component"
-- `debug-step3`: "when debugging, create minimal reproduction"
-- `debug-step4`: "when debugging, verify fix with test"
+Exemplo:
+- `debug-step1`: "ao depurar, primeiro verifique os logs"
+- `debug-step2`: "ao depurar, isole o componente que falha"
+- `debug-step3`: "ao depurar, crie uma reprodução mínima"
+- `debug-step4`: "ao depurar, verifique a correção com um teste"
 
-→ Creates: **debugger** agent
+→ Cria: agent **debugger**
 
-## What to Do
+## O Que Fazer
 
-1. Detect current project context
-2. Read project + global instincts (project takes precedence on ID conflicts)
-3. Group instincts by trigger/domain patterns
-4. Identify:
-   - Skill candidates (trigger clusters with 2+ instincts)
-   - Command candidates (high-confidence workflow instincts)
-   - Agent candidates (larger, high-confidence clusters)
-5. Show promotion candidates (project -> global) when applicable
-6. If `--generate` is passed, write files to:
-   - Project scope: `~/.claude/homunculus/projects/<project-id>/evolved/`
-   - Global fallback: `~/.claude/homunculus/evolved/`
+1. Detectar o contexto atual do projeto
+2. Ler os instintos do projeto + globais (o projeto tem precedência em conflitos de ID)
+3. Agrupar instintos por padrões de gatilho/domínio
+4. Identificar:
+   - Candidatos a skill (clusters de gatilho com 2+ instintos)
+   - Candidatos a comando (instintos de fluxo de trabalho de alta confiança)
+   - Candidatos a agent (clusters maiores, de alta confiança)
+5. Mostrar candidatos a promoção (projeto -> global) quando aplicável
+6. Se `--generate` for passado, escrever arquivos em:
+   - Escopo de projeto: `~/.claude/homunculus/projects/<project-id>/evolved/`
+   - Fallback global: `~/.claude/homunculus/evolved/`
 
-## Output Format
+## Formato de Saída
 
 ```
 ============================================================
@@ -119,11 +119,11 @@ High confidence instincts (>=80%): 5
 
 ## Flags
 
-- `--generate`: Generate evolved files in addition to analysis output
+- `--generate`: Gera arquivos evoluídos além da saída de análise
 
-## Generated File Format
+## Formato de Arquivo Gerado
 
-### Command
+### Comando
 ```markdown
 ---
 name: new-table

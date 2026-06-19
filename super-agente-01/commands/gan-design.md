@@ -1,24 +1,24 @@
 ---
-description: Run a generator/evaluator design loop for frontend or visual work with bounded iterations and scoring.
+description: Executa um loop de design gerador/avaliador para trabalho de frontend ou visual com iterações limitadas e pontuação.
 ---
 
-Parse the following from $ARGUMENTS:
-1. `brief` — the user's description of the design to create
-2. `--max-iterations N` — (optional, default 10) maximum design-evaluate cycles
-3. `--pass-threshold N` — (optional, default 7.5) weighted score to pass (higher default for design)
+Faça o parse do seguinte a partir de $ARGUMENTS:
+1. `brief` — a descrição do usuário sobre o design a ser criado
+2. `--max-iterations N` — (opcional, padrão 10) número máximo de ciclos design-avaliação
+3. `--pass-threshold N` — (opcional, padrão 7.5) pontuação ponderada para aprovação (padrão mais alto para design)
 
-## GAN-Style Design Harness
+## Harness de Design no Estilo GAN
 
-A two-agent loop (Generator + Evaluator) focused on frontend design quality. No planner — the brief IS the spec.
+Um loop de dois agents (Gerador + Avaliador) focado na qualidade de design de frontend. Sem planner — o brief É a especificação.
 
-This is the same mode Anthropic used for their frontend design experiments, where they saw creative breakthroughs like the 3D Dutch art museum with CSS perspective and doorway navigation.
+Este é o mesmo modo que a Anthropic usou em seus experimentos de design de frontend, onde observaram avanços criativos como o museu de arte holandês em 3D com perspectiva CSS e navegação por portas.
 
-### Setup
-1. Create `gan-harness/` directory
-2. Write the brief directly as `gan-harness/spec.md`
-3. Write a design-focused `gan-harness/eval-rubric.md` with extra weight on Design Quality and Originality
+### Configuração
+1. Crie o diretório `gan-harness/`
+2. Escreva o brief diretamente como `gan-harness/spec.md`
+3. Escreva um `gan-harness/eval-rubric.md` focado em design com peso extra em Qualidade de Design e Originalidade
 
-### Design-Specific Eval Rubric
+### Rubrica de Avaliação Específica para Design
 ```markdown
 ### Design Quality (weight: 0.35)
 ### Originality (weight: 0.30)
@@ -26,14 +26,14 @@ This is the same mode Anthropic used for their frontend design experiments, wher
 ### Functionality (weight: 0.10)
 ```
 
-Note: Originality weight is higher (0.30 vs 0.20) to push for creative breakthroughs. Functionality weight is lower since design mode focuses on visual quality.
+Nota: O peso de Originalidade é maior (0.30 vs 0.20) para impulsionar avanços criativos. O peso de Funcionalidade é menor, já que o modo de design foca na qualidade visual.
 
 ### Loop
-Same as `/project:gan-build` Phase 2, but:
-- Skip the planner
-- Use the design-focused rubric
-- Generator prompt emphasizes visual quality over feature completeness
-- Evaluator prompt emphasizes "would this win a design award?" over "do all features work?"
+Igual à Fase 2 do `/project:gan-build`, mas:
+- Pule o planner
+- Use a rubrica focada em design
+- O prompt do Gerador enfatiza qualidade visual em vez de completude de funcionalidades
+- O prompt do Avaliador enfatiza "isso ganharia um prêmio de design?" em vez de "todas as funcionalidades funcionam?"
 
-### Key Difference from gan-build
-The Generator is told: "Your PRIMARY goal is visual excellence. A stunning half-finished app beats a functional ugly one. Push for creative leaps — unusual layouts, custom animations, distinctive color work."
+### Diferença Principal em Relação ao gan-build
+Diz-se ao Gerador: "Seu objetivo PRINCIPAL é a excelência visual. Um app deslumbrante e pela metade vence um funcional e feio. Busque saltos criativos — layouts incomuns, animações personalizadas, trabalho de cores distintivo."

@@ -1,164 +1,164 @@
 ---
-description: Answer a quick side question without interrupting or losing context from the current task. Resume work automatically after answering.
+description: Responde a uma pergunta rápida paralela sem interromper ou perder o contexto da tarefa atual. Retoma o trabalho automaticamente após responder.
 ---
 
-# Aside Command
+# Comando Aside
 
-Ask a question mid-task and get an immediate, focused answer — then continue right where you left off. The current task, files, and context are never modified.
+Faça uma pergunta no meio da tarefa e receba uma resposta imediata e focada — depois continue exatamente de onde parou. A tarefa atual, os arquivos e o contexto nunca são modificados.
 
-## When to Use
+## Quando Usar
 
-- You're curious about something while Claude is working and don't want to lose momentum
-- You need a quick explanation of code Claude is currently editing
-- You want a second opinion or clarification on a decision without derailing the task
-- You need to understand an error, concept, or pattern before Claude proceeds
-- You want to ask something unrelated to the current task without starting a new session
+- Você está curioso sobre algo enquanto o Claude está trabalhando e não quer perder o ritmo
+- Você precisa de uma explicação rápida de um código que o Claude está editando no momento
+- Você quer uma segunda opinião ou esclarecimento sobre uma decisão sem desviar a tarefa
+- Você precisa entender um erro, conceito ou padrão antes de o Claude prosseguir
+- Você quer perguntar algo não relacionado à tarefa atual sem iniciar uma nova sessão
 
-## Usage
-
-```
-/aside <your question>
-/aside what does this function actually return?
-/aside is this pattern thread-safe?
-/aside why are we using X instead of Y here?
-/aside what's the difference between foo() and bar()?
-/aside should we be worried about the N+1 query we just added?
-```
-
-## Process
-
-### Step 1: Freeze the current task state
-
-Before answering anything, mentally note:
-- What is the active task? (what file, feature, or problem was being worked on)
-- What step was in progress at the moment `/aside` was invoked?
-- What was about to happen next?
-
-Do NOT touch, edit, create, or delete any files during the aside.
-
-### Step 2: Answer the question directly
-
-Answer the question in the most concise form that is still complete and useful.
-
-- Lead with the answer, not the reasoning
-- Keep it short — if a full explanation is needed, offer to go deeper after the task
-- If the question is about the current file or code being worked on, reference it precisely (file path and line number if relevant)
-- If answering requires reading a file, read it — but read only, never write
-
-Format the response as:
+## Uso
 
 ```
-ASIDE: [restate the question briefly]
-
-[Your answer here]
-
-— Back to task: [one-line description of what was being done]
+/aside <sua pergunta>
+/aside o que essa função realmente retorna?
+/aside esse padrão é thread-safe?
+/aside por que estamos usando X em vez de Y aqui?
+/aside qual é a diferença entre foo() e bar()?
+/aside devemos nos preocupar com a query N+1 que acabamos de adicionar?
 ```
 
-### Step 3: Resume the main task
+## Processo
 
-After delivering the answer, immediately continue the active task from the exact point it was paused. Do not ask for permission to resume unless the aside answer revealed a blocker or a reason to reconsider the current approach (see Edge Cases).
+### Passo 1: Congele o estado da tarefa atual
 
----
+Antes de responder qualquer coisa, anote mentalmente:
+- Qual é a tarefa ativa? (qual arquivo, feature ou problema estava sendo trabalhado)
+- Qual passo estava em andamento no momento em que `/aside` foi invocado?
+- O que estava prestes a acontecer em seguida?
 
-## Edge Cases
+NÃO toque, edite, crie ou exclua nenhum arquivo durante o aside.
 
-**No question provided (`/aside` with nothing after it):**
-Respond:
+### Passo 2: Responda a pergunta diretamente
+
+Responda a pergunta na forma mais concisa que ainda seja completa e útil.
+
+- Comece pela resposta, não pelo raciocínio
+- Seja breve — se uma explicação completa for necessária, ofereça-se para aprofundar após a tarefa
+- Se a pergunta for sobre o arquivo atual ou o código sendo trabalhado, faça referência precisa a ele (caminho do arquivo e número da linha, se relevante)
+- Se responder exigir ler um arquivo, leia-o — mas apenas leitura, nunca escrita
+
+Formate a resposta como:
+
 ```
-ASIDE: no question provided
+ASIDE: [reformule a pergunta brevemente]
 
-What would you like to know? (ask your question and I'll answer without losing the current task context)
+[Sua resposta aqui]
 
-— Back to task: [one-line description of what was being done]
-```
-
-**Question reveals a potential problem with the current task:**
-Flag it clearly before resuming:
-```
-ASIDE: [answer]
-
-WARNING: Note: This answer suggests [issue] with the current approach. Want to address this before continuing, or proceed as planned?
-```
-Wait for the user's decision before resuming.
-
-**Question is actually a task redirect (not a side question):**
-If the question implies changing what is being built (e.g., `/aside actually, let's use Redis instead`), clarify:
-```
-ASIDE: That sounds like a direction change, not just a side question.
-Do you want to:
-  (a) Answer this as information only and keep the current plan
-  (b) Pause the current task and change approach
-```
-Wait for the user's answer — do not make assumptions.
-
-**Question is about the currently open file or code:**
-Answer from the live context. If the file was read earlier in the session, reference it directly. If not, read it now (read-only) and answer with a file:line reference.
-
-**No active task (nothing in progress when `/aside` is invoked):**
-Still use the standard wrapper so the response shape stays consistent:
-```
-ASIDE: [restate the question briefly]
-
-[Your answer here]
-
-— Back to task: no active task to resume
+— De volta à tarefa: [descrição de uma linha do que estava sendo feito]
 ```
 
-**Question requires a long answer:**
-Give the essential answer concisely, then offer:
-```
-That's the short version. Want a deeper explanation after we finish [current task]?
-```
+### Passo 3: Retome a tarefa principal
 
-**Multiple `/aside` questions in a row:**
-Answer each one in sequence. After the last answer, resume the main task. Do not lose task state across a chain of asides.
-
-**Aside answer implies a code change is needed:**
-Note the change needed but do not make it during the aside:
-```
-ASIDE: [answer]
-
- Worth fixing: [what should be changed]. I'll flag this after the current task unless you want to address it now.
-```
-
-**Question is ambiguous or too vague:**
-Ask one clarifying question — the shortest question that gets the information needed to answer. Do not ask multiple questions.
+Após entregar a resposta, continue imediatamente a tarefa ativa do ponto exato em que ela foi pausada. Não peça permissão para retomar, a menos que a resposta do aside tenha revelado um bloqueio ou um motivo para reconsiderar a abordagem atual (veja Casos Especiais).
 
 ---
 
-## Example Output
+## Casos Especiais
 
+**Nenhuma pergunta fornecida (`/aside` sem nada depois):**
+Responda:
 ```
-User: /aside what does fetchWithRetry() actually do?
+ASIDE: nenhuma pergunta fornecida
 
-ASIDE: what does fetchWithRetry() do?
+O que você gostaria de saber? (faça sua pergunta e eu respondo sem perder o contexto da tarefa atual)
 
-fetchWithRetry() (src/api/retry.ts:12) attempts the request up to 3 times with
-exponential backoff (250ms → 500ms → 1s). It only retries on 5xx responses and
-network errors — 4xx errors are treated as final and not retried.
-
-— Back to task: refactoring the auth middleware in src/middleware/auth.ts
+— De volta à tarefa: [descrição de uma linha do que estava sendo feito]
 ```
 
+**A pergunta revela um problema potencial com a tarefa atual:**
+Sinalize claramente antes de retomar:
 ```
-User: /aside is the approach we're taking thread-safe?
+ASIDE: [resposta]
 
-ASIDE: is the current approach thread-safe?
+WARNING: Nota: Esta resposta sugere [problema] com a abordagem atual. Quer resolver isso antes de continuar, ou prosseguir conforme planejado?
+```
+Aguarde a decisão do usuário antes de retomar.
 
-No — the shared cache object in src/cache/store.ts:34 is mutated without locking.
-Under concurrent requests this is a race condition. It's low risk in a single-process
-Node.js server but would be a real problem with worker threads or clustering.
+**A pergunta é, na verdade, um redirecionamento de tarefa (não uma pergunta paralela):**
+Se a pergunta implicar mudar o que está sendo construído (ex.: `/aside na verdade, vamos usar Redis em vez disso`), esclareça:
+```
+ASIDE: Isso parece uma mudança de direção, não apenas uma pergunta paralela.
+Você quer:
+  (a) Responder isto apenas como informação e manter o plano atual
+  (b) Pausar a tarefa atual e mudar de abordagem
+```
+Aguarde a resposta do usuário — não faça suposições.
 
-WARNING: Note: This could affect the feature we're building. Want to address this now or continue and fix it in a follow-up?
+**A pergunta é sobre o arquivo ou código atualmente aberto:**
+Responda a partir do contexto ativo. Se o arquivo foi lido anteriormente na sessão, faça referência direta a ele. Caso contrário, leia-o agora (apenas leitura) e responda com uma referência arquivo:linha.
+
+**Nenhuma tarefa ativa (nada em andamento quando `/aside` é invocado):**
+Ainda use o wrapper padrão para que o formato da resposta permaneça consistente:
+```
+ASIDE: [reformule a pergunta brevemente]
+
+[Sua resposta aqui]
+
+— De volta à tarefa: nenhuma tarefa ativa para retomar
+```
+
+**A pergunta exige uma resposta longa:**
+Dê a resposta essencial de forma concisa, depois ofereça:
+```
+Essa é a versão curta. Quer uma explicação mais aprofundada depois que terminarmos [tarefa atual]?
+```
+
+**Várias perguntas `/aside` em sequência:**
+Responda a cada uma em sequência. Após a última resposta, retome a tarefa principal. Não perca o estado da tarefa ao longo de uma cadeia de asides.
+
+**A resposta do aside implica que uma mudança de código é necessária:**
+Anote a mudança necessária, mas não a faça durante o aside:
+```
+ASIDE: [resposta]
+
+ Vale corrigir: [o que deveria ser alterado]. Vou sinalizar isso após a tarefa atual, a menos que você queira resolver agora.
+```
+
+**A pergunta é ambígua ou vaga demais:**
+Faça uma pergunta de esclarecimento — a pergunta mais curta que obtenha a informação necessária para responder. Não faça múltiplas perguntas.
+
+---
+
+## Exemplo de Saída
+
+```
+User: /aside o que fetchWithRetry() realmente faz?
+
+ASIDE: o que fetchWithRetry() faz?
+
+fetchWithRetry() (src/api/retry.ts:12) tenta a requisição até 3 vezes com
+backoff exponencial (250ms → 500ms → 1s). Ele só repete em respostas 5xx e
+erros de rede — erros 4xx são tratados como finais e não são repetidos.
+
+— De volta à tarefa: refatorando o middleware de autenticação em src/middleware/auth.ts
+```
+
+```
+User: /aside a abordagem que estamos adotando é thread-safe?
+
+ASIDE: a abordagem atual é thread-safe?
+
+Não — o objeto de cache compartilhado em src/cache/store.ts:34 é mutado sem travamento.
+Sob requisições concorrentes isso é uma condição de corrida. É de baixo risco em um
+servidor Node.js de processo único, mas seria um problema real com worker threads ou clustering.
+
+WARNING: Nota: Isso poderia afetar a feature que estamos construindo. Quer resolver isso agora ou continuar e corrigir num follow-up?
 ```
 
 ---
 
-## Notes
+## Notas
 
-- Never modify files during an aside — read-only access only
-- The aside is a conversation pause, not a new task — the original task must always resume
-- Keep answers focused: the goal is to unblock the user quickly, not to deliver a lecture
-- If an aside sparks a larger discussion, finish the current task first unless the aside reveals a blocker
-- Asides are not saved to session files unless explicitly relevant to the task outcome
+- Nunca modifique arquivos durante um aside — acesso somente leitura
+- O aside é uma pausa na conversa, não uma nova tarefa — a tarefa original deve sempre ser retomada
+- Mantenha as respostas focadas: o objetivo é desbloquear o usuário rapidamente, não dar uma palestra
+- Se um aside desencadear uma discussão maior, termine a tarefa atual primeiro, a menos que o aside revele um bloqueio
+- Asides não são salvos nos arquivos de sessão, a menos que sejam explicitamente relevantes para o resultado da tarefa

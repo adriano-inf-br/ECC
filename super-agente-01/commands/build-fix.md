@@ -1,66 +1,66 @@
 ---
-description: Detect the project build system and incrementally fix build/type errors with minimal safe changes.
+description: Detecta o sistema de build do projeto e corrige incrementalmente erros de build/tipo com mudanças mínimas e seguras.
 ---
 
 # Build and Fix
 
-Incrementally fix build and type errors with minimal, safe changes.
+Corrige incrementalmente erros de build e de tipo com mudanças mínimas e seguras.
 
-## Step 1: Detect Build System
+## Passo 1: Detectar o Sistema de Build
 
-Identify the project's build tool and run the build:
+Identifique a ferramenta de build do projeto e execute o build:
 
-| Indicator | Build Command |
+| Indicador | Comando de Build |
 |-----------|---------------|
-| `package.json` with `build` script | `npm run build` or `pnpm build` |
-| `tsconfig.json` (TypeScript only) | `npx tsc --noEmit` |
+| `package.json` com script `build` | `npm run build` ou `pnpm build` |
+| `tsconfig.json` (somente TypeScript) | `npx tsc --noEmit` |
 | `Cargo.toml` | `cargo build 2>&1` |
 | `pom.xml` | `mvn compile` |
 | `build.gradle` | `./gradlew compileJava` |
 | `go.mod` | `go build ./...` |
-| `pyproject.toml` | `python -m compileall -q .` or `mypy .` |
+| `pyproject.toml` | `python -m compileall -q .` ou `mypy .` |
 
-## Step 2: Parse and Group Errors
+## Passo 2: Analisar e Agrupar Erros
 
-1. Run the build command and capture stderr
-2. Group errors by file path
-3. Sort by dependency order (fix imports/types before logic errors)
-4. Count total errors for progress tracking
+1. Execute o comando de build e capture o stderr
+2. Agrupe os erros por caminho de arquivo
+3. Ordene por ordem de dependência (corrija imports/tipos antes de erros de lógica)
+4. Conte o total de erros para acompanhamento de progresso
 
-## Step 3: Fix Loop (One Error at a Time)
+## Passo 3: Loop de Correção (Um Erro por Vez)
 
-For each error:
+Para cada erro:
 
-1. **Read the file** — Use Read tool to see error context (10 lines around the error)
-2. **Diagnose** — Identify root cause (missing import, wrong type, syntax error)
-3. **Fix minimally** — Use Edit tool for the smallest change that resolves the error
-4. **Re-run build** — Verify the error is gone and no new errors introduced
-5. **Move to next** — Continue with remaining errors
+1. **Leia o arquivo** — Use a tool Read para ver o contexto do erro (10 linhas ao redor do erro)
+2. **Diagnostique** — Identifique a causa raiz (import faltando, tipo errado, erro de sintaxe)
+3. **Corrija minimamente** — Use a tool Edit para a menor mudança que resolve o erro
+4. **Reexecute o build** — Verifique se o erro sumiu e se nenhum novo erro foi introduzido
+5. **Vá para o próximo** — Continue com os erros restantes
 
-## Step 4: Guardrails
+## Passo 4: Guardrails
 
-Stop and ask the user if:
-- A fix introduces **more errors than it resolves**
-- The **same error persists after 3 attempts** (likely a deeper issue)
-- The fix requires **architectural changes** (not just a build fix)
-- Build errors stem from **missing dependencies** (need `npm install`, `cargo add`, etc.)
+Pare e pergunte ao usuário se:
+- Uma correção introduzir **mais erros do que resolve**
+- O **mesmo erro persistir após 3 tentativas** (provavelmente um problema mais profundo)
+- A correção exigir **mudanças arquiteturais** (não apenas uma correção de build)
+- Os erros de build vierem de **dependências faltando** (precisa de `npm install`, `cargo add`, etc.)
 
-## Step 5: Summary
+## Passo 5: Resumo
 
-Show results:
-- Errors fixed (with file paths)
-- Errors remaining (if any)
-- New errors introduced (should be zero)
-- Suggested next steps for unresolved issues
+Mostre os resultados:
+- Erros corrigidos (com caminhos de arquivo)
+- Erros restantes (se houver)
+- Novos erros introduzidos (deve ser zero)
+- Próximos passos sugeridos para problemas não resolvidos
 
-## Recovery Strategies
+## Estratégias de Recuperação
 
-| Situation | Action |
+| Situação | Ação |
 |-----------|--------|
-| Missing module/import | Check if package is installed; suggest install command |
-| Type mismatch | Read both type definitions; fix the narrower type |
-| Circular dependency | Identify cycle with import graph; suggest extraction |
-| Version conflict | Check `package.json` / `Cargo.toml` for version constraints |
-| Build tool misconfiguration | Read config file; compare with working defaults |
+| Módulo/import faltando | Verifique se o pacote está instalado; sugira comando de instalação |
+| Incompatibilidade de tipos | Leia ambas as definições de tipo; corrija o tipo mais restrito |
+| Dependência circular | Identifique o ciclo com o grafo de imports; sugira extração |
+| Conflito de versão | Verifique `package.json` / `Cargo.toml` para restrições de versão |
+| Má configuração da ferramenta de build | Leia o arquivo de config; compare com os defaults funcionais |
 
-Fix one error at a time for safety. Prefer minimal diffs over refactoring.
+Corrija um erro por vez para mais segurança. Prefira diffs mínimos a refatorações.

@@ -1,13 +1,13 @@
 ---
-description: Pull the latest ECC repo changes and reinstall the current managed targets.
+description: Puxa as últimas mudanças do repositório ECC e reinstala os alvos gerenciados atuais.
 disable-model-invocation: true
 ---
 
 # Auto Update
 
-Update ECC from its upstream repo and regenerate the current context's managed install using the original install-state request.
+Atualiza o ECC a partir de seu repositório upstream e regenera a instalação gerenciada do contexto atual usando a requisição original de install-state.
 
-## Usage
+## Uso
 
 ```bash
 # Preview the update without mutating anything
@@ -21,8 +21,8 @@ node "$ECC_ROOT/scripts/auto-update.js" --target cursor
 node "$ECC_ROOT/scripts/auto-update.js" --repo-root /path/to/everything-claude-code
 ```
 
-## Notes
+## Notas
 
-- This command uses the recorded install-state request and reruns `install-apply.js` after pulling the latest repo changes.
-- Reinstall is intentional: it handles upstream renames and deletions that `repair.js` cannot safely reconstruct from stale operations alone.
-- Use `--dry-run` first if you want to see the reconstructed reinstall plan before mutating anything.
+- Este comando usa a requisição de install-state registrada e reexecuta o `install-apply.js` após puxar as últimas mudanças do repositório.
+- A reinstalação é intencional: ela lida com renomeações e exclusões upstream que o `repair.js` não consegue reconstruir com segurança apenas a partir de operações desatualizadas.
+- Use `--dry-run` primeiro se quiser ver o plano de reinstalação reconstruído antes de modificar qualquer coisa.

@@ -2,28 +2,28 @@
 description: Fix Go build errors, go vet warnings, and linter issues incrementally. Invokes the go-build-resolver agent for minimal, surgical fixes.
 ---
 
-# Go Build and Fix
+# Build e Correção de Go
 
-This command invokes the **go-build-resolver** agent to incrementally fix Go build errors with minimal changes.
+Este comando invoca o agent **go-build-resolver** para corrigir incrementalmente erros de build de Go com mudanças mínimas.
 
-## What This Command Does
+## O Que Este Comando Faz
 
-1. **Run Diagnostics**: Execute `go build`, `go vet`, `staticcheck`
-2. **Parse Errors**: Group by file and sort by severity
-3. **Fix Incrementally**: One error at a time
-4. **Verify Each Fix**: Re-run build after each change
-5. **Report Summary**: Show what was fixed and what remains
+1. **Executar Diagnósticos**: Executa `go build`, `go vet`, `staticcheck`
+2. **Fazer o Parse dos Erros**: Agrupa por arquivo e ordena por severidade
+3. **Corrigir Incrementalmente**: Um erro de cada vez
+4. **Verificar Cada Correção**: Reexecuta o build após cada mudança
+5. **Reportar Resumo**: Mostra o que foi corrigido e o que resta
 
-## When to Use
+## Quando Usar
 
-Use `/go-build` when:
-- `go build ./...` fails with errors
-- `go vet ./...` reports issues
-- `golangci-lint run` shows warnings
-- Module dependencies are broken
-- After pulling changes that break the build
+Use `/go-build` quando:
+- `go build ./...` falha com erros
+- `go vet ./...` reporta problemas
+- `golangci-lint run` mostra avisos
+- Dependências de módulo estão quebradas
+- Após puxar mudanças que quebram o build
 
-## Diagnostic Commands Run
+## Comandos de Diagnóstico Executados
 
 ```bash
 # Primary build check
@@ -41,7 +41,7 @@ go mod verify
 go mod tidy -v
 ```
 
-## Example Session
+## Exemplo de Sessão
 
 ```text
 User: /go-build
@@ -143,41 +143,41 @@ ok      project/internal/handler   0.023s
 Build Status: PASS: SUCCESS
 ```
 
-## Common Errors Fixed
+## Erros Comuns Corrigidos
 
-| Error | Typical Fix |
+| Erro | Correção Típica |
 |-------|-------------|
-| `undefined: X` | Add import or fix typo |
-| `cannot use X as Y` | Type conversion or fix assignment |
-| `missing return` | Add return statement |
-| `X does not implement Y` | Add missing method |
-| `import cycle` | Restructure packages |
-| `declared but not used` | Remove or use variable |
-| `cannot find package` | `go get` or `go mod tidy` |
+| `undefined: X` | Adicionar import ou corrigir erro de digitação |
+| `cannot use X as Y` | Conversão de tipo ou corrigir atribuição |
+| `missing return` | Adicionar instrução de return |
+| `X does not implement Y` | Adicionar método ausente |
+| `import cycle` | Reestruturar pacotes |
+| `declared but not used` | Remover ou usar a variável |
+| `cannot find package` | `go get` ou `go mod tidy` |
 
-## Fix Strategy
+## Estratégia de Correção
 
-1. **Build errors first** - Code must compile
-2. **Vet warnings second** - Fix suspicious constructs
-3. **Lint warnings third** - Style and best practices
-4. **One fix at a time** - Verify each change
-5. **Minimal changes** - Don't refactor, just fix
+1. **Erros de build primeiro** - O código precisa compilar
+2. **Avisos de vet em segundo** - Corrigir construções suspeitas
+3. **Avisos de lint em terceiro** - Estilo e boas práticas
+4. **Uma correção de cada vez** - Verificar cada mudança
+5. **Mudanças mínimas** - Não refatorar, apenas corrigir
 
-## Stop Conditions
+## Condições de Parada
 
-The agent will stop and report if:
-- Same error persists after 3 attempts
-- Fix introduces more errors
-- Requires architectural changes
-- Missing external dependencies
+O agent vai parar e reportar se:
+- O mesmo erro persistir após 3 tentativas
+- A correção introduzir mais erros
+- Exigir mudanças arquiteturais
+- Faltarem dependências externas
 
-## Related Commands
+## Comandos Relacionados
 
-- `/go-test` - Run tests after build succeeds
-- `/go-review` - Review code quality
-- `verification-loop` skill - Full verification loop
+- `/go-test` - Executa testes após o build ter sucesso
+- `/go-review` - Revisa a qualidade do código
+- skill `verification-loop` - Loop completo de verificação
 
-## Related
+## Relacionados
 
 - Agent: `agents/go-build-resolver.md`
 - Skill: `skills/golang-patterns/`

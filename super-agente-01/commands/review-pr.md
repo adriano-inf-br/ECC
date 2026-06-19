@@ -1,37 +1,37 @@
 ---
-description: Comprehensive PR review using specialized agents
+description: Revisão abrangente de PR usando agents especializados
 ---
 
-Run a comprehensive multi-perspective review of a pull request.
+Execute uma revisão abrangente e multiperspectiva de um pull request.
 
-## Usage
+## Uso
 
 `/review-pr [PR-number-or-URL] [--focus=comments|tests|errors|types|code|simplify]`
 
-If no PR is specified, review the current branch's PR. If no focus is specified, run the full review stack.
+Se nenhum PR for especificado, revise o PR da branch atual. Se nenhum foco for especificado, execute a pilha completa de revisão.
 
-## Steps
+## Etapas
 
-1. Identify the PR:
-   - use `gh pr view` to get PR details, changed files, and diff
-2. Find project guidance:
-   - look for `CLAUDE.md`, lint config, TypeScript config, repo conventions
-3. Run specialized review agents:
+1. Identifique o PR:
+   - use `gh pr view` para obter detalhes do PR, arquivos alterados e o diff
+2. Encontre as orientações do projeto:
+   - procure por `CLAUDE.md`, configuração do lint, configuração do TypeScript, convenções do repositório
+3. Execute os agents de revisão especializados:
    - `code-reviewer`
    - `comment-analyzer`
    - `pr-test-analyzer`
    - `silent-failure-hunter`
    - `type-design-analyzer`
    - `code-simplifier`
-4. Aggregate results:
-   - dedupe overlapping findings
-   - rank by severity
-5. Report findings grouped by severity
+4. Agregue os resultados:
+   - elimine descobertas sobrepostas duplicadas
+   - ordene por severidade
+5. Reporte as descobertas agrupadas por severidade
 
-## Confidence Rule
+## Regra de Confiança
 
-Only report issues with confidence >= 80:
+Reporte apenas problemas com confiança >= 80:
 
-- Critical: bugs, security, data loss
-- Important: missing tests, quality problems, style violations
-- Advisory: suggestions only when explicitly requested
+- Crítico: bugs, segurança, perda de dados
+- Importante: testes faltando, problemas de qualidade, violações de estilo
+- Consultivo: sugestões apenas quando explicitamente solicitadas

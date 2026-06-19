@@ -1,49 +1,49 @@
 ---
-description: Guided feature development with codebase understanding and architecture focus
+description: Desenvolvimento guiado de funcionalidades com compreensão da base de código e foco em arquitetura
 ---
 
-A structured feature-development workflow that emphasizes understanding existing code before writing new code.
+Um fluxo de trabalho estruturado de desenvolvimento de funcionalidades que enfatiza compreender o código existente antes de escrever código novo.
 
-## Phases
+## Fases
 
-### 1. Discovery
+### 1. Descoberta
 
-- read the feature request carefully
-- identify requirements, constraints, and acceptance criteria
-- ask clarifying questions if the request is ambiguous
+- leia o pedido da funcionalidade com atenção
+- identifique requisitos, restrições e critérios de aceitação
+- faça perguntas esclarecedoras se o pedido for ambíguo
 
-### 2. Codebase Exploration
+### 2. Exploração da Base de Código
 
-- use `code-explorer` to analyze the relevant existing code
-- trace execution paths and architecture layers
-- understand integration points and conventions
+- use `code-explorer` para analisar o código existente relevante
+- trace os caminhos de execução e as camadas de arquitetura
+- entenda os pontos de integração e as convenções
 
-### 3. Clarifying Questions
+### 3. Perguntas Esclarecedoras
 
-- present findings from exploration
-- ask targeted design and edge-case questions
-- wait for user response before proceeding
+- apresente os achados da exploração
+- faça perguntas direcionadas de design e de casos extremos
+- aguarde a resposta do usuário antes de prosseguir
 
-### 4. Architecture Design
+### 4. Design de Arquitetura
 
-- use `code-architect` to design the feature
-- provide the implementation blueprint
-- wait for approval before implementing
+- use `code-architect` para projetar a funcionalidade
+- forneça o blueprint de implementação
+- aguarde aprovação antes de implementar
 
-### 5. Implementation
+### 5. Implementação
 
-- implement the feature following the approved design
-- prefer TDD where appropriate
-- keep commits small and focused
+- implemente a funcionalidade seguindo o design aprovado
+- prefira TDD quando apropriado
+- mantenha os commits pequenos e focados
 
-### 6. Quality Review
+### 6. Revisão de Qualidade
 
-- use `code-reviewer` to review the implementation
-- address critical and important issues
-- verify test coverage
+- use `code-reviewer` para revisar a implementação
+- trate questões críticas e importantes
+- verifique a cobertura de testes
 
-### 7. Summary
+### 7. Resumo
 
-- summarize what was built
-- list follow-up items or limitations
-- provide testing instructions
+- resuma o que foi construído
+- liste itens de acompanhamento ou limitações
+- forneça instruções de teste

@@ -1,22 +1,22 @@
 ---
-description: Validate epic readiness, dependencies, and coordination policy.
+description: Valida a prontidão do épico, dependências e política de coordenação.
 ---
 
 # /epic-validate
 
-Validate a single epic issue before publishing or review handoff.
+Valida uma única issue de épico antes de publicar ou repassar para revisão.
 
 ```bash
 node scripts/github-coordination.js validate <issue-number> --repo <owner/repo>
 ```
 
-What this checks:
+O que isto verifica:
 
-1. Coordination state exists and is parseable.
-2. Validation state is satisfied by policy.
-3. Declared dependencies are closed.
-4. The epic is ready for the next workflow stage.
+1. O estado de coordenação existe e é parseável.
+2. O estado de validação é satisfeito pela política.
+3. As dependências declaradas estão fechadas.
+4. O épico está pronto para o próximo estágio do fluxo de trabalho.
 
-Compatibility aliases:
+Aliases de compatibilidade:
 
 - `/quality-gate`

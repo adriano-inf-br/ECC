@@ -1,69 +1,69 @@
-# Skill Development Guide
+# Guia de Desenvolvimento de Skills
 
-A comprehensive guide to creating effective skills for Everything Claude Code (ECC).
+Um guia abrangente para criar skills eficazes para o Everything Claude Code (ECC).
 
-## Table of Contents
+## Sumário
 
-- [What Are Skills?](#what-are-skills)
-- [Skill Architecture](#skill-architecture)
-- [Creating Your First Skill](#creating-your-first-skill)
-- [Skill Categories](#skill-categories)
-- [Writing Effective Skill Content](#writing-effective-skill-content)
-- [Best Practices](#best-practices)
-- [Common Patterns](#common-patterns)
-- [Testing Your Skill](#testing-your-skill)
-- [Submitting Your Skill](#submitting-your-skill)
-- [Examples Gallery](#examples-gallery)
+- [O que são Skills?](#o-que-sao-skills)
+- [Arquitetura de Skill](#arquitetura-de-skill)
+- [Criando Sua Primeira Skill](#criando-sua-primeira-skill)
+- [Categorias de Skill](#categorias-de-skill)
+- [Escrevendo Conteúdo Eficaz para Skills](#escrevendo-conteudo-eficaz-para-skills)
+- [Boas Práticas](#boas-praticas)
+- [Padrões Comuns](#padroes-comuns)
+- [Testando Sua Skill](#testando-sua-skill)
+- [Submetendo Sua Skill](#submetendo-sua-skill)
+- [Galeria de Exemplos](#galeria-de-exemplos)
 
 ---
 
-## What Are Skills?
+## O que são Skills?
 
-Skills are **knowledge modules** that Claude Code loads based on context. They provide:
+Skills são **módulos de conhecimento** que o Claude Code carrega com base no contexto. Eles fornecem:
 
-- **Domain expertise**: Framework patterns, language idioms, best practices
-- **Workflow definitions**: Step-by-step processes for common tasks
-- **Reference material**: Code snippets, checklists, decision trees
-- **Context injection**: Activate when specific conditions are met
+- **Expertise de domínio**: Padrões de framework, idiomas de linguagem, boas práticas
+- **Definições de fluxo de trabalho**: Processos passo a passo para tarefas comuns
+- **Material de referência**: Trechos de código, checklists, árvores de decisão
+- **Injeção de contexto**: Ativam quando condições específicas são atendidas
 
-Unlike **agents** (specialized subassistants) or **commands** (user-triggered actions), skills are passive knowledge that Claude Code references when relevant.
+Ao contrário de **agents** (subassistentes especializados) ou **commands** (ações acionadas pelo usuário), as skills são conhecimento passivo que o Claude Code referencia quando relevante.
 
-### When Skills Activate
+### Quando as Skills Ativam
 
-Skills activate when:
-- The user's task matches the skill's domain
-- Claude Code detects relevant context
-- A command references a skill
-- An agent needs domain knowledge
+As skills ativam quando:
+- A tarefa do usuário corresponde ao domínio da skill
+- O Claude Code detecta contexto relevante
+- Um comando referencia uma skill
+- Um agent precisa de conhecimento de domínio
 
 ### Skill vs Agent vs Command
 
-| Component | Purpose | Activation |
+| Componente | Objetivo | Ativação |
 |-----------|---------|------------|
-| **Skill** | Knowledge repository | Context-based (automatic) |
-| **Agent** | Task executor | Explicit delegation |
-| **Command** | User action | User-invoked (`/command`) |
-| **Hook** | Automation | Event-triggered |
-| **Rule** | Always-on guidelines | Always active |
+| **Skill** | Repositório de conhecimento | Baseado em contexto (automático) |
+| **Agent** | Executor de tarefas | Delegação explícita |
+| **Command** | Ação do usuário | Invocado pelo usuário (`/command`) |
+| **Hook** | Automação | Acionado por evento |
+| **Rule** | Diretrizes sempre ativas | Sempre ativo |
 
 ---
 
-## Skill Architecture
+## Arquitetura de Skill
 
-### File Structure
+### Estrutura de Arquivo
 
 ```
 skills/
 └── your-skill-name/
-    ├── SKILL.md           # Required: Main skill definition
-    ├── examples/          # Optional: Code examples
+    ├── SKILL.md           # Obrigatório: Definição principal da skill
+    ├── examples/          # Opcional: Exemplos de código
     │   ├── basic.ts
     │   └── advanced.ts
-    └── references/        # Optional: External references
+    └── references/        # Opcional: Referências externas
         └── links.md
 ```
 
-### SKILL.md Format
+### Formato do SKILL.md
 
 ```markdown
 ---
@@ -104,40 +104,40 @@ Show what NOT to do with concrete examples.
 Link to complementary skills.
 ```
 
-### YAML Frontmatter Fields
+### Campos do Frontmatter YAML
 
-| Field | Required | Description |
+| Campo | Obrigatório | Descrição |
 |-------|----------|-------------|
-| `name` | Yes | Lowercase, hyphenated identifier (e.g., `react-patterns`) |
-| `description` | Yes | One-line description for skill list and auto-activation |
-| `origin` | No | Source identifier (e.g., `ECC`, `community`, project name) |
-| `tags` | No | Array of tags for categorization |
-| `version` | No | Skill version for tracking updates |
+| `name` | Sim | Identificador em minúsculas com hífens (ex.: `react-patterns`) |
+| `description` | Sim | Descrição de uma linha para lista de skills e ativação automática |
+| `origin` | Não | Identificador de origem (ex.: `ECC`, `community`, nome do projeto) |
+| `tags` | Não | Array de tags para categorização |
+| `version` | Não | Versão da skill para rastrear atualizações |
 
 ---
 
-## Creating Your First Skill
+## Criando Sua Primeira Skill
 
-### Step 1: Choose a Focus
+### Passo 1: Escolher um Foco
 
-Good skills are **focused and actionable**:
+Boas skills são **focadas e acionáveis**:
 
-| PASS: Good Focus | FAIL: Too Broad |
+| APROVADO: Bom Foco | REPROVADO: Muito Amplo |
 |---------------|--------------|
 | `react-hook-patterns` | `react` |
 | `postgresql-indexing` | `databases` |
 | `pytest-fixtures` | `python-testing` |
 | `nextjs-app-router` | `nextjs` |
 
-### Step 2: Create the Directory
+### Passo 2: Criar o Diretório
 
 ```bash
 mkdir -p skills/your-skill-name
 ```
 
-### Step 3: Write SKILL.md
+### Passo 3: Escrever o SKILL.md
 
-Here's a minimal template:
+Aqui está um template mínimo:
 
 ```markdown
 ---
@@ -182,25 +182,25 @@ Another pattern with code.
 - `related-skill-2`
 ```
 
-### Step 4: Add Content
+### Passo 4: Adicionar Conteúdo
 
-Write content that Claude can **immediately use**:
+Escreva conteúdo que o Claude possa **usar imediatamente**:
 
-- PASS: Copy-pasteable code examples
-- PASS: Clear decision trees
-- PASS: Checklists for verification
-- FAIL: Vague explanations without examples
-- FAIL: Long prose without actionable guidance
+- APROVADO: Exemplos de código prontos para copiar e colar
+- APROVADO: Árvores de decisão claras
+- APROVADO: Checklists para verificação
+- REPROVADO: Explicações vagas sem exemplos
+- REPROVADO: Prosa longa sem orientação acionável
 
 ---
 
-## Skill Categories
+## Categorias de Skill
 
-### Language Standards
+### Padrões de Linguagem
 
-Focus on idiomatic code, naming conventions, and language-specific patterns.
+Foque em código idiomático, convenções de nomenclatura e padrões específicos da linguagem.
 
-**Examples:** `python-patterns`, `golang-patterns`, `typescript-standards`
+**Exemplos:** `python-patterns`, `golang-patterns`, `typescript-standards`
 
 ```markdown
 ---
@@ -227,11 +227,11 @@ with open('file.txt') as f:
 \`\`\`
 ```
 
-### Framework Patterns
+### Padrões de Framework
 
-Focus on framework-specific conventions, common patterns, and anti-patterns.
+Foque em convenções específicas do framework, padrões comuns e anti-padrões.
 
-**Examples:** `django-patterns`, `nextjs-patterns`, `springboot-patterns`
+**Exemplos:** `django-patterns`, `nextjs-patterns`, `springboot-patterns`
 
 ```markdown
 ---
@@ -248,11 +248,11 @@ description: Django best practices for models, views, URLs, and templates.
 - Django URL configuration
 ```
 
-### Workflow Skills
+### Skills de Fluxo de Trabalho
 
-Define step-by-step processes for common development tasks.
+Defina processos passo a passo para tarefas comuns de desenvolvimento.
 
-**Examples:** `tdd-workflow`, `code-review-workflow`, `deployment-checklist`
+**Exemplos:** `tdd-workflow`, `code-review-workflow`, `deployment-checklist`
 
 ```markdown
 ---
@@ -271,11 +271,11 @@ description: Systematic code review process for quality and security.
 5. **Verify Style** - Ensure code follows conventions
 ```
 
-### Domain Knowledge
+### Conhecimento de Domínio
 
-Specialized knowledge for specific domains (security, performance, etc.).
+Conhecimento especializado para domínios específicos (segurança, desempenho, etc.).
 
-**Examples:** `security-review`, `performance-optimization`, `api-design`
+**Exemplos:** `security-review`, `performance-optimization`, `api-design`
 
 ```markdown
 ---
@@ -294,19 +294,19 @@ description: REST and GraphQL API design patterns, versioning, and best practice
 | POST | /resources | Create |
 ```
 
-### Tool Integration
+### Integração de Ferramentas
 
-Guidance for using specific tools, libraries, or services.
+Orientação para uso de ferramentas, bibliotecas ou serviços específicos.
 
-**Examples:** `supabase-patterns`, `docker-patterns`, `mcp-server-patterns`
+**Exemplos:** `supabase-patterns`, `docker-patterns`, `mcp-server-patterns`
 
 ---
 
-## Writing Effective Skill Content
+## Escrevendo Conteúdo Eficaz para Skills
 
-### 1. Start with "When to Activate"
+### 1. Comece com "When to Activate"
 
-This section is **critical** for auto-activation. Be specific:
+Esta seção é **crítica** para ativação automática. Seja específico:
 
 ```markdown
 ## When to Activate
@@ -317,16 +317,16 @@ This section is **critical** for auto-activation. Be specific:
 - Reviewing React code for best practices
 ```
 
-### 2. Use "Show, Don't Tell"
+### 2. Use "Mostrar, não Dizer"
 
-Bad:
+Ruim:
 ```markdown
 ## Error Handling
 
 Always handle errors properly in async functions.
 ```
 
-Good:
+Bom:
 ```markdown
 ## Error Handling
 
@@ -354,14 +354,14 @@ async function fetchData(url: string) {
 - Re-throw with user-friendly message
 ```
 
-### 3. Include Anti-Patterns
+### 3. Inclua Anti-Padrões
 
-Show what NOT to do:
+Mostre o que NÃO fazer:
 
 ```markdown
 ## Anti-Patterns
 
-### FAIL: Direct State Mutation
+### REPROVADO: Mutação Direta de Estado
 
 \`\`\`typescript
 // NEVER do this
@@ -369,7 +369,7 @@ user.name = 'New Name'
 items.push(newItem)
 \`\`\`
 
-### PASS: Immutable Updates
+### APROVADO: Atualizações Imutáveis
 
 \`\`\`typescript
 // ALWAYS do this
@@ -378,9 +378,9 @@ const updatedItems = [...items, newItem]
 \`\`\`
 ```
 
-### 4. Provide Checklists
+### 4. Forneça Checklists
 
-Checklists are actionable and easy to follow:
+Checklists são acionáveis e fáceis de seguir:
 
 ```markdown
 ## Pre-Deployment Checklist
@@ -393,9 +393,9 @@ Checklists are actionable and easy to follow:
 - [ ] Input validation in place
 ```
 
-### 5. Use Decision Trees
+### 5. Use Árvores de Decisão
 
-For complex decisions:
+Para decisões complexas:
 
 ```markdown
 ## Choosing the Right Approach
@@ -411,42 +411,42 @@ Need to fetch data?
 
 ---
 
-## Best Practices
+## Boas Práticas
 
-### DO
+### FAÇA
 
-| Practice | Example |
+| Prática | Exemplo |
 |----------|---------|
-| **Be specific** | "Use \`useCallback\` for event handlers passed to child components" |
-| **Show examples** | Include copy-pasteable code |
-| **Explain WHY** | "Immutability prevents unexpected side effects in React state" |
-| **Link related skills** | "See also: \`react-performance\`" |
-| **Keep focused** | One skill = one domain/concept |
-| **Use sections** | Clear headers for easy scanning |
+| **Seja específico** | "Use \`useCallback\` para manipuladores de eventos passados para componentes filhos" |
+| **Mostre exemplos** | Inclua código pronto para copiar e colar |
+| **Explique o PORQUÊ** | "Imutabilidade previne efeitos colaterais inesperados no estado React" |
+| **Vincule skills relacionadas** | "Veja também: \`react-performance\`" |
+| **Mantenha o foco** | Uma skill = um domínio/conceito |
+| **Use seções** | Cabeçalhos claros para fácil escaneamento |
 
-### DON'T
+### NÃO FAÇA
 
-| Practice | Why It's Bad |
+| Prática | Por que é Ruim |
 |----------|--------------|
-| **Be vague** | "Write good code" - not actionable |
-| **Long prose** | Hard to parse, better as code |
-| **Cover too much** | "Python, Django, and Flask patterns" - too broad |
-| **Skip examples** | Theory without practice is less useful |
-| **Ignore anti-patterns** | Learning what NOT to do is valuable |
+| **Seja vago** | "Escreva bom código" - não é acionável |
+| **Prosa longa** | Difícil de analisar, melhor como código |
+| **Cubra demais** | "Padrões de Python, Django e Flask" - muito amplo |
+| **Pule exemplos** | Teoria sem prática é menos útil |
+| **Ignore anti-padrões** | Aprender o que NÃO fazer é valioso |
 
-### Content Guidelines
+### Diretrizes de Conteúdo
 
-1. **Length**: 200-500 lines typical, 800 lines maximum
-2. **Code blocks**: Include language identifier
-3. **Headers**: Use `##` and `###` hierarchy
-4. **Lists**: Use `-` for unordered, `1.` for ordered
-5. **Tables**: For comparisons and references
+1. **Comprimento**: 200-500 linhas típico, máximo 800 linhas
+2. **Blocos de código**: Inclua identificador de linguagem
+3. **Cabeçalhos**: Use hierarquia `##` e `###`
+4. **Listas**: Use `-` para desordenadas, `1.` para ordenadas
+5. **Tabelas**: Para comparações e referências
 
 ---
 
-## Common Patterns
+## Padrões Comuns
 
-### Pattern 1: Standards Skill
+### Padrão 1: Skill de Padrões
 
 ```markdown
 ---
@@ -485,7 +485,7 @@ description: Coding standards and best practices for [language].
 - `language-security`
 ```
 
-### Pattern 2: Workflow Skill
+### Padrão 2: Skill de Fluxo de Trabalho
 
 ```markdown
 ---
@@ -531,7 +531,7 @@ description: Step-by-step workflow for [task].
 | [Issue] | [Fix] |
 ```
 
-### Pattern 3: Reference Skill
+### Padrão 3: Skill de Referência
 
 ```markdown
 ---
@@ -571,39 +571,39 @@ description: Quick reference for [API/Library].
 
 ---
 
-## Testing Your Skill
+## Testando Sua Skill
 
-### Local Testing
+### Teste Local
 
-1. **Copy to Claude Code skills directory**:
+1. **Copie para o diretório de skills do Claude Code**:
    ```bash
    cp -r skills/your-skill-name ~/.claude/skills/
    ```
 
-2. **Test with Claude Code**:
+2. **Teste com o Claude Code**:
    ```
-   You: "I need to [task that should trigger your skill]"
+   Você: "Preciso [tarefa que deve acionar sua skill]"
 
-   Claude should reference your skill's patterns.
+   O Claude deve referenciar os padrões da sua skill.
    ```
 
-3. **Verify activation**:
-   - Ask Claude to explain a concept from your skill
-   - Check if it uses your examples and patterns
-   - Ensure it follows your guidelines
+3. **Verifique a ativação**:
+   - Peça ao Claude para explicar um conceito da sua skill
+   - Verifique se ele usa seus exemplos e padrões
+   - Certifique-se de que segue suas diretrizes
 
-### Validation Checklist
+### Checklist de Validação
 
-- [ ] **YAML frontmatter valid** - No syntax errors
-- [ ] **Name follows convention** - lowercase-with-hyphens
-- [ ] **Description is clear** - Tells when to use
-- [ ] **Examples work** - Code compiles and runs
-- [ ] **Links valid** - Related skills exist
-- [ ] **No sensitive data** - No API keys, tokens, paths
+- [ ] **Frontmatter YAML válido** - Sem erros de sintaxe
+- [ ] **Nome segue a convenção** - minúsculas-com-hífens
+- [ ] **Descrição está clara** - Informa quando usar
+- [ ] **Exemplos funcionam** - Código compila e executa
+- [ ] **Links válidos** - Skills relacionadas existem
+- [ ] **Sem dados sensíveis** - Sem chaves de API, tokens, caminhos
 
-### Code Example Testing
+### Teste de Exemplos de Código
 
-Test all code examples:
+Teste todos os exemplos de código:
 
 ```bash
 # From the repo root
@@ -627,29 +627,29 @@ go build ./examples/...
 
 ---
 
-## Submitting Your Skill
+## Submetendo Sua Skill
 
-### 1. Fork and Clone
+### 1. Fork e Clone
 
 ```bash
 gh repo fork affaan-m/everything-claude-code --clone
 cd everything-claude-code
 ```
 
-### 2. Create Branch
+### 2. Criar Branch
 
 ```bash
 git checkout -b feat/skill-your-skill-name
 ```
 
-### 3. Add Your Skill
+### 3. Adicionar Sua Skill
 
 ```bash
 mkdir -p skills/your-skill-name
 # Create SKILL.md
 ```
 
-### 4. Validate
+### 4. Validar
 
 ```bash
 # Check YAML frontmatter
@@ -662,7 +662,7 @@ ls -la skills/your-skill-name/
 npm test
 ```
 
-### 5. Commit and Push
+### 5. Commit e Push
 
 ```bash
 git add skills/your-skill-name/
@@ -670,9 +670,9 @@ git commit -m "feat(skills): add your-skill-name skill"
 git push -u origin feat/skill-your-skill-name
 ```
 
-### 6. Create Pull Request
+### 6. Criar Pull Request
 
-Use this PR template:
+Use este template de PR:
 
 ```markdown
 ## Summary
@@ -702,11 +702,11 @@ How I tested this skill locally.
 
 ---
 
-## Examples Gallery
+## Galeria de Exemplos
 
-### Example 1: Language Standards
+### Exemplo 1: Padrões de Linguagem
 
-**File:** `skills/rust-patterns/SKILL.md`
+**Arquivo:** `skills/rust-patterns/SKILL.md`
 
 ```markdown
 ---
@@ -765,9 +765,9 @@ pub type AppResult<T> = Result<T, AppError>;
 - `rust-security`
 ```
 
-### Example 2: Framework Patterns
+### Exemplo 2: Padrões de Framework
 
-**File:** `skills/fastapi-patterns/SKILL.md`
+**Arquivo:** `skills/fastapi-patterns/SKILL.md`
 
 ```markdown
 ---
@@ -826,9 +826,9 @@ async def get_user(
 - `pydantic-validation`
 ```
 
-### Example 3: Workflow Skill
+### Exemplo 3: Skill de Fluxo de Trabalho
 
-**File:** `skills/refactoring-workflow/SKILL.md`
+**Arquivo:** `skills/refactoring-workflow/SKILL.md`
 
 ```markdown
 ---
@@ -906,14 +906,14 @@ npm run test:e2e
 
 ---
 
-## Additional Resources
+## Recursos Adicionais
 
-- [CONTRIBUTING.md](../CONTRIBUTING.md) - General contribution guidelines
-- [project-guidelines-template](./examples/project-guidelines-template.md) - Project-specific skill template
-- [coding-standards](../skills/coding-standards/SKILL.md) - Example of standards skill
-- [tdd-workflow](../skills/tdd-workflow/SKILL.md) - Example of workflow skill
-- [security-review](../skills/security-review/SKILL.md) - Example of domain knowledge skill
+- [CONTRIBUTING.md](../CONTRIBUTING.md) - Diretrizes gerais de contribuição
+- [project-guidelines-template](./examples/project-guidelines-template.md) - Template de skill específico do projeto
+- [coding-standards](../skills/coding-standards/SKILL.md) - Exemplo de skill de padrões
+- [tdd-workflow](../skills/tdd-workflow/SKILL.md) - Exemplo de skill de fluxo de trabalho
+- [security-review](../skills/security-review/SKILL.md) - Exemplo de skill de conhecimento de domínio
 
 ---
 
-**Remember**: A good skill is focused, actionable, and immediately useful. Write skills you'd want to use yourself.
+**Lembre-se**: Uma boa skill é focada, acionável e imediatamente útil. Escreva skills que você mesmo gostaria de usar.

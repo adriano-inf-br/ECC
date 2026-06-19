@@ -1,67 +1,67 @@
-# The Longform Guide to Everything Claude Code
+# O Guia Detalhado para o Everything Claude Code
 
 ![Header: The Longform Guide to Everything Claude Code](./assets/images/longform/01-header.png)
 
 ---
 
-> **Prerequisite**: This guide builds on [The Shorthand Guide to Everything Claude Code](./the-shortform-guide.md). Read that first if you haven't set up skills, hooks, subagents, MCPs, and plugins.
+> **Pré-requisito**: Este guia se baseia em [O Guia Resumido para o Everything Claude Code](./the-shortform-guide.md). Leia-o primeiro caso ainda não tenha configurado Skills, Hooks, subagentes, MCPs e Plugins.
 
 ![Reference to Shorthand Guide](./assets/images/longform/02-shortform-reference.png)
-*The Shorthand Guide - read it first*
+*O Guia Resumido - leia-o primeiro*
 
-In the shorthand guide, I covered the foundational setup: skills and commands, hooks, subagents, MCPs, plugins, and the configuration patterns that form the backbone of an effective Claude Code workflow. That was the setup guide and the base infrastructure.
+No guia resumido, abordei a configuração fundamental: Skills e comandos, Hooks, subagentes, MCPs, Plugins e os padrões de configuração que formam a espinha dorsal de um fluxo de trabalho eficaz com o Claude Code. Aquele era o guia de configuração e a infraestrutura base.
 
-This longform guide goes into the techniques that separate productive sessions from wasteful ones. If you haven't read the shorthand guide, go back and set up your configs first. What follows assumes you have skills, agents, hooks, and MCPs already configured and working.
+Este guia detalhado mergulha nas técnicas que separam sessões produtivas das que desperdiçam recursos. Se você ainda não leu o guia resumido, volte e configure suas configs primeiro. O que segue assume que você já tem Skills, agentes, Hooks e MCPs configurados e funcionando.
 
-The themes here: token economics, memory persistence, verification patterns, parallelization strategies, and the compound effects of building reusable workflows. These are the patterns I've refined over 10+ months of daily use that make the difference between being plagued by context rot within the first hour, versus maintaining productive sessions for hours.
+Os temas aqui: economia de Tokens, persistência de memória, padrões de verificação, estratégias de paralelização e os efeitos compostos de construir fluxos de trabalho reutilizáveis. Esses são os padrões que refinei ao longo de mais de 10 meses de uso diário e que fazem a diferença entre ser atormentado pela degradação de contexto na primeira hora e manter sessões produtivas por horas.
 
-Everything covered in the shorthand and longform guides is available on GitHub: `github.com/affaan-m/everything-claude-code`
-
----
-
-## Tips and Tricks
-
-### Some MCPs are Replaceable and Will Free Up Your Context Window
-
-For MCPs such as version control (GitHub), databases (Supabase), deployment (Vercel, Railway) etc. - most of these platforms already have robust CLIs that the MCP is essentially just wrapping. The MCP is a nice wrapper but it comes at a cost.
-
-To have the CLI function more like an MCP without actually using the MCP (and the decreased context window that comes with it), consider bundling the functionality into skills and commands. Strip out the tools the MCP exposes that make things easy and turn those into commands.
-
-Example: instead of having the GitHub MCP loaded at all times, create a `/gh-pr` command that wraps `gh pr create` with your preferred options. Instead of the Supabase MCP eating context, create skills that use the Supabase CLI directly.
-
-With lazy loading, the context window issue is mostly solved. But token usage and cost is not solved in the same way. The CLI + skills approach is still a token optimization method.
+Tudo o que é abordado nos guias resumido e detalhado está disponível no GitHub: `github.com/affaan-m/everything-claude-code`
 
 ---
 
-## IMPORTANT STUFF
+## Dicas e Truques
 
-### Context and Memory Management
+### Alguns MCPs São Substituíveis e Vão Liberar Sua Janela de Contexto
 
-For sharing memory across sessions, a skill or command that summarizes and checks in on progress then saves to a `.tmp` file in your `.claude` folder and appends to it until the end of your session is the best bet. The next day it can use that as context and pick up where you left off, create a new file for each session so you don't pollute old context into new work.
+Para MCPs como controle de versão (GitHub), bancos de dados (Supabase), deploy (Vercel, Railway), etc. - a maioria dessas plataformas já tem CLIs robustas que o MCP basicamente apenas envolve. O MCP é um wrapper agradável, mas vem com um custo.
+
+Para fazer a CLI funcionar mais como um MCP sem de fato usar o MCP (e a janela de contexto reduzida que vem com ele), considere agrupar a funcionalidade em Skills e comandos. Extraia as ferramentas que o MCP expõe e que facilitam as coisas e transforme-as em comandos.
+
+Exemplo: em vez de ter o MCP do GitHub carregado o tempo todo, crie um comando `/gh-pr` que envolva `gh pr create` com suas opções preferidas. Em vez de o MCP do Supabase consumir contexto, crie Skills que usem a CLI do Supabase diretamente.
+
+Com lazy loading, o problema da janela de contexto está em grande parte resolvido. Mas o uso de Tokens e o custo não são resolvidos da mesma forma. A abordagem CLI + Skills ainda é um método de otimização de Tokens.
+
+---
+
+## COISAS IMPORTANTES
+
+### Gerenciamento de Contexto e Memória
+
+Para compartilhar memória entre sessões, a melhor aposta é uma Skill ou comando que resuma e faça um balanço do progresso, então salve em um arquivo `.tmp` na sua pasta `.claude` e vá adicionando a ele até o fim da sua sessão. No dia seguinte, ele pode usar isso como contexto e retomar de onde você parou; crie um arquivo novo para cada sessão para não poluir o novo trabalho com contexto antigo.
 
 ![Session Storage File Tree](./assets/images/longform/03-session-storage.png)
-*Example of session storage -> <https://github.com/affaan-m/everything-claude-code/tree/main/examples/sessions>*
+*Exemplo de armazenamento de sessão -> <https://github.com/affaan-m/everything-claude-code/tree/main/examples/sessions>*
 
-Claude creates a file summarizing current state. Review it, ask for edits if needed, then start fresh. For the new conversation, just provide the file path. Particularly useful when you're hitting context limits and need to continue complex work. These files should contain:
-- What approaches worked (verifiably with evidence)
-- Which approaches were attempted but did not work
-- Which approaches have not been attempted and what's left to do
+O Claude cria um arquivo resumindo o estado atual. Revise-o, peça edições se necessário, e então comece do zero. Para a nova conversa, basta fornecer o caminho do arquivo. Particularmente útil quando você está atingindo os limites de contexto e precisa dar continuidade a um trabalho complexo. Esses arquivos devem conter:
+- Quais abordagens funcionaram (de forma verificável, com evidências)
+- Quais abordagens foram tentadas, mas não funcionaram
+- Quais abordagens não foram tentadas e o que falta fazer
 
-**Clearing Context Strategically:**
+**Limpando o Contexto Estrategicamente:**
 
-Once you have your plan set and context cleared (default option in plan mode in Claude Code now), you can work from the plan. This is useful when you've accumulated a lot of exploration context that's no longer relevant to execution. For strategic compacting, disable auto compact. Manually compact at logical intervals or create a skill that does so for you.
+Depois que você tem seu plano definido e o contexto limpo (opção padrão no modo de planejamento do Claude Code agora), você pode trabalhar a partir do plano. Isso é útil quando você acumulou muito contexto de exploração que já não é relevante para a execução. Para uma compactação estratégica, desative a compactação automática. Compacte manualmente em intervalos lógicos ou crie uma Skill que faça isso por você.
 
-**Advanced: Dynamic System Prompt Injection**
+**Avançado: Injeção Dinâmica de System Prompt**
 
-One pattern I picked up: instead of solely putting everything in CLAUDE.md (user scope) or `.claude/rules/` (project scope) which loads every session, use CLI flags to inject context dynamically.
+Um padrão que aprendi: em vez de colocar tudo apenas no CLAUDE.md (escopo de usuário) ou em `.claude/rules/` (escopo de projeto), que carregam em toda sessão, use flags da CLI para injetar contexto dinamicamente.
 
 ```bash
 claude --system-prompt "$(cat memory.md)"
 ```
 
-This lets you be more surgical about what context loads when. System prompt content has higher authority than user messages, which have higher authority than tool results.
+Isso permite que você seja mais cirúrgico sobre qual contexto carrega e quando. O conteúdo do system prompt tem autoridade maior que as mensagens do usuário, que têm autoridade maior que os resultados de ferramentas.
 
-**Practical setup:**
+**Configuração prática:**
 
 ```bash
 # Daily development
@@ -74,90 +74,90 @@ alias claude-review='claude --system-prompt "$(cat ~/.claude/contexts/review.md)
 alias claude-research='claude --system-prompt "$(cat ~/.claude/contexts/research.md)"'
 ```
 
-**Advanced: Memory Persistence Hooks**
+**Avançado: Hooks de Persistência de Memória**
 
-There are hooks most people don't know about that help with memory:
+Existem Hooks que a maioria das pessoas não conhece e que ajudam com a memória:
 
-- **PreCompact Hook**: Before context compaction happens, save important state to a file
-- **Stop Hook (Session End)**: On session end, persist learnings to a file
-- **SessionStart Hook**: On new session, load previous context automatically
+- **Hook PreCompact**: Antes de a compactação de contexto acontecer, salva o estado importante em um arquivo
+- **Hook Stop (Fim de Sessão)**: No fim da sessão, persiste os aprendizados em um arquivo
+- **Hook SessionStart**: Em uma nova sessão, carrega o contexto anterior automaticamente
 
-I've built these hooks and they're in the repo at `github.com/affaan-m/everything-claude-code/tree/main/hooks/memory-persistence`
-
----
-
-### Continuous Learning / Memory
-
-If you've had to repeat a prompt multiple times and Claude ran into the same problem or gave you a response you've heard before - those patterns must be appended to skills.
-
-**The Problem:** Wasted tokens, wasted context, wasted time.
-
-**The Solution:** When Claude Code discovers something that isn't trivial - a debugging technique, a workaround, some project-specific pattern - it saves that knowledge as a new skill. Next time a similar problem comes up, the skill gets loaded automatically.
-
-I've built a continuous learning skill that does this: `github.com/affaan-m/everything-claude-code/tree/main/skills/continuous-learning`
-
-**Why Stop Hook (Not UserPromptSubmit):**
-
-The key design decision is using a **Stop hook** instead of UserPromptSubmit. UserPromptSubmit runs on every single message - adds latency to every prompt. Stop runs once at session end - lightweight, doesn't slow you down during the session.
+Eu construí esses Hooks e eles estão no repositório em `github.com/affaan-m/everything-claude-code/tree/main/hooks/memory-persistence`
 
 ---
 
-### Token Optimization
+### Aprendizado Contínuo / Memória
 
-**Primary Strategy: Subagent Architecture**
+Se você teve que repetir um prompt várias vezes e o Claude esbarrou no mesmo problema ou deu uma resposta que você já tinha ouvido antes - esses padrões precisam ser adicionados às Skills.
 
-Optimize the tools you use and subagent architecture designed to delegate the cheapest possible model that is sufficient for the task.
+**O Problema:** Tokens desperdiçados, contexto desperdiçado, tempo desperdiçado.
 
-**Model Selection Quick Reference:**
+**A Solução:** Quando o Claude Code descobre algo que não é trivial - uma técnica de depuração, um contorno, algum padrão específico do projeto - ele salva esse conhecimento como uma nova Skill. Na próxima vez que um problema semelhante surgir, a Skill é carregada automaticamente.
+
+Eu construí uma Skill de aprendizado contínuo que faz isso: `github.com/affaan-m/everything-claude-code/tree/main/skills/continuous-learning`
+
+**Por que o Hook Stop (e não o UserPromptSubmit):**
+
+A decisão-chave de design é usar um **Hook Stop** em vez do UserPromptSubmit. O UserPromptSubmit roda a cada mensagem - adiciona latência a cada prompt. O Stop roda uma vez no fim da sessão - leve, não te atrasa durante a sessão.
+
+---
+
+### Otimização de Tokens
+
+**Estratégia Principal: Arquitetura de Subagentes**
+
+Otimize as ferramentas que você usa e uma arquitetura de subagentes projetada para delegar ao modelo mais barato possível que seja suficiente para a tarefa.
+
+**Referência Rápida de Seleção de Modelo:**
 
 ![Model Selection Table](./assets/images/longform/04-model-selection.png)
-*Hypothetical setup of subagents on various common tasks and reasoning behind the choices*
+*Configuração hipotética de subagentes em várias tarefas comuns e o raciocínio por trás das escolhas*
 
-| Task Type                 | Model  | Why                                        |
-| ------------------------- | ------ | ------------------------------------------ |
-| Exploration/search        | Haiku  | Fast, cheap, good enough for finding files |
-| Simple edits              | Haiku  | Single-file changes, clear instructions    |
-| Multi-file implementation | Sonnet | Best balance for coding                    |
-| Complex architecture      | Opus   | Deep reasoning needed                      |
-| PR reviews                | Sonnet | Understands context, catches nuance        |
-| Security analysis         | Opus   | Can't afford to miss vulnerabilities       |
-| Writing docs              | Haiku  | Structure is simple                        |
-| Debugging complex bugs    | Opus   | Needs to hold entire system in mind        |
+| Tipo de Tarefa            | Modelo | Por quê                                          |
+| ------------------------- | ------ | ------------------------------------------------ |
+| Exploração/busca          | Haiku  | Rápido, barato, bom o suficiente para achar arquivos |
+| Edições simples           | Haiku  | Mudanças em arquivo único, instruções claras     |
+| Implementação multi-arquivo | Sonnet | Melhor equilíbrio para programação             |
+| Arquitetura complexa      | Opus   | Necessita de raciocínio profundo                 |
+| Revisões de PR            | Sonnet | Entende o contexto, capta nuances                |
+| Análise de segurança      | Opus   | Não pode se dar ao luxo de perder vulnerabilidades |
+| Escrever docs             | Haiku  | A estrutura é simples                            |
+| Depurar bugs complexos    | Opus   | Precisa manter o sistema inteiro em mente        |
 
-Default to Sonnet for 90% of coding tasks. Upgrade to Opus when first attempt failed, task spans 5+ files, architectural decisions, or security-critical code.
+Use o Sonnet por padrão em 90% das tarefas de programação. Faça upgrade para o Opus quando a primeira tentativa falhou, a tarefa abrange 5+ arquivos, decisões arquiteturais ou código crítico para segurança.
 
-**Pricing Reference:**
+**Referência de Preços:**
 
 ![Claude Model Pricing](./assets/images/longform/05-pricing-table.png)
-*Source: <https://platform.claude.com/docs/en/about-claude/pricing>*
+*Fonte: <https://platform.claude.com/docs/en/about-claude/pricing>*
 
-**Tool-Specific Optimizations:**
+**Otimizações Específicas de Ferramentas:**
 
-Replace grep with mgrep - ~50% token reduction on average compared to traditional grep or ripgrep:
+Substitua o grep pelo mgrep - ~50% de redução de Tokens em média comparado ao grep tradicional ou ao ripgrep:
 
 ![mgrep Benchmark](./assets/images/longform/06-mgrep-benchmark.png)
-*In our 50-task benchmark, mgrep + Claude Code used ~2x fewer tokens than grep-based workflows at similar or better judged quality. Source: mgrep by @mixedbread-ai*
+*No nosso benchmark de 50 tarefas, o mgrep + Claude Code usou ~2x menos Tokens que fluxos de trabalho baseados em grep, com qualidade avaliada similar ou melhor. Fonte: mgrep por @mixedbread-ai*
 
-**Modular Codebase Benefits:**
+**Benefícios de uma Base de Código Modular:**
 
-Having a more modular codebase with main files being in the hundreds of lines instead of thousands of lines helps both in token optimization costs and getting a task done right on the first try.
+Ter uma base de código mais modular, com arquivos principais na casa das centenas de linhas em vez de milhares de linhas, ajuda tanto nos custos de otimização de Tokens quanto em concluir uma tarefa corretamente na primeira tentativa.
 
 ---
 
-### Verification Loops and Evals
+### Loops de Verificação e Evals
 
-**Benchmarking Workflow:**
+**Fluxo de Trabalho de Benchmarking:**
 
-Compare asking for the same thing with and without a skill and checking the output difference:
+Compare pedir a mesma coisa com e sem uma Skill e verifique a diferença na saída:
 
-Fork the conversation, initiate a new worktree in one of them without the skill, pull up a diff at the end, see what was logged.
+Bifurque a conversa, inicie um novo worktree em uma delas sem a Skill, abra um diff no final, veja o que foi registrado.
 
-**Eval Pattern Types:**
+**Tipos de Padrões de Eval:**
 
-- **Checkpoint-Based Evals**: Set explicit checkpoints, verify against defined criteria, fix before proceeding
-- **Continuous Evals**: Run every N minutes or after major changes, full test suite + lint
+- **Evals Baseados em Checkpoint**: Defina checkpoints explícitos, verifique contra critérios definidos, corrija antes de prosseguir
+- **Evals Contínuos**: Execute a cada N minutos ou após grandes mudanças, suíte de testes completa + lint
 
-**Key Metrics:**
+**Métricas-Chave:**
 
 ```
 pass@k: At least ONE of k attempts succeeds
@@ -167,28 +167,28 @@ pass^k: ALL k attempts must succeed
         k=1: 70%  k=3: 34%  k=5: 17%
 ```
 
-Use **pass@k** when you just need it to work. Use **pass^k** when consistency is essential.
+Use **pass@k** quando você só precisa que funcione. Use **pass^k** quando a consistência é essencial.
 
 ---
 
-## PARALLELIZATION
+## PARALELIZAÇÃO
 
-When forking conversations in a multi-Claude terminal setup, make sure the scope is well-defined for the actions in the fork and the original conversation. Aim for minimal overlap when it comes to code changes.
+Ao bifurcar conversas em uma configuração de terminal multi-Claude, garanta que o escopo esteja bem definido para as ações na bifurcação e na conversa original. Busque a mínima sobreposição quando se trata de mudanças de código.
 
-**My Preferred Pattern:**
+**Meu Padrão Preferido:**
 
-Main chat for code changes, forks for questions about the codebase and its current state, or research on external services.
+Chat principal para mudanças de código, bifurcações para perguntas sobre a base de código e seu estado atual, ou pesquisa sobre serviços externos.
 
-**On Arbitrary Terminal Counts:**
+**Sobre Quantidades Arbitrárias de Terminais:**
 
 ![Boris on Parallel Terminals](./assets/images/longform/07-boris-parallel.png)
-*Boris (Anthropic) on running multiple Claude instances*
+*Boris (Anthropic) sobre rodar múltiplas instâncias do Claude*
 
-Boris has tips on parallelization. He's suggested things like running 5 Claude instances locally and 5 upstream. I advise against setting arbitrary terminal amounts. The addition of a terminal should be out of true necessity.
+O Boris tem dicas sobre paralelização. Ele sugeriu coisas como rodar 5 instâncias do Claude localmente e 5 na origem. Eu desaconselho definir quantidades arbitrárias de terminais. A adição de um terminal deve partir de uma verdadeira necessidade.
 
-Your goal should be: **how much can you get done with the minimum viable amount of parallelization.**
+Seu objetivo deve ser: **o quanto você consegue realizar com a quantidade mínima viável de paralelização.**
 
-**Git Worktrees for Parallel Instances:**
+**Git Worktrees para Instâncias Paralelas:**
 
 ```bash
 # Create worktrees for parallel work
@@ -200,73 +200,73 @@ git worktree add ../project-refactor refactor-branch
 cd ../project-feature-a && claude
 ```
 
-IF you are to begin scaling your instances AND you have multiple instances of Claude working on code that overlaps with one another, it's imperative you use git worktrees and have a very well-defined plan for each. Use `/rename <name here>` to name all your chats.
+SE você for começar a escalar suas instâncias E tiver múltiplas instâncias do Claude trabalhando em código que se sobrepõe, é imperativo que você use git worktrees e tenha um plano muito bem definido para cada uma. Use `/rename <name here>` para nomear todos os seus chats.
 
 ![Two Terminal Setup](./assets/images/longform/08-two-terminals.png)
-*Starting Setup: Left Terminal for Coding, Right Terminal for Questions - use /rename and /fork*
+*Configuração Inicial: Terminal Esquerdo para Programação, Terminal Direito para Perguntas - use /rename e /fork*
 
-**The Cascade Method:**
+**O Método Cascade:**
 
-When running multiple Claude Code instances, organize with a "cascade" pattern:
+Ao rodar múltiplas instâncias do Claude Code, organize com um padrão "cascade":
 
-- Open new tasks in new tabs to the right
-- Sweep left to right, oldest to newest
-- Focus on at most 3-4 tasks at a time
+- Abra novas tarefas em novas abas à direita
+- Varra da esquerda para a direita, da mais antiga para a mais nova
+- Foque em no máximo 3-4 tarefas por vez
 
 ---
 
-## GROUNDWORK
+## TRABALHO DE BASE
 
-**The Two-Instance Kickoff Pattern:**
+**O Padrão de Início com Duas Instâncias:**
 
-For my own workflow management, I like to start an empty repo with 2 open Claude instances.
+Para o gerenciamento do meu próprio fluxo de trabalho, gosto de começar um repositório vazio com 2 instâncias do Claude abertas.
 
-**Instance 1: Scaffolding Agent**
-- Lays down the scaffold and groundwork
-- Creates project structure
-- Sets up configs (CLAUDE.md, rules, agents)
+**Instância 1: Agente de Scaffolding**
+- Estabelece o scaffold e o trabalho de base
+- Cria a estrutura do projeto
+- Configura as configs (CLAUDE.md, regras, agentes)
 
-**Instance 2: Deep Research Agent**
-- Connects to all your services, web search
-- Creates the detailed PRD
-- Creates architecture mermaid diagrams
-- Compiles the references with actual documentation clips
+**Instância 2: Agente de Deep Research**
+- Conecta a todos os seus serviços, busca na web
+- Cria o PRD detalhado
+- Cria diagramas de arquitetura em mermaid
+- Compila as referências com trechos reais de documentação
 
-**llms.txt Pattern:**
+**Padrão llms.txt:**
 
-If available, you can find an `llms.txt` on many documentation references by doing `/llms.txt` on them once you reach their docs page. This gives you a clean, LLM-optimized version of the documentation.
+Se disponível, você pode encontrar um `llms.txt` em muitas referências de documentação acrescentando `/llms.txt` a elas assim que chegar à página de docs. Isso te dá uma versão limpa e otimizada para LLM da documentação.
 
-**Philosophy: Build Reusable Patterns**
+**Filosofia: Construa Padrões Reutilizáveis**
 
-From @omarsar0: "Early on, I spent time building reusable workflows/patterns. Tedious to build, but this had a wild compounding effect as models and agent harnesses improved."
+De @omarsar0: "No começo, dediquei tempo a construir fluxos de trabalho/padrões reutilizáveis. Tedioso de construir, mas isso teve um efeito composto absurdo conforme os modelos e os harnesses de agentes melhoravam."
 
-**What to invest in:**
+**No que investir:**
 
-- Subagents
+- Subagentes
 - Skills
-- Commands
-- Planning patterns
-- MCP tools
-- Context engineering patterns
+- Comandos
+- Padrões de planejamento
+- Ferramentas MCP
+- Padrões de engenharia de contexto
 
 ---
 
-## Best Practices for Agents & Sub-Agents
+## Boas Práticas para Agentes e Subagentes
 
-**The Sub-Agent Context Problem:**
+**O Problema de Contexto do Subagente:**
 
-Sub-agents exist to save context by returning summaries instead of dumping everything. But the orchestrator has semantic context the sub-agent lacks. The sub-agent only knows the literal query, not the PURPOSE behind the request.
+Subagentes existem para economizar contexto retornando resumos em vez de despejar tudo. Mas o orquestrador tem contexto semântico que o subagente não tem. O subagente só conhece a consulta literal, não o PROPÓSITO por trás da solicitação.
 
-**Iterative Retrieval Pattern:**
+**Padrão de Recuperação Iterativa:**
 
-1. Orchestrator evaluates every sub-agent return
-2. Ask follow-up questions before accepting it
-3. Sub-agent goes back to source, gets answers, returns
-4. Loop until sufficient (max 3 cycles)
+1. O orquestrador avalia cada retorno do subagente
+2. Faça perguntas de acompanhamento antes de aceitá-lo
+3. O subagente volta à fonte, obtém respostas, retorna
+4. Repita o loop até ser suficiente (máx. 3 ciclos)
 
-**Key:** Pass objective context, not just the query.
+**Chave:** Passe o contexto do objetivo, não apenas a consulta.
 
-**Orchestrator with Sequential Phases:**
+**Orquestrador com Fases Sequenciais:**
 
 ```markdown
 Phase 1: RESEARCH (use Explore agent) → research-summary.md
@@ -276,32 +276,32 @@ Phase 4: REVIEW (use code-reviewer agent) → review-comments.md
 Phase 5: VERIFY (use build-error-resolver if needed) → done or loop back
 ```
 
-**Key rules:**
+**Regras-chave:**
 
-1. Each agent gets ONE clear input and produces ONE clear output
-2. Outputs become inputs for next phase
-3. Never skip phases
-4. Use `/clear` between agents
-5. Store intermediate outputs in files
+1. Cada agente recebe UMA entrada clara e produz UMA saída clara
+2. As saídas se tornam entradas para a fase seguinte
+3. Nunca pule fases
+4. Use `/clear` entre os agentes
+5. Armazene as saídas intermediárias em arquivos
 
 ---
 
-## FUN STUFF / NOT CRITICAL JUST FUN TIPS
+## COISAS DIVERTIDAS / NÃO CRÍTICAS, APENAS DICAS DIVERTIDAS
 
-### Custom Status Line
+### Status Line Personalizada
 
-You can set it using `/statusline` - then Claude will say you don't have one but can set it up for you and ask what you want in it.
+Você pode configurá-la usando `/statusline` - então o Claude vai dizer que você não tem uma, mas que pode configurá-la para você e perguntar o que você quer nela.
 
-See also: ccstatusline (community project for custom Claude Code status lines)
+Veja também: ccstatusline (projeto da comunidade para status lines personalizadas do Claude Code)
 
-### Voice Transcription
+### Transcrição por Voz
 
-Talk to Claude Code with your voice. Faster than typing for many people.
+Fale com o Claude Code usando sua voz. Mais rápido que digitar para muitas pessoas.
 
-- superwhisper, MacWhisper on Mac
-- Even with transcription mistakes, Claude understands intent
+- superwhisper, MacWhisper no Mac
+- Mesmo com erros de transcrição, o Claude entende a intenção
 
-### Terminal Aliases
+### Aliases de Terminal
 
 ```bash
 alias c='claude'
@@ -312,35 +312,35 @@ alias q='cd ~/Desktop/projects'
 
 ---
 
-## Milestone
+## Marco
 
 ![25k+ GitHub Stars](./assets/images/longform/09-25k-stars.png)
-*25,000+ GitHub stars in under a week*
+*Mais de 25.000 estrelas no GitHub em menos de uma semana*
 
 ---
 
-## Resources
+## Recursos
 
-**Agent Orchestration:**
+**Orquestração de Agentes:**
 
-- claude-flow — Community-built enterprise orchestration platform with 54+ specialized agents
+- claude-flow — Plataforma de orquestração empresarial construída pela comunidade com mais de 54 agentes especializados
 
-**Self-Improving Memory:**
+**Memória Autoaperfeiçoável:**
 
-- See `skills/continuous-learning/` in this repo
-- rlancemartin.github.io/2025/12/01/claude_diary/ - Session reflection pattern
+- Veja `skills/continuous-learning/` neste repositório
+- rlancemartin.github.io/2025/12/01/claude_diary/ - Padrão de reflexão de sessão
 
-**System Prompts Reference:**
+**Referência de System Prompts:**
 
-- system-prompts-and-models-of-ai-tools — Community collection of AI system prompts (110k+ stars)
+- system-prompts-and-models-of-ai-tools — Coleção da comunidade de system prompts de IA (mais de 110k estrelas)
 
-**Official:**
+**Oficial:**
 
 - Anthropic Academy: anthropic.skilljar.com
 
 ---
 
-## References
+## Referências
 
 - [Anthropic: Demystifying evals for AI agents](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)
 - [YK: 32 Claude Code Tips](https://agenticcoding.substack.com/p/32-claude-code-tips-from-basics-to)
@@ -351,4 +351,4 @@ alias q='cd ~/Desktop/projects'
 
 ---
 
-*Everything covered in both guides is available on GitHub at [everything-claude-code](https://github.com/affaan-m/everything-claude-code)*
+*Tudo o que é abordado em ambos os guias está disponível no GitHub em [everything-claude-code](https://github.com/affaan-m/everything-claude-code)*

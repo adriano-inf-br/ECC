@@ -1,154 +1,154 @@
-# Everything Claude Code (ECC) — Agent Instructions
+# Everything Claude Code (ECC) — Instruções para Agents
 
-This is a **production-ready AI coding plugin** providing 67 specialized agents, 271 skills, 92 commands, and automated hook workflows for software development.
+Este é um **plugin de codificação com IA pronto para produção** que fornece 67 agents especializados, 271 skills, 92 comandos e fluxos de trabalho automatizados de hook para desenvolvimento de software.
 
-**Version:** 2.0.0
+**Versão:** 2.0.0
 
-## Core Principles
+## Princípios Centrais
 
-1. **Agent-First** — Delegate to specialized agents for domain tasks
-2. **Test-Driven** — Write tests before implementation, 80%+ coverage required
-3. **Security-First** — Never compromise on security; validate all inputs
-4. **Immutability** — Always create new objects, never mutate existing ones
-5. **Plan Before Execute** — Plan complex features before writing code
+1. **Agent-First** — Delegue a agents especializados para tarefas de domínio
+2. **Test-Driven** — Escreva testes antes da implementação, cobertura de 80%+ exigida
+3. **Security-First** — Nunca comprometa a segurança; valide todas as entradas
+4. **Imutabilidade** — Sempre crie novos objetos, nunca modifique os existentes
+5. **Planejar Antes de Executar** — Planeje funcionalidades complexas antes de escrever código
 
-## Available Agents
+## Agents Disponíveis
 
-| Agent | Purpose | When to Use |
+| Agent | Propósito | Quando Usar |
 |-------|---------|-------------|
-| planner | Implementation planning | Complex features, refactoring |
-| architect | System design and scalability | Architectural decisions |
-| tdd-guide | Test-driven development | New features, bug fixes |
-| code-reviewer | Code quality and maintainability | After writing/modifying code |
-| security-reviewer | Vulnerability detection | Before commits, sensitive code |
-| spec-miner | Brownfield spec extraction | Onboarding brownfield projects to spec-driven development |
-| build-error-resolver | Fix build/type errors | When build fails |
-| e2e-runner | End-to-end Playwright testing | Critical user flows |
-| refactor-cleaner | Dead code cleanup | Code maintenance |
-| doc-updater | Documentation and codemaps | Updating docs |
-| cpp-reviewer | C/C++ code review | C and C++ projects |
-| cpp-build-resolver | C/C++ build errors | C and C++ build failures |
-| fsharp-reviewer | F# functional code review | F# projects |
-| docs-lookup | Documentation lookup via Context7 | API/docs questions |
-| go-reviewer | Go code review | Go projects |
-| go-build-resolver | Go build errors | Go build failures |
-| kotlin-reviewer | Kotlin code review | Kotlin/Android/KMP projects |
-| kotlin-build-resolver | Kotlin/Gradle build errors | Kotlin build failures |
-| database-reviewer | PostgreSQL/Supabase specialist | Schema design, query optimization |
-| python-reviewer | Python code review | Python projects |
-| django-reviewer | Django code review | Django apps, DRF APIs, ORM, migrations |
-| django-build-resolver | Django build, migration, and setup errors | Django startup, dependency, migration, collectstatic failures |
-| java-reviewer | Java and Spring Boot code review | Java/Spring Boot projects |
-| java-build-resolver | Java/Maven/Gradle build errors | Java build failures |
-| loop-operator | Autonomous loop execution | Run loops safely, monitor stalls, intervene |
-| harness-optimizer | Harness config tuning | Reliability, cost, throughput |
-| rust-reviewer | Rust code review | Rust projects |
-| rust-build-resolver | Rust build errors | Rust build failures |
-| pytorch-build-resolver | PyTorch runtime/CUDA/training errors | PyTorch build/training failures |
-| mle-reviewer | Production ML pipeline review | ML pipelines, evals, serving, monitoring, rollback |
-| typescript-reviewer | TypeScript/JavaScript code review | TypeScript/JavaScript projects |
+| planner | Planejamento de implementação | Funcionalidades complexas, refatoração |
+| architect | Design de sistema e escalabilidade | Decisões de arquitetura |
+| tdd-guide | Desenvolvimento orientado a testes | Novas funcionalidades, correções de bugs |
+| code-reviewer | Qualidade e manutenibilidade do código | Após escrever/modificar código |
+| security-reviewer | Detecção de vulnerabilidades | Antes de commits, código sensível |
+| spec-miner | Extração de especificação em projetos brownfield | Integração de projetos brownfield ao desenvolvimento orientado a especificação |
+| build-error-resolver | Corrigir erros de build/tipo | Quando o build falha |
+| e2e-runner | Testes end-to-end com Playwright | Fluxos de usuário críticos |
+| refactor-cleaner | Limpeza de código morto | Manutenção de código |
+| doc-updater | Documentação e codemaps | Atualização de documentação |
+| cpp-reviewer | Revisão de código C/C++ | Projetos C e C++ |
+| cpp-build-resolver | Erros de build C/C++ | Falhas de build C e C++ |
+| fsharp-reviewer | Revisão de código funcional F# | Projetos F# |
+| docs-lookup | Consulta de documentação via Context7 | Perguntas sobre API/documentação |
+| go-reviewer | Revisão de código Go | Projetos Go |
+| go-build-resolver | Erros de build Go | Falhas de build Go |
+| kotlin-reviewer | Revisão de código Kotlin | Projetos Kotlin/Android/KMP |
+| kotlin-build-resolver | Erros de build Kotlin/Gradle | Falhas de build Kotlin |
+| database-reviewer | Especialista em PostgreSQL/Supabase | Design de schema, otimização de queries |
+| python-reviewer | Revisão de código Python | Projetos Python |
+| django-reviewer | Revisão de código Django | Aplicações Django, APIs DRF, ORM, migrações |
+| django-build-resolver | Erros de build, migração e configuração do Django | Falhas de inicialização, dependência, migração, collectstatic do Django |
+| java-reviewer | Revisão de código Java e Spring Boot | Projetos Java/Spring Boot |
+| java-build-resolver | Erros de build Java/Maven/Gradle | Falhas de build Java |
+| loop-operator | Execução autônoma de loops | Executar loops com segurança, monitorar travamentos, intervir |
+| harness-optimizer | Ajuste de configuração do harness | Confiabilidade, custo, throughput |
+| rust-reviewer | Revisão de código Rust | Projetos Rust |
+| rust-build-resolver | Erros de build Rust | Falhas de build Rust |
+| pytorch-build-resolver | Erros de runtime/CUDA/treinamento do PyTorch | Falhas de build/treinamento do PyTorch |
+| mle-reviewer | Revisão de pipeline de ML em produção | Pipelines de ML, evals, serving, monitoramento, rollback |
+| typescript-reviewer | Revisão de código TypeScript/JavaScript | Projetos TypeScript/JavaScript |
 
-## Agent Orchestration
+## Orquestração de Agents
 
-Use agents proactively without user prompt:
-- Complex feature requests → **planner**
-- Code just written/modified → **code-reviewer**
-- Bug fix or new feature → **tdd-guide**
-- Architectural decision → **architect**
-- Security-sensitive code → **security-reviewer**
-- Brownfield project onboarding → **spec-miner**
-- Autonomous loops / loop monitoring → **loop-operator**
-- Harness config reliability and cost → **harness-optimizer**
+Use agents proativamente sem solicitação do usuário:
+- Pedidos de funcionalidades complexas → **planner**
+- Código recém-escrito/modificado → **code-reviewer**
+- Correção de bug ou nova funcionalidade → **tdd-guide**
+- Decisão de arquitetura → **architect**
+- Código sensível à segurança → **security-reviewer**
+- Integração de projeto brownfield → **spec-miner**
+- Loops autônomos / monitoramento de loops → **loop-operator**
+- Confiabilidade e custo da configuração do harness → **harness-optimizer**
 
-Use parallel execution for independent operations — launch multiple agents simultaneously.
+Use execução paralela para operações independentes — lance múltiplos agents simultaneamente.
 
-## Security Guidelines
+## Diretrizes de Segurança
 
-**Before ANY commit:**
-- No hardcoded secrets (API keys, passwords, tokens)
-- All user inputs validated
-- SQL injection prevention (parameterized queries)
-- XSS prevention (sanitized HTML)
-- CSRF protection enabled
-- Authentication/authorization verified
-- Rate limiting on all endpoints
-- Error messages don't leak sensitive data
+**Antes de QUALQUER commit:**
+- Nenhum segredo embutido no código (chaves de API, senhas, tokens)
+- Todas as entradas de usuário validadas
+- Prevenção de injeção de SQL (queries parametrizadas)
+- Prevenção de XSS (HTML sanitizado)
+- Proteção contra CSRF habilitada
+- Autenticação/autorização verificadas
+- Limitação de taxa (rate limiting) em todos os endpoints
+- Mensagens de erro não vazam dados sensíveis
 
-**Secret management:** NEVER hardcode secrets. Use environment variables or a secret manager. Validate required secrets at startup. Rotate any exposed secrets immediately.
+**Gestão de segredos:** NUNCA embuta segredos no código. Use variáveis de ambiente ou um gerenciador de segredos. Valide os segredos exigidos na inicialização. Faça rotação imediata de qualquer segredo exposto.
 
-**If security issue found:** STOP → use security-reviewer agent → fix CRITICAL issues → rotate exposed secrets → review codebase for similar issues.
+**Se uma questão de segurança for encontrada:** PARE → use o agent security-reviewer → corrija questões CRÍTICAS → faça rotação dos segredos expostos → revise a base de código em busca de questões semelhantes.
 
-## Coding Style
+## Estilo de Código
 
-**Immutability (CRITICAL):** Always create new objects, never mutate. Return new copies with changes applied.
+**Imutabilidade (CRÍTICO):** Sempre crie novos objetos, nunca modifique. Retorne novas cópias com as alterações aplicadas.
 
-**File organization:** Many small files over few large ones. 200-400 lines typical, 800 max. Organize by feature/domain, not by type. High cohesion, low coupling.
+**Organização de arquivos:** Muitos arquivos pequenos em vez de poucos grandes. 200-400 linhas típico, 800 máximo. Organize por funcionalidade/domínio, não por tipo. Alta coesão, baixo acoplamento.
 
-**Error handling:** Handle errors at every level. Provide user-friendly messages in UI code. Log detailed context server-side. Never silently swallow errors.
+**Tratamento de erros:** Trate erros em todos os níveis. Forneça mensagens amigáveis ao usuário em código de UI. Registre contexto detalhado no lado do servidor. Nunca engula erros silenciosamente.
 
-**Input validation:** Validate all user input at system boundaries. Use schema-based validation. Fail fast with clear messages. Never trust external data.
+**Validação de entrada:** Valide toda entrada de usuário nos limites do sistema. Use validação baseada em schema. Falhe rápido com mensagens claras. Nunca confie em dados externos.
 
-**Code quality checklist:**
-- Functions small (<50 lines), files focused (<800 lines)
-- No deep nesting (>4 levels)
-- Proper error handling, no hardcoded values
-- Readable, well-named identifiers
+**Checklist de qualidade de código:**
+- Funções pequenas (<50 linhas), arquivos focados (<800 linhas)
+- Sem aninhamento profundo (>4 níveis)
+- Tratamento adequado de erros, sem valores embutidos no código
+- Identificadores legíveis e bem nomeados
 
-## Testing Requirements
+## Requisitos de Teste
 
-**Minimum coverage: 80%**
+**Cobertura mínima: 80%**
 
-Test types (all required):
-1. **Unit tests** — Individual functions, utilities, components
-2. **Integration tests** — API endpoints, database operations
-3. **E2E tests** — Critical user flows
+Tipos de teste (todos exigidos):
+1. **Testes unitários** — Funções individuais, utilitários, componentes
+2. **Testes de integração** — Endpoints de API, operações de banco de dados
+3. **Testes E2E** — Fluxos de usuário críticos
 
-**TDD workflow (mandatory):**
-1. Write test first (RED) — test should FAIL
-2. Write minimal implementation (GREEN) — test should PASS
-3. Refactor (IMPROVE) — verify coverage 80%+
+**Fluxo de trabalho de TDD (obrigatório):**
+1. Escreva o teste primeiro (RED) — o teste deve FALHAR
+2. Escreva a implementação mínima (GREEN) — o teste deve PASSAR
+3. Refatore (IMPROVE) — verifique cobertura de 80%+
 
-Troubleshoot failures: check test isolation → verify mocks → fix implementation (not tests, unless tests are wrong).
+Solucione falhas: verifique o isolamento dos testes → verifique os mocks → corrija a implementação (não os testes, a menos que os testes estejam errados).
 
-## Development Workflow
+## Fluxo de Trabalho de Desenvolvimento
 
-1. **Plan** — Use planner agent, identify dependencies and risks, break into phases
-2. **TDD** — Use tdd-guide agent, write tests first, implement, refactor
-3. **Review** — Use code-reviewer agent immediately, address CRITICAL/HIGH issues
-4. **Capture knowledge in the right place**
-   - Personal debugging notes, preferences, and temporary context → auto memory
-   - Team/project knowledge (architecture decisions, API changes, runbooks) → the project's existing docs structure
-   - If the current task already produces the relevant docs or code comments, do not duplicate the same information elsewhere
-   - If there is no obvious project doc location, ask before creating a new top-level file
-5. **Commit** — Conventional commits format, comprehensive PR summaries
+1. **Planejar** — Use o agent planner, identifique dependências e riscos, divida em fases
+2. **TDD** — Use o agent tdd-guide, escreva testes primeiro, implemente, refatore
+3. **Revisar** — Use o agent code-reviewer imediatamente, trate questões CRÍTICAS/ALTAS
+4. **Capture conhecimento no lugar certo**
+   - Notas pessoais de depuração, preferências e contexto temporário → memória automática
+   - Conhecimento de equipe/projeto (decisões de arquitetura, mudanças de API, runbooks) → a estrutura de documentação existente do projeto
+   - Se a tarefa atual já produz a documentação ou os comentários de código relevantes, não duplique a mesma informação em outro lugar
+   - Se não houver um local óbvio de documentação do projeto, pergunte antes de criar um novo arquivo de nível superior
+5. **Commit** — Formato de conventional commits, resumos abrangentes de PR
 
-## Workflow Surface Policy
+## Política de Superfície de Fluxo de Trabalho
 
-- `skills/` is the canonical workflow surface.
-- New workflow contributions should land in `skills/` first.
-- `commands/` is a legacy slash-entry compatibility surface and should only be added or updated when a shim is still required for migration or cross-harness parity.
+- `skills/` é a superfície canônica de fluxo de trabalho.
+- Novas contribuições de fluxo de trabalho devem chegar primeiro em `skills/`.
+- `commands/` é uma superfície de compatibilidade de entrada por barra legada e só deve ser adicionada ou atualizada quando um shim ainda for necessário para migração ou paridade entre harnesses.
 
-## Git Workflow
+## Fluxo de Trabalho do Git
 
-**Commit format:** `<type>: <description>` — Types: feat, fix, refactor, docs, test, chore, perf, ci
+**Formato de commit:** `<type>: <description>` — Tipos: feat, fix, refactor, docs, test, chore, perf, ci
 
-**PR workflow:** Analyze full commit history → draft comprehensive summary → include test plan → push with `-u` flag.
+**Fluxo de trabalho de PR:** Analise todo o histórico de commits → redija um resumo abrangente → inclua um plano de teste → faça push com a flag `-u`.
 
-## Architecture Patterns
+## Padrões de Arquitetura
 
-**API response format:** Consistent envelope with success indicator, data payload, error message, and pagination metadata.
+**Formato de resposta de API:** Envelope consistente com indicador de sucesso, payload de dados, mensagem de erro e metadados de paginação.
 
-**Repository pattern:** Encapsulate data access behind standard interface (findAll, findById, create, update, delete). Business logic depends on abstract interface, not storage mechanism.
+**Padrão Repository:** Encapsule o acesso a dados atrás de uma interface padrão (findAll, findById, create, update, delete). A lógica de negócio depende da interface abstrata, não do mecanismo de armazenamento.
 
-**Skeleton projects:** Search for battle-tested templates, evaluate with parallel agents (security, extensibility, relevance), clone best match, iterate within proven structure.
+**Projetos esqueleto:** Busque templates testados em campo, avalie com agents paralelos (segurança, extensibilidade, relevância), clone a melhor correspondência, itere dentro de uma estrutura comprovada.
 
 ## Performance
 
-**Context management:** Avoid last 20% of context window for large refactoring and multi-file features. Lower-sensitivity tasks (single edits, docs, simple fixes) tolerate higher utilization.
+**Gestão de contexto:** Evite os últimos 20% da janela de contexto para refatorações grandes e funcionalidades multiarquivo. Tarefas de menor sensibilidade (edições únicas, documentação, correções simples) toleram maior utilização.
 
-**Build troubleshooting:** Use build-error-resolver agent → analyze errors → fix incrementally → verify after each fix.
+**Solução de problemas de build:** Use o agent build-error-resolver → analise os erros → corrija incrementalmente → verifique após cada correção.
 
-## Project Structure
+## Estrutura do Projeto
 
 ```
 agents/          — 67 specialized subagents
@@ -161,12 +161,12 @@ mcp-configs/     — 14 MCP server configurations
 tests/           — Test suite
 ```
 
-`commands/` remains in the repo for compatibility, but the long-term direction is skills-first.
+`commands/` permanece no repositório por compatibilidade, mas a direção de longo prazo é skills-first.
 
-## Success Metrics
+## Métricas de Sucesso
 
-- All tests pass with 80%+ coverage
-- No security vulnerabilities
-- Code is readable and maintainable
-- Performance is acceptable
-- User requirements are met
+- Todos os testes passam com cobertura de 80%+
+- Nenhuma vulnerabilidade de segurança
+- O código é legível e de fácil manutenção
+- A performance é aceitável
+- Os requisitos do usuário são atendidos

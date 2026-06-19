@@ -1,31 +1,31 @@
-# Troubleshooting Guide
+# Guia de Solução de Problemas
 
-Common issues and solutions for Everything Claude Code (ECC) plugin.
+Problemas comuns e soluções para o plugin Everything Claude Code (ECC).
 
-## Table of Contents
+## Sumário
 
-- [Memory & Context Issues](#memory--context-issues)
-- [Agent Harness Failures](#agent-harness-failures)
-- [Hook & Workflow Errors](#hook--workflow-errors)
-- [Installation & Setup](#installation--setup)
-- [Performance Issues](#performance-issues)
-- [Common Error Messages](#common-error-messages)
-- [Getting Help](#getting-help)
+- [Problemas de Memória e Contexto](#memory--context-issues)
+- [Falhas no Harness de Agent](#agent-harness-failures)
+- [Erros de Hook e Fluxo de Trabalho](#hook--workflow-errors)
+- [Instalação e Configuração](#installation--setup)
+- [Problemas de Desempenho](#performance-issues)
+- [Mensagens de Erro Comuns](#common-error-messages)
+- [Obtendo Ajuda](#getting-help)
 
 ---
 
-## Memory & Context Issues
+## Problemas de Memória e Contexto
 
-### Context Window Overflow
+### Estouro da Janela de Contexto
 
-**Symptom:** "Context too long" errors or incomplete responses
+**Sintoma:** Erros de "Context too long" ou respostas incompletas
 
-**Causes:**
-- Large file uploads exceeding token limits
-- Accumulated conversation history
-- Multiple large tool outputs in single session
+**Causas:**
+- Uploads de arquivos grandes que excedem os limites de Token
+- Histórico de conversa acumulado
+- Múltiplas saídas grandes de ferramentas em uma única sessão
 
-**Solutions:**
+**Soluções:**
 ```bash
 # 1. Clear conversation history and start fresh
 # Use Claude Code: "New Chat" or Cmd/Ctrl+Shift+N
@@ -41,16 +41,16 @@ head -n 50 large-file.txt
 # Use: "Analyze files in src/components/ directory"
 ```
 
-### Memory Persistence Failures
+### Falhas na Persistência de Memória
 
-**Symptom:** Agent doesn't remember previous context or observations
+**Sintoma:** O Agent não lembra do contexto ou das observações anteriores
 
-**Causes:**
-- Disabled continuous-learning hooks
-- Corrupted observation files
-- Project detection failures
+**Causas:**
+- Hooks de aprendizado contínuo desativados
+- Arquivos de observação corrompidos
+- Falhas na detecção do projeto
 
-**Solutions:**
+**Soluções:**
 ```bash
 # Check if observations are being recorded
 ls ~/.claude/homunculus/projects/*/observations.jsonl
@@ -82,18 +82,18 @@ grep -r "observe" ~/.claude/settings.json
 
 ---
 
-## Agent Harness Failures
+## Falhas no Harness de Agent
 
-### Agent Not Found
+### Agent Não Encontrado
 
-**Symptom:** "Agent not loaded" or "Unknown agent" errors
+**Sintoma:** Erros de "Agent not loaded" ou "Unknown agent"
 
-**Causes:**
-- Plugin not installed correctly
-- Agent path misconfiguration
-- Marketplace vs manual install mismatch
+**Causas:**
+- Plugin não instalado corretamente
+- Configuração incorreta do caminho do Agent
+- Incompatibilidade entre instalação via marketplace e manual
 
-**Solutions:**
+**Soluções:**
 ```bash
 # Check plugin installation
 ls ~/.claude/plugins/cache/
@@ -108,16 +108,16 @@ ls ~/.claude/agents/  # Custom agents only
 # Claude Code → Settings → Extensions → Reload
 ```
 
-### Workflow Execution Hangs
+### A Execução do Fluxo de Trabalho Trava
 
-**Symptom:** Agent starts but never completes
+**Sintoma:** O Agent inicia, mas nunca conclui
 
-**Causes:**
-- Infinite loops in agent logic
-- Blocked on user input
-- Network timeout waiting for API
+**Causas:**
+- Loops infinitos na lógica do Agent
+- Bloqueado aguardando entrada do usuário
+- Timeout de rede aguardando a API
 
-**Solutions:**
+**Soluções:**
 ```bash
 # 1. Check for stuck processes
 ps aux | grep claude
@@ -132,16 +132,16 @@ export CLAUDE_TIMEOUT=30
 curl -I https://api.anthropic.com
 ```
 
-### Tool Use Errors
+### Erros de Uso de Ferramentas
 
-**Symptom:** "Tool execution failed" or permission denied
+**Sintoma:** "Tool execution failed" ou permissão negada
 
-**Causes:**
-- Missing dependencies (npm, python, etc.)
-- Insufficient file permissions
-- Path not found
+**Causas:**
+- Dependências ausentes (npm, python, etc.)
+- Permissões de arquivo insuficientes
+- Caminho não encontrado
 
-**Solutions:**
+**Soluções:**
 ```bash
 # Verify required tools are installed
 which node python3 npm git
@@ -156,18 +156,18 @@ echo $PATH
 
 ---
 
-## Hook & Workflow Errors
+## Erros de Hook e Fluxo de Trabalho
 
-### Hooks Not Firing
+### Hooks Não Disparam
 
-**Symptom:** Pre/post hooks don't execute
+**Sintoma:** Os hooks de pré/pós-execução não são executados
 
-**Causes:**
-- Hooks not registered in settings.json
-- Invalid hook syntax
-- Hook script not executable
+**Causas:**
+- Hooks não registrados em settings.json
+- Sintaxe de Hook inválida
+- Script de Hook não executável
 
-**Solutions:**
+**Soluções:**
 ```bash
 # Check hooks are registered
 grep -A 10 '"hooks"' ~/.claude/settings.json
@@ -182,16 +182,16 @@ bash ~/.claude/plugins/cache/*/hooks/pre-bash.sh <<< '{"command":"echo test"}'
 # Disable and re-enable plugin in Claude Code settings
 ```
 
-### Python/Node Version Mismatches
+### Incompatibilidades de Versão do Python/Node
 
-**Symptom:** "python3 not found" or "node: command not found"
+**Sintoma:** "python3 not found" ou "node: command not found"
 
-**Causes:**
-- Missing Python/Node installation
-- PATH not configured
-- Wrong Python version (Windows)
+**Causas:**
+- Instalação do Python/Node ausente
+- PATH não configurado
+- Versão incorreta do Python (Windows)
 
-**Solutions:**
+**Soluções:**
 ```bash
 # Install Python 3 (if missing)
 # macOS: brew install python3
@@ -212,15 +212,15 @@ npm --version
 python --version
 ```
 
-### Dev Server Blocker False Positives
+### Falsos Positivos do Bloqueador de Servidor de Desenvolvimento
 
-**Symptom:** Hook blocks legitimate commands mentioning "dev"
+**Sintoma:** O Hook bloqueia comandos legítimos que mencionam "dev"
 
-**Causes:**
-- Heredoc content triggering pattern match
-- Non-dev commands with "dev" in arguments
+**Causas:**
+- Conteúdo de heredoc disparando a correspondência de padrão
+- Comandos não relacionados a desenvolvimento com "dev" nos argumentos
 
-**Solutions:**
+**Soluções:**
 ```bash
 # This is fixed in v1.8.0+ (PR #371)
 # Upgrade plugin to latest version
@@ -235,19 +235,19 @@ tmux attach -t dev
 
 ---
 
-## Installation & Setup
+## Instalação e Configuração
 
-### Plugin Not Loading
+### O Plugin Não Carrega
 
-**Symptom:** Plugin features unavailable after install
+**Sintoma:** Recursos do Plugin indisponíveis após a instalação
 
-**Causes:**
-- Marketplace cache not updated
-- Claude Code version incompatibility
-- Corrupted plugin files
-- Local Claude setup was wiped or reset
+**Causas:**
+- Cache do marketplace não atualizado
+- Incompatibilidade de versão do Claude Code
+- Arquivos de Plugin corrompidos
+- A configuração local do Claude foi apagada ou redefinida
 
-**Solutions:**
+**Soluções:**
 ```bash
 # First inspect what ECC still knows about this machine
 ecc list-installed
@@ -278,16 +278,16 @@ git clone https://github.com/affaan-m/everything-claude-code.git
 cp -r everything-claude-code ~/.claude/plugins/ecc
 ```
 
-### Package Manager Detection Fails
+### A Detecção do Gerenciador de Pacotes Falha
 
-**Symptom:** Wrong package manager used (npm instead of pnpm)
+**Sintoma:** Gerenciador de pacotes incorreto usado (npm em vez de pnpm)
 
-**Causes:**
-- No lock file present
-- CLAUDE_PACKAGE_MANAGER not set
-- Multiple lock files confusing detection
+**Causas:**
+- Nenhum arquivo de lock presente
+- CLAUDE_PACKAGE_MANAGER não definido
+- Múltiplos arquivos de lock confundindo a detecção
 
-**Solutions:**
+**Soluções:**
 ```bash
 # Set preferred package manager globally
 export CLAUDE_PACKAGE_MANAGER=pnpm
@@ -307,18 +307,18 @@ rm package-lock.json  # If using pnpm/yarn/bun
 
 ---
 
-## Performance Issues
+## Problemas de Desempenho
 
-### Slow Response Times
+### Tempos de Resposta Lentos
 
-**Symptom:** Agent takes 30+ seconds to respond
+**Sintoma:** O Agent leva mais de 30 segundos para responder
 
-**Causes:**
-- Large observation files
-- Too many active hooks
-- Network latency to API
+**Causas:**
+- Arquivos de observação grandes
+- Hooks ativos em excesso
+- Latência de rede até a API
 
-**Solutions:**
+**Soluções:**
 ```bash
 # Archive large observations instead of deleting them
 archive_dir="$HOME/.claude/homunculus/archive/$(date +%Y%m%d)"
@@ -338,16 +338,16 @@ find ~/.claude/homunculus/projects -name "observations.jsonl" -size +10M -exec s
 # Large archives should live under ~/.claude/homunculus/archive/
 ```
 
-### High CPU Usage
+### Uso Elevado de CPU
 
-**Symptom:** Claude Code consuming 100% CPU
+**Sintoma:** O Claude Code consumindo 100% da CPU
 
-**Causes:**
-- Infinite observation loops
-- File watching on large directories
-- Memory leaks in hooks
+**Causas:**
+- Loops infinitos de observação
+- Monitoramento de arquivos em diretórios grandes
+- Vazamentos de memória nos hooks
 
-**Solutions:**
+**Soluções:**
 ```bash
 # Check for runaway processes
 top -o cpu | grep claude
@@ -364,7 +364,7 @@ du -sh ~/.claude/homunculus/*/
 
 ---
 
-## Common Error Messages
+## Mensagens de Erro Comuns
 
 ### "EACCES: permission denied"
 
@@ -402,17 +402,17 @@ find ~/.claude/plugins -name "*.sh" -exec dos2unix {} \;
 
 ---
 
-## Getting Help
+## Obtendo Ajuda
 
- If you're still experiencing issues:
+ Se você ainda estiver enfrentando problemas:
 
-1. **Check GitHub Issues**: [github.com/affaan-m/everything-claude-code/issues](https://github.com/affaan-m/everything-claude-code/issues)
-2. **Enable Debug Logging**:
+1. **Consulte as Issues no GitHub**: [github.com/affaan-m/everything-claude-code/issues](https://github.com/affaan-m/everything-claude-code/issues)
+2. **Ative o Log de Depuração**:
    ```bash
    export CLAUDE_DEBUG=1
    export CLAUDE_LOG_LEVEL=debug
    ```
-3. **Collect Diagnostic Info**:
+3. **Colete Informações de Diagnóstico**:
    ```bash
    claude --version
    node --version
@@ -420,13 +420,13 @@ find ~/.claude/plugins -name "*.sh" -exec dos2unix {} \;
    echo $CLAUDE_PACKAGE_MANAGER
    ls -la ~/.claude/plugins/cache/
    ```
-4. **Open an Issue**: Include debug logs, error messages, and diagnostic info
+4. **Abra uma Issue**: Inclua logs de depuração, mensagens de erro e informações de diagnóstico
 
 ---
 
-## Related Documentation
+## Documentação Relacionada
 
-- [README.md](./README.md) - Installation and features
-- [CONTRIBUTING.md](./CONTRIBUTING.md) - Development guidelines
-- [docs/](./docs/) - Detailed documentation
-- [examples/](./examples/) - Usage examples
+- [README.md](./README.md) - Instalação e recursos
+- [CONTRIBUTING.md](./CONTRIBUTING.md) - Diretrizes de desenvolvimento
+- [docs/](./docs/) - Documentação detalhada
+- [examples/](./examples/) - Exemplos de uso

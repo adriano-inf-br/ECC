@@ -1,110 +1,110 @@
-# Security Policy
+# Política de Segurança
 
-## Supported Versions
+## Versões Suportadas
 
-| Version | Supported |
+| Versão | Suportada |
 | --- | --- |
-| 2.x / rc builds | :white_check_mark: |
+| 2.x / builds rc | :white_check_mark: |
 | 1.10.x | :white_check_mark: |
-| 1.9.x | Critical fixes only |
+| 1.9.x | Apenas correções críticas |
 | < 1.9 | :x: |
 
-Security fixes land on `main` first. Backports are best-effort and only for currently supported release lines.
+As correções de segurança chegam primeiro na `main`. Backports são feitos na medida do possível e apenas para as linhas de release atualmente suportadas.
 
-## Reporting a Vulnerability
+## Reportando uma Vulnerabilidade
 
-Use GitHub private vulnerability reporting whenever possible — it reaches the maintainer directly:
+Use o reporte privado de vulnerabilidades do GitHub sempre que possível — ele chega diretamente ao mantenedor:
 
 - <https://github.com/affaan-m/ECC/security/advisories/new>
 
-You can also email **<affaan@ecc.tools>** (the `security@ecc.tools` alias is not monitored — use `affaan@ecc.tools`).
+Você também pode enviar e-mail para **<affaan@ecc.tools>** (o alias `security@ecc.tools` não é monitorado — use `affaan@ecc.tools`).
 
-Do **not** open a public GitHub issue for security vulnerabilities.
+**Não** abra uma issue pública no GitHub para vulnerabilidades de segurança.
 
-Include:
+Inclua:
 
-- affected file, package, version, commit, and install path
-- steps to reproduce from a clean checkout
-- expected impact and affected trust boundary
-- whether exploitation requires local shell access, a malicious repo, a malicious package, a remote unauthenticated actor, or maintainer credentials
-- any PoC logs with tokens, keys, local paths, and private data redacted
+- arquivo, pacote, versão, commit e caminho de instalação afetados
+- passos para reproduzir a partir de um checkout limpo
+- impacto esperado e limite de confiança afetado
+- se a exploração exige acesso local ao shell, um repositório malicioso, um pacote malicioso, um ator remoto não autenticado ou credenciais de mantenedor
+- quaisquer logs de PoC com tokens, chaves, caminhos locais e dados privados redigidos
 
-Expected response:
+Resposta esperada:
 
-- **Acknowledgment:** within 48 hours
-- **Initial assessment:** within 7 days
-- **Critical fix or mitigation target:** within 14 days when the report affects a supported release and crosses a real trust boundary
-- **Coordinated disclosure:** before public advisory publication
+- **Confirmação de recebimento:** dentro de 48 horas
+- **Avaliação inicial:** dentro de 7 dias
+- **Meta de correção ou mitigação crítica:** dentro de 14 dias quando o reporte afeta uma release suportada e cruza um limite de confiança real
+- **Divulgação coordenada:** antes da publicação do aviso público
 
-If a report is declined, we will explain whether it is not reproducible, out of scope, already fixed, or needs a stronger attack path.
+Se um reporte for recusado, explicaremos se ele não é reproduzível, está fora de escopo, já foi corrigido ou precisa de um caminho de ataque mais robusto.
 
-## Scope
+## Escopo
 
-This policy covers:
+Esta política cobre:
 
-- the `affaan-m/ECC` repository
-- the `ecc-universal` npm package
-- ECC plugin, install, repair, dashboard, hook, rule, skill, MCP, and command surfaces shipped from this repository
-- GitHub Actions workflows and release automation in this repository
-- the ECC Tools GitHub App integration points documented by this repository
-- AgentShield usage docs when they are embedded here. AgentShield code issues belong in <https://github.com/affaan-m/agentshield>
+- o repositório `affaan-m/ECC`
+- o pacote npm `ecc-universal`
+- as superfícies de plugin, instalação, reparo, dashboard, hook, regra, skill, MCP e comandos do ECC enviadas a partir deste repositório
+- os fluxos de trabalho do GitHub Actions e a automação de release neste repositório
+- os pontos de integração do GitHub App da ECC Tools documentados por este repositório
+- a documentação de uso do AgentShield quando ela está embutida aqui. Problemas de código do AgentShield pertencem a <https://github.com/affaan-m/agentshield>
 
-## Official Distribution Surfaces
+## Superfícies de Distribuição Oficiais
 
-Official ECC surfaces are:
+As superfícies oficiais do ECC são:
 
-- GitHub repo: <https://github.com/affaan-m/ECC>
-- npm package: `ecc-universal`
+- repositório GitHub: <https://github.com/affaan-m/ECC>
+- pacote npm: `ecc-universal`
 - GitHub App: <https://github.com/apps/ecc-tools>
-- marketplace/plugin slug: `ecc@ecc`
-- website: <https://ecc.tools>
+- slug de marketplace/plugin: `ecc@ecc`
+- site: <https://ecc.tools>
 
-Official AgentShield surface:
+Superfície oficial do AgentShield:
 
-- npm package: `ecc-agentshield`
-- GitHub repo: <https://github.com/affaan-m/agentshield>
+- pacote npm: `ecc-agentshield`
+- repositório GitHub: <https://github.com/affaan-m/agentshield>
 
-The following packages have been observed using ECC repository metadata but are **not maintained by ECC**:
+Os seguintes pacotes foram observados usando metadados do repositório ECC, mas **não são mantidos pela ECC**:
 
 - `@chil_ntl/ecc-cli`
 - `ecc-100xprompt-plugin`
 
-Treat any package not listed under official surfaces as unofficial until verified. Do not install packages named `opencode-ecc`, `everything-claude-code`, or other ECC-like aliases unless this repository explicitly documents them as official.
+Trate qualquer pacote não listado nas superfícies oficiais como não oficial até ser verificado. Não instale pacotes chamados `opencode-ecc`, `everything-claude-code` ou outros aliases parecidos com ECC, a menos que este repositório os documente explicitamente como oficiais.
 
-GitHub dependency graph may also show Go module aliases such as `github.com/affaan-m/ecc` or historical repository paths. ECC is not currently distributed as a supported Go module.
+O grafo de dependências do GitHub também pode mostrar aliases de módulo Go como `github.com/affaan-m/ecc` ou caminhos históricos do repositório. O ECC não é atualmente distribuído como um módulo Go suportado.
 
-## Out of Scope
+## Fora de Escopo
 
-Reports are usually out of scope when they only show:
+Os reportes geralmente estão fora de escopo quando apenas mostram:
 
-- local command execution where the user already controls the local shell and no higher-privilege trust boundary is crossed
-- screenshots, stale line numbers, or reports against `affaan-m/everything-claude-code` that do not reproduce on current `affaan-m/ECC`
-- self-XSS or social engineering with no repository-controlled exploit path
-- dependency graph/package metadata confusion without an install path to an official ECC package
-- vulnerabilities in third-party packages unless ECC pins, installs, or executes them in a way that creates extra impact
+- execução local de comandos em que o usuário já controla o shell local e nenhum limite de confiança de privilégio superior é cruzado
+- capturas de tela, números de linha desatualizados ou reportes contra `affaan-m/everything-claude-code` que não se reproduzem no `affaan-m/ECC` atual
+- self-XSS ou engenharia social sem caminho de exploit controlado pelo repositório
+- confusão de grafo de dependências/metadados de pacote sem um caminho de instalação para um pacote oficial do ECC
+- vulnerabilidades em pacotes de terceiros, a menos que o ECC os fixe, instale ou execute de uma forma que crie impacto adicional
 
-Local developer tools can still be valid security issues when untrusted repository content, package installation, generated hooks, or CI automation can trigger execution without clear user intent. Show that trust boundary in the report.
+Ferramentas locais de desenvolvedor ainda podem ser problemas de segurança válidos quando conteúdo de repositório não confiável, instalação de pacote, hooks gerados ou automação de CI podem disparar execução sem intenção clara do usuário. Demonstre esse limite de confiança no reporte.
 
-## Supply-Chain Rules
+## Regras de Cadeia de Suprimentos
 
-ECC treats supply-chain exposure as a first-class security surface.
+O ECC trata a exposição da cadeia de suprimentos como uma superfície de segurança de primeira classe.
 
-- GitHub Actions must use pinned commit SHAs for third-party actions.
-- Workflows must avoid shelling untrusted GitHub context directly into `run:` blocks.
-- Release and install docs must point only to official packages.
-- Package metadata should point at `affaan-m/ECC`, not historical repo paths.
-- Private vulnerability reports are triaged privately before public disclosure.
-- Security advisories are published only when a supported release is affected and coordinated disclosure is appropriate.
+- O GitHub Actions deve usar SHAs de commit fixados para actions de terceiros.
+- Os fluxos de trabalho devem evitar passar contexto não confiável do GitHub diretamente para blocos `run:` via shell.
+- A documentação de release e instalação deve apontar apenas para pacotes oficiais.
+- Os metadados do pacote devem apontar para `affaan-m/ECC`, não para caminhos históricos do repositório.
+- Reportes privados de vulnerabilidade são triados de forma privada antes da divulgação pública.
+- Avisos de segurança são publicados apenas quando uma release suportada é afetada e a divulgação coordenada é apropriada.
 
-## Operational Guidance
+## Orientação Operacional
 
-### Secrets Handling
+### Manuseio de Segredos
 
-`mcp-configs/mcp-servers.json` is a **template**. All `YOUR_*_HERE` values must be replaced at install time from env-vars or a secrets manager. Never commit real credentials. If a secret is accidentally committed, rotate it immediately and rewrite history. Do not rely on a plain revert.
+`mcp-configs/mcp-servers.json` é um **template**. Todos os valores `YOUR_*_HERE` devem ser substituídos no momento da instalação a partir de variáveis de ambiente ou de um gerenciador de segredos. Nunca faça commit de credenciais reais. Se um segredo for comitado acidentalmente, rotacione-o imediatamente e reescreva o histórico. Não confie em um simples revert.
 
-The same rule applies to user-scope Claude Code config (`~/.claude/settings.json` or `%USERPROFILE%\.claude\settings.json`). That file is outside this repository, but it is commonly shared through `claude doctor` output, screenshots, and bug reports. Do not hardcode PATs, API keys, or OAuth tokens into `mcpServers[*].env` blocks. Resolve them at spawn time from the OS keychain or env-vars your MCP server already supports.
+A mesma regra se aplica à config de usuário do Claude Code (`~/.claude/settings.json` ou `%USERPROFILE%\.claude\settings.json`). Esse arquivo está fora deste repositório, mas é comumente compartilhado por meio da saída do `claude doctor`, capturas de tela e relatórios de bug. Não deixe PATs, chaves de API ou tokens OAuth hardcoded em blocos `mcpServers[*].env`. Resolva-os no momento do spawn a partir do keychain do SO ou de variáveis de ambiente que o seu servidor MCP já suporta.
 
-Quick audit:
+Auditoria rápida:
 
 ```bash
 # macOS / Linux
@@ -114,11 +114,11 @@ grep -EnH '(TOKEN|SECRET|KEY|PASSWORD)\s*"\s*:\s*"[A-Za-z0-9_-]{16,}"' ~/.claude
 Select-String -Path "$env:USERPROFILE\.claude\settings.json" -Pattern '(TOKEN|SECRET|KEY|PASSWORD)"\s*:\s*"[A-Za-z0-9_-]{16,}"'
 ```
 
-If the audit matches, rotate the secret at the issuing provider, then move it out of the file.
+Se a auditoria encontrar correspondências, rotacione o segredo no provedor emissor e então mova-o para fora do arquivo.
 
-### Local MCP Ports
+### Portas Locais de MCP
 
-Some bundled MCP servers connect over plain HTTP to a localhost port. Before first use, verify the listening process:
+Alguns servidores MCP empacotados se conectam via HTTP simples a uma porta de localhost. Antes do primeiro uso, verifique o processo que está escutando:
 
 ```bash
 # Windows
@@ -128,29 +128,29 @@ netstat -ano | findstr :18801
 lsof -iTCP:18801 -sTCP:LISTEN
 ```
 
-Compare the PID against the expected binary. Any other process on that port can intercept MCP traffic.
+Compare o PID com o binário esperado. Qualquer outro processo naquela porta pode interceptar o tráfego MCP.
 
-## Triage: suspicious `<system-reminder>` blocks
+## Triagem: blocos `<system-reminder>` suspeitos
 
-ECC runs inside agent harnesses that may inject ephemeral client-side system reminders into the model input on every turn. These blocks are not automatically repository-carried payloads.
+O ECC roda dentro de harnesses de agente que podem injetar lembretes de sistema efêmeros do lado do cliente na entrada do modelo a cada turno. Esses blocos não são automaticamente payloads carregados pelo repositório.
 
-Before treating one as an attack, verify:
+Antes de tratar um deles como ataque, verifique:
 
-1. Is the block actually in a file under this repo?
+1. O bloco está de fato em um arquivo dentro deste repositório?
 
    ```bash
    grep -rEn "system-reminder|NEVER mention|DO NOT mention" .
    ```
 
-2. Is the block stored in the session transcript as part of a tool result?
-3. Is it consistent with known client reminders such as TodoWrite nudges, date notices, or file-modified notices?
+2. O bloco está armazenado na transcrição da sessão como parte de um resultado de ferramenta?
+3. Ele é consistente com lembretes de cliente conhecidos, como cutucadas do TodoWrite, avisos de data ou avisos de arquivo modificado?
 
-Escalate upstream only when the block is present inside a tool result or repository file and is not attributable to the file, URL, or command that was actually read.
+Escale para cima apenas quando o bloco estiver presente dentro de um resultado de ferramenta ou arquivo do repositório e não for atribuível ao arquivo, URL ou comando que foi de fato lido.
 
-## Security Resources
+## Recursos de Segurança
 
 - **AgentShield:** `npx ecc-agentshield scan`
-- **Security Guide:** [The Shorthand Guide to Everything Agentic Security](./the-security-guide.md)
-- **Supply-chain incident response:** [npm/GitHub Actions package-registry playbook](./docs/security/supply-chain-incident-response.md)
+- **Guia de Segurança:** [O Guia Resumido para Tudo sobre Segurança de Agentes](./the-security-guide.md)
+- **Resposta a incidentes de cadeia de suprimentos:** [playbook de registro de pacotes npm/GitHub Actions](./docs/security/supply-chain-incident-response.md)
 - **OWASP MCP Top 10:** <https://owasp.org/www-project-mcp-top-10/>
 - **OWASP Agentic Applications Top 10:** <https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/>

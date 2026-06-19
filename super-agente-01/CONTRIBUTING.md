@@ -1,8 +1,8 @@
-# Contributing to Everything Claude Code
+# Contribuindo para o Everything Claude Code
 
-Thanks for wanting to contribute! This repo is a community resource for Claude Code users.
+Obrigado por querer contribuir! Este repositório é um recurso comunitário para usuários do Claude Code.
 
-## Table of Contents
+## Índice
 
 - [What We're Looking For](#what-were-looking-for)
 - [Quick Start](#quick-start)
@@ -17,34 +17,34 @@ Thanks for wanting to contribute! This repo is a community resource for Claude C
 
 ---
 
-## What We're Looking For
+## O Que Procuramos
 
 ### Agents
-New agents that handle specific tasks well:
-- Language-specific reviewers (Python, Go, Rust)
-- Framework experts (Django, Rails, Laravel, Spring)
-- DevOps specialists (Kubernetes, Terraform, CI/CD)
-- Domain experts (ML pipelines, data engineering, mobile)
+Novos agents que lidam bem com tarefas específicas:
+- Reviewers específicos de linguagem (Python, Go, Rust)
+- Especialistas em frameworks (Django, Rails, Laravel, Spring)
+- Especialistas em DevOps (Kubernetes, Terraform, CI/CD)
+- Especialistas de domínio (pipelines de ML, engenharia de dados, mobile)
 
 ### Skills
-Workflow definitions and domain knowledge:
-- Language best practices
-- Framework patterns
-- Testing strategies
-- Architecture guides
+Definições de fluxo de trabalho e conhecimento de domínio:
+- Boas práticas de linguagem
+- Padrões de framework
+- Estratégias de teste
+- Guias de arquitetura
 
 ### Hooks
-Useful automations:
-- Linting/formatting hooks
-- Security checks
-- Validation hooks
-- Notification hooks
+Automações úteis:
+- Hooks de linting/formatação
+- Verificações de segurança
+- Hooks de validação
+- Hooks de notificação
 
-### Commands
-Slash commands that invoke useful workflows:
-- Deployment commands
-- Testing commands
-- Code generation commands
+### Comandos
+Comandos de barra que invocam fluxos de trabalho úteis:
+- Comandos de deploy
+- Comandos de teste
+- Comandos de geração de código
 
 ---
 
@@ -70,18 +70,18 @@ git add . && git commit -m "feat: add my-skill" && git push -u origin feat/my-co
 
 ---
 
-## Contributing Skills
+## Contribuindo com Skills
 
-Skills are knowledge modules that Claude Code loads based on context.
+Skills são módulos de conhecimento que o Claude Code carrega com base no contexto.
 
-> **Comprehensive Guide:** For detailed guidance on creating effective skills, see [Skill Development Guide](docs/SKILL-DEVELOPMENT-GUIDE.md). It covers:
-> - Skill architecture and categories
-> - Writing effective content with examples
-> - Best practices and common patterns
-> - Testing and validation
-> - Complete examples gallery
+> **Guia Abrangente:** Para orientação detalhada sobre como criar skills eficazes, veja o [Guia de Desenvolvimento de Skills](docs/SKILL-DEVELOPMENT-GUIDE.md). Ele cobre:
+> - Arquitetura e categorias de skills
+> - Escrita de conteúdo eficaz com exemplos
+> - Boas práticas e padrões comuns
+> - Teste e validação
+> - Galeria completa de exemplos
 
-### Directory Structure
+### Estrutura de Diretórios
 
 ```
 skills/
@@ -89,7 +89,7 @@ skills/
     └── SKILL.md
 ```
 
-### SKILL.md Template
+### Template de SKILL.md
 
 ```markdown
 ---
@@ -134,66 +134,66 @@ Show what NOT to do with examples.
 Link to complementary skills (e.g., `related-skill-1`, `related-skill-2`).
 ```
 
-### Skill Categories
+### Categorias de Skills
 
-| Category | Purpose | Examples |
+| Categoria | Propósito | Exemplos |
 |----------|---------|----------|
-| **Language Standards** | Idioms, conventions, best practices | `python-patterns`, `golang-patterns` |
-| **Framework Patterns** | Framework-specific guidance | `django-patterns`, `nextjs-patterns` |
-| **Workflow** | Step-by-step processes | `tdd-workflow`, `refactoring-workflow` |
-| **Domain Knowledge** | Specialized domains | `security-review`, `api-design` |
-| **Tool Integration** | Tool/library usage | `docker-patterns`, `supabase-patterns` |
-| **Template** | Project-specific skill templates | `docs/examples/project-guidelines-template.md` |
+| **Language Standards** | Idiomas, convenções, boas práticas | `python-patterns`, `golang-patterns` |
+| **Framework Patterns** | Orientação específica de framework | `django-patterns`, `nextjs-patterns` |
+| **Workflow** | Processos passo a passo | `tdd-workflow`, `refactoring-workflow` |
+| **Domain Knowledge** | Domínios especializados | `security-review`, `api-design` |
+| **Tool Integration** | Uso de ferramenta/biblioteca | `docker-patterns`, `supabase-patterns` |
+| **Template** | Templates de skill específicos de projeto | `docs/examples/project-guidelines-template.md` |
 
-### Skill Adaptation Policy
+### Política de Adaptação de Skills
 
-If you are porting an idea from another repo, plugin, harness, or personal prompt pack, read [Skill Adaptation Policy](docs/skill-adaptation-policy.md) before opening the PR.
+Se você está portando uma ideia de outro repositório, plugin, harness ou pacote pessoal de prompts, leia a [Política de Adaptação de Skills](docs/skill-adaptation-policy.md) antes de abrir o PR.
 
-Short version:
+Versão curta:
 
-- copy the underlying idea, not the external product identity
-- rename the skill when ECC materially changes or expands the surface
-- prefer ECC-native rules, skills, scripts, and MCPs over new default third-party dependencies
-- do not ship a skill whose main value is telling users to install an unvetted package
+- copie a ideia subjacente, não a identidade do produto externo
+- renomeie a skill quando o ECC mudar ou expandir materialmente a superfície
+- prefira regras, skills, scripts e MCPs nativos do ECC em vez de novas dependências de terceiros padrão
+- não entregue uma skill cujo principal valor seja dizer aos usuários para instalar um pacote não verificado
 
-### Skill Checklist
+### Checklist de Skill
 
-- [ ] Focused on one domain/technology (not too broad)
-- [ ] Includes "When to Activate" section for auto-activation
-- [ ] Includes practical, copy-pasteable code examples
-- [ ] Shows anti-patterns (what NOT to do)
-- [ ] Under 500 lines (800 max)
-- [ ] Uses clear section headers
-- [ ] Tested with Claude Code
-- [ ] Links to related skills
-- [ ] No sensitive data (API keys, tokens, paths)
-- [ ] Frontmatter declares `name:` matching the directory name
-- [ ] Frontmatter `description:` is an inline string or folded (`>`) scalar — not a literal block (`|`, `|-`, or `|+`), which preserves internal newlines and breaks flat-table renderers
+- [ ] Focada em um domínio/tecnologia (não muito ampla)
+- [ ] Inclui a seção "When to Activate" para auto-ativação
+- [ ] Inclui exemplos de código práticos e prontos para copiar e colar
+- [ ] Mostra anti-padrões (o que NÃO fazer)
+- [ ] Abaixo de 500 linhas (800 máximo)
+- [ ] Usa cabeçalhos de seção claros
+- [ ] Testada com o Claude Code
+- [ ] Links para skills relacionadas
+- [ ] Nenhum dado sensível (chaves de API, tokens, caminhos)
+- [ ] O frontmatter declara `name:` correspondendo ao nome do diretório
+- [ ] O `description:` do frontmatter é uma string inline ou escalar dobrado (`>`) — não um bloco literal (`|`, `|-` ou `|+`), que preserva quebras de linha internas e quebra os renderizadores de tabela plana
 
-### Example Skills
+### Skills de Exemplo
 
-| Skill | Category | Purpose |
+| Skill | Categoria | Propósito |
 |-------|----------|---------|
-| `coding-standards/` | Language Standards | TypeScript/JavaScript patterns |
-| `frontend-patterns/` | Framework Patterns | React and Next.js best practices |
-| `backend-patterns/` | Framework Patterns | API and database patterns |
-| `security-review/` | Domain Knowledge | Security checklist |
-| `tdd-workflow/` | Workflow | Test-driven development process |
-| `docs/examples/project-guidelines-template.md` | Template | Project-specific skill template |
+| `coding-standards/` | Language Standards | Padrões TypeScript/JavaScript |
+| `frontend-patterns/` | Framework Patterns | Boas práticas de React e Next.js |
+| `backend-patterns/` | Framework Patterns | Padrões de API e banco de dados |
+| `security-review/` | Domain Knowledge | Checklist de segurança |
+| `tdd-workflow/` | Workflow | Processo de desenvolvimento orientado a testes |
+| `docs/examples/project-guidelines-template.md` | Template | Template de skill específico de projeto |
 
 ---
 
-## Contributing Agents
+## Contribuindo com Agents
 
-Agents are specialized assistants invoked via the Task tool.
+Agents são assistentes especializados invocados via a ferramenta Task.
 
-### File Location
+### Localização do Arquivo
 
 ```
 agents/your-agent-name.md
 ```
 
-### Agent Template
+### Template de Agent
 
 ```markdown
 ---
@@ -234,46 +234,46 @@ Action: [what you do]
 Output: [what you return]
 ```
 
-### Agent Fields
+### Campos do Agent
 
-| Field | Description | Options |
+| Campo | Descrição | Opções |
 |-------|-------------|---------|
-| `name` | Lowercase, hyphenated | `code-reviewer` |
-| `description` | Used to decide when to invoke | Be specific! |
-| `tools` | Only what's needed | `Read, Write, Edit, Bash, Grep, Glob, WebFetch, Task`, or MCP tool names (e.g. `mcp__context7__resolve-library-id`, `mcp__context7__query-docs`) when the agent uses MCP |
-| `model` | Complexity level | `haiku` (simple), `sonnet` (coding), `opus` (complex) |
+| `name` | Minúsculo, com hífens | `code-reviewer` |
+| `description` | Usado para decidir quando invocar | Seja específico! |
+| `tools` | Apenas o que for necessário | `Read, Write, Edit, Bash, Grep, Glob, WebFetch, Task`, ou nomes de ferramentas MCP (ex.: `mcp__context7__resolve-library-id`, `mcp__context7__query-docs`) quando o agent usa MCP |
+| `model` | Nível de complexidade | `haiku` (simples), `sonnet` (codificação), `opus` (complexo) |
 
-### Example Agents
+### Agents de Exemplo
 
-| Agent | Purpose |
+| Agent | Propósito |
 |-------|---------|
-| `tdd-guide.md` | Test-driven development |
-| `code-reviewer.md` | Code review |
-| `security-reviewer.md` | Security scanning |
-| `build-error-resolver.md` | Fix build errors |
+| `tdd-guide.md` | Desenvolvimento orientado a testes |
+| `code-reviewer.md` | Revisão de código |
+| `security-reviewer.md` | Varredura de segurança |
+| `build-error-resolver.md` | Corrigir erros de build |
 
 ---
 
-## Contributing Hooks
+## Contribuindo com Hooks
 
-Hooks are automatic behaviors triggered by Claude Code events.
+Hooks são comportamentos automáticos acionados por eventos do Claude Code.
 
-### File Location
+### Localização do Arquivo
 
 ```
 hooks/hooks.json
 ```
 
-### Hook Types
+### Tipos de Hook
 
-| Type | Trigger | Use Case |
+| Tipo | Gatilho | Caso de Uso |
 |------|---------|----------|
-| `PreToolUse` | Before tool runs | Validate, warn, block |
-| `PostToolUse` | After tool runs | Format, check, notify |
-| `SessionStart` | Session begins | Load context |
-| `Stop` | Session ends | Cleanup, audit |
+| `PreToolUse` | Antes de a ferramenta rodar | Validar, avisar, bloquear |
+| `PostToolUse` | Depois de a ferramenta rodar | Formatar, verificar, notificar |
+| `SessionStart` | Início da sessão | Carregar contexto |
+| `Stop` | Fim da sessão | Limpeza, auditoria |
 
-### Hook Format
+### Formato de Hook
 
 ```json
 {
@@ -294,7 +294,7 @@ hooks/hooks.json
 }
 ```
 
-### Matcher Syntax
+### Sintaxe de Matcher
 
 ```javascript
 // Match specific tools
@@ -310,7 +310,7 @@ tool_input.file_path matches "\\.tsx?$"
 tool == "Bash" && tool_input.command matches "git push"
 ```
 
-### Hook Examples
+### Exemplos de Hook
 
 ```json
 // Block dev servers outside tmux
@@ -335,27 +335,27 @@ tool == "Bash" && tool_input.command matches "git push"
 }
 ```
 
-### Hook Checklist
+### Checklist de Hook
 
-- [ ] Matcher is specific (not overly broad)
-- [ ] Includes clear error/info messages
-- [ ] Uses correct exit codes (`exit 1` blocks, `exit 0` allows)
-- [ ] Tested thoroughly
-- [ ] Has description
+- [ ] O matcher é específico (não excessivamente amplo)
+- [ ] Inclui mensagens claras de erro/informação
+- [ ] Usa códigos de saída corretos (`exit 1` bloqueia, `exit 0` permite)
+- [ ] Testado minuciosamente
+- [ ] Possui descrição
 
 ---
 
-## Contributing Commands
+## Contribuindo com Comandos
 
-Commands are user-invoked actions with `/command-name`.
+Comandos são ações invocadas pelo usuário com `/command-name`.
 
-### File Location
+### Localização do Arquivo
 
 ```
 commands/your-command.md
 ```
 
-### Command Template
+### Template de Comando
 
 ```markdown
 ---
@@ -385,54 +385,54 @@ What this command does.
 What the user receives.
 ```
 
-### Example Commands
+### Comandos de Exemplo
 
-| Command | Purpose |
+| Comando | Propósito |
 |---------|---------|
-| `commit.md` | Create git commits |
-| `code-review.md` | Review code changes |
-| `tdd.md` | TDD workflow |
-| `e2e.md` | E2E testing |
+| `commit.md` | Criar commits do git |
+| `code-review.md` | Revisar alterações de código |
+| `tdd.md` | Fluxo de trabalho de TDD |
+| `e2e.md` | Testes E2E |
 
 ---
 
-## MCP and documentation (e.g. Context7)
+## MCP e documentação (ex.: Context7)
 
-Skills and agents can use **MCP (Model Context Protocol)** tools to pull in up-to-date data instead of relying only on training data. This is especially useful for documentation.
+Skills e agents podem usar ferramentas de **MCP (Model Context Protocol)** para trazer dados atualizados em vez de depender apenas dos dados de treinamento. Isso é especialmente útil para documentação.
 
-- **Context7** is an MCP server that exposes `resolve-library-id` and `query-docs`. Use it when the user asks about libraries, frameworks, or APIs so answers reflect current docs and code examples.
-- When contributing **skills** that depend on live docs (e.g. setup, API usage), describe how to use the relevant MCP tools (e.g. resolve the library ID, then query docs) and point to the `documentation-lookup` skill or Context7 as the pattern.
-- When contributing **agents** that answer docs/API questions, include the Context7 MCP tool names (e.g. `mcp__context7__resolve-library-id`, `mcp__context7__query-docs`) in the agent's tools and document the resolve → query workflow.
-- **mcp-configs/mcp-servers.json** includes a Context7 entry; users enable it in their harness (e.g. Claude Code, Cursor) to use the documentation-lookup skill (in `skills/documentation-lookup/`) and the `/docs` command.
-
----
-
-## Cross-Harness and Translations
-
-### Skill subsets (Codex and Cursor)
-
-ECC ships skill subsets for other harnesses:
-
-- **Codex:** `.agents/skills/` — skills listed in `agents/openai.yaml` are loaded by Codex.
-- **Cursor:** `.cursor/skills/` — a subset of skills is bundled for Cursor.
-
-When you **add a new skill** that should be available on Codex or Cursor:
-
-1. Add the skill under `skills/your-skill-name/` as usual.
-2. If it should be available on **Codex**, add it to `.agents/skills/` (copy the skill directory or add a reference) and ensure it is referenced in `agents/openai.yaml` if required.
-3. If it should be available on **Cursor**, add it under `.cursor/skills/` per Cursor's layout.
-
-Check existing skills in those directories for the expected structure. Keeping these subsets in sync is manual; mention in your PR if you updated them.
-
-### Translations
-
-Translations live under `docs/` (e.g. `docs/zh-CN`, `docs/zh-TW`, `docs/ja-JP`). If you change agents, commands, or skills that are translated, consider updating the corresponding translation files or opening an issue so maintainers or translators can update them.
+- **Context7** é um servidor MCP que expõe `resolve-library-id` e `query-docs`. Use-o quando o usuário perguntar sobre bibliotecas, frameworks ou APIs para que as respostas reflitam a documentação e os exemplos de código atuais.
+- Ao contribuir com **skills** que dependem de documentação ao vivo (ex.: configuração, uso de API), descreva como usar as ferramentas MCP relevantes (ex.: resolver o ID da biblioteca, depois consultar a documentação) e aponte para a skill `documentation-lookup` ou o Context7 como o padrão.
+- Ao contribuir com **agents** que respondem perguntas sobre documentação/API, inclua os nomes das ferramentas MCP do Context7 (ex.: `mcp__context7__resolve-library-id`, `mcp__context7__query-docs`) nas tools do agent e documente o fluxo de trabalho resolver → consultar.
+- **mcp-configs/mcp-servers.json** inclui uma entrada de Context7; os usuários a habilitam em seu harness (ex.: Claude Code, Cursor) para usar a skill documentation-lookup (em `skills/documentation-lookup/`) e o comando `/docs`.
 
 ---
 
-## Pull Request Process
+## Cross-Harness e Traduções
 
-### 1. PR Title Format
+### Subconjuntos de skills (Codex e Cursor)
+
+O ECC entrega subconjuntos de skills para outros harnesses:
+
+- **Codex:** `.agents/skills/` — as skills listadas em `agents/openai.yaml` são carregadas pelo Codex.
+- **Cursor:** `.cursor/skills/` — um subconjunto de skills é empacotado para o Cursor.
+
+Quando você **adiciona uma nova skill** que deve estar disponível no Codex ou Cursor:
+
+1. Adicione a skill em `skills/your-skill-name/` como de costume.
+2. Se ela deve estar disponível no **Codex**, adicione-a em `.agents/skills/` (copie o diretório da skill ou adicione uma referência) e garanta que ela esteja referenciada em `agents/openai.yaml` se necessário.
+3. Se ela deve estar disponível no **Cursor**, adicione-a em `.cursor/skills/` conforme o layout do Cursor.
+
+Verifique as skills existentes nesses diretórios para a estrutura esperada. Manter esses subconjuntos sincronizados é manual; mencione no seu PR se você os atualizou.
+
+### Traduções
+
+As traduções ficam em `docs/` (ex.: `docs/zh-CN`, `docs/zh-TW`, `docs/ja-JP`). Se você alterar agents, comandos ou skills que são traduzidos, considere atualizar os arquivos de tradução correspondentes ou abrir uma issue para que os mantenedores ou tradutores possam atualizá-los.
+
+---
+
+## Processo de Pull Request
+
+### 1. Formato do Título do PR
 
 ```
 feat(skills): add rust-patterns skill
@@ -442,7 +442,7 @@ fix(skills): update React patterns
 docs: improve contributing guide
 ```
 
-### 2. PR Description
+### 2. Descrição do PR
 
 ```markdown
 ## Summary
@@ -464,44 +464,44 @@ How you tested this.
 - [ ] Clear descriptions
 ```
 
-### 3. Review Process
+### 3. Processo de Revisão
 
-1. Maintainers review within 48 hours
-2. Address feedback if requested
-3. Once approved, merged to main
-
----
-
-## Guidelines
-
-### Do
-- Keep contributions focused and modular
-- Include clear descriptions
-- Test before submitting
-- Follow existing patterns
-- Document dependencies
-
-### Don't
-- Include sensitive data (API keys, tokens, paths)
-- Add overly complex or niche configs
-- Submit untested contributions
-- Create duplicates of existing functionality
+1. Os mantenedores revisam em até 48 horas
+2. Trate o feedback se solicitado
+3. Uma vez aprovado, é mesclado na main
 
 ---
 
-## File Naming
+## Diretrizes
 
-- Use lowercase with hyphens: `python-reviewer.md`
-- Be descriptive: `tdd-workflow.md` not `workflow.md`
-- Match name to filename
+### Faça
+- Mantenha as contribuições focadas e modulares
+- Inclua descrições claras
+- Teste antes de submeter
+- Siga os padrões existentes
+- Documente dependências
+
+### Não Faça
+- Incluir dados sensíveis (chaves de API, tokens, caminhos)
+- Adicionar configurações excessivamente complexas ou de nicho
+- Submeter contribuições não testadas
+- Criar duplicatas de funcionalidade existente
 
 ---
 
-## Questions?
+## Nomenclatura de Arquivos
+
+- Use minúsculas com hífens: `python-reviewer.md`
+- Seja descritivo: `tdd-workflow.md` em vez de `workflow.md`
+- Corresponda o nome ao nome do arquivo
+
+---
+
+## Dúvidas?
 
 - **Issues:** [github.com/affaan-m/ECC/issues](https://github.com/affaan-m/ECC/issues)
 - **X/Twitter:** [@affaanmustafa](https://x.com/affaanmustafa)
 
 ---
 
-Thanks for contributing! Let's build a great resource together.
+Obrigado por contribuir! Vamos construir juntos um ótimo recurso.

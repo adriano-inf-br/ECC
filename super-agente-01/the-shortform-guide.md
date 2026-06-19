@@ -1,28 +1,28 @@
-# The Shorthand Guide to Everything Claude Code
+# O Guia Resumido para o Everything Claude Code
 
 ![Header: Anthropic Hackathon Winner - Tips & Tricks for Claude Code](./assets/images/shortform/00-header.png)
 
 ---
 
-**Been an avid Claude Code user since the experimental rollout in Feb, and won the Anthropic x Forum Ventures hackathon with [zenith.chat](https://zenith.chat) alongside [@DRodriguezFX](https://x.com/DRodriguezFX) - completely using Claude Code.**
+**Sou um usuário assíduo do Claude Code desde o lançamento experimental em fevereiro, e venci o hackathon Anthropic x Forum Ventures com o [zenith.chat](https://zenith.chat) ao lado de [@DRodriguezFX](https://x.com/DRodriguezFX) - usando inteiramente o Claude Code.**
 
-Here's my complete setup after 10 months of daily use: skills, hooks, subagents, MCPs, plugins, and what actually works.
+Aqui está minha configuração completa após 10 meses de uso diário: Skills, Hooks, subagentes, MCPs, Plugins, e o que realmente funciona.
 
 ---
 
-## Skills and Commands
+## Skills e Comandos
 
-Skills are the primary workflow surface. They act like scoped workflow bundles: reusable prompts, structure, supporting files, and codemaps when you need a particular execution pattern.
+Skills são a principal superfície de fluxo de trabalho. Elas funcionam como pacotes de fluxo de trabalho com escopo definido: prompts reutilizáveis, estrutura, arquivos de apoio e codemaps quando você precisa de um padrão de execução específico.
 
-After a long session of coding with Opus 4.5, you want to clean out dead code and loose .md files? Run `/refactor-clean`. Need testing? `/tdd`, `/e2e`, `/test-coverage`. Those slash entries are convenient, but the real durable unit is the underlying skill. Skills can also include codemaps - a way for Claude to quickly navigate your codebase without burning context on exploration.
+Depois de uma longa sessão de programação com o Opus 4.5, você quer limpar código morto e arquivos .md soltos? Execute `/refactor-clean`. Precisa de testes? `/tdd`, `/e2e`, `/test-coverage`. Esses atalhos de barra são convenientes, mas a unidade realmente duradoura é a Skill subjacente. As Skills também podem incluir codemaps - uma forma de o Claude navegar rapidamente pela sua base de código sem gastar contexto com exploração.
 
 ![Terminal showing chained commands](./assets/images/shortform/02-chaining-commands.jpeg)
-*Chaining commands together*
+*Encadeando comandos em sequência*
 
-ECC still ships a `commands/` layer, but it is best thought of as legacy slash-entry compatibility during migration. The durable logic should live in skills.
+O ECC ainda inclui uma camada `commands/`, mas o melhor é pensá-la como compatibilidade legada de atalhos de barra durante a migração. A lógica duradoura deve viver nas Skills.
 
-- **Skills**: `~/.claude/skills/` - canonical workflow definitions
-- **Commands**: `~/.claude/commands/` - legacy slash-entry shims when you still need them
+- **Skills**: `~/.claude/skills/` - definições canônicas de fluxo de trabalho
+- **Comandos**: `~/.claude/commands/` - shims legados de atalho de barra para quando você ainda precisa deles
 
 ```bash
 # Example skill structure
@@ -37,18 +37,18 @@ ECC still ships a `commands/` layer, but it is best thought of as legacy slash-e
 
 ## Hooks
 
-Hooks are trigger-based automations that fire on specific events. Unlike skills, they're constricted to tool calls and lifecycle events.
+Hooks são automações baseadas em gatilhos que disparam em eventos específicos. Diferentemente das Skills, eles ficam restritos a chamadas de ferramentas e eventos de ciclo de vida.
 
-**Hook Types:**
+**Tipos de Hook:**
 
-1. **PreToolUse** - Before a tool executes (validation, reminders)
-2. **PostToolUse** - After a tool finishes (formatting, feedback loops)
-3. **UserPromptSubmit** - When you send a message
-4. **Stop** - When Claude finishes responding
-5. **PreCompact** - Before context compaction
-6. **Notification** - Permission requests
+1. **PreToolUse** - Antes de uma ferramenta executar (validação, lembretes)
+2. **PostToolUse** - Depois de uma ferramenta terminar (formatação, loops de feedback)
+3. **UserPromptSubmit** - Quando você envia uma mensagem
+4. **Stop** - Quando o Claude termina de responder
+5. **PreCompact** - Antes da compactação de contexto
+6. **Notification** - Solicitações de permissão
 
-**Example: tmux reminder before long-running commands**
+**Exemplo: lembrete de tmux antes de comandos de longa duração**
 
 ```json
 {
@@ -67,17 +67,17 @@ Hooks are trigger-based automations that fire on specific events. Unlike skills,
 ```
 
 ![PostToolUse hook feedback](./assets/images/shortform/03-posttooluse-hook.png)
-*Example of what feedback you get in Claude Code, while running a PostToolUse hook*
+*Exemplo do feedback que você recebe no Claude Code ao executar um Hook PostToolUse*
 
-**Pro tip:** Use the `hookify` plugin to create hooks conversationally instead of writing JSON manually. Run `/hookify` and describe what you want.
+**Dica profissional:** Use o Plugin `hookify` para criar Hooks de forma conversacional em vez de escrever JSON manualmente. Execute `/hookify` e descreva o que você quer.
 
 ---
 
-## Subagents
+## Subagentes
 
-Subagents are processes your orchestrator (main Claude) can delegate tasks to with limited scopes. They can run in background or foreground, freeing up context for the main agent.
+Subagentes são processos para os quais seu orquestrador (o Claude principal) pode delegar tarefas com escopos limitados. Eles podem rodar em segundo plano ou em primeiro plano, liberando contexto para o agente principal.
 
-Subagents work nicely with skills - a subagent capable of executing a subset of your skills can be delegated tasks and use those skills autonomously. They can also be sandboxed with specific tool permissions.
+Subagentes funcionam muito bem com Skills - um subagente capaz de executar um subconjunto das suas Skills pode receber tarefas delegadas e usar essas Skills de forma autônoma. Eles também podem ser isolados em sandbox com permissões de ferramentas específicas.
 
 ```bash
 # Example subagent structure
@@ -92,16 +92,16 @@ Subagents work nicely with skills - a subagent capable of executing a subset of 
   refactor-cleaner.md
 ```
 
-Configure allowed tools, MCPs, and permissions per subagent for proper scoping.
+Configure as ferramentas permitidas, MCPs e permissões por subagente para um escopo adequado.
 
 ---
 
-## Rules and Memory
+## Regras e Memória
 
-Your `.rules` folder holds `.md` files with best practices Claude should ALWAYS follow. Two approaches:
+Sua pasta `.rules` contém arquivos `.md` com boas práticas que o Claude deve SEMPRE seguir. Duas abordagens:
 
-1. **Single CLAUDE.md** - Everything in one file (user or project level)
-2. **Rules folder** - Modular `.md` files grouped by concern
+1. **CLAUDE.md único** - Tudo em um arquivo (nível de usuário ou de projeto)
+2. **Pasta de regras** - Arquivos `.md` modulares agrupados por área de interesse
 
 ```bash
 ~/.claude/rules/
@@ -113,37 +113,37 @@ Your `.rules` folder holds `.md` files with best practices Claude should ALWAYS 
   performance.md   # Model selection, context management
 ```
 
-**Example rules:**
+**Exemplos de regras:**
 
-- No emojis in codebase
-- Refrain from purple hues in frontend
-- Always test code before deployment
-- Prioritize modular code over mega-files
-- Never commit console.logs
+- Nada de emojis na base de código
+- Evitar tons de roxo no frontend
+- Sempre testar o código antes do deploy
+- Priorizar código modular em vez de arquivos gigantes
+- Nunca commitar console.logs
 
 ---
 
 ## MCPs (Model Context Protocol)
 
-MCPs connect Claude to external services directly. Not a replacement for APIs - it's a prompt-driven wrapper around them, allowing more flexibility in navigating information.
+MCPs conectam o Claude a serviços externos diretamente. Não são um substituto para APIs - são um wrapper orientado por prompt em torno delas, permitindo mais flexibilidade na navegação das informações.
 
-**Example:** Supabase MCP lets Claude pull specific data, run SQL directly upstream without copy-paste. Same for databases, deployment platforms, etc.
+**Exemplo:** o MCP do Supabase permite que o Claude extraia dados específicos e execute SQL diretamente na origem, sem copiar e colar. O mesmo vale para bancos de dados, plataformas de deploy, etc.
 
 ![Supabase MCP listing tables](./assets/images/shortform/04-supabase-mcp.jpeg)
-*Example of the Supabase MCP listing the tables within the public schema*
+*Exemplo do MCP do Supabase listando as tabelas dentro do schema public*
 
-**Chrome in Claude:** is a built-in plugin MCP that lets Claude autonomously control your browser - clicking around to see how things work.
+**Chrome no Claude:** é um MCP de Plugin embutido que permite ao Claude controlar seu navegador de forma autônoma - clicando por aí para ver como as coisas funcionam.
 
-**CRITICAL: Context Window Management**
+**CRÍTICO: Gerenciamento da Janela de Contexto**
 
-Be picky with MCPs. I keep all MCPs in user config but **disable everything unused**. Navigate to `/plugins` and scroll down or run `/mcp`.
+Seja seletivo com os MCPs. Eu mantenho todos os MCPs na configuração de usuário, mas **desativo tudo o que não uso**. Vá até `/plugins` e role para baixo, ou execute `/mcp`.
 
 ![/plugins interface](./assets/images/shortform/05-plugins-interface.jpeg)
-*Using /plugins to navigate to MCPs to see which ones are currently installed and their status*
+*Usando /plugins para navegar até os MCPs e ver quais estão instalados no momento e seu status*
 
-Your 200k context window before compacting might only be 70k with too many tools enabled. Performance degrades significantly.
+Sua janela de contexto de 200k antes da compactação pode acabar sendo de apenas 70k com ferramentas demais habilitadas. O desempenho cai significativamente.
 
-**Rule of thumb:** Have 20-30 MCPs in config, but keep under 10 enabled / under 80 tools active.
+**Regra geral:** Tenha de 20 a 30 MCPs na configuração, mas mantenha menos de 10 habilitados / menos de 80 ferramentas ativas.
 
 ```bash
 # Check enabled MCPs
@@ -156,9 +156,9 @@ Your 200k context window before compacting might only be 70k with too many tools
 
 ## Plugins
 
-Plugins package tools for easy installation instead of tedious manual setup. A plugin can be a skill + MCP combined, or hooks/tools bundled together.
+Plugins empacotam ferramentas para instalação fácil, em vez de uma configuração manual tediosa. Um Plugin pode ser uma Skill + MCP combinados, ou Hooks/ferramentas agrupados.
 
-**Installing plugins:**
+**Instalando Plugins:**
 
 ```bash
 # Add a marketplace
@@ -169,9 +169,9 @@ claude plugin marketplace add https://github.com/mixedbread-ai/mgrep
 ```
 
 ![Marketplaces tab showing mgrep](./assets/images/shortform/06-marketplaces-mgrep.jpeg)
-*Displaying the newly installed Mixedbread-Grep marketplace*
+*Exibindo o marketplace Mixedbread-Grep recém-instalado*
 
-**LSP Plugins** are particularly useful if you run Claude Code outside editors frequently. Language Server Protocol gives Claude real-time type checking, go-to-definition, and intelligent completions without needing an IDE open.
+**Plugins de LSP** são particularmente úteis se você executa o Claude Code fora de editores com frequência. O Language Server Protocol (LSP) dá ao Claude verificação de tipos em tempo real, ir-para-definição e autocompletes inteligentes sem precisar de uma IDE aberta.
 
 ```bash
 # Enabled plugins example
@@ -181,37 +181,37 @@ hookify@claude-plugins-official         # Create hooks conversationally
 mgrep@Mixedbread-Grep                   # Better search than ripgrep
 ```
 
-Same warning as MCPs - watch your context window.
+O mesmo aviso vale para os MCPs - fique de olho na sua janela de contexto.
 
 ---
 
-## Tips and Tricks
+## Dicas e Truques
 
-### Keyboard Shortcuts
+### Atalhos de Teclado
 
-- `Ctrl+U` - Delete entire line (faster than backspace spam)
-- `!` - Quick bash command prefix
-- `@` - Search for files
-- `/` - Initiate slash commands
-- `Shift+Enter` - Multi-line input
-- `Tab` - Toggle thinking display
-- `Esc Esc` - Interrupt Claude / restore code
+- `Ctrl+U` - Apaga a linha inteira (mais rápido que ficar martelando o backspace)
+- `!` - Prefixo rápido para comando bash
+- `@` - Busca por arquivos
+- `/` - Inicia comandos de barra
+- `Shift+Enter` - Entrada multilinha
+- `Tab` - Alterna a exibição do raciocínio
+- `Esc Esc` - Interrompe o Claude / restaura o código
 
-### Parallel Workflows
+### Fluxos de Trabalho Paralelos
 
-- **Fork** (`/fork`) - Fork conversations to do non-overlapping tasks in parallel instead of spamming queued messages
-- **Git Worktrees** - For overlapping parallel Claudes without conflicts. Each worktree is an independent checkout
+- **Fork** (`/fork`) - Bifurca conversas para fazer tarefas não sobrepostas em paralelo, em vez de encher a fila de mensagens
+- **Git Worktrees** - Para Claudes paralelos sobrepostos sem conflitos. Cada worktree é um checkout independente
 
 ```bash
 git worktree add ../feature-branch feature-branch
 # Now run separate Claude instances in each worktree
 ```
 
-### tmux for Long-Running Commands
+### tmux para Comandos de Longa Duração
 
-Stream and watch logs/bash processes Claude runs:
+Transmita e acompanhe logs/processos bash que o Claude executa:
 
-[Watch: tmux session streaming a long-running command (video)](./assets/images/shortform/07-tmux-video.mp4)
+[Assista: sessão tmux transmitindo um comando de longa duração (vídeo)](./assets/images/shortform/07-tmux-video.mp4)
 
 ```bash
 tmux new -s dev
@@ -221,74 +221,74 @@ tmux attach -t dev
 
 ### mgrep > grep
 
-`mgrep` is a significant improvement from ripgrep/grep. Install via plugin marketplace, then use the `/mgrep` skill. Works with both local search and web search.
+O `mgrep` é uma melhoria significativa em relação ao ripgrep/grep. Instale via marketplace de Plugins e depois use a Skill `/mgrep`. Funciona tanto com busca local quanto com busca na web.
 
 ```bash
 mgrep "function handleSubmit"  # Local search
 mgrep --web "Next.js 15 app router changes"  # Web search
 ```
 
-### Other Useful Commands
+### Outros Comandos Úteis
 
-- `/rewind` - Go back to a previous state
-- `/statusline` - Customize with branch, context %, todos
-- `/checkpoints` - File-level undo points
-- `/compact` - Manually trigger context compaction
+- `/rewind` - Volta a um estado anterior
+- `/statusline` - Personalize com Branch, % de contexto, todos
+- `/checkpoints` - Pontos de desfazer a nível de arquivo
+- `/compact` - Dispara manualmente a compactação de contexto
 
-### GitHub Actions CI/CD
+### CI/CD com GitHub Actions
 
-Set up code review on your PRs with GitHub Actions. Claude can review PRs automatically when configured.
+Configure a revisão de código nos seus PRs com GitHub Actions. O Claude pode revisar PRs automaticamente quando configurado.
 
 ![Claude bot approving a PR](./assets/images/shortform/08-github-pr-review.jpeg)
-*Claude approving a bug fix PR*
+*Claude aprovando um PR de correção de bug*
 
 ### Sandboxing
 
-Use sandbox mode for risky operations - Claude runs in restricted environment without affecting your actual system.
+Use o modo sandbox para operações arriscadas - o Claude roda em um ambiente restrito sem afetar seu sistema real.
 
 ---
 
-## On Editors
+## Sobre Editores
 
-Your editor choice significantly impacts Claude Code workflow. While Claude Code works from any terminal, pairing it with a capable editor unlocks real-time file tracking, quick navigation, and integrated command execution.
+A escolha do seu editor impacta significativamente o fluxo de trabalho do Claude Code. Embora o Claude Code funcione a partir de qualquer terminal, combiná-lo com um editor capaz desbloqueia rastreamento de arquivos em tempo real, navegação rápida e execução integrada de comandos.
 
-### Zed (My Preference)
+### Zed (Minha Preferência)
 
-I use [Zed](https://zed.dev) - written in Rust, so it's genuinely fast. Opens instantly, handles massive codebases without breaking a sweat, and barely touches system resources.
+Eu uso o [Zed](https://zed.dev) - escrito em Rust, então é genuinamente rápido. Abre instantaneamente, lida com bases de código enormes sem suar a camisa e mal toca nos recursos do sistema.
 
-**Why Zed + Claude Code is a great combo:**
+**Por que Zed + Claude Code é uma ótima combinação:**
 
-- **Speed** - Rust-based performance means no lag when Claude is rapidly editing files. Your editor keeps up
-- **Agent Panel Integration** - Zed's Claude integration lets you track file changes in real-time as Claude edits. Jump between files Claude references without leaving the editor
-- **CMD+Shift+R Command Palette** - Quick access to all your custom slash commands, debuggers, build scripts in a searchable UI
-- **Minimal Resource Usage** - Won't compete with Claude for RAM/CPU during heavy operations. Important when running Opus
-- **Vim Mode** - Full vim keybindings if that's your thing
+- **Velocidade** - O desempenho baseado em Rust significa nenhum travamento quando o Claude está editando arquivos rapidamente. Seu editor acompanha o ritmo
+- **Integração com o Agent Panel** - A integração do Zed com o Claude permite acompanhar mudanças de arquivos em tempo real conforme o Claude edita. Salte entre os arquivos que o Claude referencia sem sair do editor
+- **Paleta de Comandos CMD+Shift+R** - Acesso rápido a todos os seus comandos de barra personalizados, depuradores e scripts de build em uma interface pesquisável
+- **Uso Mínimo de Recursos** - Não compete com o Claude por RAM/CPU durante operações pesadas. Importante ao rodar o Opus
+- **Modo Vim** - Atalhos de teclado completos do vim, se isso for a sua praia
 
 ![Zed Editor with custom commands](./assets/images/shortform/09-zed-editor.jpeg)
-*Zed Editor with custom commands dropdown using CMD+Shift+R. Following mode shown as the bullseye in the bottom right.*
+*Editor Zed com o menu de comandos personalizados usando CMD+Shift+R. O modo de acompanhamento aparece como o alvo no canto inferior direito.*
 
-**Editor-Agnostic Tips:**
+**Dicas Independentes de Editor:**
 
-1. **Split your screen** - Terminal with Claude Code on one side, editor on the other
-2. **Ctrl + G** - quickly open the file Claude is currently working on in Zed
-3. **Auto-save** - Enable autosave so Claude's file reads are always current
-4. **Git integration** - Use editor's git features to review Claude's changes before committing
-5. **File watchers** - Most editors auto-reload changed files, verify this is enabled
+1. **Divida sua tela** - Terminal com o Claude Code de um lado, editor do outro
+2. **Ctrl + G** - abre rapidamente no Zed o arquivo em que o Claude está trabalhando no momento
+3. **Auto-save** - Habilite o salvamento automático para que as leituras de arquivos do Claude estejam sempre atualizadas
+4. **Integração com Git** - Use os recursos de git do editor para revisar as mudanças do Claude antes de commitar
+5. **File watchers** - A maioria dos editores recarrega automaticamente arquivos alterados; verifique se isso está habilitado
 
 ### VSCode / Cursor
 
-This is also a viable choice and works well with Claude Code. You can use it in either terminal format, with automatic sync with your editor using `\ide` enabling LSP functionality (somewhat redundant with plugins now). Or you can opt for the extension which is more integrated with the Editor and has a matching UI.
+Esta também é uma escolha viável e funciona bem com o Claude Code. Você pode usá-lo no formato de terminal, com sincronização automática com seu editor usando `\ide`, habilitando a funcionalidade de LSP (de certa forma redundante com os Plugins hoje em dia). Ou você pode optar pela extensão, que é mais integrada ao editor e tem uma UI compatível.
 
 ![VS Code Claude Code Extension](./assets/images/shortform/10-vscode-extension.jpeg)
-*The VS Code extension provides a native graphical interface for Claude Code, integrated directly into your IDE.*
+*A extensão do VS Code oferece uma interface gráfica nativa para o Claude Code, integrada diretamente à sua IDE.*
 
 ---
 
-## My Setup
+## Minha Configuração
 
 ### Plugins
 
-**Installed:** (I usually only have 4-5 of these enabled at a time)
+**Instalados:** (normalmente só tenho 4-5 deles habilitados por vez)
 
 ```markdown
 ralph-wiggum@claude-code-plugins       # Loop automation
@@ -307,9 +307,9 @@ pyright-lsp@claude-plugins-official    # Python types
 mgrep@Mixedbread-Grep                  # Better search
 ```
 
-### MCP Servers
+### Servidores MCP
 
-**Configured (User Level):**
+**Configurados (Nível de Usuário):**
 
 ```json
 {
@@ -337,9 +337,9 @@ mgrep@Mixedbread-Grep                  # Better search
 }
 ```
 
-This is the key - I have 14 MCPs configured but only ~5-6 enabled per project. Keeps context window healthy.
+Este é o segredo - eu tenho 14 MCPs configurados, mas apenas ~5-6 habilitados por projeto. Mantém a janela de contexto saudável.
 
-### Key Hooks
+### Hooks Principais
 
 ```json
 {
@@ -359,19 +359,19 @@ This is the key - I have 14 MCPs configured but only ~5-6 enabled per project. K
 }
 ```
 
-### Custom Status Line
+### Status Line Personalizada
 
-Shows user, directory, git branch with dirty indicator, context remaining %, model, time, and todo count:
+Mostra usuário, diretório, Branch do git com indicador de alterações pendentes, % de contexto restante, modelo, hora e contagem de todos:
 
 ![Custom status line](./assets/images/shortform/11-statusline.jpeg)
-*Example statusline in my Mac root directory*
+*Exemplo de status line no diretório raiz do meu Mac*
 
 ```
 affoon:~ ctx:65% Opus 4.5 19:52
 ▌▌ plan mode on (shift+tab to cycle)
 ```
 
-### Rules Structure
+### Estrutura de Regras
 
 ```
 ~/.claude/rules/
@@ -385,7 +385,7 @@ affoon:~ ctx:65% Opus 4.5 19:52
   hooks.md         # Hook documentation
 ```
 
-### Subagents
+### Subagentes
 
 ```
 ~/.claude/agents/
@@ -402,17 +402,17 @@ affoon:~ ctx:65% Opus 4.5 19:52
 
 ---
 
-## Key Takeaways
+## Principais Conclusões
 
-1. **Don't overcomplicate** - treat configuration like fine-tuning, not architecture
-2. **Context window is precious** - disable unused MCPs and plugins
-3. **Parallel execution** - fork conversations, use git worktrees
-4. **Automate the repetitive** - hooks for formatting, linting, reminders
-5. **Scope your subagents** - limited tools = focused execution
+1. **Não complique demais** - trate a configuração como um ajuste fino, não como arquitetura
+2. **A janela de contexto é preciosa** - desative MCPs e Plugins não utilizados
+3. **Execução paralela** - bifurque conversas, use git worktrees
+4. **Automatize o repetitivo** - Hooks para formatação, lint e lembretes
+5. **Defina o escopo dos seus subagentes** - ferramentas limitadas = execução focada
 
 ---
 
-## References
+## Referências
 
 - [Plugins Reference](https://code.claude.com/docs/en/plugins-reference)
 - [Hooks Documentation](https://code.claude.com/docs/en/hooks)
@@ -424,8 +424,8 @@ affoon:~ ctx:65% Opus 4.5 19:52
 
 ---
 
-**Note:** This is a subset of detail. See the [Longform Guide](./the-longform-guide.md) for advanced patterns.
+**Nota:** Este é um subconjunto dos detalhes. Veja o [Guia Detalhado](./the-longform-guide.md) para padrões avançados.
 
 ---
 
-*Won the Anthropic x Forum Ventures hackathon in NYC building [zenith.chat](https://zenith.chat) with [@DRodriguezFX](https://x.com/DRodriguezFX)*
+*Venci o hackathon Anthropic x Forum Ventures em NYC construindo o [zenith.chat](https://zenith.chat) com [@DRodriguezFX](https://x.com/DRodriguezFX)*

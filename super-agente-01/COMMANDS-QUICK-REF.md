@@ -1,150 +1,150 @@
-# Commands Quick Reference
+# Referência Rápida de Comandos
 
-> 59 slash commands installed globally. Type `/` in any Claude Code session to invoke.
+> 59 comandos de barra instalados globalmente. Digite `/` em qualquer sessão do Claude Code para invocá-los.
 
 ---
 
-## Core Workflow
+## Fluxo de Trabalho Principal
 
-| Command | What it does |
+| Comando | O que faz |
 |---------|-------------|
-| `/plan` | Restate requirements, assess risks, write step-by-step implementation plan — **waits for your confirm before touching code** |
-| `/tdd` | Enforce test-driven development: scaffold interface → write failing test → implement → verify 80%+ coverage |
-| `/code-review` | Full code quality, security, and maintainability review of changed files |
-| `/build-fix` | Detect and fix build errors — delegates to the right build-resolver agent automatically |
-| `/verify` | Run the full verification loop: build → lint → test → type-check |
-| `/quality-gate` | Quality gate check against project standards |
+| `/plan` | Reformula os requisitos, avalia riscos, escreve um plano de implementação passo a passo — **aguarda sua confirmação antes de tocar no código** |
+| `/tdd` | Impõe o desenvolvimento orientado a testes: estruturar interface → escrever teste que falha → implementar → verificar 80%+ de cobertura |
+| `/code-review` | Revisão completa de qualidade, segurança e manutenibilidade do código nos arquivos alterados |
+| `/build-fix` | Detecta e corrige erros de build — delega ao agente build-resolver correto automaticamente |
+| `/verify` | Executa o loop de verificação completo: build → lint → test → type-check |
+| `/quality-gate` | Verificação de quality gate contra os padrões do projeto |
 
 ---
 
-## Testing
+## Testes
 
-| Command | What it does |
+| Comando | O que faz |
 |---------|-------------|
-| `/tdd` | Universal TDD workflow (any language) |
-| `/e2e` | Generate + run Playwright end-to-end tests, capture screenshots/videos/traces |
-| `/test-coverage` | Report test coverage, identify gaps |
-| `/go-test` | TDD workflow for Go (table-driven, 80%+ coverage with `go test -cover`) |
-| `/kotlin-test` | TDD for Kotlin (Kotest + Kover) |
-| `/rust-test` | TDD for Rust (cargo test, integration tests) |
-| `/cpp-test` | TDD for C++ (GoogleTest + gcov/lcov) |
+| `/tdd` | Fluxo de trabalho universal de TDD (qualquer linguagem) |
+| `/e2e` | Gera + executa testes end-to-end do Playwright, captura screenshots/vídeos/traces |
+| `/test-coverage` | Reporta a cobertura de testes, identifica lacunas |
+| `/go-test` | Fluxo de trabalho de TDD para Go (table-driven, 80%+ de cobertura com `go test -cover`) |
+| `/kotlin-test` | TDD para Kotlin (Kotest + Kover) |
+| `/rust-test` | TDD para Rust (cargo test, testes de integração) |
+| `/cpp-test` | TDD para C++ (GoogleTest + gcov/lcov) |
 
 ---
 
-## Code Review
+## Revisão de Código
 
-| Command | What it does |
+| Comando | O que faz |
 |---------|-------------|
-| `/code-review` | Universal code review |
-| `/python-review` | Python — PEP 8, type hints, security, idiomatic patterns |
-| `/go-review` | Go — idiomatic patterns, concurrency safety, error handling |
-| `/kotlin-review` | Kotlin — null safety, coroutine safety, clean architecture |
-| `/rust-review` | Rust — ownership, lifetimes, unsafe usage |
-| `/cpp-review` | C++ — memory safety, modern idioms, concurrency |
+| `/code-review` | Revisão de código universal |
+| `/python-review` | Python — PEP 8, type hints, segurança, padrões idiomáticos |
+| `/go-review` | Go — padrões idiomáticos, segurança de concorrência, tratamento de erros |
+| `/kotlin-review` | Kotlin — null safety, segurança de corrotinas, clean architecture |
+| `/rust-review` | Rust — ownership, lifetimes, uso de unsafe |
+| `/cpp-review` | C++ — segurança de memória, idiomas modernos, concorrência |
 
 ---
 
-## Build Fixers
+## Corretores de Build
 
-| Command | What it does |
+| Comando | O que faz |
 |---------|-------------|
-| `/build-fix` | Auto-detect language and fix build errors |
-| `/go-build` | Fix Go build errors and `go vet` warnings |
-| `/kotlin-build` | Fix Kotlin/Gradle compiler errors |
-| `/rust-build` | Fix Rust build + borrow checker issues |
-| `/cpp-build` | Fix C++ CMake and linker problems |
-| `/gradle-build` | Fix Gradle errors for Android / KMP |
+| `/build-fix` | Detecta a linguagem automaticamente e corrige erros de build |
+| `/go-build` | Corrige erros de build do Go e avisos do `go vet` |
+| `/kotlin-build` | Corrige erros do compilador Kotlin/Gradle |
+| `/rust-build` | Corrige problemas de build + borrow checker do Rust |
+| `/cpp-build` | Corrige problemas de CMake e linker do C++ |
+| `/gradle-build` | Corrige erros do Gradle para Android / KMP |
 
 ---
 
-## Planning & Architecture
+## Planejamento e Arquitetura
 
-| Command | What it does |
+| Comando | O que faz |
 |---------|-------------|
-| `/plan` | Implementation plan with risk assessment |
-| `/multi-plan` | Multi-model collaborative planning |
-| `/multi-workflow` | Multi-model collaborative development |
-| `/multi-backend` | Backend-focused multi-model development |
-| `/multi-frontend` | Frontend-focused multi-model development |
-| `/multi-execute` | Multi-model collaborative execution |
-| `/orchestrate` | Guide for tmux/worktree multi-agent orchestration |
-| `/devfleet` | Orchestrate parallel Claude Code agents via DevFleet |
+| `/plan` | Plano de implementação com avaliação de riscos |
+| `/multi-plan` | Planejamento colaborativo multi-modelo |
+| `/multi-workflow` | Desenvolvimento colaborativo multi-modelo |
+| `/multi-backend` | Desenvolvimento multi-modelo focado em backend |
+| `/multi-frontend` | Desenvolvimento multi-modelo focado em frontend |
+| `/multi-execute` | Execução colaborativa multi-modelo |
+| `/orchestrate` | Guia para orquestração multi-agente com tmux/worktree |
+| `/devfleet` | Orquestra agentes do Claude Code em paralelo via DevFleet |
 
 ---
 
-## Session Management
+## Gerenciamento de Sessão
 
-| Command | What it does |
+| Comando | O que faz |
 |---------|-------------|
-| `/save-session` | Save current session state to `~/.claude/session-data/` |
-| `/resume-session` | Load the most recent saved session from the canonical session store and resume from where you left off |
-| `/sessions` | Browse, search, and manage session history with aliases from `~/.claude/session-data/` (with legacy reads from `~/.claude/sessions/`) |
-| `/checkpoint` | Mark a checkpoint in the current session |
-| `/aside` | Answer a quick side question without losing current task context |
-| `/context-budget` | Analyse context window usage — find token overhead, optimise |
+| `/save-session` | Salva o estado da sessão atual em `~/.claude/session-data/` |
+| `/resume-session` | Carrega a sessão salva mais recente do armazenamento canônico de sessões e retoma de onde você parou |
+| `/sessions` | Navega, busca e gerencia o histórico de sessões com aliases de `~/.claude/session-data/` (com leituras legadas de `~/.claude/sessions/`) |
+| `/checkpoint` | Marca um checkpoint na sessão atual |
+| `/aside` | Responde a uma pergunta rápida paralela sem perder o contexto da tarefa atual |
+| `/context-budget` | Analisa o uso da janela de contexto — encontra sobrecarga de Tokens, otimiza |
 
 ---
 
-## Learning & Improvement
+## Aprendizado e Melhoria
 
-| Command | What it does |
+| Comando | O que faz |
 |---------|-------------|
-| `/learn` | Extract reusable patterns from the current session |
-| `/learn-eval` | Extract patterns + self-evaluate quality before saving |
-| `/evolve` | Analyse learned instincts, suggest evolved skill structures |
-| `/promote` | Promote project-scoped instincts to global scope |
-| `/instinct-status` | Show all learned instincts (project + global) with confidence scores |
-| `/instinct-export` | Export instincts to a file |
-| `/instinct-import` | Import instincts from a file or URL |
-| `/skill-create` | Analyse local git history → generate a reusable skill |
-| `/skill-health` | Skill portfolio health dashboard with analytics |
-| `/rules-distill` | Scan skills, extract cross-cutting principles, distill into rules |
+| `/learn` | Extrai padrões reutilizáveis da sessão atual |
+| `/learn-eval` | Extrai padrões + autoavalia a qualidade antes de salvar |
+| `/evolve` | Analisa instintos aprendidos, sugere estruturas de Skill evoluídas |
+| `/promote` | Promove instintos de escopo de projeto para o escopo global |
+| `/instinct-status` | Mostra todos os instintos aprendidos (projeto + global) com pontuações de confiança |
+| `/instinct-export` | Exporta instintos para um arquivo |
+| `/instinct-import` | Importa instintos de um arquivo ou URL |
+| `/skill-create` | Analisa o histórico local do git → gera uma Skill reutilizável |
+| `/skill-health` | Painel de saúde do portfólio de Skills com analytics |
+| `/rules-distill` | Varre Skills, extrai princípios transversais, destila em regras |
 
 ---
 
-## Refactoring & Cleanup
+## Refatoração e Limpeza
 
-| Command | What it does |
+| Comando | O que faz |
 |---------|-------------|
-| `/refactor-clean` | Remove dead code, consolidate duplicates, clean up structure |
-| `/prompt-optimize` | Analyse a draft prompt and output an optimised ECC-enriched version |
+| `/refactor-clean` | Remove código morto, consolida duplicatas, limpa a estrutura |
+| `/prompt-optimize` | Analisa um rascunho de prompt e gera uma versão otimizada e enriquecida com ECC |
 
 ---
 
-## Docs & Research
+## Docs e Pesquisa
 
-| Command | What it does |
+| Comando | O que faz |
 |---------|-------------|
-| `/docs` | Look up current library/API documentation via Context7 |
-| `/update-docs` | Update project documentation |
-| `/update-codemaps` | Regenerate codemaps for the codebase |
+| `/docs` | Consulta a documentação atual de biblioteca/API via Context7 |
+| `/update-docs` | Atualiza a documentação do projeto |
+| `/update-codemaps` | Regenera os codemaps da base de código |
 
 ---
 
-## Loops & Automation
+## Loops e Automação
 
-| Command | What it does |
+| Comando | O que faz |
 |---------|-------------|
-| `/loop-start` | Start a recurring agent loop on an interval |
-| `/loop-status` | Check status of running loops |
-| `/claw` | Start NanoClaw v2 — persistent REPL with model routing, skill hot-load, branching, and metrics |
+| `/loop-start` | Inicia um loop recorrente de agente em um intervalo |
+| `/loop-status` | Verifica o status dos loops em execução |
+| `/claw` | Inicia o NanoClaw v2 — REPL persistente com roteamento de modelo, hot-load de Skill, branching e métricas |
 
 ---
 
-## Project & Infrastructure
+## Projeto e Infraestrutura
 
-| Command | What it does |
+| Comando | O que faz |
 |---------|-------------|
-| `/projects` | List known projects and their instinct statistics |
-| `/harness-audit` | Audit the agent harness configuration for reliability and cost |
-| `/eval` | Run the evaluation harness |
-| `/model-route` | Route a task to the right model (Haiku / Sonnet / Opus) |
-| `/pm2` | PM2 process manager initialisation |
-| `/setup-pm` | Configure package manager (npm / pnpm / yarn / bun) |
+| `/projects` | Lista os projetos conhecidos e suas estatísticas de instintos |
+| `/harness-audit` | Audita a configuração do harness do agente quanto a confiabilidade e custo |
+| `/eval` | Executa o harness de avaliação |
+| `/model-route` | Roteia uma tarefa para o modelo certo (Haiku / Sonnet / Opus) |
+| `/pm2` | Inicialização do gerenciador de processos PM2 |
+| `/setup-pm` | Configura o gerenciador de pacotes (npm / pnpm / yarn / bun) |
 
 ---
 
-## Quick Decision Guide
+## Guia Rápido de Decisão
 
 ```
 Starting a new feature?         → /plan first, then /tdd

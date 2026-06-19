@@ -3,13 +3,13 @@ paths:
   - "**/*.fs"
   - "**/*.fsx"
 ---
-# F# Patterns
+# Padrões F#
 
-> This file extends [common/patterns.md](../common/patterns.md) with F#-specific content.
+> Este arquivo estende [common/patterns.md](../common/patterns.md) com conteúdo específico de F#.
 
-## Result Type for Error Handling
+## Tipo Result para Tratamento de Erros
 
-Use `Result<'T, 'TError>` with railway-oriented programming instead of exceptions for expected failures.
+Use `Result<'T, 'TError>` com programação orientada a trilhos (railway-oriented) em vez de exceções para falhas esperadas.
 
 ```fsharp
 type OrderError =
@@ -26,9 +26,9 @@ let validateOrder (request: CreateOrderRequest) : Result<ValidatedOrder, OrderEr
         Ok { CustomerId = request.CustomerId; Items = request.Items }
 ```
 
-## Option for Missing Values
+## Option para Valores Ausentes
 
-Prefer `Option<'T>` over null. Use `Option.map`, `Option.bind`, and `Option.defaultValue` to transform.
+Prefira `Option<'T>` em vez de null. Use `Option.map`, `Option.bind` e `Option.defaultValue` para transformar.
 
 ```fsharp
 let findUser (id: Guid) : User option =
@@ -40,9 +40,9 @@ let getUserEmail userId =
     |> Option.defaultValue "unknown@example.com"
 ```
 
-## Discriminated Unions for Domain Modeling
+## Discriminated Unions para Modelagem de Domínio
 
-Model business states explicitly. The compiler enforces exhaustive handling.
+Modele estados de negócio explicitamente. O compilador impõe o tratamento exaustivo.
 
 ```fsharp
 type PaymentState =
@@ -60,7 +60,7 @@ let describePayment = function
 
 ## Computation Expressions
 
-Use computation expressions to simplify sequential operations that may fail.
+Use computation expressions para simplificar operações sequenciais que podem falhar.
 
 ```fsharp
 let placeOrder request =
@@ -72,11 +72,11 @@ let placeOrder request =
     }
 ```
 
-## Module Organization
+## Organização de Módulos
 
-- Group related functions in modules rather than classes
-- Use `[<RequireQualifiedAccess>]` to prevent name collisions
-- Keep modules small and focused on a single responsibility
+- Agrupe funções relacionadas em módulos em vez de classes
+- Use `[<RequireQualifiedAccess>]` para evitar colisões de nomes
+- Mantenha os módulos pequenos e focados em uma única responsabilidade
 
 ```fsharp
 [<RequireQualifiedAccess>]
@@ -86,11 +86,11 @@ module Order =
     let cancel reason order = { order with Status = Cancelled reason }
 ```
 
-## Dependency Injection
+## Injeção de Dependência
 
-- Define dependencies as function parameters or record-of-functions
-- Use interfaces sparingly, primarily at the boundary with .NET libraries
-- Prefer partial application for injecting dependencies into pipelines
+- Defina dependências como parâmetros de função ou record de funções
+- Use interfaces com moderação, principalmente na fronteira com bibliotecas .NET
+- Prefira aplicação parcial para injetar dependências em pipelines
 
 ```fsharp
 type OrderDeps =

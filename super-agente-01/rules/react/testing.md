@@ -7,51 +7,51 @@ paths:
   - "**/__tests__/**/*.ts"
   - "**/__tests__/**/*.tsx"
 ---
-# React Testing
+# Testes React
 
-> This file extends [typescript/testing.md](../typescript/testing.md) and [common/testing.md](../common/testing.md) with React specific content.
+> Este arquivo estende [typescript/testing.md](../typescript/testing.md) e [common/testing.md](../common/testing.md) com conteúdo específico de React.
 
-## Library Choice
+## Escolha da Biblioteca
 
-- **React Testing Library (RTL)** — the standard for component testing. Tests behavior through the rendered DOM.
-- **Vitest** — preferred runner for new Vite-based projects. Faster than Jest, native ESM, same API.
-- **Jest** — still the default for Next.js / CRA projects. RTL works identically.
-- **Playwright Component Testing** — when component tests need a real browser engine (animation, layout, complex events)
-- **Cypress Component Testing** — alternative real-browser component runner
+- **React Testing Library (RTL)** — o padrão para teste de componentes. Testa o comportamento através do DOM renderizado.
+- **Vitest** — runner preferido para novos projetos baseados em Vite. Mais rápido que o Jest, ESM nativo, mesma API.
+- **Jest** — ainda é o padrão para projetos Next.js / CRA. A RTL funciona de forma idêntica.
+- **Playwright Component Testing** — quando os testes de componente precisam de um motor de navegador real (animação, layout, eventos complexos)
+- **Cypress Component Testing** — runner alternativo de componente em navegador real
 
-Pick one component test runner per project — do not mix RTL + Playwright CT in the same repo.
+Escolha um único runner de teste de componente por projeto — não misture RTL + Playwright CT no mesmo repositório.
 
-## Core Principle
+## Princípio Central
 
-Test what the user sees and does, not implementation details.
+Teste o que o usuário vê e faz, não detalhes de implementação.
 
-- Query by accessible role first, then label, then text — fall back to `data-testid` only when nothing else fits
-- Never assert on internal state, props passed to children, or which hooks were called
-- Refactor without breaking tests = the test was testing behavior; that is the goal
+- Consulte primeiro por role acessível, depois por label, depois por texto — recorra a `data-testid` apenas quando nada mais servir
+- Nunca faça assert sobre estado interno, props passadas aos filhos, ou quais hooks foram chamados
+- Refatorar sem quebrar os testes = o teste estava testando comportamento; esse é o objetivo
 
-## Query Priority
+## Prioridade de Consultas
 
-RTL exposes queries in three families. Use this priority order top-down:
+A RTL expõe consultas em três famílias. Use esta ordem de prioridade, de cima para baixo:
 
-1. **Accessible to everyone**
-   - `getByRole(role, { name })` — primary choice
-   - `getByLabelText` — for form inputs
-   - `getByPlaceholderText` — when no label is available (and add a label)
-   - `getByText` — for non-interactive text
-   - `getByDisplayValue` — for form fields with a current value
+1. **Acessível a todos**
+   - `getByRole(role, { name })` — escolha principal
+   - `getByLabelText` — para inputs de formulário
+   - `getByPlaceholderText` — quando não há label disponível (e adicione um label)
+   - `getByText` — para texto não interativo
+   - `getByDisplayValue` — para campos de formulário com um valor atual
 
-2. **Semantic queries**
-   - `getByAltText` — for images
-   - `getByTitle` — last resort, low accessibility value
+2. **Consultas semânticas**
+   - `getByAltText` — para imagens
+   - `getByTitle` — último recurso, baixo valor de acessibilidade
 
 3. **Test IDs**
-   - `getByTestId("some-id")` — escape hatch only, when none of the above work
+   - `getByTestId("some-id")` — apenas válvula de escape, quando nenhuma das anteriores funcionar
 
-`getBy*` throws when no match. `queryBy*` returns null (use for asserting absence). `findBy*` returns a promise (use for async).
+`getBy*` lança erro quando não há correspondência. `queryBy*` retorna null (use para afirmar ausência). `findBy*` retorna uma promise (use para async).
 
-## User Interaction
+## Interação do Usuário
 
-Prefer `userEvent` over `fireEvent`. `userEvent` simulates real browser sequences (focus, keydown, beforeinput, input, keyup) — `fireEvent` dispatches a single synthetic event.
+Prefira `userEvent` em vez de `fireEvent`. O `userEvent` simula sequências reais do navegador (focus, keydown, beforeinput, input, keyup) — o `fireEvent` dispara um único evento sintético.
 
 ```tsx
 import userEvent from "@testing-library/user-event";
@@ -67,32 +67,32 @@ test("submits the form", async () => {
 });
 ```
 
-- Always `await` `userEvent` calls — they are async
-- Call `userEvent.setup()` once at the top of each test, then reuse the returned `user`
+- Sempre use `await` nas chamadas de `userEvent` — elas são assíncronas
+- Chame `userEvent.setup()` uma vez no topo de cada teste, depois reutilize o `user` retornado
 
-## Async Assertions
+## Asserts Assíncronos
 
 ```tsx
-// WRONG: synchronous query for async-rendered content
-expect(screen.getByText("Loaded")).toBeInTheDocument();   // throws — not in DOM yet
+// ERRADO: consulta síncrona para conteúdo renderizado de forma assíncrona
+expect(screen.getByText("Loaded")).toBeInTheDocument();   // lança erro — ainda não está no DOM
 
-// CORRECT: findBy* (returns a promise, retries)
+// CORRETO: findBy* (retorna uma promise, faz retry)
 expect(await screen.findByText("Loaded")).toBeInTheDocument();
 
-// CORRECT: waitFor for non-element assertions
+// CORRETO: waitFor para asserts que não são de elemento
 await waitFor(() => expect(saveSpy).toHaveBeenCalled());
 ```
 
-- `findBy*` for async element appearance
-- `waitFor` for async expectations on side effects or other matchers
-- Never `setTimeout` + assertion — flaky
+- `findBy*` para o aparecimento assíncrono de elementos
+- `waitFor` para expectativas assíncronas sobre efeitos colaterais ou outros matchers
+- Nunca use `setTimeout` + assert — instável (flaky)
 
-## Network Mocking with MSW
+## Mock de Rede com MSW
 
-Use Mock Service Worker for any test that hits a network boundary. MSW runs at the network layer, so the component, hooks, and fetch library all behave as in production.
+Use o Mock Service Worker para qualquer teste que atinja uma fronteira de rede. O MSW roda na camada de rede, então o componente, os hooks e a biblioteca de fetch se comportam como em produção.
 
 ```tsx
-// test setup
+// setup do teste
 import { setupServer } from "msw/node";
 import { http, HttpResponse } from "msw";
 
@@ -107,7 +107,7 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 ```
 
-Per-test override:
+Override por teste:
 
 ```tsx
 test("renders error on 500", async () => {
@@ -117,18 +117,18 @@ test("renders error on 500", async () => {
 });
 ```
 
-## Avoid Snapshot Tests for Components
+## Evite Testes de Snapshot para Componentes
 
-Snapshots of rendered output are brittle, hard to review, and rubber-stamped by reviewers. Use them only for:
+Snapshots da saída renderizada são frágeis, difíceis de revisar e aprovados sem análise pelos revisores. Use-os apenas para:
 
-- Pure data serialization (e.g., a transformer that produces a stable string)
-- Catching unintended regressions in non-visual output
+- Serialização pura de dados (ex.: um transformer que produz uma string estável)
+- Capturar regressões não intencionais em saída não visual
 
-For component visual regression, use Playwright / Cypress / Percy screenshots — actual visual diffs, not DOM diffs.
+Para regressão visual de componente, use screenshots de Playwright / Cypress / Percy — diffs visuais reais, não diffs de DOM.
 
-## Test Setup Helpers
+## Helpers de Setup de Teste
 
-Wrap providers once:
+Encapsule os providers uma vez:
 
 ```tsx
 function renderWithProviders(ui: React.ReactElement) {
@@ -142,11 +142,11 @@ function renderWithProviders(ui: React.ReactElement) {
 }
 ```
 
-Export from `test-utils.tsx` and use everywhere.
+Exporte de `test-utils.tsx` e use em todo lugar.
 
-## Custom Hook Testing
+## Teste de Custom Hook
 
-Use `renderHook` from RTL:
+Use `renderHook` da RTL:
 
 ```tsx
 import { renderHook, act } from "@testing-library/react";
@@ -158,13 +158,13 @@ test("useCounter increments", () => {
 });
 ```
 
-- Always wrap state-changing calls in `act`
-- Always test through the public hook API, not internal implementation
+- Sempre encapsule chamadas que mudam estado em `act`
+- Sempre teste através da API pública do hook, não da implementação interna
 
-## Accessibility Assertions
+## Asserts de Acessibilidade
 
 ```tsx
-import { axe } from "vitest-axe";   // or jest-axe
+import { axe } from "vitest-axe";   // ou jest-axe
 
 test("UserCard has no a11y violations", async () => {
   const { container } = render(<UserCard user={mockUser} />);
@@ -172,37 +172,37 @@ test("UserCard has no a11y violations", async () => {
 });
 ```
 
-Run axe assertions in component tests — catches missing labels, ARIA misuse, color contrast (limited).
+Rode asserts do axe em testes de componente — capturam labels ausentes, uso indevido de ARIA, contraste de cor (limitado).
 
-## When to Reach for Playwright / Cypress
+## Quando Recorrer a Playwright / Cypress
 
-Component test with RTL + JSDOM cannot:
+O teste de componente com RTL + JSDOM não consegue:
 
-- Test real layout (flexbox, grid, viewport-dependent rendering)
-- Test scrolling, drag-and-drop, paste from clipboard
-- Test browser-native animation, CSS transitions
-- Test cross-frame interactions (iframes, popups)
+- Testar layout real (flexbox, grid, renderização dependente de viewport)
+- Testar scroll, drag-and-drop, colar da área de transferência
+- Testar animação nativa do navegador, transições CSS
+- Testar interações entre frames (iframes, popups)
 
-For those, use Playwright Component Testing or end-to-end Playwright/Cypress runs. See [e2e-testing skill](../../skills/e2e-testing/SKILL.md).
+Para isso, use Playwright Component Testing ou execuções end-to-end de Playwright/Cypress. Veja a [skill e2e-testing](../../skills/e2e-testing/SKILL.md).
 
-## Coverage Targets
+## Metas de Cobertura
 
-| Layer | Target |
+| Camada | Meta |
 |---|---|
-| Pure utility functions | ≥90% |
+| Funções utilitárias puras | ≥90% |
 | Custom hooks | ≥85% |
-| Components (presentational) | ≥80% — behavior, not lines |
-| Container components | ≥70% — golden paths + error states |
-| Pages (E2E covered separately) | Smoke test per route minimum |
+| Componentes (de apresentação) | ≥80% — comportamento, não linhas |
+| Componentes container | ≥70% — caminhos felizes + estados de erro |
+| Páginas (E2E coberto separadamente) | Mínimo de um smoke test por rota |
 
-## Anti-Patterns
+## Antipadrões
 
-- Asserting on `container.querySelector` — bypasses accessibility queries
-- Asserting on number of renders — implementation detail
-- Mocking React hooks (`jest.mock("react", ...)`) — refactor the component instead
-- Mocking child components by default — tests the integration, not the parent in isolation
-- Manual `act()` warnings ignored — they indicate real bugs
+- Fazer assert em `container.querySelector` — contorna as consultas de acessibilidade
+- Fazer assert no número de renderizações — detalhe de implementação
+- Mockar hooks do React (`jest.mock("react", ...)`) — refatore o componente em vez disso
+- Mockar componentes filhos por padrão — testa a integração, não o pai isoladamente
+- Avisos de `act()` manuais ignorados — eles indicam bugs reais
 
-## Skill Reference
+## Referência de Skill
 
-See `skills/react-testing/SKILL.md` for end-to-end test examples, MSW patterns, and accessibility test scaffolding.
+Veja `skills/react-testing/SKILL.md` para exemplos de testes end-to-end, padrões de MSW e scaffolding de testes de acessibilidade.

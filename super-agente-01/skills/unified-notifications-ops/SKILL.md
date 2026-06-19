@@ -1,188 +1,188 @@
 ---
 name: unified-notifications-ops
-description: Operate notifications as one ECC-native workflow across GitHub, Linear, desktop alerts, hooks, and connected communication surfaces. Use when the real problem is alert routing, deduplication, escalation, or inbox collapse.
+description: Opere notificações como um único fluxo de trabalho nativo do ECC entre GitHub, Linear, alertas de desktop, hooks e superfícies de comunicação conectadas. Use quando o problema real é roteamento de alertas, deduplicação, escalonamento ou colapso de caixa de entrada.
 metadata:
   origin: ECC
 ---
 
 # Unified Notifications Ops
 
-Use this skill when the real problem is not a missing ping. The real problem is a fragmented notification system.
+Use esta skill quando o problema real não é uma notificação ausente. O problema real é um sistema de notificações fragmentado.
 
-The job is to turn scattered events into one operator surface with:
-- clear severity
-- clear ownership
-- clear routing
-- clear follow-up action
+O objetivo é transformar eventos dispersos em uma única superfície de operador com:
+- severidade clara
+- propriedade clara
+- roteamento claro
+- ação de acompanhamento clara
 
-## When to Use
+## Quando Usar
 
-- the user wants a unified notification lane across GitHub, Linear, local hooks, desktop alerts, chat, or email
-- CI failures, review requests, issue updates, and operator events are arriving in disconnected places
-- the current setup creates noise instead of action
-- the user wants to consolidate overlapping notification branches or backlog proposals into one ECC-native lane
-- the workspace already has hooks, MCPs, or connected tools, but no coherent notification policy
+- o usuário quer um canal unificado de notificações entre GitHub, Linear, hooks locais, alertas de desktop, chat ou email
+- falhas de CI, solicitações de revisão, atualizações de issue e eventos de operador estão chegando em lugares desconexos
+- a configuração atual cria ruído em vez de ação
+- o usuário quer consolidar branches de notificação sobrepostas ou propostas de backlog em um canal nativo do ECC
+- o workspace já tem hooks, MCPs ou ferramentas conectadas, mas sem política de notificação coerente
 
-## Preferred Surface
+## Superfície Preferida
 
-Start from what already exists:
-- GitHub issues, PRs, reviews, comments, and CI
-- Linear issue/project movement
-- local hook events and session lifecycle signals
-- desktop notification primitives
-- connected email/chat surfaces when they actually exist
+Comece pelo que já existe:
+- issues, PRs, revisões, comentários e CI do GitHub
+- movimentação de issue/projeto do Linear
+- eventos de hook local e sinais de ciclo de vida de sessão
+- primitivos de notificação de desktop
+- superfícies de email/chat conectadas quando realmente existem
 
-Prefer ECC-native orchestration over telling the user to adopt a separate notification product.
+Prefira orquestração nativa do ECC em vez de sugerir ao usuário que adote um produto de notificação separado.
 
-## Non-Negotiable Rules
+## Regras Não-Negociáveis
 
-- never expose tokens, secrets, webhook secrets, or internal identifiers
-- separate:
-  - event source
-  - severity
-  - routing channel
-  - operator action
-- default to digest-first when interruption cost is unclear
-- do not fan out every event to every channel
-- if the real fix is better issue triage, hook policy, or project flow, say so explicitly
+- nunca exponha tokens, segredos, segredos de webhook ou identificadores internos
+- separe:
+  - fonte do evento
+  - severidade
+  - canal de roteamento
+  - ação do operador
+- padronize para digest-first quando o custo de interrupção é incerto
+- não espalhe cada evento para cada canal
+- se a correção real é melhor triagem de issues, política de hook ou fluxo de projeto, diga isso explicitamente
 
-## Event Pipeline
+## Pipeline de Eventos
 
-Treat the lane as:
+Trate o canal como:
 
-1. **Capture** the event
-2. **Classify** urgency and owner
-3. **Route** to the correct channel
-4. **Collapse** duplicates and low-signal churn
-5. **Attach** the next operator action
+1. **Capturar** o evento
+2. **Classificar** urgência e proprietário
+3. **Rotear** para o canal correto
+4. **Colapsar** duplicatas e agitação de baixo sinal
+5. **Anexar** a próxima ação do operador
 
-The goal is fewer, better notifications.
+O objetivo são notificações em menor quantidade, porém de melhor qualidade.
 
-## Default Severity Model
+## Modelo de Severidade Padrão
 
-| Class | Examples | Default handling |
+| Classe | Exemplos | Tratamento padrão |
 | --- | --- | --- |
-| Critical | broken default-branch CI, security issue, blocked release, failed deploy | interrupt now |
-| High | review requested, failing PR, owner-blocking handoff | same-day alert |
-| Medium | issue state changes, notable comments, backlog movement | digest or queue |
-| Low | repeat successes, routine churn, redundant lifecycle markers | suppress or fold |
+| Crítico | CI de branch padrão quebrado, issue de segurança, release bloqueado, deploy com falha | interromper agora |
+| Alto | revisão solicitada, PR com falha, handoff bloqueante do proprietário | alerta no mesmo dia |
+| Médio | mudanças de estado de issue, comentários notáveis, movimentação de backlog | digest ou fila |
+| Baixo | sucessos repetidos, agitação rotineira, marcadores de ciclo de vida redundantes | suprimir ou dobrar |
 
-If the workspace has no severity model, build one before proposing automation.
+Se o workspace não tiver modelo de severidade, construa um antes de propor automação.
 
-## Workflow
+## Fluxo de Trabalho
 
-### 1. Inventory the current surface
+### 1. Inventariar a superfície atual
 
-List:
-- event sources
-- current channels
-- existing hooks/scripts that emit alerts
-- duplicate paths for the same event
-- silent failure cases where important things are not being surfaced
+Liste:
+- fontes de evento
+- canais atuais
+- hooks/scripts existentes que emitem alertas
+- caminhos duplicados para o mesmo evento
+- casos de falha silenciosa onde coisas importantes não estão sendo surfaçadas
 
-Call out what ECC already owns.
+Destaque o que o ECC já possui.
 
-### 2. Decide what deserves interruption
+### 2. Decidir o que merece interrupção
 
-For each event family, answer:
-- who needs to know?
-- how fast do they need to know?
-- should this interrupt, batch, or just log?
+Para cada família de evento, responda:
+- quem precisa saber?
+- com que rapidez precisam saber?
+- isso deve interromper, agrupar ou apenas registrar?
 
-Use these defaults:
-- interrupt for release, CI, security, and owner-blocking events
-- digest for medium-signal updates
-- log-only for telemetry and low-signal lifecycle markers
+Use estes padrões:
+- interromper para eventos de release, CI, segurança e bloqueantes do proprietário
+- digest para atualizações de médio sinal
+- apenas registro para telemetria e marcadores de ciclo de vida de baixo sinal
 
-### 3. Collapse duplicates before adding channels
+### 3. Colapsar duplicatas antes de adicionar canais
 
-Look for:
-- the same PR event appearing in GitHub, Linear, and local logs
-- repeated hook notifications for the same failure
-- comments or status churn that should be summarized instead of forwarded raw
-- channels that duplicate each other without adding a better action path
+Procure por:
+- o mesmo evento de PR aparecendo no GitHub, Linear e logs locais
+- notificações de hook repetidas para a mesma falha
+- comentários ou agitação de status que deveriam ser resumidos em vez de encaminhados brutos
+- canais que se duplicam entre si sem adicionar um caminho de ação melhor
 
-Prefer:
-- one canonical summary
-- one owner
-- one primary channel
-- one fallback path
+Prefira:
+- um resumo canônico
+- um proprietário
+- um canal primário
+- um caminho de fallback
 
-### 4. Design the ECC-native workflow
+### 4. Projetar o fluxo de trabalho nativo do ECC
 
-For each real notification need, define:
-- **source**
-- **gate**
-- **shape**: immediate alert, digest, queue, or dashboard-only
-- **channel**
-- **action**
+Para cada necessidade real de notificação, defina:
+- **fonte**
+- **portão**
+- **formato**: alerta imediato, digest, fila ou somente dashboard
+- **canal**
+- **ação**
 
-If ECC already has the primitive, prefer:
-- a skill for operator triage
-- a hook for automatic emission/enforcement
-- an agent for delegated classification
-- an MCP/connector only when a real bridge is missing
+Se o ECC já tem o primitivo, prefira:
+- uma skill para triagem de operador
+- um hook para emissão/aplicação automática
+- um agent para classificação delegada
+- um MCP/conector apenas quando uma ponte real está faltando
 
-### 5. Return an action-biased design
+### 5. Retornar um design orientado à ação
 
-End with:
-- what to keep
-- what to suppress
-- what to merge
-- what ECC should wrap next
+Termine com:
+- o que manter
+- o que suprimir
+- o que mesclar
+- o que o ECC deve encapsular em seguida
 
-## Output Format
+## Formato de Saída
 
 ```text
-CURRENT SURFACE
-- sources
-- channels
-- duplicates
-- gaps
+SUPERFÍCIE ATUAL
+- fontes
+- canais
+- duplicatas
+- lacunas
 
-EVENT MODEL
-- critical
-- high
-- medium
-- low
+MODELO DE EVENTO
+- crítico
+- alto
+- médio
+- baixo
 
-ROUTING PLAN
-- source -> channel
-- why
-- operator owner
+PLANO DE ROTEAMENTO
+- fonte -> canal
+- por quê
+- proprietário operador
 
-CONSOLIDATION
-- suppress
-- merge
-- canonical summaries
+CONSOLIDAÇÃO
+- suprimir
+- mesclar
+- resumos canônicos
 
-NEXT ECC MOVE
+PRÓXIMO MOVIMENTO ECC
 - skill / hook / agent / MCP
-- exact workflow to build next
+- fluxo de trabalho exato a construir em seguida
 ```
 
-## Recommendation Rules
+## Regras de Recomendação
 
-- prefer one strong lane over many weak ones
-- prefer digests for medium and low-signal updates
-- prefer hooks when the signal should emit automatically
-- prefer operator skills when the work is triage, routing, and review-first decision-making
-- prefer `project-flow-ops` when the root cause is backlog / PR coordination rather than alerts
-- prefer `workspace-surface-audit` when the user first needs a source inventory
-- if desktop notifications are enough, do not invent an unnecessary external bridge
+- prefira um canal forte a muitos canais fracos
+- prefira digests para atualizações de médio e baixo sinal
+- prefira hooks quando o sinal deve emitir automaticamente
+- prefira skills de operador quando o trabalho é triagem, roteamento e tomada de decisão com revisão em primeiro lugar
+- prefira `project-flow-ops` quando a causa raiz é coordenação de backlog / PR em vez de alertas
+- prefira `workspace-surface-audit` quando o usuário primeiro precisa de um inventário de fontes
+- se notificações de desktop são suficientes, não invente uma ponte externa desnecessária
 
-## Good Use Cases
+## Bons Casos de Uso
 
-- "We have GitHub, Linear, and local hook alerts, but no single operator flow"
-- "Our CI failures are noisy and people ignore them"
-- "I want one notification policy across Claude, OpenCode, and Codex surfaces"
-- "Figure out what should interrupt versus land in a digest"
-- "Collapse overlapping notification PR ideas into one canonical ECC lane"
+- "Temos GitHub, Linear e alertas de hook local, mas nenhum fluxo único de operador"
+- "Nossas falhas de CI são ruidosas e as pessoas as ignoram"
+- "Quero uma política de notificação entre as superfícies Claude, OpenCode e Codex"
+- "Descubra o que deve interromper versus chegar em um digest"
+- "Consolide ideias sobrepostas de PR de notificação em um canal ECC canônico"
 
-## Related Skills
+## Skills Relacionadas
 
 - `workspace-surface-audit`
 - `project-flow-ops`
 - `github-ops`
 - `knowledge-ops`
-- `customer-billing-ops` when the notification pain is billing/customer operations rather than engineering
+- `customer-billing-ops` quando a dificuldade de notificação é cobrança/operações de clientes em vez de engenharia

@@ -25,7 +25,7 @@ Exemplo real: um botão "New Email" chamava `setComposeMode(true)` e depois `sel
 
 ---
 
-## How It Works
+## Como Funciona
 
 Para CADA ponto de contato interativo na área-alvo:
 
@@ -46,7 +46,7 @@ Para CADA ponto de contato interativo na área-alvo:
 
 ## Passos de Execução
 
-### Step 1: Mapear os State Stores
+### Passo 1: Mapear os State Stores
 
 Antes de auditar qualquer ponto de contato, construa um mapa de efeitos colaterais de cada action de state store:
 
@@ -73,7 +73,7 @@ RESETS PERIGOSOS (actions que limpam estado que não lhes pertence):
   reset → redefine tudo
 ```
 
-### Step 2: Auditar Cada Ponto de Contato
+### Passo 2: Auditar Cada Ponto de Contato
 
 Para cada botão/toggle/submit de formulário na área-alvo:
 
@@ -140,7 +140,7 @@ handler() {
 // O usuário não vê nada acontecer
 ```
 
-### Step 3: Reportar
+### Passo 3: Reportar
 
 Para cada bug encontrado:
 
@@ -170,7 +170,7 @@ Esta auditoria é cara. Defina o escopo adequadamente:
 ### Divisão de agents recomendada para o app completo:
 
 ```
-Agent 1: Mapear TODOS os state stores (Step 1) — este é o contexto compartilhado para todos os outros agents
+Agent 1: Mapear TODOS os state stores (Passo 1) — este é o contexto compartilhado para todos os outros agents
 Agent 2: Dashboard (Tasks, Notes, Journal, Ideas)
 Agent 3: Chat (DanteChatColumn, JustChatPage)
 Agent 4: Emails (ThreadList, DraftArea, EmailsPage)
@@ -184,7 +184,7 @@ O Agent 1 DEVE concluir primeiro. A saída dele é a entrada para todos os outro
 
 ---
 
-## When to Use
+## Quando Usar
 
 - Após o debugging sistemático não encontrar "nenhum bug", mas os usuários relatarem UI quebrada
 - Após modificar qualquer action de Zustand store (verifique todos os chamadores)
@@ -192,7 +192,7 @@ O Agent 1 DEVE concluir primeiro. A saída dele é a entrada para todos os outro
 - Antes do release, em fluxos de usuário críticos
 - Quando um botão "não faz nada" — esta é A ferramenta para isso
 
-## When NOT to Use
+## Quando NÃO Usar
 
 - Para bugs em nível de API (formato de resposta errado, endpoint ausente) — use systematic-debugging
 - Para problemas de estilização/layout — inspeção visual
@@ -240,6 +240,6 @@ selectThread: (thread) => set({
 - Os tipos de dados estão corretos (sem incompatibilidade de tipo)
 
 **A auditoria de click-path o detecta** porque:
-- O Step 1 mapeia que `selectThread` redefine `composeMode`
-- O Step 2 rastreia o handler: a chamada 1 define true, a chamada 2 redefine false
+- O Passo 1 mapeia que `selectThread` redefine `composeMode`
+- O Passo 2 rastreia o handler: a chamada 1 define true, a chamada 2 redefine false
 - Veredito: Desfazer Sequencial — o estado final contradiz a intenção do botão

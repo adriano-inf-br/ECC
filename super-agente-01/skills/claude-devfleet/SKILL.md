@@ -7,11 +7,11 @@ metadata:
 
 # Claude DevFleet Multi-Agent Orchestration
 
-## When to Use
+## Quando Usar
 
 Use esta skill quando você precisar despachar múltiplos agents do Claude Code para trabalhar em tarefas de código em paralelo. Cada agent roda em um worktree git isolado com ferramental completo.
 
-## Setup
+## Configuração
 
 O servidor DevFleet é um projeto separado, não incluído no ECC. Instale e
 execute-o a partir do repositório dele primeiro: <https://github.com/LEC-AI/claude-devfleet>
@@ -24,7 +24,7 @@ claude mcp add devfleet --transport http http://localhost:18801/mcp
 Antes do primeiro uso, verifique se o processo escutando na porta 18801 é o
 binário do DevFleet que você instalou (veja SECURITY.md sobre servidores MCP em localhost).
 
-## How It Works
+## Como Funciona
 
 ```
 User → "Build a REST API with auth and tests"
@@ -74,7 +74,7 @@ Reportar de volta ao usuário
 
 O DevFleet executa até 3 agents concorrentes por padrão (configurável via `DEVFLEET_MAX_AGENTS`). Quando todos os slots estão ocupados, as missões com `auto_dispatch=true` ficam na fila no watcher de missões e são despachadas automaticamente conforme os slots ficam livres. Verifique `get_dashboard()` para o uso atual de slots.
 
-## Examples
+## Exemplos
 
 ### Totalmente automático: planejar e lançar
 
@@ -101,7 +101,7 @@ O DevFleet executa até 3 agents concorrentes por padrão (configurável via `DE
 4. `get_report(mission_id=impl_mission_id)` para revisar os resultados.
 5. `create_mission(project_id=project_id, title="Review", prompt="...", depends_on=[impl_mission_id], auto_dispatch=true)` — inicia automaticamente, já que a dependência já foi atendida.
 
-## Guidelines
+## Diretrizes
 
 - Sempre confirme o plano com o usuário antes de despachar, a menos que ele já tenha dito para prosseguir.
 - Inclua os títulos e IDs das missões ao reportar o status.

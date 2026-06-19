@@ -1,32 +1,32 @@
-# ECC v2.0.0-rc.1 Publication Evidence - 2026-05-18
+# ECC v2.0.0-rc.1 Evidência de Publicação - 2026-05-18
 
-This is release-readiness evidence only. It does not create a GitHub release,
-npm publication, plugin tag, marketplace submission, or announcement post.
+Esta é apenas uma evidência de prontidão para lançamento. Ela não cria um lançamento no GitHub,
+publicação no npm, tag de plugin, submissão ao marketplace ou post de anúncio.
 
-## Source Commit
+## Commit de Origem
 
-| Field | Evidence |
+| Campo | Evidência |
 | --- | --- |
 | Upstream main | `4470e2e6702f17099d6feb137ba03ff00582c202` |
-| Git remote | `https://github.com/affaan-m/everything-claude-code.git` |
-| Evidence scope | Current `main` after PR #1970 workflow-security validator bypass fixes, PR #1971 metrics bridge cost-reporting fixes, PR #1972 `uncloud` skill merge, PR #1973 stale script cleanup, issue #1974 cost-reporting verification/closure, PR #1976 OpenAI/AstraFlow provider response guards, PR #1978 review/closure, catalog/operator dashboard refresh, ECC-Tools Wrangler OAuth billing readback mirror, AgentShield `840952a` fleet-ticket and Mini Shai-Hulud IOC evidence mirror, Mini Shai-Hulud/TanStack protection recheck, defensive-deny IOC scanner hardening, release name/plugin publication checklist, readiness/smoke gate enforcement for that checklist, release OIDC publishing-scope hardening, workflow line-ending normalization, current-head CI/security scan, work-items sync, Linear progress sync, the ITO-46 publication-path dry-run refresh, ITO-46 Linear closure, and the post-closure operator dashboard refresh |
-| Local status caveat | `git status --short --branch` was clean at dashboard generation time; generated evidence files are committed after the source snapshot they describe |
+| Remote Git | `https://github.com/affaan-m/everything-claude-code.git` |
+| Escopo da evidência | `main` atual após correções de bypass do validador de segurança de workflow do PR #1970, correções de relatório de custos da bridge de métricas do PR #1971, merge da skill `uncloud` do PR #1972, limpeza de scripts obsoletos do PR #1973, verificação/fechamento de relatório de custos do issue #1974, guards de resposta de provedor OpenAI/AstraFlow do PR #1976, revisão/fechamento do PR #1978, atualização do catálogo/painel do operador, mirror de readback de faturamento Wrangler OAuth das ECC-Tools, mirror de evidência de frota `840952a` do AgentShield e IOC Mini Shai-Hulud, reverificação de proteção Mini Shai-Hulud/TanStack, hardening do scanner IOC defensive-deny, checklist de publicação de nome/plugin do lançamento, aplicação de gate de prontidão/smoke para esse checklist, hardening de escopo de publicação OIDC do lançamento, normalização de quebra de linha de workflow, CI/varredura de segurança no head atual, sincronização de itens de trabalho, sincronização de progresso Linear, atualização de dry-run do caminho de publicação ITO-46, fechamento do ITO-46 no Linear e atualização do painel do operador pós-fechamento |
+| Ressalva sobre status local | `git status --short --branch` estava limpo no momento da geração do painel; os arquivos de evidência gerados são commitados após o snapshot de origem que descrevem |
 
-The actual release operator should repeat all publish-facing checks from the
-final release commit with a strictly clean checkout before publishing.
+O operador real do lançamento deve repetir todas as verificações voltadas para publicação a partir do
+commit de lançamento final com um checkout estritamente limpo antes de publicar.
 
-## Queue And Discussion State
+## Estado da Fila e Discussão
 
-| Surface | Command | Result |
+| Superfície | Comando | Resultado |
 | --- | --- | --- |
-| Trunk PRs | `gh pr list --limit 100 --json number,title,state,author,updatedAt,url` | 0 open PRs |
-| Trunk issues | `gh issue list --limit 100 --json number,title,state,updatedAt,url,labels` | 0 open issues |
-| Discussion audit | `npm run discussion:audit -- --json` | Ready; 58 sampled discussions in `affaan-m/everything-claude-code`, 0 needing maintainer touch, 0 answerable discussions missing accepted answer, and 0 fetch errors |
-| Platform audit | `node scripts/platform-audit.js --json --allow-untracked docs/drafts/` | Ready; tracked repos report 0 open PRs, 0 open issues, 0 discussion maintainer-touch gaps, 0 answerable Q&A missing accepted answers, and 0 blocking dirty files |
-| Work-items sync | `node scripts/work-items.js sync-github --repo <tracked-repo>` for five tracked repos; `node scripts/status.js --json`; `node scripts/work-items.js list --json` | All five tracked repos synced with 0 open PRs/issues and no changed work items; local status reports 0 open, 0 blocked, and 0 closed work items |
-| Operator dashboard | `npm run operator:dashboard -- --markdown --write docs/releases/2.0.0-rc.1/operator-readiness-dashboard-2026-05-18.md` | Regenerated at `4470e2e6702f17099d6feb137ba03ff00582c202`; dashboard ready true, publication ready false because release, npm, plugin, billing, and announcement gates are approval-gated; 0 PRs, 0 issues, and 0 discussion gaps remain across tracked repos; AgentShield enterprise evidence includes `840952a`; ECC Tools native-payments gate now names the narrowed ITO-61 blocker: create or verify Marketplace-managed Pro target billing-state with webhook provenance, configure the target account and `INTERNAL_API_SECRET`, then rerun target readback and the live announcement gate |
+| PRs do trunk | `gh pr list --limit 100 --json number,title,state,author,updatedAt,url` | 0 PRs abertos |
+| Issues do trunk | `gh issue list --limit 100 --json number,title,state,updatedAt,url,labels` | 0 issues abertos |
+| Auditoria de discussão | `npm run discussion:audit -- --json` | Pronto; 58 discussões amostradas em `affaan-m/everything-claude-code`, 0 precisando de toque do mantenedor, 0 discussões respondíveis sem resposta aceita e 0 erros de busca |
+| Auditoria de plataforma | `node scripts/platform-audit.js --json --allow-untracked docs/drafts/` | Pronto; repos rastreados reportam 0 PRs abertos, 0 issues abertos, 0 lacunas de toque do mantenedor nas discussões, 0 Q&A respondíveis sem respostas aceitas e 0 arquivos bloqueadores sujos |
+| Sincronização de itens de trabalho | `node scripts/work-items.js sync-github --repo <tracked-repo>` para cinco repos rastreados; `node scripts/status.js --json`; `node scripts/work-items.js list --json` | Todos os cinco repos rastreados sincronizados com 0 PRs/issues abertos e nenhum item de trabalho alterado; o status local reporta 0 abertos, 0 bloqueados e 0 fechados |
+| Painel do operador | `npm run operator:dashboard -- --markdown --write docs/releases/2.0.0-rc.1/operator-readiness-dashboard-2026-05-18.md` | Regenerado em `4470e2e6702f17099d6feb137ba03ff00582c202`; painel pronto verdadeiro, publicação pronta falso porque os gates de lançamento, npm, plugin, faturamento e anúncio estão aguardando aprovação; 0 PRs, 0 issues e 0 lacunas de discussão permanecem nos repos rastreados; evidência enterprise do AgentShield inclui `840952a`; o gate de pagamentos nativos das ECC Tools agora nomeia o bloqueador ITO-61 narrowed: criar ou verificar billing-state alvo Pro gerenciado pelo Marketplace com proveniência de webhook, configurar a conta alvo e `INTERNAL_API_SECRET`, depois reexecutar readback do alvo e o gate de anúncio ao vivo |
 
-Tracked repositories in the platform audit and work-items sync were:
+Os repositórios rastreados na auditoria de plataforma e sincronização de itens de trabalho foram:
 
 - `affaan-m/everything-claude-code`
 - `affaan-m/agentshield`
@@ -34,117 +34,114 @@ Tracked repositories in the platform audit and work-items sync were:
 - `ECC-Tools/ECC-Tools`
 - `ECC-Tools/ECC-website`
 
-## Merge And Triage Batch
+## Lote de Merge e Triagem
 
-| Item | Result |
+| Item | Resultado |
 | --- | --- |
-| PR #1970 | Merged workflow-security validator fixes for quoted `write-all` and `refs/pull/*` checkout bypasses; main includes `e06d0382` and `7bb31720` from that slice |
-| PR #1971 | Merged metrics bridge cost-reporting fixes, full costs-file scan behavior, and persistent warning de-duplication across hook subprocesses; main includes commits through `9b1d8918` |
-| PR #1972 | Merged `skills/uncloud/SKILL.md` with activation structure and uncloud command references; main includes `8b6aed0`, `2e5f30f`, and `caee7cf` |
-| PR #1973 | Merged stale `skills/strategic-compact/suggest-compact.sh` removal after confirming the active hook is `scripts/hooks/suggest-compact.js`; remote main includes `812d4d06` |
-| Issue #1974 | Closed after verifying current `origin/main` already reads the latest cumulative metrics bridge cost row and focused cost/metrics tests pass |
-| Catalog/operator refresh | Pushed `81fca2ce` to refresh generated catalog count, URL ledger, and operator dashboard state after #1973/#1974 |
-| PR #1976 | Merged provider response hardening for OpenAI-compatible and AstraFlow providers; main includes `eb0d8939` follow-up guards for empty/filtered provider choices, missing OpenAI `response.usage`, shared filtered-response error text, and credential-less provider construction validation |
-| Provider guard validation | `uv run --extra dev pytest -q tests/test_provider_tools.py tests/test_astraflow_provider.py`, `uv run --extra dev pytest -q`, `node tests/run-all.js`, and `git diff --check` passed before merging #1976 follow-up into main: 11 provider-focused Python tests, 76 full Python tests, 2509 Node tests, and clean whitespace checks |
-| Defensive-deny IOC scanner hardening | Pushed `04d4d819` so explicit Claude `permissions.deny` IOC entries are treated as defensive controls while the same IOC still fails in hooks, tasks, scripts, locks, and payload files; local `npm test` passed 2511/2511 and current-head CI `26017368895` passed 37/37 |
-| Release name/plugin publication checklist | Pushed `6c0fbfb6` to add `docs/releases/2.0.0-rc.1/release-name-plugin-publication-checklist-2026-05-18.md`; the artifact freezes rc.1 as Everything Claude Code / ECC, keeps npm `ecc-universal`, keeps Claude/Codex plugin slug `ecc`, cites current Anthropic/OpenAI plugin publication paths, and blocks rename/npm publish/plugin tag/submission/billing/social actions until final release evidence exists; GitHub Actions CI `26034898420` passed |
-| Dashboard and preview-pack checklist enforcement | Added `680aeff0` so `scripts/operator-readiness-dashboard.js` and `scripts/preview-pack-smoke.js` require the release-name/plugin publication checklist; local dashboard and smoke tests passed and preview-pack smoke now enforces 26 required artifacts |
-| AgentShield enterprise evidence mirror | Added `2ba0c62d` and refreshed the dashboard generator/GA roadmap/AgentShield enterprise roadmap so the ECC release evidence names AgentShield `840952a` fleet review ticket payloads and current Mini Shai-Hulud IOC breadcrumb coverage |
-| PR #1978 | Closed broad/failing outside Excel harness PR after review; recorded a corrected split path for a future smaller Excel harness proposal, install-target/tooling PR, plugin-runtime PR, and translation-automation PR |
-| Announcement draft tracking | Added `docs/drafts/release-1.10.1-announcement.md` so the stabilization announcement draft is tracked instead of remaining as release-blocking untracked local state |
-| Clean-worktree preview-pack smoke | Detached worktree at `680aeff0fb9a8598858e3105ba4742973ef386ab`; `node scripts/preview-pack-smoke.js --root <worktree> --format json` passed 5/5 with digest `0ed831dbd0cf`; 26 required artifacts, final verification commands, Hermes public sanitization boundary, and approval-gated publication blockers were all preserved |
-| Public queues | Rechecked after the merge and issue-closure batch; 0 PRs, 0 issues, and 0 discussion gaps remain across tracked repos |
-| Release OIDC publishing scope | Pushed `7911af4a` to keep the release workflow's trusted-publishing path scoped to release publication instead of broadening OIDC permissions across unrelated jobs; local workflow security validation passed |
-| Release workflow normalization | Pushed `97567a91` to normalize release workflow line endings after the OIDC hardening slice; current-head CI `26050727969` passed for `97567a91e79e1ee4c291eb78f5f9c30c2046ac94` |
-| Operator readiness evidence refresh | Pushed `0f1775e3`, `fe7b4f2b`, and `67e63e63` to refresh blocker evidence, regenerate the operator dashboard, and align publication readiness to the latest CI/security evidence; pushed `4470e2e6` to close ITO-46 publication-path evidence, then regenerated the dashboard at `4470e2e6702f17099d6feb137ba03ff00582c202`; current-head CI `26057806361` passed for `4470e2e6702f17099d6feb137ba03ff00582c202` |
+| PR #1970 | Mergeadas correções do validador de segurança de workflow para bypasses de checkout `write-all` e `refs/pull/*` com aspas; main inclui `e06d0382` e `7bb31720` desse slice |
+| PR #1971 | Mergeadas correções de relatório de custos da bridge de métricas, comportamento de varredura completa do arquivo de custos e deduplicação de avisos persistentes nos subprocessos de hook; main inclui commits através de `9b1d8918` |
+| PR #1972 | Mergeado `skills/uncloud/SKILL.md` com estrutura de ativação e referências de comando uncloud; main inclui `8b6aed0`, `2e5f30f` e `caee7cf` |
+| PR #1973 | Mergeada remoção do `skills/strategic-compact/suggest-compact.sh` obsoleto após confirmar que o hook ativo é `scripts/hooks/suggest-compact.js`; main remoto inclui `812d4d06` |
+| Issue #1974 | Fechado após verificar que o `origin/main` atual já lê a última linha acumulada de custo da bridge de métricas e testes focados de custo/métricas passam |
+| Atualização de catálogo/operador | Enviado `81fca2ce` para atualizar a contagem do catálogo gerado, o ledger de URLs e o estado do painel do operador após #1973/#1974 |
+| PR #1976 | Mergeado hardening de resposta de provedor para provedores compatíveis com OpenAI e AstraFlow; main inclui guards de acompanhamento `eb0d8939` para escolhas de provedor vazias/filtradas, `response.usage` OpenAI ausente, texto de erro de resposta filtrada compartilhada e validação de construção de provedor sem credenciais |
+| Validação de guard de provedor | `uv run --extra dev pytest -q tests/test_provider_tools.py tests/test_astraflow_provider.py`, `uv run --extra dev pytest -q`, `node tests/run-all.js` e `git diff --check` passaram antes de mergear o acompanhamento #1976 no main: 11 testes Python focados em provedor, 76 testes Python completos, 2509 testes Node e verificações de espaços em branco limpas |
+| Hardening do scanner IOC defensive-deny | Enviado `04d4d819` para que entradas de IOC `permissions.deny` explícitas do Claude sejam tratadas como controles defensivos enquanto o mesmo IOC ainda falha em hooks, tasks, scripts, locks e arquivos de payload; `npm test` local passou 2511/2511 e CI no head atual `26017368895` passou 37/37 |
+| Checklist de publicação de nome/plugin do lançamento | Enviado `6c0fbfb6` para adicionar `docs/releases/2.0.0-rc.1/release-name-plugin-publication-checklist-2026-05-18.md`; o artefato congela rc.1 como Everything Claude Code / ECC, mantém npm `ecc-universal`, mantém o slug `ecc` dos plugins Claude/Codex, cita caminhos de publicação de plugin Anthropic/OpenAI atuais e bloqueia ações de renomeação/publicação npm/tag de plugin/submissão/faturamento/social até que evidências finais de lançamento existam; CI do GitHub Actions `26034898420` passou |
+| Aplicação de checklist do painel e preview pack | Adicionado `680aeff0` para que `scripts/operator-readiness-dashboard.js` e `scripts/preview-pack-smoke.js` exijam o checklist de publicação de nome/plugin do lançamento; testes locais de painel e smoke passaram e o smoke do preview pack agora aplica 26 artefatos obrigatórios |
+| Mirror de evidência enterprise do AgentShield | Adicionado `2ba0c62d` e atualizado o gerador de painel/roadmap GA/roadmap enterprise do AgentShield para que a evidência de lançamento do ECC nomeie os payloads de ticket de revisão de frota `840952a` do AgentShield e a cobertura atual de trilha de IOC Mini Shai-Hulud |
+| PR #1978 | Fechado PR amplo/com falhas de harness Excel externo após revisão; registrado um caminho de divisão correto para uma futura proposta menor de harness Excel, PR de alvo de instalação/ferramentas, PR de runtime de plugin e PR de automação de tradução |
+| Rastreamento de rascunho de anúncio | Adicionado `docs/drafts/release-1.10.1-announcement.md` para que o rascunho do anúncio de estabilização seja rastreado em vez de permanecer como estado local não rastreado bloqueador do lançamento |
+| Smoke do preview pack na worktree limpa | Worktree separada em `680aeff0fb9a8598858e3105ba4742973ef386ab`; `node scripts/preview-pack-smoke.js --root <worktree> --format json` passou 5/5 com digest `0ed831dbd0cf`; 26 artefatos obrigatórios, comandos de verificação final, limite de sanitização pública do Hermes e bloqueadores de publicação aguardando aprovação foram todos preservados |
+| Filas públicas | Reverificadas após o lote de merge e fechamento de issues; 0 PRs, 0 issues e 0 lacunas de discussão permanecem nos repos rastreados |
+| Escopo de publicação OIDC do lançamento | Enviado `7911af4a` para manter o caminho de publicação confiável do workflow de lançamento com escopo para publicação de lançamento em vez de ampliar permissões OIDC para jobs não relacionados; a validação de segurança de workflow local passou |
+| Normalização de workflow de lançamento | Enviado `97567a91` para normalizar as quebras de linha do workflow de lançamento após o slice de hardening OIDC; CI no head atual `26050727969` passou para `97567a91e79e1ee4c291eb78f5f9c30c2046ac94` |
+| Atualização de evidência de prontidão do operador | Enviados `0f1775e3`, `fe7b4f2b` e `67e63e63` para atualizar evidências do bloqueador, regenerar o painel do operador e alinhar a prontidão de publicação com as evidências mais recentes de CI/segurança; enviado `4470e2e6` para fechar a evidência do caminho de publicação ITO-46, depois regenerado o painel em `4470e2e6702f17099d6feb137ba03ff00582c202`; CI no head atual `26057806361` passou para `4470e2e6702f17099d6feb137ba03ff00582c202` |
 
-## Supply-Chain And Security Evidence
+## Evidência de Cadeia de Suprimentos e Segurança
 
-| Gate | Command | Result |
+| Gate | Comando | Resultado |
 | --- | --- | --- |
-| Repo IOC scan | `npm run security:ioc-scan` | Passed; 198 files inspected |
-| Home persistence IOC scan | `node scripts/ci/scan-supply-chain-iocs.js --home --json` | Passed; 200 files inspected; `findings: []` |
-| ECC workspace IOC recheck | `node scripts/ci/scan-supply-chain-iocs.js --root <local ECC root> --home --json` | Passed; 1212 files inspected; `findings: []`; exact local path is kept out of public release evidence |
-| Narrow active persistence sweep | Targeted search over user-level Claude, VS Code, LaunchAgent/systemd, local-bin, `/tmp`, and `/private/tmp` campaign paths | Existing active targets: 2; no campaign marker hits |
-| Scanner fixture tests | `node tests/ci/scan-supply-chain-iocs.test.js` | 20 passed, 0 failed, including defensive Claude deny-wall pass and hook-with-same-IOC fail-closed coverage |
-| Advisory source refresh | `node scripts/ci/supply-chain-advisory-sources.js --refresh --json` | Ready with 9 sources; live refresh produced 1 OpenAI URL warning from Node fetch while primary TanStack, GitHub advisory, StepSecurity, Wiz, Socket, npm, and CISA sources returned OK |
-| No-lifecycle install | `npm ci --ignore-scripts` | Completed cleanly; 213 packages installed, 0 vulnerabilities |
-| npm audit | `npm audit --audit-level=high` | 0 vulnerabilities |
-| npm signatures | `npm audit signatures` | 213 verified registry signatures; 17 verified attestations |
-| Workflow security | `node scripts/ci/validate-workflow-security.js` | Validated 8 workflow files after the release OIDC publishing-scope hardening |
-| AgentShield project scan | `npx --no-install ecc-agentshield scan --format json` | Grade A / 99; 0 critical, 0 high, 0 medium; 6 low docs-example skill telemetry/governance findings |
-| Current-head CI security scan | `gh run view 26057806361 --repo affaan-m/everything-claude-code --json status,conclusion,headSha,jobs,url` | Completed successfully for `4470e2e6702f17099d6feb137ba03ff00582c202`; 37/37 CI jobs passed, including lint, workflow/component validation, coverage, cross-platform package-manager tests, npm audit, and supply-chain IOC scan |
-| Latest Supply-Chain Watch | `gh run view 26010432490 --repo affaan-m/everything-claude-code --json status,conclusion,headSha,url` | Completed successfully for `25ac57ac40e9fc5a0606e76e6339e72c79748c99`; rerun from the final release commit before publication |
+| Varredura IOC do repo | `npm run security:ioc-scan` | Passou; 198 arquivos inspecionados |
+| Varredura IOC de persistência doméstica | `node scripts/ci/scan-supply-chain-iocs.js --home --json` | Passou; 200 arquivos inspecionados; `findings: []` |
+| Reverificação IOC do workspace ECC | `node scripts/ci/scan-supply-chain-iocs.js --root <local ECC root> --home --json` | Passou; 1212 arquivos inspecionados; `findings: []`; o caminho local exato é mantido fora das evidências de lançamento público |
+| Varredura estreita de persistência ativa | Busca direcionada sobre caminhos de campanha Claude, VS Code, LaunchAgent/systemd, local-bin, `/tmp` e `/private/tmp` em nível de usuário | Alvos ativos existentes: 2; sem correspondências de marcador de campanha |
+| Testes de fixtures do scanner | `node tests/ci/scan-supply-chain-iocs.test.js` | 20 passados, 0 falhas, incluindo cobertura de passagem de Claude deny-wall defensivo e falha-fechada de hook-com-mesmo-IOC |
+| Atualização de fonte de aviso | `node scripts/ci/supply-chain-advisory-sources.js --refresh --json` | Pronto com 9 fontes; a atualização ao vivo produziu 1 aviso de URL OpenAI do Node fetch enquanto as fontes primárias TanStack, GitHub advisory, StepSecurity, Wiz, Socket, npm e CISA retornaram OK |
+| Instalação sem ciclo de vida | `npm ci --ignore-scripts` | Concluído sem problemas; 213 pacotes instalados, 0 vulnerabilidades |
+| Auditoria npm | `npm audit --audit-level=high` | 0 vulnerabilidades |
+| Assinaturas npm | `npm audit signatures` | 213 assinaturas de registro verificadas; 17 atestados verificados |
+| Segurança de workflow | `node scripts/ci/validate-workflow-security.js` | Validados 8 arquivos de workflow após o hardening de escopo de publicação OIDC do lançamento |
+| Varredura de projeto AgentShield | `npx --no-install ecc-agentshield scan --format json` | Grau A / 99; 0 críticos, 0 altos, 0 médios; 6 descobertas baixas de telemetria/governança de skill de exemplo em documentos |
+| Varredura de segurança CI no head atual | `gh run view 26057806361 --repo affaan-m/everything-claude-code --json status,conclusion,headSha,jobs,url` | Concluído com sucesso para `4470e2e6702f17099d6feb137ba03ff00582c202`; 37/37 jobs CI passaram, incluindo lint, validação de workflow/componente, cobertura, testes de gerenciador de pacotes multiplataforma, auditoria npm e varredura IOC da cadeia de suprimentos |
+| Último Supply-Chain Watch | `gh run view 26010432490 --repo affaan-m/everything-claude-code --json status,conclusion,headSha,url` | Concluído com sucesso para `25ac57ac40e9fc5a0606e76e6339e72c79748c99`; reexecute do commit final de lançamento antes da publicação |
 
-## ITO-46 Publication Path Refresh
+## Atualização do Caminho de Publicação ITO-46
 
-| Gate | Command | Result |
+| Gate | Comando | Resultado |
 | --- | --- | --- |
-| Clean publication-path baseline | `git status --short --branch`; `git rev-parse HEAD`; `git remote get-url origin` | Clean `main` at `67e63e63f9bfd074bd6a21bf6bac71f3dfefa58b`; remote `https://github.com/affaan-m/everything-claude-code.git` |
-| Package/plugin identity readback | `node -p "JSON.stringify({pkg, claude, codex, opencode}, null, 2)"` | `ecc-universal@2.0.0-rc.1`; Claude plugin `ecc@2.0.0-rc.1`; Codex plugin `ecc@2.0.0-rc.1`; OpenCode package `ecc-universal@2.0.0-rc.1` |
-| Name availability | `npm view ecc name version description repository.url --json`; `npm view @affaan-m/ecc name version --json`; `npm view ecc-universal name version dist-tags --json` | `ecc` is occupied by unrelated `ecc@0.0.2`; `@affaan-m/ecc` returns 404; `ecc-universal` registry latest remains `1.10.0` with no `next` dist-tag |
-| Plugin manifest tests | `node tests/plugin-manifest.test.js` | 54 passed, 0 failed |
-| Release surface tests | `node tests/docs/ecc2-release-surface.test.js` | 21 passed, 0 failed |
-| Claude plugin validation | `claude plugin validate .claude-plugin/plugin.json`; `claude plugin validate .`; `claude plugin tag .claude-plugin --dry-run` | Claude Code `2.1.143`; manifest validation passed; full plugin validation passed with one expected root `CLAUDE.md` context warning; tag dry run would create `ecc--v2.0.0-rc.1` |
-| Claude marketplace source help | `claude plugin marketplace add --help`; `claude plugin marketplace update --help` | Marketplace add supports URL, local path, GitHub repo, `--scope`, and `--sparse`; update supports targeted or all-marketplace refresh |
-| Codex marketplace help | `codex plugin marketplace add --help` | Codex CLI `0.131.0`; marketplace add supports local paths, `owner/repo[@ref]`, HTTPS Git URL, SSH Git URL, `--ref`, and `--sparse` |
-| Codex local marketplace smoke | `HOME="$(mktemp -d)" codex plugin marketplace add ./` | Added marketplace `ecc` from the local checkout without touching the real Codex config |
-| Codex GitHub-ref marketplace smoke | `HOME="$(mktemp -d)" codex plugin marketplace add affaan-m/everything-claude-code --ref "$(git rev-parse HEAD)"` | Added marketplace `ecc` from the public GitHub repo pinned to `67e63e63f9bfd074bd6a21bf6bac71f3dfefa58b` without touching the real Codex config |
-| npm package dry-run | `NPM_CONFIG_USERCONFIG=/dev/null npm pack --dry-run --json`; `NPM_CONFIG_USERCONFIG=/dev/null npm publish --tag next --dry-run` | Pack produced `ecc-universal-2.0.0-rc.1.tgz`, 2228 files, 4,348,504 bytes packed, 13,024,929 bytes unpacked, shasum `29d6a17029d80f5cb1df068880ba86c55a5d60f1`; publish dry-run would publish `ecc-universal@2.0.0-rc.1` with tag `next` |
-| OpenCode package build | `npm run build:opencode` | Passed |
-| Preview pack smoke | `npm run preview-pack:smoke` | Ready yes; digest `0ed831dbd0cf`; 5 passed, 0 failed |
-| Official docs check | Anthropic `https://code.claude.com/docs/en/plugins` and `https://code.claude.com/docs/en/plugin-marketplaces`; OpenAI `https://developers.openai.com/codex/plugins/build` | Anthropic documents self-hosted marketplace sources; OpenAI documents repo/personal marketplaces and the official Plugin Directory. ECC has not created a real release tag, official listing, or npm publication in this pass |
-| ITO-46 closure | Linear ITO-46 comment `9ef92056-ab23-4eed-bfdb-932dddc2b056`; Linear issue status `Done`; GitHub Actions `26057806361` | Publication-path docs now record every channel, name conflicts, package/plugin dry-run commands, and blocker register; Codex repo-marketplace distribution is verified but official Plugin Directory listing is not claimed before OpenAI submission/listing evidence |
+| Linha de base limpa do caminho de publicação | `git status --short --branch`; `git rev-parse HEAD`; `git remote get-url origin` | `main` limpo em `67e63e63f9bfd074bd6a21bf6bac71f3dfefa58b`; remote `https://github.com/affaan-m/everything-claude-code.git` |
+| Readback de identidade de pacote/plugin | `node -p "JSON.stringify({pkg, claude, codex, opencode}, null, 2)"` | `ecc-universal@2.0.0-rc.1`; plugin Claude `ecc@2.0.0-rc.1`; plugin Codex `ecc@2.0.0-rc.1`; pacote OpenCode `ecc-universal@2.0.0-rc.1` |
+| Disponibilidade de nome | `npm view ecc name version description repository.url --json`; `npm view @affaan-m/ecc name version --json`; `npm view ecc-universal name version dist-tags --json` | `ecc` está ocupado pelo pacote não relacionado `ecc@0.0.2`; `@affaan-m/ecc` retorna 404; o registro `ecc-universal` latest permanece `1.10.0` sem dist-tag `next` |
+| Testes de manifest de plugin | `node tests/plugin-manifest.test.js` | 54 passados, 0 falhas |
+| Testes de superfície de lançamento | `node tests/docs/ecc2-release-surface.test.js` | 21 passados, 0 falhas |
+| Validação do plugin Claude | `claude plugin validate .claude-plugin/plugin.json`; `claude plugin validate .`; `claude plugin tag .claude-plugin --dry-run` | Claude Code `2.1.143`; validação do manifest passou; validação completa do plugin passou com um aviso esperado de contexto `CLAUDE.md` raiz; o dry run de tag criaria `ecc--v2.0.0-rc.1` |
+| Ajuda de fonte do marketplace Claude | `claude plugin marketplace add --help`; `claude plugin marketplace update --help` | Marketplace add suporta URL, caminho local, repo GitHub, `--scope` e `--sparse`; update suporta atualização direcionada ou de todos os marketplaces |
+| Ajuda do marketplace Codex | `codex plugin marketplace add --help` | Codex CLI `0.131.0`; marketplace add suporta caminhos locais, `owner/repo[@ref]`, URL Git HTTPS, URL Git SSH, `--ref` e `--sparse` |
+| Smoke local do marketplace Codex | `HOME="$(mktemp -d)" codex plugin marketplace add ./` | Adicionado marketplace `ecc` do checkout local sem tocar na configuração real do Codex |
+| Smoke do marketplace Codex via ref do GitHub | `HOME="$(mktemp -d)" codex plugin marketplace add affaan-m/everything-claude-code --ref "$(git rev-parse HEAD)"` | Adicionado marketplace `ecc` do repo público do GitHub fixado em `67e63e63f9bfd074bd6a21bf6bac71f3dfefa58b` sem tocar na configuração real do Codex |
+| Dry-run do pacote npm | `NPM_CONFIG_USERCONFIG=/dev/null npm pack --dry-run --json`; `NPM_CONFIG_USERCONFIG=/dev/null npm publish --tag next --dry-run` | Pack produziu `ecc-universal-2.0.0-rc.1.tgz`, 2228 arquivos, 4.348.504 bytes empacotados, 13.024.929 bytes desempacotados, shasum `29d6a17029d80f5cb1df068880ba86c55a5d60f1`; o dry-run de publicação publicaria `ecc-universal@2.0.0-rc.1` com a tag `next` |
+| Build do pacote OpenCode | `npm run build:opencode` | Passou |
+| Smoke do preview pack | `npm run preview-pack:smoke` | Pronto sim; digest `0ed831dbd0cf`; 5 passados, 0 falhas |
+| Verificação de documentação oficial | Anthropic `https://code.claude.com/docs/en/plugins` e `https://code.claude.com/docs/en/plugin-marketplaces`; OpenAI `https://developers.openai.com/codex/plugins/build` | Anthropic documenta fontes de marketplace self-hosted; OpenAI documenta marketplaces de repo/pessoais e o Diretório Oficial de Plugins. O ECC não criou uma tag de lançamento real, listagem oficial ou publicação npm nesta passagem |
+| Fechamento do ITO-46 | Comentário Linear ITO-46 `9ef92056-ab23-4eed-bfdb-932dddc2b056`; status da issue Linear `Done`; GitHub Actions `26057806361` | Os docs do caminho de publicação agora registram cada canal, conflitos de nome, comandos de dry-run de pacote/plugin e registro de bloqueadores; a distribuição via marketplace de repo do Codex está verificada mas a listagem oficial no Diretório de Plugins não é reivindicada antes das evidências de submissão/listagem da OpenAI |
 
-## Linear Progress Sync
+## Sincronização de Progresso Linear
 
-| Surface | Evidence |
+| Superfície | Evidência |
 | --- | --- |
-| ITO-57 issue comments | `0b9931b9-1556-4ebc-a70c-f3635557625d` records May 18 queue counts, #1970/#1971/#1972/#1976 merge evidence, supply-chain verification, current-head CI URL, deferred gates, and next slices; reply `6fa15367-d994-4e53-ade3-9462477e1100` records the expanded TanStack/Mini Shai-Hulud recheck, defensive-deny scanner fix, current-head CI `26017368895`, and post-push platform audit; comment `3fe5b2b7-c4fe-401c-a317-b40d72119cb3` records the final emergency refresh against `97567a91`, AgentShield `4e36aab`, clean ECC/Ito/Documents workspace IOC scans, absent dead-man/persistence artifacts, and package-manager/Claude deny-wall posture; comment `43837404-c01c-4aaa-b5e2-1e784c136d69` records ECC-Tools `brace-expansion` alert 44 fixed in `e56fc1a` with CI `26054671308` and Dependabot API `state: fixed` |
-| ITO-52 issue status | `f2e5a208-de91-4a3a-960b-5362d12aa5a4` records ECC-Tools `69ca535` team-learning feedback controls, local verification, and CI `26054455434`; Linear ITO-52 is Done |
-| ITO-61 issue status | `6904e4fb-bec7-4787-90e2-759f077a628c` records the narrowed native-payments readback blocker: Wrangler OAuth now works, aggregate readback is clean, but there is still no Marketplace-managed Pro target billing-state with webhook provenance and the local announcement preflight is missing the target account plus `INTERNAL_API_SECRET` |
-| ECC platform project comment | `e32e5b7a-287b-4bf4-9ed7-314389a157e1` records the earlier current public queue, security, #1976, and remaining-gate state at the project level; follow-up ITO-44 comments `a01eeef3-c69b-48c0-8804-a4682acfc1ef` and `6b0885cc-c4e9-40db-899b-f7b88b4aa046` record ITO-52 completion and the fixed ECC-Tools Dependabot alert |
-| Project status update caveat | Linear returned "Project status updates are not enabled for this workspace"; project comment was used as the supported status surface |
+| Comentários de issue ITO-57 | `0b9931b9-1556-4ebc-a70c-f3635557625d` registra contagens da fila de 18 de maio, evidências de merge #1970/#1971/#1972/#1976, verificação da cadeia de suprimentos, URL de CI no head atual, gates adiados e próximos slices; resposta `6fa15367-d994-4e53-ade3-9462477e1100` registra a reverificação expandida TanStack/Mini Shai-Hulud, correção do scanner defensive-deny, CI no head atual `26017368895` e auditoria de plataforma pós-envio; comentário `3fe5b2b7-c4fe-401c-a317-b40d72119cb3` registra a atualização de emergência final contra `97567a91`, AgentShield `4e36aab`, varreduras de workspace ECC/Ito/Documents limpas, ausência de artefatos dead-man/persistência e postura de gerenciador de pacotes/Claude deny-wall; comentário `43837404-c01c-4aaa-b5e2-1e784c136d69` registra o alerta 44 `brace-expansion` das ECC-Tools corrigido em `e56fc1a` com CI `26054671308` e API do Dependabot `state: fixed` |
+| Status da issue ITO-52 | `f2e5a208-de91-4a3a-960b-5362d12aa5a4` registra controles de feedback de aprendizado em equipe `69ca535` das ECC-Tools, verificação local e CI `26054455434`; Linear ITO-52 está Done |
+| Status da issue ITO-61 | `6904e4fb-bec7-4787-90e2-759f077a628c` registra o bloqueador de readback de pagamentos nativos narrowed: o Wrangler OAuth agora funciona, o readback agregado está limpo, mas ainda não há billing-state alvo Pro gerenciado pelo Marketplace com proveniência de webhook e o preflight de anúncio local está faltando a conta alvo mais `INTERNAL_API_SECRET` |
+| Comentário do projeto da plataforma ECC | `e32e5b7a-287b-4bf4-9ed7-314389a157e1` registra o estado anterior de fila pública atual, segurança, #1976 e gates restantes a nível de projeto; comentários ITO-44 de acompanhamento `a01eeef3-c69b-48c0-8804-a4682acfc1ef` e `6b0885cc-c4e9-40db-899b-f7b88b4aa046` registram a conclusão do ITO-52 e o alerta Dependabot das ECC-Tools corrigido |
+| Ressalva sobre atualização de status do projeto | O Linear retornou "Project status updates are not enabled for this workspace"; o comentário do projeto foi usado como superfície de status suportada |
 
-## Current Publication Blockers
+## Bloqueadores Atuais de Publicação
 
-- GitHub prerelease `v2.0.0-rc.1` is still not created in this pass.
-- npm `ecc-universal@2.0.0-rc.1` is still not published to the `next`
-  dist-tag.
-- Claude plugin tag and marketplace propagation remain approval-gated.
-- Codex repo-marketplace distribution is verified for rc.1, but official
-  Plugin Directory publishing remains blocked on OpenAI's self-serve publishing
-  surface.
-- ECC Tools billing/native-payments copy remains blocked until a Marketplace
-  Pro purchase/webhook path writes ready production `billing-state:*`
-  provenance for the target Marketplace test account, then
+- O pré-lançamento `v2.0.0-rc.1` no GitHub ainda não foi criado nesta passagem.
+- O npm `ecc-universal@2.0.0-rc.1` ainda não foi publicado com a dist-tag `next`.
+- A tag do plugin Claude e a propagação no marketplace permanecem aguardando aprovação.
+- A distribuição via marketplace de repo do plugin Codex está verificada para rc.1, mas a
+  publicação oficial no Diretório de Plugins permanece bloqueada na superfície de publicação
+  de autoatendimento da OpenAI.
+- O texto de faturamento/pagamentos nativos das ECC Tools permanece bloqueado até que um
+  caminho de compra/webhook do Marketplace Pro escreva proveniência `billing-state:*` de produção
+  pronta para a conta de teste do Marketplace alvo, depois
   `npm run billing:kv-readback -- --account <github-login> --require-ready`
-  with working Cloudflare API auth or repaired Wrangler OAuth, followed by
-  `npm run billing:announcement-gate -- --account <github-login>`, return
-  announcement-ready gates. The latest Wrangler OAuth aggregate readback found
-  256 `account-billing:*` records, 256 `billing-state:*` records, 197
-  Marketplace-source records, 59 Stripe-source records, 53 Pro records, 4
-  Marketplace webhook-provenance records, all `Open Source`, 0 Marketplace Pro
-  states, 0 ready-like Marketplace Pro states, and 0 parse failures. ECC-Tools
-  commit `632e059` adds the follow-up target-account readback mode, redacts
-  the account login and raw KV key names, and requires both target key families
-  before `--require-ready` can pass. ECC-Tools commit `13cd3fc` normalizes
-  billing-state key casing. The latest ITO-61 retry fails because no
-  Marketplace-managed Pro state exists and the announcement preflight is
-  missing the target account plus `INTERNAL_API_SECRET`; Linear ITO-61 tracks
-  the exact target-account acceptance criteria.
-- Release notes, X, LinkedIn, GitHub release, and longform copy still need final
-  live URLs after release/package/plugin URLs exist.
-- The local checkout is clean after the dashboard/evidence refresh, but a
-  strict clean-checkout release pass remains required before real publication.
+  com autenticação API do Cloudflare funcionando ou Wrangler OAuth reparado, seguido por
+  `npm run billing:announcement-gate -- --account <github-login>`, retornem
+  gates prontos para anúncio. O readback agregado mais recente do Wrangler OAuth encontrou
+  256 registros `account-billing:*`, 256 registros `billing-state:*`, 197
+  registros de origem Marketplace, 59 registros de origem Stripe, 53 registros Pro, 4
+  registros de proveniência de webhook do Marketplace, todos `Open Source`, 0 estados Marketplace Pro,
+  0 estados Marketplace Pro prontos e 0 falhas de parse. O commit `632e059` das ECC-Tools
+  adiciona o modo de readback de conta alvo de acompanhamento, edita o login da conta e os nomes
+  de chave KV brutos e exige ambas as famílias de chaves alvo antes que `--require-ready` possa passar.
+  O commit `13cd3fc` das ECC-Tools normaliza a caixa das chaves billing-state. A última tentativa
+  ITO-61 falha porque nenhum estado Marketplace Pro gerenciado existe e o preflight de anúncio
+  está faltando a conta alvo mais `INTERNAL_API_SECRET`; o ITO-61 Linear rastreia
+  os critérios exatos de aceitação da conta alvo.
+- As notas de lançamento, X, LinkedIn, lançamento no GitHub e texto longo ainda precisam de URLs
+  ao vivo finais após as URLs de lançamento/pacote/plugin existirem.
+- O checkout local está limpo após a atualização do painel/evidência, mas uma passagem de
+  lançamento com checkout estritamente limpo continua sendo necessária antes da publicação real.
 
-## Result
+## Resultado
 
-The tracked public PR queue, issue queue, discussion queue, local work-items
-bridge, release-name/plugin publication gate, and Mini Shai-Hulud/TanStack
-protection loop are current on May 18, 2026 for current `main` through
-`97567a91`, with follow-up ECC Tools billing-gate hardening in `632e059`
-and AgentShield enterprise/security hardening through `4e36aab`.
-This improves publication readiness but does not replace the approval-gated
-release, package, plugin, billing, and announcement steps in
-`publication-readiness.md`.
+A fila pública de PRs, fila de issues, fila de discussões, bridge de itens de trabalho local,
+gate de publicação de nome/plugin do lançamento e loop de proteção Mini Shai-Hulud/TanStack estão
+atuais em 18 de maio de 2026 para o `main` atual através de `97567a91`, com hardening do gate de
+faturamento das ECC Tools de acompanhamento em `632e059` e hardening de segurança/enterprise
+do AgentShield através de `4e36aab`.
+Isso melhora a prontidão de publicação mas não substitui as etapas de lançamento, pacote, plugin,
+faturamento e anúncio aguardando aprovação em `publication-readiness.md`.

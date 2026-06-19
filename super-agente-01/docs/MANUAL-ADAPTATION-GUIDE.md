@@ -1,20 +1,20 @@
-# Manual Adaptation Guide for Non-Native Harnesses
+# Guia de Adaptação Manual para Harnesses Não Nativos
 
-Use this guide when you want ECC behavior inside a harness that does not natively load `.claude/`, `.codex/`, `.opencode/`, `.cursor/`, or `.agent/` layouts.
+Use este guia quando quiser o comportamento do ECC dentro de um harness que não carrega nativamente os layouts `.claude/`, `.codex/`, `.opencode/`, `.cursor/` ou `.agent/`.
 
-This is the fallback path for tools like Grok and other chat-style interfaces that can accept system prompts, uploaded files, or pasted instructions, but cannot execute the repo's native install surfaces directly.
+Este é o caminho de fallback para ferramentas como Grok e outras interfaces no estilo chat que podem aceitar prompts de sistema, arquivos enviados ou instruções coladas, mas não podem executar as superfícies de instalação nativas do repositório diretamente.
 
-## When to Use This
+## Quando Usar Isso
 
-Use manual adaptation when the target harness:
+Use a adaptação manual quando o harness de destino:
 
-- does not auto-load repo folders
-- does not support custom slash commands
-- does not support hooks
-- does not support repo-local skill activation
-- has partial or no filesystem/tool access
+- não carrega pastas do repositório automaticamente
+- não suporta comandos de barra personalizados
+- não suporta hooks
+- não suporta ativação de skill local ao repositório
+- tem acesso parcial ou nenhum ao sistema de arquivos/ferramenta
 
-Prefer a first-class ECC target whenever one exists:
+Prefira um target ECC de primeira classe sempre que um existir:
 
 - Claude Code
 - Codex
@@ -23,54 +23,54 @@ Prefer a first-class ECC target whenever one exists:
 - CodeBuddy
 - Antigravity
 
-Use this guide only when you need ECC behavior in a non-native harness.
+Use este guia somente quando precisar do comportamento do ECC em um harness não nativo.
 
-## What You Are Reproducing
+## O que Você Está Reproduzindo
 
-When you adapt ECC manually, you are trying to preserve four things:
+Quando você adapta o ECC manualmente, está tentando preservar quatro coisas:
 
-1. Focused context instead of dumping the whole repo.
-2. Skill activation cues instead of hoping the model guesses the workflow.
-3. Command intent even when the harness has no slash-command system.
-4. Hook discipline even when the harness has no native automation.
+1. Contexto focado em vez de despejar o repositório inteiro.
+2. Pistas de ativação de skill em vez de esperar que o modelo adivinhe o fluxo de trabalho.
+3. Intenção de comando mesmo quando o harness não tem sistema de comandos de barra.
+4. Disciplina de hook mesmo quando o harness não tem automação nativa.
 
-You are not trying to mirror every file in the repo. You are trying to recreate the useful behavior with the smallest possible context bundle.
+Você não está tentando espelhar todos os arquivos do repositório. Você está tentando recriar o comportamento útil com o menor bundle de contexto possível.
 
-## The ECC-Native Fallback
+## O Fallback Nativo do ECC
 
-Default to manual selection from the repo itself.
+Padronize para seleção manual do próprio repositório.
 
-Start with only the files you actually need:
+Comece com apenas os arquivos de que você realmente precisa:
 
-- one language or framework skill
-- one workflow skill
-- one domain skill if the task is specialized
-- one agent or command only if the harness benefits from explicit orchestration
+- uma skill de linguagem ou framework
+- uma skill de fluxo de trabalho
+- uma skill de domínio se a tarefa for especializada
+- um agent ou comando somente se o harness se beneficiar de orquestração explícita
 
-Good minimal examples:
+Bons exemplos mínimos:
 
-- Python feature work:
+- Trabalho com funcionalidades Python:
   - `skills/python-patterns/SKILL.md`
   - `skills/tdd-workflow/SKILL.md`
   - `skills/verification-loop/SKILL.md`
-- TypeScript API work:
+- Trabalho com API TypeScript:
   - `skills/backend-patterns/SKILL.md`
   - `skills/security-review/SKILL.md`
   - `skills/tdd-workflow/SKILL.md`
-- Content/outbound work:
+- Trabalho de conteúdo/outbound:
   - `skills/brand-voice/SKILL.md`
   - `skills/content-engine/SKILL.md`
   - `skills/crosspost/SKILL.md`
 
-If the harness supports file upload, upload only those files.
+Se o harness suportar upload de arquivo, faça upload apenas desses arquivos.
 
-If the harness only supports pasted context, extract the relevant sections and paste a compressed bundle rather than the raw full files.
+Se o harness só suportar contexto colado, extraia as seções relevantes e cole um bundle comprimido em vez dos arquivos completos brutos.
 
-## Manual Context Packing
+## Empacotamento Manual de Contexto
 
-You do not need extra tooling to do this.
+Você não precisa de ferramentas extras para fazer isso.
 
-Use the repo directly:
+Use o repositório diretamente:
 
 ```bash
 cd /path/to/everything-claude-code
@@ -82,133 +82,133 @@ printf '\n\n---\n\n' >> /tmp/ecc-context.md
 sed -n '1,220p' skills/security-review/SKILL.md >> /tmp/ecc-context.md
 ```
 
-You can also use `rg` to identify the right skills before packing:
+Você também pode usar `rg` para identificar as skills certas antes de empacotar:
 
 ```bash
 rg -n "When to use|Use when|Trigger" skills -g 'SKILL.md'
 ```
 
-Optional: if you already use a repo packer like `repomix`, it can help compress selected files into one handoff document. It is a convenience tool, not the canonical ECC path.
+Opcional: se você já usa um empacotador de repositório como `repomix`, ele pode ajudar a comprimir arquivos selecionados em um documento de handoff. É uma ferramenta de conveniência, não o caminho canônico do ECC.
 
-## Compression Rules
+## Regras de Compressão
 
-When manually packing ECC for another harness:
+Ao empacotar manualmente o ECC para outro harness:
 
-- keep the task framing
-- keep the activation conditions
-- keep the workflow steps
-- keep the critical examples
-- remove repetitive prose first
-- remove unrelated variants second
-- avoid pasting whole directories when one or two skills are enough
+- mantenha o enquadramento da tarefa
+- mantenha as condições de ativação
+- mantenha os passos do fluxo de trabalho
+- mantenha os exemplos críticos
+- remova primeiro a prosa repetitiva
+- remova variantes não relacionadas por segundo
+- evite colar diretórios inteiros quando uma ou duas skills são suficientes
 
-If you need a tighter prompt format, convert the essential parts into a compact structured block:
+Se você precisar de um formato de prompt mais compacto, converta as partes essenciais em um bloco estruturado compacto:
 
 ```xml
 <skill name="tdd-workflow">
-  <when>New feature, bug fix, or refactor that should be test-first.</when>
+  <when>Nova funcionalidade, correção de bug ou refatoração que deve ser test-first.</when>
   <steps>
-    <step>Write a failing test.</step>
-    <step>Make it pass with the smallest change.</step>
-    <step>Refactor and rerun validation.</step>
+    <step>Escreva um teste que falha.</step>
+    <step>Faça-o passar com a menor mudança.</step>
+    <step>Refatore e execute a validação novamente.</step>
   </steps>
 </skill>
 ```
 
-## Reproducing Commands
+## Reproduzindo Comandos
 
-If the harness has no slash-command system, define a small command registry in the system prompt or session preamble.
+Se o harness não tem sistema de comandos de barra, defina um pequeno registro de comandos no prompt do sistema ou no preâmbulo da sessão.
 
-Example:
-
-```text
-Command registry:
-- /plan -> use planner-style reasoning, produce a short execution plan, then act
-- /tdd -> follow the tdd-workflow skill
-- /review -> switch into code-review mode and enumerate findings first
-- /verify -> run a verification loop before claiming completion
-```
-
-You are not implementing real commands. You are giving the harness explicit invocation handles that map to ECC behavior.
-
-## Reproducing Hooks
-
-If the harness has no native hooks, move the hook intent into the standing instructions.
-
-Example:
+Exemplo:
 
 ```text
-Before writing code:
-1. Check whether a relevant skill should be activated.
-2. Check for security-sensitive changes.
-3. Prefer tests before implementation when feasible.
-
-Before finalizing:
-1. Re-read the user request.
-2. Verify the main changed paths.
-3. State what was actually validated and what was not.
+Registro de comandos:
+- /plan -> use raciocínio estilo planner, produza um plano de execução curto, depois aja
+- /tdd -> siga a skill tdd-workflow
+- /review -> entre no modo code-review e enumere as descobertas primeiro
+- /verify -> execute um loop de verificação antes de declarar conclusão
 ```
 
-That does not recreate true automation, but it captures the operational discipline of ECC.
+Você não está implementando comandos reais. Você está dando ao harness identificadores de invocação explícitos que mapeiam para o comportamento do ECC.
 
-## Harness Capability Matrix
+## Reproduzindo Hooks
 
-| Capability | First-Class ECC Targets | Manual-Adaptation Targets |
+Se o harness não tem hooks nativos, mova a intenção do hook para as instruções permanentes.
+
+Exemplo:
+
+```text
+Antes de escrever código:
+1. Verifique se uma skill relevante deve ser ativada.
+2. Verifique se há mudanças sensíveis à segurança.
+3. Prefira testes antes da implementação quando viável.
+
+Antes de finalizar:
+1. Releia a solicitação do usuário.
+2. Verifique os principais caminhos alterados.
+3. Declare o que foi realmente validado e o que não foi.
+```
+
+Isso não recria automação verdadeira, mas captura a disciplina operacional do ECC.
+
+## Matriz de Capacidade de Harness
+
+| Capacidade | Targets ECC de Primeira Classe | Targets de Adaptação Manual |
 | --- | --- | --- |
-| Folder-based install | Native | No |
-| Slash commands | Native | Simulated in prompt |
-| Hooks | Native | Simulated in prompt |
-| Skill activation | Native | Manual |
-| Repo-local tooling | Native | Depends on harness |
-| Context packing | Optional | Required |
+| Instalação baseada em pasta | Nativa | Não |
+| Comandos de barra | Nativos | Simulados no prompt |
+| Hooks | Nativos | Simulados no prompt |
+| Ativação de skill | Nativa | Manual |
+| Ferramentas locais ao repositório | Nativas | Depende do harness |
+| Empacotamento de contexto | Opcional | Obrigatório |
 
-## Practical Grok-Style Setup
+## Configuração Prática no Estilo Grok
 
-1. Pick the smallest useful bundle.
-2. Pack the selected ECC skill files into one upload or paste block.
-3. Add a short command registry.
-4. Add standing “hook intent” instructions.
-5. Start with one task and verify the harness follows the workflow before scaling up.
+1. Escolha o menor bundle útil.
+2. Empacote os arquivos de skill do ECC selecionados em um upload ou bloco colado.
+3. Adicione um pequeno registro de comandos.
+4. Adicione instruções permanentes de "intenção de hook".
+5. Comece com uma tarefa e verifique se o harness segue o fluxo de trabalho antes de escalar.
 
-Example starter preamble:
+Exemplo de preâmbulo inicial:
 
 ```text
-You are operating with a manually adapted ECC bundle.
+Você está operando com um bundle ECC adaptado manualmente.
 
-Active skills:
+Skills ativas:
 - backend-patterns
 - tdd-workflow
 - security-review
 
-Command registry:
+Registro de comandos:
 - /plan
 - /tdd
 - /verify
 
-Before writing code, follow the active skill instructions.
-Before finalizing, verify what changed and report any remaining gaps.
+Antes de escrever código, siga as instruções da skill ativa.
+Antes de finalizar, verifique o que mudou e reporte quaisquer lacunas restantes.
 ```
 
-## Limitations
+## Limitações
 
-Manual adaptation is useful, but it is still second-class compared with native targets.
+A adaptação manual é útil, mas ainda é de segunda classe em comparação com os targets nativos.
 
-You lose:
+Você perde:
 
-- automatic install and sync
-- native hook execution
-- true command plumbing
-- reliable skill discovery at runtime
-- built-in multi-agent/worktree orchestration
+- instalação e sincronização automáticas
+- execução nativa de hook
+- encanamento real de comando
+- descoberta confiável de skill em runtime
+- orquestração nativa multi-agent/worktree
 
-So the rule is simple:
+Então a regra é simples:
 
-- use manual adaptation to carry ECC behavior into non-native harnesses
-- use native ECC targets whenever you want the full system
+- use adaptação manual para levar o comportamento do ECC para harnesses não nativos
+- use targets nativos do ECC sempre que quiser o sistema completo
 
-## Related Work
+## Trabalhos Relacionados
 
 - [Issue #1186](https://github.com/affaan-m/everything-claude-code/issues/1186)
-- [Discussion #1077](https://github.com/affaan-m/everything-claude-code/discussions/1077)
-- [Antigravity Guide](./ANTIGRAVITY-GUIDE.md)
-- [Troubleshooting](./TROUBLESHOOTING.md)
+- [Discussão #1077](https://github.com/affaan-m/everything-claude-code/discussions/1077)
+- [Guia do Antigravity](./ANTIGRAVITY-GUIDE.md)
+- [Solução de Problemas](./TROUBLESHOOTING.md)

@@ -1,25 +1,25 @@
-# ECC 2.0 Selective Install Discovery
+# Descoberta de Instalação Seletiva do ECC 2.0
 
-## Purpose
+## Objetivo
 
-This document turns the March 11 mega-plan selective-install requirement into a
-concrete ECC 2.0 discovery design.
+Este documento transforma o requisito de instalação seletiva do mega plano de 11 de março em um
+design concreto de descoberta do ECC 2.0.
 
-The goal is not just "fewer files copied during install." The actual target is
-an install system that can answer, deterministically:
+O objetivo não é apenas "menos arquivos copiados durante a instalação." O alvo real é
+um sistema de instalação que possa responder, deterministicamente:
 
-- what was requested
-- what was resolved
-- what was copied or generated
-- what target-specific transforms were applied
-- what ECC owns and may safely remove or repair later
+- o que foi solicitado
+- o que foi resolvido
+- o que foi copiado ou gerado
+- quais transformações específicas do target foram aplicadas
+- o que o ECC possui e pode remover ou reparar com segurança posteriormente
 
-That is the missing contract between ECC 1.x installation and an ECC 2.0
-control plane.
+Esse é o contrato ausente entre a instalação do ECC 1.x e um plano de controle
+do ECC 2.0.
 
-## Current Implemented Foundation
+## Base Implementada Atual
 
-The first selective-install substrate already exists in-repo:
+O primeiro substrato de instalação seletiva já existe no repositório:
 
 - `manifests/install-modules.json`
 - `manifests/install-profiles.json`
@@ -41,131 +41,131 @@ The first selective-install substrate already exists in-repo:
 - `scripts/list-installed.js`
 - `scripts/doctor.js`
 
-Current capabilities:
+Capacidades atuais:
 
-- machine-readable module and profile catalogs
-- CI validation that manifest entries point at real repo paths
-- dependency expansion and target filtering
-- adapter-aware operation planning
-- canonical request normalization for legacy and manifest install modes
-- explicit runtime dispatch from normalized requests into plan creation
-- legacy and manifest installs both write durable install-state
-- read-only inspection of install plans before any mutation
-- unified `ecc` CLI routing install, planning, and lifecycle commands
-- lifecycle inspection and mutation via `list-installed`, `doctor`, `repair`,
-  and `uninstall`
+- catálogos de módulos e perfis legíveis por máquina
+- validação de CI que entradas de manifesto apontam para caminhos reais no repositório
+- expansão de dependências e filtragem por target
+- planejamento de operações com consciência de adapter
+- normalização canônica de requisições para modos de instalação legado e por manifesto
+- despacho de runtime explícito de requisições normalizadas para criação de planos
+- instalações legado e por manifesto ambas gravam estado de instalação durável
+- inspeção somente leitura de planos de instalação antes de qualquer mutação
+- roteamento de CLI unificado `ecc` para comandos de instalação, planejamento e ciclo de vida
+- inspeção e mutação de ciclo de vida via `list-installed`, `doctor`, `repair`
+  e `uninstall`
 
-Current limitation:
+Limitação atual:
 
-- target-specific merge/remove semantics are still scaffold-level for some modules
-- legacy `ecc-install` compatibility still points at `install.sh`
-- publish surface is still broad in `package.json`
+- semânticas de merge/remove específicas do target ainda estão em nível de scaffold para alguns módulos
+- compatibilidade legada de `ecc-install` ainda aponta para `install.sh`
+- superfície de publicação ainda é ampla em `package.json`
 
-## Current Code Review
+## Revisão do Código Atual
 
-The current installer stack is already much healthier than the original
-language-first shell installer, but it still concentrates too much
-responsibility in a few files.
+A pilha atual do instalador já é muito mais saudável do que o instalador shell original
+de linguagem em primeiro lugar, mas ainda concentra muita responsabilidade em
+alguns arquivos.
 
-### Current Runtime Path
+### Caminho de Runtime Atual
 
-The runtime flow today is:
+O fluxo de runtime hoje é:
 
 1. `install.sh`
-   thin shell wrapper that resolves the real package root
+   wrapper shell fino que resolve a raiz real do pacote
 2. `scripts/install-apply.js`
-   user-facing installer CLI for legacy and manifest modes
+   CLI do instalador voltado ao usuário para modos legado e por manifesto
 3. `scripts/lib/install/request.js`
-   CLI parsing plus canonical request normalization
+   análise de CLI mais normalização canônica de requisição
 4. `scripts/lib/install/runtime.js`
-   runtime dispatch from normalized requests into install plans
+   despacho de runtime de requisições normalizadas para planos de instalação
 5. `scripts/lib/install-executor.js`
-   argument translation, legacy compatibility, operation materialization,
-   filesystem mutation, and install-state write
+   tradução de argumentos, compatibilidade legada, materialização de operações,
+   mutação do sistema de arquivos e gravação de estado de instalação
 6. `scripts/lib/install-manifests.js`
-   module/profile catalog loading plus dependency expansion
+   carregamento de catálogo de módulo/perfil mais expansão de dependências
 7. `scripts/lib/install-targets/`
-   target root and destination-path scaffolding
+   scaffold de raiz do target e caminho de destino
 8. `scripts/lib/install-state.js`
-   schema-backed install-state read/write
+   leitura/gravação de estado de instalação com suporte a schema
 9. `scripts/lib/install-lifecycle.js`
-   doctor/repair/uninstall behavior derived from stored operations
+   comportamento de doctor/repair/uninstall derivado de operações armazenadas
 
-That is enough to prove the selective-install substrate, but not enough to make
-the installer architecture feel settled.
+Isso é suficiente para provar o substrato de instalação seletiva, mas não o suficiente para
+deixar a arquitetura do instalador se sentir estável.
 
-### Current Strengths
+### Pontos Fortes Atuais
 
-- install intent is now explicit through `--profile` and `--modules`
-- request parsing and request normalization are now split from the CLI shell
-- target root resolution is already adapterized
-- lifecycle commands now use durable install-state instead of guessing
-- the repo already has a unified Node entrypoint through `ecc` and
+- a intenção de instalação agora é explícita através de `--profile` e `--modules`
+- análise de requisição e normalização de requisição agora estão separadas do shell de CLI
+- resolução de raiz do target já foi adapterizada
+- comandos de ciclo de vida agora usam estado de instalação durável em vez de adivinhar
+- o repositório já tem um ponto de entrada Node unificado através de `ecc` e
   `install-apply.js`
 
-### Current Coupling Still Present
+### Acoplamento Atual Ainda Presente
 
-1. `install-executor.js` is smaller than before, but still carrying too many
-   planning and materialization layers at once.
-   The request boundary is now extracted, but legacy request translation,
-   manifest-plan expansion, and operation materialization still live together.
-2. target adapters are still too thin.
-   Today they mostly resolve roots and scaffold destination paths. The real
-   install semantics still live in executor branches and path heuristics.
-3. the planner/executor boundary is not clean enough yet.
-   `install-manifests.js` resolves modules, but the final install operation set
-   is still partly constructed in executor-specific logic.
-4. lifecycle behavior depends on low-level recorded operations more than on
-   stable module semantics.
-   That works for plain file copy, but becomes brittle for merge/generate/remove
-   behaviors.
-5. compatibility mode is mixed directly into the main installer runtime.
-   Legacy language installs should behave like a request adapter, not as a
-   parallel installer architecture.
+1. `install-executor.js` é menor do que antes, mas ainda carrega muitas camadas de
+   planejamento e materialização ao mesmo tempo.
+   O limite de requisição agora está extraído, mas tradução de requisição legada,
+   expansão de plano por manifesto e materialização de operação ainda vivem juntos.
+2. os adapters de target ainda são muito finos.
+   Hoje eles principalmente resolvem raízes e fazem scaffold de caminhos de destino. As semânticas
+   reais de instalação ainda vivem em branches do executor e heurísticas de caminho.
+3. o limite planner/executor não está limpo o suficiente ainda.
+   `install-manifests.js` resolve módulos, mas o conjunto final de operações de instalação
+   ainda é parcialmente construído em lógica específica do executor.
+4. o comportamento de ciclo de vida depende de operações registradas de baixo nível mais do que de
+   semânticas de módulo estáveis.
+   Isso funciona para cópia simples de arquivos, mas torna-se frágil para comportamentos
+   merge/generate/remove.
+5. o modo de compatibilidade está misturado diretamente no runtime principal do instalador.
+   Instalações de linguagem legadas devem se comportar como um adapter de requisição, não como uma
+   arquitetura de instalador paralela.
 
-## Proposed Modular Architecture Changes
+## Mudanças Arquiteturais Modulares Propostas
 
-The next architectural step is to separate the installer into explicit layers,
-with each layer returning stable data instead of immediately mutating files.
+O próximo passo arquitetural é separar o instalador em camadas explícitas,
+com cada camada retornando dados estáveis em vez de imediatamente mutar arquivos.
 
-### Target State
+### Estado Alvo
 
-The desired install pipeline is:
+O pipeline de instalação desejado é:
 
-1. CLI surface
-2. request normalization
-3. module resolution
-4. target planning
-5. operation planning
-6. execution
-7. install-state persistence
-8. lifecycle services built on the same operation contract
+1. superfície de CLI
+2. normalização de requisição
+3. resolução de módulo
+4. planejamento de target
+5. planejamento de operação
+6. execução
+7. persistência de estado de instalação
+8. serviços de ciclo de vida construídos no mesmo contrato de operação
 
-The main idea is simple:
+A ideia principal é simples:
 
-- manifests describe content
-- adapters describe target-specific landing semantics
-- planners describe what should happen
-- executors apply those plans
-- lifecycle commands reuse the same plan/state model instead of reinventing it
+- manifestos descrevem conteúdo
+- adapters descrevem semânticas de pouso específicas do target
+- planners descrevem o que deve acontecer
+- executores aplicam esses planos
+- comandos de ciclo de vida reutilizam o mesmo modelo plano/estado em vez de reinventá-lo
 
-### Proposed Runtime Layers
+### Camadas de Runtime Propostas
 
-#### 1. CLI Surface
+#### 1. Superfície de CLI
 
-Responsibility:
+Responsabilidade:
 
-- parse user intent only
-- route to install, plan, doctor, repair, uninstall
-- render human or JSON output
+- analisar apenas a intenção do usuário
+- rotear para install, plan, doctor, repair, uninstall
+- renderizar saída humana ou JSON
 
-Should not own:
+Não deve possuir:
 
-- legacy language translation
-- target-specific install rules
-- operation construction
+- tradução de linguagem legada
+- regras de instalação específicas do target
+- construção de operação
 
-Suggested files:
+Arquivos sugeridos:
 
 ```text
 scripts/ecc.js
@@ -176,17 +176,17 @@ scripts/repair.js
 scripts/uninstall.js
 ```
 
-These stay as entrypoints, but become thin wrappers around library modules.
+Estes permanecem como pontos de entrada, mas tornam-se wrappers finos em torno de módulos de biblioteca.
 
-#### 2. Request Normalizer
+#### 2. Normalizador de Requisição
 
-Responsibility:
+Responsabilidade:
 
-- translate raw CLI flags into a canonical install request
-- convert legacy language installs into a compatibility request shape
-- reject mixed or ambiguous inputs early
+- traduzir flags brutas de CLI em uma requisição de instalação canônica
+- converter instalações de linguagem legadas em uma forma de requisição de compatibilidade
+- rejeitar entradas mistas ou ambíguas cedo
 
-Suggested canonical request:
+Requisição canônica sugerida:
 
 ```json
 {
@@ -199,7 +199,7 @@ Suggested canonical request:
 }
 ```
 
-or, in compatibility mode:
+ou, no modo de compatibilidade:
 
 ```json
 {
@@ -212,32 +212,32 @@ or, in compatibility mode:
 }
 ```
 
-This lets the rest of the pipeline ignore whether the request came from old or
-new CLI syntax.
+Isso permite que o restante do pipeline ignore se a requisição veio da sintaxe de CLI antiga ou
+nova.
 
-#### 3. Module Resolver
+#### 3. Resolvedor de Módulo
 
-Responsibility:
+Responsabilidade:
 
-- load manifest catalogs
-- expand dependencies
-- reject conflicts
-- filter unsupported modules per target
-- return a canonical resolution object
+- carregar catálogos de manifesto
+- expandir dependências
+- rejeitar conflitos
+- filtrar módulos não suportados por target
+- retornar um objeto de resolução canônico
 
-This layer should stay pure and read-only.
+Esta camada deve permanecer pura e somente leitura.
 
-It should not know:
+Não deve conhecer:
 
-- destination filesystem paths
-- merge semantics
-- copy strategies
+- caminhos do sistema de arquivos de destino
+- semânticas de merge
+- estratégias de cópia
 
-Current nearest file:
+Arquivo mais próximo atual:
 
 - `scripts/lib/install-manifests.js`
 
-Suggested split:
+Divisão sugerida:
 
 ```text
 scripts/lib/install/catalog.js
@@ -245,30 +245,30 @@ scripts/lib/install/resolve-request.js
 scripts/lib/install/resolve-modules.js
 ```
 
-#### 4. Target Planner
+#### 4. Planner de Target
 
-Responsibility:
+Responsabilidade:
 
-- select the install target adapter
-- resolve target root
-- resolve install-state path
-- expand module-to-target mapping rules
-- emit target-aware operation intents
+- selecionar o adapter de target de instalação
+- resolver raiz do target
+- resolver caminho de estado de instalação
+- expandir regras de mapeamento módulo-para-target
+- emitir intenções de operação com consciência do target
 
-This is where target-specific meaning should live.
+É aqui que o significado específico do target deve residir.
 
-Examples:
+Exemplos:
 
-- Claude may preserve native hierarchy under `~/.claude`
-- Cursor may sync bundled `.cursor` root children differently from rules
-- generated configs may require merge or replace semantics depending on target
+- Claude pode preservar hierarquia nativa em `~/.claude`
+- Cursor pode sincronizar filhos raiz `.cursor` empacotados de forma diferente das regras
+- configurações geradas podem exigir semânticas de merge ou substituição dependendo do target
 
-Current nearest files:
+Arquivos mais próximos atuais:
 
 - `scripts/lib/install-targets/helpers.js`
 - `scripts/lib/install-targets/registry.js`
 
-Suggested evolution:
+Evolução sugerida:
 
 ```text
 scripts/lib/install/targets/registry.js
@@ -277,49 +277,49 @@ scripts/lib/install/targets/cursor-project.js
 scripts/lib/install/targets/antigravity-project.js
 ```
 
-Each adapter should eventually expose more than `resolveRoot`.
-It should own path and strategy mapping for its target family.
+Cada adapter deve eventualmente expor mais do que `resolveRoot`.
+Deve possuir mapeamento de caminho e estratégia para sua família de target.
 
-#### 5. Operation Planner
+#### 5. Planner de Operação
 
-Responsibility:
+Responsabilidade:
 
-- turn module resolution plus adapter rules into a typed operation graph
-- emit first-class operations such as:
+- transformar resolução de módulo mais regras de adapter em um grafo de operação tipado
+- emitir operações de primeira classe como:
   - `copy-file`
   - `copy-tree`
   - `merge-json`
   - `render-template`
   - `remove`
-- attach ownership and validation metadata
+- anexar metadados de propriedade e validação
 
-This is the missing architectural seam in the current installer.
+Esta é a costura arquitetural ausente no instalador atual.
 
-Today, operations are partly scaffold-level and partly executor-specific.
-ECC 2.0 should make operation planning a standalone phase so that:
+Hoje, as operações são parcialmente em nível de scaffold e parcialmente específicas do executor.
+O ECC 2.0 deve tornar o planejamento de operação uma fase independente para que:
 
-- `plan` becomes a true preview of execution
-- `doctor` can validate intended behavior, not just current files
-- `repair` can rebuild exact missing work safely
-- `uninstall` can reverse only managed operations
+- `plan` torne-se uma verdadeira visualização da execução
+- `doctor` possa validar o comportamento pretendido, não apenas os arquivos atuais
+- `repair` possa reconstruir o trabalho ausente exato com segurança
+- `uninstall` possa reverter apenas operações gerenciadas
 
-#### 6. Execution Engine
+#### 6. Motor de Execução
 
-Responsibility:
+Responsabilidade:
 
-- apply a typed operation graph
-- enforce overwrite and ownership rules
-- stage writes safely
-- collect final applied-operation results
+- aplicar um grafo de operação tipado
+- aplicar regras de sobrescrita e propriedade
+- preparar gravações com segurança
+- coletar resultados de operação aplicada final
 
-This layer should not decide *what* to do.
-It should only decide *how* to apply a provided operation kind safely.
+Esta camada não deve decidir *o que* fazer.
+Deve decidir apenas *como* aplicar um tipo de operação fornecido com segurança.
 
-Current nearest file:
+Arquivo mais próximo atual:
 
 - `scripts/lib/install-executor.js`
 
-Recommended refactor:
+Refatoração recomendada:
 
 ```text
 scripts/lib/install/executor/apply-plan.js
@@ -328,43 +328,43 @@ scripts/lib/install/executor/apply-merge-json.js
 scripts/lib/install/executor/apply-remove.js
 ```
 
-That turns executor logic from one large branching runtime into a set of small
-operation handlers.
+Isso transforma a lógica do executor de um grande runtime de ramificação em um conjunto de pequenos
+manipuladores de operação.
 
-#### 7. Install-State Store
+#### 7. Armazenamento de Estado de Instalação
 
-Responsibility:
+Responsabilidade:
 
-- validate and persist install-state
-- record canonical request, resolution, and applied operations
-- support lifecycle commands without forcing them to reverse-engineer installs
+- validar e persistir o estado de instalação
+- registrar requisição canônica, resolução e operações aplicadas
+- suportar comandos de ciclo de vida sem forçá-los a fazer engenharia reversa das instalações
 
-Current nearest file:
+Arquivo mais próximo atual:
 
 - `scripts/lib/install-state.js`
 
-This layer is already close to the right shape. The main remaining change is to
-store richer operation metadata once merge/generate semantics are real.
+Esta camada já está próxima da forma correta. A principal mudança remanescente é
+armazenar metadados de operação mais ricos assim que as semânticas de merge/generate forem reais.
 
-#### 8. Lifecycle Services
+#### 8. Serviços de Ciclo de Vida
 
-Responsibility:
+Responsabilidade:
 
-- `list-installed`: inspect state only
-- `doctor`: compare desired/install-state view against current filesystem
-- `repair`: regenerate a plan from state and reapply safe operations
-- `uninstall`: remove only ECC-owned outputs
+- `list-installed`: inspecionar apenas o estado
+- `doctor`: comparar a visão desejada/estado de instalação com o sistema de arquivos atual
+- `repair`: regenerar um plano a partir do estado e reaplicar operações seguras
+- `uninstall`: remover apenas saídas de propriedade do ECC
 
-Current nearest file:
+Arquivo mais próximo atual:
 
 - `scripts/lib/install-lifecycle.js`
 
-This layer should eventually operate on operation kinds and ownership policies,
-not just on raw `copy-file` records.
+Esta camada deve eventualmente operar em tipos de operação e políticas de propriedade,
+não apenas em registros brutos de `copy-file`.
 
-## Proposed File Layout
+## Layout de Arquivo Proposto
 
-The clean modular end state should look roughly like this:
+O estado final modular limpo deve parecer aproximadamente assim:
 
 ```text
 scripts/lib/install/
@@ -393,105 +393,104 @@ scripts/lib/install/
     uninstall.js
 ```
 
-This is not a packaging split.
-It is a code-ownership split inside the current repo so each layer has one job.
+Esta não é uma divisão de empacotamento.
+É uma divisão de propriedade de código dentro do repositório atual para que cada camada tenha uma função.
 
-## Migration Map From Current Files
+## Mapa de Migração dos Arquivos Atuais
 
-The lowest-risk migration path is evolutionary, not a rewrite.
+O caminho de migração de menor risco é evolutivo, não uma reescrita.
 
-### Keep
+### Manter
 
-- `install.sh` as the public compatibility shim
-- `scripts/ecc.js` as the unified CLI
-- `scripts/lib/install-state.js` as the starting point for the state store
-- current target adapter IDs and state locations
+- `install.sh` como o shim de compatibilidade público
+- `scripts/ecc.js` como a CLI unificada
+- `scripts/lib/install-state.js` como ponto de partida para o armazenamento de estado
+- IDs de adapter de target atuais e localizações de estado
 
-### Extract
+### Extrair
 
-- request parsing and compatibility translation out of
+- análise de requisição e tradução de compatibilidade de
   `scripts/lib/install-executor.js`
-- target-aware operation planning out of executor branches and into target
-  adapters plus planner modules
-- lifecycle-specific analysis out of the shared lifecycle monolith into smaller
-  services
+- planejamento de operação com consciência do target de branches do executor para adapters de target
+  mais módulos planner
+- análise específica do ciclo de vida do monólito de ciclo de vida compartilhado para serviços menores
 
-### Replace Gradually
+### Substituir Gradualmente
 
-- broad path-copy heuristics with typed operations
-- scaffold-only adapter planning with adapter-owned semantics
-- legacy language install branches with legacy request translation into the same
-  planner/executor pipeline
+- heurísticas amplas de cópia de caminho com operações tipadas
+- planejamento de adapter apenas scaffold com semânticas de propriedade do adapter
+- branches de instalação de linguagem legada com tradução de requisição legada para o mesmo
+  pipeline planner/executor
 
-## Immediate Architecture Changes To Make Next
+## Mudanças Arquiteturais Imediatas a Fazer a Seguir
 
-If the goal is ECC 2.0 and not just “working enough,” the next modularization
-steps should be:
+Se o objetivo é ECC 2.0 e não apenas "funcionando o suficiente," os próximos passos de
+modularização devem ser:
 
-1. split `install-executor.js` into request normalization, operation planning,
-   and execution modules
-2. move target-specific strategy decisions into adapter-owned planning methods
-3. make `repair` and `uninstall` operate on typed operation handlers rather than
-   only plain `copy-file` records
-4. teach manifests about install strategy and ownership so the planner no
-   longer depends on path heuristics
-5. narrow the npm publish surface only after the internal module boundaries are
-   stable
+1. dividir `install-executor.js` em módulos de normalização de requisição, planejamento de operação
+   e execução
+2. mover decisões de estratégia específicas do target para métodos de planejamento de propriedade do adapter
+3. fazer `repair` e `uninstall` operarem em manipuladores de operação tipados em vez de
+   apenas em registros simples de `copy-file`
+4. ensinar manifestos sobre estratégia de instalação e propriedade para que o planner não
+   dependa mais de heurísticas de caminho
+5. reduzir a superfície de publicação npm apenas após os limites internos do módulo estarem
+   estáveis
 
-## Why The Current Model Is Not Enough
+## Por que o Modelo Atual Não É Suficiente
 
-Today ECC still behaves like a broad payload copier:
+Hoje o ECC ainda se comporta como um copiador amplo de payload:
 
-- `install.sh` is language-first and target-branch-heavy
-- targets are partly implicit in directory layout
-- uninstall, repair, and doctor now exist but are still early lifecycle commands
-- the repo cannot prove what a prior install actually wrote
-- publish surface is still broad in `package.json`
+- `install.sh` é de linguagem em primeiro lugar e pesado em branches de target
+- os targets são parcialmente implícitos no layout de diretório
+- desinstalação, reparação e doctor agora existem mas ainda são comandos de ciclo de vida iniciais
+- o repositório não pode provar o que uma instalação anterior realmente escreveu
+- a superfície de publicação ainda é ampla em `package.json`
 
-That creates the problems already called out in the mega plan:
+Isso cria os problemas já apontados no mega plano:
 
-- users pull more content than their harness or workflow needs
-- support and upgrades are harder because installs are not recorded
-- target behavior drifts because install logic is duplicated in shell branches
-- future targets like Codex or OpenCode require more special-case logic instead
-  of reusing a stable install contract
+- usuários puxam mais conteúdo do que seu harness ou fluxo de trabalho precisa
+- suporte e atualizações são mais difíceis porque as instalações não são registradas
+- o comportamento do target deriva porque a lógica de instalação é duplicada em branches shell
+- targets futuros como Codex ou OpenCode requerem mais lógica de caso especial em vez de
+  reutilizar um contrato de instalação estável
 
-## ECC 2.0 Design Thesis
+## Tese de Design do ECC 2.0
 
-Selective install should be modeled as:
+A instalação seletiva deve ser modelada como:
 
-1. resolve requested intent into a canonical module graph
-2. translate that graph through a target adapter
-3. execute a deterministic install operation set
-4. write install-state as the durable source of truth
+1. resolver intenção solicitada em um grafo de módulos canônico
+2. traduzir esse grafo através de um adapter de target
+3. executar um conjunto de operações de instalação determinístico
+4. gravar estado de instalação como a fonte de verdade durável
 
-That means ECC 2.0 needs two contracts, not one:
+Isso significa que o ECC 2.0 precisa de dois contratos, não de um:
 
-- a content contract
-  what modules exist and how they depend on each other
-- a target contract
-  how those modules land inside Claude, Cursor, Antigravity, Codex, or OpenCode
+- um contrato de conteúdo
+  quais módulos existem e como dependem uns dos outros
+- um contrato de target
+  como esses módulos pousam dentro de Claude, Cursor, Antigravity, Codex ou OpenCode
 
-The current repo only had the first half in early form.
-The current repo now has the first full vertical slice, but not the full
-target-specific semantics.
+O repositório atual tinha apenas a primeira metade em forma inicial.
+O repositório atual agora tem o primeiro slice vertical completo, mas não a
+semântica completa específica do target.
 
-## Design Constraints
+## Restrições de Design
 
-1. Keep `everything-claude-code` as the canonical source repo.
-2. Preserve existing `install.sh` flows during migration.
-3. Support home-scoped and project-scoped targets from the same planner.
-4. Make uninstall/repair/doctor possible without guessing.
-5. Avoid per-target copy logic leaking back into module definitions.
-6. Keep future Codex and OpenCode support additive, not a rewrite.
+1. Manter `everything-claude-code` como o repositório de origem canônico.
+2. Preservar os fluxos de `install.sh` existentes durante a migração.
+3. Suportar targets com escopo de home e com escopo de projeto a partir do mesmo planner.
+4. Tornar desinstalação/reparação/doctor possíveis sem adivinhação.
+5. Evitar que a lógica de cópia por target vaze de volta para as definições de módulo.
+6. Manter o suporte futuro a Codex e OpenCode aditivo, não uma reescrita.
 
-## Canonical Artifacts
+## Artefatos Canônicos
 
-### 1. Module Catalog
+### 1. Catálogo de Módulos
 
-The module catalog is the canonical content graph.
+O catálogo de módulos é o grafo de conteúdo canônico.
 
-Current fields already implemented:
+Campos atuais já implementados:
 
 - `id`
 - `kind`
@@ -503,20 +502,20 @@ Current fields already implemented:
 - `cost`
 - `stability`
 
-Fields still needed for ECC 2.0:
+Campos ainda necessários para o ECC 2.0:
 
 - `installStrategy`
-  for example `copy`, `flatten-rules`, `generate`, `merge-config`
+  por exemplo `copy`, `flatten-rules`, `generate`, `merge-config`
 - `ownership`
-  whether ECC fully owns the target path or only generated files under it
+  se o ECC possui totalmente o caminho de destino ou apenas os arquivos gerados sob ele
 - `pathMode`
-  for example `preserve`, `flatten`, `target-template`
+  por exemplo `preserve`, `flatten`, `target-template`
 - `conflicts`
-  modules or path families that cannot coexist on one target
+  módulos ou famílias de caminho que não podem coexistir em um target
 - `publish`
-  whether the module is packaged by default, optional, or generated post-install
+  se o módulo é empacotado por padrão, opcional ou gerado pós-instalação
 
-Suggested future shape:
+Forma futura sugerida:
 
 ```json
 {
@@ -534,13 +533,13 @@ Suggested future shape:
 }
 ```
 
-### 2. Profile Catalog
+### 2. Catálogo de Perfis
 
-Profiles stay thin.
+Os perfis permanecem finos.
 
-They should express user intent, not duplicate target logic.
+Devem expressar a intenção do usuário, não duplicar a lógica do target.
 
-Current examples already implemented:
+Exemplos atuais já implementados:
 
 - `core`
 - `developer`
@@ -548,32 +547,32 @@ Current examples already implemented:
 - `research`
 - `full`
 
-Fields still needed:
+Campos ainda necessários:
 
 - `defaultTargets`
 - `recommendedFor`
 - `excludes`
 - `requiresConfirmation`
 
-That lets ECC 2.0 say things like:
+Isso permite que o ECC 2.0 diga coisas como:
 
-- `developer` is the recommended default for Claude and Cursor
-- `research` may be heavy for narrow local installs
-- `full` is allowed but not default
+- `developer` é o padrão recomendado para Claude e Cursor
+- `research` pode ser pesado para instalações locais estreitas
+- `full` é permitido mas não é padrão
 
-### 3. Target Adapters
+### 3. Adapters de Target
 
-This is the main missing layer.
+Esta é a principal camada ausente.
 
-The module graph should not know:
+O grafo de módulos não deve saber:
 
-- where Claude home lives
-- how Cursor flattens or remaps content
-- which config files need merge semantics instead of blind copy
+- onde o home do Claude fica
+- como o Cursor achata ou remapeia conteúdo
+- quais arquivos de configuração precisam de semânticas de merge em vez de cópia cega
 
-That belongs to a target adapter.
+Isso pertence a um adapter de target.
 
-Suggested interface:
+Interface sugerida:
 
 ```ts
 type InstallTargetAdapter = {
@@ -586,54 +585,53 @@ type InstallTargetAdapter = {
 };
 ```
 
-Suggested first adapters:
+Primeiros adapters sugeridos:
 
 1. `claude-home`
-   writes into `~/.claude/...`
+   escreve em `~/.claude/...`
 2. `cursor-project`
-   writes into `./.cursor/...`
+   escreve em `./.cursor/...`
 3. `antigravity-project`
-   writes into `./.agent/...`
+   escreve em `./.agent/...`
 4. `codex-home`
-   later
+   posteriormente
 5. `opencode-home`
-   later
+   posteriormente
 
-This matches the same pattern already proposed in the session-adapter discovery
-doc: canonical contract first, harness-specific adapter second.
+Isso corresponde ao mesmo padrão já proposto no documento de descoberta do adapter de sessão: contrato canônico primeiro, adapter específico do harness depois.
 
-## Install Planning Model
+## Modelo de Planejamento de Instalação
 
-The current `scripts/install-plan.js` CLI proves the repo can resolve requested
-modules into a filtered module set.
+O CLI atual `scripts/install-plan.js` prova que o repositório pode resolver módulos
+solicitados em um conjunto de módulos filtrado.
 
-ECC 2.0 needs the next layer: operation planning.
+O ECC 2.0 precisa da próxima camada: planejamento de operação.
 
-Suggested phases:
+Fases sugeridas:
 
-1. input normalization
-   - parse `--target`
-   - parse `--profile`
-   - parse `--modules`
-   - optionally translate legacy language args
-2. module resolution
-   - expand dependencies
-   - reject conflicts
-   - filter by supported targets
-3. adapter planning
-   - resolve target root
-   - derive exact copy or generation operations
-   - identify config merges and target remaps
-4. dry-run output
-   - show selected modules
-   - show skipped modules
-   - show exact file operations
-5. mutation
-   - execute the operation plan
-6. state write
-   - persist install-state only after successful completion
+1. normalização de entrada
+   - analisar `--target`
+   - analisar `--profile`
+   - analisar `--modules`
+   - opcionalmente traduzir argumentos de linguagem legada
+2. resolução de módulo
+   - expandir dependências
+   - rejeitar conflitos
+   - filtrar por targets suportados
+3. planejamento de adapter
+   - resolver raiz do target
+   - derivar operações exatas de cópia ou geração
+   - identificar merges de configuração e remapamentos de target
+4. saída de dry-run
+   - mostrar módulos selecionados
+   - mostrar módulos ignorados
+   - mostrar operações de arquivo exatas
+5. mutação
+   - executar o plano de operação
+6. gravação de estado
+   - persistir estado de instalação somente após conclusão bem-sucedida
 
-Suggested operation shape:
+Forma de operação sugerida:
 
 ```json
 {
@@ -646,7 +644,7 @@ Suggested operation shape:
 }
 ```
 
-Other operation kinds:
+Outros tipos de operação:
 
 - `copy`
 - `copy-tree`
@@ -657,22 +655,22 @@ Other operation kinds:
 - `mkdir`
 - `remove`
 
-## Install-State Contract
+## Contrato de Estado de Instalação
 
-Install-state is the durable contract that ECC 1.x is missing.
+O estado de instalação é o contrato durável que o ECC 1.x não tem.
 
-Suggested path conventions:
+Convenções de caminho sugeridas:
 
-- Claude target:
+- Target Claude:
   `~/.claude/ecc/install-state.json`
-- Cursor target:
+- Target Cursor:
   `./.cursor/ecc-install-state.json`
-- Antigravity target:
+- Target Antigravity:
   `./.agent/ecc-install-state.json`
-- future Codex target:
+- futuro target Codex:
   `~/.codex/ecc-install-state.json`
 
-Suggested payload:
+Payload sugerido:
 
 ```json
 {
@@ -718,86 +716,86 @@ Suggested payload:
 }
 ```
 
-State requirements:
+Requisitos de estado:
 
-- enough detail for uninstall to remove only ECC-managed outputs
-- enough detail for repair to compare desired versus actual installed files
-- enough detail for doctor to explain drift instead of guessing
+- detalhes suficientes para que a desinstalação remova apenas saídas gerenciadas pelo ECC
+- detalhes suficientes para que a reparação compare arquivos instalados desejados versus reais
+- detalhes suficientes para que o doctor explique a deriva em vez de adivinhar
 
-## Lifecycle Commands
+## Comandos de Ciclo de Vida
 
-The following commands are the lifecycle surface for install-state:
+Os seguintes comandos são a superfície de ciclo de vida para o estado de instalação:
 
 1. `ecc list-installed`
 2. `ecc uninstall`
 3. `ecc doctor`
 4. `ecc repair`
 
-Current implementation status:
+Status de implementação atual:
 
-- `ecc list-installed` routes to `node scripts/list-installed.js`
-- `ecc uninstall` routes to `node scripts/uninstall.js`
-- `ecc doctor` routes to `node scripts/doctor.js`
-- `ecc repair` routes to `node scripts/repair.js`
-- legacy script entrypoints remain available during migration
+- `ecc list-installed` roteia para `node scripts/list-installed.js`
+- `ecc uninstall` roteia para `node scripts/uninstall.js`
+- `ecc doctor` roteia para `node scripts/doctor.js`
+- `ecc repair` roteia para `node scripts/repair.js`
+- pontos de entrada de script legados permanecem disponíveis durante a migração
 
 ### `list-installed`
 
-Responsibilities:
+Responsabilidades:
 
-- show target id and root
-- show requested profile/modules
-- show resolved modules
-- show source version and install time
+- mostrar id e raiz do target
+- mostrar perfil/módulos solicitados
+- mostrar módulos resolvidos
+- mostrar versão da origem e horário de instalação
 
 ### `uninstall`
 
-Responsibilities:
+Responsabilidades:
 
-- load install-state
-- remove only ECC-managed destinations recorded in state
-- leave user-authored unrelated files untouched
-- delete install-state only after successful cleanup
+- carregar estado de instalação
+- remover apenas destinos gerenciados pelo ECC registrados no estado
+- deixar arquivos não relacionados criados pelo usuário intactos
+- excluir estado de instalação somente após limpeza bem-sucedida
 
 ### `doctor`
 
-Responsibilities:
+Responsabilidades:
 
-- detect missing managed files
-- detect unexpected config drift
-- detect target roots that no longer exist
-- detect manifest/version mismatch
+- detectar arquivos gerenciados ausentes
+- detectar deriva de configuração inesperada
+- detectar raízes de target que não existem mais
+- detectar incompatibilidade de manifesto/versão
 
 ### `repair`
 
-Responsibilities:
+Responsabilidades:
 
-- rebuild the desired operation plan from install-state
-- re-copy missing or drifted managed files
-- refuse repair if requested modules no longer exist in the current manifest
-  unless a compatibility map exists
+- reconstruir o plano de operação desejado a partir do estado de instalação
+- recopiar arquivos gerenciados ausentes ou derivados
+- recusar reparação se os módulos solicitados não existirem mais no manifesto atual
+  a menos que exista um mapa de compatibilidade
 
-## Legacy Compatibility Layer
+## Camada de Compatibilidade Legada
 
-Current `install.sh` accepts:
+O `install.sh` atual aceita:
 
 - `--target <claude|cursor|antigravity>`
-- a list of language names
+- uma lista de nomes de linguagem
 
-That behavior cannot disappear in one cut because users already depend on it.
+Esse comportamento não pode desaparecer em um único corte porque os usuários já dependem dele.
 
-ECC 2.0 should translate legacy language arguments into a compatibility request.
+O ECC 2.0 deve traduzir argumentos de linguagem legada em uma requisição de compatibilidade.
 
-Suggested approach:
+Abordagem sugerida:
 
-1. keep existing CLI shape for legacy mode
-2. map language names to module requests such as:
+1. manter a forma de CLI existente para o modo legado
+2. mapear nomes de linguagem para requisições de módulo como:
    - `rules-core`
-   - target-compatible rule subsets
-3. write install-state even for legacy installs
-4. label the request as `legacyMode: true`
+   - subconjuntos de regras compatíveis com o target
+3. gravar estado de instalação mesmo para instalações legadas
+4. rotular a requisição como `legacyMode: true`
 
-Example:
+Exemplo:
 
 ```json
 {
@@ -808,38 +806,38 @@ Example:
 }
 ```
 
-This keeps old behavior available while moving all installs onto the same state
-contract.
+Isso mantém o comportamento antigo disponível enquanto move todas as instalações para o mesmo contrato
+de estado.
 
-## Publish Boundary
+## Limite de Publicação
 
-The current npm package still publishes a broad payload through `package.json`.
+O pacote npm atual ainda publica um payload amplo através de `package.json`.
 
-ECC 2.0 should improve this carefully.
+O ECC 2.0 deve melhorar isso com cuidado.
 
-Recommended sequence:
+Sequência recomendada:
 
-1. keep one canonical npm package first
-2. use manifests to drive install-time selection before changing publish shape
-3. only later consider reducing packaged surface where safe
+1. manter um pacote npm canônico primeiro
+2. usar manifestos para conduzir seleção em tempo de instalação antes de mudar a forma de publicação
+3. apenas mais tarde considerar reduzir a superfície empacotada onde for seguro
 
-Why:
+Por quê:
 
-- selective install can ship before aggressive package surgery
-- uninstall and repair depend on install-state more than publish changes
-- Codex/OpenCode support is easier if the package source remains unified
+- a instalação seletiva pode ser entregue antes de uma cirurgia agressiva de pacote
+- desinstalação e reparação dependem mais do estado de instalação do que de mudanças de publicação
+- o suporte a Codex/OpenCode é mais fácil se a origem do pacote permanecer unificada
 
-Possible later directions:
+Possíveis direções futuras:
 
-- generated slim bundles per profile
-- generated target-specific tarballs
-- optional remote fetch of heavy modules
+- pacotes slim gerados por perfil
+- tarballs específicos de target gerados
+- busca remota opcional de módulos pesados
 
-Those are Phase 3 or later, not prerequisites for profile-aware installs.
+Esses são Fase 3 ou posterior, não pré-requisitos para instalações com consciência de perfil.
 
-## File Layout Recommendation
+## Recomendação de Layout de Arquivo
 
-Suggested next files:
+Próximos arquivos sugeridos:
 
 ```text
 scripts/lib/install-targets/
@@ -859,75 +857,75 @@ tests/lib/install-state.test.js
 tests/lib/install-lifecycle.test.js
 ```
 
-`install.sh` can remain the user-facing entry point during migration, but it
-should become a thin shell around a Node-based planner and executor rather than
-keep growing per-target shell branches.
+`install.sh` pode permanecer como o ponto de entrada voltado ao usuário durante a migração, mas
+deve tornar-se um shell fino em torno de um planner e executor baseados em Node em vez de
+continuar crescendo branches shell por target.
 
-## Implementation Sequence
+## Sequência de Implementação
 
-### Phase 1: Planner To Contract
+### Fase 1: Planner para Contrato
 
-1. keep current manifest schema and resolver
-2. add operation planning on top of resolved modules
-3. define `ecc.install.v1` state schema
-4. write install-state on successful install
+1. manter o schema de manifesto atual e o resolvedor
+2. adicionar planejamento de operação em cima dos módulos resolvidos
+3. definir o schema de estado `ecc.install.v1`
+4. gravar estado de instalação em instalação bem-sucedida
 
-### Phase 2: Target Adapters
+### Fase 2: Adapters de Target
 
-1. extract Claude install behavior into `claude-home` adapter
-2. extract Cursor install behavior into `cursor-project` adapter
-3. extract Antigravity install behavior into `antigravity-project` adapter
-4. reduce `install.sh` to argument parsing plus adapter invocation
+1. extrair comportamento de instalação do Claude para o adapter `claude-home`
+2. extrair comportamento de instalação do Cursor para o adapter `cursor-project`
+3. extrair comportamento de instalação do Antigravity para o adapter `antigravity-project`
+4. reduzir `install.sh` para análise de argumentos mais invocação de adapter
 
-### Phase 3: Lifecycle
+### Fase 3: Ciclo de Vida
 
-1. add stronger target-specific merge/remove semantics
-2. extend repair/uninstall coverage for non-copy operations
-3. reduce package shipping surface to the module graph instead of broad folders
-4. decide when `ecc-install` should become a thin alias for `ecc install`
+1. adicionar semânticas de merge/remove específicas do target mais fortes
+2. estender cobertura de repair/uninstall para operações não-cópia
+3. reduzir superfície de envio de pacote para o grafo de módulos em vez de pastas amplas
+4. decidir quando `ecc-install` deve tornar-se um alias fino para `ecc install`
 
-### Phase 4: Publish And Future Targets
+### Fase 4: Publicação e Targets Futuros
 
-1. evaluate safe reduction of `package.json` publish surface
-2. add `codex-home`
-3. add `opencode-home`
-4. consider generated profile bundles if packaging pressure remains high
+1. avaliar redução segura da superfície de publicação de `package.json`
+2. adicionar `codex-home`
+3. adicionar `opencode-home`
+4. considerar pacotes de perfil gerados se a pressão de empacotamento permanecer alta
 
-## Immediate Repo-Local Next Steps
+## Próximos Passos Imediatos no Repositório Local
 
-The highest-signal next implementation moves in this repo are:
+Os próximos movimentos de implementação de maior sinal neste repositório são:
 
-1. add target-specific merge/remove semantics for config-like modules
-2. extend repair and uninstall beyond simple copy-file operations
-3. reduce package shipping surface to the module graph instead of broad folders
-4. decide whether `ecc-install` remains separate or becomes `ecc install`
-5. add tests that lock down:
-   - target-specific merge/remove behavior
-   - repair and uninstall safety for non-copy operations
-   - unified `ecc` CLI routing and compatibility guarantees
+1. adicionar semânticas de merge/remove específicas do target para módulos do tipo configuração
+2. estender repair e uninstall além de operações simples de copy-file
+3. reduzir superfície de envio de pacote para o grafo de módulos em vez de pastas amplas
+4. decidir se `ecc-install` permanece separado ou torna-se `ecc install`
+5. adicionar testes que fixem:
+   - comportamento de merge/remove específico do target
+   - segurança de repair e uninstall para operações não-cópia
+   - roteamento de CLI unificado `ecc` e garantias de compatibilidade
 
-## Open Questions
+## Perguntas Abertas
 
-1. Should rules stay language-addressable in legacy mode forever, or only during
-   the migration window?
-2. Should `platform-configs` always install with `core`, or be split into
-   smaller target-specific modules?
-3. Do we want config merge semantics recorded at the operation level or only in
-   adapter logic?
-4. Should heavy skill families eventually move to fetch-on-demand rather than
-   package-time inclusion?
-5. Should Codex and OpenCode target adapters ship only after the Claude/Cursor
-   lifecycle commands are stable?
+1. As regras devem permanecer endereçáveis por linguagem no modo legado para sempre, ou apenas durante
+   a janela de migração?
+2. `platform-configs` deve sempre instalar com `core`, ou ser dividido em
+   módulos menores específicos do target?
+3. Queremos semânticas de merge de configuração registradas no nível de operação ou apenas em
+   lógica de adapter?
+4. As famílias de skill pesadas devem eventualmente mover para busca sob demanda em vez de
+   inclusão em tempo de empacotamento?
+5. Os adapters de target Codex e OpenCode devem ser entregues apenas após os comandos de ciclo de vida
+   de Claude/Cursor estarem estáveis?
 
-## Recommendation
+## Recomendação
 
-Treat the current manifest resolver as adapter `0` for installs:
+Tratar o resolvedor de manifesto atual como adapter `0` para instalações:
 
-1. preserve the current install surface
-2. move real copy behavior behind target adapters
-3. write install-state for every successful install
-4. make uninstall, doctor, and repair depend only on install-state
-5. only then shrink packaging or add more targets
+1. preservar a superfície de instalação atual
+2. mover o comportamento real de cópia para trás dos adapters de target
+3. gravar estado de instalação para cada instalação bem-sucedida
+4. fazer desinstalação, doctor e repair depender apenas do estado de instalação
+5. apenas então reduzir empacotamento ou adicionar mais targets
 
-That is the shortest path from ECC 1.x installer sprawl to an ECC 2.0
-install/control contract that is deterministic, supportable, and extensible.
+Esse é o caminho mais curto do espalhamento do instalador do ECC 1.x para um contrato de instalação/controle
+do ECC 2.0 que é determinístico, suportável e extensível.

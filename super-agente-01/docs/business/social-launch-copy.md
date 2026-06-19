@@ -1,73 +1,82 @@
-# Social Launch Copy (X + LinkedIn)
+# Texto de Lançamento Social (X + LinkedIn)
 
-Use these templates as launch-ready starting points. Review channel tone before posting.
+Use estes templates como pontos de partida prontos para lançamento. Revise o tom do canal
+antes de publicar.
 
-## X Post: Release Announcement
+## Post no X: Anúncio de Release
 
 ```text
-ECC v2.0.0-rc.1 preview pack is ready for final release review.
+O pacote de pré-visualização do ECC v2.0.0-rc.1 está pronto para revisão final de release.
 
-ECC 2.0 is the harness-native operator system for agentic work: skills, hooks,
-rules, MCP conventions, release gates, and an optional Hermes operator shell.
+O ECC 2.0 é o sistema de operador nativo de harness para trabalho agêntico: skills, hooks,
+regras, convenções MCP, gates de release e um shell de operador Hermes opcional.
 
-What ships:
-- Hermes setup guide
-- release notes and launch collateral
-- cross-harness architecture docs
-- Hermes import guidance for turning local operator workflows into public ECC skills
+O que está incluído:
+- Guia de configuração do Hermes
+- notas de release e material de lançamento
+- documentação de arquitetura cross-harness
+- orientação de importação do Hermes para transformar fluxos de trabalho locais do operador
+  em skills públicas do ECC
 
-Start here: https://github.com/affaan-m/ECC
-Release notes: https://github.com/affaan-m/ECC/blob/main/docs/releases/2.0.0-rc.1/release-notes.md
+Comece aqui: https://github.com/affaan-m/ECC
+Notas de release: https://github.com/affaan-m/ECC/blob/main/docs/releases/2.0.0-rc.1/release-notes.md
 ```
 
-## X Post: Proof + Metrics
+## Post no X: Prova + Métricas
 
 ```text
-ECC v2.0.0-rc.1 keeps the public surface honest:
-- reusable ECC substrate in repo
-- Hermes documented as the operator shell
-- private workspace state left out
-- release metadata and docs covered by tests
+O ECC v2.0.0-rc.1 mantém a superfície pública honesta:
+- substrato ECC reutilizável no repositório
+- Hermes documentado como o shell de operador
+- estado do workspace privado excluído
+- metadados de release e documentação cobertos por testes
 
-This is the release-candidate line: public system shape now, deeper local integrations only after sanitization.
+Esta é a linha do release-candidate: formato do sistema público agora, integrações locais
+mais profundas apenas após higienização.
 ```
 
-## X Quote Tweet: Eval Skills Article
+## Quote Tweet no X: Artigo sobre Evals de Skills
 
 ```text
-Strong point on eval discipline.
+Ponto forte sobre disciplina de evals.
 
-In ECC we turned this into production checks via:
+No ECC transformamos isso em verificações de produção via:
 - /harness-audit
 - /quality-gate
-- Stop-phase session summaries
+- Resumos de sessão na fase Stop
 
-In v2.0.0-rc.1, that discipline extends to the release surface: docs, manifests, launch copy, and public/private boundaries are test-backed.
+No v2.0.0-rc.1, essa disciplina se estende à superfície de release: documentação, manifestos,
+texto de lançamento e limites público/privado são respaldados por testes.
 ```
 
-## X Quote Tweet: Plankton / deslop workflow
+## Quote Tweet no X: Fluxo de trabalho Plankton / deslop
 
 ```text
-This workflow direction is right: optimize the harness, not just prompts.
+Esta direção de fluxo de trabalho está certa: otimizar o harness, não apenas os prompts.
 
-ECC v2.0.0-rc.1 pushes that further: reusable skills, thin harness adapters, and Hermes as the operator shell on top.
+O ECC v2.0.0-rc.1 vai além: skills reutilizáveis, adaptadores de harness finos e Hermes
+como o shell de operador no topo.
 ```
 
-## LinkedIn Post: Partner-Friendly Summary
+## Post no LinkedIn: Resumo Amigável para Parceiros
 
 ```text
-ECC v2.0.0-rc.1 preview pack is ready for final release review.
+O pacote de pré-visualização do ECC v2.0.0-rc.1 está pronto para revisão final de release.
 
-ECC 2.0 is the harness-native operator system for agentic work. The same reusable layer now reaches Claude Code, Codex, OpenCode, Cursor, Gemini, Zed, GitHub Copilot workflows, and terminal-only operator lanes.
+O ECC 2.0 é o sistema de operador nativo de harness para trabalho agêntico. A mesma camada
+reutilizável agora alcança Claude Code, Codex, OpenCode, Cursor, Gemini, Zed, fluxos de
+trabalho do GitHub Copilot e rotas de operador somente terminal.
 
-This release-candidate surface includes:
-- sanitized Hermes setup documentation
-- release notes and launch collateral
-- cross-harness architecture notes
-- Hermes import guidance for turning local operator patterns into public ECC skills
+Esta superfície de release-candidate inclui:
+- documentação de configuração do Hermes higienizada
+- notas de release e material de lançamento
+- notas de arquitetura cross-harness
+- orientação de importação do Hermes para transformar padrões locais do operador em skills
+  públicas do ECC
 
-It does not include private workspace state, credentials, raw local exports, or personal datasets.
+Não inclui estado do workspace privado, credenciais, exportações locais brutas ou conjuntos
+de dados pessoais.
 
-Repo: https://github.com/affaan-m/ECC
-Release notes: https://github.com/affaan-m/ECC/blob/main/docs/releases/2.0.0-rc.1/release-notes.md
+Repositório: https://github.com/affaan-m/ECC
+Notas de release: https://github.com/affaan-m/ECC/blob/main/docs/releases/2.0.0-rc.1/release-notes.md
 ```

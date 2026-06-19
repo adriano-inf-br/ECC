@@ -1,27 +1,27 @@
-# Session Adapter Contract
+# Contrato do Adapter de Sessão
 
-This document defines the canonical ECC session snapshot contract for
+Este documento define o contrato canônico de snapshot de sessão do ECC para
 `ecc.session.v1`.
 
-The contract is implemented in
-`scripts/lib/session-adapters/canonical-session.js`. This document is the
-normative specification for adapters and consumers.
+O contrato está implementado em
+`scripts/lib/session-adapters/canonical-session.js`. Este documento é a
+especificação normativa para adapters e consumidores.
 
-## Purpose
+## Objetivo
 
-ECC has multiple session sources:
+O ECC tem múltiplas fontes de sessão:
 
-- tmux-orchestrated worktree sessions
-- Claude local session history
-- future harnesses and control-plane backends
+- sessões de worktree orquestradas por tmux
+- histórico de sessão local do Claude
+- futuros harnesses e backends de plano de controle
 
-Adapters normalize those sources into one control-plane-safe snapshot shape so
-inspection, persistence, and future UI layers do not depend on harness-specific
-files or runtime details.
+Os adapters normalizam essas fontes em um formato de snapshot seguro para o plano de controle,
+para que inspeção, persistência e futuras camadas de UI não dependam de arquivos
+específicos do harness ou detalhes de runtime.
 
-## Canonical Snapshot
+## Snapshot Canônico
 
-Every adapter MUST return a JSON-serializable object with this top-level shape:
+Todo adapter DEVE retornar um objeto serializável em JSON com esta forma de nível superior:
 
 ```json
 {
@@ -80,214 +80,211 @@ Every adapter MUST return a JSON-serializable object with this top-level shape:
 }
 ```
 
-## Required Fields
+## Campos Obrigatórios
 
-### Top level
+### Nível Superior
 
-| Field | Type | Notes |
+| Campo | Tipo | Notas |
 | --- | --- | --- |
-| `schemaVersion` | string | MUST be exactly `ecc.session.v1` for this contract |
-| `adapterId` | string | Stable adapter identifier such as `dmux-tmux` or `claude-history` |
-| `session` | object | Canonical session metadata |
-| `workers` | array | Canonical worker records; may be empty |
-| `aggregates` | object | Derived worker counts |
+| `schemaVersion` | string | DEVE ser exatamente `ecc.session.v1` para este contrato |
+| `adapterId` | string | Identificador estável do adapter como `dmux-tmux` ou `claude-history` |
+| `session` | object | Metadados canônicos de sessão |
+| `workers` | array | Registros canônicos de worker; pode estar vazio |
+| `aggregates` | object | Contagens derivadas de worker |
 
 ### `session`
 
-| Field | Type | Notes |
+| Campo | Tipo | Notas |
 | --- | --- | --- |
-| `id` | string | Stable identifier within the adapter domain |
-| `kind` | string | High-level session family such as `orchestrated` or `history` |
-| `state` | string | Canonical session state |
-| `sourceTarget` | object | Provenance for the target that opened the session |
+| `id` | string | Identificador estável no domínio do adapter |
+| `kind` | string | Família de sessão de alto nível como `orchestrated` ou `history` |
+| `state` | string | Estado canônico de sessão |
+| `sourceTarget` | object | Proveniência para o target que abriu a sessão |
 
 ### `session.sourceTarget`
 
-| Field | Type | Notes |
+| Campo | Tipo | Notas |
 | --- | --- | --- |
-| `type` | string | Lookup class such as `plan`, `session`, `claude-history`, `claude-alias`, or `session-file` |
-| `value` | string | Raw target value or resolved path |
+| `type` | string | Classe de busca como `plan`, `session`, `claude-history`, `claude-alias` ou `session-file` |
+| `value` | string | Valor bruto do target ou caminho resolvido |
 
 ### `workers[]`
 
-| Field | Type | Notes |
+| Campo | Tipo | Notas |
 | --- | --- | --- |
-| `id` | string | Stable worker identifier in adapter scope |
-| `label` | string | Operator-facing label |
-| `state` | string | Canonical worker state (lifecycle) |
-| `health` | string | Canonical worker health (operational condition) |
-| `runtime` | object | Execution/runtime metadata |
-| `intent` | object | Why this worker/session exists |
-| `outputs` | object | Structured outcomes and checks |
-| `artifacts` | object | Adapter-owned file/path references |
+| `id` | string | Identificador estável do worker no escopo do adapter |
+| `label` | string | Rótulo voltado ao operador |
+| `state` | string | Estado canônico do worker (ciclo de vida) |
+| `health` | string | Saúde canônica do worker (condição operacional) |
+| `runtime` | object | Metadados de execução/runtime |
+| `intent` | object | Por que este worker/sessão existe |
+| `outputs` | object | Resultados estruturados e verificações |
+| `artifacts` | object | Referências de arquivo/caminho de propriedade do adapter |
 
 ### `workers[].runtime`
 
-| Field | Type | Notes |
+| Campo | Tipo | Notas |
 | --- | --- | --- |
-| `kind` | string | Runtime family such as `tmux-pane` or `claude-session` |
-| `active` | boolean | Whether the runtime is active now |
-| `dead` | boolean | Whether the runtime is known dead/finished |
+| `kind` | string | Família de runtime como `tmux-pane` ou `claude-session` |
+| `active` | boolean | Se o runtime está ativo agora |
+| `dead` | boolean | Se o runtime é conhecido como morto/finalizado |
 
 ### `workers[].intent`
 
-| Field | Type | Notes |
+| Campo | Tipo | Notas |
 | --- | --- | --- |
-| `objective` | string | Primary objective or title |
-| `seedPaths` | string[] | Seed or context paths associated with the worker/session |
+| `objective` | string | Objetivo primário ou título |
+| `seedPaths` | string[] | Caminhos de seed ou contexto associados ao worker/sessão |
 
 ### `workers[].outputs`
 
-| Field | Type | Notes |
+| Campo | Tipo | Notas |
 | --- | --- | --- |
-| `summary` | string[] | Completed outputs or summary items |
-| `validation` | string[] | Validation evidence or checks |
-| `remainingRisks` | string[] | Open risks, follow-ups, or notes |
+| `summary` | string[] | Saídas concluídas ou itens de resumo |
+| `validation` | string[] | Evidências de validação ou verificações |
+| `remainingRisks` | string[] | Riscos abertos, acompanhamentos ou notas |
 
 ### `aggregates`
 
-| Field | Type | Notes |
+| Campo | Tipo | Notas |
 | --- | --- | --- |
-| `workerCount` | integer | MUST equal `workers.length` |
-| `states` | object | Count map derived from `workers[].state` |
-| `healths` | object | Count map derived from `workers[].health` |
+| `workerCount` | integer | DEVE ser igual a `workers.length` |
+| `states` | object | Mapa de contagem derivado de `workers[].state` |
+| `healths` | object | Mapa de contagem derivado de `workers[].health` |
 
-## Optional Fields
+## Campos Opcionais
 
-Optional fields MAY be omitted, but if emitted they MUST preserve the documented
-type:
+Campos opcionais PODEM ser omitidos, mas se emitidos DEVEM preservar o tipo documentado:
 
-| Field | Type | Notes |
+| Campo | Tipo | Notas |
 | --- | --- | --- |
-| `session.repoRoot` | `string \| null` | Repo/worktree root when known |
-| `workers[].branch` | `string \| null` | Branch name when known |
-| `workers[].worktree` | `string \| null` | Worktree path when known |
-| `workers[].runtime.command` | `string \| null` | Active command when known |
-| `workers[].runtime.pid` | `number \| null` | Process id when known |
-| `workers[].artifacts.*` | adapter-defined | File paths or structured references owned by the adapter |
+| `session.repoRoot` | `string \| null` | Raiz do repositório/worktree quando conhecida |
+| `workers[].branch` | `string \| null` | Nome do branch quando conhecido |
+| `workers[].worktree` | `string \| null` | Caminho do worktree quando conhecido |
+| `workers[].runtime.command` | `string \| null` | Comando ativo quando conhecido |
+| `workers[].runtime.pid` | `number \| null` | ID do processo quando conhecido |
+| `workers[].artifacts.*` | definido pelo adapter | Caminhos de arquivo ou referências estruturadas de propriedade do adapter |
 
-Adapter-specific optional fields belong inside `runtime`, `artifacts`, or other
-documented nested objects. Adapters MUST NOT invent new top-level fields without
-updating this contract.
+Campos opcionais específicos do adapter pertencem dentro de `runtime`, `artifacts` ou outros
+objetos aninhados documentados. Os adapters NÃO DEVEM inventar novos campos de nível superior sem
+atualizar este contrato.
 
-## State Semantics
+## Semânticas de Estado
 
-The contract intentionally keeps `session.state` and `workers[].state` flexible
-enough for multiple harnesses, but current adapters use these values:
+O contrato mantém intencionalmente `session.state` e `workers[].state` flexíveis
+o suficiente para múltiplos harnesses, mas os adapters atuais usam esses valores:
 
 - `dmux-tmux`
-  - session states: `active`, `completed`, `failed`, `idle`, `missing`
-  - worker states: derived from worker status files, for example `running` or
+  - estados de sessão: `active`, `completed`, `failed`, `idle`, `missing`
+  - estados de worker: derivados de arquivos de status do worker, por exemplo `running` ou
     `completed`
 - `claude-history`
-  - session state: `recorded`
-  - worker state: `recorded`
+  - estado de sessão: `recorded`
+  - estado de worker: `recorded`
 
-Consumers MUST treat unknown state strings as valid adapter-specific values and
-degrade gracefully.
+Os consumidores DEVEM tratar strings de estado desconhecidas como valores válidos específicos do adapter e
+degradar graciosamente.
 
-## Versioning Strategy
+## Estratégia de Versionamento
 
-`schemaVersion` is the only compatibility gate. Consumers MUST branch on it.
+`schemaVersion` é o único portão de compatibilidade. Os consumidores DEVEM ramificar nele.
 
-### Allowed in `ecc.session.v1`
+### Permitido em `ecc.session.v1`
 
-- adding new optional nested fields
-- adding new adapter ids
-- adding new state string values
-- adding new health string values
-- adding new artifact keys inside `workers[].artifacts`
+- adicionar novos campos aninhados opcionais
+- adicionar novos IDs de adapter
+- adicionar novos valores de string de estado
+- adicionar novos valores de string de saúde
+- adicionar novas chaves de artefato dentro de `workers[].artifacts`
 
-### Requires a new schema version
+### Requer uma nova versão de schema
 
-- removing a required field
-- renaming a field
-- changing a field type
-- changing the meaning of an existing field in a non-compatible way
-- moving data from one field to another while keeping the same version string
+- remover um campo obrigatório
+- renomear um campo
+- mudar o tipo de um campo
+- mudar o significado de um campo existente de forma não compatível
+- mover dados de um campo para outro mantendo a mesma string de versão
 
-If any of those happen, the producer MUST emit a new version string such as
+Se algum desses acontecer, o produtor DEVE emitir uma nova string de versão como
 `ecc.session.v2`.
 
-## Adapter Compliance Requirements
+## Requisitos de Conformidade do Adapter
 
-Every ECC session adapter MUST:
+Todo adapter de sessão ECC DEVE:
 
-1. Emit `schemaVersion: "ecc.session.v1"` exactly.
-2. Return a snapshot that satisfies all required fields and types.
-3. Use `null` for unknown optional scalar values and empty arrays for unknown
-   list values.
-4. Keep adapter-specific details nested under `runtime`, `artifacts`, or other
-   documented nested objects.
-5. Ensure `aggregates.workerCount === workers.length`.
-6. Ensure `aggregates.states` matches the emitted worker states.
-7. Ensure `aggregates.healths` matches the emitted worker health values.
-7. Produce plain JSON-serializable values only.
-8. Validate the canonical shape before persistence or downstream use.
-9. Persist the normalized canonical snapshot through the session recording shim.
-   In this repo, that shim first attempts `scripts/lib/state-store` and falls
-   back to a JSON recording file only when the state store module is not
-   available yet.
+1. Emitir `schemaVersion: "ecc.session.v1"` exatamente.
+2. Retornar um snapshot que satisfaça todos os campos e tipos obrigatórios.
+3. Usar `null` para valores escalares opcionais desconhecidos e arrays vazios para valores
+   de lista desconhecidos.
+4. Manter detalhes específicos do adapter aninhados em `runtime`, `artifacts` ou outros
+   objetos aninhados documentados.
+5. Garantir que `aggregates.workerCount === workers.length`.
+6. Garantir que `aggregates.states` corresponda aos estados de worker emitidos.
+7. Garantir que `aggregates.healths` corresponda aos valores de saúde do worker emitidos.
+7. Produzir apenas valores simples serializáveis em JSON.
+8. Validar a forma canônica antes da persistência ou uso downstream.
+9. Persistir o snapshot canônico normalizado através do shim de gravação de sessão.
+   Neste repositório, esse shim tenta primeiro `scripts/lib/state-store` e recorre
+   a um arquivo de gravação JSON apenas quando o módulo de armazenamento de estado ainda não está
+   disponível.
 
-## Consumer Expectations
+## Expectativas do Consumidor
 
-Consumers SHOULD:
+Os consumidores DEVEM:
 
-- rely only on documented fields for `ecc.session.v1`
-- ignore unknown optional fields
-- treat `adapterId`, `session.kind`, and `runtime.kind` as routing hints rather
-  than exhaustive enums
-- expect adapter-specific artifact keys inside `workers[].artifacts`
+- confiar apenas nos campos documentados para `ecc.session.v1`
+- ignorar campos opcionais desconhecidos
+- tratar `adapterId`, `session.kind` e `runtime.kind` como dicas de roteamento em vez de
+  enums exaustivos
+- esperar chaves de artefato específicas do adapter dentro de `workers[].artifacts`
 
-Consumers MUST NOT:
+Os consumidores NÃO DEVEM:
 
-- infer harness-specific behavior from undocumented fields
-- assume all adapters have tmux panes, git worktrees, or markdown coordination
-  files
-- reject snapshots only because a state string is unfamiliar
+- inferir comportamento específico do harness a partir de campos não documentados
+- assumir que todos os adapters têm painéis tmux, worktrees git ou arquivos de coordenação markdown
+- rejeitar snapshots apenas porque uma string de estado é desconhecida
 
-## Current Adapter Mappings
+## Mapeamentos Atuais do Adapter
 
 ### `dmux-tmux`
 
-- Source: `scripts/lib/orchestration-session.js`
-- Session id: orchestration session name
-- Session kind: `orchestrated`
-- Session source target: plan path or session name
-- Worker runtime kind: `tmux-pane`
-- Artifacts: `statusFile`, `taskFile`, `handoffFile`
+- Origem: `scripts/lib/orchestration-session.js`
+- ID de sessão: nome da sessão de orquestração
+- Tipo de sessão: `orchestrated`
+- Target de origem da sessão: caminho do plano ou nome da sessão
+- Tipo de runtime do worker: `tmux-pane`
+- Artefatos: `statusFile`, `taskFile`, `handoffFile`
 
 ### `claude-history`
 
-- Source: `scripts/lib/session-manager.js`
-- Session id: Claude short id when present, otherwise session filename-derived id
-- Session kind: `history`
-- Session source target: explicit history target, alias, or `.tmp` session file
-- Worker runtime kind: `claude-session`
-- Intent seed paths: parsed from `### Context to Load`
-- Artifacts: `sessionFile`, `context`
+- Origem: `scripts/lib/session-manager.js`
+- ID de sessão: ID curto do Claude quando presente, caso contrário ID derivado do nome de arquivo da sessão
+- Tipo de sessão: `history`
+- Target de origem da sessão: target de histórico explícito, alias ou arquivo de sessão `.tmp`
+- Tipo de runtime do worker: `claude-session`
+- Caminhos de seed de intenção: analisados de `### Context to Load`
+- Artefatos: `sessionFile`, `context`
 
-## Validation Reference
+## Referência de Validação
 
-The repo implementation validates:
+A implementação no repositório valida:
 
-- required object structure
-- required string fields
-- boolean runtime flags
-- string-array outputs and seed paths
-- aggregate count consistency
+- estrutura de objeto obrigatória
+- campos de string obrigatórios
+- flags de runtime booleanas
+- saídas de array de string e caminhos de seed
+- consistência de contagem de aggregate
 
-Adapters should treat validation failures as contract bugs, not user input
-errors.
+Os adapters devem tratar falhas de validação como bugs de contrato, não erros de entrada do usuário.
 
-## Recording Fallback Behavior
+## Comportamento de Fallback de Gravação
 
-The JSON fallback recorder is a temporary compatibility shim for the period
-before the dedicated state store lands. Its behavior is:
+O gravador de fallback JSON é um shim de compatibilidade temporário para o período
+antes do armazenamento de estado dedicado chegar. Seu comportamento é:
 
-- latest snapshot is always replaced in-place
-- history records only distinct snapshot bodies
-- unchanged repeated reads do not append duplicate history entries
+- o snapshot mais recente é sempre substituído no lugar
+- registros de histórico apenas corpos de snapshot distintos
+- leituras repetidas sem alteração não acrescentam entradas de histórico duplicadas
 
-This keeps `session-inspect` and other polling-style reads from growing
-unbounded history for the same unchanged session snapshot.
+Isso mantém `session-inspect` e outras leituras de estilo de polling de crescer
+histórico ilimitado para o mesmo snapshot de sessão sem alterações.

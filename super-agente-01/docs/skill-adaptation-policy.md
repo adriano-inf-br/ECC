@@ -1,73 +1,74 @@
-# Skill Adaptation Policy
+# Política de Adaptação de Skills
 
-ECC accepts ideas from outside repos, but shipped skills need to become ECC-native surfaces.
+O ECC aceita ideias de repositórios externos, mas as skills disponibilizadas precisam se tornar
+superfícies nativas do ECC.
 
-## Default Rule
+## Regra Padrão
 
-When a contribution starts from another open-source repo, prompt pack, plugin, harness, or personal config:
+Quando uma contribuição começa a partir de outro repositório open-source, pacote de prompts, plugin, harness ou configuração pessoal:
 
-- copy the underlying idea, workflow, or structure
-- adapt it to ECC's current install surfaces, validation flow, and repo conventions
-- remove unnecessary external branding, dependency assumptions, and upstream-specific framing
+- copie a ideia subjacente, fluxo de trabalho ou estrutura
+- adapte-a às superfícies de instalação atuais do ECC, fluxo de validação e convenções de repositório
+- remova branding externo desnecessário, suposições de dependência e enquadramento específico do upstream
 
-The goal is reuse without turning ECC into a thin wrapper around someone else's runtime.
+O objetivo é reutilização sem transformar o ECC em um wrapper fino em torno do runtime de outra pessoa.
 
-## When To Keep The Original Name
+## Quando Manter o Nome Original
 
-Keep the original skill name only when all of the following are true:
+Mantenha o nome original da skill somente quando todos os itens a seguir forem verdadeiros:
 
-- the contribution is close to a direct port
-- the name is already descriptive and neutral
-- the surface still behaves like the upstream concept
-- there is no better ECC-native name already in the repo
+- a contribuição é próxima de uma portagem direta
+- o nome já é descritivo e neutro
+- a superfície ainda se comporta como o conceito do upstream
+- não há nenhum nome nativo do ECC melhor já no repositório
 
-Examples:
+Exemplos:
 
-- framework names like `nestjs-patterns`
-- protocol or product names that are the subject matter, not the vendor pitch
+- nomes de framework como `nestjs-patterns`
+- nomes de protocolo ou produto que são o assunto, não o discurso de vendor
 
-## When To Rename
+## Quando Renomear
 
-Rename the skill when ECC meaningfully expands, narrows, or repackages the original work.
+Renomeie a skill quando o ECC expande, restringe ou reempacota significativamente o trabalho original.
 
-Typical triggers:
+Gatilhos típicos:
 
-- ECC adds substantial new behavior, structure, or guidance
-- the original name is vendor-forward or community-brand-forward instead of workflow-forward
-- the contribution overlaps an existing ECC surface and needs a clearer boundary
-- the contribution now fits as a capability, operator workflow, or policy layer rather than a literal port
+- O ECC adiciona comportamento, estrutura ou orientação substancialmente novos
+- o nome original é orientado ao vendor ou à marca da comunidade em vez de ser orientado ao fluxo de trabalho
+- a contribuição se sobrepõe a uma superfície ECC existente e precisa de um limite mais claro
+- a contribuição agora se encaixa como uma capacidade, fluxo de trabalho de operador ou camada de política em vez de uma portagem literal
 
-Examples:
+Exemplos:
 
-- keep a reusable graph primitive as `social-graph-ranker`, but make broader workflow layers `lead-intelligence` or `connections-optimizer`
-- prefer ECC-native names like `product-capability` over vague imported planning labels if the scope changed materially
+- manter uma primitiva de grafo reutilizável como `social-graph-ranker`, mas tornar camadas de fluxo de trabalho mais amplas `lead-intelligence` ou `connections-optimizer`
+- preferir nomes nativos do ECC como `product-capability` sobre rótulos de planejamento importados vagos se o escopo mudou materialmente
 
-## Dependency Policy
+## Política de Dependências
 
-ECC prefers the narrowest native surface that gets the job done:
+O ECC prefere a superfície nativa mais restrita que realize o trabalho:
 
-- `rules/` for deterministic constraints
-- `skills/` for on-demand workflows
-- MCP when a long-lived interactive tool boundary is justified
-- local scripts/CLI for deterministic one-shot execution
-- direct APIs when the remote call is narrow and does not justify MCP
+- `rules/` para restrições determinísticas
+- `skills/` para fluxos de trabalho sob demanda
+- MCP quando um limite de ferramenta interativa de longa duração é justificado
+- scripts/CLI locais para execução determinística de uma só vez
+- APIs diretas quando a chamada remota é restrita e não justifica MCP
 
-Avoid shipping a skill that exists mainly to tell users to install or trust an unvetted third-party package.
+Evite disponibilizar uma skill que exista principalmente para dizer aos usuários para instalar ou confiar em um pacote de terceiros não verificado.
 
-If external functionality is worth keeping:
+Se a funcionalidade externa vale a pena manter:
 
-- vendor or recreate the relevant logic inside ECC when practical
-- or keep the integration optional and clearly marked as external
-- never let a new external dependency become the default path without explicit justification
+- incorpore ou recrie a lógica relevante dentro do ECC quando prático
+- ou mantenha a integração opcional e claramente marcada como externa
+- nunca deixe uma nova dependência externa se tornar o caminho padrão sem justificativa explícita
 
-## Review Questions
+## Perguntas de Revisão
 
-Before merging a contributed skill, answer these:
+Antes de fazer merge de uma skill contribuída, responda estas:
 
-1. Is this a real reusable surface in ECC, or just documentation for another tool?
-2. Does the current name still match the ECC-shaped surface?
-3. Is there already an ECC skill that owns most of this behavior?
-4. Are we importing a concept, or importing someone else's product identity?
-5. Would an ECC user understand the purpose of this skill without knowing the upstream repo?
+1. Esta é uma superfície reutilizável real no ECC, ou apenas documentação para outra ferramenta?
+2. O nome atual ainda corresponde à superfície moldada pelo ECC?
+3. Já existe uma skill ECC que possui a maior parte desse comportamento?
+4. Estamos importando um conceito, ou importando a identidade de produto de outra pessoa?
+5. Um usuário do ECC entenderia o propósito desta skill sem conhecer o repositório upstream?
 
-If those answers are weak, adapt more, narrow the scope, or do not ship it.
+Se essas respostas forem fracas, adapte mais, reduza o escopo, ou não disponibilize.

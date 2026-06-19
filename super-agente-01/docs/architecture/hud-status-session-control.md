@@ -1,80 +1,80 @@
-# HUD Status And Session Control Contract
+# Contrato de Status do HUD e Controle de Sessão
 
-This contract defines the portable status payload ECC uses for local operator
-surfaces, handoffs, and future HUDs. It is intentionally harness-neutral: a
-Claude Code statusline, Codex pane, dmux session, OpenCode run, or terminal-only
-workflow can emit partial data without changing field names.
+Este contrato define o payload de status portátil que o ECC usa para superfícies de operador
+locais, handoffs e futuros HUDs. É intencionalmente neutro em relação ao harness: uma
+statusline do Claude Code, painel do Codex, sessão dmux, execução do OpenCode ou fluxo de
+trabalho somente terminal pode emitir dados parciais sem alterar os nomes dos campos.
 
-The canonical example lives at
+O exemplo canônico vive em
 [`examples/hud-status-contract.json`](../../examples/hud-status-contract.json).
 
-## Payload Shape
+## Formato do Payload
 
-Every status payload uses `schema_version: "ecc.hud-status.v1"` and keeps these
-top-level sections stable:
+Cada payload de status usa `schema_version: "ecc.hud-status.v1"` e mantém estas
+seções de nível superior estáveis:
 
-| Field | Purpose | Primary Source |
+| Campo | Propósito | Fonte Primária |
 |---|---|---|
-| `context` | Model, harness, repo, branch, worktree, session id, and context-window pressure | statusline stdin, git, session adapters |
-| `toolCalls` | Recent tool counts, pending calls, stale calls, and last tool event | `loop-status`, `tool-usage.jsonl`, hook bridge |
-| `activeAgents` | Current workers/subagents, runtime state, branch, worktree, objective, and handoff paths | dmux/orchestration snapshots |
-| `todos` | Current in-progress task and todo counts | Claude todos, local task files, plan metadata |
-| `checks` | Local and remote validation status with command/check URLs when available | CI, local commands, release gates |
-| `cost` | Session spend, token counts, budget, and trend | cost tracker, metrics bridge |
-| `risk` | Attention state, conflict pressure, stale calls, dirty worktree, and manual-review flags | readiness gates, git, queue state |
-| `queueState` | GitHub PR/issue/discussion counts, conflict queue, merge queue, and stale-salvage queue | GitHub sync, work items |
-| `sessionControls` | Supported operator actions for the current target | ECC CLI, dmux, git/GitHub |
-| `sync` | Linear, GitHub, and handoff publication state | status updates, work items, handoff writer |
+| `context` | Modelo, harness, repositório, branch, worktree, ID de sessão e pressão na janela de contexto | stdin da statusline, git, adaptadores de sessão |
+| `toolCalls` | Contagens recentes de chamadas de ferramentas, chamadas pendentes, chamadas desatualizadas e último evento de ferramenta | `loop-status`, `tool-usage.jsonl`, bridge de hook |
+| `activeAgents` | Workers/subagentes atuais, estado em tempo de execução, branch, worktree, objetivo e caminhos de handoff | Snapshots de orquestração/dmux |
+| `todos` | Tarefa em andamento atual e contagens de tarefas | Tarefas do Claude, arquivos de tarefas locais, metadados de plano |
+| `checks` | Status de validação local e remota com comando/URLs de verificação quando disponíveis | CI, comandos locais, gates de release |
+| `cost` | Gasto da sessão, contagens de tokens, orçamento e tendência | rastreador de custo, bridge de métricas |
+| `risk` | Estado de atenção, pressão de conflito, chamadas desatualizadas, worktree sujo e flags de revisão manual | gates de prontidão, git, estado da fila |
+| `queueState` | Contagens de PR/issue/discussão do GitHub, fila de conflitos, fila de merge e fila de salvamento de desatualizados | sincronização GitHub, itens de trabalho |
+| `sessionControls` | Ações do operador suportadas para o alvo atual | CLI ECC, dmux, git/GitHub |
+| `sync` | Estado de publicação do Linear, GitHub e handoff | atualizações de status, itens de trabalho, escritor de handoff |
 
-Fields can be `null`, empty arrays, or `"unknown"` when a harness cannot expose
-the signal. Producers should not invent incompatible names. Consumers should
-render missing sections as unavailable, not as green.
+Os campos podem ser `null`, arrays vazios ou `"unknown"` quando um harness não pode expor
+o sinal. Os produtores não devem inventar nomes incompatíveis. Os consumidores devem renderizar
+seções ausentes como indisponíveis, não como verde.
 
-## Session Controls
+## Controles de Sessão
 
-The minimum session-control vocabulary is:
+O vocabulário mínimo de controle de sessão é:
 
-| Control | Meaning |
+| Controle | Significado |
 |---|---|
-| `create` | Start a new isolated run, worktree, or orchestration plan |
-| `resume` | Reattach to an existing session or historical target |
-| `status` | Emit the current payload without mutating state |
-| `stop` | Request a graceful stop or mark the session completed |
-| `diff` | Show current working-tree or worker diff |
-| `pr` | Open or inspect the linked pull request |
-| `mergeQueue` | Show merge-ready, blocked, and waiting-check items |
-| `conflictQueue` | Show dirty/conflicting PRs or worktrees needing integration |
+| `create` | Iniciar uma nova execução isolada, worktree ou plano de orquestração |
+| `resume` | Reanexar a uma sessão existente ou alvo histórico |
+| `status` | Emitir o payload atual sem mutar o estado |
+| `stop` | Solicitar uma parada graciosa ou marcar a sessão como concluída |
+| `diff` | Mostrar o diff atual da árvore de trabalho ou do worker |
+| `pr` | Abrir ou inspecionar o pull request vinculado |
+| `mergeQueue` | Mostrar itens prontos para merge, bloqueados e aguardando verificação |
+| `conflictQueue` | Mostrar PRs ou worktrees sujos/conflitantes que precisam de integração |
 
-`sessionControls.supported` lists the controls available for the current
-harness. `sessionControls.blocked` explains unavailable controls, for example a
-missing GitHub token, no tmux session, or a read-only adapter.
+`sessionControls.supported` lista os controles disponíveis para o harness atual.
+`sessionControls.blocked` explica os controles indisponíveis, por exemplo um token GitHub
+ausente, sem sessão tmux ou um adaptador somente leitura.
 
-## Sync Contract
+## Contrato de Sincronização
 
-The sync section separates durable trackers:
+A seção de sincronização separa os rastreadores duráveis:
 
-- `Linear` records project status update id, health, and whether issue creation
-  is blocked by workspace capacity.
-- `GitHub` records the current repo, PR/issue/discussion queue counts, and the
-  latest merged or open PR tied to the session.
-- `handoff` records the durable Markdown handoff path and whether it has been
-  written after the latest batch.
+- `Linear` registra o ID de atualização de status do projeto, a saúde e se a criação de
+  issues está bloqueada pela capacidade do workspace.
+- `GitHub` registra o repositório atual, as contagens da fila de PR/issue/discussão e o
+  último PR mesclado ou aberto vinculado à sessão.
+- `handoff` registra o caminho de handoff Markdown durável e se ele foi escrito após o
+  último lote.
 
-This makes real-time progress tracking explicit without requiring every run to
-create Linear issues or GitHub comments. When Linear issue capacity is blocked,
-the status payload can still prove progress through project updates and repo
-handoffs.
+Isso torna o rastreamento de progresso em tempo real explícito sem exigir que cada execução
+crie issues no Linear ou comentários no GitHub. Quando a capacidade de issues do Linear está
+bloqueada, o payload de status ainda pode provar o progresso por meio de atualizações de
+projeto e handoffs do repositório.
 
-## Current Implementations
+## Implementações Atuais
 
-- `ecc status --json` exposes readiness, active sessions, skill runs, install
-  health, governance, and linked work items from the SQLite state store.
-- `ecc loop-status --json --write-dir <dir>` writes live transcript snapshots
-  and attention signals for long-running loops.
-- `ecc session-inspect <target> --write <path>` emits canonical session
-  snapshots from dmux and Claude-history adapters.
-- `scripts/hooks/ecc-statusline.js` renders compact model, task, cost, tool,
-  file, duration, directory, and context pressure signals inside Claude Code.
+- `ecc status --json` expõe prontidão, sessões ativas, execuções de skill, saúde de
+  instalação, governança e itens de trabalho vinculados do armazenamento de estado SQLite.
+- `ecc loop-status --json --write-dir <dir>` escreve snapshots de transcrição ao vivo e
+  sinais de atenção para loops de longa execução.
+- `ecc session-inspect <target> --write <path>` emite snapshots de sessão canônicos a
+  partir de adaptadores dmux e de histórico do Claude.
+- `scripts/hooks/ecc-statusline.js` renderiza sinais compactos de modelo, tarefa, custo,
+  ferramenta, arquivo, duração, diretório e pressão de contexto dentro do Claude Code.
 
-The `ecc.hud-status.v1` payload is the common outer contract these surfaces can
-project into before ECC grows a dedicated full-screen HUD.
+O payload `ecc.hud-status.v1` é o contrato externo comum que essas superfícies podem
+projetar antes que o ECC desenvolva um HUD dedicado em tela cheia.

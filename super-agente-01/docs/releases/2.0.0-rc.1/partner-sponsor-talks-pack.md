@@ -1,63 +1,63 @@
-# ECC v2.0.0-rc.1 Partner, Sponsor, and Talks Pack
+# Pacote de Parceiros, Patrocinadores e Palestras ECC v2.0.0-rc.1
 
-This pack turns the rc.1 release surface into outbound-ready copy for sponsors,
-partners, consulting conversations, conference talks, podcast bookings, and
-community announcements.
+Este pacote transforma a superfície de release do rc.1 em cópia pronta para saída para patrocinadores,
+parceiros, conversas de consultoria, palestras em conferências, agendamentos de podcasts e
+anúncios comunitários.
 
-It is not a publish action. Use it after the release URL ledger, video suite,
-and publication gates are current.
+Não é uma ação de publicação. Use-o após o ledger de URLs de release, suíte de vídeos
+e gates de publicação estarem atuais.
 
-## Current Business Baseline
+## Linha de Base de Negócios Atual
 
-| Metric | Current | Target | Gap |
+| Métrica | Atual | Meta | Lacuna |
 | --- | ---: | ---: | ---: |
-| MRR | `$1,728/mo` | `$10,000/mo` | `$8,272/mo` |
-| Core revenue lanes | Sponsors, ECC Tools Pro, consulting, talks | Repeatable growth loop | Approval-gated outbound |
-| Launch proof | rc.1 preview pack, video suite, queue-zero audit | Public release package | Final URLs and human approval |
+| MRR | `$1.728/mês` | `$10.000/mês` | `$8.272/mês` |
+| Lanes de receita principais | Patrocinadores, ECC Tools Pro, consultoria, palestras | Loop de crescimento repetível | Saída gateada por aprovação |
+| Prova de lançamento | preview pack rc.1, suíte de vídeos, auditoria de fila-zero | Pacote de release público | URLs finais e aprovação humana |
 
-## Positioning Line
+## Linha de Posicionamento
 
-ECC 2.0 is the harness-native operator system for agentic work.
+ECC 2.0 é o sistema de operador nativo de harness para trabalho agêntico.
 
-Use this short version in partner and sponsor messages:
+Use esta versão curta em mensagens para parceiros e patrocinadores:
 
 ```text
-ECC gives teams one reusable layer for skills, hooks, rules, MCP conventions,
-release gates, and operator workflows across Claude Code, Codex, OpenCode,
-Cursor, Gemini, Zed, GitHub Copilot, and terminal-only workflows.
+ECC oferece às equipes uma camada reutilizável para skills, hooks, regras, convenções de MCP,
+gates de release e fluxos de trabalho do operador no Claude Code, Codex, OpenCode,
+Cursor, Gemini, Zed, GitHub Copilot e fluxos de trabalho exclusivamente em terminal.
 ```
 
-## Offer Ladder
+## Escada de Oferta
 
-| Motion | Best fit | Starting point | Primary ask |
+| Modalidade | Melhor ajuste | Ponto de partida | Pedido principal |
 | --- | --- | ---: | --- |
-| Pilot sponsor | OSS-friendly team that wants early signal | `$200/mo` | GitHub Sponsors |
-| Business sponsor | Tooling or AI infra company that wants logo and case-study surface | `$500/mo` | GitHub Sponsors or direct invoice |
-| Strategic partner | Platform, marketplace, security, or developer-tool company | `$1,000+/mo` | Sponsor plus launch or integration plan |
-| Consulting sprint | Team adopting agent harnesses internally | Scoped quote | Harness audit, rollout plan, and operating loop |
-| Talk or podcast | Devtools, AI engineering, security, OSS, or founder audience | No fee required for high-leverage reach | Recording slot, demo slot, or conference proposal |
+| Patrocinador piloto | Equipe amigável a OSS que quer sinal antecipado | `$200/mês` | GitHub Sponsors |
+| Patrocinador empresarial | Empresa de ferramentas ou infraestrutura de IA que quer visibilidade de logo e estudo de caso | `$500/mês` | GitHub Sponsors ou fatura direta |
+| Parceiro estratégico | Empresa de plataforma, marketplace, segurança ou ferramentas para desenvolvedores | `$1.000+/mês` | Patrocínio mais plano de lançamento ou integração |
+| Sprint de consultoria | Equipe adotando harnesses de agents internamente | Cotação com escopo | Auditoria de harness, plano de rollout e loop operacional |
+| Palestra ou podcast | Público de devtools, engenharia de IA, segurança, OSS ou fundadores | Sem taxa para alcance de alta alavancagem | Slot de gravação, slot de demo ou proposta para conferência |
 
-## Partner Targets
+## Alvos de Parceiros
 
-Prioritize partners that already benefit from a harness-agnostic operating
-layer:
+Priorizar parceiros que já se beneficiam de uma camada operacional
+harness-agnostic:
 
-- AI coding platforms and IDEs;
-- hosted agent and workflow orchestration tools;
-- code review, security, and supply-chain vendors;
-- model and inference providers;
-- developer education, podcast, and conference organizers;
-- teams adopting multiple harnesses at once.
+- Plataformas de codificação por IA e IDEs;
+- ferramentas de orquestração de agent e fluxo de trabalho hospedadas;
+- fornecedores de revisão de código, segurança e cadeia de suprimentos;
+- provedores de modelo e inferência;
+- educação para desenvolvedores, organizadores de podcasts e conferências;
+- equipes adotando múltiplos harnesses ao mesmo tempo.
 
-## Sponsor Outbound
+## Saída para Patrocinadores
 
-Subject:
+Assunto:
 
 ```text
 ECC 2.0 sponsor slot for cross-harness agent workflows
 ```
 
-Body:
+Corpo:
 
 ```text
 Hey [name],
@@ -89,7 +89,7 @@ If useful, I can send the short sponsor packet and a proposed first 30-day plan.
 Affaan
 ```
 
-## Platform Partner DM
+## DM para Parceiro de Plataforma
 
 ```text
 ECC 2.0 is getting close to rc.1.
@@ -107,7 +107,7 @@ better setup, policy, security, or workflow portability for agent users.
 Repo: https://github.com/affaan-m/ECC
 ```
 
-## Consulting Intro
+## Introdução de Consultoria
 
 ```text
 I am open to a small number of ECC 2.0 implementation sprints for teams that
@@ -125,16 +125,16 @@ This is not generic AI consulting. The output is a working harness operating
 system your team can keep using.
 ```
 
-## Talk And Podcast Pitch
+## Pitch para Palestra e Podcast
 
-Title options:
+Opções de título:
 
 - Building a Cross-Harness Operating System for AI Coding
 - From Prompt Packs to Operator Systems
 - What Breaks When Teams Adopt Too Many AI Coding Harnesses
 - Security and Release Discipline for Agentic Coding Workflows
 
-Short pitch:
+Pitch curto:
 
 ```text
 ECC started as an open-source workflow layer for Claude Code and is now moving
@@ -149,7 +149,7 @@ AgentShield-style security checks, and an optional Hermes operator shell to make
 agentic work more measurable and portable.
 ```
 
-## GitHub Discussion Announcement
+## Anúncio para Discussion do GitHub
 
 ```text
 ECC v2.0.0-rc.1 preview pack is ready for final release review.
@@ -180,9 +180,9 @@ sponsor fit, prediction-market research use cases, and examples of teams using
 multiple AI coding harnesses.
 ```
 
-## Video CTA Hooks
+## Hooks de CTA para Vídeo
 
-Use these with the release video suite:
+Use estes com a suíte de vídeos de release:
 
 - "If your AI coding setup only works in one harness, it is not an operating
   system yet."
@@ -192,26 +192,25 @@ Use these with the release video suite:
   layer."
 - "Start with one workflow lane: engineering, research, content, or outreach."
 
-## Do Not Send Or Publish If
+## Não Enviar Nem Publicar Se
 
-- The release URL ledger still has stale or placeholder links.
-- `npm run release:video-suite -- --format json` is not green against the
-  intended video roots.
-- The GitHub prerelease or npm package readback is contradicted, or a plugin
-  path, video URL, billing claim, or official directory listing is described as
-  live without evidence.
-- The message claims native payments are ready before ECC Tools billing readback
-  passes.
-- The recipient needs a custom promise that is not covered by `SPONSORS.md`,
-  `SPONSORING.md`, or a separate consulting scope.
-- The user has not approved outbound sponsor, partner, consulting, or media
-  messages.
+- O ledger de URLs de release ainda tiver links desatualizados ou placeholder.
+- `npm run release:video-suite -- --format json` não estiver verde nos
+  roots de vídeo pretendidos.
+- O readback do prerelease do GitHub ou do pacote npm for contradito, ou um caminho de
+  plugin, URL de vídeo, declaração de faturamento ou listagem em diretório oficial for descrito como
+  ao vivo sem evidência.
+- A mensagem afirmar que pagamentos nativos estão prontos antes que o readback de faturamento das ECC Tools
+  seja aprovado.
+- O destinatário precisar de uma promessa personalizada não coberta por `SPONSORS.md`,
+  `SPONSORING.md` ou um escopo de consultoria separado.
+- O usuário não tiver aprovado mensagens de saída para patrocinadores, parceiros, consultoria ou mídia.
 
-## Routing Links
+## Links de Roteamento
 
-- Repo: <https://github.com/affaan-m/ECC>
-- Release notes: <https://github.com/affaan-m/ECC/blob/main/docs/releases/2.0.0-rc.1/release-notes.md>
+- Repositório: <https://github.com/affaan-m/ECC>
+- Notas de release: <https://github.com/affaan-m/ECC/blob/main/docs/releases/2.0.0-rc.1/release-notes.md>
 - Quickstart: <https://github.com/affaan-m/ECC/blob/main/docs/releases/2.0.0-rc.1/quickstart.md>
-- Sponsor: <https://github.com/sponsors/affaan-m>
-- Sponsor tiers: <https://github.com/affaan-m/ECC/blob/main/SPONSORS.md>
-- Sponsoring guide: <https://github.com/affaan-m/ECC/blob/main/SPONSORING.md>
+- Patrocinador: <https://github.com/sponsors/affaan-m>
+- Níveis de patrocínio: <https://github.com/affaan-m/ECC/blob/main/SPONSORS.md>
+- Guia de patrocínio: <https://github.com/affaan-m/ECC/blob/main/SPONSORING.md>

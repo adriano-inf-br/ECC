@@ -1,22 +1,22 @@
-# JoyCode Adapter Guide
+# Guia do Adaptador JoyCode
 
-JoyCode can consume ECC through the selective installer. The adapter installs shared ECC commands, agents, skills, and flattened rules into a project-local `.joycode/` directory.
+O JoyCode pode consumir o ECC por meio do instalador seletivo. O adaptador instala comandos, agents, skills e regras niveladas compartilhadas do ECC em um diretório `.joycode/` local do projeto.
 
-## Install
+## Instalação
 
-Preview the install plan:
+Visualize o plano de instalação:
 
 ```bash
 node scripts/install-plan.js --target joycode --profile full
 ```
 
-Apply it to the current project:
+Aplique-o ao projeto atual:
 
 ```bash
 node scripts/install-apply.js --target joycode --profile full
 ```
 
-For a smaller install, select modules explicitly:
+Para uma instalação menor, selecione módulos explicitamente:
 
 ```bash
 node scripts/install-apply.js --target joycode --modules rules-core,commands-core,workflow-quality
@@ -24,7 +24,7 @@ node scripts/install-apply.js --target joycode --modules rules-core,commands-cor
 
 ## Layout
 
-The project adapter writes managed files under:
+O adaptador de projeto grava arquivos gerenciados em:
 
 ```text
 .joycode/
@@ -37,19 +37,19 @@ The project adapter writes managed files under:
   ecc-install-state.json
 ```
 
-Rules are flattened into namespaced filenames so a JoyCode project does not receive nested rule directories such as `rules/common/coding-style.md`. Commands, agents, and skills keep the same structure they use elsewhere in ECC.
-The full profile also includes shared MCP and setup helper files that other ECC project-local adapters use.
+As regras são niveladas em nomes de arquivos com namespace para que um projeto JoyCode não receba diretórios de regras aninhados como `rules/common/coding-style.md`. Comandos, agents e skills mantêm a mesma estrutura que usam em outros lugares no ECC.
+O perfil completo também inclui arquivos MCP compartilhados e auxiliares de configuração que outros adaptadores locais de projeto do ECC utilizam.
 
-## Uninstall
+## Desinstalação
 
-Use ECC's managed uninstall path instead of deleting files by hand:
+Use o caminho de desinstalação gerenciada do ECC em vez de excluir arquivos manualmente:
 
 ```bash
 node scripts/uninstall.js --target joycode
 ```
 
-The uninstall command reads `.joycode/ecc-install-state.json` and removes only files that ECC installed. User-created JoyCode files are preserved.
+O comando de desinstalação lê `.joycode/ecc-install-state.json` e remove apenas os arquivos que o ECC instalou. Arquivos JoyCode criados pelo usuário são preservados.
 
-## Source PR
+## PR de Origem
 
-This adapter salvages the useful project-local JoyCode intent from stale PR #1429 while replacing the standalone shell installer with ECC's current install-state and uninstall machinery.
+Este adaptador recupera a intenção útil do JoyCode local de projeto do PR obsoleto #1429, substituindo o instalador de shell independente pela maquinaria atual de estado de instalação e desinstalação do ECC.

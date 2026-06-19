@@ -1,136 +1,136 @@
-# ECC Selective Install Design
+# Design de Instalação Seletiva do ECC
 
-## Purpose
+## Objetivo
 
-This document defines the user-facing selective-install design for ECC.
+Este documento define o design de instalação seletiva voltado ao usuário para o ECC.
 
-It complements
-`docs/SELECTIVE-INSTALL-ARCHITECTURE.md`, which focuses on internal runtime
-architecture and code boundaries.
+Ele complementa
+`docs/SELECTIVE-INSTALL-ARCHITECTURE.md`, que foca na arquitetura de runtime interno
+e nos limites de código.
 
-This document answers the product and operator questions first:
+Este documento responde primeiro às perguntas de produto e operador:
 
-- how users choose ECC components
-- what the CLI should feel like
-- what config file should exist
-- how installation should behave across harness targets
-- how the design maps onto the current ECC codebase without requiring a rewrite
+- como os usuários escolhem os componentes do ECC
+- como a CLI deve se parecer
+- qual arquivo de configuração deve existir
+- como a instalação deve se comportar entre os targets de harness
+- como o design mapeia para a base de código ECC atual sem exigir uma reescrita
 
-## Problem
+## Problema
 
-Today ECC still feels like a large payload installer even though the repo now
-has first-pass manifest and lifecycle support.
+Hoje o ECC ainda parece um instalador de payload grande mesmo que o repositório agora
+tenha suporte inicial de manifesto e ciclo de vida.
 
-Users need a simpler mental model:
+Os usuários precisam de um modelo mental mais simples:
 
-- install the baseline
-- add the language packs they actually use
-- add the framework configs they actually want
-- add optional capability packs like security, research, or orchestration
+- instalar a linha de base
+- adicionar os pacotes de linguagem que realmente usam
+- adicionar as configurações de framework que realmente querem
+- adicionar pacotes de capacidade opcionais como segurança, pesquisa ou orquestração
 
-The selective-install system should make ECC feel composable instead of
-all-or-nothing.
+O sistema de instalação seletiva deve fazer o ECC parecer combinável em vez de
+tudo-ou-nada.
 
-In the current substrate, user-facing components are still an alias layer over
-coarser internal install modules. That means include/exclude is already useful
-at the module-selection level, but some file-level boundaries remain imperfect
-until the underlying module graph is split more finely.
+No substrato atual, os componentes voltados ao usuário ainda são uma camada de alias sobre
+módulos de instalação internos mais grossos. Isso significa que include/exclude já é útil
+no nível de seleção de módulo, mas alguns limites de nível de arquivo permanecem imperfeitos
+até que o grafo de módulos subjacente seja dividido de forma mais refinada.
 
-## Goals
+## Objetivos
 
-1. Let users install a small default ECC footprint quickly.
-2. Let users compose installs from reusable component families:
-   - core rules
-   - language packs
-   - framework packs
-   - capability packs
-   - target/platform configs
-3. Keep one consistent UX across Claude, Cursor, Antigravity, Codex, and
+1. Permitir que os usuários instalem um pequeno footprint padrão do ECC rapidamente.
+2. Permitir que os usuários componham instalações a partir de famílias de componentes reutilizáveis:
+   - regras essenciais
+   - pacotes de linguagem
+   - pacotes de framework
+   - pacotes de capacidade
+   - configurações de target/plataforma
+3. Manter uma UX consistente entre Claude, Cursor, Antigravity, Codex e
    OpenCode.
-4. Keep installs inspectable, repairable, and uninstallable.
-5. Preserve backward compatibility with the current `ecc-install typescript`
-   style during rollout.
+4. Manter as instalações inspecionáveis, reparáveis e desinstalaváveis.
+5. Preservar a compatibilidade retroativa com o estilo atual `ecc-install typescript`
+   durante o rollout.
 
-## Non-Goals
+## Não-Objetivos
 
-- packaging ECC into multiple npm packages in the first phase
-- building a remote marketplace
-- full control-plane UI in the same phase
-- solving every skill-classification problem before selective install ships
+- empacotar o ECC em múltiplos pacotes npm na primeira fase
+- construir um marketplace remoto
+- UI de plano de controle completo na mesma fase
+- resolver todo problema de classificação de skill antes da instalação seletiva ser entregue
 
-## User Experience Principles
+## Princípios de Experiência do Usuário
 
-### 1. Start Small
+### 1. Começar Pequeno
 
-A user should be able to get a useful ECC install with one command:
+Um usuário deve ser capaz de obter uma instalação útil do ECC com um comando:
 
 ```bash
 ecc install --target claude --profile core
 ```
 
-The default experience should not assume the user wants every skill family and
-every framework.
+A experiência padrão não deve assumir que o usuário quer todas as famílias de skill e
+todos os frameworks.
 
-### 2. Build Up By Intent
+### 2. Expandir por Intenção
 
-The user should think in terms of:
+O usuário deve pensar em termos de:
 
-- "I want the developer baseline"
-- "I need TypeScript and Python"
-- "I want Next.js and Django"
-- "I want the security pack"
+- "Quero a linha de base do desenvolvedor"
+- "Preciso de TypeScript e Python"
+- "Quero Next.js e Django"
+- "Quero o pacote de segurança"
 
-The user should not have to know raw internal repo paths.
+O usuário não deve ter que conhecer os caminhos internos brutos do repositório.
 
-### 3. Preview Before Mutation
+### 3. Visualizar Antes de Mutar
 
-Every install path should support dry-run planning:
+Todo caminho de instalação deve suportar planejamento de dry-run:
 
 ```bash
 ecc install --target cursor --profile developer --with lang:typescript --with framework:nextjs --dry-run
 ```
 
-The plan should clearly show:
+O plano deve mostrar claramente:
 
-- selected components
-- skipped components
-- target root
-- managed paths
-- expected install-state location
+- componentes selecionados
+- componentes ignorados
+- raiz do target
+- caminhos gerenciados
+- localização esperada do estado de instalação
 
-### 4. Local Configuration Should Be First-Class
+### 4. Configuração Local Deve Ser de Primeira Classe
 
-Teams should be able to commit a project-level install config and use:
+As equipes devem ser capazes de commitar uma configuração de instalação em nível de projeto e usar:
 
 ```bash
 ecc install --config ecc-install.json
 ```
 
-That allows deterministic installs across contributors and CI.
+Isso permite instalações determinísticas entre colaboradores e CI.
 
-## Component Model
+## Modelo de Componentes
 
-The current manifest already uses install modules and profiles. The user-facing
-design should keep that internal structure, but present it as four main
-component families.
+O manifesto atual já usa módulos e perfis de instalação. O design voltado ao usuário
+deve manter essa estrutura interna, mas apresentá-la como quatro famílias principais
+de componentes.
 
-Near-term implementation note: some user-facing component IDs still resolve to
-shared internal modules, especially in the language/framework layer. The
-catalog improves UX immediately while preserving a clean path toward finer
-module granularity in later phases.
+Nota de implementação de curto prazo: alguns IDs de componentes voltados ao usuário ainda resolvem para
+módulos internos compartilhados, especialmente na camada de linguagem/framework. O
+catálogo melhora a UX imediatamente enquanto preserva um caminho limpo para maior
+granularidade de módulo em fases posteriores.
 
-### 1. Baseline
+### 1. Linha de Base
 
-These are the default ECC building blocks:
+Estes são os blocos de construção padrão do ECC:
 
-- core rules
-- baseline agents
-- core commands
-- runtime hooks
-- platform configs
-- workflow quality primitives
+- regras essenciais
+- agents de linha de base
+- comandos essenciais
+- hooks de runtime
+- configurações de plataforma
+- primitivas de qualidade de fluxo de trabalho
 
-Examples of current internal modules:
+Exemplos de módulos internos atuais:
 
 - `rules-core`
 - `agents-core`
@@ -139,11 +139,11 @@ Examples of current internal modules:
 - `platform-configs`
 - `workflow-quality`
 
-### 2. Language Packs
+### 2. Pacotes de Linguagem
 
-Language packs group rules, guidance, and workflows for a language ecosystem.
+Os pacotes de linguagem agrupam regras, orientações e fluxos de trabalho para um ecossistema de linguagem.
 
-Examples:
+Exemplos:
 
 - `lang:typescript`
 - `lang:python`
@@ -151,15 +151,15 @@ Examples:
 - `lang:java`
 - `lang:rust`
 
-Each language pack should resolve to one or more internal modules plus
-target-specific assets.
+Cada pacote de linguagem deve resolver para um ou mais módulos internos mais
+ativos específicos do target.
 
-### 3. Framework Packs
+### 3. Pacotes de Framework
 
-Framework packs sit above language packs and pull in framework-specific rules,
-skills, and optional setup.
+Os pacotes de framework ficam acima dos pacotes de linguagem e incluem regras específicas de framework,
+skills e configuração opcional.
 
-Examples:
+Exemplos:
 
 - `framework:react`
 - `framework:nextjs`
@@ -167,14 +167,14 @@ Examples:
 - `framework:springboot`
 - `framework:laravel`
 
-Framework packs should depend on the correct language pack or baseline
-primitives where appropriate.
+Os pacotes de framework devem depender do pacote de linguagem correto ou de primitivas de linha de base
+onde apropriado.
 
-### 4. Capability Packs
+### 4. Pacotes de Capacidade
 
-Capability packs are cross-cutting ECC feature bundles.
+Os pacotes de capacidade são pacotes de funcionalidade ECC transversais.
 
-Examples:
+Exemplos:
 
 - `capability:security`
 - `capability:research`
@@ -182,37 +182,37 @@ Examples:
 - `capability:media`
 - `capability:content`
 
-These should map onto the current module families already being introduced in
-the manifests.
+Estes devem mapear para as famílias de módulos atuais já sendo introduzidas nos
+manifestos.
 
-## Profiles
+## Perfis
 
-Profiles remain the fastest on-ramp.
+Os perfis permanecem a entrada mais rápida.
 
-Recommended user-facing profiles:
+Perfis recomendados voltados ao usuário:
 
 - `core`
-  minimal baseline, safe default for most users trying ECC
+  linha de base mínima, padrão seguro para a maioria dos usuários experimentando o ECC
 - `developer`
-  best default for active software engineering work
+  melhor padrão para trabalho ativo de engenharia de software
 - `security`
-  baseline plus security-heavy guidance
+  linha de base mais orientações pesadas de segurança
 - `research`
-  baseline plus research/content/investigation tools
+  linha de base mais ferramentas de pesquisa/conteúdo/investigação
 - `full`
-  everything classified and currently supported
+  tudo classificado e atualmente suportado
 
-Profiles should be composable with additional `--with` and `--without` flags.
+Os perfis devem ser combináveis com flags adicionais `--with` e `--without`.
 
-Example:
+Exemplo:
 
 ```bash
 ecc install --target claude --profile developer --with lang:typescript --with framework:nextjs --without capability:orchestration
 ```
 
-## Proposed CLI Design
+## Design de CLI Proposto
 
-### Primary Commands
+### Comandos Primários
 
 ```bash
 ecc install
@@ -224,15 +224,15 @@ ecc uninstall
 ecc catalog
 ```
 
-### Install CLI
+### CLI de Install
 
-Recommended shape:
+Forma recomendada:
 
 ```bash
 ecc install [--target <target>] [--profile <name>] [--with <component>]... [--without <component>]... [--config <path>] [--dry-run] [--json]
 ```
 
-Examples:
+Exemplos:
 
 ```bash
 ecc install --target claude --profile core
@@ -241,22 +241,22 @@ ecc install --target antigravity --with capability:security --with lang:python
 ecc install --config ecc-install.json
 ```
 
-### Plan CLI
+### CLI de Plan
 
-Recommended shape:
+Forma recomendada:
 
 ```bash
 ecc plan [same selection flags as install]
 ```
 
-Purpose:
+Objetivo:
 
-- produce a preview without mutation
-- act as the canonical debugging surface for selective install
+- produzir uma visualização sem mutação
+- atuar como a superfície canônica de depuração para instalação seletiva
 
-### Catalog CLI
+### CLI de Catalog
 
-Recommended shape:
+Forma recomendada:
 
 ```bash
 ecc catalog profiles
@@ -265,14 +265,14 @@ ecc catalog components --family language
 ecc catalog show framework:nextjs
 ```
 
-Purpose:
+Objetivo:
 
-- let users discover valid component names without reading docs
-- keep config authoring approachable
+- permitir que os usuários descubram nomes de componentes válidos sem ler documentação
+- manter a autoria de configuração acessível
 
-### Compatibility CLI
+### CLI de Compatibilidade
 
-These legacy flows should still work during migration:
+Esses fluxos legados ainda devem funcionar durante a migração:
 
 ```bash
 ecc-install typescript
@@ -280,22 +280,22 @@ ecc-install --target cursor typescript
 ecc typescript
 ```
 
-Internally these should normalize into the new request model and write
-install-state the same way as modern installs.
+Internamente, estes devem normalizar para o novo modelo de requisição e gravar
+estado de instalação da mesma forma que instalações modernas.
 
-## Proposed Config File
+## Arquivo de Configuração Proposto
 
-### Filename
+### Nome do Arquivo
 
-Recommended default:
+Padrão recomendado:
 
 - `ecc-install.json`
 
-Optional future support:
+Suporte futuro opcional:
 
 - `.ecc/install.json`
 
-### Config Shape
+### Forma de Configuração
 
 ```json
 {
@@ -320,170 +320,169 @@ Optional future support:
 }
 ```
 
-### Field Semantics
+### Semânticas de Campo
 
 - `target`
-  selected harness target such as `claude`, `cursor`, or `antigravity`
+  target de harness selecionado como `claude`, `cursor` ou `antigravity`
 - `profile`
-  baseline profile to start from
+  perfil de linha de base para começar
 - `include`
-  additional components to add
+  componentes adicionais a adicionar
 - `exclude`
-  components to subtract from the profile result
+  componentes a subtrair do resultado do perfil
 - `options`
-  target/runtime tuning flags that do not change component identity
+  flags de ajuste de target/runtime que não mudam a identidade do componente
 
-### Precedence Rules
+### Regras de Precedência
 
-1. CLI arguments override config file values.
-2. config file overrides profile defaults.
-3. profile defaults override internal module defaults.
+1. Argumentos de CLI substituem valores do arquivo de configuração.
+2. O arquivo de configuração substitui os padrões do perfil.
+3. Os padrões do perfil substituem os padrões internos do módulo.
 
-This keeps the behavior predictable and easy to explain.
+Isso mantém o comportamento previsível e fácil de explicar.
 
-## Modular Installation Flow
+## Fluxo de Instalação Modular
 
-The user-facing flow should be:
+O fluxo voltado ao usuário deve ser:
 
-1. load config file if provided or auto-detected
-2. merge CLI intent on top of config intent
-3. normalize the request into a canonical selection
-4. expand profile into baseline components
-5. add `include` components
-6. subtract `exclude` components
-7. resolve dependencies and target compatibility
-8. render a plan
-9. apply operations if not in dry-run mode
-10. write install-state
+1. carregar o arquivo de configuração se fornecido ou detectado automaticamente
+2. mesclar intenção de CLI sobre intenção de configuração
+3. normalizar a requisição em uma seleção canônica
+4. expandir perfil em componentes de linha de base
+5. adicionar componentes `include`
+6. subtrair componentes `exclude`
+7. resolver dependências e compatibilidade de target
+8. renderizar um plano
+9. aplicar operações se não estiver no modo dry-run
+10. gravar estado de instalação
 
-The important UX property is that the exact same flow powers:
+A propriedade de UX importante é que exatamente o mesmo fluxo alimenta:
 
 - `install`
 - `plan`
 - `repair`
 - `uninstall`
 
-The commands differ in action, not in how ECC understands the selected install.
+Os comandos diferem em ação, não em como o ECC entende a instalação selecionada.
 
-## Target Behavior
+## Comportamento do Target
 
-Selective install should preserve the same conceptual component graph across all
-targets, while letting target adapters decide how content lands.
+A instalação seletiva deve preservar o mesmo grafo conceitual de componentes entre todos os
+targets, enquanto deixa os adapters de target decidirem como o conteúdo pousa.
 
 ### Claude
 
-Best fit for:
+Melhor adequado para:
 
-- home-scoped ECC baseline
-- commands, agents, rules, hooks, platform config, orchestration
+- linha de base ECC com escopo de home
+- comandos, agents, regras, hooks, configuração de plataforma, orquestração
 
 ### Cursor
 
-Best fit for:
+Melhor adequado para:
 
-- project-scoped installs
-- rules plus project-local automation and config
+- instalações com escopo de projeto
+- regras mais automação e configuração locais do projeto
 
 ### Antigravity
 
-Best fit for:
+Melhor adequado para:
 
-- project-scoped agent/rule/workflow installs
+- instalações de agent/regra/fluxo de trabalho com escopo de projeto
 
 ### Codex / OpenCode
 
-Should remain additive targets rather than special forks of the installer.
+Devem permanecer como targets aditivos em vez de forks especiais do instalador.
 
-The selective-install design should make these just new adapters plus new
-target-specific mapping rules, not new installer architectures.
+O design de instalação seletiva deve tornar estes apenas novos adapters mais novas
+regras de mapeamento específicas do target, não novas arquiteturas de instalador.
 
-## Technical Feasibility
+## Viabilidade Técnica
 
-This design is feasible because the repo already has:
+Este design é viável porque o repositório já tem:
 
-- install module and profile manifests
-- target adapters with install-state paths
-- plan inspection
-- install-state recording
-- lifecycle commands
-- a unified `ecc` CLI surface
+- manifestos de módulo e perfil de instalação
+- adapters de target com caminhos de estado de instalação
+- inspeção de plano
+- registro de estado de instalação
+- comandos de ciclo de vida
+- uma superfície de CLI `ecc` unificada
 
-The missing work is not conceptual invention. The missing work is productizing
-the current substrate into a cleaner user-facing component model.
+O trabalho ausente não é invenção conceitual. O trabalho ausente é produtizar
+o substrato atual em um modelo de componentes mais limpo voltado ao usuário.
 
-### Feasible In Phase 1
+### Viável na Fase 1
 
-- profile + include/exclude selection
-- `ecc-install.json` config file parsing
-- catalog/discovery command
-- alias mapping from user-facing component IDs to internal module sets
-- dry-run and JSON planning
+- seleção de perfil + include/exclude
+- análise do arquivo de configuração `ecc-install.json`
+- comando de catalog/descoberta
+- mapeamento de alias de IDs de componente voltados ao usuário para conjuntos de módulos internos
+- planejamento de dry-run e JSON
 
-### Feasible In Phase 2
+### Viável na Fase 2
 
-- richer target adapter semantics
-- merge-aware operations for config-like assets
-- stronger repair/uninstall behavior for non-copy operations
+- semânticas de adapter de target mais ricas
+- operações com consciência de merge para ativos do tipo configuração
+- comportamento de repair/uninstall mais forte para operações não-cópia
 
-### Later
+### Posteriormente
 
-- reduced publish surface
-- generated slim bundles
-- remote component fetch
+- superfície de publicação reduzida
+- pacotes slim gerados
+- busca remota de componente
 
-## Mapping To Current ECC Manifests
+## Mapeamento para os Manifestos ECC Atuais
 
-The current manifests do not yet expose a true user-facing `lang:*` /
-`framework:*` / `capability:*` taxonomy. That should be introduced as a
-presentation layer on top of the existing modules, not as a second installer
-engine.
+Os manifestos atuais ainda não expõem uma verdadeira taxonomia `lang:*` /
+`framework:*` / `capability:*` voltada ao usuário. Isso deve ser introduzido como uma
+camada de apresentação sobre os módulos existentes, não como um segundo motor de instalador.
 
-Recommended approach:
+Abordagem recomendada:
 
-- keep `install-modules.json` as the internal resolution catalog
-- add a user-facing component catalog that maps friendly component IDs to one or
-  more internal modules
-- let profiles reference either internal modules or user-facing component IDs
-  during the migration window
+- manter `install-modules.json` como o catálogo de resolução interno
+- adicionar um catálogo de componentes voltado ao usuário que mapeia IDs de componente amigáveis para um ou
+  mais módulos internos
+- permitir que os perfis referenciem módulos internos ou IDs de componentes voltados ao usuário
+  durante a janela de migração
 
-That avoids breaking the current selective-install substrate while improving UX.
+Isso evita quebrar o substrato atual de instalação seletiva enquanto melhora a UX.
 
-## Suggested Rollout
+## Rollout Sugerido
 
-### Phase 1: Design And Discovery
+### Fase 1: Design e Descoberta
 
-- finalize the user-facing component taxonomy
-- add the config schema
-- add CLI design and precedence rules
+- finalizar a taxonomia de componentes voltada ao usuário
+- adicionar o schema de configuração
+- adicionar design de CLI e regras de precedência
 
-### Phase 2: User-Facing Resolution Layer
+### Fase 2: Camada de Resolução Voltada ao Usuário
 
-- implement component aliases
-- implement config-file parsing
-- implement `include` / `exclude`
-- implement `catalog`
+- implementar aliases de componente
+- implementar análise de arquivo de configuração
+- implementar `include` / `exclude`
+- implementar `catalog`
 
-### Phase 3: Stronger Target Semantics
+### Fase 3: Semânticas de Target Mais Fortes
 
-- move more logic into target-owned planning
-- support merge/generate operations cleanly
-- improve repair/uninstall fidelity
+- mover mais lógica para planejamento de propriedade do target
+- suportar operações merge/generate de forma limpa
+- melhorar fidelidade de repair/uninstall
 
-### Phase 4: Packaging Optimization
+### Fase 4: Otimização de Empacotamento
 
-- narrow published surface
-- evaluate generated bundles
+- reduzir superfície publicada
+- avaliar pacotes gerados
 
-## Recommendation
+## Recomendação
 
-The next implementation move should not be "rewrite the installer."
+O próximo movimento de implementação não deve ser "reescrever o instalador."
 
-It should be:
+Deve ser:
 
-1. keep the current manifest/runtime substrate
-2. add a user-facing component catalog and config file
-3. add `include` / `exclude` selection and catalog discovery
-4. let the existing planner and lifecycle stack consume that model
+1. manter o substrato atual de manifesto/runtime
+2. adicionar um catálogo de componentes voltado ao usuário e arquivo de configuração
+3. adicionar seleção de `include` / `exclude` e descoberta de catalog
+4. deixar a pilha existente de planner e ciclo de vida consumir esse modelo
 
-That is the shortest path from the current ECC codebase to a real selective
-install experience that feels like ECC 2.0 instead of a large legacy installer.
+Esse é o caminho mais curto da base de código ECC atual para uma experiência real de instalação
+seletiva que parece ECC 2.0 em vez de um grande instalador legado.

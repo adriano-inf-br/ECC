@@ -1,125 +1,125 @@
-# Hermes x ECC Setup
+# Configuração Hermes x ECC
 
-Hermes is the operator shell. ECC is the reusable system behind it.
+Hermes é o shell do operador. ECC é o sistema reutilizável por trás dele.
 
-This guide is the public, sanitized version of the Hermes stack used to run content, outreach, research, sales ops, finance checks, and engineering workflows from one terminal-native surface.
+Este guia é a versão pública e sanitizada da stack Hermes usada para executar conteúdo, outreach, pesquisa, operações de vendas, verificações financeiras e fluxos de trabalho de engenharia a partir de uma superfície nativa de terminal.
 
-## What Ships Publicly
+## O que é Disponibilizado Publicamente
 
-- ECC skills, agents, commands, hooks, and MCP configs from this repo
-- Hermes-generated workflow skills that are stable enough to reuse
-- a documented operator topology for chat, crons, workspace memory, and distribution flows
-- launch collateral for sharing the stack publicly
+- Skills, agents, comandos, hooks e configs de MCP do ECC deste repositório
+- Skills de fluxo de trabalho geradas pelo Hermes que são estáveis o suficiente para reutilização
+- Uma topologia de operador documentada para chat, crons, memória de workspace e fluxos de distribuição
+- Material de lançamento para compartilhar a stack publicamente
 
-This guide does not include private secrets, live tokens, personal data, or a raw `~/.hermes` export.
+Este guia não inclui segredos privados, tokens ativos, dados pessoais ou uma exportação bruta de `~/.hermes`.
 
-## Architecture
+## Arquitetura
 
-Use Hermes as the front door and ECC as the reusable workflow substrate.
+Use o Hermes como porta de entrada e o ECC como substrato de fluxo de trabalho reutilizável.
 
 ```text
 Telegram / CLI / TUI
         ↓
       Hermes
         ↓
- ECC skills + hooks + MCPs + generated workflow packs
+ ECC skills + hooks + MCPs + pacotes de fluxo de trabalho gerados
         ↓
- Google Drive / GitHub / browser automation / research APIs / media tools / finance tools
+ Google Drive / GitHub / automação de navegador / APIs de pesquisa / ferramentas de mídia / ferramentas financeiras
 ```
 
-## Public Workspace Map
+## Mapa de Workspace Público
 
-Use this as the minimal surface to reproduce the setup without leaking private state.
+Use isso como a superfície mínima para reproduzir a configuração sem vazar estado privado.
 
 - `~/.hermes/config.yaml`
-  - model routing
-  - MCP server registration
-  - plugin loading
+  - roteamento de modelo
+  - registro de servidor MCP
+  - carregamento de plugin
 - `~/.hermes/skills/ecc-imports/`
-  - ECC skills copied in for Hermes-native use
+  - skills do ECC copiadas para uso nativo no Hermes
 - `skills/hermes-generated/`
-  - operator patterns distilled from repeated Hermes sessions
+  - padrões de operador destilados de sessões repetidas do Hermes
 - `~/.hermes/plugins/`
-  - bridge plugins for hooks, reminders, and workflow-specific tool glue
+  - plugins bridge para hooks, lembretes e cola de ferramenta específica de fluxo de trabalho
 - `~/.hermes/cron/jobs.json`
-  - scheduled automation runs with explicit prompts and channels
+  - execuções de automação agendadas com prompts e canais explícitos
 - `~/.hermes/workspace/`
-  - business, ops, health, content, and memory artifacts
+  - artefatos de negócios, ops, saúde, conteúdo e memória
 
-## Recommended Capability Stack
+## Stack de Capacidades Recomendada
 
 ### Core
 
-- Hermes for chat, cron, orchestration, and workspace state
-- ECC for skills, rules, prompts, and cross-harness conventions
-- GitHub + Context7 + Exa + Firecrawl + Playwright as the baseline MCP layer
+- Hermes para chat, cron, orquestração e estado do workspace
+- ECC para skills, regras, prompts e convenções cross-harness
+- GitHub + Context7 + Exa + Firecrawl + Playwright como camada base de MCP
 
-### Content
+### Conteúdo
 
-- FFmpeg for local edit and assembly
-- Remotion for programmable clips
-- fal.ai for image/video generation
-- ElevenLabs for voice, cleanup, and audio packaging
-- CapCut or VectCutAPI for final social-native polish
+- FFmpeg para edição e montagem local
+- Remotion para clipes programáveis
+- fal.ai para geração de imagens/vídeo
+- ElevenLabs para voz, limpeza e empacotamento de áudio
+- CapCut ou VectCutAPI para polimento final nativo para redes sociais
 
-### Business Ops
+### Operações de Negócios
 
-- Google Drive as the system of record for docs, sheets, decks, and research dumps
-- Stripe for revenue and payment operations
-- GitHub for engineering execution
-- Telegram and iMessage-style channels for urgent nudges and approvals
+- Google Drive como sistema de registro para documentos, planilhas, apresentações e dumps de pesquisa
+- Stripe para operações de receita e pagamento
+- GitHub para execução de engenharia
+- Canais Telegram e estilo iMessage para nudges urgentes e aprovações
 
-## What Still Requires Local Auth
+## O que Ainda Requer Auth Local
 
-These stay local and should be configured per operator:
+Estes permanecem locais e devem ser configurados por operador:
 
-- Google OAuth token for Drive / Docs / Sheets / Slides
-- X / LinkedIn / outbound distribution credentials
-- Stripe keys
-- browser automation credentials and stealth/proxy settings
-- any CRM or project system credentials such as Linear or Apollo
-- Apple Health export or ingest path if health automations are enabled
+- Token OAuth do Google para Drive / Docs / Sheets / Slides
+- Credenciais de distribuição do X / LinkedIn / outbound
+- Chaves Stripe
+- Credenciais de automação de navegador e configurações de stealth/proxy
+- Quaisquer credenciais de sistema CRM ou de projeto como Linear ou Apollo
+- Caminho de exportação ou ingestão do Apple Health se automações de saúde estiverem habilitadas
 
-## Suggested Bring-Up Order
+## Ordem de Inicialização Sugerida
 
-0. Run `ecc migrate audit --source ~/.hermes` first to inventory the legacy workspace and see which parts already map onto ECC2.
-0.5. Plan and scaffold migration artifacts before importing anything:
-   - generate reviewable plans with `ecc migrate plan` and `ecc migrate scaffold`
-   - scaffold reusable legacy skills with `ecc migrate import-skills --output-dir migration-artifacts/skills`
-   - scaffold tool translation templates with `ecc migrate import-tools --output-dir migration-artifacts/tools`
-   - scaffold bridge plugin templates with `ecc migrate import-plugins --output-dir migration-artifacts/plugins`
-   - preview recurring jobs with `ecc migrate import-schedules --dry-run`
-   - preview gateway dispatch with `ecc migrate import-remote --dry-run`
-   - preview safe env/service context with `ecc migrate import-env --dry-run`
-   - import sanitized workspace memory with `ecc migrate import-memory`
-1. Install ECC and verify the baseline harness setup with `node tests/run-all.js`; the expected result is a zero-failure test summary.
-2. Install Hermes and point it at ECC-imported skills.
-3. Register the MCP servers you actually use every day.
-4. Authenticate Google Drive first, then GitHub, then distribution channels.
-5. Start with a small cron surface: readiness check, content accountability, inbox triage, revenue monitor.
-6. Only then add heavier personal workflows like health, relationship graphing, or outbound sequencing.
+0. Execute `ecc migrate audit --source ~/.hermes` primeiro para inventariar o workspace legado e ver quais partes já mapeiam para o ECC2.
+0.5. Planeje e faça scaffold dos artefatos de migração antes de importar qualquer coisa:
+   - gere planos revisáveis com `ecc migrate plan` e `ecc migrate scaffold`
+   - faça scaffold de skills legadas reutilizáveis com `ecc migrate import-skills --output-dir migration-artifacts/skills`
+   - faça scaffold de templates de tradução de ferramentas com `ecc migrate import-tools --output-dir migration-artifacts/tools`
+   - faça scaffold de templates de plugins bridge com `ecc migrate import-plugins --output-dir migration-artifacts/plugins`
+   - visualize jobs recorrentes com `ecc migrate import-schedules --dry-run`
+   - visualize dispatch de gateway com `ecc migrate import-remote --dry-run`
+   - visualize contexto seguro de env/serviço com `ecc migrate import-env --dry-run`
+   - importe memória sanitizada do workspace com `ecc migrate import-memory`
+1. Instale o ECC e verifique a configuração base do harness com `node tests/run-all.js`; o resultado esperado é um resumo de testes com zero falhas.
+2. Instale o Hermes e aponte-o para as skills importadas do ECC.
+3. Registre os servidores MCP que você realmente usa todos os dias.
+4. Autentique o Google Drive primeiro, depois o GitHub, depois os canais de distribuição.
+5. Comece com uma pequena superfície de cron: verificação de prontidão, accountability de conteúdo, triagem de caixa de entrada, monitor de receita.
+6. Somente então adicione fluxos de trabalho pessoais mais pesados como saúde, grafos de relacionamento ou sequenciamento de outbound.
 
-## Related Docs
+## Documentos Relacionados
 
-- [Hermes/OpenClaw migration guide](HERMES-OPENCLAW-MIGRATION.md)
-- [Cross-harness architecture](architecture/cross-harness.md)
+- [Guia de migração Hermes/OpenClaw](HERMES-OPENCLAW-MIGRATION.md)
+- [Arquitetura cross-harness](architecture/cross-harness.md)
 
-## Why Hermes x ECC
+## Por que Hermes x ECC
 
-This stack is useful when you want:
+Esta stack é útil quando você quer:
 
-- one terminal-native place to run business and engineering operations
-- reusable skills instead of one-off prompts
-- automation that can nudge, audit, and escalate
-- a public repo that shows the system shape without exposing your private operator state
+- um lugar nativo de terminal para executar operações de negócios e engenharia
+- skills reutilizáveis em vez de prompts únicos
+- automação que pode notificar, auditar e escalar
+- um repositório público que mostra o formato do sistema sem expor seu estado de operador privado
 
-## Public Release Candidate Scope
+## Escopo do Release Candidate Público
 
-ECC v2.0.0-rc.1 documents the Hermes surface and ships launch collateral now.
+O ECC v2.0.0-rc.1 documenta a superfície do Hermes e disponibiliza material de lançamento agora.
 
-The remaining private pieces can be layered later:
+As peças privadas restantes podem ser adicionadas depois:
 
-- additional sanitized templates
-- richer public examples
-- more generated workflow packs
-- tighter CRM and Google Workspace integrations
+- templates sanitizados adicionais
+- exemplos públicos mais ricos
+- mais pacotes de fluxo de trabalho gerados
+- integrações mais robustas com CRM e Google Workspace

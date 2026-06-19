@@ -1,16 +1,16 @@
-# Token Optimization Guide
+# Guia de Otimização de Token
 
-Practical settings and habits to reduce token consumption, extend session quality, and get more work done within daily limits.
+Configurações e hábitos práticos para reduzir o consumo de tokens, estender a qualidade da sessão e realizar mais trabalho dentro dos limites diários.
 
-> See also: `rules/common/performance.md` for model selection strategy, `skills/strategic-compact/` for automated compaction suggestions.
+> Veja também: `rules/common/performance.md` para estratégia de seleção de modelo, `skills/strategic-compact/` para sugestões automatizadas de compactação.
 
 ---
 
-## Recommended Settings
+## Configurações Recomendadas
 
-These are recommended defaults for most users. Power users can tune values further based on their workload — for example, setting `MAX_THINKING_TOKENS` lower for simple tasks or higher for complex architectural work.
+Estas são as configurações padrão recomendadas para a maioria dos usuários. Usuários avançados podem ajustar os valores com base em sua carga de trabalho — por exemplo, definindo `MAX_THINKING_TOKENS` mais baixo para tarefas simples ou mais alto para trabalho arquitetural complexo.
 
-Add to your `~/.claude/settings.json`:
+Adicione ao seu `~/.claude/settings.json`:
 
 ```json
 {
@@ -22,59 +22,59 @@ Add to your `~/.claude/settings.json`:
 }
 ```
 
-### What each setting does
+### O que cada configuração faz
 
-| Setting | Default | Recommended | Effect |
+| Configuração | Padrão | Recomendado | Efeito |
 |---------|---------|-------------|--------|
-| `model` | opus | **sonnet** | Sonnet handles ~80% of coding tasks well. Switch to Opus with `/model opus` for complex reasoning. ~60% cost reduction. |
-| `MAX_THINKING_TOKENS` | 31,999 | **10,000** | Extended thinking reserves up to 31,999 output tokens per request for internal reasoning. Reducing this cuts hidden cost by ~70%. Set to `0` to disable for trivial tasks. |
-| `CLAUDE_CODE_SUBAGENT_MODEL` | _(inherits main)_ | **haiku** | Subagents (Task tool) run on this model. Haiku is ~80% cheaper and sufficient for exploration, file reading, and test running. |
-| `ECC_CONTEXT_MONITOR_COST_WARNINGS` | on | **off for subscription users** | Suppresses agent-facing API-rate estimate warnings while keeping context exhaustion, scope, and loop warnings. |
+| `model` | opus | **sonnet** | Sonnet lida bem com ~80% das tarefas de programação. Alterne para Opus com `/model opus` para raciocínio complexo. Redução de custo de ~60%. |
+| `MAX_THINKING_TOKENS` | 31.999 | **10.000** | O pensamento estendido reserva até 31.999 tokens de output por requisição para raciocínio interno. Reduzir isso corta o custo oculto em ~70%. Defina como `0` para desabilitar em tarefas triviais. |
+| `CLAUDE_CODE_SUBAGENT_MODEL` | _(herda o principal)_ | **haiku** | Subagents (ferramenta Task) rodam neste modelo. Haiku é ~80% mais barato e suficiente para exploração, leitura de arquivos e execução de testes. |
+| `ECC_CONTEXT_MONITOR_COST_WARNINGS` | ligado | **desligado para usuários de assinatura** | Suprime avisos de estimativa de custo por taxa de API voltados ao agent, mantendo avisos de esgotamento de contexto, escopo e loop. |
 
-### Community note on auto-compaction overrides
+### Nota da comunidade sobre sobrescritas de autocompactação
 
-Some recent Claude Code builds have community reports that `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE` can only lower the compaction threshold, which means values below the default may compact earlier instead of later. If that happens in your setup, remove the override and rely on manual `/compact` plus ECC's `strategic-compact` guidance. See [Troubleshooting](./TROUBLESHOOTING.md).
+Algumas builds recentes do Claude Code têm relatos da comunidade de que `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE` pode apenas diminuir o limite de compactação, o que significa que valores abaixo do padrão podem compactar mais cedo em vez de mais tarde. Se isso acontecer na sua configuração, remova a sobrescrita e confie no `/compact` manual mais a orientação `strategic-compact` do ECC. Veja [Solução de Problemas](./TROUBLESHOOTING.md).
 
-### Toggling extended thinking
+### Ativando/desativando o pensamento estendido
 
-- **Alt+T** (Windows/Linux) or **Option+T** (macOS) — toggle on/off
-- **Ctrl+O** — see thinking output (verbose mode)
+- **Alt+T** (Windows/Linux) ou **Option+T** (macOS) — ativar/desativar
+- **Ctrl+O** — ver output de pensamento (modo verbose)
 
 ---
 
-## Model Selection
+## Seleção de Modelo
 
-Use the right model for the task:
+Use o modelo certo para a tarefa:
 
-| Model | Best for | Cost |
+| Modelo | Melhor para | Custo |
 |-------|----------|------|
-| **Haiku** | Subagent exploration, file reading, simple lookups | Lowest |
-| **Sonnet** | Day-to-day coding, reviews, test writing, implementation | Medium |
-| **Opus** | Complex architecture, multi-step reasoning, debugging subtle issues | Highest |
+| **Haiku** | Exploração com subagent, leitura de arquivos, lookups simples | Mais baixo |
+| **Sonnet** | Programação do dia a dia, revisões, escrita de testes, implementação | Médio |
+| **Opus** | Arquitetura complexa, raciocínio em múltiplas etapas, depuração de problemas sutis | Mais alto |
 
-Switch models mid-session:
+Troque de modelo no meio da sessão:
 
 ```
-/model sonnet     # default for most work
-/model opus       # complex reasoning
-/model haiku      # quick lookups
+/model sonnet     # padrão para a maioria dos trabalhos
+/model opus       # raciocínio complexo
+/model haiku      # lookups rápidos
 ```
 
 ---
 
-## Context Management
+## Gerenciamento de Contexto
 
-### Commands
+### Comandos
 
-| Command | When to use |
+| Comando | Quando usar |
 |---------|-------------|
-| `/clear` | Between unrelated tasks. Stale context wastes tokens on every subsequent message. |
-| `/compact` | At logical task breakpoints (after planning, after debugging, before switching focus). |
-| `/cost` | Check token spending for the current session. |
+| `/clear` | Entre tarefas não relacionadas. Contexto obsoleto desperdiça tokens em cada mensagem subsequente. |
+| `/compact` | Em pontos de quebra lógicos de tarefa (após planejamento, após depuração, antes de mudar o foco). |
+| `/cost` | Verificar gastos de token para a sessão atual. |
 
-### API-rate cost estimate warnings
+### Avisos de estimativa de custo por taxa de API
 
-ECC's context monitor can emit API-rate cost estimates from local hook telemetry. If you are on a Claude subscription and those estimates do not reflect your actual bill, disable only the agent-facing cost warnings:
+O monitor de contexto do ECC pode emitir estimativas de custo por taxa de API a partir da telemetria de hook local. Se você estiver em uma assinatura Claude e essas estimativas não refletirem sua conta real, desabilite apenas os avisos de custo voltados ao agent:
 
 ```bash
 export ECC_CONTEXT_MONITOR_COST_WARNINGS=off
@@ -86,70 +86,70 @@ Windows PowerShell:
 [Environment]::SetEnvironmentVariable('ECC_CONTEXT_MONITOR_COST_WARNINGS', 'off', 'User')
 ```
 
-This does not disable context exhaustion warnings, scope warnings, loop warnings, `/cost`, or cost telemetry files.
+Isso não desabilita avisos de esgotamento de contexto, avisos de escopo, avisos de loop, `/cost` ou arquivos de telemetria de custo.
 
-### Strategic compaction
+### Compactação estratégica
 
-The `strategic-compact` skill (in `skills/strategic-compact/`) suggests `/compact` at logical intervals rather than relying on auto-compaction, which can trigger mid-task. See the skill's README for hook setup instructions.
+A skill `strategic-compact` (em `skills/strategic-compact/`) sugere `/compact` em intervalos lógicos em vez de depender da autocompactação, que pode ser acionada no meio de uma tarefa. Consulte o README da skill para instruções de configuração de hook.
 
-**When to compact:**
-- After exploration, before implementation
-- After completing a milestone
-- After debugging, before continuing with new work
-- Before a major context shift
+**Quando compactar:**
+- Após exploração, antes da implementação
+- Após concluir um marco
+- Após depuração, antes de continuar com trabalho novo
+- Antes de uma grande mudança de contexto
 
-**When NOT to compact:**
-- Mid-implementation of related changes
-- While debugging an active issue
-- During multi-file refactoring
+**Quando NÃO compactar:**
+- No meio da implementação de alterações relacionadas
+- Enquanto depura um problema ativo
+- Durante refatoração de múltiplos arquivos
 
-### Subagents protect your context
+### Subagents protegem seu contexto
 
-Use subagents (Task tool) for exploration instead of reading many files in your main session. The subagent reads 20 files but only returns a summary — your main context stays clean.
-
----
-
-## MCP Server Management
-
-Each enabled MCP server adds tool definitions to your context window. The README warns: **keep under 10 enabled per project**.
-
-Tips:
-- Run `/mcp` to see active servers and their context cost
-- Use `/mcp` to disable Claude Code MCP servers when you want a live runtime change. Claude Code persists those runtime disables in `~/.claude.json`.
-- Prefer CLI tools when available (`gh` instead of GitHub MCP, `aws` instead of AWS MCP)
-- Do not rely on `.claude/settings.json` or `.claude/settings.local.json` to disable already-loaded Claude Code MCP servers; use `/mcp` for that.
-- `ECC_DISABLED_MCPS` only affects ECC-generated MCP config output during install/sync flows, such as `install.sh`, `npx ecc-install`, and Codex MCP merging. It is not a live Claude Code toggle.
-- The `memory` MCP server is configured by default but not used by any skill, agent, or hook — consider disabling it
+Use subagents (ferramenta Task) para exploração em vez de ler muitos arquivos na sua sessão principal. O subagent lê 20 arquivos mas retorna apenas um resumo — seu contexto principal permanece limpo.
 
 ---
 
-## Agent Teams Cost Warning
+## Gerenciamento de Servidor MCP
 
-[Agent Teams](https://code.claude.com/docs/en/agent-teams) (experimental) spawns multiple independent context windows. Each teammate consumes tokens separately.
+Cada servidor MCP habilitado adiciona definições de ferramenta à sua janela de contexto. O README avisa: **mantenha menos de 10 habilitados por projeto**.
 
-- Only use for tasks where parallelism adds clear value (multi-module work, parallel reviews)
-- For simple sequential tasks, subagents (Task tool) are more token-efficient
-- Enable with: `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` in settings
-
----
-
-## Future: configure-ecc Integration
-
-The `configure-ecc` install wizard could offer to set these environment variables during setup, with explanations of the cost tradeoffs. This would help new users optimize from day one rather than discovering these settings after hitting limits.
+Dicas:
+- Execute `/mcp` para ver servidores ativos e seu custo de contexto
+- Use `/mcp` para desabilitar servidores MCP do Claude Code quando quiser uma mudança de runtime ao vivo. O Claude Code persiste esses desabilitamentos de runtime em `~/.claude.json`.
+- Prefira ferramentas CLI quando disponíveis (`gh` em vez de MCP do GitHub, `aws` em vez de MCP da AWS)
+- Não confie em `.claude/settings.json` ou `.claude/settings.local.json` para desabilitar servidores MCP do Claude Code já carregados; use `/mcp` para isso.
+- `ECC_DISABLED_MCPS` afeta apenas o output de configuração MCP gerado pelo ECC durante fluxos de instalação/sincronização, como `install.sh`, `npx ecc-install` e mesclagem de MCP do Codex. Não é um toggle ao vivo do Claude Code.
+- O servidor MCP `memory` é configurado por padrão, mas não é usado por nenhuma skill, agent ou hook — considere desabilitá-lo
 
 ---
 
-## Quick Reference
+## Aviso de Custo de Equipes de Agent
+
+[Equipes de Agent](https://code.claude.com/docs/en/agent-teams) (experimental) gera múltiplas janelas de contexto independentes. Cada membro da equipe consome tokens separadamente.
+
+- Use apenas para tarefas onde o paralelismo agrega valor claro (trabalho multi-módulo, revisões paralelas)
+- Para tarefas sequenciais simples, subagents (ferramenta Task) são mais eficientes em tokens
+- Habilitar com: `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` nas configurações
+
+---
+
+## Futuro: Integração configure-ecc
+
+O assistente de instalação `configure-ecc` poderia oferecer configurar essas variáveis de ambiente durante a instalação, com explicações dos trade-offs de custo. Isso ajudaria novos usuários a otimizar desde o primeiro dia em vez de descobrir essas configurações após atingir os limites.
+
+---
+
+## Referência Rápida
 
 ```bash
-# Daily workflow
-/model sonnet              # Start here
-/model opus                # Only for complex reasoning
-/clear                     # Between unrelated tasks
-/compact                   # At logical breakpoints
-/cost                      # Check spending
+# Fluxo de trabalho diário
+/model sonnet              # Comece aqui
+/model opus                # Apenas para raciocínio complexo
+/clear                     # Entre tarefas não relacionadas
+/compact                   # Em pontos de quebra lógicos
+/cost                      # Verificar gastos
 
-# Environment variables (add to ~/.claude/settings.json "env" block)
+# Variáveis de ambiente (adicionar ao bloco "env" de ~/.claude/settings.json)
 MAX_THINKING_TOKENS=10000
 CLAUDE_CODE_SUBAGENT_MODEL=haiku
 CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1

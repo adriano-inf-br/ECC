@@ -1,70 +1,71 @@
-# Progress Sync Contract
+# Contrato de Sincronização de Progresso
 
-ECC 2.0 tracks execution state across GitHub, Linear, local handoffs, and the
-repo roadmap. This contract defines the minimum evidence required before a
-status update can claim a lane is current.
+O ECC 2.0 rastreia o estado de execução entre GitHub, Linear, handoffs locais e o roadmap
+do repositório. Este contrato define a evidência mínima necessária antes que uma atualização
+de status possa afirmar que uma rota está atualizada.
 
-## Sources Of Truth
+## Fontes de Verdade
 
-| Surface | Role | Current rule |
+| Superfície | Papel | Regra atual |
 | --- | --- | --- |
-| GitHub PRs/issues/discussions | Public queue and review state | Recheck live counts before every significant merge batch and before release approval. |
-| Linear project | Executive roadmap and stakeholder status update | Use project documents and project/issue comments because project status updates are disabled in this workspace; create/reuse issues for durable execution lanes. |
-| Local handoff | Durable operator continuity | Update the active handoff after every merge batch, queue drain, skipped release gate, or blocked external action. |
-| Repo roadmap | Auditable planning mirror | Keep `docs/ECC-2.0-GA-ROADMAP.md` aligned to merged PR evidence and unresolved gates. |
-| `scripts/work-items.js` | Local tracker bridge | Sync GitHub PRs/issues into the SQLite work-items store for status snapshots and blocked follow-up. |
+| PRs/issues/discussões do GitHub | Fila pública e estado de revisão | Verificar novamente as contagens ao vivo antes de cada lote de merge significativo e antes da aprovação de release. |
+| Projeto Linear | Roadmap executivo e atualização de status para stakeholders | Usar documentos de projeto e comentários de projeto/issue porque as atualizações de status do projeto estão desabilitadas neste workspace; criar/reutilizar issues para rotas de execução duráveis. |
+| Handoff local | Continuidade durável do operador | Atualizar o handoff ativo após cada lote de merge, drenagem de fila, gate de release ignorado ou ação externa bloqueada. |
+| Roadmap do repositório | Espelho de planejamento auditável | Manter `docs/ECC-2.0-GA-ROADMAP.md` alinhado com evidências de PRs mesclados e gates não resolvidos. |
+| `scripts/work-items.js` | Bridge do rastreador local | Sincronizar PRs/issues do GitHub no armazenamento de itens de trabalho SQLite para snapshots de status e acompanhamento bloqueado. |
 
-## Flow Lanes
+## Rotas de Fluxo
 
-The repo mirror uses these flow lanes so ECC work does not collapse into one
-undifferentiated backlog:
+O espelho do repositório usa estas rotas de fluxo para que o trabalho do ECC não colapse
+em um único backlog indiferenciado:
 
-- Queue hygiene and stale-work salvage
-- Release, naming, plugin publication, and announcements
-- Harness adapter compliance
-- Local observability, HUD/status, and session control
-- Evaluator/RAG and self-improving harness loops
-- AgentShield enterprise security platform
-- ECC Tools billing, PR-risk checks, deep analysis, and Linear sync
-- Legacy artifact audit and translator/manual-review tails
+- Higiene de fila e salvamento de trabalho desatualizado
+- Release, nomenclatura, publicação de plugin e anúncios
+- Conformidade do adaptador de harness
+- Observabilidade local, HUD/status e controle de sessão
+- Loops de avaliador/RAG e harness de auto-aperfeiçoamento
+- Plataforma de segurança empresarial AgentShield
+- Cobrança ECC Tools, verificações de risco de PR, análise profunda e sincronização com Linear
+- Auditoria de artefatos legados e pendências de tradutor/revisão manual
 
-Each flow lane needs one owner artifact, one current evidence source, and one
-next action. A lane is not current if any of those three fields are missing.
+Cada rota de fluxo precisa de um artefato proprietário, uma fonte de evidência atual e
+uma próxima ação. Uma rota não está atualizada se qualquer um desses três campos estiver
+ausente.
 
-## Significant Merge Batch Update
+## Atualização de Lote de Merge Significativo
 
-After a significant merge batch, update Linear and the handoff with:
+Após um lote de merge significativo, atualizar o Linear e o handoff com:
 
-1. Current public queue counts for tracked GitHub repos.
-2. Merged PR numbers, commit IDs, and validation evidence.
-3. Changed release gates, if any.
-4. Deferred or skipped work and the explicit reason.
-5. The next one or two implementation slices.
+1. Contagens atuais da fila pública para repositórios GitHub rastreados.
+2. Números de PRs mesclados, IDs de commit e evidências de validação.
+3. Gates de release alterados, se houver.
+4. Trabalho adiado ou ignorado e o motivo explícito.
+5. Os próximos um ou dois slices de implementação.
 
-When Linear project status updates are unavailable, use a project document plus
-project/issue comments instead of creating placeholder issues. Issue capacity is
-available for durable execution lanes, but do not use that issue capacity as a
-substitute for evidence-backed project status. Create or reuse exact-title
-issues only when the lane needs a durable execution owner, and link those issues
-to repo evidence.
+Quando as atualizações de status do projeto Linear estiverem indisponíveis, usar um documento
+de projeto mais comentários de projeto/issue em vez de criar issues de espaço reservado. A
+capacidade de issues está disponível para rotas de execução duráveis, mas não use essa
+capacidade de issues como substituta para status de projeto baseado em evidências. Criar ou
+reutilizar issues com título exato somente quando a rota precisar de um proprietário de
+execução durável, e vincular essas issues a evidências do repositório.
 
-## Realtime Boundary
+## Fronteira de Tempo Real
 
-The local realtime path is file-backed by default:
+O caminho de tempo real local é baseado em arquivo por padrão:
 
-- `node scripts/work-items.js sync-github --repo <owner/repo>` imports current
-  GitHub PR and issue state into the SQLite work-items store.
-- `node scripts/status.js --json` and `node scripts/work-items.js list --json`
-  expose local state for a HUD, handoff, or later Linear sync.
-- Linear remains the external status surface; the repo does not require hosted
-  telemetry to be release-ready.
+- `node scripts/work-items.js sync-github --repo <owner/repo>` importa o estado atual de
+  PR e issue do GitHub para o armazenamento de itens de trabalho SQLite.
+- `node scripts/status.js --json` e `node scripts/work-items.js list --json`
+  expõem o estado local para um HUD, handoff ou sincronização posterior com o Linear.
+- O Linear permanece a superfície de status externo; o repositório não requer telemetria
+  hospedada para estar pronto para release.
 
-Hosted telemetry such as PostHog can be added later, but it must consume the
-same event model rather than becoming a second source of truth.
+A telemetria hospedada, como PostHog, pode ser adicionada posteriormente, mas deve consumir
+o mesmo modelo de eventos em vez de se tornar uma segunda fonte de verdade.
 
-## Release Gate
+## Gate de Release
 
-Do not publish, tag, announce, submit marketplace packages, or claim plugin
-availability from this contract alone. Release readiness still requires the
-publication-readiness evidence documents, fresh queue checks, package checks,
-plugin checks, and explicit maintainer approval.
+Não publicar, adicionar tag, anunciar, submeter pacotes no marketplace ou afirmar
+disponibilidade de plugin apenas com base neste contrato. A prontidão para release ainda
+requer os documentos de evidência de prontidão de publicação, verificações frescas de fila,
+verificações de pacote, verificações de plugin e aprovação explícita do mantenedor.

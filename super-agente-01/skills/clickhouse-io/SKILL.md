@@ -283,12 +283,12 @@ GROUP BY database, table
 ORDER BY sum(bytes) DESC;
 ```
 
-## Common Analytics Queries
+## Consultas Analíticas Comuns
 
-### Time Series Analysis
+### Análise de Séries Temporais
 
 ```sql
--- Daily active users
+-- Usuários ativos diários
 SELECT
     toDate(timestamp) AS date,
     uniq(user_id) AS daily_active_users
@@ -297,7 +297,7 @@ WHERE timestamp >= today() - INTERVAL 30 DAY
 GROUP BY date
 ORDER BY date;
 
--- Retention analysis
+-- Análise de retenção
 SELECT
     signup_date,
     countIf(days_since_signup = 0) AS day_0,
@@ -317,10 +317,10 @@ GROUP BY signup_date
 ORDER BY signup_date DESC;
 ```
 
-### Funnel Analysis
+### Análise de Funil
 
 ```sql
--- Conversion funnel
+-- Funil de conversão
 SELECT
     countIf(step = 'viewed_market') AS viewed,
     countIf(step = 'clicked_trade') AS clicked,
@@ -338,10 +338,10 @@ FROM (
 GROUP BY session_id;
 ```
 
-### Cohort Analysis
+### Análise de Coorte
 
 ```sql
--- User cohorts by signup month
+-- Coortes de usuários por mês de cadastro
 SELECT
     toStartOfMonth(signup_date) AS cohort,
     toStartOfMonth(activity_date) AS month,

@@ -1,22 +1,22 @@
 ---
-description: "Create a GitHub PR from current branch with unpushed commits — discovers templates, analyzes changes, pushes"
+description: "Cria um PR no GitHub a partir do branch atual com commits não enviados — descobre templates, analisa mudanças, faz push"
 argument-hint: "[base-branch] (default: main)"
 ---
 
-# Create Pull Request
+# Criar Pull Request
 
-**Input**: `$ARGUMENTS` — optional, may contain a base branch name and/or flags (e.g., `--draft`).
+**Entrada**: `$ARGUMENTS` — opcional, pode conter o nome de um branch base e/ou flags (ex.: `--draft`).
 
-**Parse `$ARGUMENTS`**:
-- Extract any recognized flags (`--draft`)
-- Treat remaining non-flag text as the base branch name
-- Default base branch to `main` if none specified
+**Parse de `$ARGUMENTS`**:
+- Extraia quaisquer flags reconhecidas (`--draft`)
+- Trate o texto restante (não-flag) como o nome do branch base
+- Use `main` como branch base padrão se nenhum for especificado
 
 ---
 
-## Phase 1 — VALIDATE
+## Fase 1 — VALIDATE
 
-Check preconditions:
+Verifique as precondições:
 
 ```bash
 git branch --show-current
@@ -24,90 +24,90 @@ git status --short
 git log origin/<base>..HEAD --oneline
 ```
 
-| Check | Condition | Action if Failed |
+| Verificação | Condição | Ação se Falhar |
 |---|---|---|
-| Not on base branch | Current branch ≠ base | Stop: "Switch to a feature branch first." |
-| Clean working directory | No uncommitted changes | Warn: "You have uncommitted changes. Commit or stash first." |
-| Has commits ahead | `git log origin/<base>..HEAD` not empty | Stop: "No commits ahead of `<base>`. Nothing to PR." |
-| No existing PR | `gh pr list --head <branch> --json number` is empty | Stop: "PR already exists: #<number>. Use `gh pr view <number> --web` to open it." |
+| Não está no branch base | Branch atual ≠ base | Pare: "Switch to a feature branch first." |
+| Diretório de trabalho limpo | Sem mudanças não commitadas | Avise: "You have uncommitted changes. Commit or stash first." |
+| Tem commits à frente | `git log origin/<base>..HEAD` não vazio | Pare: "No commits ahead of `<base>`. Nothing to PR." |
+| Sem PR existente | `gh pr list --head <branch> --json number` está vazio | Pare: "PR already exists: #<number>. Use `gh pr view <number> --web` to open it." |
 
-If all checks pass, proceed.
+Se todas as verificações passarem, prossiga.
 
 ---
 
-## Phase 2 — DISCOVER
+## Fase 2 — DISCOVER
 
-### PR Template
+### Template de PR
 
-Search for PR template in order:
+Busque o template de PR nesta ordem:
 
-1. `.github/PULL_REQUEST_TEMPLATE/` directory — if exists, list files and let user choose (or use `default.md`)
+1. diretório `.github/PULL_REQUEST_TEMPLATE/` — se existir, liste os arquivos e deixe o usuário escolher (ou use `default.md`)
 2. `.github/PULL_REQUEST_TEMPLATE.md`
 3. `.github/pull_request_template.md`
 4. `docs/pull_request_template.md`
 
-If found, read it and use its structure for the PR body.
+Se encontrado, leia-o e use sua estrutura para o corpo do PR.
 
-### Commit Analysis
+### Análise de Commits
 
 ```bash
 git log origin/<base>..HEAD --format="%h %s" --reverse
 ```
 
-Analyze commits to determine:
-- **PR title**: Use conventional commit format with type prefix — `feat: ...`, `fix: ...`, etc.
-  - If multiple types, use the dominant one
-  - If single commit, use its message as-is
-- **Change summary**: Group commits by type/area
+Analise os commits para determinar:
+- **Título do PR**: Use o formato conventional commit com prefixo de tipo — `feat: ...`, `fix: ...`, etc.
+  - Se houver múltiplos tipos, use o dominante
+  - Se for um único commit, use sua mensagem como está
+- **Resumo das mudanças**: Agrupe os commits por tipo/área
 
-### File Analysis
+### Análise de Arquivos
 
 ```bash
 git diff origin/<base>..HEAD --stat
 git diff origin/<base>..HEAD --name-only
 ```
 
-Categorize changed files: source, tests, docs, config, migrations.
+Categorize os arquivos alterados: source, tests, docs, config, migrations.
 
-### Planning Artifacts
+### Artefatos de Planejamento
 
-Check for related artifacts produced by `/plan-prd`, `/plan`, or the legacy PRP workflow:
-- `.claude/prds/` — PRDs this PR implements a milestone of
-- `.claude/plans/` — Plans executed by this PR
-- `.claude/PRPs/prds/` — legacy PRP PRDs
-- `.claude/PRPs/plans/` — legacy PRP implementation plans
-- `.claude/PRPs/reports/` — legacy PRP implementation reports
+Verifique se há artefatos relacionados produzidos por `/plan-prd`, `/plan` ou pelo fluxo PRP legado:
+- `.claude/prds/` — PRDs dos quais este PR implementa um marco
+- `.claude/plans/` — Planos executados por este PR
+- `.claude/PRPs/prds/` — PRDs PRP legados
+- `.claude/PRPs/plans/` — planos de implementação PRP legados
+- `.claude/PRPs/reports/` — relatórios de implementação PRP legados
 
-Reference these in the PR body if they exist.
+Referencie-os no corpo do PR se existirem.
 
 ---
 
-## Phase 3 — PUSH
+## Fase 3 — PUSH
 
 ```bash
 git push -u origin HEAD
 ```
 
-If push fails due to divergence:
+Se o push falhar por divergência:
 ```bash
 git fetch origin
 git rebase origin/<base>
 git push -u origin HEAD
 ```
 
-If rebase conflicts occur, stop and inform the user.
+Se ocorrerem conflitos de rebase, pare e informe o usuário.
 
 ---
 
-## Phase 4 — CREATE
+## Fase 4 — CREATE
 
-### With Template
+### Com Template
 
-If a PR template was found in Phase 2, fill in each section using the commit and file analysis. Preserve all template sections — leave sections as "N/A" if not applicable rather than removing them.
+Se um template de PR foi encontrado na Fase 2, preencha cada seção usando a análise de commits e arquivos. Preserve todas as seções do template — deixe as seções como "N/A" se não forem aplicáveis, em vez de removê-las.
 
-### Without Template
+### Sem Template
 
-Use this default format:
+Use este formato padrão:
 
 ```markdown
 ## Summary
@@ -131,7 +131,7 @@ Use this default format:
 <linked issues with Closes/Fixes/Relates to #N, or "None">
 ```
 
-### Create the PR
+### Criar o PR
 
 ```bash
 gh pr create \
@@ -143,7 +143,7 @@ gh pr create \
 
 ---
 
-## Phase 5 — VERIFY
+## Fase 5 — VERIFY
 
 ```bash
 gh pr view --json number,url,title,state,baseRefName,headRefName,additions,deletions,changedFiles
@@ -152,9 +152,9 @@ gh pr checks --json name,status,conclusion 2>/dev/null || true
 
 ---
 
-## Phase 6 — OUTPUT
+## Fase 6 — OUTPUT
 
-Report to user:
+Reporte ao usuário:
 
 ```
 PR #<number>: <title>
@@ -175,10 +175,10 @@ Next steps:
 
 ---
 
-## Edge Cases
+## Casos Extremos
 
-- **No `gh` CLI**: Stop with: "GitHub CLI (`gh`) is required. Install: <https://cli.github.com/>"
-- **Not authenticated**: Stop with: "Run `gh auth login` first."
-- **Force push needed**: If remote has diverged and rebase was done, use `git push --force-with-lease` (never `--force`).
-- **Multiple PR templates**: If `.github/PULL_REQUEST_TEMPLATE/` has multiple files, list them and ask user to choose.
-- **Large PR (>20 files)**: Warn about PR size. Suggest splitting if changes are logically separable.
+- **Sem CLI `gh`**: Pare com: "GitHub CLI (`gh`) is required. Install: <https://cli.github.com/>"
+- **Não autenticado**: Pare com: "Run `gh auth login` first."
+- **Force push necessário**: Se o remoto divergiu e o rebase foi feito, use `git push --force-with-lease` (nunca `--force`).
+- **Múltiplos templates de PR**: Se `.github/PULL_REQUEST_TEMPLATE/` tiver múltiplos arquivos, liste-os e peça ao usuário para escolher.
+- **PR grande (>20 arquivos)**: Avise sobre o tamanho do PR. Sugira dividir se as mudanças forem logicamente separáveis.

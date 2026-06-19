@@ -1,55 +1,55 @@
 ---
-description: Comprehensive Kotlin code review for idiomatic patterns, null safety, coroutine safety, and security. Invokes the kotlin-reviewer agent.
+description: Revisão abrangente de código Kotlin para padrões idiomáticos, null safety, segurança de coroutines e segurança. Invoca o agent kotlin-reviewer.
 ---
 
-# Kotlin Code Review
+# Revisão de Código Kotlin
 
-This command invokes the **kotlin-reviewer** agent for comprehensive Kotlin-specific code review.
+Este comando invoca o agent **kotlin-reviewer** para uma revisão de código abrangente e específica de Kotlin.
 
-## What This Command Does
+## O Que Este Comando Faz
 
-1. **Identify Kotlin Changes**: Find modified `.kt` and `.kts` files via `git diff`
-2. **Run Build & Static Analysis**: Execute `./gradlew build`, `detekt`, `ktlintCheck`
-3. **Security Scan**: Check for SQL injection, command injection, hardcoded secrets
-4. **Null Safety Review**: Analyze `!!` usage, platform type handling, unsafe casts
-5. **Coroutine Review**: Check structured concurrency, dispatcher usage, cancellation
-6. **Generate Report**: Categorize issues by severity
+1. **Identificar Mudanças em Kotlin**: Encontra arquivos `.kt` e `.kts` modificados via `git diff`
+2. **Executar Build e Análise Estática**: Executa `./gradlew build`, `detekt`, `ktlintCheck`
+3. **Varredura de Segurança**: Verifica injeção de SQL, injeção de comandos, segredos embutidos no código
+4. **Revisão de Null Safety**: Analisa o uso de `!!`, tratamento de platform types, casts inseguros
+5. **Revisão de Coroutines**: Verifica concorrência estruturada, uso de dispatchers, cancelamento
+6. **Gerar Relatório**: Categoriza os problemas por severidade
 
-## When to Use
+## Quando Usar
 
-Use `/kotlin-review` when:
-- After writing or modifying Kotlin code
-- Before committing Kotlin changes
-- Reviewing pull requests with Kotlin code
-- Onboarding to a new Kotlin codebase
-- Learning idiomatic Kotlin patterns
+Use `/kotlin-review` quando:
+- Depois de escrever ou modificar código Kotlin
+- Antes de commitar mudanças em Kotlin
+- Revisando pull requests com código Kotlin
+- Iniciando em uma nova base de código Kotlin
+- Aprendendo padrões idiomáticos de Kotlin
 
-## Review Categories
+## Categorias de Revisão
 
-### CRITICAL (Must Fix)
-- SQL/Command injection vulnerabilities
-- Force-unwrap `!!` without justification
-- Platform type null safety violations
-- GlobalScope usage (structured concurrency violation)
-- Hardcoded credentials
-- Unsafe deserialization
+### CRITICAL (Corrigir Obrigatoriamente)
+- Vulnerabilidades de injeção de SQL/comandos
+- Force-unwrap `!!` sem justificativa
+- Violações de null safety de platform types
+- Uso de GlobalScope (violação de concorrência estruturada)
+- Credenciais embutidas no código
+- Desserialização insegura
 
-### HIGH (Should Fix)
-- Mutable state where immutable suffices
-- Blocking calls inside coroutine context
-- Missing cancellation checks in long loops
-- Non-exhaustive `when` on sealed types
-- Large functions (>50 lines)
-- Deep nesting (>4 levels)
+### HIGH (Deve Corrigir)
+- Estado mutável onde o imutável seria suficiente
+- Chamadas bloqueantes dentro do contexto de coroutine
+- Verificações de cancelamento ausentes em loops longos
+- `when` não exaustivo em sealed types
+- Funções grandes (>50 linhas)
+- Aninhamento profundo (>4 níveis)
 
-### MEDIUM (Consider)
-- Non-idiomatic Kotlin (Java-style patterns)
-- Missing trailing commas
-- Scope function misuse or nesting
-- Missing sequence for large collection chains
-- Redundant explicit types
+### MEDIUM (Considerar)
+- Kotlin não idiomático (padrões no estilo Java)
+- Trailing commas ausentes
+- Mau uso ou aninhamento de scope functions
+- Falta de sequence em cadeias grandes de coleções
+- Tipos explícitos redundantes
 
-## Automated Checks Run
+## Verificações Automatizadas Executadas
 
 ```bash
 # Build check
@@ -65,7 +65,7 @@ Use `/kotlin-review` when:
 ./gradlew test
 ```
 
-## Example Usage
+## Exemplo de Uso
 
 ````text
 User: /kotlin-review

@@ -122,53 +122,53 @@ $ ./gradlew test
 # All tests passed
 ```
 
-## Summary
+## Resumo
 
-| Metric | Count |
+| Métrica | Contagem |
 |--------|-------|
-| Build errors fixed | 3 |
-| Detekt issues fixed | 0 |
-| Files modified | 2 |
-| Remaining issues | 0 |
+| Erros de build corrigidos | 3 |
+| Problemas do detekt corrigidos | 0 |
+| Arquivos modificados | 2 |
+| Problemas restantes | 0 |
 
-Build Status: PASS: SUCCESS
+Status do Build: PASS: SUCCESS
 ````
 
-## Common Errors Fixed
+## Erros Comuns Corrigidos
 
-| Error | Typical Fix |
+| Erro | Correção Típica |
 |-------|-------------|
-| `Unresolved reference: X` | Add import or dependency |
-| `Type mismatch` | Fix type conversion or assignment |
-| `'when' must be exhaustive` | Add missing sealed class branches |
-| `Suspend function can only be called from coroutine` | Add `suspend` modifier |
-| `Smart cast impossible` | Use local `val` or `let` |
-| `None of the following candidates is applicable` | Fix argument types |
-| `Could not resolve dependency` | Fix version or add repository |
+| `Unresolved reference: X` | Adicionar import ou dependência |
+| `Type mismatch` | Corrigir conversão ou atribuição de tipo |
+| `'when' must be exhaustive` | Adicionar branches ausentes da sealed class |
+| `Suspend function can only be called from coroutine` | Adicionar o modificador `suspend` |
+| `Smart cast impossible` | Usar `val` local ou `let` |
+| `None of the following candidates is applicable` | Corrigir os tipos dos argumentos |
+| `Could not resolve dependency` | Corrigir a versão ou adicionar o repositório |
 
-## Fix Strategy
+## Estratégia de Correção
 
-1. **Build errors first** - Code must compile
-2. **Detekt violations second** - Fix code quality issues
-3. **ktlint warnings third** - Fix formatting
-4. **One fix at a time** - Verify each change
-5. **Minimal changes** - Don't refactor, just fix
+1. **Erros de build primeiro** - O código precisa compilar
+2. **Violações do detekt em segundo** - Corrigir problemas de qualidade de código
+3. **Avisos do ktlint em terceiro** - Corrigir formatação
+4. **Uma correção por vez** - Verificar cada mudança
+5. **Mudanças mínimas** - Não refatorar, apenas corrigir
 
-## Stop Conditions
+## Condições de Parada
 
-The agent will stop and report if:
-- Same error persists after 3 attempts
-- Fix introduces more errors
-- Requires architectural changes
-- Missing external dependencies
+O agent vai parar e relatar se:
+- O mesmo erro persistir após 3 tentativas
+- A correção introduzir mais erros
+- For necessária uma mudança arquitetural
+- Faltarem dependências externas
 
-## Related Commands
+## Comandos Relacionados
 
-- `/kotlin-test` - Run tests after build succeeds
-- `/kotlin-review` - Review code quality
-- `verification-loop` skill - Full verification loop
+- `/kotlin-test` - Executar testes após o build ser bem-sucedido
+- `/kotlin-review` - Revisar a qualidade do código
+- skill `verification-loop` - Loop completo de verificação
 
-## Related
+## Relacionados
 
 - Agent: `agents/kotlin-build-resolver.md`
 - Skill: `skills/kotlin-patterns/`

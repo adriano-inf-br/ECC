@@ -132,42 +132,42 @@ All tests passed.
 Build Status: PASS: SUCCESS
 ```
 
-## Common Errors Fixed
+## Erros Comuns Corrigidos
 
-| Error | Typical Fix |
+| Erro | Correção Típica |
 |-------|-------------|
-| `undeclared identifier` | Add `#include` or fix typo |
-| `no matching function` | Fix argument types or add overload |
-| `undefined reference` | Link library or add implementation |
-| `multiple definition` | Use `inline` or move to .cpp |
-| `incomplete type` | Replace forward decl with `#include` |
-| `no member named X` | Fix member name or include |
-| `cannot convert X to Y` | Add appropriate cast |
-| `CMake Error` | Fix CMakeLists.txt configuration |
+| `undeclared identifier` | Adicione `#include` ou corrija o erro de digitação |
+| `no matching function` | Corrija os tipos dos argumentos ou adicione uma sobrecarga |
+| `undefined reference` | Faça o link da biblioteca ou adicione a implementação |
+| `multiple definition` | Use `inline` ou mova para .cpp |
+| `incomplete type` | Substitua a declaração antecipada por `#include` |
+| `no member named X` | Corrija o nome do membro ou o include |
+| `cannot convert X to Y` | Adicione o cast apropriado |
+| `CMake Error` | Corrija a configuração do CMakeLists.txt |
 
-## Fix Strategy
+## Estratégia de Correção
 
-1. **Compilation errors first** - Code must compile
-2. **Linker errors second** - Resolve undefined references
-3. **Warnings third** - Fix with `-Wall -Wextra`
-4. **One fix at a time** - Verify each change
-5. **Minimal changes** - Don't refactor, just fix
+1. **Erros de compilação primeiro** - O código deve compilar
+2. **Erros de linker em segundo** - Resolva referências indefinidas
+3. **Warnings em terceiro** - Corrija com `-Wall -Wextra`
+4. **Uma correção por vez** - Verifique cada mudança
+5. **Mudanças mínimas** - Não refatore, apenas corrija
 
-## Stop Conditions
+## Condições de Parada
 
-The agent will stop and report if:
-- Same error persists after 3 attempts
-- Fix introduces more errors
-- Requires architectural changes
-- Missing external dependencies
+O agent vai parar e reportar se:
+- O mesmo erro persistir após 3 tentativas
+- A correção introduzir mais erros
+- Exigir mudanças arquiteturais
+- Faltarem dependências externas
 
-## Related Commands
+## Comandos Relacionados
 
-- `/cpp-test` - Run tests after build succeeds
-- `/cpp-review` - Review code quality
-- `verification-loop` skill - Full verification loop
+- `/cpp-test` - Executa os testes após o build ter sucesso
+- `/cpp-review` - Revisa a qualidade do código
+- skill `verification-loop` - Loop de verificação completo
 
-## Related
+## Relacionados
 
 - Agent: `agents/cpp-build-resolver.md`
 - Skill: `skills/cpp-coding-standards/`

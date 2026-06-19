@@ -2,53 +2,53 @@
 description: Comprehensive C++ code review for memory safety, modern C++ idioms, concurrency, and security. Invokes the cpp-reviewer agent.
 ---
 
-# C++ Code Review
+# Revisão de código C++
 
-This command invokes the **cpp-reviewer** agent for comprehensive C++-specific code review.
+Este comando invoca o agent **cpp-reviewer** para uma revisão de código abrangente e específica de C++.
 
-## What This Command Does
+## O Que Este Comando Faz
 
-1. **Identify C++ Changes**: Find modified `.cpp`, `.hpp`, `.cc`, `.h` files via `git diff`
-2. **Run Static Analysis**: Execute `clang-tidy` and `cppcheck`
-3. **Memory Safety Scan**: Check for raw new/delete, buffer overflows, use-after-free
-4. **Concurrency Review**: Analyze thread safety, mutex usage, data races
-5. **Modern C++ Check**: Verify code follows C++17/20 conventions and best practices
-6. **Generate Report**: Categorize issues by severity
+1. **Identifica Mudanças em C++**: Encontra arquivos `.cpp`, `.hpp`, `.cc`, `.h` modificados via `git diff`
+2. **Executa Análise Estática**: Executa `clang-tidy` e `cppcheck`
+3. **Varredura de Segurança de Memória**: Verifica new/delete crus, buffer overflows, use-after-free
+4. **Revisão de Concorrência**: Analisa thread safety, uso de mutex, data races
+5. **Checagem de C++ Moderno**: Verifica se o código segue as convenções e boas práticas de C++17/20
+6. **Gera o Relatório**: Categoriza os problemas por severidade
 
-## When to Use
+## Quando Usar
 
-Use `/cpp-review` when:
-- After writing or modifying C++ code
-- Before committing C++ changes
-- Reviewing pull requests with C++ code
-- Onboarding to a new C++ codebase
-- Checking for memory safety issues
+Use `/cpp-review` quando:
+- Após escrever ou modificar código C++
+- Antes de commitar mudanças em C++
+- Ao revisar pull requests com código C++
+- Ao começar em uma nova base de código C++
+- Ao verificar problemas de segurança de memória
 
-## Review Categories
+## Categorias de Revisão
 
-### CRITICAL (Must Fix)
-- Raw `new`/`delete` without RAII
-- Buffer overflows and use-after-free
-- Data races without synchronization
-- Command injection via `system()`
-- Uninitialized variable reads
-- Null pointer dereferences
+### CRITICAL (Deve Corrigir)
+- `new`/`delete` crus sem RAII
+- Buffer overflows e use-after-free
+- Data races sem sincronização
+- Injeção de comando via `system()`
+- Leituras de variável não inicializada
+- Desreferenciamento de ponteiro nulo
 
-### HIGH (Should Fix)
-- Rule of Five violations
-- Missing `std::lock_guard` / `std::scoped_lock`
-- Detached threads without proper lifetime management
-- C-style casts instead of `static_cast`/`dynamic_cast`
-- Missing `const` correctness
+### HIGH (Deveria Corrigir)
+- Violações da Regra dos Cinco (Rule of Five)
+- `std::lock_guard` / `std::scoped_lock` ausentes
+- Threads desanexadas (detached) sem gerenciamento adequado de tempo de vida
+- Casts no estilo C em vez de `static_cast`/`dynamic_cast`
+- Falta de correção de `const`
 
-### MEDIUM (Consider)
-- Unnecessary copies (pass by value instead of `const&`)
-- Missing `reserve()` on known-size containers
-- `using namespace std;` in headers
-- Missing `[[nodiscard]]` on important return values
-- Overly complex template metaprogramming
+### MEDIUM (Considerar)
+- Cópias desnecessárias (passagem por valor em vez de `const&`)
+- `reserve()` ausente em containers de tamanho conhecido
+- `using namespace std;` em headers
+- `[[nodiscard]]` ausente em valores de retorno importantes
+- Metaprogramação de template excessivamente complexa
 
-## Automated Checks Run
+## Checagens Automatizadas Executadas
 
 ```bash
 # Static analysis

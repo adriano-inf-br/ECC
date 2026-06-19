@@ -1,58 +1,58 @@
 ---
-description: Comprehensive Python code review for PEP 8 compliance, type hints, security, and Pythonic idioms. Invokes the python-reviewer agent.
+description: Revisão abrangente de código Python para conformidade com PEP 8, type hints, segurança e idiomas Pythônicos. Invoca o agent python-reviewer.
 ---
 
-# Python Code Review
+# Revisão de Código Python
 
-This command invokes the **python-reviewer** agent for comprehensive Python-specific code review.
+Este comando invoca o agent **python-reviewer** para uma revisão abrangente de código específica de Python.
 
-## What This Command Does
+## O Que Este Comando Faz
 
-1. **Identify Python Changes**: Find modified `.py` files via `git diff`
-2. **Run Static Analysis**: Execute `ruff`, `mypy`, `pylint`, `black --check`
-3. **Security Scan**: Check for SQL injection, command injection, unsafe deserialization
-4. **Type Safety Review**: Analyze type hints and mypy errors
-5. **Pythonic Code Check**: Verify code follows PEP 8 and Python best practices
-6. **Generate Report**: Categorize issues by severity
+1. **Identificar Alterações Python**: Encontra arquivos `.py` modificados via `git diff`
+2. **Executar Análise Estática**: Roda `ruff`, `mypy`, `pylint`, `black --check`
+3. **Varredura de Segurança**: Verifica injeção de SQL, injeção de comando, desserialização insegura
+4. **Revisão de Segurança de Tipos**: Analisa type hints e erros do mypy
+5. **Verificação de Código Pythônico**: Confirma que o código segue PEP 8 e as boas práticas de Python
+6. **Gerar Relatório**: Categoriza os problemas por severidade
 
-## When to Use
+## Quando Usar
 
-Use `/python-review` when:
-- After writing or modifying Python code
-- Before committing Python changes
-- Reviewing pull requests with Python code
-- Onboarding to a new Python codebase
-- Learning Pythonic patterns and idioms
+Use `/python-review` quando:
+- Após escrever ou modificar código Python
+- Antes de fazer commit de alterações em Python
+- Ao revisar pull requests com código Python
+- Ao se integrar a uma nova base de código Python
+- Ao aprender padrões e idiomas Pythônicos
 
-## Review Categories
+## Categorias de Revisão
 
-### CRITICAL (Must Fix)
-- SQL/Command injection vulnerabilities
-- Unsafe eval/exec usage
-- Pickle unsafe deserialization
-- Hardcoded credentials
-- YAML unsafe load
-- Bare except clauses hiding errors
+### CRITICAL (Deve Corrigir)
+- Vulnerabilidades de injeção de SQL/comando
+- Uso inseguro de eval/exec
+- Desserialização insegura com pickle
+- Credenciais hardcoded
+- Carregamento inseguro de YAML
+- Cláusulas except vazias que ocultam erros
 
-### HIGH (Should Fix)
-- Missing type hints on public functions
-- Mutable default arguments
-- Swallowing exceptions silently
-- Not using context managers for resources
-- C-style looping instead of comprehensions
-- Using type() instead of isinstance()
-- Race conditions without locks
+### HIGH (Deveria Corrigir)
+- Type hints faltando em funções públicas
+- Argumentos padrão mutáveis
+- Engolir exceções silenciosamente
+- Não usar context managers para recursos
+- Laços ao estilo C em vez de comprehensions
+- Usar type() em vez de isinstance()
+- Condições de corrida sem locks
 
-### MEDIUM (Consider)
-- PEP 8 formatting violations
-- Missing docstrings on public functions
-- Print statements instead of logging
-- Inefficient string operations
-- Magic numbers without named constants
-- Not using f-strings for formatting
-- Unnecessary list creation
+### MEDIUM (Considerar)
+- Violações de formatação do PEP 8
+- Docstrings faltando em funções públicas
+- Instruções print em vez de logging
+- Operações de string ineficientes
+- Números mágicos sem constantes nomeadas
+- Não usar f-strings para formatação
+- Criação desnecessária de listas
 
-## Automated Checks Run
+## Verificações Automatizadas Executadas
 
 ```bash
 # Type checking
@@ -74,7 +74,7 @@ safety check
 pytest --cov=app --cov-report=term-missing
 ```
 
-## Example Usage
+## Exemplo de Uso
 
 ```text
 User: /python-review

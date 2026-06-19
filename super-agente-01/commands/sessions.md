@@ -27,6 +27,7 @@ Use `/sessions info` quando precisar de contexto de superfície de operador para
 ```
 
 **Script:**
+
 ```bash
 node -e "
 const _r = (()=>{var e=process.env.CLAUDE_PLUGIN_ROOT;if(e&&e.trim())return e.trim();var p=require('path'),f=require('fs'),h=require('os').homedir(),d=p.join(h,'.claude'),q=p.join('scripts','lib','utils.js');if(f.existsSync(p.join(d,q)))return d;for(var s of [['ecc'],['ecc@ecc'],['marketplaces','ecc'],['everything-claude-code'],['everything-claude-code@everything-claude-code'],['marketplaces','everything-claude-code']]){var l=p.join(d,'plugins',...s);if(f.existsSync(p.join(l,q)))return l}try{for(var g of ['ecc','everything-claude-code']){var b=p.join(d,'plugins','cache',g);for(var o of f.readdirSync(b,{withFileTypes:true})){if(!o.isDirectory())continue;for(var v of f.readdirSync(p.join(b,o.name),{withFileTypes:true})){if(!v.isDirectory())continue;var c=p.join(b,o.name,v.name);if(f.existsSync(p.join(c,q)))return c}}}}catch(x){}return d})();
@@ -57,9 +58,9 @@ for (const s of result.sessions) {
 "
 ```
 
-### Load Session
+### Carregar sessão
 
-Load and display a session's content (by ID or alias).
+Carrega e exibe o conteúdo de uma sessão (por ID ou alias).
 
 ```bash
 /sessions load <id|alias>             # Load session
@@ -133,9 +134,9 @@ if (session.metadata.worktree) {
 " "$ARGUMENTS"
 ```
 
-### Create Alias
+### Criar alias
 
-Create a memorable alias for a session.
+Cria um alias memorável para uma sessão.
 
 ```bash
 /sessions alias <id> <name>           # Create alias
@@ -174,9 +175,9 @@ if (result.success) {
 " "$ARGUMENTS"
 ```
 
-### Remove Alias
+### Remover alias
 
-Delete an existing alias.
+Exclui um alias existente.
 
 ```bash
 /sessions alias --remove <name>        # Remove alias
@@ -205,9 +206,9 @@ if (result.success) {
 " "$ARGUMENTS"
 ```
 
-### Session Info
+### Informações da sessão
 
-Show detailed information about a session.
+Mostra informações detalhadas sobre uma sessão.
 
 ```bash
 /sessions info <id|alias>              # Show session details
@@ -256,9 +257,9 @@ if (aliases.length > 0) {
 " "$ARGUMENTS"
 ```
 
-### List Aliases
+### Listar aliases
 
-Show all session aliases.
+Mostra todos os aliases de sessão.
 
 ```bash
 /sessions aliases                      # List all aliases

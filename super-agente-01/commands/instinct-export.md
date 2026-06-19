@@ -4,14 +4,14 @@ description: Export instincts from project/global scope to a file
 command: /instinct-export
 ---
 
-# Instinct Export Command
+# Comando de Exportação de Instincts
 
-Exports instincts to a shareable format. Perfect for:
-- Sharing with teammates
-- Transferring to a new machine
-- Contributing to project conventions
+Exporta instincts para um formato compartilhável. Perfeito para:
+- Compartilhar com colegas de equipe
+- Transferir para uma nova máquina
+- Contribuir com convenções de projeto
 
-## Usage
+## Uso
 
 ```
 /instinct-export                           # Export all personal instincts
@@ -21,19 +21,19 @@ Exports instincts to a shareable format. Perfect for:
 /instinct-export --scope project --output project-instincts.yaml
 ```
 
-## What to Do
+## O Que Fazer
 
-1. Detect current project context
-2. Load instincts by selected scope:
-   - `project`: current project only
-   - `global`: global only
-   - `all`: project + global merged (default)
-3. Apply filters (`--domain`, `--min-confidence`)
-4. Write YAML-style export to file (or stdout if no output path provided)
+1. Detecte o contexto do projeto atual
+2. Carregue os instincts pelo escopo selecionado:
+   - `project`: apenas o projeto atual
+   - `global`: apenas global
+   - `all`: projeto + global mesclados (padrão)
+3. Aplique os filtros (`--domain`, `--min-confidence`)
+4. Escreva a exportação no estilo YAML em um arquivo (ou em stdout se nenhum caminho de saída for fornecido)
 
-## Output Format
+## Formato de Saída
 
-Creates a YAML file:
+Cria um arquivo YAML:
 
 ```yaml
 # Instincts Export
@@ -60,7 +60,7 @@ Use functional patterns over classes.
 
 ## Flags
 
-- `--domain <name>`: Export only specified domain
-- `--min-confidence <n>`: Minimum confidence threshold
-- `--output <file>`: Output file path (prints to stdout when omitted)
-- `--scope <project|global|all>`: Export scope (default: `all`)
+- `--domain <name>`: Exporta apenas o domínio especificado
+- `--min-confidence <n>`: Limite mínimo de confiança
+- `--output <file>`: Caminho do arquivo de saída (imprime em stdout quando omitido)
+- `--scope <project|global|all>`: Escopo de exportação (padrão: `all`)

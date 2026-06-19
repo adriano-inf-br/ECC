@@ -1,39 +1,39 @@
 ---
 name: dotnet-patterns
-description: Idiomatic C# and .NET patterns, conventions, dependency injection, async/await, and best practices for building robust, maintainable .NET applications.
+description: Padrões idiomáticos de C# e .NET, convenções, injeção de dependência, async/await e melhores práticas para construir aplicações .NET robustas e de fácil manutenção.
 metadata:
   origin: ECC
 ---
 
-# .NET Development Patterns
+# Padrões de Desenvolvimento .NET
 
-Idiomatic C# and .NET patterns for building robust, performant, and maintainable applications.
+Padrões idiomáticos de C# e .NET para construir aplicações robustas, performáticas e de fácil manutenção.
 
-## When to Activate
+## Quando Ativar
 
-- Writing new C# code
-- Reviewing C# code
-- Refactoring existing .NET applications
-- Designing service architectures with ASP.NET Core
+- Escrevendo novo código C#
+- Revisando código C#
+- Refatorando aplicações .NET existentes
+- Projetando arquiteturas de serviço com ASP.NET Core
 
-## Core Principles
+## Princípios Centrais
 
-### 1. Prefer Immutability
+### 1. Prefira a Imutabilidade
 
-Use records and init-only properties for data models. Mutability should be an explicit, justified choice.
+Use records e propriedades init-only para modelos de dados. A mutabilidade deve ser uma escolha explícita e justificada.
 
 ```csharp
-// Good: Immutable value object
+// Bom: Objeto de valor imutável
 public sealed record Money(decimal Amount, string Currency);
 
-// Good: Immutable DTO with init setters
+// Bom: DTO imutável com setters init
 public sealed class CreateOrderRequest
 {
     public required string CustomerId { get; init; }
     public required IReadOnlyList<OrderItem> Items { get; init; }
 }
 
-// Bad: Mutable model with public setters
+// Ruim: Modelo mutável com setters públicos
 public class Order
 {
     public string CustomerId { get; set; }
@@ -41,12 +41,12 @@ public class Order
 }
 ```
 
-### 2. Explicit Over Implicit
+### 2. Explícito em Vez de Implícito
 
-Be clear about nullability, access modifiers, and intent.
+Seja claro sobre nullability, modificadores de acesso e intenção.
 
 ```csharp
-// Good: Explicit access modifiers and nullability
+// Bom: Modificadores de acesso e nullability explícitos
 public sealed class UserService
 {
     private readonly IUserRepository _repository;
@@ -65,12 +65,12 @@ public sealed class UserService
 }
 ```
 
-### 3. Depend on Abstractions
+### 3. Dependa de Abstrações
 
-Use interfaces for service boundaries. Register via DI container.
+Use interfaces para fronteiras de serviço. Registre via container de DI.
 
 ```csharp
-// Good: Interface-based dependency
+// Bom: Dependência baseada em interface
 public interface IOrderRepository
 {
     Task<Order?> FindByIdAsync(Guid id, CancellationToken cancellationToken);
@@ -78,16 +78,16 @@ public interface IOrderRepository
     Task AddAsync(Order order, CancellationToken cancellationToken);
 }
 
-// Registration
+// Registro
 builder.Services.AddScoped<IOrderRepository, SqlOrderRepository>();
 ```
 
-## Async/Await Patterns
+## Padrões de Async/Await
 
-### Proper Async Usage
+### Uso Correto de Async
 
 ```csharp
-// Good: Async all the way, with CancellationToken
+// Bom: Async em todo o caminho, com CancellationToken
 public async Task<OrderSummary> GetOrderSummaryAsync(
     Guid orderId,
     CancellationToken cancellationToken)
@@ -100,18 +100,18 @@ public async Task<OrderSummary> GetOrderSummaryAsync(
     return new OrderSummary(order, customer);
 }
 
-// Bad: Blocking on async
+// Ruim: Bloqueando em código async
 public OrderSummary GetOrderSummary(Guid orderId)
 {
-    var order = _repository.FindByIdAsync(orderId, CancellationToken.None).Result; // Deadlock risk
+    var order = _repository.FindByIdAsync(orderId, CancellationToken.None).Result; // Risco de deadlock
     return new OrderSummary(order);
 }
 ```
 
-### Parallel Async Operations
+### Operações Async em Paralelo
 
 ```csharp
-// Good: Concurrent independent operations
+// Bom: Operações independentes concorrentes
 public async Task<DashboardData> LoadDashboardAsync(CancellationToken cancellationToken)
 {
     var ordersTask = _orderService.GetRecentAsync(cancellationToken);
@@ -127,9 +127,9 @@ public async Task<DashboardData> LoadDashboardAsync(CancellationToken cancellati
 }
 ```
 
-## Options Pattern
+## Padrão Options
 
-Bind configuration sections to strongly-typed objects.
+Vincule seções de configuração a objetos fortemente tipados.
 
 ```csharp
 public sealed class SmtpOptions
@@ -142,20 +142,20 @@ public sealed class SmtpOptions
     public bool UseSsl { get; init; } = true;
 }
 
-// Registration
+// Registro
 builder.Services.Configure<SmtpOptions>(
     builder.Configuration.GetSection(SmtpOptions.SectionName));
 
-// Usage via injection
+// Uso via injeção
 public class EmailService(IOptions<SmtpOptions> options)
 {
     private readonly SmtpOptions _smtp = options.Value;
 }
 ```
 
-## Result Pattern
+## Padrão Result
 
-Return explicit success/failure instead of throwing for expected failures.
+Retorne sucesso/falha explícito em vez de lançar exceções para falhas esperadas.
 
 ```csharp
 public sealed record Result<T>
@@ -171,7 +171,7 @@ public sealed record Result<T>
     public static Result<T> Failure(string error) => new(error);
 }
 
-// Usage
+// Uso
 public async Task<Result<Order>> PlaceOrderAsync(CreateOrderRequest request)
 {
     if (request.Items.Count == 0)
@@ -183,7 +183,7 @@ public async Task<Result<Order>> PlaceOrderAsync(CreateOrderRequest request)
 }
 ```
 
-## Repository Pattern with EF Core
+## Padrão Repository com EF Core
 
 ```csharp
 public sealed class SqlOrderRepository : IOrderRepository
@@ -219,10 +219,10 @@ public sealed class SqlOrderRepository : IOrderRepository
 }
 ```
 
-## Middleware and Pipeline
+## Middleware e Pipeline
 
 ```csharp
-// Custom middleware
+// Middleware personalizado
 public sealed class RequestTimingMiddleware
 {
     private readonly RequestDelegate _next;
@@ -255,10 +255,10 @@ public sealed class RequestTimingMiddleware
 }
 ```
 
-## Minimal API Patterns
+## Padrões de Minimal API
 
 ```csharp
-// Organized with route groups
+// Organizado com grupos de rotas
 var orders = app.MapGroup("/api/orders")
     .RequireAuthorization()
     .WithTags("Orders");
@@ -289,7 +289,7 @@ orders.MapPost("/", async (
 ## Guard Clauses
 
 ```csharp
-// Good: Early returns with clear validation
+// Bom: Retornos antecipados com validação clara
 public async Task<ProcessResult> ProcessPaymentAsync(
     PaymentRequest request,
     CancellationToken cancellationToken)
@@ -302,21 +302,21 @@ public async Task<ProcessResult> ProcessPaymentAsync(
     if (string.IsNullOrWhiteSpace(request.Currency))
         throw new ArgumentException("Currency is required", nameof(request.Currency));
 
-    // Happy path continues here without nesting
+    // O caminho feliz continua aqui sem aninhamento
     var gateway = _gatewayFactory.Create(request.Currency);
     return await gateway.ChargeAsync(request, cancellationToken);
 }
 ```
 
-## Anti-Patterns to Avoid
+## Anti-Padrões a Evitar
 
-| Anti-Pattern | Fix |
+| Anti-Padrão | Correção |
 |---|---|
-| `async void` methods | Return `Task` (except event handlers) |
-| `.Result` or `.Wait()` | Use `await` |
-| `catch (Exception) { }` | Handle or rethrow with context |
-| `new Service()` in constructors | Use constructor injection |
-| `public` fields | Use properties with appropriate accessors |
-| `dynamic` in business logic | Use generics or explicit types |
-| Mutable `static` state | Use DI scoping or `ConcurrentDictionary` |
-| `string.Format` in loops | Use `StringBuilder` or interpolated string handlers |
+| Métodos `async void` | Retorne `Task` (exceto handlers de eventos) |
+| `.Result` ou `.Wait()` | Use `await` |
+| `catch (Exception) { }` | Trate ou relance com contexto |
+| `new Service()` em construtores | Use injeção via construtor |
+| Campos `public` | Use propriedades com accessors apropriados |
+| `dynamic` em lógica de negócio | Use generics ou tipos explícitos |
+| Estado `static` mutável | Use escopo de DI ou `ConcurrentDictionary` |
+| `string.Format` em loops | Use `StringBuilder` ou interpolated string handlers |

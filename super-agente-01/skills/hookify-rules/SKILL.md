@@ -1,17 +1,17 @@
 ---
 name: hookify-rules
-description: This skill should be used when the user asks to create a hookify rule, write a hook rule, configure hookify, add a hookify rule, or needs guidance on hookify rule syntax and patterns.
+description: Esta skill deve ser usada quando o usuário pedir para criar uma regra do hookify, escrever uma regra de hook, configurar o hookify, adicionar uma regra do hookify, ou precisar de orientação sobre a sintaxe e os padrões de regras do hookify.
 ---
 
-# Writing Hookify Rules
+# Escrevendo Regras do Hookify
 
-## Overview
+## Visão Geral
 
-Hookify rules are markdown files with YAML frontmatter that define patterns to watch for and messages to show when those patterns match. Rules are stored in `.claude/hookify.{rule-name}.local.md` files.
+Regras do hookify são arquivos markdown com frontmatter YAML que definem padrões a observar e mensagens a exibir quando esses padrões correspondem. As regras são armazenadas em arquivos `.claude/hookify.{rule-name}.local.md`.
 
-## Rule File Format
+## Formato do Arquivo de Regra
 
-### Basic Structure
+### Estrutura Básica
 
 ```markdown
 ---
@@ -21,21 +21,21 @@ event: bash|file|stop|prompt|all
 pattern: regex-pattern-here
 ---
 
-Message to show Claude when this rule triggers.
-Can include markdown formatting, warnings, suggestions, etc.
+Mensagem a exibir ao Claude quando esta regra é disparada.
+Pode incluir formatação markdown, avisos, sugestões, etc.
 ```
 
-### Frontmatter Fields
+### Campos do Frontmatter
 
-| Field | Required | Values | Description |
+| Campo | Obrigatório | Valores | Descrição |
 |-------|----------|--------|-------------|
-| name | Yes | kebab-case string | Unique identifier (verb-first: warn-*, block-*, require-*) |
-| enabled | Yes | true/false | Toggle without deleting |
-| event | Yes | bash/file/stop/prompt/all | Which hook event triggers this |
-| action | No | warn/block | warn (default) shows message; block prevents operation |
-| pattern | Yes* | regex string | Pattern to match (*or use conditions for complex rules) |
+| name | Sim | string kebab-case | Identificador único (verbo primeiro: warn-*, block-*, require-*) |
+| enabled | Sim | true/false | Alterna sem excluir |
+| event | Sim | bash/file/stop/prompt/all | Qual evento de hook dispara esta regra |
+| action | Não | warn/block | warn (padrão) exibe a mensagem; block impede a operação |
+| pattern | Sim* | string regex | Padrão a corresponder (*ou use conditions para regras complexas) |
 
-### Advanced Format (Multiple Conditions)
+### Formato Avançado (Múltiplas Condições)
 
 ```markdown
 ---
@@ -51,72 +51,72 @@ conditions:
     pattern: API_KEY
 ---
 
-You're adding an API key to a .env file. Ensure this file is in .gitignore!
+Você está adicionando uma chave de API a um arquivo .env. Garanta que este arquivo esteja no .gitignore!
 ```
 
-**Condition fields by event:**
+**Campos de condição por evento:**
 - bash: `command`
 - file: `file_path`, `new_text`, `old_text`, `content`
 - prompt: `user_prompt`
 
-**Operators:** `regex_match`, `contains`, `equals`, `not_contains`, `starts_with`, `ends_with`
+**Operadores:** `regex_match`, `contains`, `equals`, `not_contains`, `starts_with`, `ends_with`
 
-All conditions must match for rule to trigger.
+Todas as condições devem corresponder para a regra ser disparada.
 
-## Event Type Guide
+## Guia de Tipos de Evento
 
-### bash Events
-Match Bash command patterns:
-- Dangerous commands: `rm\s+-rf`, `dd\s+if=`, `mkfs`
-- Privilege escalation: `sudo\s+`, `su\s+`
-- Permission issues: `chmod\s+777`
+### Eventos bash
+Correspondem a padrões de comandos Bash:
+- Comandos perigosos: `rm\s+-rf`, `dd\s+if=`, `mkfs`
+- Escalonamento de privilégios: `sudo\s+`, `su\s+`
+- Problemas de permissão: `chmod\s+777`
 
-### file Events
-Match Edit/Write/MultiEdit operations:
-- Debug code: `console\.log\(`, `debugger`
-- Security risks: `eval\(`, `innerHTML\s*=`
-- Sensitive files: `\.env$`, `credentials`, `\.pem$`
+### Eventos file
+Correspondem a operações de Edit/Write/MultiEdit:
+- Código de debug: `console\.log\(`, `debugger`
+- Riscos de segurança: `eval\(`, `innerHTML\s*=`
+- Arquivos sensíveis: `\.env$`, `credentials`, `\.pem$`
 
-### stop Events
-Completion checks and reminders. Pattern `.*` matches always.
+### Eventos stop
+Verificações de conclusão e lembretes. O padrão `.*` corresponde sempre.
 
-### prompt Events
-Match user prompt content for workflow enforcement.
+### Eventos prompt
+Correspondem ao conteúdo do prompt do usuário para imposição de fluxo de trabalho.
 
-## Pattern Writing Tips
+## Dicas para Escrever Padrões
 
-### Regex Basics
-- Escape special chars: `.` to `\.`, `(` to `\(`
-- `\s` whitespace, `\d` digit, `\w` word char
-- `+` one or more, `*` zero or more, `?` optional
-- `|` OR operator
+### Noções de Regex
+- Escape caracteres especiais: `.` para `\.`, `(` para `\(`
+- `\s` espaço em branco, `\d` dígito, `\w` caractere de palavra
+- `+` um ou mais, `*` zero ou mais, `?` opcional
+- `|` operador OR
 
-### Common Pitfalls
-- **Too broad**: `log` matches "login", "dialog" — use `console\.log\(`
-- **Too specific**: `rm -rf /tmp` — use `rm\s+-rf`
-- **YAML escaping**: Use unquoted patterns; quoted strings need `\\s`
+### Armadilhas Comuns
+- **Amplo demais**: `log` corresponde a "login", "dialog" — use `console\.log\(`
+- **Específico demais**: `rm -rf /tmp` — use `rm\s+-rf`
+- **Escape em YAML**: Use padrões sem aspas; strings com aspas precisam de `\\s`
 
-### Testing
+### Testes
 ```bash
 python3 -c "import re; print(re.search(r'your_pattern', 'test text'))"
 ```
 
-## File Organization
+## Organização de Arquivos
 
-- **Location**: `.claude/` directory in project root
-- **Naming**: `.claude/hookify.{descriptive-name}.local.md`
-- **Gitignore**: Add `.claude/*.local.md` to `.gitignore`
+- **Localização**: diretório `.claude/` na raiz do projeto
+- **Nomenclatura**: `.claude/hookify.{descriptive-name}.local.md`
+- **Gitignore**: Adicione `.claude/*.local.md` ao `.gitignore`
 
-## Commands
+## Comandos
 
-- `/hookify [description]` - Create new rules (auto-analyzes conversation if no args)
-- `/hookify-list` - View all rules in table format
-- `/hookify-configure` - Toggle rules on/off interactively
-- `/hookify-help` - Full documentation
+- `/hookify [description]` - Cria novas regras (analisa a conversa automaticamente se não houver args)
+- `/hookify-list` - Exibe todas as regras em formato de tabela
+- `/hookify-configure` - Alterna regras on/off interativamente
+- `/hookify-help` - Documentação completa
 
-## Quick Reference
+## Referência Rápida
 
-Minimum viable rule:
+Regra mínima viável:
 ```markdown
 ---
 name: my-rule
@@ -124,5 +124,5 @@ enabled: true
 event: bash
 pattern: dangerous_command
 ---
-Warning message here
+Mensagem de aviso aqui
 ```

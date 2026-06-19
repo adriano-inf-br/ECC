@@ -1,141 +1,141 @@
 ---
 name: customer-billing-ops
-description: Operate customer billing workflows such as subscriptions, refunds, churn triage, billing-portal recovery, and plan analysis using connected billing tools like Stripe. Use when the user needs to help a customer, inspect subscription state, or manage revenue-impacting billing operations.
+description: Opere fluxos de trabalho de cobrança de clientes, como assinaturas, reembolsos, triagem de churn, recuperação de portal de cobrança e análise de planos, usando tools de cobrança conectadas como o Stripe. Use quando o usuário precisar ajudar um cliente, inspecionar o estado de uma assinatura ou gerenciar operações de cobrança que impactam a receita.
 metadata:
   origin: ECC
 ---
 
 # Customer Billing Ops
 
-Use this skill for real customer operations, not generic payment API design.
+Use esta skill para operações reais de clientes, não para design genérico de APIs de pagamento.
 
-The goal is to help the operator answer: who is this customer, what happened, what is the safest fix, and what follow-up should we send?
+O objetivo é ajudar o operador a responder: quem é este cliente, o que aconteceu, qual é a correção mais segura e qual acompanhamento devemos enviar?
 
-## When to Use
+## Quando Usar
 
-- Customer says billing is broken, they want a refund, or they cannot cancel
-- Investigating duplicate subscriptions, accidental charges, failed renewals, or churn risk
-- Reviewing plan mix, active subscriptions, yearly vs monthly conversion, or team-seat confusion
-- Creating or validating a billing portal flow
-- Auditing support complaints that touch subscriptions, invoices, refunds, or payment methods
+- O cliente diz que a cobrança está quebrada, quer um reembolso ou não consegue cancelar
+- Investigar assinaturas duplicadas, cobranças acidentais, renovações que falharam ou risco de churn
+- Revisar o mix de planos, assinaturas ativas, conversão anual vs mensal ou confusão de assentos de equipe
+- Criar ou validar um fluxo de portal de cobrança
+- Auditar reclamações de suporte que tocam em assinaturas, faturas, reembolsos ou métodos de pagamento
 
-## Preferred Tool Surface
+## Superfície de Tools Preferida
 
-- Use connected billing tools such as Stripe first
-- Use email, GitHub, or issue trackers only as supporting evidence
-- Prefer hosted billing/customer portals over custom account-management code when the platform already provides the needed controls
+- Use tools de cobrança conectadas como o Stripe primeiro
+- Use e-mail, GitHub ou rastreadores de issue apenas como evidência de apoio
+- Prefira portais hospedados de cobrança/cliente a código personalizado de gerenciamento de conta quando a plataforma já fornecer os controles necessários
 
-## Guardrails
+## Proteções
 
-- Never expose secret keys, full card details, or unnecessary customer PII in the response
-- Do not refund blindly; first classify the issue
-- Distinguish among:
-  - accidental duplicate purchase
-  - deliberate multi-seat or team purchase
-  - broken product / unmet value
-  - failed or incomplete checkout
-  - cancellation due to missing self-serve controls
-- For annual plans, team plans, and prorated states, verify the contract shape before taking action
+- Nunca exponha chaves secretas, dados completos de cartão ou PII desnecessária do cliente na resposta
+- Não reembolse às cegas; primeiro classifique o problema
+- Distinga entre:
+  - compra duplicada acidental
+  - compra deliberada multi-assento ou de equipe
+  - produto quebrado / valor não entregue
+  - checkout que falhou ou ficou incompleto
+  - cancelamento por falta de controles de autoatendimento
+- Para planos anuais, planos de equipe e estados rateados, verifique o formato do contrato antes de agir
 
-## Workflow
+## Fluxo de Trabalho
 
-### 1. Identify the customer cleanly
+### 1. Identifique o cliente de forma limpa
 
-Start from the strongest identifier available:
+Comece pelo identificador mais forte disponível:
 
-- customer email
-- Stripe customer ID
-- subscription ID
-- invoice ID
-- GitHub username or support email if it is known to map back to billing
+- e-mail do cliente
+- ID de cliente do Stripe
+- ID da assinatura
+- ID da fatura
+- nome de usuário do GitHub ou e-mail de suporte se for conhecido por mapear de volta à cobrança
 
-Return a concise identity summary:
+Retorne um resumo de identidade conciso:
 
-- customer
-- active subscriptions
-- canceled subscriptions
-- invoices
-- obvious anomalies such as duplicate active subscriptions
+- cliente
+- assinaturas ativas
+- assinaturas canceladas
+- faturas
+- anomalias óbvias, como assinaturas ativas duplicadas
 
-### 2. Classify the issue
+### 2. Classifique o problema
 
-Put the case into one bucket before acting:
+Coloque o caso em um balde antes de agir:
 
-| Case | Typical action |
+| Caso | Ação típica |
 |------|----------------|
-| Duplicate personal subscription | cancel extras, consider refund |
-| Real multi-seat/team intent | preserve seats, clarify billing model |
-| Failed payment / incomplete checkout | recover via portal or update payment method |
-| Missing self-serve controls | provide portal, cancellation path, or invoice access |
-| Product failure or trust break | refund, apologize, log product issue |
+| Assinatura pessoal duplicada | cancelar extras, considerar reembolso |
+| Intenção real de multi-assento/equipe | preservar assentos, esclarecer o modelo de cobrança |
+| Pagamento falho / checkout incompleto | recuperar via portal ou atualizar método de pagamento |
+| Falta de controles de autoatendimento | fornecer portal, caminho de cancelamento ou acesso a faturas |
+| Falha de produto ou quebra de confiança | reembolsar, pedir desculpas, registrar problema de produto |
 
-### 3. Take the safest reversible action first
+### 3. Tome primeiro a ação reversível mais segura
 
-Preferred order:
+Ordem preferida:
 
-1. restore self-serve management
-2. fix duplicate or broken billing state
-3. refund only the affected charge or duplicate
-4. document the reason
-5. send a short customer follow-up
+1. restaurar o gerenciamento por autoatendimento
+2. corrigir o estado de cobrança duplicado ou quebrado
+3. reembolsar apenas a cobrança afetada ou a duplicada
+4. documentar o motivo
+5. enviar um acompanhamento curto ao cliente
 
-If the fix requires product work, separate:
+Se a correção exigir trabalho de produto, separe:
 
-- customer remediation now
-- product bug / workflow gap for backlog
+- remediação do cliente agora
+- bug de produto / lacuna de fluxo de trabalho para o backlog
 
-### 4. Check operator-side product gaps
+### 4. Verifique lacunas de produto do lado do operador
 
-If the customer pain comes from a missing operator surface, call it out explicitly. Common examples:
+Se a dor do cliente vem de uma superfície de operador ausente, aponte isso explicitamente. Exemplos comuns:
 
-- no billing portal
-- no usage/rate-limit visibility
-- no plan/seat explanation
-- no cancellation flow
-- no duplicate-subscription guard
+- nenhum portal de cobrança
+- nenhuma visibilidade de uso/rate-limit
+- nenhuma explicação de plano/assento
+- nenhum fluxo de cancelamento
+- nenhuma proteção contra assinatura duplicada
 
-Treat those as ECC or website follow-up items, not just support incidents.
+Trate esses casos como itens de acompanhamento do ECC ou do site, não apenas como incidentes de suporte.
 
-### 5. Produce the operator handoff
+### 5. Produza o handoff para o operador
 
-End with:
+Termine com:
 
-- customer state summary
-- action taken
-- revenue impact
-- follow-up text to send
-- product or backlog issue to create
+- resumo do estado do cliente
+- ação tomada
+- impacto na receita
+- texto de acompanhamento a enviar
+- issue de produto ou backlog a criar
 
-## Output Format
+## Formato de Saída
 
-Use this structure:
+Use esta estrutura:
 
 ```text
-CUSTOMER
-- name / email
-- relevant account identifiers
+CLIENTE
+- nome / e-mail
+- identificadores de conta relevantes
 
-BILLING STATE
-- active subscriptions
-- invoice or renewal state
-- anomalies
+ESTADO DE COBRANÇA
+- assinaturas ativas
+- estado de fatura ou renovação
+- anomalias
 
-DECISION
-- issue classification
-- why this action is correct
+DECISÃO
+- classificação do problema
+- por que esta ação está correta
 
-ACTION TAKEN
-- refund / cancel / portal / no-op
+AÇÃO TOMADA
+- reembolso / cancelar / portal / nenhuma ação
 
-FOLLOW-UP
-- short customer message
+ACOMPANHAMENTO
+- mensagem curta ao cliente
 
-PRODUCT GAP
-- what should be fixed in the product or website
+LACUNA DE PRODUTO
+- o que deve ser corrigido no produto ou site
 ```
 
-## Examples of Good Recommendations
+## Exemplos de Boas Recomendações
 
-- "The right fix is a billing portal, not a custom dashboard yet"
-- "This looks like duplicate personal checkout, not a real team-seat purchase"
-- "Refund one duplicate charge, keep the remaining active subscription, then convert the customer to org billing later if needed"
+- "A correção certa é um portal de cobrança, não um dashboard personalizado ainda"
+- "Isto parece um checkout pessoal duplicado, não uma compra real de assento de equipe"
+- "Reembolse uma cobrança duplicada, mantenha a assinatura ativa restante e depois converta o cliente para cobrança de organização se necessário"

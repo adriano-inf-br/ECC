@@ -1,161 +1,161 @@
 ---
 name: ecc-tools-cost-audit
-description: Evidence-first ECC Tools burn and billing audit workflow. Use when investigating runaway PR creation, quota bypass, premium-model leakage, duplicate jobs, or GitHub App cost spikes in the ECC Tools repo.
+description: Fluxo de trabalho de auditoria de gasto e cobrança do ECC Tools baseado em evidências. Use ao investigar criação descontrolada de PRs, bypass de cota, vazamento de modelo premium, jobs duplicados ou picos de custo do GitHub App no repositório do ECC Tools.
 metadata:
   origin: ECC
 ---
 
 # ECC Tools Cost Audit
 
-Use this skill when the user suspects the ECC Tools GitHub App is burning cost, over-creating PRs, bypassing usage limits, or routing free users into premium analysis paths.
+Use esta skill quando o usuário suspeitar que o GitHub App do ECC Tools está queimando custo, criando PRs em excesso, contornando limites de uso ou roteando usuários gratuitos para caminhos de análise premium.
 
-This is a focused operator workflow for the sibling [ECC-Tools](../../ECC-Tools) repo. It is not a generic billing skill and it is not a repo-wide code review pass.
+Este é um fluxo de trabalho de operador focado para o repositório irmão [ECC-Tools](../../ECC-Tools). Não é uma skill genérica de cobrança e não é um passe de code review em todo o repositório.
 
 ## Skill Stack
 
-Pull these ECC-native skills into the workflow when relevant:
+Traga estas skills nativas do ECC para o fluxo de trabalho quando relevante:
 
-- `autonomous-loops` for bounded multi-step audits that cross webhooks, queues, billing, and retries
-- `agentic-engineering` for tracing the request path into discrete, provable units
-- `customer-billing-ops` when repo behavior and customer-impact math must be separated cleanly
-- `search-first` before inventing helpers or re-implementing repo-local utilities
-- `security-review` when auth, usage gates, entitlements, or secrets are touched
-- `verification-loop` for proving rerun safety and exact post-fix state
-- `tdd-workflow` when the fix needs regression coverage in the worker, router, or billing paths
+- `autonomous-loops` para auditorias multi-passo limitadas que cruzam webhooks, filas, cobrança e retentativas
+- `agentic-engineering` para rastrear o caminho da requisição em unidades discretas e prováveis
+- `customer-billing-ops` quando o comportamento do repositório e a matemática de impacto no cliente devem ser separados de forma limpa
+- `search-first` antes de inventar helpers ou reimplementar utilitários locais do repositório
+- `security-review` quando auth, gates de uso, entitlements ou segredos forem tocados
+- `verification-loop` para provar a segurança de reexecução e o estado exato pós-correção
+- `tdd-workflow` quando a correção precisar de cobertura de regressão nos caminhos de worker, router ou cobrança
 
-## When To Use
+## Quando Usar
 
-- user says ECC Tools burn rate, PR recursion, over-created PRs, usage-limit bypass, or premium-model leakage
-- the task is in the sibling `ECC-Tools` repo and depends on webhook handlers, queue workers, usage reservation, PR creation logic, or paid-gate enforcement
-- a customer report says the app created too many PRs, billed incorrectly, or analyzed code without producing a usable result
+- usuário menciona taxa de gasto do ECC Tools, recursão de PR, PRs criados em excesso, bypass de limite de uso ou vazamento de modelo premium
+- a tarefa está no repositório irmão `ECC-Tools` e depende de handlers de webhook, workers de fila, reserva de uso, lógica de criação de PR ou aplicação de paid-gate
+- um relato de cliente diz que o app criou PRs demais, cobrou incorretamente ou analisou código sem produzir um resultado utilizável
 
-## Scope Guardrails
+## Guardrails de Escopo
 
-- work in the sibling `ECC-Tools` repo, not in `everything-claude-code`
-- start read-only unless the user clearly asked for a fix
-- do not mutate unrelated billing, checkout, or UI flows while tracing analysis burn
-- treat app-generated branches and app-generated PRs as red-flag recursion paths until proved otherwise
-- separate three things explicitly:
-  - repo-side burn root cause
-  - customer-facing billing impact
-  - product or entitlement gaps that need backlog follow-up
+- trabalhe no repositório irmão `ECC-Tools`, não em `everything-claude-code`
+- comece em modo somente leitura, a menos que o usuário tenha pedido claramente uma correção
+- não altere fluxos de cobrança, checkout ou UI não relacionados enquanto rastreia o gasto de análise
+- trate branches gerados pelo app e PRs gerados pelo app como caminhos de recursão suspeitos até prova em contrário
+- separe três coisas explicitamente:
+  - causa raiz do gasto no lado do repositório
+  - impacto de cobrança voltado ao cliente
+  - lacunas de produto ou entitlement que precisam de acompanhamento no backlog
 
-## Workflow
+## Fluxo de Trabalho
 
-### 1. Freeze repo scope
+### 1. Congele o escopo do repositório
 
-- switch into the sibling `ECC-Tools` repo
-- check branch and local diff first
-- identify the exact surface under audit:
-  - webhook router
-  - queue producer
-  - queue consumer
-  - PR creation path
-  - usage reservation / billing path
-  - model routing path
+- mude para o repositório irmão `ECC-Tools`
+- verifique o branch e o diff local primeiro
+- identifique a superfície exata sob auditoria:
+  - router de webhook
+  - produtor de fila
+  - consumidor de fila
+  - caminho de criação de PR
+  - caminho de reserva de uso / cobrança
+  - caminho de roteamento de modelo
 
-### 2. Trace ingress before theorizing
+### 2. Rastreie a entrada antes de teorizar
 
-- inspect `src/index.*` or the main entrypoint first
-- map every enqueue path before suggesting a fix
-- confirm which GitHub events share a queue type
-- confirm whether push, pull_request, synchronize, comment, or manual re-run events can converge on the same expensive path
+- inspecione `src/index.*` ou o entrypoint principal primeiro
+- mapeie cada caminho de enfileiramento antes de sugerir uma correção
+- confirme quais eventos do GitHub compartilham um tipo de fila
+- confirme se eventos de push, pull_request, synchronize, comment ou re-execução manual podem convergir para o mesmo caminho caro
 
-### 3. Trace the worker and side effects
+### 3. Rastreie o worker e os efeitos colaterais
 
-- inspect the queue consumer or scheduled worker that handles analysis
-- confirm whether a queued analysis always ends in:
-  - PR creation
-  - branch creation
-  - file updates
-  - premium model calls
-  - usage increments
-- if analysis can spend tokens and then fail before output is persisted, classify it as burn-with-broken-output
+- inspecione o consumidor de fila ou o worker agendado que trata da análise
+- confirme se uma análise enfileirada sempre termina em:
+  - criação de PR
+  - criação de branch
+  - atualizações de arquivo
+  - chamadas a modelo premium
+  - incrementos de uso
+- se a análise puder gastar tokens e então falhar antes de a saída ser persistida, classifique como gasto-com-saída-quebrada
 
-### 4. Audit the high-signal burn paths
+### 4. Audite os caminhos de gasto de alto sinal
 
-#### PR multiplication
+#### Multiplicação de PR
 
-- inspect PR helpers and branch naming
-- check dedupe, synchronize-event handling, and existing-PR reuse
-- if app-generated branches can re-enter analysis, treat that as a priority-0 recursion risk
+- inspecione os helpers de PR e a nomenclatura de branch
+- verifique dedupe, tratamento de evento synchronize e reuso de PR existente
+- se branches gerados pelo app puderem reentrar na análise, trate isso como risco de recursão prioridade-0
 
-#### Quota bypass
+#### Bypass de cota
 
-- inspect where quota is checked versus where usage is reserved or incremented
-- if quota is checked before enqueue but usage is charged only inside the worker, treat concurrent front-door passes as a real race
+- inspecione onde a cota é verificada versus onde o uso é reservado ou incrementado
+- se a cota for verificada antes do enfileiramento, mas o uso for cobrado apenas dentro do worker, trate passagens concorrentes pela porta da frente como uma corrida real
 
-#### Premium-model leakage
+#### Vazamento de modelo premium
 
-- inspect model selection, tier branching, and provider routing
-- verify whether free or capped users can still hit premium analyzers when premium keys are present
+- inspecione a seleção de modelo, a ramificação por tier e o roteamento de provedor
+- verifique se usuários gratuitos ou limitados ainda podem atingir analisadores premium quando há chaves premium presentes
 
-#### Retry burn
+#### Gasto por retentativa
 
-- inspect retry loops, duplicate queue jobs, and deterministic failure reruns
-- if the same non-transient error can spend analysis repeatedly, fix that before quality improvements
+- inspecione loops de retentativa, jobs de fila duplicados e reexecuções de falha determinística
+- se o mesmo erro não-transitório puder gastar análise repetidamente, corrija isso antes de melhorias de qualidade
 
-### 5. Fix in burn order
+### 5. Corrija na ordem de gasto
 
-If the user asked for code changes, prioritize fixes in this order:
+Se o usuário pediu mudanças de código, priorize as correções nesta ordem:
 
-1. stop automatic PR multiplication
-2. stop quota bypass
-3. stop premium leakage
-4. stop duplicate-job fanout and pointless retries
-5. close rerun/update safety gaps
+1. parar a multiplicação automática de PR
+2. parar o bypass de cota
+3. parar o vazamento premium
+4. parar o fanout de jobs duplicados e retentativas inúteis
+5. fechar lacunas de segurança de reexecução/atualização
 
-Keep the pass bounded to one to three direct fixes unless the same root cause clearly spans multiple files.
+Mantenha o passe limitado a uma a três correções diretas, a menos que a mesma causa raiz claramente abranja múltiplos arquivos.
 
-### 6. Verify with the smallest proving steps
+### 6. Verifique com os menores passos de prova
 
-- rerun only the targeted tests or integration slices that cover the changed path
-- verify whether the burn path is now:
-  - blocked
-  - deduped
-  - downgraded to cheaper analysis
-  - or rejected early
-- state the final status exactly:
-  - changed locally
-  - verified locally
-  - pushed
-  - deployed
-  - still blocked
+- reexecute apenas os testes direcionados ou fatias de integração que cobrem o caminho alterado
+- verifique se o caminho de gasto agora está:
+  - bloqueado
+  - deduplicado
+  - rebaixado para análise mais barata
+  - ou rejeitado cedo
+- declare o status final exatamente:
+  - alterado localmente
+  - verificado localmente
+  - enviado (push)
+  - implantado (deployed)
+  - ainda bloqueado
 
-## High-Signal Failure Patterns
+## Padrões de Falha de Alto Sinal
 
-### 1. One queue type for all triggers
+### 1. Um tipo de fila para todos os gatilhos
 
-If pushes, PR syncs, and manual audits all enqueue the same job and the worker always creates a PR, analysis equals PR spam.
+Se pushes, syncs de PR e auditorias manuais enfileiram o mesmo job e o worker sempre cria um PR, análise equivale a spam de PR.
 
-### 2. Post-enqueue usage reservation
+### 2. Reserva de uso pós-enfileiramento
 
-If usage is checked at the front door but only incremented in the worker, concurrent requests can all pass the gate and exceed quota.
+Se o uso for verificado na porta da frente mas só incrementado no worker, requisições concorrentes podem todas passar pelo gate e exceder a cota.
 
-### 3. Free tier on premium path
+### 3. Tier gratuito no caminho premium
 
-If free queued jobs can still route into Anthropic or another premium provider when keys exist, that is real spend leakage even if the user never sees the premium result.
+Se jobs gratuitos enfileirados ainda puderem rotear para Anthropic ou outro provedor premium quando há chaves, isso é vazamento de gasto real mesmo que o usuário nunca veja o resultado premium.
 
-### 4. App-generated branches re-enter the webhook
+### 4. Branches gerados pelo app reentram no webhook
 
-If `pull_request.synchronize`, branch pushes, or comment-triggered runs fire on app-owned branches, the app can recursively analyze its own output.
+Se `pull_request.synchronize`, pushes de branch ou execuções disparadas por comentário forem acionados em branches de propriedade do app, o app pode analisar recursivamente sua própria saída.
 
-### 5. Expensive work before persistence safety
+### 5. Trabalho caro antes da segurança de persistência
 
-If the system can spend tokens and then fail on PR creation, file update, or branch collision, it is burning cost without shipping value.
+Se o sistema puder gastar tokens e então falhar na criação de PR, atualização de arquivo ou colisão de branch, ele está queimando custo sem entregar valor.
 
-## Pitfalls
+## Armadilhas
 
-- do not begin with broad repo wandering; settle webhook -> queue -> worker first
-- do not mix customer billing inference with code-backed product truth
-- do not fix lower-value quality issues before the highest-burn path is contained
-- do not claim burn is fixed until the narrow proving step was rerun
-- do not push or deploy unless the user asked
-- do not touch unrelated repo-local changes if they are already in progress
+- não comece com perambulação ampla pelo repositório; estabeleça webhook -> fila -> worker primeiro
+- não misture inferência de cobrança de cliente com a verdade de produto embasada em código
+- não corrija problemas de qualidade de menor valor antes de o caminho de maior gasto estar contido
+- não afirme que o gasto foi corrigido até que o passo de prova estreito tenha sido reexecutado
+- não faça push nem deploy a menos que o usuário tenha pedido
+- não toque em mudanças locais não relacionadas do repositório se já estiverem em andamento
 
-## Verification
+## Verificação
 
-- root causes cite exact file paths and code areas
-- fixes are ordered by burn impact, not code neatness
-- proving commands are named
-- final status distinguishes local change, verification, push, and deployment
+- causas raiz citam caminhos de arquivo e áreas de código exatos
+- correções são ordenadas por impacto de gasto, não por elegância do código
+- comandos de prova são nomeados
+- o status final distingue mudança local, verificação, push e implantação

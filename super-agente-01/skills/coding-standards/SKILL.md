@@ -286,26 +286,26 @@ interface ApiResponse<T> {
   }
 }
 
-// Success response
+// Resposta de sucesso
 return NextResponse.json({
   success: true,
   data: markets,
   meta: { total: 100, page: 1, limit: 10 }
 })
 
-// Error response
+// Resposta de erro
 return NextResponse.json({
   success: false,
   error: 'Invalid request'
 }, { status: 400 })
 ```
 
-### Input Validation
+### Validação de Entrada
 
 ```typescript
 import { z } from 'zod'
 
-// PASS: GOOD: Schema validation
+// PASS: BOM: Validação por schema
 const CreateMarketSchema = z.object({
   name: z.string().min(1).max(200),
   description: z.string().min(1).max(2000),
@@ -318,7 +318,7 @@ export async function POST(request: Request) {
 
   try {
     const validated = CreateMarketSchema.parse(body)
-    // Proceed with validated data
+    // Prosseguir com os dados validados
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json({
@@ -331,68 +331,68 @@ export async function POST(request: Request) {
 }
 ```
 
-## File Organization
+## Organização de Arquivos
 
-### Project Structure
+### Estrutura do Projeto
 
 ```
 src/
 ├── app/                    # Next.js App Router
-│   ├── api/               # API routes
-│   ├── markets/           # Market pages
-│   └── (auth)/           # Auth pages (route groups)
-├── components/            # React components
-│   ├── ui/               # Generic UI components
-│   ├── forms/            # Form components
-│   └── layouts/          # Layout components
-├── hooks/                # Custom React hooks
-├── lib/                  # Utilities and configs
-│   ├── api/             # API clients
-│   ├── utils/           # Helper functions
-│   └── constants/       # Constants
-├── types/                # TypeScript types
-└── styles/              # Global styles
+│   ├── api/               # rotas de API
+│   ├── markets/           # páginas de markets
+│   └── (auth)/           # páginas de auth (route groups)
+├── components/            # componentes React
+│   ├── ui/               # componentes de UI genéricos
+│   ├── forms/            # componentes de formulário
+│   └── layouts/          # componentes de layout
+├── hooks/                # custom hooks React
+├── lib/                  # utilitários e configs
+│   ├── api/             # clientes de API
+│   ├── utils/           # funções auxiliares
+│   └── constants/       # constantes
+├── types/                # tipos TypeScript
+└── styles/              # estilos globais
 ```
 
-### File Naming
+### Nomenclatura de Arquivos
 
 ```
-components/Button.tsx          # PascalCase for components
-hooks/useAuth.ts              # camelCase with 'use' prefix
-lib/formatDate.ts             # camelCase for utilities
-types/market.types.ts         # camelCase with .types suffix
+components/Button.tsx          # PascalCase para componentes
+hooks/useAuth.ts              # camelCase com prefixo 'use'
+lib/formatDate.ts             # camelCase para utilitários
+types/market.types.ts         # camelCase com sufixo .types
 ```
 
 ## Comments & Documentation
 
-### When to Comment
+### Quando Comentar
 
 ```typescript
-// PASS: GOOD: Explain WHY, not WHAT
-// Use exponential backoff to avoid overwhelming the API during outages
+// PASS: BOM: Explique o PORQUÊ, não o O QUÊ
+// Use backoff exponencial para evitar sobrecarregar a API durante quedas
 const delay = Math.min(1000 * Math.pow(2, retryCount), 30000)
 
-// Deliberately using mutation here for performance with large arrays
+// Usando mutação deliberadamente aqui por performance com arrays grandes
 items.push(newItem)
 
-// FAIL: BAD: Stating the obvious
-// Increment counter by 1
+// FAIL: RUIM: Afirmar o óbvio
+// Incrementa o contador em 1
 count++
 
-// Set name to user's name
+// Define name como o nome do usuário
 name = user.name
 ```
 
-### JSDoc for Public APIs
+### JSDoc para APIs Públicas
 
 ```typescript
 /**
- * Searches markets using semantic similarity.
+ * Pesquisa markets usando similaridade semântica.
  *
- * @param query - Natural language search query
- * @param limit - Maximum number of results (default: 10)
- * @returns Array of markets sorted by similarity score
- * @throws {Error} If OpenAI API fails or Redis unavailable
+ * @param query - Consulta de pesquisa em linguagem natural
+ * @param limit - Número máximo de resultados (padrão: 10)
+ * @returns Array de markets ordenados por pontuação de similaridade
+ * @throws {Error} Se a API da OpenAI falhar ou o Redis estiver indisponível
  *
  * @example
  * ```typescript
@@ -404,24 +404,24 @@ export async function searchMarkets(
   query: string,
   limit: number = 10
 ): Promise<Market[]> {
-  // Implementation
+  // Implementação
 }
 ```
 
-## Performance Best Practices
+## Boas Práticas de Performance
 
-### Memoization
+### Memoização
 
 ```typescript
 import { useMemo, useCallback } from 'react'
 
-// PASS: GOOD: Memoize expensive computations
-// Copy before sorting - Array.prototype.sort mutates in place
+// PASS: BOM: Memoize computações caras
+// Copie antes de ordenar - Array.prototype.sort muta in place
 const sortedMarkets = useMemo(() => {
   return [...markets].sort((a, b) => b.volume - a.volume)
 }, [markets])
 
-// PASS: GOOD: Memoize callbacks
+// PASS: BOM: Memoize callbacks
 const handleSearch = useCallback((query: string) => {
   setSearchQuery(query)
 }, [])
@@ -432,7 +432,7 @@ const handleSearch = useCallback((query: string) => {
 ```typescript
 import { lazy, Suspense } from 'react'
 
-// PASS: GOOD: Lazy load heavy components
+// PASS: BOM: Faça lazy load de componentes pesados
 const HeavyChart = lazy(() => import('./HeavyChart'))
 
 export function Dashboard() {
@@ -444,16 +444,16 @@ export function Dashboard() {
 }
 ```
 
-### Database Queries
+### Consultas de Banco de Dados
 
 ```typescript
-// PASS: GOOD: Select only needed columns
+// PASS: BOM: Selecione apenas as colunas necessárias
 const { data } = await supabase
   .from('markets')
   .select('id, name, status')
   .limit(10)
 
-// FAIL: BAD: Select everything
+// FAIL: RUIM: Selecionar tudo
 const { data } = await supabase
   .from('markets')
   .select('*')
@@ -461,7 +461,7 @@ const { data } = await supabase
 
 ## Testing Standards
 
-### Test Structure (AAA Pattern)
+### Estrutura de Teste (Padrão AAA)
 
 ```typescript
 test('calculates similarity correctly', () => {
@@ -477,31 +477,31 @@ test('calculates similarity correctly', () => {
 })
 ```
 
-### Test Naming
+### Nomenclatura de Testes
 
 ```typescript
-// PASS: GOOD: Descriptive test names
+// PASS: BOM: Nomes de teste descritivos
 test('returns empty array when no markets match query', () => { })
 test('throws error when OpenAI API key is missing', () => { })
 test('falls back to substring search when Redis unavailable', () => { })
 
-// FAIL: BAD: Vague test names
+// FAIL: RUIM: Nomes de teste vagos
 test('works', () => { })
 test('test search', () => { })
 ```
 
-## Code Smell Detection
+## Detecção de Code Smells
 
-Watch for these anti-patterns:
+Fique atento a estes anti-patterns:
 
-### 1. Long Functions
+### 1. Funções Longas
 ```typescript
-// FAIL: BAD: Function > 50 lines
+// FAIL: RUIM: Função > 50 linhas
 function processMarketData() {
-  // 100 lines of code
+  // 100 linhas de código
 }
 
-// PASS: GOOD: Split into smaller functions
+// PASS: BOM: Dividir em funções menores
 function processMarketData() {
   const validated = validateData()
   const transformed = transformData(validated)
@@ -509,38 +509,38 @@ function processMarketData() {
 }
 ```
 
-### 2. Deep Nesting
+### 2. Aninhamento Profundo
 ```typescript
-// FAIL: BAD: 5+ levels of nesting
+// FAIL: RUIM: 5+ níveis de aninhamento
 if (user) {
   if (user.isAdmin) {
     if (market) {
       if (market.isActive) {
         if (hasPermission) {
-          // Do something
+          // Fazer algo
         }
       }
     }
   }
 }
 
-// PASS: GOOD: Early returns
+// PASS: BOM: Retornos antecipados
 if (!user) return
 if (!user.isAdmin) return
 if (!market) return
 if (!market.isActive) return
 if (!hasPermission) return
 
-// Do something
+// Fazer algo
 ```
 
-### 3. Magic Numbers
+### 3. Números Mágicos
 ```typescript
-// FAIL: BAD: Unexplained numbers
+// FAIL: RUIM: Números sem explicação
 if (retryCount > 3) { }
 setTimeout(callback, 500)
 
-// PASS: GOOD: Named constants
+// PASS: BOM: Constantes nomeadas
 const MAX_RETRIES = 3
 const DEBOUNCE_DELAY_MS = 500
 
@@ -548,4 +548,4 @@ if (retryCount > MAX_RETRIES) { }
 setTimeout(callback, DEBOUNCE_DELAY_MS)
 ```
 
-**Remember**: Code quality is not negotiable. Clear, maintainable code enables rapid development and confident refactoring.
+**Lembre-se**: A qualidade do código não é negociável. Código claro e de fácil manutenção viabiliza desenvolvimento rápido e refatoração com confiança.

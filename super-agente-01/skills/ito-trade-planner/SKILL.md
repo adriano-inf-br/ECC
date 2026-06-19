@@ -1,66 +1,69 @@
 ---
 name: ito-trade-planner
-description: Build a non-advisory prediction-market trade planning worksheet for Itô or venue workflows. Use to inspect venues, underliers, constraints, order prerequisites, and manual execution steps without placing trades or recommending positions.
+description: Monte uma planilha de planejamento de operações em mercados de previsão, sem caráter de aconselhamento, para fluxos de trabalho do Itô ou de venues. Use para inspecionar venues, ativos subjacentes, restrições, pré-requisitos de ordens e etapas de execução manual sem realizar operações nem recomendar posições.
 metadata:
   origin: ECC
 ---
 
 # Itô Trade Planner
 
-Use this skill when a user wants a structured worksheet for a prediction-market
-idea, basket adjustment, venue comparison, or manual execution plan.
+Use esta skill quando um usuário quiser uma planilha estruturada para uma ideia
+de mercado de previsão, ajuste de cesta, comparação de venues ou plano de
+execução manual.
 
-The skill is intentionally non-executing. It produces checklists and parameter
-tables the user can review manually.
+A skill é intencionalmente não executora. Ela produz checklists e tabelas de
+parâmetros que o usuário pode revisar manualmente.
 
 ## Guardrails
 
-- Do not say a trade is good, bad, optimal, or recommended.
-- Do not provide investment advice or position sizing advice.
-- Do not place, cancel, route, or sign orders.
-- Do not request private keys, seed phrases, exchange passwords, or wallet
-  credentials.
-- Require explicit user approval before any workflow moves from research to
-  execution-capable tooling.
+- Não diga que uma operação é boa, ruim, ótima ou recomendada.
+- Não forneça aconselhamento de investimento nem aconselhamento sobre
+  dimensionamento de posição.
+- Não realize, cancele, roteie ou assine ordens.
+- Não solicite chaves privadas, frases-semente, senhas de exchange ou
+  credenciais de carteira.
+- Exija aprovação explícita do usuário antes que qualquer fluxo de trabalho passe
+  da pesquisa para ferramentas capazes de executar.
 
-## Planning Workflow
+## Fluxo de trabalho de planejamento
 
-1. Restate the user's idea as a neutral hypothesis.
-2. Identify markets, venues, underliers, resolution rules, fees, and data
-   freshness constraints.
-3. If `ITO_API_KEY` is configured and requested, read Itô basket metadata.
-4. Build a manual worksheet:
-   - market/underlier
+1. Reformule a ideia do usuário como uma hipótese neutra.
+2. Identifique mercados, venues, ativos subjacentes, regras de resolução, taxas e
+   restrições de atualidade dos dados.
+3. Se `ITO_API_KEY` estiver configurada e for solicitada, leia os metadados da
+   cesta do Itô.
+4. Monte uma planilha manual:
+   - mercado/ativo subjacente
    - venue
-   - data source
-   - current observable price or status
-   - resolution rule
-   - liquidity caveat
-   - open questions
-   - manual action link or next review step
-5. Run `prediction-market-risk-review` before discussing automation, keys,
-   venue auth, or capital constraints.
+   - fonte de dados
+   - preço ou status observável atual
+   - regra de resolução
+   - ressalva de liquidez
+   - questões em aberto
+   - link de ação manual ou próxima etapa de revisão
+5. Execute `prediction-market-risk-review` antes de discutir automação, chaves,
+   autenticação de venue ou restrições de capital.
 
-## Allowed Language
+## Linguagem permitida
 
 Use:
 
-- "manual planning worksheet"
-- "questions to answer before acting"
-- "observable venue data"
-- "risk and constraint review"
+- "planilha de planejamento manual"
+- "questões a responder antes de agir"
+- "dados observáveis da venue"
+- "revisão de risco e restrições"
 
-Avoid:
+Evite:
 
-- "you should buy/sell"
-- "best trade"
-- "guaranteed"
-- "risk-free"
-- "optimal size"
+- "você deveria comprar/vender"
+- "melhor operação"
+- "garantido"
+- "sem risco"
+- "tamanho ótimo"
 
-## Output Contract
+## Contrato de saída
 
-End every plan with:
+Encerre cada plano com:
 
 ```text
 This is a planning worksheet, not investment or trading advice. Review venue

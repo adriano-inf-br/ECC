@@ -1,63 +1,63 @@
 ---
 name: ito-basket-compare
-description: Compare Itô prediction-market baskets against a user's knowledge base, portfolio notes, financial context, watchlist, or research thesis. Use for read-only basket comparison and gap analysis without investment advice or live trading.
+description: Compara cestas (baskets) de mercados de previsão da Itô com a base de conhecimento do usuário, notas de portfólio, contexto financeiro, watchlist ou tese de pesquisa. Use para comparação de cestas somente leitura e análise de lacunas, sem aconselhamento de investimento ou trading ao vivo.
 metadata:
   origin: ECC
 ---
 
 # Itô Basket Compare
 
-Use this skill to compare a basket, theme, or market set against a user's
-knowledge base, portfolio notes, research memo, CRM context, or stated thesis.
+Use esta skill para comparar uma cesta (basket), tema ou conjunto de mercados com a
+base de conhecimento do usuário, notas de portfólio, memorando de pesquisa, contexto de CRM ou tese declarada.
 
-This skill is read-only. It does not recommend trades. It helps a user inspect
-fit, exposure, assumptions, and missing context before they decide what to do.
+Esta skill é somente leitura. Ela não recomenda operações. Ela ajuda o usuário a inspecionar
+fit, exposição, premissas e contexto ausente antes de decidir o que fazer.
 
 ## Guardrails
 
-- Do not provide investment advice or tell the user to buy, sell, hold, hedge,
-  lever, or size a trade.
-- Do not execute, prepare, or submit orders.
-- Do not use private documents unless the user explicitly points to them.
-- Use `ITO_API_KEY` only for read-only Itô basket/market data after explicit
-  user request.
-- If comparing against financials, preserve privacy and summarize only the
-  fields needed for the comparison.
+- Não forneça aconselhamento de investimento nem diga ao usuário para comprar, vender, manter, fazer hedge,
+  alavancar ou dimensionar uma operação.
+- Não execute, prepare nem submeta ordens.
+- Não use documentos privados a menos que o usuário aponte explicitamente para eles.
+- Use `ITO_API_KEY` apenas para dados de cesta/mercado da Itô somente leitura, após solicitação
+  explícita do usuário.
+- Ao comparar com dados financeiros, preserve a privacidade e resuma apenas os
+  campos necessários para a comparação.
 
-## Comparison Modes
+## Modos de Comparação
 
-### Basket vs Knowledge Base
+### Cesta vs Base de Conhecimento
 
-1. Identify the basket theme and underliers.
-2. Retrieve the user's relevant notes, docs, or memory snippets.
-3. Map each underlier to claims, sources, uncertainties, and stale assumptions.
-4. Return aligned signals, conflicting signals, and missing research.
+1. Identifique o tema da cesta e os ativos subjacentes (underliers).
+2. Recupere as notas, documentos ou trechos de memória relevantes do usuário.
+3. Mapeie cada underlier para afirmações, fontes, incertezas e premissas desatualizadas.
+4. Retorne sinais alinhados, sinais conflitantes e pesquisa ausente.
 
-### Basket vs Portfolio Notes
+### Cesta vs Notas de Portfólio
 
-1. Parse the user's watchlist, holdings summary, or exposure notes.
-2. Compare themes, geographies, time horizons, and event outcomes.
-3. Flag concentration, correlation, and duplicated narrative exposure.
-4. Avoid recommendations; phrase output as inspection and questions.
+1. Analise a watchlist, o resumo de posições ou as notas de exposição do usuário.
+2. Compare temas, geografias, horizontes de tempo e resultados de eventos.
+3. Sinalize concentração, correlação e exposição narrativa duplicada.
+4. Evite recomendações; formule a saída como inspeção e perguntas.
 
-### Basket vs Financial Context
+### Cesta vs Contexto Financeiro
 
-1. Accept only user-provided or explicitly selected financial context.
-2. Identify liquidity, drawdown, time-horizon, and constraint mismatches.
-3. Ask for missing constraints instead of guessing.
+1. Aceite apenas contexto financeiro fornecido ou explicitamente selecionado pelo usuário.
+2. Identifique descompassos de liquidez, drawdown, horizonte de tempo e restrições.
+3. Pergunte sobre restrições ausentes em vez de adivinhar.
 
-## Output Contract
+## Contrato de Saída
 
-Use this structure:
+Use esta estrutura:
 
-1. Basket summary
-2. Comparison target
-3. Matches
-4. Conflicts or stale assumptions
-5. Missing context
-6. User-action checklist
+1. Resumo da cesta
+2. Alvo da comparação
+3. Correspondências
+4. Conflitos ou premissas desatualizadas
+5. Contexto ausente
+6. Checklist de ações do usuário
 
-End with:
+Termine com:
 
 ```text
 This comparison is informational and not investment or trading advice.

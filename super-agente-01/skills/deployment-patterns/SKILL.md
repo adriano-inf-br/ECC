@@ -1,90 +1,90 @@
 ---
 name: deployment-patterns
-description: Deployment workflows, CI/CD pipeline patterns, Docker containerization, health checks, rollback strategies, and production readiness checklists for web applications.
+description: Fluxos de trabalho de deployment, padrões de pipeline CI/CD, conteinerização com Docker, health checks, estratégias de rollback e checklists de prontidão para produção para aplicações web.
 metadata:
   origin: ECC
 ---
 
 # Deployment Patterns
 
-Production deployment workflows and CI/CD best practices.
+Fluxos de trabalho de deployment para produção e boas práticas de CI/CD.
 
-## When to Activate
+## Quando Ativar
 
-- Setting up CI/CD pipelines
-- Dockerizing an application
-- Planning deployment strategy (blue-green, canary, rolling)
-- Implementing health checks and readiness probes
-- Preparing for a production release
-- Configuring environment-specific settings
+- Configurar pipelines CI/CD
+- Conteinerizar uma aplicação com Docker
+- Planejar estratégia de deployment (blue-green, canary, rolling)
+- Implementar health checks e readiness probes
+- Preparar uma release de produção
+- Configurar definições específicas de ambiente
 
-## Deployment Strategies
+## Estratégias de Deployment
 
-### Rolling Deployment (Default)
+### Rolling Deployment (Padrão)
 
-Replace instances gradually — old and new versions run simultaneously during rollout.
+Substitui instâncias gradualmente — versões antiga e nova rodam simultaneamente durante o rollout.
 
 ```
-Instance 1: v1 → v2  (update first)
-Instance 2: v1        (still running v1)
-Instance 3: v1        (still running v1)
+Instância 1: v1 → v2  (atualiza primeiro)
+Instância 2: v1        (ainda rodando v1)
+Instância 3: v1        (ainda rodando v1)
 
-Instance 1: v2
-Instance 2: v1 → v2  (update second)
-Instance 3: v1
+Instância 1: v2
+Instância 2: v1 → v2  (atualiza em segundo)
+Instância 3: v1
 
-Instance 1: v2
-Instance 2: v2
-Instance 3: v1 → v2  (update last)
+Instância 1: v2
+Instância 2: v2
+Instância 3: v1 → v2  (atualiza por último)
 ```
 
-**Pros:** Zero downtime, gradual rollout
-**Cons:** Two versions run simultaneously — requires backward-compatible changes
-**Use when:** Standard deployments, backward-compatible changes
+**Prós:** Zero downtime, rollout gradual
+**Contras:** Duas versões rodam simultaneamente — exige mudanças retrocompatíveis
+**Use quando:** Deployments padrão, mudanças retrocompatíveis
 
 ### Blue-Green Deployment
 
-Run two identical environments. Switch traffic atomically.
+Rode dois ambientes idênticos. Troque o tráfego atomicamente.
 
 ```
-Blue  (v1) ← traffic
-Green (v2)   idle, running new version
+Blue  (v1) ← tráfego
+Green (v2)   ocioso, rodando a nova versão
 
-# After verification:
-Blue  (v1)   idle (becomes standby)
-Green (v2) ← traffic
+# Após verificação:
+Blue  (v1)   ocioso (torna-se standby)
+Green (v2) ← tráfego
 ```
 
-**Pros:** Instant rollback (switch back to blue), clean cutover
-**Cons:** Requires 2x infrastructure during deployment
-**Use when:** Critical services, zero-tolerance for issues
+**Prós:** Rollback instantâneo (volte para o blue), cutover limpo
+**Contras:** Exige 2x de infraestrutura durante o deployment
+**Use quando:** Serviços críticos, tolerância zero a problemas
 
 ### Canary Deployment
 
-Route a small percentage of traffic to the new version first.
+Roteia uma pequena porcentagem do tráfego para a nova versão primeiro.
 
 ```
-v1: 95% of traffic
-v2:  5% of traffic  (canary)
+v1: 95% do tráfego
+v2:  5% do tráfego  (canary)
 
-# If metrics look good:
-v1: 50% of traffic
-v2: 50% of traffic
+# Se as métricas parecerem boas:
+v1: 50% do tráfego
+v2: 50% do tráfego
 
 # Final:
-v2: 100% of traffic
+v2: 100% do tráfego
 ```
 
-**Pros:** Catches issues with real traffic before full rollout
-**Cons:** Requires traffic splitting infrastructure, monitoring
-**Use when:** High-traffic services, risky changes, feature flags
+**Prós:** Pega problemas com tráfego real antes do rollout completo
+**Contras:** Exige infraestrutura de divisão de tráfego, monitoramento
+**Use quando:** Serviços de alto tráfego, mudanças arriscadas, feature flags
 
 ## Docker
 
-### Multi-Stage Dockerfile (Node.js)
+### Dockerfile Multi-Stage (Node.js)
 
 ```dockerfile
-# Stage 1: Install dependencies
+# Stage 1: Instala dependências
 FROM node:22-alpine AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
@@ -98,7 +98,7 @@ COPY . .
 RUN npm run build
 RUN npm prune --production
 
-# Stage 3: Production image
+# Stage 3: Imagem de produção
 FROM node:22-alpine AS runner
 WORKDIR /app
 
@@ -118,7 +118,7 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
 CMD ["node", "dist/server.js"]
 ```
 
-### Multi-Stage Dockerfile (Go)
+### Dockerfile Multi-Stage (Go)
 
 ```dockerfile
 FROM golang:1.22-alpine AS builder
@@ -140,7 +140,7 @@ HEALTHCHECK --interval=30s --timeout=3s CMD wget -qO- http://localhost:8080/heal
 CMD ["/server"]
 ```
 
-### Multi-Stage Dockerfile (Python/Django)
+### Dockerfile Multi-Stage (Python/Django)
 
 ```dockerfile
 FROM python:3.12-slim AS builder
@@ -166,29 +166,29 @@ HEALTHCHECK --interval=30s --timeout=3s CMD python -c "import urllib.request; ur
 CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "4"]
 ```
 
-### Docker Best Practices
+### Boas Práticas de Docker
 
 ```
-# GOOD practices
-- Use specific version tags (node:22-alpine, not node:latest)
-- Multi-stage builds to minimize image size
-- Run as non-root user
-- Copy dependency files first (layer caching)
-- Use .dockerignore to exclude node_modules, .git, tests
-- Add HEALTHCHECK instruction
-- Set resource limits in docker-compose or k8s
+# Boas práticas
+- Use tags de versão específicas (node:22-alpine, não node:latest)
+- Builds multi-stage para minimizar o tamanho da imagem
+- Rode como usuário não-root
+- Copie os arquivos de dependência primeiro (cache de camadas)
+- Use .dockerignore para excluir node_modules, .git, tests
+- Adicione a instrução HEALTHCHECK
+- Defina limites de recursos em docker-compose ou k8s
 
-# BAD practices
-- Running as root
-- Using :latest tags
-- Copying entire repo in one COPY layer
-- Installing dev dependencies in production image
-- Storing secrets in image (use env vars or secrets manager)
+# Más práticas
+- Rodar como root
+- Usar tags :latest
+- Copiar o repositório inteiro em uma única camada COPY
+- Instalar dependências de dev na imagem de produção
+- Armazenar segredos na imagem (use env vars ou gerenciador de segredos)
 ```
 
-## CI/CD Pipeline
+## Pipeline CI/CD
 
-### GitHub Actions (Standard Pipeline)
+### GitHub Actions (Pipeline Padrão)
 
 ```yaml
 name: CI/CD
@@ -245,34 +245,34 @@ jobs:
     steps:
       - name: Deploy to production
         run: |
-          # Platform-specific deployment command
+          # Comando de deployment específico da plataforma
           # Railway: railway up
           # Vercel: vercel --prod
           # K8s: kubectl set image deployment/app app=ghcr.io/${{ github.repository }}:${{ github.sha }}
           echo "Deploying ${{ github.sha }}"
 ```
 
-### Pipeline Stages
+### Estágios do Pipeline
 
 ```
-PR opened:
-  lint → typecheck → unit tests → integration tests → preview deploy
+PR aberto:
+  lint → typecheck → testes unitários → testes de integração → deploy de preview
 
-Merged to main:
-  lint → typecheck → unit tests → integration tests → build image → deploy staging → smoke tests → deploy production
+Merge na main:
+  lint → typecheck → testes unitários → testes de integração → build da imagem → deploy em staging → smoke tests → deploy em produção
 ```
 
 ## Health Checks
 
-### Health Check Endpoint
+### Endpoint de Health Check
 
 ```typescript
-// Simple health check
+// Health check simples
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "ok" });
 });
 
-// Detailed health check (for internal monitoring)
+// Health check detalhado (para monitoramento interno)
 app.get("/health/detailed", async (req, res) => {
   const checks = {
     database: await checkDatabase(),
@@ -301,7 +301,7 @@ async function checkDatabase(): Promise<HealthCheck> {
 }
 ```
 
-### Kubernetes Probes
+### Probes do Kubernetes
 
 ```yaml
 livenessProbe:
@@ -326,27 +326,27 @@ startupProbe:
     port: 3000
   initialDelaySeconds: 0
   periodSeconds: 5
-  failureThreshold: 30    # 30 * 5s = 150s max startup time
+  failureThreshold: 30    # 30 * 5s = 150s de tempo máximo de startup
 ```
 
-## Environment Configuration
+## Configuração de Ambiente
 
-### Twelve-Factor App Pattern
+### Padrão Twelve-Factor App
 
 ```bash
-# All config via environment variables — never in code
+# Toda config via variáveis de ambiente — nunca no código
 DATABASE_URL=postgres://user:pass@host:5432/db
 REDIS_URL=redis://host:6379/0
-API_KEY=${API_KEY}           # injected by secrets manager
+API_KEY=${API_KEY}           # injetada pelo gerenciador de segredos
 LOG_LEVEL=info
 PORT=3000
 
-# Environment-specific behavior
-NODE_ENV=production          # or staging, development
-APP_ENV=production           # explicit app environment
+# Comportamento específico de ambiente
+NODE_ENV=production          # ou staging, development
+APP_ENV=production           # ambiente explícito da aplicação
 ```
 
-### Configuration Validation
+### Validação de Configuração
 
 ```typescript
 import { z } from "zod";
@@ -360,69 +360,69 @@ const envSchema = z.object({
   LOG_LEVEL: z.enum(["debug", "info", "warn", "error"]).default("info"),
 });
 
-// Validate at startup — fail fast if config is wrong
+// Valida no startup — falhe rápido se a config estiver errada
 export const env = envSchema.parse(process.env);
 ```
 
-## Rollback Strategy
+## Estratégia de Rollback
 
-### Instant Rollback
+### Rollback Instantâneo
 
 ```bash
-# Docker/Kubernetes: point to previous image
+# Docker/Kubernetes: aponte para a imagem anterior
 kubectl rollout undo deployment/app
 
-# Vercel: promote previous deployment
+# Vercel: promova o deployment anterior
 vercel rollback
 
-# Railway: redeploy previous commit
+# Railway: faça redeploy do commit anterior
 railway up --commit <previous-sha>
 
-# Database: rollback migration (if reversible)
+# Banco de dados: faça rollback da migration (se reversível)
 npx prisma migrate resolve --rolled-back <migration-name>
 ```
 
-### Rollback Checklist
+### Checklist de Rollback
 
-- [ ] Previous image/artifact is available and tagged
-- [ ] Database migrations are backward-compatible (no destructive changes)
-- [ ] Feature flags can disable new features without deploy
-- [ ] Monitoring alerts configured for error rate spikes
-- [ ] Rollback tested in staging before production release
+- [ ] Imagem/artefato anterior está disponível e com tag
+- [ ] Migrations de banco de dados são retrocompatíveis (sem mudanças destrutivas)
+- [ ] Feature flags podem desativar novos recursos sem deploy
+- [ ] Alertas de monitoramento configurados para picos na taxa de erro
+- [ ] Rollback testado em staging antes da release de produção
 
-## Production Readiness Checklist
+## Checklist de Prontidão para Produção
 
-Before any production deployment:
+Antes de qualquer deployment de produção:
 
-### Application
-- [ ] All tests pass (unit, integration, E2E)
-- [ ] No hardcoded secrets in code or config files
-- [ ] Error handling covers all edge cases
-- [ ] Logging is structured (JSON) and does not contain PII
-- [ ] Health check endpoint returns meaningful status
+### Aplicação
+- [ ] Todos os testes passam (unitários, integração, E2E)
+- [ ] Nenhum segredo hardcoded no código ou em arquivos de config
+- [ ] Tratamento de erros cobre todos os casos extremos
+- [ ] Logging é estruturado (JSON) e não contém PII
+- [ ] Endpoint de health check retorna status significativo
 
-### Infrastructure
-- [ ] Docker image builds reproducibly (pinned versions)
-- [ ] Environment variables documented and validated at startup
-- [ ] Resource limits set (CPU, memory)
-- [ ] Horizontal scaling configured (min/max instances)
-- [ ] SSL/TLS enabled on all endpoints
+### Infraestrutura
+- [ ] Imagem Docker compila de forma reprodutível (versões fixadas)
+- [ ] Variáveis de ambiente documentadas e validadas no startup
+- [ ] Limites de recursos definidos (CPU, memória)
+- [ ] Escalonamento horizontal configurado (instâncias min/max)
+- [ ] SSL/TLS habilitado em todos os endpoints
 
-### Monitoring
-- [ ] Application metrics exported (request rate, latency, errors)
-- [ ] Alerts configured for error rate > threshold
-- [ ] Log aggregation set up (structured logs, searchable)
-- [ ] Uptime monitoring on health endpoint
+### Monitoramento
+- [ ] Métricas da aplicação exportadas (taxa de requisições, latência, erros)
+- [ ] Alertas configurados para taxa de erro > limite
+- [ ] Agregação de logs configurada (logs estruturados, pesquisáveis)
+- [ ] Monitoramento de uptime no endpoint de health
 
-### Security
-- [ ] Dependencies scanned for CVEs
-- [ ] CORS configured for allowed origins only
-- [ ] Rate limiting enabled on public endpoints
-- [ ] Authentication and authorization verified
-- [ ] Security headers set (CSP, HSTS, X-Frame-Options)
+### Segurança
+- [ ] Dependências escaneadas em busca de CVEs
+- [ ] CORS configurado apenas para origens permitidas
+- [ ] Rate limiting habilitado em endpoints públicos
+- [ ] Autenticação e autorização verificadas
+- [ ] Headers de segurança definidos (CSP, HSTS, X-Frame-Options)
 
-### Operations
-- [ ] Rollback plan documented and tested
-- [ ] Database migration tested against production-sized data
-- [ ] Runbook for common failure scenarios
-- [ ] On-call rotation and escalation path defined
+### Operações
+- [ ] Plano de rollback documentado e testado
+- [ ] Migration de banco de dados testada contra dados do tamanho de produção
+- [ ] Runbook para cenários comuns de falha
+- [ ] Rotação de plantão (on-call) e caminho de escalonamento definidos

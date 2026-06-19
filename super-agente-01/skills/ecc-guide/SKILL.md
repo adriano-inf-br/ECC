@@ -1,31 +1,31 @@
 ---
 name: ecc-guide
-description: Guide users through ECC's current agents, skills, commands, hooks, rules, install profiles, and project onboarding by reading the live repository surface before answering.
+description: Oriente os usuários pelos agents, skills, comandos, hooks, regras, perfis de instalação e onboarding de projeto atuais do ECC, lendo a superfície ativa do repositório antes de responder.
 metadata:
   origin: community
 ---
 
 # ECC Guide
 
-Use this skill when a user needs help understanding, navigating, installing, or choosing parts of Everything Claude Code.
+Use esta skill quando um usuário precisar de ajuda para entender, navegar, instalar ou escolher partes do Everything Claude Code.
 
-## When To Use
+## Quando Usar
 
-Use this skill when the user:
+Use esta skill quando o usuário:
 
-- asks what ECC includes
-- wants help finding a skill, command, agent, hook, rule, or install profile
-- is new to the repository and needs a guided path
-- asks "how do I do X with ECC?"
-- asks which ECC components fit a project
-- needs a lightweight explanation of how commands, skills, agents, hooks, and rules relate
-- is confused by install paths, duplicate installs, reset/uninstall, or selective install options
+- pergunta o que o ECC inclui
+- quer ajuda para encontrar uma skill, comando, agent, hook, regra ou perfil de instalação
+- é novo no repositório e precisa de um caminho guiado
+- pergunta "como faço X com o ECC?"
+- pergunta quais componentes do ECC se encaixam em um projeto
+- precisa de uma explicação leve de como comandos, skills, agents, hooks e regras se relacionam
+- está confuso com caminhos de instalação, instalações duplicadas, reset/desinstalação ou opções de instalação seletiva
 
-## Core Principle
+## Princípio Central
 
-Answer from current files, not memory. ECC changes quickly, so hard-coded catalog counts, feature lists, and install instructions go stale.
+Responda a partir dos arquivos atuais, não da memória. O ECC muda rapidamente, então contagens de catálogo, listas de recursos e instruções de instalação fixadas no código ficam desatualizadas.
 
-When the ECC repository is available, inspect the relevant files before giving a concrete answer:
+Quando o repositório do ECC estiver disponível, inspecione os arquivos relevantes antes de dar uma resposta concreta:
 
 ```bash
 node scripts/ci/catalog.js --json
@@ -36,74 +36,74 @@ node scripts/install-plan.js --list-profiles
 node scripts/install-plan.js --list-components --json
 ```
 
-Use the smallest set of reads needed for the user's question.
+Use o menor conjunto de leituras necessário para a pergunta do usuário.
 
-## Repository Map
+## Mapa do Repositório
 
-- `README.md`: install paths, uninstall/reset guidance, public positioning, FAQs
-- `AGENTS.md`: contributor guidance and project structure
-- `agent.yaml`: exported gitagent surface and command list
-- `commands/`: maintained slash-command compatibility shims
-- `skills/*/SKILL.md`: reusable workflows and domain playbooks
-- `agents/*.md`: delegated subagent role prompts
-- `rules/`: language and harness rules
-- `hooks/README.md`, `hooks/hooks.json`, `scripts/hooks/`: hook behavior and safety gates
-- `manifests/install-*.json`: selective install modules, components, profiles, and target support
-- `docs/`: harness guides, architecture notes, translated docs, release docs
+- `README.md`: caminhos de instalação, orientação de desinstalação/reset, posicionamento público, FAQs
+- `AGENTS.md`: orientação para contribuidores e estrutura do projeto
+- `agent.yaml`: superfície de gitagent exportada e lista de comandos
+- `commands/`: shims de compatibilidade de slash-command mantidos
+- `skills/*/SKILL.md`: fluxos de trabalho reutilizáveis e playbooks de domínio
+- `agents/*.md`: prompts de papel de subagent delegado
+- `rules/`: regras de linguagem e harness
+- `hooks/README.md`, `hooks/hooks.json`, `scripts/hooks/`: comportamento de hooks e gates de segurança
+- `manifests/install-*.json`: módulos, componentes, perfis de instalação seletiva e suporte a alvos
+- `docs/`: guias de harness, notas de arquitetura, docs traduzidos, docs de release
 
-## Response Style
+## Estilo de Resposta
 
-Lead with the answer, then give the next action. Most users do not need a full catalog dump.
+Comece pela resposta, depois dê a próxima ação. A maioria dos usuários não precisa de um despejo completo do catálogo.
 
-Good first response shape:
+Boa forma de primeira resposta:
 
-1. what to use
-2. why it fits
-3. exact file or command to inspect
-4. one next command or question
+1. o que usar
+2. por que se encaixa
+3. arquivo ou comando exato para inspecionar
+4. um próximo comando ou pergunta
 
-Avoid:
+Evite:
 
-- listing every skill or command by default
-- repeating large README sections
-- recommending retired command shims when a skill-first path exists
-- claiming a component exists without checking the filesystem
-- replacing install guidance with manual copy commands when the managed installer supports the target
+- listar toda skill ou comando por padrão
+- repetir grandes seções do README
+- recomendar shims de comando aposentados quando existe um caminho skill-first
+- afirmar que um componente existe sem verificar o sistema de arquivos
+- substituir a orientação de instalação por comandos de cópia manual quando o instalador gerenciado suporta o alvo
 
-## Common Tasks
+## Tarefas Comuns
 
-### New User Onboarding
+### Onboarding de Novo Usuário
 
-Give a short menu:
+Dê um menu curto:
 
-- install or reset ECC
-- pick skills for a project
-- understand commands vs skills
-- inspect hooks and safety behavior
-- run a harness audit
-- find a specific workflow
+- instalar ou resetar o ECC
+- escolher skills para um projeto
+- entender comandos vs skills
+- inspecionar hooks e comportamento de segurança
+- executar uma auditoria de harness
+- encontrar um fluxo de trabalho específico
 
-Point to `README.md` for install/reset and `/project-init` for project-specific onboarding.
+Aponte para `README.md` para instalação/reset e para `/project-init` para onboarding específico de projeto.
 
-### Feature Discovery
+### Descoberta de Recursos
 
-For "what should I use for X?":
+Para "o que devo usar para X?":
 
-1. Search `skills/`, `commands/`, and `agents/`.
-2. Prefer skills as the primary workflow surface.
-3. Use commands only when they are a maintained compatibility shim or a user explicitly wants slash-command behavior.
-4. Mention agents when delegation is useful.
+1. Pesquise em `skills/`, `commands/` e `agents/`.
+2. Prefira skills como a superfície primária de fluxo de trabalho.
+3. Use comandos apenas quando forem um shim de compatibilidade mantido ou um usuário quiser explicitamente comportamento de slash-command.
+4. Mencione agents quando a delegação for útil.
 
-Useful searches:
+Pesquisas úteis:
 
 ```bash
 rg -n "<query>" skills commands agents docs
 find skills -maxdepth 2 -name SKILL.md | sort
 ```
 
-### Install Guidance
+### Orientação de Instalação
 
-Use managed install paths:
+Use caminhos de instalação gerenciados:
 
 ```bash
 node scripts/install-plan.js --list-profiles
@@ -111,36 +111,36 @@ node scripts/install-plan.js --profile minimal --target claude --json
 node scripts/install-apply.js --profile minimal --target claude --dry-run
 ```
 
-For specific skill installs:
+Para instalações de skills específicas:
 
 ```bash
 node scripts/install-plan.js --skills <skill-id> --target claude --json
 node scripts/install-apply.js --skills <skill-id> --target claude --dry-run
 ```
 
-Warn users not to stack plugin installs and full manual/profile installs unless they intentionally want duplicate surfaces.
+Avise os usuários para não empilhar instalações de plugin e instalações manuais/de perfil completas, a menos que queiram intencionalmente superfícies duplicadas.
 
-### Project Onboarding
+### Onboarding de Projeto
 
-Use `/project-init` when the user wants ECC configured for a target repo. The expected sequence is:
+Use `/project-init` quando o usuário quiser o ECC configurado para um repositório-alvo. A sequência esperada é:
 
-1. detect the stack from project files
-2. resolve a dry-run install plan
-3. inspect existing `CLAUDE.md` and settings files
-4. ask before applying changes
-5. keep generated guidance minimal and repo-specific
+1. detectar a stack a partir dos arquivos do projeto
+2. resolver um plano de instalação em dry-run
+3. inspecionar o `CLAUDE.md` existente e os arquivos de configuração
+4. perguntar antes de aplicar mudanças
+5. manter a orientação gerada mínima e específica ao repositório
 
-### Troubleshooting
+### Solução de Problemas
 
-Ask for the target harness and install path first, then inspect:
+Pergunte primeiro pelo harness-alvo e pelo caminho de instalação, depois inspecione:
 
-- plugin install metadata
-- `.claude/`, `.cursor/`, `.codex/`, `.gemini/`, `.opencode/`, `.codebuddy/`, `.joycode/`, or `.qwen/`
+- metadados de instalação de plugin
+- `.claude/`, `.cursor/`, `.codex/`, `.gemini/`, `.opencode/`, `.codebuddy/`, `.joycode/` ou `.qwen/`
 - `hooks/hooks.json`
-- install-state files
-- relevant command/skill files
+- arquivos de estado de instalação
+- arquivos relevantes de comando/skill
 
-For repo health, suggest:
+Para a saúde do repositório, sugira:
 
 ```bash
 npm run harness:audit -- --format text
@@ -148,9 +148,9 @@ npm run observability:ready
 npm test
 ```
 
-## Output Templates
+## Modelos de Saída
 
-### Short Recommendation
+### Recomendação Curta
 
 ```text
 Use <skill-or-command>. It fits because <reason>.
@@ -160,7 +160,7 @@ Verify with: <command>
 Next: <one concrete action>
 ```
 
-### Search Results
+### Resultados de Pesquisa
 
 ```text
 Best matches:
@@ -170,7 +170,7 @@ Best matches:
 Recommendation: <which one to use first and why>
 ```
 
-### Install Plan Summary
+### Resumo do Plano de Instalação
 
 ```text
 Detected: <stack evidence>
@@ -181,10 +181,10 @@ Would change: <paths>
 Needs approval before apply: <yes/no>
 ```
 
-## Related Surfaces
+## Superfícies Relacionadas
 
-- `/project-init`: stack-aware onboarding plan for a target repo
-- `/harness-audit`: deterministic readiness scorecard
-- `/skill-health`: skill quality review
-- `/skill-create`: generate a new skill from local git history
-- `/security-scan`: inspect Claude/OpenCode configuration security
+- `/project-init`: plano de onboarding ciente da stack para um repositório-alvo
+- `/harness-audit`: scorecard determinístico de prontidão
+- `/skill-health`: revisão de qualidade de skill
+- `/skill-create`: gerar uma nova skill a partir do histórico local do git
+- `/security-scan`: inspecionar a segurança da configuração do Claude/OpenCode

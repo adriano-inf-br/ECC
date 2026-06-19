@@ -1,89 +1,89 @@
 ---
 name: java-coding-standards
-description: "Java coding standards for Spring Boot and Quarkus services: naming, immutability, Optional usage, streams, exceptions, generics, CDI, reactive patterns, and project layout. Automatically applies framework-specific conventions."
+description: "Padrões de código Java para serviços Spring Boot e Quarkus: nomenclatura, imutabilidade, uso de Optional, streams, exceções, generics, CDI, padrões reativos e estrutura de projeto. Aplica automaticamente convenções específicas do framework."
 metadata:
   origin: ECC
 ---
 
 # Java Coding Standards
 
-Standards for readable, maintainable Java (17+) code in Spring Boot and Quarkus services.
+Padrões para código Java (17+) legível e de fácil manutenção em serviços Spring Boot e Quarkus.
 
 ## When to Use
 
-- Writing or reviewing Java code in Spring Boot or Quarkus projects
-- Enforcing naming, immutability, or exception handling conventions
-- Working with records, sealed classes, or pattern matching (Java 17+)
-- Reviewing use of Optional, streams, or generics
-- Structuring packages and project layout
-- **[QUARKUS]**: Working with CDI scopes, Panache entities, or reactive pipelines
+- Escrever ou revisar código Java em projetos Spring Boot ou Quarkus
+- Aplicar convenções de nomenclatura, imutabilidade ou tratamento de exceções
+- Trabalhar com records, sealed classes ou pattern matching (Java 17+)
+- Revisar uso de Optional, streams ou generics
+- Estruturar pacotes e a organização do projeto
+- **[QUARKUS]**: Trabalhar com escopos de CDI, entidades Panache ou pipelines reativos
 
 ## How It Works
 
-### Framework Detection
+### Detecção de framework
 
-Before applying standards, determine the framework from the build file:
+Antes de aplicar os padrões, determine o framework a partir do arquivo de build:
 
-- Build file contains `quarkus` → apply **[QUARKUS]** conventions
-- Build file contains `spring-boot` → apply **[SPRING]** conventions
-- Neither detected → apply shared conventions only
+- Arquivo de build contém `quarkus` → aplique as convenções **[QUARKUS]**
+- Arquivo de build contém `spring-boot` → aplique as convenções **[SPRING]**
+- Nenhum detectado → aplique apenas as convenções compartilhadas
 
-## Core Principles
+## Princípios fundamentais
 
-- Prefer clarity over cleverness
-- Immutable by default; minimize shared mutable state
-- Fail fast with meaningful exceptions
-- Consistent naming and package structure
-- **[QUARKUS]**: Favor build-time over runtime processing; avoid runtime reflection where possible
+- Prefira clareza a esperteza
+- Imutável por padrão; minimize estado mutável compartilhado
+- Falhe rápido com exceções significativas
+- Nomenclatura e estrutura de pacotes consistentes
+- **[QUARKUS]**: Favoreça o processamento em tempo de build em vez de tempo de execução; evite reflexão em tempo de execução sempre que possível
 
 ## Examples
 
-The sections below show concrete Spring Boot, Quarkus, and shared Java examples
-for naming, immutability, dependency injection, reactive code, exceptions,
-project layout, logging, configuration, and tests.
+As seções abaixo mostram exemplos concretos de Spring Boot, Quarkus e Java
+compartilhado para nomenclatura, imutabilidade, injeção de dependências, código
+reativo, exceções, estrutura de projeto, logging, configuração e testes.
 
-## Naming
+## Nomenclatura
 
 ```java
 // PASS: Classes/Records: PascalCase
 public class MarketService {}
 public record Money(BigDecimal amount, Currency currency) {}
 
-// PASS: Methods/fields: camelCase
+// PASS: Métodos/campos: camelCase
 private final MarketRepository marketRepository;
 public Market findBySlug(String slug) {}
 
-// PASS: Constants: UPPER_SNAKE_CASE
+// PASS: Constantes: UPPER_SNAKE_CASE
 private static final int MAX_PAGE_SIZE = 100;
 
-// PASS: [QUARKUS] JAX-RS resources named as *Resource, not *Controller
+// PASS: [QUARKUS] Recursos JAX-RS nomeados como *Resource, não *Controller
 public class MarketResource {}
 
-// PASS: [SPRING] REST controllers named as *Controller
+// PASS: [SPRING] Controllers REST nomeados como *Controller
 public class MarketController {}
 ```
 
-## Immutability
+## Imutabilidade
 
 ```java
-// PASS: Favor records and final fields
+// PASS: Favoreça records e campos final
 public record MarketDto(Long id, String name, MarketStatus status) {}
 
 public class Market {
   private final Long id;
   private final String name;
-  // getters only, no setters
+  // somente getters, sem setters
 }
 
-// PASS: [QUARKUS] Panache active-record entities use public fields (Quarkus convention)
+// PASS: [QUARKUS] Entidades active-record do Panache usam campos public (convenção do Quarkus)
 @Entity
 public class Market extends PanacheEntity {
   public String name;
   public MarketStatus status;
-  // Panache generates accessors at build time; public fields are idiomatic here
+  // O Panache gera os acessadores em tempo de build; campos public são idiomáticos aqui
 }
 
-// PASS: [QUARKUS] Panache MongoDB entities
+// PASS: [QUARKUS] Entidades MongoDB do Panache
 @MongoEntity(collection = "markets")
 public class Market extends PanacheMongoEntity {
   public String name;
@@ -91,38 +91,38 @@ public class Market extends PanacheMongoEntity {
 }
 ```
 
-## Optional Usage
+## Uso de Optional
 
 ```java
-// PASS: Return Optional from find* methods
+// PASS: Retorne Optional de métodos find*
 // [SPRING]
 Optional<Market> market = marketRepository.findBySlug(slug);
 
 // [QUARKUS] Panache
 Optional<Market> market = Market.find("slug", slug).firstResultOptional();
 
-// PASS: Map/flatMap instead of get()
+// PASS: Use map/flatMap em vez de get()
 return market
     .map(MarketResponse::from)
     .orElseThrow(() -> new EntityNotFoundException("Market not found"));
 ```
 
-## Streams Best Practices
+## Boas práticas com streams
 
 ```java
-// PASS: Use streams for transformations, keep pipelines short
+// PASS: Use streams para transformações, mantenha pipelines curtos
 List<String> names = markets.stream()
     .map(Market::name)
     .filter(Objects::nonNull)
     .toList();
 
-// FAIL: Avoid complex nested streams; prefer loops for clarity
+// FAIL: Evite streams aninhados complexos; prefira loops por clareza
 ```
 
-## Dependency Injection
+## Injeção de dependências
 
 ```java
-// PASS: [SPRING] Constructor injection (preferred over @Autowired on fields)
+// PASS: [SPRING] Injeção por construtor (preferível a @Autowired em campos)
 @Service
 public class MarketService {
   private final MarketRepository marketRepository;
@@ -132,7 +132,7 @@ public class MarketService {
   }
 }
 
-// PASS: [QUARKUS] Constructor injection
+// PASS: [QUARKUS] Injeção por construtor
 @ApplicationScoped
 public class MarketService {
   private final MarketRepository marketRepository;
@@ -143,26 +143,26 @@ public class MarketService {
   }
 }
 
-// PASS: [QUARKUS] Package-private field injection (acceptable in Quarkus — avoids proxy issues)
+// PASS: [QUARKUS] Injeção em campo package-private (aceitável no Quarkus — evita problemas de proxy)
 @ApplicationScoped
 public class MarketService {
   @Inject
   MarketRepository marketRepository;
 }
 
-// FAIL: [SPRING] Field injection with @Autowired
+// FAIL: [SPRING] Injeção em campo com @Autowired
 @Autowired
-private MarketRepository marketRepository; // use constructor injection
+private MarketRepository marketRepository; // use injeção por construtor
 
-// FAIL: [QUARKUS] @Singleton when interception or lazy init is needed
-@Singleton // non-proxyable — use @ApplicationScoped instead
+// FAIL: [QUARKUS] @Singleton quando interceptação ou inicialização lazy são necessárias
+@Singleton // não proxiável — use @ApplicationScoped em vez disso
 public class MarketService {}
 ```
 
-## Reactive Patterns [QUARKUS]
+## Padrões reativos [QUARKUS]
 
 ```java
-// PASS: Return Uni/Multi from reactive endpoints
+// PASS: Retorne Uni/Multi de endpoints reativos
 @GET
 @Path("/{slug}")
 public Uni<Market> findBySlug(@PathParam("slug") String slug) {
@@ -171,36 +171,36 @@ public Uni<Market> findBySlug(@PathParam("slug") String slug) {
       .onItem().ifNull().failWith(() -> new MarketNotFoundException(slug));
 }
 
-// PASS: Non-blocking pipeline composition
+// PASS: Composição de pipeline não bloqueante
 public Uni<OrderConfirmation> placeOrder(OrderRequest req) {
   return validateOrder(req)
       .chain(valid -> persistOrder(valid))
       .chain(order -> notifyFulfillment(order));
 }
 
-// FAIL: Blocking call inside a Uni/Multi pipeline
+// FAIL: Chamada bloqueante dentro de um pipeline Uni/Multi
 public Uni<Market> find(String slug) {
-  Market m = Market.find("slug", slug).firstResult(); // BLOCKING — breaks event loop
+  Market m = Market.find("slug", slug).firstResult(); // BLOQUEANTE — quebra o event loop
   return Uni.createFrom().item(m);
 }
 
-// FAIL: Subscribing more than once to a shared Uni
+// FAIL: Inscrever-se mais de uma vez em um Uni compartilhado
 Uni<Market> shared = fetchMarket(slug);
 shared.subscribe().with(m -> log(m));
-shared.subscribe().with(m -> cache(m)); // double subscribe — use Uni.memoize()
+shared.subscribe().with(m -> cache(m)); // inscrição dupla — use Uni.memoize()
 ```
 
-## Exceptions
+## Exceções
 
-- Use unchecked exceptions for domain errors; wrap technical exceptions with context
-- Create domain-specific exceptions (e.g., `MarketNotFoundException`)
-- Avoid broad `catch (Exception ex)` unless rethrowing/logging centrally
+- Use exceções unchecked para erros de domínio; envolva exceções técnicas com contexto
+- Crie exceções específicas de domínio (ex.: `MarketNotFoundException`)
+- Evite `catch (Exception ex)` abrangente, a menos que esteja relançando/logando centralmente
 
 ```java
 throw new MarketNotFoundException(slug);
 ```
 
-### Centralised Exception Handling
+### Tratamento centralizado de exceções
 
 ```java
 // [SPRING]
@@ -212,7 +212,7 @@ public class GlobalExceptionHandler {
   }
 }
 
-// [QUARKUS] Option A: ExceptionMapper
+// [QUARKUS] Opção A: ExceptionMapper
 @Provider
 public class MarketNotFoundMapper implements ExceptionMapper<MarketNotFoundException> {
   @Override
@@ -221,23 +221,23 @@ public class MarketNotFoundMapper implements ExceptionMapper<MarketNotFoundExcep
   }
 }
 
-// [QUARKUS] Option B: @ServerExceptionMapper (RESTEasy Reactive)
+// [QUARKUS] Opção B: @ServerExceptionMapper (RESTEasy Reactive)
 @ServerExceptionMapper
 public RestResponse<ErrorResponse> handle(MarketNotFoundException ex) {
   return RestResponse.status(Status.NOT_FOUND, ErrorResponse.from(ex));
 }
 ```
 
-## Generics and Type Safety
+## Generics e segurança de tipos
 
-- Avoid raw types; declare generic parameters
-- Prefer bounded generics for reusable utilities
+- Evite tipos crus (raw types); declare parâmetros genéricos
+- Prefira generics com limites (bounded) para utilitários reutilizáveis
 
 ```java
 public <T extends Identifiable> Map<Long, T> indexById(Collection<T> items) { ... }
 ```
 
-## Project Structure
+## Estrutura do projeto
 
 ### [SPRING] Maven/Gradle
 
@@ -252,44 +252,44 @@ src/main/java/com/example/app/
   util/
 src/main/resources/
   application.yml
-src/test/java/... (mirrors main)
+src/test/java/... (espelha main)
 ```
 
 ### [QUARKUS] Maven/Gradle
 
 ```
 src/main/java/com/example/app/
-  config/              # @ConfigMapping, @ConfigProperty beans, Producers
-  resource/            # JAX-RS resources (not "controller")
+  config/              # beans @ConfigMapping, @ConfigProperty, Producers
+  resource/            # recursos JAX-RS (não "controller")
   service/
-  repository/          # PanacheRepository implementations (if not using active record)
-  domain/              # JPA/Panache entities, MongoDB entities
+  repository/          # implementações de PanacheRepository (se não usar active record)
+  domain/              # entidades JPA/Panache, entidades MongoDB
   dto/
   util/
-  mapper/              # MapStruct mappers (if used)
+  mapper/              # mappers MapStruct (se usados)
 src/main/resources/
-  application.properties   # Quarkus convention (YAML supported with quarkus-config-yaml)
-  import.sql               # Hibernate auto-import for dev/test
-src/test/java/... (mirrors main)
+  application.properties   # convenção do Quarkus (YAML suportado com quarkus-config-yaml)
+  import.sql               # auto-import do Hibernate para dev/test
+src/test/java/... (espelha main)
 ```
 
-## Formatting and Style
+## Formatação e estilo
 
-- Use 2 or 4 spaces consistently (project standard)
-- One public top-level type per file
-- Keep methods short and focused; extract helpers
-- Order members: constants, fields, constructors, public methods, protected, private
+- Use 2 ou 4 espaços de forma consistente (padrão do projeto)
+- Um tipo público de nível superior por arquivo
+- Mantenha métodos curtos e focados; extraia helpers
+- Ordene os membros: constantes, campos, construtores, métodos públicos, protegidos, privados
 
-## Code Smells to Avoid
+## Code smells a evitar
 
-- Long parameter lists → use DTO/builders
-- Deep nesting → early returns
-- Magic numbers → named constants
-- Static mutable state → prefer dependency injection
-- Silent catch blocks → log and act or rethrow
-- **[QUARKUS]**: `@Singleton` where `@ApplicationScoped` is intended — breaks proxying and interception
-- **[QUARKUS]**: Mixing `quarkus-resteasy-reactive` and `quarkus-resteasy` (classic) — pick one stack
-- **[QUARKUS]**: Panache active-record + repository pattern in the same bounded context — pick one
+- Listas longas de parâmetros → use DTO/builders
+- Aninhamento profundo → early returns
+- Números mágicos → constantes nomeadas
+- Estado estático mutável → prefira injeção de dependências
+- Blocos catch silenciosos → logue e aja ou relance
+- **[QUARKUS]**: `@Singleton` onde `@ApplicationScoped` é o pretendido — quebra proxying e interceptação
+- **[QUARKUS]**: Misturar `quarkus-resteasy-reactive` e `quarkus-resteasy` (clássico) — escolha uma stack
+- **[QUARKUS]**: Active-record do Panache + padrão repository no mesmo bounded context — escolha um
 
 ## Logging
 
@@ -299,69 +299,69 @@ private static final Logger log = LoggerFactory.getLogger(MarketService.class);
 log.info("fetch_market slug={}", slug);
 log.error("failed_fetch_market slug={}", slug, ex);
 
-// [QUARKUS] JBoss Logging (default, zero-cost at build time)
+// [QUARKUS] JBoss Logging (padrão, custo zero em tempo de build)
 private static final Logger log = Logger.getLogger(MarketService.class);
 log.infof("fetch_market slug=%s", slug);
 log.errorf(ex, "failed_fetch_market slug=%s", slug);
 
-// [QUARKUS] Alternative: simplified logging with @Inject
+// [QUARKUS] Alternativa: logging simplificado com @Inject
 @Inject
-Logger log; // CDI-injected, scoped to declaring class
+Logger log; // injetado via CDI, com escopo da classe declarante
 ```
 
-## Null Handling
+## Tratamento de null
 
-- Accept `@Nullable` only when unavoidable; otherwise use `@NonNull`
-- Use Bean Validation (`@NotNull`, `@NotBlank`) on inputs
-- **[QUARKUS]**: Apply `@Valid` on `@BeanParam`, `@RestForm`, and request body parameters
+- Aceite `@Nullable` apenas quando inevitável; caso contrário use `@NonNull`
+- Use Bean Validation (`@NotNull`, `@NotBlank`) nas entradas
+- **[QUARKUS]**: Aplique `@Valid` em parâmetros `@BeanParam`, `@RestForm` e no corpo da requisição
 
-## Configuration
+## Configuração
 
 ```java
 // [SPRING] @ConfigurationProperties
 @ConfigurationProperties(prefix = "market")
 public record MarketProperties(int maxPageSize, Duration cacheTtl) {}
 
-// [QUARKUS] @ConfigMapping (type-safe, build-time validated)
+// [QUARKUS] @ConfigMapping (type-safe, validado em tempo de build)
 @ConfigMapping(prefix = "market")
 public interface MarketConfig {
   int maxPageSize();
   Duration cacheTtl();
 }
 
-// [QUARKUS] Simple values with @ConfigProperty
+// [QUARKUS] Valores simples com @ConfigProperty
 @ConfigProperty(name = "market.max-page-size", defaultValue = "100")
 int maxPageSize;
 ```
 
-## Testing Expectations
+## Expectativas de teste
 
-### Shared
-- JUnit 5 + AssertJ for fluent assertions
-- Mockito for mocking; avoid partial mocks where possible
-- Favor deterministic tests; no hidden sleeps
+### Compartilhado
+- JUnit 5 + AssertJ para asserções fluentes
+- Mockito para mocking; evite mocks parciais sempre que possível
+- Favoreça testes determinísticos; sem sleeps ocultos
 
 ### [SPRING]
-- `@WebMvcTest` for controller slices, `@DataJpaTest` for repository slices
-- `@SpringBootTest` reserved for full integration tests
-- `@MockBean` for replacing beans in Spring context
+- `@WebMvcTest` para slices de controller, `@DataJpaTest` para slices de repository
+- `@SpringBootTest` reservado para testes de integração completos
+- `@MockBean` para substituir beans no contexto Spring
 
 ### [QUARKUS]
-- Plain JUnit 5 + Mockito for unit tests (no `@QuarkusTest`)
-- `@QuarkusTest` reserved for CDI integration tests
-- `@InjectMock` for replacing CDI beans in integration tests
-- Dev Services for database/Kafka/Redis — avoid manual Testcontainers setup when Dev Services suffice
-- `@QuarkusTestResource` for custom external service lifecycle
+- JUnit 5 + Mockito puros para testes unitários (sem `@QuarkusTest`)
+- `@QuarkusTest` reservado para testes de integração de CDI
+- `@InjectMock` para substituir beans CDI em testes de integração
+- Dev Services para banco de dados/Kafka/Redis — evite configuração manual de Testcontainers quando os Dev Services bastarem
+- `@QuarkusTestResource` para o ciclo de vida de serviços externos customizados
 
 ```java
-// [SPRING] Controller test
+// [SPRING] Teste de controller
 @WebMvcTest(MarketController.class)
 class MarketControllerTest {
   @Autowired MockMvc mockMvc;
   @MockBean MarketService marketService;
 }
 
-// [QUARKUS] Integration test
+// [QUARKUS] Teste de integração
 @QuarkusTest
 class MarketResourceTest {
   @InjectMock
@@ -373,7 +373,7 @@ class MarketResourceTest {
   }
 }
 
-// [QUARKUS] Unit test (no CDI, no @QuarkusTest)
+// [QUARKUS] Teste unitário (sem CDI, sem @QuarkusTest)
 @ExtendWith(MockitoExtension.class)
 class MarketServiceTest {
   @Mock MarketRepository marketRepository;
@@ -381,4 +381,4 @@ class MarketServiceTest {
 }
 ```
 
-**Remember**: Keep code intentional, typed, and observable. Optimize for maintainability over micro-optimizations unless proven necessary.
+**Lembre-se**: Mantenha o código intencional, tipado e observável. Otimize para manutenibilidade em vez de micro-otimizações, a menos que comprovadamente necessário.

@@ -1,57 +1,57 @@
 ---
 name: django-security
-description: Django security best practices, authentication, authorization, CSRF protection, SQL injection prevention, XSS prevention, and secure deployment configurations.
+description: Melhores práticas de segurança no Django, autenticação, autorização, proteção CSRF, prevenção de Injeção SQL, prevenção de XSS e configurações de deploy seguras.
 metadata:
   origin: ECC
 ---
 
-# Django Security Best Practices
+# Melhores Práticas de Segurança no Django
 
-Comprehensive security guidelines for Django applications to protect against common vulnerabilities.
+Diretrizes abrangentes de segurança para aplicações Django, a fim de proteger contra vulnerabilidades comuns.
 
-## When to Activate
+## Quando Ativar
 
-- Setting up Django authentication and authorization
-- Implementing user permissions and roles
-- Configuring production security settings
-- Reviewing Django application for security issues
-- Deploying Django applications to production
+- Configurar autenticação e autorização no Django
+- Implementar permissões e papéis de usuário
+- Configurar definições de segurança para produção
+- Revisar uma aplicação Django em busca de problemas de segurança
+- Fazer deploy de aplicações Django em produção
 
-## Core Security Settings
+## Configurações Centrais de Segurança
 
-### Production Settings Configuration
+### Configuração de Settings de Produção
 
 ```python
 # settings/production.py
 import os
 
-DEBUG = False  # CRITICAL: Never use True in production
+DEBUG = False  # CRÍTICO: Nunca use True em produção
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
 
-# Security headers
+# Cabeçalhos de segurança
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
-SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_SECONDS = 31536000  # 1 ano
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_BROWSER_XSS_FILTER = True
 X_FRAME_OPTIONS = 'DENY'
 
-# HTTPS and Cookies
+# HTTPS e Cookies
 SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_SAMESITE = 'Lax'
 
-# Secret key (must be set via environment variable)
+# Chave secreta (deve ser definida via variável de ambiente)
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 if not SECRET_KEY:
     raise ImproperlyConfigured('DJANGO_SECRET_KEY environment variable is required')
 
-# Password validation
+# Validação de senha
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -71,9 +71,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 ```
 
-## Authentication
+## Autenticação
 
-### Custom User Model
+### Model de Usuário Customizado
 
 ```python
 # apps/users/models.py
@@ -81,12 +81,12 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 class User(AbstractUser):
-    """Custom user model for better security."""
+    """Model de usuário customizado para melhor segurança."""
 
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=20, blank=True)
 
-    USERNAME_FIELD = 'email'  # Use email as username
+    USERNAME_FIELD = 'email'  # Usa o e-mail como username
     REQUIRED_FIELDS = ['username']
 
     class Meta:
@@ -101,10 +101,10 @@ class User(AbstractUser):
 AUTH_USER_MODEL = 'users.User'
 ```
 
-### Password Hashing
+### Hashing de Senha
 
 ```python
-# Django uses PBKDF2 by default. For stronger security:
+# O Django usa PBKDF2 por padrão. Para segurança mais forte:
 PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.Argon2PasswordHasher',
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
@@ -113,20 +113,20 @@ PASSWORD_HASHERS = [
 ]
 ```
 
-### Session Management
+### Gerenciamento de Sessão
 
 ```python
-# Session configuration
-SESSION_ENGINE = 'django.contrib.sessions.backends.cache'  # Or 'db'
+# Configuração de sessão
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'  # Ou 'db'
 SESSION_CACHE_ALIAS = 'default'
-SESSION_COOKIE_AGE = 3600 * 24 * 7  # 1 week
+SESSION_COOKIE_AGE = 3600 * 24 * 7  # 1 semana
 SESSION_SAVE_EVERY_REQUEST = False
-SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # Better UX, but less secure
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # Melhor UX, porém menos seguro
 ```
 
-## Authorization
+## Autorização
 
-### Permissions
+### Permissões
 
 ```python
 # models.py
@@ -145,7 +145,7 @@ class Post(models.Model):
         ]
 
     def user_can_edit(self, user):
-        """Check if user can edit this post."""
+        """Verifica se o usuário pode editar este post."""
         return self.author == user or user.has_perm('app.can_edit_others')
 
 # views.py
@@ -155,32 +155,32 @@ from django.views.generic import UpdateView
 class PostUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Post
     permission_required = 'app.can_edit_others'
-    raise_exception = True  # Return 403 instead of redirect
+    raise_exception = True  # Retorna 403 em vez de redirecionar
 
     def get_queryset(self):
-        """Only allow users to edit their own posts."""
+        """Permite que os usuários editem apenas seus próprios posts."""
         return Post.objects.filter(author=self.request.user)
 ```
 
-### Custom Permissions
+### Permissões Customizadas
 
 ```python
 # permissions.py
 from rest_framework import permissions
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
-    """Allow only owners to edit objects."""
+    """Permite que apenas os proprietários editem objetos."""
 
     def has_object_permission(self, request, view, obj):
-        # Read permissions allowed for any request
+        # Permissões de leitura liberadas para qualquer requisição
         if request.method in permissions.SAFE_METHODS:
             return True
 
-        # Write permissions only for owner
+        # Permissões de escrita apenas para o proprietário
         return obj.author == request.user
 
 class IsAdminOrReadOnly(permissions.BasePermission):
-    """Allow admins to do anything, others read-only."""
+    """Permite que admins façam qualquer coisa; os demais, somente leitura."""
 
     def has_permission(self, request, view):
         if request.method in permissions.SAFE_METHODS:
@@ -188,13 +188,13 @@ class IsAdminOrReadOnly(permissions.BasePermission):
         return request.user and request.user.is_staff
 
 class IsVerifiedUser(permissions.BasePermission):
-    """Allow only verified users."""
+    """Permite apenas usuários verificados."""
 
     def has_permission(self, request, view):
         return request.user and request.user.is_authenticated and request.user.is_verified
 ```
 
-### Role-Based Access Control (RBAC)
+### Controle de Acesso Baseado em Papéis (RBAC)
 
 ```python
 # models.py
@@ -216,7 +216,7 @@ class User(AbstractUser):
 
 # Mixins
 class AdminRequiredMixin:
-    """Mixin to require admin role."""
+    """Mixin para exigir o papel de admin."""
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated or not request.user.is_admin():
@@ -225,97 +225,97 @@ class AdminRequiredMixin:
         return super().dispatch(request, *args, **kwargs)
 ```
 
-## SQL Injection Prevention
+## Prevenção de Injeção SQL
 
-### Django ORM Protection
+### Proteção do ORM do Django
 
 ```python
-# GOOD: Django ORM automatically escapes parameters
+# BOM: o ORM do Django escapa automaticamente os parâmetros
 def get_user(username):
-    return User.objects.get(username=username)  # Safe
+    return User.objects.get(username=username)  # Seguro
 
-# GOOD: Using parameters with raw()
+# BOM: usando parâmetros com raw()
 def search_users(query):
     return User.objects.raw('SELECT * FROM users WHERE username = %s', [query])
 
-# BAD: Never directly interpolate user input
+# RUIM: Nunca interpole entrada do usuário diretamente
 def get_user_bad(username):
-    return User.objects.raw(f'SELECT * FROM users WHERE username = {username}')  # VULNERABLE!
+    return User.objects.raw(f'SELECT * FROM users WHERE username = {username}')  # VULNERÁVEL!
 
-# GOOD: Using filter with proper escaping
+# BOM: usando filter com escape adequado
 def get_users_by_email(email):
-    return User.objects.filter(email__iexact=email)  # Safe
+    return User.objects.filter(email__iexact=email)  # Seguro
 
-# GOOD: Using Q objects for complex queries
+# BOM: usando objetos Q para consultas complexas
 from django.db.models import Q
 def search_users_complex(query):
     return User.objects.filter(
         Q(username__icontains=query) |
         Q(email__icontains=query)
-    )  # Safe
+    )  # Seguro
 ```
 
-### Extra Security with raw()
+### Segurança Extra com raw()
 
 ```python
-# If you must use raw SQL, always use parameters
+# Se você precisar usar SQL bruto, sempre use parâmetros
 User.objects.raw(
     'SELECT * FROM users WHERE email = %s AND status = %s',
     [user_input_email, status]
 )
 ```
 
-## XSS Prevention
+## Prevenção de XSS
 
-### Template Escaping
+### Escape em Templates
 
 ```django
-{# Django auto-escapes variables by default - SAFE #}
-{{ user_input }}  {# Escaped HTML #}
+{# O Django escapa variáveis automaticamente por padrão - SEGURO #}
+{{ user_input }}  {# HTML escapado #}
 
-{# Explicitly mark safe only for trusted content #}
-{{ trusted_html|safe }}  {# Not escaped #}
+{# Marque como safe explicitamente apenas para conteúdo confiável #}
+{{ trusted_html|safe }}  {# Não escapado #}
 
-{# Use template filters for safe HTML #}
-{{ user_input|escape }}  {# Same as default #}
-{{ user_input|striptags }}  {# Remove all HTML tags #}
+{# Use filtros de template para HTML seguro #}
+{{ user_input|escape }}  {# Igual ao padrão #}
+{{ user_input|striptags }}  {# Remove todas as tags HTML #}
 
-{# JavaScript escaping #}
+{# Escape de JavaScript #}
 <script>
     var username = {{ username|escapejs }};
 </script>
 ```
 
-### Safe String Handling
+### Manipulação Segura de Strings
 
 ```python
 from django.utils.safestring import mark_safe
 from django.utils.html import escape
 
-# BAD: Never mark user input as safe without escaping
+# RUIM: Nunca marque entrada do usuário como safe sem escapar
 def render_bad(user_input):
-    return mark_safe(user_input)  # VULNERABLE!
+    return mark_safe(user_input)  # VULNERÁVEL!
 
-# GOOD: Escape first, then mark safe
+# BOM: Escape primeiro, depois marque como safe
 def render_good(user_input):
     return mark_safe(escape(user_input))
 
-# GOOD: Use format_html for HTML with variables
+# BOM: Use format_html para HTML com variáveis
 from django.utils.html import format_html
 
 def greet_user(username):
     return format_html('<span class="user">{}</span>', escape(username))
 ```
 
-### HTTP Headers
+### Cabeçalhos HTTP
 
 ```python
 # settings.py
-SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevent MIME sniffing
-SECURE_BROWSER_XSS_FILTER = True  # Enable XSS filter
-X_FRAME_OPTIONS = 'DENY'  # Prevent clickjacking
+SECURE_CONTENT_TYPE_NOSNIFF = True  # Previne MIME sniffing
+SECURE_BROWSER_XSS_FILTER = True  # Habilita o filtro XSS
+X_FRAME_OPTIONS = 'DENY'  # Previne clickjacking
 
-# Custom middleware
+# Middleware customizado
 from django.conf import settings
 
 class SecurityHeaderMiddleware:
@@ -331,25 +331,25 @@ class SecurityHeaderMiddleware:
         return response
 ```
 
-## CSRF Protection
+## Proteção CSRF
 
-### Default CSRF Protection
+### Proteção CSRF Padrão
 
 ```python
-# settings.py - CSRF is enabled by default
-CSRF_COOKIE_SECURE = True  # Only send over HTTPS
-CSRF_COOKIE_HTTPONLY = True  # Prevent JavaScript access
-CSRF_COOKIE_SAMESITE = 'Lax'  # Prevent CSRF in some cases
-CSRF_TRUSTED_ORIGINS = ['https://example.com']  # Trusted domains
+# settings.py - CSRF está habilitado por padrão
+CSRF_COOKIE_SECURE = True  # Enviar apenas via HTTPS
+CSRF_COOKIE_HTTPONLY = True  # Previne acesso via JavaScript
+CSRF_COOKIE_SAMESITE = 'Lax'  # Previne CSRF em alguns casos
+CSRF_TRUSTED_ORIGINS = ['https://example.com']  # Domínios confiáveis
 
-# Template usage
+# Uso em template
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Submit</button>
 </form>
 
-# AJAX requests
+# Requisições AJAX
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -375,34 +375,34 @@ fetch('/api/endpoint/', {
 });
 ```
 
-### Exempting Views (Use Carefully)
+### Isentando Views (Use com Cautela)
 
 ```python
 from django.views.decorators.csrf import csrf_exempt
 
-@csrf_exempt  # Only use when absolutely necessary!
+@csrf_exempt  # Use apenas quando absolutamente necessário!
 def webhook_view(request):
-    # Webhook from external service
+    # Webhook de um serviço externo
     pass
 ```
 
-## File Upload Security
+## Segurança no Upload de Arquivos
 
-### File Validation
+### Validação de Arquivos
 
 ```python
 import os
 from django.core.exceptions import ValidationError
 
 def validate_file_extension(value):
-    """Validate file extension."""
+    """Valida a extensão do arquivo."""
     ext = os.path.splitext(value.name)[1]
     valid_extensions = ['.jpg', '.jpeg', '.png', '.gif', '.pdf']
     if not ext.lower() in valid_extensions:
         raise ValidationError('Unsupported file extension.')
 
 def validate_file_size(value):
-    """Validate file size (max 5MB)."""
+    """Valida o tamanho do arquivo (máx. 5MB)."""
     filesize = value.size
     if filesize > 5 * 1024 * 1024:
         raise ValidationError('File too large. Max size is 5MB.')
@@ -415,24 +415,24 @@ class Document(models.Model):
     )
 ```
 
-### Secure File Storage
+### Armazenamento Seguro de Arquivos
 
 ```python
 # settings.py
 MEDIA_ROOT = '/var/www/media/'
 MEDIA_URL = '/media/'
 
-# Use a separate domain for media in production
+# Use um domínio separado para mídia em produção
 MEDIA_DOMAIN = 'https://media.example.com'
 
-# Don't serve user uploads directly
-# Use whitenoise or a CDN for static files
-# Use a separate server or S3 for media files
+# Não sirva uploads de usuários diretamente
+# Use whitenoise ou um CDN para arquivos estáticos
+# Use um servidor separado ou S3 para arquivos de mídia
 ```
 
-## API Security
+## Segurança de API
 
-### Rate Limiting
+### Limitação de Taxa (Rate Limiting)
 
 ```python
 # settings.py
@@ -448,7 +448,7 @@ REST_FRAMEWORK = {
     }
 }
 
-# Custom throttle
+# Throttle customizado
 from rest_framework.throttling import UserRateThrottle
 
 class BurstRateThrottle(UserRateThrottle):
@@ -460,7 +460,7 @@ class SustainedRateThrottle(UserRateThrottle):
     rate = '1000/day'
 ```
 
-### Authentication for APIs
+### Autenticação para APIs
 
 ```python
 # settings.py
@@ -485,7 +485,7 @@ def protected_view(request):
     return Response({'message': 'You are authenticated'})
 ```
 
-## Security Headers
+## Cabeçalhos de Segurança
 
 ### Content Security Policy
 
@@ -514,34 +514,34 @@ class CSPMiddleware:
         return response
 ```
 
-## Environment Variables
+## Variáveis de Ambiente
 
-### Managing Secrets
+### Gerenciando Segredos
 
 ```python
-# Use python-decouple or django-environ
+# Use python-decouple ou django-environ
 import environ
 
 env = environ.Env(
-    # set casting, default value
+    # define a conversão de tipo, valor padrão
     DEBUG=(bool, False)
 )
 
-# reading .env file
+# lendo o arquivo .env
 environ.Env.read_env()
 
 SECRET_KEY = env('DJANGO_SECRET_KEY')
 DATABASE_URL = env('DATABASE_URL')
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
 
-# .env file (never commit this)
+# arquivo .env (nunca faça commit deste arquivo)
 DEBUG=False
 SECRET_KEY=your-secret-key-here
 DATABASE_URL=postgresql://user:password@localhost:5432/dbname
 ALLOWED_HOSTS=example.com,www.example.com
 ```
 
-## Logging Security Events
+## Registrando Eventos de Segurança
 
 ```python
 # settings.py
@@ -574,21 +574,21 @@ LOGGING = {
 }
 ```
 
-## Quick Security Checklist
+## Checklist Rápido de Segurança
 
-| Check | Description |
+| Verificação | Descrição |
 |-------|-------------|
-| `DEBUG = False` | Never run with DEBUG in production |
-| HTTPS only | Force SSL, secure cookies |
-| Strong secrets | Use environment variables for SECRET_KEY |
-| Password validation | Enable all password validators |
-| CSRF protection | Enabled by default, don't disable |
-| XSS prevention | Django auto-escapes, don't use `&#124;safe` with user input |
-| SQL injection | Use ORM, never concatenate strings in queries |
-| File uploads | Validate file type and size |
-| Rate limiting | Throttle API endpoints |
-| Security headers | CSP, X-Frame-Options, HSTS |
-| Logging | Log security events |
-| Updates | Keep Django and dependencies updated |
+| `DEBUG = False` | Nunca rode com DEBUG em produção |
+| Apenas HTTPS | Forçar SSL, cookies seguros |
+| Segredos fortes | Use variáveis de ambiente para a SECRET_KEY |
+| Validação de senha | Habilite todos os validadores de senha |
+| Proteção CSRF | Habilitada por padrão; não desabilite |
+| Prevenção de XSS | O Django escapa automaticamente; não use `&#124;safe` com entrada do usuário |
+| Injeção SQL | Use o ORM; nunca concatene strings em consultas |
+| Uploads de arquivos | Valide tipo e tamanho do arquivo |
+| Limitação de taxa | Aplique throttling nos endpoints de API |
+| Cabeçalhos de segurança | CSP, X-Frame-Options, HSTS |
+| Logging | Registre eventos de segurança |
+| Atualizações | Mantenha o Django e as dependências atualizados |
 
-Remember: Security is a process, not a product. Regularly review and update your security practices.
+Lembre-se: segurança é um processo, não um produto. Revise e atualize regularmente suas práticas de segurança.

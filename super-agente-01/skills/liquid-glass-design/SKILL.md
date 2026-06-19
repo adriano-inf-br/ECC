@@ -1,34 +1,34 @@
 ---
 name: liquid-glass-design
-description: iOS 26 Liquid Glass design system — dynamic glass material with blur, reflection, and interactive morphing for SwiftUI, UIKit, and WidgetKit.
+description: Design system Liquid Glass do iOS 26 — material de vidro dinâmico com desfoque, reflexo e morphing interativo para SwiftUI, UIKit e WidgetKit.
 ---
 
 # Liquid Glass Design System (iOS 26)
 
-Patterns for implementing Apple's Liquid Glass — a dynamic material that blurs content behind it, reflects color and light from surrounding content, and reacts to touch and pointer interactions. Covers SwiftUI, UIKit, and WidgetKit integration.
+Padrões para implementar o Liquid Glass da Apple — um material dinâmico que desfoca o conteúdo atrás dele, reflete cor e luz do conteúdo ao redor e reage a interações de toque e ponteiro. Cobre a integração com SwiftUI, UIKit e WidgetKit.
 
-## When to Activate
+## Quando Ativar
 
-- Building or updating apps for iOS 26+ with the new design language
-- Implementing glass-style buttons, cards, toolbars, or containers
-- Creating morphing transitions between glass elements
-- Applying Liquid Glass effects to widgets
-- Migrating existing blur/material effects to the new Liquid Glass API
+- Construir ou atualizar apps para iOS 26+ com a nova linguagem de design
+- Implementar botões, cards, toolbars ou containers no estilo glass
+- Criar transições de morphing entre elementos glass
+- Aplicar efeitos Liquid Glass a widgets
+- Migrar efeitos de blur/material existentes para a nova API Liquid Glass
 
-## Core Pattern — SwiftUI
+## Padrão Central — SwiftUI
 
-### Basic Glass Effect
+### Efeito Glass Básico
 
-The simplest way to add Liquid Glass to any view:
+A forma mais simples de adicionar Liquid Glass a qualquer view:
 
 ```swift
 Text("Hello, World!")
     .font(.title)
     .padding()
-    .glassEffect()  // Default: regular variant, capsule shape
+    .glassEffect()  // Padrão: variante regular, formato cápsula
 ```
 
-### Customizing Shape and Tint
+### Personalizando Formato e Tonalidade
 
 ```swift
 Text("Hello, World!")
@@ -37,13 +37,13 @@ Text("Hello, World!")
     .glassEffect(.regular.tint(.orange).interactive(), in: .rect(cornerRadius: 16.0))
 ```
 
-Key customization options:
-- `.regular` — standard glass effect
-- `.tint(Color)` — add color tint for prominence
-- `.interactive()` — react to touch and pointer interactions
-- Shape: `.capsule` (default), `.rect(cornerRadius:)`, `.circle`
+Principais opções de personalização:
+- `.regular` — efeito glass padrão
+- `.tint(Color)` — adiciona tonalidade de cor para destaque
+- `.interactive()` — reage a interações de toque e ponteiro
+- Formato: `.capsule` (padrão), `.rect(cornerRadius:)`, `.circle`
 
-### Glass Button Styles
+### Estilos de Botão Glass
 
 ```swift
 Button("Click Me") { /* action */ }
@@ -53,9 +53,9 @@ Button("Important") { /* action */ }
     .buttonStyle(.glassProminent)
 ```
 
-### GlassEffectContainer for Multiple Elements
+### GlassEffectContainer para Múltiplos Elementos
 
-Always wrap multiple glass views in a container for performance and morphing:
+Sempre envolva múltiplas views glass em um container para desempenho e morphing:
 
 ```swift
 GlassEffectContainer(spacing: 40.0) {
@@ -73,11 +73,11 @@ GlassEffectContainer(spacing: 40.0) {
 }
 ```
 
-The `spacing` parameter controls merge distance — closer elements blend their glass shapes together.
+O parâmetro `spacing` controla a distância de fusão — elementos mais próximos mesclam seus formatos glass.
 
-### Uniting Glass Effects
+### Unindo Efeitos Glass
 
-Combine multiple views into a single glass shape with `glassEffectUnion`:
+Combine múltiplas views em um único formato glass com `glassEffectUnion`:
 
 ```swift
 @Namespace private var namespace
@@ -94,9 +94,9 @@ GlassEffectContainer(spacing: 20.0) {
 }
 ```
 
-### Morphing Transitions
+### Transições de Morphing
 
-Create smooth morphing when glass elements appear/disappear:
+Crie um morphing suave quando elementos glass aparecem/desaparecem:
 
 ```swift
 @State private var isExpanded = false
@@ -124,13 +124,13 @@ Button("Toggle") {
 .buttonStyle(.glass)
 ```
 
-### Extending Horizontal Scrolling Under Sidebar
+### Estendendo a Rolagem Horizontal Sob a Sidebar
 
-To allow horizontal scroll content to extend under a sidebar or inspector, ensure the `ScrollView` content reaches the leading/trailing edges of the container. The system automatically handles the under-sidebar scrolling behavior when the layout extends to the edges — no additional modifier is needed.
+Para permitir que o conteúdo de rolagem horizontal se estenda sob uma sidebar ou inspector, garanta que o conteúdo do `ScrollView` alcance as bordas inicial/final do container. O sistema trata automaticamente o comportamento de rolagem sob a sidebar quando o layout se estende até as bordas — nenhum modificador adicional é necessário.
 
-## Core Pattern — UIKit
+## Padrão Central — UIKit
 
-### Basic UIGlassEffect
+### UIGlassEffect Básico
 
 ```swift
 let glassEffect = UIGlassEffect()
@@ -150,7 +150,7 @@ NSLayoutConstraint.activate([
     visualEffectView.heightAnchor.constraint(equalToConstant: 120)
 ])
 
-// Add content to contentView
+// Adicionar conteúdo ao contentView
 let label = UILabel()
 label.text = "Liquid Glass"
 label.translatesAutoresizingMaskIntoConstraints = false
@@ -161,7 +161,7 @@ NSLayoutConstraint.activate([
 ])
 ```
 
-### UIGlassContainerEffect for Multiple Elements
+### UIGlassContainerEffect para Múltiplos Elementos
 
 ```swift
 let containerEffect = UIGlassContainerEffect()
@@ -176,7 +176,7 @@ containerView.contentView.addSubview(firstGlass)
 containerView.contentView.addSubview(secondGlass)
 ```
 
-### Scroll Edge Effects
+### Efeitos de Borda de Rolagem
 
 ```swift
 scrollView.topEdgeEffect.style = .automatic
@@ -184,16 +184,16 @@ scrollView.bottomEdgeEffect.style = .hard
 scrollView.leftEdgeEffect.isHidden = true
 ```
 
-### Toolbar Glass Integration
+### Integração Glass com Toolbar
 
 ```swift
 let favoriteButton = UIBarButtonItem(image: UIImage(systemName: "heart"), style: .plain, target: self, action: #selector(favoriteAction))
-favoriteButton.hidesSharedBackground = true  // Opt out of shared glass background
+favoriteButton.hidesSharedBackground = true  // Desativa o fundo glass compartilhado
 ```
 
-## Core Pattern — WidgetKit
+## Padrão Central — WidgetKit
 
-### Rendering Mode Detection
+### Detecção de Modo de Renderização
 
 ```swift
 struct MyWidgetView: View {
@@ -201,79 +201,79 @@ struct MyWidgetView: View {
 
     var body: some View {
         if renderingMode == .accented {
-            // Tinted mode: white-tinted, themed glass background
+            // Modo tonalizado: fundo glass tematizado, com tonalidade branca
         } else {
-            // Full color mode: standard appearance
+            // Modo de cor completa: aparência padrão
         }
     }
 }
 ```
 
-### Accent Groups for Visual Hierarchy
+### Grupos de Acento para Hierarquia Visual
 
 ```swift
 HStack {
     VStack(alignment: .leading) {
         Text("Title")
-            .widgetAccentable()  // Accent group
+            .widgetAccentable()  // Grupo de acento
         Text("Subtitle")
-            // Primary group (default)
+            // Grupo primário (padrão)
     }
     Image(systemName: "star.fill")
-        .widgetAccentable()  // Accent group
+        .widgetAccentable()  // Grupo de acento
 }
 ```
 
-### Image Rendering in Accented Mode
+### Renderização de Imagem no Modo Acentuado
 
 ```swift
 Image("myImage")
     .widgetAccentedRenderingMode(.monochrome)
 ```
 
-### Container Background
+### Fundo do Container
 
 ```swift
-VStack { /* content */ }
+VStack { /* conteúdo */ }
     .containerBackground(for: .widget) {
         Color.blue.opacity(0.2)
     }
 ```
 
-## Key Design Decisions
+## Principais Decisões de Design
 
-| Decision | Rationale |
+| Decisão | Justificativa |
 |----------|-----------|
-| GlassEffectContainer wrapping | Performance optimization, enables morphing between glass elements |
-| `spacing` parameter | Controls merge distance — fine-tune how close elements must be to blend |
-| `@Namespace` + `glassEffectID` | Enables smooth morphing transitions on view hierarchy changes |
-| `interactive()` modifier | Explicit opt-in for touch/pointer reactions — not all glass should respond |
-| UIGlassContainerEffect in UIKit | Same container pattern as SwiftUI for consistency |
-| Accented rendering mode in widgets | System applies tinted glass when user selects tinted Home Screen |
+| Envolver com GlassEffectContainer | Otimização de desempenho, habilita morphing entre elementos glass |
+| Parâmetro `spacing` | Controla a distância de fusão — ajuste fino de quão próximos os elementos devem estar para se mesclar |
+| `@Namespace` + `glassEffectID` | Habilita transições suaves de morphing em mudanças de hierarquia de views |
+| Modificador `interactive()` | Adesão explícita a reações de toque/ponteiro — nem todo glass deve responder |
+| UIGlassContainerEffect no UIKit | Mesmo padrão de container do SwiftUI para consistência |
+| Modo de renderização acentuado em widgets | O sistema aplica glass tonalizado quando o usuário seleciona a Tela de Início tonalizada |
 
-## Best Practices
+## Boas Práticas
 
-- **Always use GlassEffectContainer** when applying glass to multiple sibling views — it enables morphing and improves rendering performance
-- **Apply `.glassEffect()` after** other appearance modifiers (frame, font, padding)
-- **Use `.interactive()`** only on elements that respond to user interaction (buttons, toggleable items)
-- **Choose spacing carefully** in containers to control when glass effects merge
-- **Use `withAnimation`** when changing view hierarchies to enable smooth morphing transitions
-- **Test across appearances** — light mode, dark mode, and accented/tinted modes
-- **Ensure accessibility contrast** — text on glass must remain readable
+- **Sempre use GlassEffectContainer** ao aplicar glass a múltiplas views irmãs — ele habilita morphing e melhora o desempenho de renderização
+- **Aplique `.glassEffect()` depois** de outros modificadores de aparência (frame, font, padding)
+- **Use `.interactive()`** apenas em elementos que respondem à interação do usuário (botões, itens alternáveis)
+- **Escolha o spacing com cuidado** nos containers para controlar quando os efeitos glass se mesclam
+- **Use `withAnimation`** ao alterar hierarquias de views para habilitar transições suaves de morphing
+- **Teste em todas as aparências** — modo claro, modo escuro e modos acentuado/tonalizado
+- **Garanta o contraste de acessibilidade** — o texto sobre glass deve permanecer legível
 
-## Anti-Patterns to Avoid
+## Anti-Padrões a Evitar
 
-- Using multiple standalone `.glassEffect()` views without a GlassEffectContainer
-- Nesting too many glass effects — degrades performance and visual clarity
-- Applying glass to every view — reserve for interactive elements, toolbars, and cards
-- Forgetting `clipsToBounds = true` in UIKit when using corner radii
-- Ignoring accented rendering mode in widgets — breaks tinted Home Screen appearance
-- Using opaque backgrounds behind glass — defeats the translucency effect
+- Usar múltiplas views `.glassEffect()` isoladas sem um GlassEffectContainer
+- Aninhar efeitos glass em excesso — degrada o desempenho e a clareza visual
+- Aplicar glass a todas as views — reserve para elementos interativos, toolbars e cards
+- Esquecer `clipsToBounds = true` no UIKit ao usar raios de canto
+- Ignorar o modo de renderização acentuado em widgets — quebra a aparência da Tela de Início tonalizada
+- Usar fundos opacos atrás do glass — anula o efeito de translucidez
 
-## When to Use
+## Quando Usar
 
-- Navigation bars, toolbars, and tab bars with the new iOS 26 design
-- Floating action buttons and card-style containers
-- Interactive controls that need visual depth and touch feedback
-- Widgets that should integrate with the system's Liquid Glass appearance
-- Morphing transitions between related UI states
+- Barras de navegação, toolbars e tab bars com o novo design do iOS 26
+- Botões de ação flutuantes e containers no estilo card
+- Controles interativos que precisam de profundidade visual e feedback de toque
+- Widgets que devem se integrar à aparência Liquid Glass do sistema
+- Transições de morphing entre estados de UI relacionados

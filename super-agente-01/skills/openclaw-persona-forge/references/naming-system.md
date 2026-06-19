@@ -1,39 +1,39 @@
-# Step 4：锻造名字
+# Step 4: Forjar o nome
 
-名字是灵魂的「第一句话」——还没开始对话，名字已经告诉你这是谁了。
+O nome é a "primeira frase" da alma — antes mesmo de a conversa começar, o nome já lhe diz quem é isto.
 
-## 命名策略（按灵魂类型推荐）
+## Estratégia de nomeação (recomendações por tipo de alma)
 
-| 灵魂类型 | 推荐策略 | 示例 |
+| Tipo de alma | Estratégia recomendada | Exemplo |
 |---------|---------|------|
-| 有文化深度的 | 致敬式 | Dewey（杜威）、Marcus、Quill |
-| 幽默反差的 | 反差式 | DadBot 3000、老周Pro |
-| 功能导向的 | 隐喻式 | Echo、Pulse、Patch |
-| 世界观完整的 | 身份暗示式 | Lady Ashworth、Shiye |
-| 不端着的 | 自嘲式 | Void、Intern |
-| 慢慢养的 | 极简式 | Jasper、小壳 |
+| Com profundidade cultural | Homenagem | Dewey, Marcus, Quill |
+| Com humor por contraste | Contraste | DadBot 3000, Velho Zé Pro |
+| Orientada à função | Metáfora | Echo, Pulse, Patch |
+| Com visão de mundo completa | Sugestão de identidade | Lady Ashworth, Shiye |
+| Sem pose | Autodepreciação | Void, Intern |
+| Cultivada aos poucos | Minimalismo | Jasper, Casquinha |
 
-## 输出要求
+## Requisitos de saída
 
-为用户提供 **3 个候选名字**，每个附带：
-- 名字
-- 命名策略类型
-- 为什么这个名字和灵魂搭配
+Ofereça ao usuário **3 nomes candidatos**, cada um acompanhado de:
+- O nome
+- O tipo de estratégia de nomeação
+- Por que esse nome combina com a alma
 
 ```markdown
-## 名字候选
+## Nomes candidatos
 
-1. **[名字]**（[策略类型]）—— [一句话解释为什么搭]
-2. **[名字]**（[策略类型]）—— [一句话解释为什么搭]
-3. **[名字]**（[策略类型]）—— [一句话解释为什么搭]
+1. **[nome]** ([tipo de estratégia]) —— [explicação em uma frase de por que combina]
+2. **[nome]** ([tipo de estratégia]) —— [explicação em uma frase de por que combina]
+3. **[nome]** ([tipo de estratégia]) —— [explicação em uma frase de por que combina]
 ```
 
-展示后说出自己最偏爱哪个（附理由），但把选择权交给用户（参见 SKILL.md 对话语气指南）
+Depois de apresentá-los, diga qual você mais prefere (com a justificativa), mas deixe a escolha nas mãos do usuário (veja o guia de tom de conversa em SKILL.md).
 
-## 命名红线
+## Linhas vermelhas da nomeação
 
-- 不要用 agent-1、my-bot、小助手
-- 不要超过 3 个单词
-- 不要和常见工具/框架名冲突
-- 好记、好念、好打字
-- 名字读完就能猜到大致性格
+- Não use agent-1, my-bot, assistentezinho
+- Não passe de 3 palavras
+- Não conflite com nomes de ferramentas/frameworks comuns
+- Fácil de lembrar, de pronunciar e de digitar
+- Ao terminar de ler o nome já deve dar para adivinhar a personalidade em linhas gerais

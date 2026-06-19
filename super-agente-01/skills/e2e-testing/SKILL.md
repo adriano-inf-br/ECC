@@ -1,15 +1,15 @@
 ---
 name: e2e-testing
-description: Playwright E2E testing patterns, Page Object Model, configuration, CI/CD integration, artifact management, and flaky test strategies.
+description: Padrões de testes E2E com Playwright, Page Object Model, configuração, integração com CI/CD, gerenciamento de artefatos e estratégias para testes instáveis.
 metadata:
   origin: ECC
 ---
 
-# E2E Testing Patterns
+# Padrões de Testes E2E
 
-Comprehensive Playwright patterns for building stable, fast, and maintainable E2E test suites.
+Padrões abrangentes de Playwright para construir suítes de testes E2E estáveis, rápidas e de fácil manutenção.
 
-## Test File Organization
+## Organização dos Arquivos de Teste
 
 ```
 tests/
@@ -65,7 +65,7 @@ export class ItemsPage {
 }
 ```
 
-## Test Structure
+## Estrutura do Teste
 
 ```typescript
 import { test, expect } from '@playwright/test'
@@ -98,7 +98,7 @@ test.describe('Item Search', () => {
 })
 ```
 
-## Playwright Configuration
+## Configuração do Playwright
 
 ```typescript
 import { defineConfig, devices } from '@playwright/test'
@@ -137,9 +137,9 @@ export default defineConfig({
 })
 ```
 
-## Flaky Test Patterns
+## Padrões para Testes Instáveis
 
-### Quarantine
+### Quarentena
 
 ```typescript
 test('flaky: complex search', async ({ page }) => {
@@ -153,16 +153,16 @@ test('conditional skip', async ({ page }) => {
 })
 ```
 
-### Identify Flakiness
+### Identificar Instabilidade
 
 ```bash
 npx playwright test tests/search.spec.ts --repeat-each=10
 npx playwright test tests/search.spec.ts --retries=3
 ```
 
-### Common Causes & Fixes
+### Causas Comuns e Correções
 
-**Race conditions:**
+**Condições de corrida:**
 ```typescript
 // Bad: assumes element is ready
 await page.click('[data-testid="button"]')
@@ -171,7 +171,7 @@ await page.click('[data-testid="button"]')
 await page.locator('[data-testid="button"]').click()
 ```
 
-**Network timing:**
+**Timing de rede:**
 ```typescript
 // Bad: arbitrary timeout
 await page.waitForTimeout(5000)
@@ -180,7 +180,7 @@ await page.waitForTimeout(5000)
 await page.waitForResponse(resp => resp.url().includes('/api/data'))
 ```
 
-**Animation timing:**
+**Timing de animação:**
 ```typescript
 // Bad: click during animation
 await page.click('[data-testid="menu-item"]')
@@ -191,7 +191,7 @@ await page.waitForLoadState('networkidle')
 await page.locator('[data-testid="menu-item"]').click()
 ```
 
-## Artifact Management
+## Gerenciamento de Artefatos
 
 ### Screenshots
 
@@ -213,7 +213,7 @@ await browser.startTracing(page, {
 await browser.stopTracing()
 ```
 
-### Video
+### Vídeo
 
 ```typescript
 // In playwright.config.ts
@@ -223,7 +223,7 @@ use: {
 }
 ```
 
-## CI/CD Integration
+## Integração com CI/CD
 
 ```yaml
 # .github/workflows/e2e.yml
@@ -251,7 +251,7 @@ jobs:
           retention-days: 30
 ```
 
-## Test Report Template
+## Modelo de Relatório de Teste
 
 ```markdown
 # E2E Test Report
@@ -278,7 +278,7 @@ jobs:
 - Traces: artifacts/*.zip
 ```
 
-## Wallet / Web3 Testing
+## Testes de Wallet / Web3
 
 ```typescript
 test('wallet connection', async ({ page, context }) => {
@@ -300,7 +300,7 @@ test('wallet connection', async ({ page, context }) => {
 })
 ```
 
-## Financial / Critical Flow Testing
+## Testes de Fluxo Financeiro / Crítico
 
 ```typescript
 test('trade execution', async ({ page }) => {

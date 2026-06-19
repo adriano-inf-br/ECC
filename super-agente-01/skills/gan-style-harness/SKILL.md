@@ -1,39 +1,39 @@
 ---
 name: gan-style-harness
-description: "GAN-inspired Generator-Evaluator agent harness for building high-quality applications autonomously. Based on Anthropic's March 2026 harness design paper."
+description: "Harness de agente Gerador-Avaliador inspirado em GAN para construir aplicações de alta qualidade de forma autônoma. Baseado no artigo de design de harness da Anthropic de março de 2026."
 metadata:
   origin: ECC-community
 tools: Read, Write, Edit, Bash, Grep, Glob, Task
 ---
 
-# GAN-Style Harness Skill
+# Skill de Harness Estilo GAN
 
-> Inspired by [Anthropic's Harness Design for Long-Running Application Development](https://www.anthropic.com/engineering/harness-design-long-running-apps) (March 24, 2026)
+> Inspirado em [Harness Design for Long-Running Application Development da Anthropic](https://www.anthropic.com/engineering/harness-design-long-running-apps) (24 de março de 2026)
 
-A multi-agent harness that separates **generation** from **evaluation**, creating an adversarial feedback loop that drives quality far beyond what a single agent can achieve.
+Um harness multiagente que separa **geração** de **avaliação**, criando um ciclo de feedback adversarial que eleva a qualidade muito além do que um único agente consegue alcançar.
 
-## Core Insight
+## Insight Central
 
-> When asked to evaluate their own work, agents are pathological optimists — they praise mediocre output and talk themselves out of legitimate issues. But engineering a **separate evaluator** to be ruthlessly strict is far more tractable than teaching a generator to self-critique.
+> Quando solicitados a avaliar o próprio trabalho, os agents são otimistas patológicos — elogiam saídas medíocres e se convencem a ignorar problemas legítimos. Mas projetar um **avaliador separado** para ser implacavelmente rigoroso é muito mais viável do que ensinar um gerador a se autocriticar.
 
-This is the same dynamic as GANs (Generative Adversarial Networks): the Generator produces, the Evaluator critiques, and that feedback drives the next iteration.
+Essa é a mesma dinâmica das GANs (Redes Adversariais Generativas): o Gerador produz, o Avaliador critica, e esse feedback impulsiona a próxima iteração.
 
-## When to Use
+## Quando Usar
 
-- Building complete applications from a one-line prompt
-- Frontend design tasks requiring high visual quality
-- Full-stack projects that need working features, not just code
-- Any task where "AI slop" aesthetics are unacceptable
-- Projects where you want to invest $50-200 for production-quality output
+- Construir aplicações completas a partir de um prompt de uma linha
+- Tarefas de design frontend que exigem alta qualidade visual
+- Projetos full-stack que precisam de funcionalidades funcionando, não apenas código
+- Qualquer tarefa em que a estética de "AI slop" seja inaceitável
+- Projetos em que você queira investir US$ 50-200 para uma saída de qualidade de produção
 
-## When NOT to Use
+## Quando NÃO Usar
 
-- Quick single-file fixes (use standard `claude -p`)
-- Tasks with tight budget constraints (<$10)
-- Simple refactoring (use de-sloppify pattern instead)
-- Tasks that are already well-specified with tests (use TDD workflow)
+- Correções rápidas de arquivo único (use o padrão `claude -p`)
+- Tarefas com restrições orçamentárias apertadas (<US$ 10)
+- Refatoração simples (use o padrão de-sloppify em vez disso)
+- Tarefas já bem especificadas com testes (use o fluxo de trabalho TDD)
 
-## Architecture
+## Arquitetura
 
 ```
                     ┌─────────────┐
@@ -65,53 +65,53 @@ This is the same dynamic as GANs (Generative Adversarial Networks): the Generato
               └────────────────────────┘
 ```
 
-## The Three Agents
+## Os Três Agents
 
-### 1. Planner Agent
+### 1. Agent Planner
 
-**Role:** Product manager — expands a brief prompt into a full product specification.
+**Papel:** Gerente de produto — expande um prompt breve em uma especificação completa de produto.
 
-**Key behaviors:**
-- Takes a one-line prompt and produces a 16-feature, multi-sprint specification
-- Defines user stories, technical requirements, and visual design direction
-- Is deliberately **ambitious** — conservative planning leads to underwhelming results
-- Produces evaluation criteria that the Evaluator will use later
+**Comportamentos-chave:**
+- Recebe um prompt de uma linha e produz uma especificação de 16 features, com múltiplos sprints
+- Define histórias de usuário, requisitos técnicos e direção de design visual
+- É deliberadamente **ambicioso** — planejamento conservador leva a resultados decepcionantes
+- Produz critérios de avaliação que o Avaliador usará posteriormente
 
-**Model:** Opus 4.6 (needs deep reasoning for spec expansion)
+**Modelo:** Opus 4.6 (precisa de raciocínio profundo para expansão da especificação)
 
-### 2. Generator Agent
+### 2. Agent Generator
 
-**Role:** Developer — implements features according to the spec.
+**Papel:** Desenvolvedor — implementa features de acordo com a especificação.
 
-**Key behaviors:**
-- Works in structured sprints (or continuous mode with newer models)
-- Negotiates a "sprint contract" with the Evaluator before writing code
-- Uses full-stack tooling: React, FastAPI/Express, databases, CSS
-- Manages git for version control between iterations
-- Reads Evaluator feedback and incorporates it in next iteration
+**Comportamentos-chave:**
+- Trabalha em sprints estruturados (ou em modo contínuo com modelos mais novos)
+- Negocia um "contrato de sprint" com o Avaliador antes de escrever código
+- Usa ferramentas full-stack: React, FastAPI/Express, bancos de dados, CSS
+- Gerencia o git para controle de versão entre iterações
+- Lê o feedback do Avaliador e o incorpora na próxima iteração
 
-**Model:** Opus 4.6 (needs strong coding capability)
+**Modelo:** Opus 4.6 (precisa de forte capacidade de codificação)
 
-### 3. Evaluator Agent
+### 3. Agent Evaluator
 
-**Role:** QA engineer — tests the live running application, not just code.
+**Papel:** Engenheiro de QA — testa a aplicação rodando ao vivo, não apenas o código.
 
-**Key behaviors:**
-- Uses **Playwright MCP** to interact with the live application
-- Clicks through features, fills forms, tests API endpoints
-- Scores against four criteria (configurable):
-  1. **Design Quality** — Does it feel like a coherent whole?
-  2. **Originality** — Custom decisions vs. template/AI patterns?
-  3. **Craft** — Typography, spacing, animations, micro-interactions?
-  4. **Functionality** — Do all features actually work?
-- Returns structured feedback with scores and specific issues
-- Is engineered to be **ruthlessly strict** — never praises mediocre work
+**Comportamentos-chave:**
+- Usa **Playwright MCP** para interagir com a aplicação ao vivo
+- Clica pelas features, preenche formulários, testa endpoints de API
+- Pontua segundo quatro critérios (configuráveis):
+  1. **Qualidade de Design** — Parece um todo coerente?
+  2. **Originalidade** — Decisões personalizadas vs. padrões de template/IA?
+  3. **Acabamento** — Tipografia, espaçamento, animações, microinterações?
+  4. **Funcionalidade** — Todas as features realmente funcionam?
+- Retorna feedback estruturado com pontuações e problemas específicos
+- É projetado para ser **implacavelmente rigoroso** — nunca elogia trabalho medíocre
 
-**Model:** Opus 4.6 (needs strong judgment + tool use)
+**Modelo:** Opus 4.6 (precisa de forte julgamento + uso de ferramentas)
 
-## Evaluation Criteria
+## Critérios de Avaliação
 
-The default four criteria, each scored 1-10:
+Os quatro critérios padrão, cada um pontuado de 1 a 10:
 
 ```markdown
 ## Evaluation Rubric
@@ -141,15 +141,15 @@ The default four criteria, each scored 1-10:
 - 9-10: Bulletproof, handles every edge case
 ```
 
-### Scoring
+### Pontuação
 
-- **Weighted score** = sum of (criterion_score * weight)
-- **Pass threshold** = 7.0 (configurable)
-- **Max iterations** = 15 (configurable, typically 5-15 sufficient)
+- **Pontuação ponderada** = soma de (pontuação_do_critério * peso)
+- **Limiar de aprovação** = 7.0 (configurável)
+- **Máximo de iterações** = 15 (configurável, normalmente 5-15 são suficientes)
 
-## Usage
+## Uso
 
-### Via Command
+### Via Comando
 
 ```bash
 # Full three-agent harness
@@ -162,7 +162,7 @@ The default four criteria, each scored 1-10:
 /project:gan-design "Create a landing page for a crypto portfolio tracker"
 ```
 
-### Via Shell Script
+### Via Script de Shell
 
 ```bash
 # Basic usage
@@ -193,87 +193,87 @@ claude -p --model opus "You are a Generator. Read spec.md and feedback-001.md. A
 # Repeat steps 3-4 until pass threshold met
 ```
 
-## Evolution Across Model Capabilities
+## Evolução Conforme as Capacidades do Modelo
 
-The harness should simplify as models improve. Following Anthropic's evolution:
+O harness deve simplificar à medida que os modelos melhoram. Seguindo a evolução da Anthropic:
 
-### Stage 1 — Weaker Models (Sonnet-class)
-- Full sprint decomposition required
-- Context resets between sprints (avoid context anxiety)
-- 2-agent minimum: Initializer + Coding Agent
-- Heavy scaffolding compensates for model limitations
+### Estágio 1 — Modelos Mais Fracos (classe Sonnet)
+- Decomposição completa em sprints obrigatória
+- Resets de contexto entre sprints (evitar ansiedade de contexto)
+- Mínimo de 2 agents: Initializer + Coding Agent
+- Andaime pesado compensa as limitações do modelo
 
-### Stage 2 — Capable Models (Opus 4.5-class)
-- Full 3-agent harness: Planner + Generator + Evaluator
-- Sprint contracts before each implementation phase
-- 10-sprint decomposition for complex apps
-- Context resets still useful but less critical
+### Estágio 2 — Modelos Capazes (classe Opus 4.5)
+- Harness completo de 3 agents: Planner + Generator + Evaluator
+- Contratos de sprint antes de cada fase de implementação
+- Decomposição em 10 sprints para apps complexos
+- Resets de contexto ainda úteis, mas menos críticos
 
-### Stage 3 — Frontier Models (Opus 4.6-class)
-- Simplified harness: single planning pass, continuous generation
-- Evaluation reduced to single end-pass (model is smarter)
-- No sprint structure needed
-- Automatic compaction handles context growth
+### Estágio 3 — Modelos de Fronteira (classe Opus 4.6)
+- Harness simplificado: passe único de planejamento, geração contínua
+- Avaliação reduzida a um único passe final (o modelo é mais inteligente)
+- Nenhuma estrutura de sprint necessária
+- A compactação automática lida com o crescimento do contexto
 
-> **Key principle:** Every harness component encodes an assumption about what the model can't do alone. When models improve, re-test those assumptions. Strip away what's no longer needed.
+> **Princípio-chave:** Todo componente do harness codifica uma suposição sobre o que o modelo não consegue fazer sozinho. Quando os modelos melhoram, reteste essas suposições. Remova o que não é mais necessário.
 
-## Configuration
+## Configuração
 
-### Environment Variables
+### Variáveis de Ambiente
 
-| Variable | Default | Description |
+| Variável | Padrão | Descrição |
 |----------|---------|-------------|
-| `GAN_MAX_ITERATIONS` | `15` | Maximum generator-evaluator cycles |
-| `GAN_PASS_THRESHOLD` | `7.0` | Weighted score to pass (1-10) |
-| `GAN_PLANNER_MODEL` | `opus` | Model for planning agent |
-| `GAN_GENERATOR_MODEL` | `opus` | Model for generator agent |
-| `GAN_EVALUATOR_MODEL` | `opus` | Model for evaluator agent |
-| `GAN_EVAL_CRITERIA` | `design,originality,craft,functionality` | Comma-separated criteria |
-| `GAN_DEV_SERVER_PORT` | `3000` | Port for the live app |
-| `GAN_DEV_SERVER_CMD` | `npm run dev` | Command to start dev server |
-| `GAN_PROJECT_DIR` | `.` | Project working directory |
-| `GAN_SKIP_PLANNER` | `false` | Skip planner, use spec directly |
-| `GAN_EVAL_MODE` | `playwright` | `playwright`, `screenshot`, or `code-only` |
+| `GAN_MAX_ITERATIONS` | `15` | Máximo de ciclos gerador-avaliador |
+| `GAN_PASS_THRESHOLD` | `7.0` | Pontuação ponderada para aprovar (1-10) |
+| `GAN_PLANNER_MODEL` | `opus` | Modelo para o agent de planejamento |
+| `GAN_GENERATOR_MODEL` | `opus` | Modelo para o agent gerador |
+| `GAN_EVALUATOR_MODEL` | `opus` | Modelo para o agent avaliador |
+| `GAN_EVAL_CRITERIA` | `design,originality,craft,functionality` | Critérios separados por vírgula |
+| `GAN_DEV_SERVER_PORT` | `3000` | Porta para o app ao vivo |
+| `GAN_DEV_SERVER_CMD` | `npm run dev` | Comando para iniciar o dev server |
+| `GAN_PROJECT_DIR` | `.` | Diretório de trabalho do projeto |
+| `GAN_SKIP_PLANNER` | `false` | Pular o planner, usar a especificação diretamente |
+| `GAN_EVAL_MODE` | `playwright` | `playwright`, `screenshot` ou `code-only` |
 
-### Evaluation Modes
+### Modos de Avaliação
 
-| Mode | Tools | Best For |
+| Modo | Ferramentas | Melhor Para |
 |------|-------|----------|
-| `playwright` | Browser MCP + live interaction | Full-stack apps with UI |
-| `screenshot` | Screenshot + visual analysis | Static sites, design-only |
-| `code-only` | Tests + linting + build | APIs, libraries, CLI tools |
+| `playwright` | Browser MCP + interação ao vivo | Apps full-stack com UI |
+| `screenshot` | Screenshot + análise visual | Sites estáticos, apenas design |
+| `code-only` | Testes + lint + build | APIs, bibliotecas, ferramentas CLI |
 
-## Anti-Patterns
+## Anti-Padrões
 
-1. **Evaluator too lenient** — If the evaluator passes everything on iteration 1, your rubric is too generous. Tighten scoring criteria and add explicit penalties for common AI patterns.
+1. **Avaliador leniente demais** — Se o avaliador aprovar tudo na iteração 1, sua rubrica é generosa demais. Aperte os critérios de pontuação e adicione penalidades explícitas para padrões comuns de IA.
 
-2. **Generator ignoring feedback** — Ensure feedback is passed as a file, not inline. The generator should read `feedback-NNN.md` at the start of each iteration.
+2. **Gerador ignorando feedback** — Garanta que o feedback seja passado como arquivo, não inline. O gerador deve ler `feedback-NNN.md` no início de cada iteração.
 
-3. **Infinite loops** — Always set `GAN_MAX_ITERATIONS`. If the generator can't improve past a score plateau after 3 iterations, stop and flag for human review.
+3. **Loops infinitos** — Sempre defina `GAN_MAX_ITERATIONS`. Se o gerador não conseguir melhorar além de um platô de pontuação após 3 iterações, pare e sinalize para revisão humana.
 
-4. **Evaluator testing superficially** — The evaluator must use Playwright to **interact** with the live app, not just screenshot it. Click buttons, fill forms, test error states.
+4. **Avaliador testando superficialmente** — O avaliador deve usar o Playwright para **interagir** com o app ao vivo, não apenas tirar screenshot. Clique em botões, preencha formulários, teste estados de erro.
 
-5. **Evaluator praising its own fixes** — Never let the evaluator suggest fixes and then evaluate those fixes. The evaluator only critiques; the generator fixes.
+5. **Avaliador elogiando as próprias correções** — Nunca deixe o avaliador sugerir correções e depois avaliar essas correções. O avaliador apenas critica; o gerador corrige.
 
-6. **Context exhaustion** — For long sessions, use Claude Agent SDK's automatic compaction or reset context between major phases.
+6. **Esgotamento de contexto** — Para sessões longas, use a compactação automática do Claude Agent SDK ou reset o contexto entre fases principais.
 
-## Results: What to Expect
+## Resultados: O Que Esperar
 
-Based on Anthropic's published results:
+Com base nos resultados publicados pela Anthropic:
 
-| Metric | Solo Agent | GAN Harness | Improvement |
+| Métrica | Agente Solo | Harness GAN | Melhoria |
 |--------|-----------|-------------|-------------|
-| Time | 20 min | 4-6 hours | 12-18x longer |
-| Cost | $9 | $125-200 | 14-22x more |
-| Quality | Barely functional | Production-ready | Phase change |
-| Core features | Broken | All working | N/A |
-| Design | Generic AI slop | Distinctive, polished | N/A |
+| Tempo | 20 min | 4-6 horas | 12-18x mais longo |
+| Custo | US$ 9 | US$ 125-200 | 14-22x mais |
+| Qualidade | Mal funcional | Pronto para produção | Mudança de fase |
+| Features centrais | Quebradas | Todas funcionando | N/A |
+| Design | AI slop genérico | Distinto, polido | N/A |
 
-**The tradeoff is clear:** ~20x more time and cost for a qualitative leap in output quality. This is for projects where quality matters.
+**O trade-off é claro:** ~20x mais tempo e custo para um salto qualitativo na qualidade da saída. Isso vale para projetos em que a qualidade importa.
 
-## References
+## Referências
 
-- [Anthropic: Harness Design for Long-Running Apps](https://www.anthropic.com/engineering/harness-design-long-running-apps) — Original paper by Prithvi Rajasekaran
-- [Epsilla: The GAN-Style Agent Loop](https://www.epsilla.com/blogs/anthropic-harness-engineering-multi-agent-gan-architecture) — Architecture deconstruction
-- [Martin Fowler: Harness Engineering](https://martinfowler.com/articles/exploring-gen-ai/harness-engineering.html) — Broader industry context
-- [OpenAI: Harness Engineering](https://openai.com/index/harness-engineering/) — OpenAI's parallel work
+- [Anthropic: Harness Design for Long-Running Apps](https://www.anthropic.com/engineering/harness-design-long-running-apps) — Artigo original de Prithvi Rajasekaran
+- [Epsilla: The GAN-Style Agent Loop](https://www.epsilla.com/blogs/anthropic-harness-engineering-multi-agent-gan-architecture) — Desconstrução da arquitetura
+- [Martin Fowler: Harness Engineering](https://martinfowler.com/articles/exploring-gen-ai/harness-engineering.html) — Contexto mais amplo da indústria
+- [OpenAI: Harness Engineering](https://openai.com/index/harness-engineering/) — Trabalho paralelo da OpenAI

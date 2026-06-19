@@ -1,151 +1,151 @@
 ---
 name: dmux-workflows
-description: Multi-agent orchestration using dmux (tmux pane manager for AI agents). Patterns for parallel agent workflows across Claude Code, Codex, OpenCode, and other harnesses. Use when running multiple agent sessions in parallel or coordinating multi-agent development workflows.
+description: Orquestração multi-agente usando dmux (gerenciador de painéis tmux para agents de IA). Padrões para fluxos de trabalho de agents em paralelo no Claude Code, Codex, OpenCode e outros harnesses. Use ao executar várias sessões de agent em paralelo ou ao coordenar fluxos de trabalho de desenvolvimento multi-agente.
 metadata:
   origin: ECC
 ---
 
-# dmux Workflows
+# Fluxos de trabalho do dmux
 
-Orchestrate parallel AI agent sessions using dmux, a tmux pane manager for agent harnesses.
+Orquestre sessões de agents de IA em paralelo usando o dmux, um gerenciador de painéis tmux para harnesses de agents.
 
-## When to Activate
+## Quando Ativar
 
-- Running multiple agent sessions in parallel
-- Coordinating work across Claude Code, Codex, and other harnesses
-- Complex tasks that benefit from divide-and-conquer parallelism
-- User says "run in parallel", "split this work", "use dmux", or "multi-agent"
+- Executando várias sessões de agent em paralelo
+- Coordenando trabalho no Claude Code, Codex e outros harnesses
+- Tarefas complexas que se beneficiam de paralelismo dividir-para-conquistar
+- O usuário diz "executar em paralelo", "dividir este trabalho", "usar dmux" ou "multi-agente"
 
-## What is dmux
+## O que é o dmux
 
-dmux is a tmux-based orchestration tool that manages AI agent panes:
-- Press `n` to create a new pane with a prompt
-- Press `m` to merge pane output back to the main session
-- Supports: Claude Code, Codex, OpenCode, Cline, Gemini, Qwen
+O dmux é uma ferramenta de orquestração baseada em tmux que gerencia painéis de agents de IA:
+- Pressione `n` para criar um novo painel com um prompt
+- Pressione `m` para mesclar a saída do painel de volta à sessão principal
+- Suporta: Claude Code, Codex, OpenCode, Cline, Gemini, Qwen
 
-**Install:** Install dmux from its repository after reviewing the package. See [github.com/standardagents/dmux](https://github.com/standardagents/dmux)
+**Instalação:** Instale o dmux a partir de seu repositório após revisar o pacote. Veja [github.com/standardagents/dmux](https://github.com/standardagents/dmux)
 
-## Quick Start
+## Início Rápido
 
 ```bash
-# Start dmux session
+# Inicia a sessão do dmux
 dmux
 
-# Create agent panes (press 'n' in dmux, then type prompt)
-# Pane 1: "Implement the auth middleware in src/auth/"
-# Pane 2: "Write tests for the user service"
-# Pane 3: "Update API documentation"
+# Cria painéis de agent (pressione 'n' no dmux, depois digite o prompt)
+# Painel 1: "Implemente o middleware de auth em src/auth/"
+# Painel 2: "Escreva testes para o serviço de usuário"
+# Painel 3: "Atualize a documentação da API"
 
-# Each pane runs its own agent session
-# Press 'm' to merge results back
+# Cada painel executa sua própria sessão de agent
+# Pressione 'm' para mesclar os resultados de volta
 ```
 
-## Workflow Patterns
+## Padrões de Fluxo de Trabalho
 
-### Pattern 1: Research + Implement
+### Padrão 1: Pesquisar + Implementar
 
-Split research and implementation into parallel tracks:
+Divida pesquisa e implementação em trilhas paralelas:
 
 ```
-Pane 1 (Research): "Research best practices for rate limiting in Node.js.
-  Check current libraries, compare approaches, and write findings to
+Painel 1 (Pesquisa): "Pesquise melhores práticas para rate limiting em Node.js.
+  Verifique as bibliotecas atuais, compare abordagens e escreva os achados em
   /tmp/rate-limit-research.md"
 
-Pane 2 (Implement): "Implement rate limiting middleware for our Express API.
-  Start with a basic token bucket, we'll refine after research completes."
+Painel 2 (Implementação): "Implemente um middleware de rate limiting para nossa API Express.
+  Comece com um token bucket básico, refinaremos após a pesquisa terminar."
 
-# After Pane 1 completes, merge findings into Pane 2's context
+# Depois que o Painel 1 terminar, mescle os achados no contexto do Painel 2
 ```
 
-### Pattern 2: Multi-File Feature
+### Padrão 2: Funcionalidade Multi-Arquivo
 
-Parallelize work across independent files:
-
-```
-Pane 1: "Create the database schema and migrations for the billing feature"
-Pane 2: "Build the billing API endpoints in src/api/billing/"
-Pane 3: "Create the billing dashboard UI components"
-
-# Merge all, then do integration in main pane
-```
-
-### Pattern 3: Test + Fix Loop
-
-Run tests in one pane, fix in another:
+Paralelize o trabalho em arquivos independentes:
 
 ```
-Pane 1 (Watcher): "Run the test suite in watch mode. When tests fail,
-  summarize the failures."
+Painel 1: "Crie o esquema de banco de dados e as migrations para a funcionalidade de billing"
+Painel 2: "Construa os endpoints da API de billing em src/api/billing/"
+Painel 3: "Crie os componentes de UI do dashboard de billing"
 
-Pane 2 (Fixer): "Fix failing tests based on the error output from pane 1"
+# Mescle tudo, depois faça a integração no painel principal
 ```
 
-### Pattern 4: Cross-Harness
+### Padrão 3: Loop de Teste + Correção
 
-Use different AI tools for different tasks:
-
-```
-Pane 1 (Claude Code): "Review the security of the auth module"
-Pane 2 (Codex): "Refactor the utility functions for performance"
-Pane 3 (Claude Code): "Write E2E tests for the checkout flow"
-```
-
-### Pattern 5: Code Review Pipeline
-
-Parallel review perspectives:
+Execute testes em um painel, corrija em outro:
 
 ```
-Pane 1: "Review src/api/ for security vulnerabilities"
-Pane 2: "Review src/api/ for performance issues"
-Pane 3: "Review src/api/ for test coverage gaps"
+Painel 1 (Observador): "Execute a suíte de testes em modo watch. Quando os testes falharem,
+  resuma as falhas."
 
-# Merge all reviews into a single report
+Painel 2 (Corretor): "Corrija os testes que falharam com base na saída de erro do painel 1"
 ```
 
-## Best Practices
+### Padrão 4: Cross-Harness
 
-1. **Independent tasks only.** Don't parallelize tasks that depend on each other's output.
-2. **Clear boundaries.** Each pane should work on distinct files or concerns.
-3. **Merge strategically.** Review pane output before merging to avoid conflicts.
-4. **Use git worktrees.** For file-conflict-prone work, use separate worktrees per pane.
-5. **Resource awareness.** Each pane uses API tokens — keep total panes under 5-6.
+Use diferentes ferramentas de IA para diferentes tarefas:
 
-## Git Worktree Integration
+```
+Painel 1 (Claude Code): "Revise a segurança do módulo de auth"
+Painel 2 (Codex): "Refatore as funções utilitárias para desempenho"
+Painel 3 (Claude Code): "Escreva testes E2E para o fluxo de checkout"
+```
 
-For tasks that touch overlapping files:
+### Padrão 5: Pipeline de Revisão de Código
+
+Perspectivas de revisão em paralelo:
+
+```
+Painel 1: "Revise src/api/ em busca de vulnerabilidades de segurança"
+Painel 2: "Revise src/api/ em busca de problemas de desempenho"
+Painel 3: "Revise src/api/ em busca de lacunas de cobertura de testes"
+
+# Mescle todas as revisões em um único relatório
+```
+
+## Melhores Práticas
+
+1. **Apenas tarefas independentes.** Não paralelize tarefas que dependem da saída umas das outras.
+2. **Limites claros.** Cada painel deve trabalhar em arquivos ou preocupações distintas.
+3. **Mescle estrategicamente.** Revise a saída do painel antes de mesclar para evitar conflitos.
+4. **Use git worktrees.** Para trabalho propenso a conflitos de arquivo, use worktrees separados por painel.
+5. **Consciência de recursos.** Cada painel usa tokens de API — mantenha o total de painéis abaixo de 5-6.
+
+## Integração com Git Worktree
+
+Para tarefas que tocam em arquivos sobrepostos:
 
 ```bash
-# Create worktrees for isolation
+# Cria worktrees para isolamento
 git worktree add -b feat/auth ../feature-auth HEAD
 git worktree add -b feat/billing ../feature-billing HEAD
 
-# Run agents in separate worktrees
-# Pane 1: cd ../feature-auth && claude
-# Pane 2: cd ../feature-billing && claude
+# Executa agents em worktrees separados
+# Painel 1: cd ../feature-auth && claude
+# Painel 2: cd ../feature-billing && claude
 
-# Merge branches when done
+# Mescla os branches quando terminar
 git merge feat/auth
 git merge feat/billing
 ```
 
-## Complementary Tools
+## Ferramentas Complementares
 
-| Tool | What It Does | When to Use |
+| Ferramenta | O que Faz | Quando Usar |
 |------|-------------|-------------|
-| **dmux** | tmux pane management for agents | Parallel agent sessions |
-| **Superset** | Terminal IDE for 10+ parallel agents | Large-scale orchestration |
-| **Claude Code Task tool** | In-process subagent spawning | Programmatic parallelism within a session |
-| **Codex multi-agent** | Built-in agent roles | Codex-specific parallel work |
+| **dmux** | Gerenciamento de painéis tmux para agents | Sessões de agent em paralelo |
+| **Superset** | IDE de terminal para mais de 10 agents em paralelo | Orquestração em larga escala |
+| **Ferramenta Task do Claude Code** | Criação de subagents em processo | Paralelismo programático dentro de uma sessão |
+| **Codex multi-agente** | Papéis de agent embutidos | Trabalho paralelo específico do Codex |
 
-## ECC Helper
+## Helper do ECC
 
-ECC now includes a helper for external tmux-pane orchestration with separate git worktrees:
+O ECC agora inclui um helper para orquestração externa de painéis tmux com git worktrees separados:
 
 ```bash
 node scripts/orchestrate-worktrees.js plan.json --execute
 ```
 
-Example `plan.json`:
+Exemplo de `plan.json`:
 
 ```json
 {
@@ -159,15 +159,15 @@ Example `plan.json`:
 }
 ```
 
-The helper:
-- Creates one branch-backed git worktree per worker
-- Optionally overlays selected `seedPaths` from the main checkout into each worker worktree
-- Writes per-worker `task.md`, `handoff.md`, and `status.md` files under `.orchestration/<session>/`
-- Starts a tmux session with one pane per worker
-- Launches each worker command in its own pane
-- Leaves the main pane free for the orchestrator
+O helper:
+- Cria um git worktree respaldado por branch por worker
+- Opcionalmente sobrepõe os `seedPaths` selecionados do checkout principal em cada worktree de worker
+- Escreve arquivos `task.md`, `handoff.md` e `status.md` por worker em `.orchestration/<session>/`
+- Inicia uma sessão tmux com um painel por worker
+- Lança o comando de cada worker em seu próprio painel
+- Deixa o painel principal livre para o orquestrador
 
-Use `seedPaths` when workers need access to dirty or untracked local files that are not yet part of `HEAD`, such as local orchestration scripts, draft plans, or docs:
+Use `seedPaths` quando os workers precisarem de acesso a arquivos locais sujos ou não rastreados que ainda não fazem parte do `HEAD`, como scripts de orquestração locais, planos em rascunho ou docs:
 
 ```json
 {
@@ -184,9 +184,9 @@ Use `seedPaths` when workers need access to dirty or untracked local files that 
 }
 ```
 
-## Troubleshooting
+## Solução de Problemas
 
-- **Pane not responding:** Switch to the pane directly or inspect it with `tmux capture-pane -pt <session>:0.<pane-index>`.
-- **Merge conflicts:** Use git worktrees to isolate file changes per pane.
-- **High token usage:** Reduce number of parallel panes. Each pane is a full agent session.
-- **tmux not found:** Install with `brew install tmux` (macOS) or `apt install tmux` (Linux).
+- **Painel não responde:** Mude diretamente para o painel ou inspecione-o com `tmux capture-pane -pt <session>:0.<pane-index>`.
+- **Conflitos de merge:** Use git worktrees para isolar as alterações de arquivo por painel.
+- **Alto uso de tokens:** Reduza o número de painéis em paralelo. Cada painel é uma sessão completa de agent.
+- **tmux não encontrado:** Instale com `brew install tmux` (macOS) ou `apt install tmux` (Linux).

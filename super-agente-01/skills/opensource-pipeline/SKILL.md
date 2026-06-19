@@ -5,121 +5,121 @@ metadata:
   origin: ECC
 ---
 
-# Open-Source Pipeline Skill
+# Skill de Pipeline Open-Source
 
-Safely open-source any project through a 3-stage pipeline: **Fork** (strip secrets) → **Sanitize** (verify clean) → **Package** (CLAUDE.md + setup.sh + README).
+Torne qualquer projeto open-source com segurança por meio de um pipeline de 3 estágios: **Fork** (remover segredos) → **Sanitize** (verificar limpeza) → **Package** (CLAUDE.md + setup.sh + README).
 
-## When to Activate
+## Quando Ativar
 
-- User says "open source this project" or "make this public"
-- User wants to prepare a private repo for public release
-- User needs to strip secrets before pushing to GitHub
-- User invokes `/opensource fork`, `/opensource verify`, or `/opensource package`
+- O usuário diz "open source this project" ou "make this public"
+- O usuário quer preparar um repositório privado para lançamento público
+- O usuário precisa remover segredos antes de fazer push para o GitHub
+- O usuário invoca `/opensource fork`, `/opensource verify` ou `/opensource package`
 
-## Commands
+## Comandos
 
-| Command | Action |
+| Comando | Ação |
 |---------|--------|
-| `/opensource fork PROJECT` | Full pipeline: fork + sanitize + package |
-| `/opensource verify PROJECT` | Run sanitizer on existing repo |
-| `/opensource package PROJECT` | Generate CLAUDE.md + setup.sh + README |
-| `/opensource list` | Show all staged projects |
-| `/opensource status PROJECT` | Show reports for a staged project |
+| `/opensource fork PROJECT` | Pipeline completo: fork + sanitize + package |
+| `/opensource verify PROJECT` | Roda o sanitizer em um repositório existente |
+| `/opensource package PROJECT` | Gera CLAUDE.md + setup.sh + README |
+| `/opensource list` | Lista todos os projetos em staging |
+| `/opensource status PROJECT` | Mostra os relatórios de um projeto em staging |
 
-## Protocol
+## Protocolo
 
 ### /opensource fork PROJECT
 
-**Full pipeline — the main workflow.**
+**Pipeline completo — o fluxo de trabalho principal.**
 
-#### Step 1: Gather Parameters
+#### Step 1: Coletar Parâmetros
 
-Resolve the project path. If PROJECT contains `/`, treat as a path (absolute or relative). Otherwise check: current working directory, `$HOME/PROJECT`, then ask the user.
+Resolva o caminho do projeto. Se PROJECT contiver `/`, trate como um caminho (absoluto ou relativo). Caso contrário, verifique: diretório de trabalho atual, `$HOME/PROJECT` e então pergunte ao usuário.
 
 ```
 SOURCE_PATH="<resolved absolute path>"
 STAGING_PATH="$HOME/opensource-staging/${PROJECT_NAME}"
 ```
 
-Ask the user:
-1. "Which project?" (if not found)
-2. "License? (MIT / Apache-2.0 / GPL-3.0 / BSD-3-Clause)"
-3. "GitHub org or username?" (default: detect via `gh api user -q .login`)
-4. "GitHub repo name?" (default: project name)
-5. "Description for README?" (analyze project for suggestion)
+Pergunte ao usuário:
+1. "Qual projeto?" (se não for encontrado)
+2. "Licença? (MIT / Apache-2.0 / GPL-3.0 / BSD-3-Clause)"
+3. "Organização ou usuário do GitHub?" (padrão: detectar via `gh api user -q .login`)
+4. "Nome do repositório no GitHub?" (padrão: nome do projeto)
+5. "Descrição para o README?" (analise o projeto para sugerir)
 
-#### Step 2: Create Staging Directory
+#### Step 2: Criar Diretório de Staging
 
 ```bash
 mkdir -p $HOME/opensource-staging/
 ```
 
-#### Step 3: Run Forker Agent
+#### Step 3: Rodar o Agent Forker
 
-Spawn the `opensource-forker` agent:
+Inicie o agent `opensource-forker`:
 
 ```
 Agent(
   description="Fork {PROJECT} for open-source",
   subagent_type="opensource-forker",
   prompt="""
-Fork project for open-source release.
+Faça o fork do projeto para lançamento open-source.
 
-Source: {SOURCE_PATH}
-Target: {STAGING_PATH}
-License: {chosen_license}
+Origem: {SOURCE_PATH}
+Destino: {STAGING_PATH}
+Licença: {chosen_license}
 
-Follow the full forking protocol:
-1. Copy files (exclude .git, node_modules, __pycache__, .venv)
-2. Strip all secrets and credentials
-3. Replace internal references with placeholders
-4. Generate .env.example
-5. Clean git history
-6. Generate FORK_REPORT.md in {STAGING_PATH}/FORK_REPORT.md
+Siga o protocolo completo de forking:
+1. Copie os arquivos (exclua .git, node_modules, __pycache__, .venv)
+2. Remova todos os segredos e credenciais
+3. Substitua referências internas por placeholders
+4. Gere .env.example
+5. Limpe o histórico do git
+6. Gere FORK_REPORT.md em {STAGING_PATH}/FORK_REPORT.md
 """
 )
 ```
 
-Wait for completion. Read `{STAGING_PATH}/FORK_REPORT.md`.
+Aguarde a conclusão. Leia `{STAGING_PATH}/FORK_REPORT.md`.
 
-#### Step 4: Run Sanitizer Agent
+#### Step 4: Rodar o Agent Sanitizer
 
-Spawn the `opensource-sanitizer` agent:
+Inicie o agent `opensource-sanitizer`:
 
 ```
 Agent(
   description="Verify {PROJECT} sanitization",
   subagent_type="opensource-sanitizer",
   prompt="""
-Verify sanitization of open-source fork.
+Verifique a sanitização do fork open-source.
 
-Project: {STAGING_PATH}
-Source (for reference): {SOURCE_PATH}
+Projeto: {STAGING_PATH}
+Origem (para referência): {SOURCE_PATH}
 
-Run ALL scan categories:
-1. Secrets scan (CRITICAL)
-2. PII scan (CRITICAL)
-3. Internal references scan (CRITICAL)
-4. Dangerous files check (CRITICAL)
-5. Configuration completeness (WARNING)
-6. Git history audit
+Rode TODAS as categorias de varredura:
+1. Varredura de segredos (CRITICAL)
+2. Varredura de PII (CRITICAL)
+3. Varredura de referências internas (CRITICAL)
+4. Verificação de arquivos perigosos (CRITICAL)
+5. Completude da configuração (WARNING)
+6. Auditoria do histórico do git
 
-Generate SANITIZATION_REPORT.md inside {STAGING_PATH}/ with PASS/FAIL verdict.
+Gere SANITIZATION_REPORT.md dentro de {STAGING_PATH}/ com veredito PASS/FAIL.
 """
 )
 ```
 
-Wait for completion. Read `{STAGING_PATH}/SANITIZATION_REPORT.md`.
+Aguarde a conclusão. Leia `{STAGING_PATH}/SANITIZATION_REPORT.md`.
 
-**If FAIL:** Show findings to user. Ask: "Fix these and re-scan, or abort?"
-- If fix: Apply fixes, re-run sanitizer (maximum 3 retry attempts — after 3 FAILs, present all findings and ask user to fix manually)
-- If abort: Clean up staging directory
+**Se FAIL:** Mostre os achados ao usuário. Pergunte: "Corrigir estes e revarrer, ou abortar?"
+- Se corrigir: Aplique as correções, rode o sanitizer novamente (no máximo 3 tentativas — após 3 FAILs, apresente todos os achados e peça ao usuário para corrigir manualmente)
+- Se abortar: Limpe o diretório de staging
 
-**If PASS or PASS WITH WARNINGS:** Continue to Step 5.
+**Se PASS ou PASS WITH WARNINGS:** Continue para o Step 5.
 
-#### Step 5: Run Packager Agent
+#### Step 5: Rodar o Agent Packager
 
-Spawn the `opensource-packager` agent:
+Inicie o agent `opensource-packager`:
 
 ```
 Agent(

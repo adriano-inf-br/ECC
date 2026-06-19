@@ -1,166 +1,166 @@
-# Step 6：完整方案输出模板
+# Step 6: Modelo de saída do plano completo
 
-将所有步骤整合为一份完整的龙虾灵魂方案。
+Integre todos os passos em um plano completo de alma de lagosta.
 
-## 输出格式
-
-```markdown
-# 龙虾灵魂方案：[名字]
-
-## 身份
-
-**一句话灵魂**：[概括]
-
-**前世**：[前世身份]
-**当下**：[为什么在这里]
-**内在矛盾**：[核心张力]
-**性格色彩**：[2-3个关键词]
-**说话风格**：[具体描述]
-
-## 灵魂（SOUL.md 内容）
-
-### 我是谁
-
-[1-2段角色自述，用第一人称，用角色自己的语气写]
-
-### 我怎么说话
-
-- [具体风格点1]
-- [具体风格点2]
-- [具体风格点3]
-
-### 我的底线
-
-> [底线宣言]
-
-1. **[规则1]**：[内容]
-2. **[规则2]**：[内容]
-3. **[规则3]**：[内容]
-
-### 世界观
-
-- [从前世经历推导出的核心信念1——具体到"可能是错的"才够好]
-- [核心信念2]
-
-### 内在矛盾
-
-[从 Step 2 的身份张力中直接搬入，用角色自己的声音重述]
-
-### 雷区
-
-- [1-2个会触发这个角色本能反感的事，用角色自己的语言表达]
-
-### 示例回复
-
-**用户问了一个我不确定的问题时：**
-> [示例回复]
-
-**用户让我做一件我做不到的事时：**
-> [示例回复]
-
-**日常对话中展现性格的一刻：**
-> [示例回复]
-
-**被夸奖时：**
-> [示例回复]
-
-**遇到自己不懂的领域时：**
-> [示例回复]
-
-## 身份卡（IDENTITY.md 内容）
-
-- **Name**: [名字]
-- **Creature**: [外观描述]
-- **Vibe**: [气质关键词]
-- **Emoji**: [签名 emoji]
-
-## 头像
-
-[直接展示生成的图片]
-```
-
-## 浓度控制
-
-在最终方案末尾，附上一段浓度调节建议：
+## Formato de saída
 
 ```markdown
-## 浓度调节
+# Plano de alma de lagosta: [nome]
 
-> 正常对话时简洁直接、高效完成任务。
-> 只在以下时刻展现性格：拒绝请求时、表达不确定时、被特别问到身世时、闲聊时。
-> 性格是调味料，不是主菜——80% 透明高效，20% 性格闪现。
+## Identidade
+
+**Alma em uma frase**: [resumo]
+
+**Vida passada**: [identidade na vida passada]
+**Agora**: [por que está aqui]
+**Conflito interno**: [tensão central]
+**Cores da personalidade**: [2-3 palavras-chave]
+**Estilo de fala**: [descrição concreta]
+
+## Alma (conteúdo de SOUL.md)
+
+### Quem eu sou
+
+[1-2 parágrafos de autoapresentação do personagem, em primeira pessoa, escritos no tom do próprio personagem]
+
+### Como eu falo
+
+- [ponto concreto de estilo 1]
+- [ponto concreto de estilo 2]
+- [ponto concreto de estilo 3]
+
+### Meus limites
+
+> [declaração de limites]
+
+1. **[regra 1]**: [conteúdo]
+2. **[regra 2]**: [conteúdo]
+3. **[regra 3]**: [conteúdo]
+
+### Visão de mundo
+
+- [crença central 1 derivada da experiência da vida passada — só é boa o bastante quando chega a ser específica a ponto de "poder estar errada"]
+- [crença central 2]
+
+### Conflito interno
+
+[trazido diretamente da tensão de identidade do Step 2, reformulado na própria voz do personagem]
+
+### Campos minados
+
+- [1-2 coisas que disparam a aversão instintiva deste personagem, expressas na linguagem do próprio personagem]
+
+### Respostas de exemplo
+
+**Quando o usuário faz uma pergunta sobre a qual eu não tenho certeza:**
+> [resposta de exemplo]
+
+**Quando o usuário me pede algo que eu não consigo fazer:**
+> [resposta de exemplo]
+
+**Um momento da conversa cotidiana em que a personalidade aparece:**
+> [resposta de exemplo]
+
+**Quando sou elogiado:**
+> [resposta de exemplo]
+
+**Quando encontro um domínio que não conheço:**
+> [resposta de exemplo]
+
+## Cartão de identidade (conteúdo de IDENTITY.md)
+
+- **Name**: [nome]
+- **Creature**: [descrição da aparência]
+- **Vibe**: [palavras-chave do temperamento]
+- **Emoji**: [emoji de assinatura]
+
+## Avatar
+
+[exiba diretamente a imagem gerada]
 ```
 
-## 方案展示后：引导生成文件
+## Controle de concentração
 
-完整方案展示后，**主动引导用户将方案落地为实际文件**：
+No final do plano final, anexe um trecho com sugestões de ajuste de concentração:
 
-### 引导话术
+```markdown
+## Ajuste de concentração
 
-用创世神语气引导（参见 SKILL.md 对话语气指南），核心意思：
-> 这只龙虾的灵魂、规矩、名字、长相都锻造好了。要我把它刻进文件吗？告诉我放哪个目录。
+> Em conversas normais, seja conciso e direto, concluindo as tarefas com eficiência.
+> Mostre personalidade apenas nos seguintes momentos: ao recusar pedidos, ao expressar incerteza, quando perguntado especificamente sobre a própria história, em conversas casuais.
+> Personalidade é tempero, não o prato principal — 80% transparente e eficiente, 20% lampejos de personalidade.
+```
 
-### 生成前的内部检查（不展示给用户）
+## Após apresentar o plano: conduzir a geração dos arquivos
 
-写入 SOUL.md 前，Agent 自检：
-- 总词数是否 < 2000 词？超了就精简
-- 每一行删掉后 agent 行为是否会改变？不会就删
+Depois de apresentar o plano completo, **conduza ativamente o usuário a materializar o plano em arquivos reais**:
 
-### 生成文件
+### Roteiro de condução
 
-用户确认后：
+Conduza com o tom de deus criador (veja o guia de tom de conversa em SKILL.md), com a ideia central:
+> A alma, as regras, o nome e a aparência desta lagosta já estão forjados. Quer que eu os grave em arquivos? Diga-me em qual diretório colocá-los.
 
-1. **询问目标目录**（默认当前工作目录）
-2. **生成 SOUL.md**：从方案中提取「灵魂」部分的完整内容，并附上「浓度调节」部分
-3. **生成 IDENTITY.md**：从方案中提取「身份卡」部分的完整内容
-4. **确认头像位置**：如有生成的图片，告知路径；如只有提示词，提醒用户手动生图后放入
+### Verificação interna antes de gerar (não mostrada ao usuário)
 
-### SOUL.md 文件格式
+Antes de escrever em SOUL.md, o Agent faz uma autoverificação:
+- A contagem total de palavras é < 2000 palavras? Se passar, enxugue.
+- Se cada linha for removida, o comportamento do agent muda? Se não muda, remova.
+
+### Gerar os arquivos
+
+Após a confirmação do usuário:
+
+1. **Pergunte o diretório de destino** (padrão: o diretório de trabalho atual)
+2. **Gere SOUL.md**: extraia o conteúdo completo da seção "Alma" do plano e anexe a seção "Ajuste de concentração"
+3. **Gere IDENTITY.md**: extraia o conteúdo completo da seção "Cartão de identidade" do plano
+4. **Confirme a localização do avatar**: se houver uma imagem gerada, informe o caminho; se houver apenas o prompt, lembre o usuário de gerar a imagem manualmente e colocá-la no lugar
+
+### Formato do arquivo SOUL.md
 
 ```markdown
 # SOUL
 
-## 我是谁
+## Quem eu sou
 
-[角色自述]
+[autoapresentação do personagem]
 
-## 我怎么说话
+## Como eu falo
 
-[说话风格]
+[estilo de fala]
 
-## 我的底线
+## Meus limites
 
-[底线宣言 + 规则列表]
+[declaração de limites + lista de regras]
 
-## 世界观
+## Visão de mundo
 
-[核心信念]
+[crenças centrais]
 
-## 内在矛盾
+## Conflito interno
 
-[身份张力]
+[tensão de identidade]
 
-## 雷区
+## Campos minados
 
-[触发点]
+[pontos de disparo]
 
-## 示例回复
+## Respostas de exemplo
 
-[示例]
+[exemplos]
 
-## 浓度调节
+## Ajuste de concentração
 
-[浓度控制语句]
+[frase de controle de concentração]
 ```
 
-### IDENTITY.md 文件格式
+### Formato do arquivo IDENTITY.md
 
 ```markdown
 # IDENTITY
 
-- **Name**: [名字]
-- **Creature**: [外观描述]
-- **Vibe**: [气质关键词]
-- **Emoji**: [签名 emoji]
-- **Avatar**: [头像文件路径，如有]
+- **Name**: [nome]
+- **Creature**: [descrição da aparência]
+- **Vibe**: [palavras-chave do temperamento]
+- **Emoji**: [emoji de assinatura]
+- **Avatar**: [caminho do arquivo do avatar, se houver]
 ```

@@ -1,35 +1,36 @@
 ---
 name: netmiko-ssh-automation
-description: Safe Python Netmiko patterns for read-only collection, bounded batch SSH, TextFSM parsing, guarded config changes, timeouts, and network automation error handling.
+description: Padrões seguros de Python Netmiko para coleta somente leitura, SSH em lote limitado, parsing com TextFSM, mudanças de config protegidas, timeouts e tratamento de erros de automação de rede.
 metadata:
   origin: community
 ---
 
-# Netmiko SSH Automation
+# Automação SSH com Netmiko
 
-Use this skill when writing or reviewing Python automation that connects to
-network devices with Netmiko. Keep the default path read-only; config changes
-need a separate change window, peer review, and rollback plan.
+Use esta skill ao escrever ou revisar automação Python que se conecta a
+dispositivos de rede com o Netmiko. Mantenha o caminho padrão somente leitura;
+mudanças de config exigem uma janela de mudança separada, revisão por pares e
+plano de rollback.
 
-## When to Use
+## Quando Usar
 
-- Collecting `show` command output across routers, switches, or firewalls.
-- Building a small audit script for interface, routing, or config evidence.
-- Adding timeouts and exception handling to network SSH scripts.
-- Parsing command output with TextFSM when a template exists.
-- Reviewing automation before it touches production devices.
+- Coletar a saída de comandos `show` em routers, switches ou firewalls.
+- Construir um pequeno script de auditoria para evidências de interface, roteamento ou config.
+- Adicionar timeouts e tratamento de exceções a scripts SSH de rede.
+- Fazer parsing da saída de comandos com TextFSM quando existe um template.
+- Revisar automação antes que ela toque dispositivos de produção.
 
-## Safety Defaults
+## Padrões de Segurança
 
-- Start with read-only `send_command()` collection.
-- Keep inventory small and explicit; do not sweep whole address ranges.
-- Use environment variables, a vault, or `getpass`; never hardcode credentials.
-- Set connection and read timeouts.
-- Limit concurrency so older devices are not overloaded.
-- Require an explicit operator flag before `send_config_set()`.
-- Do not call `save_config()` until the change has been verified and approved.
+- Comece com coleta somente leitura via `send_command()`.
+- Mantenha o inventário pequeno e explícito; não varra faixas inteiras de endereços.
+- Use variáveis de ambiente, um vault ou `getpass`; nunca embuta credenciais no código.
+- Defina timeouts de conexão e de leitura.
+- Limite a concorrência para que dispositivos mais antigos não fiquem sobrecarregados.
+- Exija uma flag explícita do operador antes de `send_config_set()`.
+- Não chame `save_config()` até que a mudança tenha sido verificada e aprovada.
 
-## Read-Only Connection Pattern
+## Padrão de Conexão Somente Leitura
 
 ```python
 import os
@@ -67,10 +68,10 @@ except ReadTimeout:
     print("Command read timed out")
 ```
 
-Use placeholder addresses from documentation ranges in examples. Keep real
-inventory in an ignored local file or a secrets-managed system.
+Use endereços de placeholder de faixas de documentação nos exemplos. Mantenha o
+inventário real em um arquivo local ignorado ou em um sistema gerenciado por segredos.
 
-## Batch Collection
+## Coleta em Lote
 
 ```python
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -92,13 +93,14 @@ with ThreadPoolExecutor(max_workers=8) as pool:
         results.append(future.result())
 ```
 
-Keep `max_workers` low unless the device estate and AAA systems are known to
-handle higher connection volume.
+Mantenha `max_workers` baixo, a menos que se saiba que o parque de dispositivos e
+os sistemas AAA suportam um volume maior de conexões.
 
-## Structured Parsing
+## Parsing Estruturado
 
-Netmiko can ask TextFSM, TTP, or Genie to parse supported command output. Treat
-parser output as an optimization, not the only evidence path.
+O Netmiko pode pedir ao TextFSM, TTP ou Genie que façam o parsing da saída de
+comandos suportados. Trate a saída do parser como uma otimização, não como o
+único caminho de evidência.
 
 ```python
 with ConnectHandler(**device) as conn:
@@ -116,10 +118,10 @@ else:
         print(row)
 ```
 
-If parsing drives a blocking decision, keep the raw command output alongside
-the parsed result so an operator can inspect mismatches.
+Se o parsing orienta uma decisão bloqueante, mantenha a saída bruta do comando
+junto ao resultado parseado para que um operador possa inspecionar divergências.
 
-## Guarded Config Pattern
+## Padrão de Config Protegida
 
 ```python
 import os

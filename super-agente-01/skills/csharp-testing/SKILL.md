@@ -196,7 +196,7 @@ public sealed class OrderApiTests : IClassFixture<WebApplicationFactory<Program>
 }
 ```
 
-### Testing with Testcontainers
+### Testes com Testcontainers
 
 ```csharp
 public sealed class PostgresOrderRepositoryTests : IAsyncLifetime
@@ -238,7 +238,7 @@ public sealed class PostgresOrderRepositoryTests : IAsyncLifetime
 }
 ```
 
-## Test Organization
+## Organização dos Testes
 
 ```
 tests/
@@ -260,7 +260,7 @@ tests/
       DatabaseFixture.cs
 ```
 
-## Test Data Builders
+## Builders de Dados de Teste
 
 ```csharp
 public sealed class OrderBuilder
@@ -283,40 +283,40 @@ public sealed class OrderBuilder
     public Order Build() => Order.Create(_customerId, _items);
 }
 
-// Usage in tests
+// Uso nos testes
 var order = new OrderBuilder()
     .WithCustomer("cust-vip")
     .WithItem("SKU-PREMIUM", 3, 99.99m)
     .Build();
 ```
 
-## Common Anti-Patterns
+## Anti-Padrões Comuns
 
-| Anti-Pattern | Fix |
+| Anti-Padrão | Correção |
 |---|---|
-| Testing implementation details | Test behavior and outcomes |
-| Shared mutable test state | Fresh instance per test (xUnit does this via constructors) |
-| `Thread.Sleep` in async tests | Use `Task.Delay` with timeout, or polling helpers |
-| Asserting on `ToString()` output | Assert on typed properties |
-| One giant assertion per test | One logical assertion per test |
-| Test names describing implementation | Name by behavior: `Method_ExpectedResult_WhenCondition` |
-| Ignoring `CancellationToken` | Always pass and verify cancellation |
+| Testar detalhes de implementação | Teste comportamento e resultados |
+| Estado de teste mutável compartilhado | Instância nova por teste (o xUnit faz isso via construtores) |
+| `Thread.Sleep` em testes assíncronos | Use `Task.Delay` com timeout, ou helpers de polling |
+| Fazer assertion sobre a saída de `ToString()` | Faça assertion sobre propriedades tipadas |
+| Uma assertion gigante por teste | Uma assertion lógica por teste |
+| Nomes de teste descrevendo a implementação | Nomeie por comportamento: `Method_ExpectedResult_WhenCondition` |
+| Ignorar `CancellationToken` | Sempre passe e verifique o cancelamento |
 
-## Running Tests
+## Executando os Testes
 
 ```bash
-# Run all tests
+# Roda todos os testes
 dotnet test
 
-# Run with coverage
+# Roda com cobertura
 dotnet test --collect:"XPlat Code Coverage"
 
-# Run specific project
+# Roda um projeto específico
 dotnet test tests/MyApp.UnitTests/
 
-# Filter by test name
+# Filtra por nome de teste
 dotnet test --filter "FullyQualifiedName~OrderService"
 
-# Watch mode during development
+# Modo watch durante o desenvolvimento
 dotnet watch test --project tests/MyApp.UnitTests/
 ```

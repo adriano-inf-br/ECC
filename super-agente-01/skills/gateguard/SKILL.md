@@ -1,28 +1,28 @@
 ---
 name: gateguard
-description: Fact-forcing gate that blocks Edit/Write/Bash (including MultiEdit) and demands concrete investigation (importers, data schemas, user instruction) before allowing the action. Measurably improves output quality by +2.25 points vs ungated agents.
+description: Gate de forçamento de fatos que bloqueia Edit/Write/Bash (incluindo MultiEdit) e exige investigação concreta (importadores, esquemas de dados, instrução do usuário) antes de permitir a ação. Melhora mensuravelmente a qualidade da saída em +2,25 pontos em relação a agents sem gate.
 metadata:
   origin: community
 ---
 
-# GateGuard — Fact-Forcing Pre-Action Gate
+# GateGuard — Gate de Pré-Ação para Forçamento de Fatos
 
-A PreToolUse hook that forces Claude to investigate before editing. Instead of self-evaluation ("are you sure?"), it demands concrete facts. The act of investigation creates awareness that self-evaluation never did.
+Um hook PreToolUse que força o Claude a investigar antes de editar. Em vez de autoavaliação ("você tem certeza?"), ele exige fatos concretos. O próprio ato de investigar cria uma consciência que a autoavaliação nunca criou.
 
-## When to Activate
+## Quando Ativar
 
-- Working on any codebase where file edits affect multiple modules
-- Projects with data files that have specific schemas or date formats
-- Teams where AI-generated code must match existing patterns
-- Any workflow where Claude tends to guess instead of investigating
+- Trabalhar em qualquer codebase em que edições de arquivos afetem múltiplos módulos
+- Projetos com arquivos de dados que possuem esquemas ou formatos de data específicos
+- Equipes em que o código gerado por IA precisa corresponder aos padrões existentes
+- Qualquer fluxo de trabalho em que o Claude tende a adivinhar em vez de investigar
 
-## Core Concept
+## Conceito Central
 
-LLM self-evaluation doesn't work. Ask "did you violate any policies?" and the answer is always "no." This is verified experimentally.
+A autoavaliação de LLM não funciona. Pergunte "você violou alguma política?" e a resposta é sempre "não". Isso foi verificado experimentalmente.
 
-But asking "list every file that imports this module" forces the LLM to run Grep and Read. The investigation itself creates context that changes the output.
+Mas pedir "liste cada arquivo que importa este módulo" força o LLM a executar Grep e Read. A própria investigação cria contexto que muda a saída.
 
-**Three-stage gate:**
+**Gate de três estágios:**
 
 ```
 1. DENY  — block the first Edit/Write/Bash attempt
@@ -30,25 +30,25 @@ But asking "list every file that imports this module" forces the LLM to run Grep
 3. ALLOW — permit retry after facts are presented
 ```
 
-No competitor does all three. Most stop at deny.
+Nenhum concorrente faz os três. A maioria para no deny.
 
-## Evidence
+## Evidência
 
-Two independent A/B tests, identical agents, same task:
+Dois testes A/B independentes, agents idênticos, mesma tarefa:
 
-| Task | Gated | Ungated | Gap |
+| Tarefa | Com gate | Sem gate | Diferença |
 | --- | --- | --- | --- |
-| Analytics module | 8.0/10 | 6.5/10 | +1.5 |
-| Webhook validator | 10.0/10 | 7.0/10 | +3.0 |
-| **Average** | **9.0** | **6.75** | **+2.25** |
+| Módulo de analytics | 8.0/10 | 6.5/10 | +1.5 |
+| Validador de webhook | 10.0/10 | 7.0/10 | +3.0 |
+| **Média** | **9.0** | **6.75** | **+2.25** |
 
-Both agents produce code that runs and passes tests. The difference is design depth.
+Ambos os agents produzem código que roda e passa nos testes. A diferença está na profundidade do design.
 
-## Gate Types
+## Tipos de Gate
 
-### Edit / MultiEdit Gate (first edit per file)
+### Gate de Edit / MultiEdit (primeira edição por arquivo)
 
-MultiEdit is handled identically — each file in the batch is gated individually.
+O MultiEdit é tratado de forma idêntica — cada arquivo do lote tem o gate aplicado individualmente.
 
 ```
 Before editing {file_path}, present these facts:
@@ -60,7 +60,7 @@ Before editing {file_path}, present these facts:
 4. Quote the user's current instruction verbatim
 ```
 
-### Write Gate (first new file creation)
+### Gate de Write (primeira criação de arquivo novo)
 
 ```
 Before creating {file_path}, present these facts:
@@ -72,9 +72,9 @@ Before creating {file_path}, present these facts:
 4. Quote the user's current instruction verbatim
 ```
 
-### Destructive Bash Gate (every destructive command)
+### Gate de Bash Destrutivo (todo comando destrutivo)
 
-Triggers on: `rm -rf`, `git reset --hard`, `git push --force`, `drop table`, etc.
+Dispara em: `rm -rf`, `git reset --hard`, `git push --force`, `drop table`, etc.
 
 ```
 1. List all files/data this command will modify or delete
@@ -82,52 +82,52 @@ Triggers on: `rm -rf`, `git reset --hard`, `git push --force`, `drop table`, etc
 3. Quote the user's current instruction verbatim
 ```
 
-### Routine Bash Gate (once per session)
+### Gate de Bash Rotineiro (uma vez por sessão)
 
 ```
 1. The current user request in one sentence
 2. What this specific command verifies or produces
 ```
 
-## Quick Start
+## Início Rápido
 
-### Option A: Use the ECC hook (zero install)
+### Opção A: Use o hook do ECC (zero instalação)
 
-The hook at `scripts/hooks/gateguard-fact-force.js` is included in this plugin. Enable it via hooks.json.
+O hook em `scripts/hooks/gateguard-fact-force.js` está incluído neste plugin. Ative-o via hooks.json.
 
-If GateGuard blocks setup or repair work, start the session with
-`ECC_GATEGUARD=off`. For hook-level control, keep using
-`ECC_DISABLED_HOOKS` with the GateGuard hook ID.
+Se o GateGuard bloquear trabalho de configuração ou reparo, inicie a sessão com
+`ECC_GATEGUARD=off`. Para controle no nível do hook, continue usando
+`ECC_DISABLED_HOOKS` com o ID do hook do GateGuard.
 
-In long sessions, only the first `GATEGUARD_FACT_FORCE_FULL_DENIALS`
-fact-force denials (default 3) emit the full four-fact block; later
-denials are condensed to a single line carrying the denial ordinal, so
-near-identical blocks cannot accumulate in the context window and
-amplify model repetition loops (#2142). Retrying the same file or
-command after presenting facts never re-triggers the gate.
+Em sessões longas, apenas as primeiras `GATEGUARD_FACT_FORCE_FULL_DENIALS`
+negações de forçamento de fatos (padrão 3) emitem o bloco completo de quatro fatos; negações
+posteriores são condensadas em uma única linha contendo o número ordinal da negação, de modo que
+blocos quase idênticos não acumulem na janela de contexto e
+amplifiquem loops de repetição do modelo (#2142). Tentar novamente o mesmo arquivo ou
+comando após apresentar os fatos nunca dispara o gate de novo.
 
-### Option B: Full package with config
+### Opção B: Pacote completo com config
 
 ```bash
 pip install gateguard-ai
 gateguard init
 ```
 
-This adds `.gateguard.yml` for per-project configuration (custom messages, ignore paths, gate toggles).
+Isso adiciona `.gateguard.yml` para configuração por projeto (mensagens personalizadas, caminhos ignorados, alternância de gates).
 
-## Anti-Patterns
+## Anti-Padrões
 
-- **Don't use self-evaluation instead.** "Are you sure?" always gets "yes." This is experimentally verified.
-- **Don't skip the data schema check.** Both A/B test agents assumed ISO-8601 dates when real data used `%Y/%m/%d %H:%M`. Checking data structure (with redacted values) prevents this entire class of bugs.
-- **Don't gate every single Bash command.** Routine bash gates once per session. Destructive bash gates every time. This balance avoids slowdown while catching real risks.
+- **Não use autoavaliação em vez disso.** "Você tem certeza?" sempre recebe "sim". Isso é verificado experimentalmente.
+- **Não pule a verificação de esquema de dados.** Ambos os agents do teste A/B assumiram datas ISO-8601 quando os dados reais usavam `%Y/%m/%d %H:%M`. Verificar a estrutura dos dados (com valores redigidos) previne toda essa classe de bugs.
+- **Não aplique gate a cada comando Bash.** Gates de bash rotineiro acontecem uma vez por sessão. Gates de bash destrutivo acontecem toda vez. Esse equilíbrio evita lentidão enquanto captura riscos reais.
 
-## Best Practices
+## Melhores Práticas
 
-- Let the gate fire naturally. Don't try to pre-answer the gate questions — the investigation itself is what improves quality.
-- Customize gate messages for your domain. If your project has specific conventions, add them to the gate prompts.
-- Use `.gateguard.yml` to ignore paths like `.venv/`, `node_modules/`, `.git/`.
+- Deixe o gate disparar naturalmente. Não tente responder às perguntas do gate antecipadamente — a própria investigação é o que melhora a qualidade.
+- Personalize as mensagens do gate para o seu domínio. Se o seu projeto tem convenções específicas, adicione-as aos prompts do gate.
+- Use `.gateguard.yml` para ignorar caminhos como `.venv/`, `node_modules/`, `.git/`.
 
-## Related Skills
+## Skills Relacionadas
 
-- `safety-guard` — Runtime safety checks (complementary, not overlapping)
-- `code-reviewer` — Post-edit review (GateGuard is pre-edit investigation)
+- `safety-guard` — Verificações de segurança em tempo de execução (complementar, não sobreposta)
+- `code-reviewer` — Revisão pós-edição (o GateGuard é investigação pré-edição)

@@ -1,25 +1,25 @@
 ---
 name: django-patterns
-description: Django architecture patterns, REST API design with DRF, ORM best practices, caching, signals, middleware, and production-grade Django apps.
+description: Padrões de arquitetura Django, design de API REST com DRF, melhores práticas de ORM, caching, signals, middleware e aplicações Django de nível de produção.
 metadata:
   origin: ECC
 ---
 
-# Django Development Patterns
+# Padrões de Desenvolvimento Django
 
-Production-grade Django architecture patterns for scalable, maintainable applications.
+Padrões de arquitetura Django de nível de produção para aplicações escaláveis e fáceis de manter.
 
-## When to Activate
+## Quando Ativar
 
-- Building Django web applications
-- Designing Django REST Framework APIs
-- Working with Django ORM and models
-- Setting up Django project structure
-- Implementing caching, signals, middleware
+- Construir aplicações web Django
+- Projetar APIs com Django REST Framework
+- Trabalhar com o ORM e os models do Django
+- Configurar a estrutura de um projeto Django
+- Implementar caching, signals, middleware
 
-## Project Structure
+## Estrutura do Projeto
 
-### Recommended Layout
+### Layout Recomendado
 
 ```
 myproject/
@@ -27,10 +27,10 @@ myproject/
 │   ├── __init__.py
 │   ├── settings/
 │   │   ├── __init__.py
-│   │   ├── base.py          # Base settings
-│   │   ├── development.py   # Dev settings
-│   │   ├── production.py    # Production settings
-│   │   └── test.py          # Test settings
+│   │   ├── base.py          # Configurações base
+│   │   ├── development.py   # Configurações de desenvolvimento
+│   │   ├── production.py    # Configurações de produção
+│   │   └── test.py          # Configurações de teste
 │   ├── urls.py
 │   ├── wsgi.py
 │   └── asgi.py
@@ -51,7 +51,7 @@ myproject/
         └── ...
 ```
 
-### Split Settings Pattern
+### Padrão de Configurações Divididas
 
 ```python
 # config/settings/base.py
@@ -73,7 +73,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
-    # Local apps
+    # Apps locais
     'apps.users',
     'apps.products',
 ]
@@ -151,9 +151,9 @@ LOGGING = {
 }
 ```
 
-## Model Design Patterns
+## Padrões de Design de Models
 
-### Model Best Practices
+### Melhores Práticas de Models
 
 ```python
 from django.db import models
@@ -161,7 +161,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 class User(AbstractUser):
-    """Custom user model extending AbstractUser."""
+    """Model de usuário customizado que estende AbstractUser."""
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=20, blank=True)
     birth_date = models.DateField(null=True, blank=True)
@@ -182,7 +182,7 @@ class User(AbstractUser):
         return f"{self.first_name} {self.last_name}".strip()
 
 class Product(models.Model):
-    """Product model with proper field configuration."""
+    """Model Product com configuração adequada de campos."""
     name = models.CharField(max_length=200)
     slug = models.SlugField(unique=True, max_length=250)
     description = models.TextField(blank=True)
@@ -226,79 +226,79 @@ class Product(models.Model):
         super().save(*args, **kwargs)
 ```
 
-### QuerySet Best Practices
+### Melhores Práticas de QuerySet
 
 ```python
 from django.db import models
 
 class ProductQuerySet(models.QuerySet):
-    """Custom QuerySet for Product model."""
+    """QuerySet customizado para o model Product."""
 
     def active(self):
-        """Return only active products."""
+        """Retorna apenas produtos ativos."""
         return self.filter(is_active=True)
 
     def with_category(self):
-        """Select related category to avoid N+1 queries."""
+        """Faz select related da categoria para evitar consultas N+1."""
         return self.select_related('category')
 
     def with_tags(self):
-        """Prefetch tags for many-to-many relationship."""
+        """Faz prefetch das tags para o relacionamento many-to-many."""
         return self.prefetch_related('tags')
 
     def in_stock(self):
-        """Return products with stock > 0."""
+        """Retorna produtos com estoque > 0."""
         return self.filter(stock__gt=0)
 
     def search(self, query):
-        """Search products by name or description."""
+        """Busca produtos por nome ou descrição."""
         return self.filter(
             models.Q(name__icontains=query) |
             models.Q(description__icontains=query)
         )
 
 class Product(models.Model):
-    # ... fields ...
+    # ... campos ...
 
-    objects = ProductQuerySet.as_manager()  # Use custom QuerySet
+    objects = ProductQuerySet.as_manager()  # Usa o QuerySet customizado
 
-# Usage
+# Uso
 Product.objects.active().with_category().in_stock()
 ```
 
-### Manager Methods
+### Métodos de Manager
 
 ```python
 class ProductManager(models.Manager):
-    """Custom manager for complex queries."""
+    """Manager customizado para consultas complexas."""
 
     def get_or_none(self, **kwargs):
-        """Return object or None instead of DoesNotExist."""
+        """Retorna o objeto ou None em vez de DoesNotExist."""
         try:
             return self.get(**kwargs)
         except self.model.DoesNotExist:
             return None
 
     def create_with_tags(self, name, price, tag_names):
-        """Create product with associated tags."""
+        """Cria um produto com as tags associadas."""
         product = self.create(name=name, price=price)
         tags = [Tag.objects.get_or_create(name=name)[0] for name in tag_names]
         product.tags.set(tags)
         return product
 
     def bulk_update_stock(self, product_ids, quantity):
-        """Bulk update stock for multiple products."""
+        """Atualiza o estoque em massa para múltiplos produtos."""
         return self.filter(id__in=product_ids).update(stock=quantity)
 
-# In model
+# No model
 class Product(models.Model):
-    # ... fields ...
+    # ... campos ...
     custom = ProductManager()
 ```
 
-## Django REST Framework Patterns
+## Padrões do Django REST Framework
 
-### Serializer Patterns
+### Padrões de Serializer
 
 ```python
 from rest_framework import serializers
@@ -306,7 +306,7 @@ from django.contrib.auth.password_validation import validate_password
 from .models import Product, User
 
 class ProductSerializer(serializers.ModelSerializer):
-    """Serializer for Product model."""
+    """Serializer para o model Product."""
 
     category_name = serializers.CharField(source='category.name', read_only=True)
     average_rating = serializers.FloatField(read_only=True)
@@ -322,26 +322,26 @@ class ProductSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'slug', 'created_at']
 
     def get_discount_price(self, obj):
-        """Calculate discount price if applicable."""
+        """Calcula o preço com desconto, se aplicável."""
         if hasattr(obj, 'discount') and obj.discount:
             return obj.price * (1 - obj.discount.percent / 100)
         return obj.price
 
     def validate_price(self, value):
-        """Ensure price is non-negative."""
+        """Garante que o preço não seja negativo."""
         if value < 0:
             raise serializers.ValidationError("Price cannot be negative.")
         return value
 
 class ProductCreateSerializer(serializers.ModelSerializer):
-    """Serializer for creating products."""
+    """Serializer para criar produtos."""
 
     class Meta:
         model = Product
         fields = ['name', 'description', 'price', 'stock', 'category']
 
     def validate(self, data):
-        """Custom validation for multiple fields."""
+        """Validação customizada para múltiplos campos."""
         if data['price'] > 10000 and data['stock'] > 100:
             raise serializers.ValidationError(
                 "Cannot have high-value products with large stock."
@@ -349,7 +349,7 @@ class ProductCreateSerializer(serializers.ModelSerializer):
         return data
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
-    """Serializer for user registration."""
+    """Serializer para registro de usuário."""
 
     password = serializers.CharField(
         write_only=True,
@@ -364,7 +364,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         fields = ['email', 'username', 'password', 'password_confirm']
 
     def validate(self, data):
-        """Validate passwords match."""
+        """Valida se as senhas coincidem."""
         if data['password'] != data['password_confirm']:
             raise serializers.ValidationError({
                 "password_confirm": "Password fields didn't match."
@@ -372,7 +372,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         return data
 
     def create(self, validated_data):
-        """Create user with hashed password."""
+        """Cria o usuário com a senha hasheada."""
         validated_data.pop('password_confirm')
         password = validated_data.pop('password')
         user = User.objects.create(**validated_data)
@@ -381,7 +381,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         return user
 ```
 
-### ViewSet Patterns
+### Padrões de ViewSet
 
 ```python
 from rest_framework import viewsets, status, filters
@@ -396,7 +396,7 @@ from .filters import ProductFilter
 from .services import ProductService
 
 class ProductViewSet(viewsets.ModelViewSet):
-    """ViewSet for Product model."""
+    """ViewSet para o model Product."""
 
     queryset = Product.objects.select_related('category').prefetch_related('tags')
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
@@ -407,25 +407,25 @@ class ProductViewSet(viewsets.ModelViewSet):
     ordering = ['-created_at']
 
     def get_serializer_class(self):
-        """Return appropriate serializer based on action."""
+        """Retorna o serializer apropriado com base na action."""
         if self.action == 'create':
             return ProductCreateSerializer
         return ProductSerializer
 
     def perform_create(self, serializer):
-        """Save with user context."""
+        """Salva com o contexto do usuário."""
         serializer.save(created_by=self.request.user)
 
     @action(detail=False, methods=['get'])
     def featured(self, request):
-        """Return featured products."""
+        """Retorna os produtos em destaque."""
         featured = self.queryset.filter(is_featured=True)[:10]
         serializer = self.get_serializer(featured, many=True)
         return Response(serializer.data)
 
     @action(detail=True, methods=['post'])
     def purchase(self, request, pk=None):
-        """Purchase a product."""
+        """Compra um produto."""
         product = self.get_object()
         service = ProductService()
         result = service.purchase(product, request.user)
@@ -433,14 +433,14 @@ class ProductViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'], permission_classes=[IsAuthenticated])
     def my_products(self, request):
-        """Return products created by current user."""
+        """Retorna os produtos criados pelo usuário atual."""
         products = self.queryset.filter(created_by=request.user)
         page = self.paginate_queryset(products)
         serializer = self.get_serializer(page, many=True)
         return self.get_paginated_response(serializer.data)
 ```
 
-### Custom Actions
+### Actions Customizadas
 
 ```python
 from rest_framework.decorators import api_view, permission_classes
@@ -450,7 +450,7 @@ from rest_framework.response import Response
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def add_to_cart(request):
-    """Add product to user cart."""
+    """Adiciona um produto ao carrinho do usuário."""
     product_id = request.data.get('product_id')
     quantity = request.data.get('quantity', 1)
 
@@ -472,7 +472,7 @@ def add_to_cart(request):
     return Response({'message': 'Added to cart'}, status=status.HTTP_201_CREATED)
 ```
 
-## Service Layer Pattern
+## Padrão de Camada de Serviço
 
 ```python
 # apps/orders/services.py
@@ -481,12 +481,12 @@ from django.db import transaction
 from .models import Order, OrderItem
 
 class OrderService:
-    """Service layer for order-related business logic."""
+    """Camada de serviço para a lógica de negócio relacionada a pedidos."""
 
     @staticmethod
     @transaction.atomic
     def create_order(user, cart: Cart) -> Order:
-        """Create order from cart."""
+        """Cria um pedido a partir do carrinho."""
         order = Order.objects.create(
             user=user,
             total_price=cart.total_price
@@ -500,15 +500,15 @@ class OrderService:
                 price=item.product.price
             )
 
-        # Clear cart
+        # Esvazia o carrinho
         cart.items.all().delete()
 
         return order
 
     @staticmethod
     def process_payment(order: Order, payment_data: dict) -> bool:
-        """Process payment for order."""
-        # Integration with payment gateway
+        """Processa o pagamento de um pedido."""
+        # Integração com o gateway de pagamento
         payment = PaymentGateway.charge(
             amount=order.total_price,
             token=payment_data['token']
@@ -517,7 +517,7 @@ class OrderService:
         if payment.success:
             order.status = Order.Status.PAID
             order.save()
-            # Send confirmation email
+            # Envia e-mail de confirmação
             OrderService.send_confirmation_email(order)
             return True
 
@@ -525,53 +525,53 @@ class OrderService:
 
     @staticmethod
     def send_confirmation_email(order: Order):
-        """Send order confirmation email."""
-        # Email sending logic
+        """Envia o e-mail de confirmação do pedido."""
+        # Lógica de envio de e-mail
         pass
 ```
 
-## Caching Strategies
+## Estratégias de Caching
 
-### View-Level Caching
+### Caching em Nível de View
 
 ```python
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
 
-@method_decorator(cache_page(60 * 15), name='dispatch')  # 15 minutes
+@method_decorator(cache_page(60 * 15), name='dispatch')  # 15 minutos
 class ProductListView(generic.ListView):
     model = Product
     template_name = 'products/list.html'
     context_object_name = 'products'
 ```
 
-### Template Fragment Caching
+### Caching de Fragmento de Template
 
 ```django
 {% load cache %}
 {% cache 500 sidebar %}
-    ... expensive sidebar content ...
+    ... conteúdo custoso da barra lateral ...
 {% endcache %}
 ```
 
-### Low-Level Caching
+### Caching de Baixo Nível
 
 ```python
 from django.core.cache import cache
 
 def get_featured_products():
-    """Get featured products with caching."""
+    """Obtém os produtos em destaque com caching."""
     cache_key = 'featured_products'
     products = cache.get(cache_key)
 
     if products is None:
         products = list(Product.objects.filter(is_featured=True))
-        cache.set(cache_key, products, timeout=60 * 15)  # 15 minutes
+        cache.set(cache_key, products, timeout=60 * 15)  # 15 minutos
 
     return products
 ```
 
-### QuerySet Caching
+### Caching de QuerySet
 
 ```python
 from django.core.cache import cache
@@ -584,14 +584,14 @@ def get_popular_categories():
         categories = list(Category.objects.annotate(
             product_count=Count('products')
         ).filter(product_count__gt=10).order_by('-product_count')[:20])
-        cache.set(cache_key, categories, timeout=60 * 60)  # 1 hour
+        cache.set(cache_key, categories, timeout=60 * 60)  # 1 hora
 
     return categories
 ```
 
 ## Signals
 
-### Signal Patterns
+### Padrões de Signal
 
 ```python
 # apps/users/signals.py
@@ -604,13 +604,13 @@ User = get_user_model()
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
-    """Create profile when user is created."""
+    """Cria o perfil quando o usuário é criado."""
     if created:
         Profile.objects.create(user=instance)
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
-    """Save profile when user is saved."""
+    """Salva o perfil quando o usuário é salvo."""
     instance.profile.save()
 
 # apps/users/apps.py
@@ -621,13 +621,13 @@ class UsersConfig(AppConfig):
     name = 'apps.users'
 
     def ready(self):
-        """Import signals when app is ready."""
+        """Importa os signals quando o app está pronto."""
         import apps.users.signals
 ```
 
 ## Middleware
 
-### Custom Middleware
+### Middleware Customizado
 
 ```python
 # middleware/active_user_middleware.py
@@ -635,53 +635,53 @@ import time
 from django.utils.deprecation import MiddlewareMixin
 
 class ActiveUserMiddleware(MiddlewareMixin):
-    """Middleware to track active users."""
+    """Middleware para rastrear usuários ativos."""
 
     def process_request(self, request):
-        """Process incoming request."""
+        """Processa a requisição recebida."""
         if request.user.is_authenticated:
-            # Update last active time
+            # Atualiza o horário da última atividade
             request.user.last_active = timezone.now()
             request.user.save(update_fields=['last_active'])
 
 class RequestLoggingMiddleware(MiddlewareMixin):
-    """Middleware for logging requests."""
+    """Middleware para registrar requisições."""
 
     def process_request(self, request):
-        """Log request start time."""
+        """Registra o horário de início da requisição."""
         request.start_time = time.time()
 
     def process_response(self, request, response):
-        """Log request duration."""
+        """Registra a duração da requisição."""
         if hasattr(request, 'start_time'):
             duration = time.time() - request.start_time
             logger.info(f'{request.method} {request.path} - {response.status_code} - {duration:.3f}s')
         return response
 ```
 
-## Performance Optimization
+## Otimização de Performance
 
-### N+1 Query Prevention
+### Prevenção de Consultas N+1
 
 ```python
-# Bad - N+1 queries
+# Ruim - consultas N+1
 products = Product.objects.all()
 for product in products:
-    print(product.category.name)  # Separate query for each product
+    print(product.category.name)  # Consulta separada para cada produto
 
-# Good - Single query with select_related
+# Bom - consulta única com select_related
 products = Product.objects.select_related('category').all()
 for product in products:
     print(product.category.name)
 
-# Good - Prefetch for many-to-many
+# Bom - prefetch para many-to-many
 products = Product.objects.prefetch_related('tags').all()
 for product in products:
     for tag in product.tags.all():
         print(tag.name)
 ```
 
-### Database Indexing
+### Indexação de Banco de Dados
 
 ```python
 class Product(models.Model):
@@ -698,38 +698,38 @@ class Product(models.Model):
         ]
 ```
 
-### Bulk Operations
+### Operações em Massa
 
 ```python
-# Bulk create
+# Criação em massa
 Product.objects.bulk_create([
     Product(name=f'Product {i}', price=10.00)
     for i in range(1000)
 ])
 
-# Bulk update
+# Atualização em massa
 products = Product.objects.all()[:100]
 for product in products:
     product.is_active = True
 Product.objects.bulk_update(products, ['is_active'])
 
-# Bulk delete
+# Exclusão em massa
 Product.objects.filter(stock=0).delete()
 ```
 
-## Quick Reference
+## Referência Rápida
 
-| Pattern | Description |
+| Padrão | Descrição |
 |---------|-------------|
-| Split settings | Separate dev/prod/test settings |
-| Custom QuerySet | Reusable query methods |
-| Service Layer | Business logic separation |
-| ViewSet | REST API endpoints |
-| Serializer validation | Request/response transformation |
-| select_related | Foreign key optimization |
-| prefetch_related | Many-to-many optimization |
-| Cache first | Cache expensive operations |
-| Signals | Event-driven actions |
-| Middleware | Request/response processing |
+| Configurações divididas | Separar configurações de dev/prod/test |
+| QuerySet customizado | Métodos de consulta reutilizáveis |
+| Camada de Serviço | Separação da lógica de negócio |
+| ViewSet | Endpoints de API REST |
+| Validação no serializer | Transformação de requisição/resposta |
+| select_related | Otimização de chave estrangeira |
+| prefetch_related | Otimização de many-to-many |
+| Cache primeiro | Fazer cache de operações custosas |
+| Signals | Ações orientadas a eventos |
+| Middleware | Processamento de requisição/resposta |
 
-Remember: Django provides many shortcuts, but for production applications, structure and organization matter more than concise code. Build for maintainability.
+Lembre-se: o Django oferece muitos atalhos, mas para aplicações de produção, a estrutura e a organização importam mais do que código conciso. Construa pensando na manutenibilidade.

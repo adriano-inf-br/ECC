@@ -1,25 +1,25 @@
 ---
 name: docker-patterns
-description: Docker and Docker Compose patterns for local development, container security, networking, volume strategies, and multi-service orchestration.
+description: Padrões de Docker e Docker Compose para desenvolvimento local, segurança de containers, rede, estratégias de volumes e orquestração multi-serviço.
 metadata:
   origin: ECC
 ---
 
-# Docker Patterns
+# Padrões de Docker
 
-Docker and Docker Compose best practices for containerized development.
+Melhores práticas de Docker e Docker Compose para desenvolvimento containerizado.
 
-## When to Activate
+## Quando Ativar
 
-- Setting up Docker Compose for local development
-- Designing multi-container architectures
-- Troubleshooting container networking or volume issues
-- Reviewing Dockerfiles for security and size
-- Migrating from local dev to containerized workflow
+- Configurando o Docker Compose para desenvolvimento local
+- Projetando arquiteturas multi-container
+- Solucionando problemas de rede ou de volumes em containers
+- Revisando Dockerfiles em busca de segurança e tamanho
+- Migrando do desenvolvimento local para um fluxo de trabalho containerizado
 
-## Docker Compose for Local Development
+## Docker Compose para Desenvolvimento Local
 
-### Standard Web App Stack
+### Stack Padrão de Aplicação Web
 
 ```yaml
 # docker-compose.yml
@@ -27,12 +27,12 @@ services:
   app:
     build:
       context: .
-      target: dev                     # Use dev stage of multi-stage Dockerfile
+      target: dev                     # Usa o estágio dev do Dockerfile multi-estágio
     ports:
       - "3000:3000"
     volumes:
-      - .:/app                        # Bind mount for hot reload
-      - /app/node_modules             # Anonymous volume -- preserves container deps
+      - .:/app                        # Bind mount para hot reload
+      - /app/node_modules             # Volume anônimo -- preserva as deps do container
     environment:
       - DATABASE_URL=postgres://postgres:postgres@db:5432/app_dev
       - REDIS_URL=redis://redis:6379/0
@@ -68,10 +68,10 @@ services:
     volumes:
       - redisdata:/data
 
-  mailpit:                            # Local email testing
+  mailpit:                            # Teste de e-mail local
     image: axllent/mailpit
     ports:
-      - "8025:8025"                   # Web UI
+      - "8025:8025"                   # Interface Web
       - "1025:1025"                   # SMTP
 
 volumes:
@@ -79,16 +79,16 @@ volumes:
   redisdata:
 ```
 
-### Development vs Production Dockerfile
+### Dockerfile de Desenvolvimento vs Produção
 
 ```dockerfile
-# Stage: dependencies
+# Estágio: dependencies
 FROM node:22-alpine AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 
-# Stage: dev (hot reload, debug tools)
+# Estágio: dev (hot reload, ferramentas de debug)
 FROM node:22-alpine AS dev
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
@@ -96,14 +96,14 @@ COPY . .
 EXPOSE 3000
 CMD ["npm", "run", "dev"]
 
-# Stage: build
+# Estágio: build
 FROM node:22-alpine AS build
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npm run build && npm prune --production
 
-# Stage: production (minimal image)
+# Estágio: production (imagem mínima)
 FROM node:22-alpine AS production
 WORKDIR /app
 RUN addgroup -g 1001 -S appgroup && adduser -S appuser -u 1001
@@ -117,19 +117,19 @@ HEALTHCHECK --interval=30s --timeout=3s CMD wget -qO- http://localhost:3000/heal
 CMD ["node", "dist/server.js"]
 ```
 
-### Override Files
+### Arquivos de Override
 
 ```yaml
-# docker-compose.override.yml (auto-loaded, dev-only settings)
+# docker-compose.override.yml (carregado automaticamente, configurações apenas para dev)
 services:
   app:
     environment:
       - DEBUG=app:*
       - LOG_LEVEL=debug
     ports:
-      - "9229:9229"                   # Node.js debugger
+      - "9229:9229"                   # Depurador do Node.js
 
-# docker-compose.prod.yml (explicit for production)
+# docker-compose.prod.yml (explícito para produção)
 services:
   app:
     build:
@@ -143,25 +143,25 @@ services:
 ```
 
 ```bash
-# Development (auto-loads override)
+# Desenvolvimento (carrega o override automaticamente)
 docker compose up
 
-# Production
+# Produção
 docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 ```
 
-## Networking
+## Rede
 
-### Service Discovery
+### Descoberta de Serviços
 
-Services in the same Compose network resolve by service name:
+Serviços na mesma rede do Compose são resolvidos pelo nome do serviço:
 ```
-# From "app" container:
-postgres://postgres:postgres@db:5432/app_dev    # "db" resolves to the db container
-redis://redis:6379/0                             # "redis" resolves to the redis container
+# A partir do container "app":
+postgres://postgres:postgres@db:5432/app_dev    # "db" resolve para o container db
+redis://redis:6379/0                             # "redis" resolve para o container redis
 ```
 
-### Custom Networks
+### Redes Personalizadas
 
 ```yaml
 services:
@@ -176,71 +176,71 @@ services:
 
   db:
     networks:
-      - backend-net              # Only reachable from api, not frontend
+      - backend-net              # Acessível apenas a partir da api, não do frontend
 
 networks:
   frontend-net:
   backend-net:
 ```
 
-### Exposing Only What's Needed
+### Expor Apenas o Necessário
 
 ```yaml
 services:
   db:
     ports:
-      - "127.0.0.1:5432:5432"   # Only accessible from host, not network
-    # Omit ports entirely in production -- accessible only within Docker network
+      - "127.0.0.1:5432:5432"   # Acessível apenas a partir do host, não da rede
+    # Omita ports inteiramente em produção -- acessível apenas dentro da rede Docker
 ```
 
-## Volume Strategies
+## Estratégias de Volume
 
 ```yaml
 volumes:
-  # Named volume: persists across container restarts, managed by Docker
+  # Volume nomeado: persiste entre reinícios do container, gerenciado pelo Docker
   pgdata:
 
-  # Bind mount: maps host directory into container (for development)
+  # Bind mount: mapeia um diretório do host para dentro do container (para desenvolvimento)
   # - ./src:/app/src
 
-  # Anonymous volume: preserves container-generated content from bind mount override
+  # Volume anônimo: preserva conteúdo gerado pelo container contra o override do bind mount
   # - /app/node_modules
 ```
 
-### Common Patterns
+### Padrões Comuns
 
 ```yaml
 services:
   app:
     volumes:
-      - .:/app                   # Source code (bind mount for hot reload)
-      - /app/node_modules        # Protect container's node_modules from host
-      - /app/.next               # Protect build cache
+      - .:/app                   # Código-fonte (bind mount para hot reload)
+      - /app/node_modules        # Protege o node_modules do container contra o host
+      - /app/.next               # Protege o cache de build
 
   db:
     volumes:
-      - pgdata:/var/lib/postgresql/data          # Persistent data
-      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql  # Init scripts
+      - pgdata:/var/lib/postgresql/data          # Dados persistentes
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql  # Scripts de inicialização
 ```
 
-## Container Security
+## Segurança de Containers
 
-### Dockerfile Hardening
+### Endurecimento do Dockerfile
 
 ```dockerfile
-# 1. Use specific tags (never :latest)
+# 1. Use tags específicas (nunca :latest)
 FROM node:22.12-alpine3.20
 
-# 2. Run as non-root
+# 2. Execute como não-root
 RUN addgroup -g 1001 -S app && adduser -S app -u 1001
 USER app
 
-# 3. Drop capabilities (in compose)
-# 4. Read-only root filesystem where possible
-# 5. No secrets in image layers
+# 3. Remova capabilities (no compose)
+# 4. Sistema de arquivos raiz somente leitura sempre que possível
+# 5. Sem segredos nas camadas da imagem
 ```
 
-### Compose Security
+### Segurança do Compose
 
 ```yaml
 services:
@@ -254,21 +254,21 @@ services:
     cap_drop:
       - ALL
     cap_add:
-      - NET_BIND_SERVICE          # Only if binding to ports < 1024
+      - NET_BIND_SERVICE          # Apenas se fizer bind em portas < 1024
 ```
 
-### Secret Management
+### Gerenciamento de Segredos
 
 ```yaml
-# GOOD: Use environment variables (injected at runtime)
+# BOM: Use variáveis de ambiente (injetadas em tempo de execução)
 services:
   app:
     env_file:
-      - .env                     # Never commit .env to git
+      - .env                     # Nunca faça commit do .env no git
     environment:
-      - API_KEY                  # Inherits from host environment
+      - API_KEY                  # Herda do ambiente do host
 
-# GOOD: Docker secrets (Swarm mode)
+# BOM: Docker secrets (modo Swarm)
 secrets:
   db_password:
     file: ./secrets/db_password.txt
@@ -278,8 +278,8 @@ services:
     secrets:
       - db_password
 
-# BAD: Hardcoded in image
-# ENV API_KEY=sk-proj-xxxxx      # NEVER DO THIS
+# RUIM: Embutido na imagem (hardcoded)
+# ENV API_KEY=sk-proj-xxxxx      # NUNCA FAÇA ISSO
 ```
 
 ## .dockerignore
@@ -300,66 +300,66 @@ README.md
 tests/
 ```
 
-## Debugging
+## Depuração
 
-### Common Commands
+### Comandos Comuns
 
 ```bash
-# View logs
-docker compose logs -f app           # Follow app logs
-docker compose logs --tail=50 db     # Last 50 lines from db
+# Ver logs
+docker compose logs -f app           # Acompanha os logs do app
+docker compose logs --tail=50 db     # Últimas 50 linhas do db
 
-# Execute commands in running container
-docker compose exec app sh           # Shell into app
-docker compose exec db psql -U postgres  # Connect to postgres
+# Executa comandos em um container em execução
+docker compose exec app sh           # Abre um shell no app
+docker compose exec db psql -U postgres  # Conecta ao postgres
 
-# Inspect
-docker compose ps                     # Running services
-docker compose top                    # Processes in each container
-docker stats                          # Resource usage
+# Inspecionar
+docker compose ps                     # Serviços em execução
+docker compose top                    # Processos em cada container
+docker stats                          # Uso de recursos
 
-# Rebuild
-docker compose up --build             # Rebuild images
-docker compose build --no-cache app   # Force full rebuild
+# Reconstruir
+docker compose up --build             # Reconstrói as imagens
+docker compose build --no-cache app   # Força uma reconstrução completa
 
-# Clean up
-docker compose down                   # Stop and remove containers
-docker compose down -v                # Also remove volumes (DESTRUCTIVE)
-docker system prune                   # Remove unused images/containers
+# Limpeza
+docker compose down                   # Para e remove os containers
+docker compose down -v                # Também remove os volumes (DESTRUTIVO)
+docker system prune                   # Remove imagens/containers não utilizados
 ```
 
-### Debugging Network Issues
+### Depurando Problemas de Rede
 
 ```bash
-# Check DNS resolution inside container
+# Verifica a resolução de DNS dentro do container
 docker compose exec app nslookup db
 
-# Check connectivity
+# Verifica a conectividade
 docker compose exec app wget -qO- http://api:3000/health
 
-# Inspect network
+# Inspeciona a rede
 docker network ls
 docker network inspect <project>_default
 ```
 
-## Anti-Patterns
+## Anti-Padrões
 
 ```
-# BAD: Using docker compose in production without orchestration
-# Use Kubernetes, ECS, or Docker Swarm for production multi-container workloads
+# RUIM: Usar docker compose em produção sem orquestração
+# Use Kubernetes, ECS ou Docker Swarm para cargas multi-container em produção
 
-# BAD: Storing data in containers without volumes
-# Containers are ephemeral -- all data lost on restart without volumes
+# RUIM: Armazenar dados em containers sem volumes
+# Containers são efêmeros -- todos os dados são perdidos no reinício sem volumes
 
-# BAD: Running as root
-# Always create and use a non-root user
+# RUIM: Executar como root
+# Sempre crie e use um usuário não-root
 
-# BAD: Using :latest tag
-# Pin to specific versions for reproducible builds
+# RUIM: Usar a tag :latest
+# Fixe versões específicas para builds reproduzíveis
 
-# BAD: One giant container with all services
-# Separate concerns: one process per container
+# RUIM: Um container gigante com todos os serviços
+# Separe as preocupações: um processo por container
 
-# BAD: Putting secrets in docker-compose.yml
-# Use .env files (gitignored) or Docker secrets
+# RUIM: Colocar segredos no docker-compose.yml
+# Use arquivos .env (no gitignore) ou Docker secrets
 ```

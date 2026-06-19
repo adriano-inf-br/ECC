@@ -1,160 +1,161 @@
 ---
 name: deep-research
-description: Multi-source deep research using firecrawl and exa MCPs. Searches the web, synthesizes findings, and delivers cited reports with source attribution. Use when the user wants thorough research on any topic with evidence and citations.
+description: Pesquisa profunda multifonte usando os MCPs firecrawl e exa. Busca na web, sintetiza descobertas e entrega relatórios com citações e atribuição de fontes. Use quando o usuário quiser pesquisa minuciosa sobre qualquer tópico com evidências e citações.
 metadata:
   origin: ECC
 ---
 
 # Deep Research
 
-> **Drift-prone skill.** Firecrawl/Exa MCP tool names, quotas, and result
-> shapes change. Verify the configured MCP tools and current API docs before
-> promising coverage or quoting live source counts.
+> **Skill propensa a desatualização (drift).** Os nomes das ferramentas MCP do
+> Firecrawl/Exa, as cotas e os formatos de resultado mudam. Verifique as
+> ferramentas MCP configuradas e a documentação atual da API antes de prometer
+> cobertura ou citar contagens de fontes ao vivo.
 
-Produce thorough, cited research reports from multiple web sources using firecrawl and exa MCP tools.
+Produza relatórios de pesquisa minuciosos e com citações a partir de múltiplas fontes da web usando as ferramentas MCP firecrawl e exa.
 
-## When to Activate
+## Quando Ativar
 
-- User asks to research any topic in depth
-- Competitive analysis, technology evaluation, or market sizing
-- Due diligence on companies, investors, or technologies
-- Any question requiring synthesis from multiple sources
-- User says "research", "deep dive", "investigate", or "what's the current state of"
+- O usuário pede para pesquisar qualquer tópico em profundidade
+- Análise competitiva, avaliação de tecnologia ou dimensionamento de mercado
+- Due diligence sobre empresas, investidores ou tecnologias
+- Qualquer pergunta que exija síntese a partir de múltiplas fontes
+- O usuário diz "pesquise", "deep dive", "investigue" ou "qual é o estado atual de"
 
-## MCP Requirements
+## Requisitos de MCP
 
-At least one of:
+Pelo menos uma das opções:
 - **firecrawl** — `firecrawl_search`, `firecrawl_scrape`, `firecrawl_crawl`
 - **exa** — `web_search_exa`, `web_search_advanced_exa`, `crawling_exa`
 
-Both together give the best coverage. Configure in `~/.claude.json` or `~/.codex/config.toml`.
+As duas juntas oferecem a melhor cobertura. Configure em `~/.claude.json` ou `~/.codex/config.toml`.
 
-## Workflow
+## Fluxo de trabalho
 
-### Step 1: Understand the Goal
+### Passo 1: Entenda o Objetivo
 
-Ask 1-2 quick clarifying questions:
-- "What's your goal — learning, making a decision, or writing something?"
-- "Any specific angle or depth you want?"
+Faça 1-2 perguntas rápidas de esclarecimento:
+- "Qual é o seu objetivo — aprender, tomar uma decisão ou escrever algo?"
+- "Algum ângulo ou profundidade específica que você quer?"
 
-If the user says "just research it" — skip ahead with reasonable defaults.
+Se o usuário disser "apenas pesquise" — pule adiante com padrões razoáveis.
 
-### Step 2: Plan the Research
+### Passo 2: Planeje a Pesquisa
 
-Break the topic into 3-5 research sub-questions. Example:
-- Topic: "Impact of AI on healthcare"
-  - What are the main AI applications in healthcare today?
-  - What clinical outcomes have been measured?
-  - What are the regulatory challenges?
-  - What companies are leading this space?
-  - What's the market size and growth trajectory?
+Divida o tópico em 3-5 subperguntas de pesquisa. Exemplo:
+- Tópico: "Impacto da IA na saúde"
+  - Quais são as principais aplicações de IA na saúde hoje?
+  - Quais resultados clínicos foram mensurados?
+  - Quais são os desafios regulatórios?
+  - Quais empresas lideram esse espaço?
+  - Qual é o tamanho do mercado e a trajetória de crescimento?
 
-### Step 3: Execute Multi-Source Search
+### Passo 3: Execute a Busca Multifonte
 
-For EACH sub-question, search using available MCP tools:
+Para CADA subpergunta, busque usando as ferramentas MCP disponíveis:
 
-**With firecrawl:**
+**Com firecrawl:**
 ```
-firecrawl_search(query: "<sub-question keywords>", limit: 8)
-```
-
-**With exa:**
-```
-web_search_exa(query: "<sub-question keywords>", numResults: 8)
-web_search_advanced_exa(query: "<keywords>", numResults: 5, startPublishedDate: "2025-01-01")
+firecrawl_search(query: "<palavras-chave da subpergunta>", limit: 8)
 ```
 
-**Search strategy:**
-- Use 2-3 different keyword variations per sub-question
-- Mix general and news-focused queries
-- Aim for 15-30 unique sources total
-- Prioritize: academic, official, reputable news > blogs > forums
+**Com exa:**
+```
+web_search_exa(query: "<palavras-chave da subpergunta>", numResults: 8)
+web_search_advanced_exa(query: "<palavras-chave>", numResults: 5, startPublishedDate: "2025-01-01")
+```
 
-### Step 4: Deep-Read Key Sources
+**Estratégia de busca:**
+- Use 2-3 variações diferentes de palavras-chave por subpergunta
+- Misture consultas gerais e focadas em notícias
+- Almeje 15-30 fontes únicas no total
+- Priorize: acadêmicas, oficiais, notícias confiáveis > blogs > fóruns
 
-For the most promising URLs, fetch full content:
+### Passo 4: Leia a Fundo as Fontes-Chave
 
-**With firecrawl:**
+Para as URLs mais promissoras, obtenha o conteúdo completo:
+
+**Com firecrawl:**
 ```
 firecrawl_scrape(url: "<url>")
 ```
 
-**With exa:**
+**Com exa:**
 ```
 crawling_exa(url: "<url>", tokensNum: 5000)
 ```
 
-Read 3-5 key sources in full for depth. Do not rely only on search snippets.
+Leia 3-5 fontes-chave na íntegra para obter profundidade. Não confie apenas nos trechos de busca.
 
-### Step 5: Synthesize and Write Report
+### Passo 5: Sintetize e Escreva o Relatório
 
-Structure the report:
+Estruture o relatório:
 
 ```markdown
-# [Topic]: Research Report
-*Generated: [date] | Sources: [N] | Confidence: [High/Medium/Low]*
+# [Tópico]: Relatório de Pesquisa
+*Gerado em: [data] | Fontes: [N] | Confiança: [Alta/Média/Baixa]*
 
-## Executive Summary
-[3-5 sentence overview of key findings]
+## Resumo Executivo
+[Visão geral de 3-5 frases das principais descobertas]
 
-## 1. [First Major Theme]
-[Findings with inline citations]
-- Key point ([Source Name](url))
-- Supporting data ([Source Name](url))
+## 1. [Primeiro Tema Principal]
+[Descobertas com citações inline]
+- Ponto-chave ([Nome da Fonte](url))
+- Dados de apoio ([Nome da Fonte](url))
 
-## 2. [Second Major Theme]
+## 2. [Segundo Tema Principal]
 ...
 
-## 3. [Third Major Theme]
+## 3. [Terceiro Tema Principal]
 ...
 
-## Key Takeaways
-- [Actionable insight 1]
-- [Actionable insight 2]
-- [Actionable insight 3]
+## Principais Conclusões
+- [Insight acionável 1]
+- [Insight acionável 2]
+- [Insight acionável 3]
 
-## Sources
-1. [Title](url) — [one-line summary]
+## Fontes
+1. [Título](url) — [resumo de uma linha]
 2. ...
 
-## Methodology
-Searched [N] queries across web and news. Analyzed [M] sources.
-Sub-questions investigated: [list]
+## Metodologia
+Buscadas [N] consultas na web e em notícias. Analisadas [M] fontes.
+Subperguntas investigadas: [lista]
 ```
 
-### Step 6: Deliver
+### Passo 6: Entregue
 
-- **Short topics**: Post the full report in chat
-- **Long reports**: Post the executive summary + key takeaways, save full report to a file
+- **Tópicos curtos**: poste o relatório completo no chat
+- **Relatórios longos**: poste o resumo executivo + principais conclusões, salve o relatório completo em um arquivo
 
-## Parallel Research with Subagents
+## Pesquisa Paralela com Subagents
 
-For broad topics, use Claude Code's Task tool to parallelize:
-
-```
-Launch 3 research agents in parallel:
-1. Agent 1: Research sub-questions 1-2
-2. Agent 2: Research sub-questions 3-4
-3. Agent 3: Research sub-question 5 + cross-cutting themes
-```
-
-Each agent searches, reads sources, and returns findings. The main session synthesizes into the final report.
-
-## Quality Rules
-
-1. **Every claim needs a source.** No unsourced assertions.
-2. **Cross-reference.** If only one source says it, flag it as unverified.
-3. **Recency matters.** Prefer sources from the last 12 months.
-4. **Acknowledge gaps.** If you couldn't find good info on a sub-question, say so.
-5. **No hallucination.** If you don't know, say "insufficient data found."
-6. **Separate fact from inference.** Label estimates, projections, and opinions clearly.
-
-## Examples
+Para tópicos amplos, use a ferramenta Task do Claude Code para paralelizar:
 
 ```
-"Research the current state of nuclear fusion energy"
-"Deep dive into Rust vs Go for backend services in 2026"
-"Research the best strategies for bootstrapping a SaaS business"
-"What's happening with the US housing market right now?"
-"Investigate the competitive landscape for AI code editors"
+Lance 3 agents de pesquisa em paralelo:
+1. Agent 1: Pesquisa as subperguntas 1-2
+2. Agent 2: Pesquisa as subperguntas 3-4
+3. Agent 3: Pesquisa a subpergunta 5 + temas transversais
+```
+
+Cada agent busca, lê as fontes e retorna as descobertas. A sessão principal sintetiza no relatório final.
+
+## Regras de Qualidade
+
+1. **Toda afirmação precisa de uma fonte.** Sem asserções sem fonte.
+2. **Faça referência cruzada.** Se apenas uma fonte afirma algo, sinalize como não verificado.
+3. **Recência importa.** Prefira fontes dos últimos 12 meses.
+4. **Reconheça lacunas.** Se você não conseguiu encontrar boas informações sobre uma subpergunta, diga isso.
+5. **Sem alucinação.** Se você não sabe, diga "dados insuficientes encontrados".
+6. **Separe fato de inferência.** Rotule estimativas, projeções e opiniões claramente.
+
+## Exemplos
+
+```
+"Pesquise o estado atual da energia de fusão nuclear"
+"Deep dive em Rust vs Go para serviços de backend em 2026"
+"Pesquise as melhores estratégias para fazer bootstrapping de um negócio SaaS"
+"O que está acontecendo com o mercado imobiliário dos EUA agora?"
+"Investigue o cenário competitivo dos editores de código com IA"
 ```

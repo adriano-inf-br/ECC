@@ -1,50 +1,50 @@
 ---
 name: kotlin-coroutines-flows
-description: Kotlin Coroutines and Flow patterns for Android and KMP — structured concurrency, Flow operators, StateFlow, error handling, and testing.
+description: Padrões de Coroutines e Flow do Kotlin para Android e KMP — concorrência estruturada, operadores de Flow, StateFlow, tratamento de erros e testes.
 metadata:
   origin: ECC
 ---
 
-# Kotlin Coroutines & Flows
+# Coroutines e Flows do Kotlin
 
-Patterns for structured concurrency, Flow-based reactive streams, and coroutine testing in Android and Kotlin Multiplatform projects.
+Padrões para concorrência estruturada, streams reativos baseados em Flow e testes de coroutines em projetos Android e Kotlin Multiplatform.
 
-## When to Activate
+## Quando Ativar
 
-- Writing async code with Kotlin coroutines
-- Using Flow, StateFlow, or SharedFlow for reactive data
-- Handling concurrent operations (parallel loading, debounce, retry)
-- Testing coroutines and Flows
-- Managing coroutine scopes and cancellation
+- Escrever código assíncrono com coroutines do Kotlin
+- Usar Flow, StateFlow ou SharedFlow para dados reativos
+- Lidar com operações concorrentes (carregamento paralelo, debounce, retry)
+- Testar coroutines e Flows
+- Gerenciar escopos de coroutines e cancelamento
 
-## Structured Concurrency
+## Concorrência Estruturada
 
-### Scope Hierarchy
+### Hierarquia de Escopos
 
 ```
 Application
   └── viewModelScope (ViewModel)
-        └── coroutineScope { } (structured child)
-              ├── async { } (concurrent task)
-              └── async { } (concurrent task)
+        └── coroutineScope { } (filho estruturado)
+              ├── async { } (tarefa concorrente)
+              └── async { } (tarefa concorrente)
 ```
 
-Always use structured concurrency — never `GlobalScope`:
+Sempre use concorrência estruturada — nunca `GlobalScope`:
 
 ```kotlin
-// BAD
+// RUIM
 GlobalScope.launch { fetchData() }
 
-// GOOD — scoped to ViewModel lifecycle
+// BOM — com escopo no ciclo de vida do ViewModel
 viewModelScope.launch { fetchData() }
 
-// GOOD — scoped to composable lifecycle
+// BOM — com escopo no ciclo de vida do composable
 LaunchedEffect(key) { fetchData() }
 ```
 
-### Parallel Decomposition
+### Decomposição Paralela
 
-Use `coroutineScope` + `async` for parallel work:
+Use `coroutineScope` + `async` para trabalho paralelo:
 
 ```kotlin
 suspend fun loadDashboard(): Dashboard = coroutineScope {
@@ -61,30 +61,30 @@ suspend fun loadDashboard(): Dashboard = coroutineScope {
 
 ### SupervisorScope
 
-Use `supervisorScope` when child failures should not cancel siblings:
+Use `supervisorScope` quando falhas de filhos não devem cancelar os irmãos:
 
 ```kotlin
 suspend fun syncAll() = supervisorScope {
-    launch { syncItems() }       // failure here won't cancel syncStats
+    launch { syncItems() }       // uma falha aqui não cancela syncStats
     launch { syncStats() }
     launch { syncSettings() }
 }
 ```
 
-## Flow Patterns
+## Padrões de Flow
 
-### Cold Flow — One-Shot to Stream Conversion
+### Cold Flow — Conversão de One-Shot em Stream
 
 ```kotlin
 fun observeItems(): Flow<List<Item>> = flow {
-    // Re-emits whenever the database changes
+    // Reemite sempre que o banco de dados muda
     itemDao.observeAll()
         .map { entities -> entities.map { it.toDomain() } }
         .collect { emit(it) }
 }
 ```
 
-### StateFlow for UI State
+### StateFlow para Estado de UI
 
 ```kotlin
 class DashboardViewModel(
@@ -99,9 +99,9 @@ class DashboardViewModel(
 }
 ```
 
-`WhileSubscribed(5_000)` keeps the upstream active for 5 seconds after the last subscriber leaves — survives configuration changes without restarting.
+`WhileSubscribed(5_000)` mantém o upstream ativo por 5 segundos após o último assinante sair — sobrevive a mudanças de configuração sem reiniciar.
 
-### Combining Multiple Flows
+### Combinando Múltiplos Flows
 
 ```kotlin
 val uiState: StateFlow<HomeState> = combine(
@@ -113,10 +113,10 @@ val uiState: StateFlow<HomeState> = combine(
 }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), HomeState())
 ```
 
-### Flow Operators
+### Operadores de Flow
 
 ```kotlin
-// Debounce search input
+// Aplica debounce na entrada de busca
 searchQuery
     .debounce(300)
     .distinctUntilChanged()
@@ -124,7 +124,7 @@ searchQuery
     .catch { emit(emptyList()) }
     .collect { results -> _state.update { it.copy(results = results) } }
 
-// Retry with exponential backoff
+// Retry com backoff exponencial
 fun fetchWithRetry(): Flow<Data> = flow { emit(api.fetch()) }
     .retryWhen { cause, attempt ->
         if (cause is IOException && attempt < 3) {
@@ -136,7 +136,7 @@ fun fetchWithRetry(): Flow<Data> = flow { emit(api.fetch()) }
     }
 ```
 
-### SharedFlow for One-Time Events
+### SharedFlow para Eventos Únicos
 
 ```kotlin
 class ItemListViewModel : ViewModel() {
@@ -156,7 +156,7 @@ class ItemListViewModel : ViewModel() {
     }
 }
 
-// Collect in Composable
+// Coleta no Composable
 LaunchedEffect(Unit) {
     viewModel.effects.collect { effect ->
         when (effect) {
@@ -170,34 +170,34 @@ LaunchedEffect(Unit) {
 ## Dispatchers
 
 ```kotlin
-// CPU-intensive work
+// Trabalho intensivo de CPU
 withContext(Dispatchers.Default) { parseJson(largePayload) }
 
-// IO-bound work
+// Trabalho limitado por IO
 withContext(Dispatchers.IO) { database.query() }
 
-// Main thread (UI) — default in viewModelScope
+// Thread principal (UI) — padrão em viewModelScope
 withContext(Dispatchers.Main) { updateUi() }
 ```
 
-In KMP, use `Dispatchers.Default` and `Dispatchers.Main` (available on all platforms). `Dispatchers.IO` is JVM/Android only — use `Dispatchers.Default` on other platforms or provide via DI.
+No KMP, use `Dispatchers.Default` e `Dispatchers.Main` (disponíveis em todas as plataformas). `Dispatchers.IO` é exclusivo de JVM/Android — use `Dispatchers.Default` em outras plataformas ou forneça via DI.
 
-## Cancellation
+## Cancelamento
 
-### Cooperative Cancellation
+### Cancelamento Cooperativo
 
-Long-running loops must check for cancellation:
+Loops de longa duração devem verificar o cancelamento:
 
 ```kotlin
 suspend fun processItems(items: List<Item>) = coroutineScope {
     for (item in items) {
-        ensureActive()  // throws CancellationException if cancelled
+        ensureActive()  // lança CancellationException se cancelado
         process(item)
     }
 }
 ```
 
-### Cleanup with try/finally
+### Limpeza com try/finally
 
 ```kotlin
 viewModelScope.launch {
@@ -206,14 +206,14 @@ viewModelScope.launch {
         val data = repository.fetch()
         _state.update { it.copy(data = data) }
     } finally {
-        _state.update { it.copy(isLoading = false) }  // always runs, even on cancellation
+        _state.update { it.copy(isLoading = false) }  // sempre executa, mesmo em cancelamento
     }
 }
 ```
 
-## Testing
+## Testes
 
-### Testing StateFlow with Turbine
+### Testando StateFlow com Turbine
 
 ```kotlin
 @Test
@@ -222,7 +222,7 @@ fun `search updates item list`() = runTest {
     val viewModel = ItemListViewModel(GetItemsUseCase(fakeRepository))
 
     viewModel.state.test {
-        assertEquals(ItemListState(), awaitItem())  // initial
+        assertEquals(ItemListState(), awaitItem())  // inicial
 
         viewModel.onSearch("query")
         val loading = awaitItem()

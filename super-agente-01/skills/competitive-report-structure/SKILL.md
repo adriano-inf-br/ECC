@@ -1,162 +1,162 @@
 ---
 name: competitive-report-structure
 description: >-
-  Use after benchmark-methodology has produced scored competitor profile cards.
-  Assembles findings into a decision-grade report: landscape map, competitor
-  profiles, benchmarking matrix, white-space analysis, strategic recommendations,
-  and team alignment trigger questions. Final step in the three-skill competitive
-  pipeline.
+  Use depois que a benchmark-methodology tiver produzido cards de perfil de
+  concorrentes pontuados. Reúne as descobertas em um relatório de grau decisório:
+  mapa do cenário, perfis de concorrentes, matriz de benchmarking, análise de
+  white-space, recomendações estratégicas e perguntas-gatilho de alinhamento de
+  equipe. Passo final do pipeline competitivo de três skills.
 ---
 
 # Competitive Report Structure
 
-Use this skill to assemble scored competitor cards into a decision-grade report.
-The report must answer three questions for the client: **who do we compete with,
-how do we compete, and where is our defensible white-space?** Every section
-earns its place by moving toward those answers — cut anything that doesn't.
+Use esta skill para reunir os cards pontuados de concorrentes em um relatório de grau decisório.
+O relatório deve responder a três perguntas para o cliente: **com quem competimos,
+como competimos e onde está nosso white-space defensável?** Cada seção
+justifica seu lugar avançando rumo a essas respostas — corte tudo o que não fizer isso.
 
 ## When to Activate
 
-- All competitor profile cards from benchmark-methodology are complete and ready to assemble.
-- Need to present competitive findings to a founder, leadership team, or board.
-- The report must drive decisions (who to compete with, how, where the moat is) — not just document the landscape.
-- Preparing a client deliverable that must be auditable and defensible.
+- Todos os cards de perfil de concorrentes da benchmark-methodology estão completos e prontos para serem reunidos.
+- Necessidade de apresentar as descobertas competitivas a um fundador, equipe de liderança ou conselho.
+- O relatório deve orientar decisões (com quem competir, como, onde está o moat) — não apenas documentar o cenário.
+- Preparação de um entregável de cliente que deve ser auditável e defensável.
 
-## Client positioning brief (establish first)
+## Positioning brief do cliente (estabeleça primeiro)
 
-Before assembling the report, establish the client's positioning brief. It
-supplies:
+Antes de reunir o relatório, estabeleça o positioning brief do cliente. Ele
+fornece:
 
-- **Strategic tension** — the paired axes (e.g., memorability × hireability)
-  that define the client's target white-space. All maps and synthesis resolve
-  back to this tension.
-- **Brand balance** — the intended proportional mix of the client's strategic
-  emphases (e.g., 60% strategy/evidence, 25% distinctiveness, 15% craft).
-  Every recommendation must be checked against this balance; flag any that
-  would shift it.
-- **Differentiator** — the framing principle for the executive summary and
-  white-space section.
-- **Target quadrant** — where the client intends to sit in the tension map;
-  confirming whether that quadrant is genuinely open is the report's central
-  empirical question.
+- **Tensão estratégica** — os eixos pareados (ex.: memorabilidade × contratabilidade)
+  que definem o white-space-alvo do cliente. Todos os mapas e a síntese resolvem
+  de volta a essa tensão.
+- **Equilíbrio de marca** — o mix proporcional pretendido das ênfases estratégicas do
+  cliente (ex.: 60% estratégia/evidência, 25% distintividade, 15% craft).
+  Toda recomendação deve ser verificada contra esse equilíbrio; sinalize qualquer uma que
+  o desloque.
+- **Diferenciador** — o princípio de enquadramento para o resumo executivo e a
+  seção de white-space.
+- **Quadrante-alvo** — onde o cliente pretende se posicionar no mapa de tensão;
+  confirmar se esse quadrante está genuinamente aberto é a questão empírica central
+  do relatório.
 
-## Framing principle
+## Princípio de enquadramento
 
-The whole report is organized around the client's strategic tension and
-recommendations resolve back to the client's deliberate brand balance.
-Recommendations that would break that balance must be flagged against it
-explicitly — "this move shifts the balance from X/Y/Z toward A/B/C; confirm
-intent."
+Todo o relatório é organizado em torno da tensão estratégica do cliente e as
+recomendações resolvem de volta ao equilíbrio de marca deliberado do cliente.
+Recomendações que quebrariam esse equilíbrio devem ser sinalizadas contra ele
+explicitamente — "este movimento desloca o equilíbrio de X/Y/Z em direção a A/B/C; confirme
+a intenção."
 
-## Report sections
+## Seções do relatório
 
-### 1. Executive summary
-3–5 takeaways, decision-first. State the most important findings in plain
-language: where the client is strong, where it's exposed, who occupies its
-target white-space, and the top 2–3 moves. Written so a founder/PM reads only
-this and knows what to do. No methodology here.
+### 1. Resumo executivo
+3–5 pontos-chave, decisão em primeiro lugar. Declare as descobertas mais importantes em linguagem
+simples: onde o cliente é forte, onde está exposto, quem ocupa seu
+white-space-alvo e os 2–3 principais movimentos. Escrito de modo que um fundador/PM leia apenas
+isto e saiba o que fazer. Sem metodologia aqui.
 
-### 2. Market landscape & category framing
-Define the category and map it. Use a **multi-axis map** — at minimum a 2×2
-(e.g., *brand-led <-> capability-led* × *boutique <-> enterprise-scale*), and
-ideally the **client's tension plot** from `benchmark-methodology` as the
-headline map. Place every profiled competitor and the client. The map should
-make the client's intended position visually obvious and show how crowded (or
-empty) it is.
+### 2. Cenário de mercado e enquadramento de categoria
+Defina a categoria e mapeie-a. Use um **mapa multi-eixo** — no mínimo um 2×2
+(ex.: *brand-led <-> capability-led* × *boutique <-> escala enterprise*), e
+idealmente o **gráfico de tensão do cliente** da `benchmark-methodology` como o
+mapa principal. Posicione cada concorrente perfilado e o cliente. O mapa deve
+tornar a posição pretendida do cliente visualmente óbvia e mostrar quão lotada (ou
+vazia) ela está.
 
-### 3. Competitor tiers
-Organize the set into **Direct / Adjacent / Aspirational** (from
-`competitive-platform-analysis`). One short paragraph per tier explaining who's
-in it and why it matters to the client. This sets reader expectations before
-the detail.
+### 3. Tiers de concorrentes
+Organize o conjunto em **Direct / Adjacent / Aspirational** (de
+`competitive-platform-analysis`). Um parágrafo curto por tier explicando quem
+está nele e por que importa para o cliente. Isso ajusta as expectativas do leitor antes
+do detalhe.
 
-### 4. Benchmarking matrix
-The full **competitors × dimensions** table — the quantitative spine. Rows =
-competitors (grouped by tier), columns = the nine benchmark dimensions (note:
-dimension 9 — strategic tension — has two poles (e.g., Memorability and
-Hireability for a brand-studio client; substitute the client's own paired axes);
-represent them as two separate sub-columns rather than averaging them). Include
-the client's own honest self-assessment as a row for contrast. Use a **heatmap**
-(color or symbol scale) so strength/weakness patterns are scannable. Do **not**
-add a blended total column — report dimensions separately (per the bias
-controls). Call out the columns where the client leads and where it trails.
+### 4. Matriz de benchmarking
+A tabela completa **concorrentes × dimensões** — a espinha quantitativa. Linhas =
+concorrentes (agrupados por tier), colunas = as nove dimensões de benchmark (nota:
+a dimensão 9 — tensão estratégica — tem dois polos (ex.: Memorabilidade e
+Contratabilidade para um cliente de estúdio de marca; substitua pelos eixos pareados do próprio cliente);
+represente-os como duas sub-colunas separadas em vez de tirar a média). Inclua
+a autoavaliação honesta do próprio cliente como uma linha para contraste. Use um **heatmap**
+(escala de cor ou símbolo) para que os padrões de força/fraqueza sejam escaneáveis. **Não**
+adicione uma coluna de total combinado — reporte as dimensões separadamente (conforme os
+controles de viés). Destaque as colunas em que o cliente lidera e em que fica atrás.
 
 ### 5. Deep dives
-3–5 most instructive competitors in narrative form (from their profile cards).
-Choose for instruction, not ranking: the best exemplar of the target tension
-(high on both poles), the cautionary "one pole only" case, the "competent but
-forgettable" archetype the client defines against, plus any direct threat. Each
-deep dive: what they do, what the client should learn, what the client should
-avoid.
+Os 3–5 concorrentes mais instrutivos em forma narrativa (a partir dos cards de perfil).
+Escolha por instrução, não por ranking: o melhor exemplar da tensão-alvo
+(alto em ambos os polos), o caso de alerta de "apenas um polo", o arquétipo "competente mas
+esquecível" contra o qual o cliente se define, além de qualquer ameaça direta. Cada
+deep dive: o que eles fazem, o que o cliente deve aprender, o que o cliente deve
+evitar.
 
-### 6. White-space & threats
-The strategic heart. Two parts:
+### 6. White-space e ameaças
+O coração estratégico. Duas partes:
 
-- **White-space:** the position the client can own that rivals don't — argued
-  from the maps and matrix, not asserted. Confirm whether the target quadrant
-  (from the positioning brief) is genuinely open.
-- **Threats:** who/what pressures the client — a rival closing the gap,
-  substitutes (no-code/AI tools, in-house teams, generalist freelancers), or
-  category shifts. Be honest about the client's own risks (e.g., a bold identity
-  reading as un-serious to risk-averse buyers).
+- **White-space:** a posição que o cliente pode dominar e que os rivais não dominam — argumentada
+  a partir dos mapas e da matriz, não afirmada. Confirme se o quadrante-alvo
+  (do positioning brief) está genuinamente aberto.
+- **Ameaças:** quem/o que pressiona o cliente — um rival fechando a lacuna,
+  substitutos (ferramentas no-code/IA, equipes internas, freelancers generalistas), ou
+  mudanças de categoria. Seja honesto sobre os próprios riscos do cliente (ex.: uma identidade
+  ousada sendo lida como pouco séria por compradores avessos a risco).
 
-### 7. Strategic recommendations
-Concrete, prioritized moves: who the client competes with, how it differentiates,
-and where to invest (offer packaging, evidence/case studies, thought leadership,
-brand sharpening). **Tie every recommendation back to the brand balance from the
-positioning brief** and flag any that would shift it. Sequence by impact ×
-effort.
+### 7. Recomendações estratégicas
+Movimentos concretos e priorizados: com quem o cliente compete, como ele se diferencia,
+e onde investir (empacotamento de oferta, evidência/case studies, thought leadership,
+afiamento de marca). **Vincule toda recomendação de volta ao equilíbrio de marca do
+positioning brief** e sinalize qualquer uma que o desloque. Sequencie por impacto ×
+esforço.
 
-### 8. Sources / methodology appendix
-The dimensions, weights, rubrics, the scoped set with tiers, source links per
-competitor, and verification notes (asserted vs proven). This is what makes the
-report auditable and defensible — carry the adversarial citation discipline
-through.
+### 8. Apêndice de fontes / metodologia
+As dimensões, os pesos, as rubricas, o conjunto delimitado com tiers, os links de fonte por
+concorrente e as notas de verificação (afirmado vs comprovado). É isso que torna o
+relatório auditável e defensável — leve a disciplina de citação adversarial
+até o fim.
 
-## How to present data
+## Como apresentar os dados
 
-- **2×2 / positioning maps** — for landscape and the tension plot. Lead with
-  these; they carry the argument faster than prose.
-- **Heatmap matrix** — for the competitors × dimensions comparison (section 4).
-- **Profile cards** — the source unit feeding deep dives (section 5).
-- **Quadrant callouts** — name who sits in each quadrant explicitly, especially
-  the client's target one.
-- Keep tables scannable; push raw evidence and links to the appendix.
+- **Mapas 2×2 / de posicionamento** — para o cenário e o gráfico de tensão. Comece por
+  eles; carregam o argumento mais rápido do que a prosa.
+- **Matriz heatmap** — para a comparação concorrentes × dimensões (seção 4).
+- **Cards de perfil** — a unidade-fonte que alimenta os deep dives (seção 5).
+- **Destaques de quadrante** — nomeie explicitamente quem fica em cada quadrante, especialmente
+  o quadrante-alvo do cliente.
+- Mantenha as tabelas escaneáveis; empurre a evidência bruta e os links para o apêndice.
 
-## Decision framework (the report must resolve these)
+## Framework de decisão (o relatório deve resolver estes)
 
-- **Who do we compete with?** — Name the Direct tier specifically; that's the
-  real fight.
-- **How do we compete?** — State the client's differentiator in one sentence,
-  grounded in the matrix (which dimensions the client owns).
-- **Where are our differentiators defensible?** — Identify the
-  dimensions/quadrant rivals can't easily copy (the moat), vs. the ones that
-  are table-stakes.
+- **Com quem competimos?** — Nomeie o tier Direct especificamente; essa é a
+  luta real.
+- **Como competimos?** — Declare o diferenciador do cliente em uma frase,
+  fundamentada na matriz (quais dimensões o cliente domina).
+- **Onde nossos diferenciadores são defensáveis?** — Identifique as
+  dimensões/quadrante que os rivais não conseguem copiar facilmente (o moat), vs. as que
+  são table-stakes.
 
-## Trigger questions for the team alignment session
+## Perguntas-gatilho para a sessão de alinhamento de equipe
 
-End with questions that force decisions, not admiration of the analysis:
+Encerre com perguntas que forcem decisões, não admiração pela análise:
 
-- Is the target quadrant truly open, or is a rival already moving in?
-- Which Direct competitor is the sharpest threat in the next 12 months, and
-  what's the counter?
-- Does the brand balance still hold given the landscape — should any emphasis
-  shift?
-- Which dimension where the client trails is worth closing, and which to
-  deliberately concede?
-- What's the one move that most widens distinctiveness *without* costing
-  hireability / credibility?
+- O quadrante-alvo está realmente aberto, ou um rival já está entrando?
+- Qual concorrente Direct é a ameaça mais nítida nos próximos 12 meses, e
+  qual é a contramedida?
+- O equilíbrio de marca ainda se sustenta dado o cenário — alguma ênfase
+  deve mudar?
+- Qual dimensão em que o cliente fica atrás vale a pena fechar, e qual
+  conceder deliberadamente?
+- Qual é o único movimento que mais amplia a distintividade *sem* custar
+  contratabilidade / credibilidade?
 
 ## Anti-Patterns
 
-- **Leading with methodology.** The executive summary opens with the most important finding, not an explanation of how the benchmark was run. Methodology belongs in the appendix.
-- **Presenting scores without the tension plot.** The 2×2 tension map is the headline artefact. A table of numbers without the map buries the strategic insight.
-- **Omitting the decision framework.** The report must resolve the three questions (who to compete with, how, where the moat is). Leaving these unanswered turns the report into a literature review.
-- **Starting before all profile cards are complete.** Benchmark-methodology must finish before assembly begins. Partial data produces gaps that undermine the heatmap and white-space analysis.
-- **Adding a blended total column to the matrix.** Explicitly excluded — it creates a false composite that obscures the asymmetry the client needs to act on.
+- **Começar pela metodologia.** O resumo executivo abre com a descoberta mais importante, não com uma explicação de como o benchmark foi conduzido. A metodologia pertence ao apêndice.
+- **Apresentar pontuações sem o gráfico de tensão.** O mapa de tensão 2×2 é o artefato principal. Uma tabela de números sem o mapa enterra o insight estratégico.
+- **Omitir o framework de decisão.** O relatório deve resolver as três perguntas (com quem competir, como, onde está o moat). Deixá-las sem resposta transforma o relatório em uma revisão de literatura.
+- **Começar antes que todos os cards de perfil estejam completos.** A benchmark-methodology deve terminar antes que a montagem comece. Dados parciais produzem lacunas que comprometem o heatmap e a análise de white-space.
+- **Adicionar uma coluna de total combinado à matriz.** Explicitamente excluída — ela cria um composto falso que obscurece a assimetria sobre a qual o cliente precisa agir.
 
 ## Related Skills
 
-- `benchmark-methodology` — the prerequisite; produces the scored competitor profile cards this skill assembles.
-- `competitive-platform-analysis` — provides the tier structure (Direct / Adjacent / Aspirational) used in Section 3.
-- `brand-discovery` — use to establish the client's positioning brief if it hasn't been defined.
+- `benchmark-methodology` — o pré-requisito; produz os cards de perfil de concorrentes pontuados que esta skill reúne.
+- `competitive-platform-analysis` — fornece a estrutura de tiers (Direct / Adjacent / Aspirational) usada na Seção 3.
+- `brand-discovery` — use para estabelecer o positioning brief do cliente se ele ainda não tiver sido definido.

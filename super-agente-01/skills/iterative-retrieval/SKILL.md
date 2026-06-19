@@ -1,37 +1,37 @@
 ---
 name: iterative-retrieval
-description: Pattern for progressively refining context retrieval to solve the subagent context problem
+description: Padrão para refinar progressivamente a recuperação de contexto a fim de resolver o problema de contexto de subagents
 metadata:
   origin: ECC
 ---
 
-# Iterative Retrieval Pattern
+# Padrão de Recuperação Iterativa
 
-Solves the "context problem" in multi-agent workflows where subagents don't know what context they need until they start working.
+Resolve o "problema de contexto" em fluxos de trabalho multiagente, em que subagents não sabem de qual contexto precisam até começarem a trabalhar.
 
-## When to Activate
+## Quando Ativar
 
-- Spawning subagents that need codebase context they cannot predict upfront
-- Building multi-agent workflows where context is progressively refined
-- Encountering "context too large" or "missing context" failures in agent tasks
-- Designing RAG-like retrieval pipelines for code exploration
-- Optimizing token usage in agent orchestration
+- Criando subagents que precisam de contexto do código-base que não conseguem prever de antemão
+- Construindo fluxos de trabalho multiagente em que o contexto é refinado progressivamente
+- Encontrando falhas de "contexto grande demais" ou "contexto ausente" em tarefas de agent
+- Projetando pipelines de recuperação no estilo RAG para exploração de código
+- Otimizando o uso de tokens na orquestração de agents
 
-## The Problem
+## O Problema
 
-Subagents are spawned with limited context. They don't know:
-- Which files contain relevant code
-- What patterns exist in the codebase
-- What terminology the project uses
+Subagents são criados com contexto limitado. Eles não sabem:
+- Quais arquivos contêm o código relevante
+- Quais padrões existem no código-base
+- Qual terminologia o projeto usa
 
-Standard approaches fail:
-- **Send everything**: Exceeds context limits
-- **Send nothing**: Agent lacks critical information
-- **Guess what's needed**: Often wrong
+Abordagens padrão falham:
+- **Enviar tudo**: Excede os limites de contexto
+- **Não enviar nada**: O agent fica sem informações críticas
+- **Adivinhar o que é necessário**: Frequentemente errado
 
-## The Solution: Iterative Retrieval
+## A Solução: Recuperação Iterativa
 
-A 4-phase loop that progressively refines context:
+Um loop de 4 fases que refina progressivamente o contexto:
 
 ```
 ┌─────────────────────────────────────────────┐
@@ -45,29 +45,29 @@ A 4-phase loop that progressively refines context:
 │   │   LOOP   │─────│  REFINE  │            │
 │   └──────────┘      └──────────┘            │
 │                                             │
-│        Max 3 cycles, then proceed           │
+│        Máx. 3 ciclos, depois prossiga       │
 └─────────────────────────────────────────────┘
 ```
 
-### Phase 1: DISPATCH
+### Fase 1: DISPATCH
 
-Initial broad query to gather candidate files:
+Consulta inicial ampla para reunir arquivos candidatos:
 
 ```javascript
-// Start with high-level intent
+// Comece com a intenção de alto nível
 const initialQuery = {
   patterns: ['src/**/*.ts', 'lib/**/*.ts'],
   keywords: ['authentication', 'user', 'session'],
   excludes: ['*.test.ts', '*.spec.ts']
 };
 
-// Dispatch to retrieval agent
+// Despacha para o agent de recuperação
 const candidates = await retrieveFiles(initialQuery);
 ```
 
-### Phase 2: EVALUATE
+### Fase 2: EVALUATE
 
-Assess retrieved content for relevance:
+Avalie a relevância do conteúdo recuperado:
 
 ```javascript
 function evaluateRelevance(files, task) {
@@ -80,32 +80,32 @@ function evaluateRelevance(files, task) {
 }
 ```
 
-Scoring criteria:
-- **High (0.8-1.0)**: Directly implements target functionality
-- **Medium (0.5-0.7)**: Contains related patterns or types
-- **Low (0.2-0.4)**: Tangentially related
-- **None (0-0.2)**: Not relevant, exclude
+Critérios de pontuação:
+- **Alta (0.8-1.0)**: Implementa diretamente a funcionalidade alvo
+- **Média (0.5-0.7)**: Contém padrões ou tipos relacionados
+- **Baixa (0.2-0.4)**: Relacionado tangencialmente
+- **Nenhuma (0-0.2)**: Não relevante, excluir
 
-### Phase 3: REFINE
+### Fase 3: REFINE
 
-Update search criteria based on evaluation:
+Atualize os critérios de busca com base na avaliação:
 
 ```javascript
 function refineQuery(evaluation, previousQuery) {
   return {
-    // Add new patterns discovered in high-relevance files
+    // Adiciona novos padrões descobertos em arquivos de alta relevância
     patterns: [...previousQuery.patterns, ...extractPatterns(evaluation)],
 
-    // Add terminology found in codebase
+    // Adiciona terminologia encontrada no código-base
     keywords: [...previousQuery.keywords, ...extractKeywords(evaluation)],
 
-    // Exclude confirmed irrelevant paths
+    // Exclui caminhos confirmados como irrelevantes
     excludes: [...previousQuery.excludes, ...evaluation
       .filter(e => e.relevance < 0.2)
       .map(e => e.path)
     ],
 
-    // Target specific gaps
+    // Foca em lacunas específicas
     focusAreas: evaluation
       .flatMap(e => e.missingContext)
       .filter(unique)
@@ -113,9 +113,9 @@ function refineQuery(evaluation, previousQuery) {
 }
 ```
 
-### Phase 4: LOOP
+### Fase 4: LOOP
 
-Repeat with refined criteria (max 3 cycles):
+Repita com critérios refinados (máx. 3 ciclos):
 
 ```javascript
 async function iterativeRetrieve(task, maxCycles = 3) {
@@ -126,13 +126,13 @@ async function iterativeRetrieve(task, maxCycles = 3) {
     const candidates = await retrieveFiles(query);
     const evaluation = evaluateRelevance(candidates, task);
 
-    // Check if we have sufficient context
+    // Verifica se temos contexto suficiente
     const highRelevance = evaluation.filter(e => e.relevance >= 0.7);
     if (highRelevance.length >= 3 && !hasCriticalGaps(evaluation)) {
       return highRelevance;
     }
 
-    // Refine and continue
+    // Refina e continua
     query = refineQuery(evaluation, query);
     bestContext = mergeContext(bestContext, highRelevance);
   }
@@ -141,72 +141,72 @@ async function iterativeRetrieve(task, maxCycles = 3) {
 }
 ```
 
-## Practical Examples
+## Exemplos Práticos
 
-### Example 1: Bug Fix Context
-
-```
-Task: "Fix the authentication token expiry bug"
-
-Cycle 1:
-  DISPATCH: Search for "token", "auth", "expiry" in src/**
-  EVALUATE: Found auth.ts (0.9), tokens.ts (0.8), user.ts (0.3)
-  REFINE: Add "refresh", "jwt" keywords; exclude user.ts
-
-Cycle 2:
-  DISPATCH: Search refined terms
-  EVALUATE: Found session-manager.ts (0.95), jwt-utils.ts (0.85)
-  REFINE: Sufficient context (2 high-relevance files)
-
-Result: auth.ts, tokens.ts, session-manager.ts, jwt-utils.ts
-```
-
-### Example 2: Feature Implementation
+### Exemplo 1: Contexto de Correção de Bug
 
 ```
-Task: "Add rate limiting to API endpoints"
+Tarefa: "Corrigir o bug de expiração do token de autenticação"
 
-Cycle 1:
-  DISPATCH: Search "rate", "limit", "api" in routes/**
-  EVALUATE: No matches - codebase uses "throttle" terminology
-  REFINE: Add "throttle", "middleware" keywords
+Ciclo 1:
+  DISPATCH: Buscar por "token", "auth", "expiry" em src/**
+  EVALUATE: Encontrados auth.ts (0.9), tokens.ts (0.8), user.ts (0.3)
+  REFINE: Adicionar palavras-chave "refresh", "jwt"; excluir user.ts
 
-Cycle 2:
-  DISPATCH: Search refined terms
-  EVALUATE: Found throttle.ts (0.9), middleware/index.ts (0.7)
-  REFINE: Need router patterns
+Ciclo 2:
+  DISPATCH: Buscar termos refinados
+  EVALUATE: Encontrados session-manager.ts (0.95), jwt-utils.ts (0.85)
+  REFINE: Contexto suficiente (2 arquivos de alta relevância)
 
-Cycle 3:
-  DISPATCH: Search "router", "express" patterns
-  EVALUATE: Found router-setup.ts (0.8)
-  REFINE: Sufficient context
-
-Result: throttle.ts, middleware/index.ts, router-setup.ts
+Resultado: auth.ts, tokens.ts, session-manager.ts, jwt-utils.ts
 ```
 
-## Integration with Agents
+### Exemplo 2: Implementação de Funcionalidade
 
-Use in agent prompts:
+```
+Tarefa: "Adicionar rate limiting aos endpoints da API"
+
+Ciclo 1:
+  DISPATCH: Buscar "rate", "limit", "api" em routes/**
+  EVALUATE: Nenhuma correspondência - o código-base usa a terminologia "throttle"
+  REFINE: Adicionar palavras-chave "throttle", "middleware"
+
+Ciclo 2:
+  DISPATCH: Buscar termos refinados
+  EVALUATE: Encontrados throttle.ts (0.9), middleware/index.ts (0.7)
+  REFINE: Preciso de padrões de router
+
+Ciclo 3:
+  DISPATCH: Buscar padrões "router", "express"
+  EVALUATE: Encontrado router-setup.ts (0.8)
+  REFINE: Contexto suficiente
+
+Resultado: throttle.ts, middleware/index.ts, router-setup.ts
+```
+
+## Integração com Agents
+
+Use em prompts de agent:
 
 ```markdown
-When retrieving context for this task:
-1. Start with broad keyword search
-2. Evaluate each file's relevance (0-1 scale)
-3. Identify what context is still missing
-4. Refine search criteria and repeat (max 3 cycles)
-5. Return files with relevance >= 0.7
+Ao recuperar contexto para esta tarefa:
+1. Comece com uma busca ampla por palavras-chave
+2. Avalie a relevância de cada arquivo (escala de 0 a 1)
+3. Identifique qual contexto ainda está faltando
+4. Refine os critérios de busca e repita (máx. 3 ciclos)
+5. Retorne arquivos com relevância >= 0.7
 ```
 
-## Best Practices
+## Boas Práticas
 
-1. **Start broad, narrow progressively** - Don't over-specify initial queries
-2. **Learn codebase terminology** - First cycle often reveals naming conventions
-3. **Track what's missing** - Explicit gap identification drives refinement
-4. **Stop at "good enough"** - 3 high-relevance files beats 10 mediocre ones
-5. **Exclude confidently** - Low-relevance files won't become relevant
+1. **Comece amplo, estreite progressivamente** - Não superespecifique as consultas iniciais
+2. **Aprenda a terminologia do código-base** - O primeiro ciclo costuma revelar convenções de nomenclatura
+3. **Acompanhe o que está faltando** - A identificação explícita de lacunas orienta o refinamento
+4. **Pare no "bom o suficiente"** - 3 arquivos de alta relevância superam 10 medianos
+5. **Exclua com confiança** - Arquivos de baixa relevância não se tornarão relevantes
 
-## Related
+## Relacionados
 
-- [The Longform Guide](https://x.com/affaanmustafa/status/2014040193557471352) - Subagent orchestration section
-- `continuous-learning` skill - For patterns that improve over time
-- Agent definitions bundled with ECC (manual install path: `agents/`)
+- [The Longform Guide](https://x.com/affaanmustafa/status/2014040193557471352) - Seção de orquestração de subagents
+- skill `continuous-learning` - Para padrões que melhoram ao longo do tempo
+- Definições de agent incluídas com o ECC (caminho de instalação manual: `agents/`)

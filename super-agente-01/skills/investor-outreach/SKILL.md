@@ -1,92 +1,92 @@
 ---
 name: investor-outreach
-description: Draft cold emails, warm intro blurbs, follow-ups, update emails, and investor communications for fundraising. Use when the user wants outreach to angels, VCs, strategic investors, or accelerators and needs concise, personalized, investor-facing messaging.
+description: Redige cold emails, frases de apresentação por indicação (warm intro), follow-ups, e-mails de atualização e comunicações com investidores para captação de recursos. Use quando o usuário quiser contatar anjos, VCs, investidores estratégicos ou aceleradoras e precisar de mensagens concisas, personalizadas e voltadas a investidores.
 metadata:
   origin: ECC
 ---
 
 # Investor Outreach
 
-Write investor communication that is short, concrete, and easy to act on.
+Escreva comunicações com investidores que sejam curtas, concretas e fáceis de acionar.
 
-## When to Activate
+## Quando Ativar
 
-- writing a cold email to an investor
-- drafting a warm intro request
-- sending follow-ups after a meeting or no response
-- writing investor updates during a process
-- tailoring outreach based on fund thesis or partner fit
+- escrevendo um cold email para um investidor
+- redigindo um pedido de apresentação por indicação (warm intro)
+- enviando follow-ups após uma reunião ou sem resposta
+- escrevendo atualizações para investidores durante um processo
+- adaptando o contato com base na tese do fundo ou no fit com o sócio
 
-## Core Rules
+## Regras Centrais
 
-1. Personalize every outbound message.
-2. Keep the ask low-friction.
-3. Use proof instead of adjectives.
-4. Stay concise.
-5. Never send copy that could go to any investor.
+1. Personalize cada mensagem enviada.
+2. Mantenha o pedido com baixo atrito.
+3. Use provas em vez de adjetivos.
+4. Seja conciso.
+5. Nunca envie um texto que poderia ir para qualquer investidor.
 
-## Voice Handling
+## Tratamento de Voz
 
-If the user's voice matters, run `brand-voice` first and reuse its `VOICE PROFILE`.
-This skill should keep the investor-specific structure and ask discipline, not recreate its own parallel voice system.
+Se a voz do usuário for importante, execute `brand-voice` primeiro e reutilize seu `VOICE PROFILE`.
+Esta skill deve manter a estrutura específica de investidores e a disciplina do pedido, e não recriar seu próprio sistema de voz paralelo.
 
-## Hard Bans
+## Proibições Absolutas
 
-Delete and rewrite any of these:
-- "I'd love to connect"
-- "excited to share"
-- generic thesis praise without a real tie-in
-- vague founder adjectives
-- begging language
-- soft closing questions when a direct ask is clearer
+Apague e reescreva qualquer uma destas:
+- "Adoraria me conectar"
+- "animado para compartilhar"
+- elogios genéricos à tese sem uma conexão real
+- adjetivos vagos sobre o fundador
+- linguagem de súplica
+- perguntas de fechamento brandas quando um pedido direto é mais claro
 
-## Cold Email Structure
+## Estrutura do Cold Email
 
-1. subject line: short and specific
-2. opener: why this investor specifically
-3. pitch: what the company does, why now, and what proof matters
-4. ask: one concrete next step
-5. sign-off: name, role, and one credibility anchor if needed
+1. linha de assunto: curta e específica
+2. abertura: por que este investidor especificamente
+3. pitch: o que a empresa faz, por que agora e qual prova importa
+4. pedido: um próximo passo concreto
+5. assinatura: nome, cargo e uma âncora de credibilidade se necessário
 
-## Personalization Sources
+## Fontes de Personalização
 
-Reference one or more of:
-- relevant portfolio companies
-- a public thesis, talk, post, or article
-- a mutual connection
-- a clear market or product fit with the investor's focus
+Referencie uma ou mais destas:
+- empresas relevantes do portfólio
+- uma tese, palestra, post ou artigo público
+- uma conexão em comum
+- um fit claro de mercado ou produto com o foco do investidor
 
-If that context is missing, state that the draft still needs personalization instead of pretending it is finished.
+Se esse contexto estiver faltando, declare que o rascunho ainda precisa de personalização em vez de fingir que está pronto.
 
-## Follow-Up Cadence
+## Cadência de Follow-Up
 
-Default:
-- day 0: initial outbound
-- day 4 or 5: short follow-up with one new data point
-- day 10 to 12: final follow-up with a clean close
+Padrão:
+- dia 0: primeiro contato
+- dia 4 ou 5: follow-up curto com um novo dado
+- dia 10 a 12: follow-up final com um fechamento limpo
 
-Do not keep nudging after that unless the user wants a longer sequence.
+Não continue insistindo depois disso, a menos que o usuário queira uma sequência mais longa.
 
-## Warm Intro Requests
+## Pedidos de Apresentação por Indicação (Warm Intro)
 
-Make life easy for the connector:
-- explain why the intro is a fit
-- include a forwardable blurb
-- keep the forwardable blurb under 100 words
+Facilite a vida de quem fará a conexão:
+- explique por que a apresentação faz sentido
+- inclua uma frase encaminhável (forwardable blurb)
+- mantenha a frase encaminhável com menos de 100 palavras
 
-## Post-Meeting Updates
+## Atualizações Pós-Reunião
 
-Include:
-- the specific thing discussed
-- the answer or update promised
-- one new proof point if available
-- the next step
+Inclua:
+- o ponto específico discutido
+- a resposta ou atualização prometida
+- um novo ponto de prova, se disponível
+- o próximo passo
 
-## Quality Gate
+## Portão de Qualidade
 
-Before delivering:
-- the message is genuinely personalized
-- the ask is explicit
-- the proof point is concrete
-- filler praise and softener language are gone
-- word count stays tight
+Antes de entregar:
+- a mensagem está genuinamente personalizada
+- o pedido é explícito
+- o ponto de prova é concreto
+- elogios de enchimento e linguagem suavizadora foram removidos
+- a contagem de palavras está enxuta

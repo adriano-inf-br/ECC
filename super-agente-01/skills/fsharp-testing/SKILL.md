@@ -1,36 +1,36 @@
 ---
 name: fsharp-testing
-description: F# testing patterns with xUnit, FsUnit, Unquote, FsCheck property-based testing, integration tests, and test organization best practices.
+description: Padrões de teste em F# com xUnit, FsUnit, Unquote, testes baseados em propriedades com FsCheck, testes de integração e melhores práticas de organização de testes.
 metadata:
   origin: ECC
 ---
 
-# F# Testing Patterns
+# Padrões de Teste em F#
 
-Comprehensive testing patterns for F# applications using xUnit, FsUnit, Unquote, FsCheck, and modern .NET testing practices.
+Padrões de teste abrangentes para aplicações F# usando xUnit, FsUnit, Unquote, FsCheck e práticas modernas de teste em .NET.
 
-## When to Activate
+## Quando Ativar
 
-- Writing new tests for F# code
-- Reviewing test quality and coverage
-- Setting up test infrastructure for F# projects
-- Debugging flaky or slow tests
+- Escrever novos testes para código F#
+- Revisar qualidade e cobertura de testes
+- Configurar infraestrutura de testes para projetos F#
+- Depurar testes instáveis ou lentos
 
-## Test Framework Stack
+## Stack de Frameworks de Teste
 
-| Tool | Purpose |
+| Ferramenta | Propósito |
 |---|---|
-| **xUnit** | Test framework (standard .NET ecosystem choice) |
-| **FsUnit.xUnit** | F#-friendly assertion syntax for xUnit |
-| **Unquote** | Assertion library using F# quotations for clear failure messages |
-| **FsCheck.xUnit** | Property-based testing integrated with xUnit |
-| **NSubstitute** | Mocking .NET dependencies |
-| **Testcontainers** | Real infrastructure in integration tests |
-| **WebApplicationFactory** | ASP.NET Core integration tests |
+| **xUnit** | Framework de teste (escolha padrão do ecossistema .NET) |
+| **FsUnit.xUnit** | Sintaxe de asserção amigável a F# para xUnit |
+| **Unquote** | Biblioteca de asserção usando quotations de F# para mensagens de falha claras |
+| **FsCheck.xUnit** | Teste baseado em propriedades integrado com xUnit |
+| **NSubstitute** | Mock de dependências .NET |
+| **Testcontainers** | Infraestrutura real em testes de integração |
+| **WebApplicationFactory** | Testes de integração ASP.NET Core |
 
-## Unit Tests with xUnit + FsUnit
+## Testes Unitários com xUnit + FsUnit
 
-### Basic Test Structure
+### Estrutura Básica de Teste
 
 ```fsharp
 module OrderServiceTests
@@ -50,9 +50,9 @@ let ``confirm changes status to Confirmed`` () =
     confirmed.Status |> should be (ofCase <@ Confirmed @>)
 ```
 
-### Assertions with Unquote
+### Asserções com Unquote
 
-Unquote uses F# quotations so failure messages show the full expression that failed, not just "expected X got Y".
+O Unquote usa quotations de F# para que as mensagens de falha mostrem a expressão completa que falhou, não apenas "esperado X obteve Y".
 
 ```fsharp
 module OrderValidationTests
@@ -79,7 +79,7 @@ let ``validated email rejects empty input`` () =
     test <@ Result.isError result @>
 ```
 
-### Async Tests
+### Testes Assíncronos
 
 ```fsharp
 [<Fact>]
@@ -103,7 +103,7 @@ let ``PlaceOrder returns error when items are empty`` () = task {
 }
 ```
 
-### Parameterized Tests with Theory
+### Testes Parametrizados com Theory
 
 ```fsharp
 [<Theory>]
@@ -123,9 +123,9 @@ let ``IsValidEmail returns expected result`` (email: string, expected: bool) =
     test <@ EmailValidator.isValid email = expected @>
 ```
 
-## Property-Based Testing with FsCheck
+## Teste Baseado em Propriedades com FsCheck
 
-### Using FsCheck.xUnit
+### Usando FsCheck.xUnit
 
 ```fsharp
 open FsCheck
@@ -147,7 +147,7 @@ let ``serialization roundtrips`` (order: Order) =
     deserialized = order
 ```
 
-### Custom Generators
+### Geradores Personalizados
 
 ```fsharp
 type OrderGenerators =
@@ -164,9 +164,9 @@ let ``valid emails pass validation`` (email: string) =
     EmailValidator.isValid email
 ```
 
-## Mocking Dependencies
+## Mock de Dependências
 
-### Function Stubs (Preferred)
+### Stubs de Função (Preferido)
 
 ```fsharp
 let createTestDeps () =
@@ -188,7 +188,7 @@ let ``PlaceOrder saves the confirmed order`` () = task {
 }
 ```
 
-### NSubstitute for .NET Interfaces
+### NSubstitute para Interfaces .NET
 
 ```fsharp
 open NSubstitute
@@ -206,7 +206,7 @@ let ``calls repository with correct ID`` () = task {
 }
 ```
 
-## ASP.NET Core Integration Tests
+## Testes de Integração ASP.NET Core
 
 ```fsharp
 type OrderApiTests (factory: WebApplicationFactory<Program>) =
@@ -227,7 +227,7 @@ type OrderApiTests (factory: WebApplicationFactory<Program>) =
     }
 ```
 
-## Test Organization
+## Organização dos Testes
 
 ```
 tests/
@@ -245,23 +245,23 @@ tests/
       TestDeps.fs
 ```
 
-## Common Anti-Patterns
+## Anti-Padrões Comuns
 
-| Anti-Pattern | Fix |
+| Anti-Padrão | Correção |
 |---|---|
-| Testing implementation details | Test behavior and outcomes |
-| Mutable shared test state | Fresh state per test |
-| `Thread.Sleep` in async tests | Use `Task.Delay` with timeout, or polling helpers |
-| Asserting on `sprintf` output | Assert on typed values and pattern matches |
-| Ignoring `CancellationToken` | Always pass and verify cancellation |
-| Skipping property-based tests | Use FsCheck for any function with clear invariants |
+| Testar detalhes de implementação | Testar comportamento e resultados |
+| Estado de teste compartilhado mutável | Estado novo por teste |
+| `Thread.Sleep` em testes assíncronos | Use `Task.Delay` com timeout, ou auxiliares de polling |
+| Asserir sobre a saída de `sprintf` | Asserir sobre valores tipados e correspondências de padrão |
+| Ignorar `CancellationToken` | Sempre passe e verifique o cancelamento |
+| Pular testes baseados em propriedades | Use FsCheck para qualquer função com invariantes claras |
 
-## Related Skills
+## Skills Relacionadas
 
-- `dotnet-patterns` - Idiomatic .NET patterns, dependency injection, and architecture
-- `csharp-testing` - C# testing patterns (shared infrastructure like WebApplicationFactory and Testcontainers applies to F# too)
+- `dotnet-patterns` - Padrões idiomáticos de .NET, injeção de dependência e arquitetura
+- `csharp-testing` - Padrões de teste em C# (infraestrutura compartilhada como WebApplicationFactory e Testcontainers também se aplica a F#)
 
-## Running Tests
+## Executando Testes
 
 ```bash
 # Run all tests

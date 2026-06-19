@@ -1,155 +1,155 @@
 ---
 name: knowledge-ops
-description: Knowledge base management, ingestion, sync, and retrieval across multiple storage layers (local files, MCP memory, vector stores, Git repos). Use when the user wants to save, organize, sync, deduplicate, or search across their knowledge systems.
+description: Gerenciamento, ingestão, sincronização e recuperação de base de conhecimento em múltiplas camadas de armazenamento (arquivos locais, memória MCP, vector stores, repositórios Git). Use quando o usuário quiser salvar, organizar, sincronizar, deduplicar ou pesquisar em seus sistemas de conhecimento.
 metadata:
   origin: ECC
 ---
 
-# Knowledge Operations
+# Operações de Conhecimento
 
-Manage a multi-layered knowledge system for ingesting, organizing, syncing, and retrieving knowledge across multiple stores.
+Gerencie um sistema de conhecimento em múltiplas camadas para ingerir, organizar, sincronizar e recuperar conhecimento em diversos armazenamentos.
 
-Prefer the live workspace model:
-- code work lives in the real cloned repos
-- active execution context lives in GitHub, Linear, and repo-local working-context files
-- broader human-facing notes can live in a non-repo context/archive folder
-- durable cross-machine memory belongs in the knowledge base, not in a shadow repo workspace
+Prefira o modelo de workspace ao vivo:
+- o trabalho de código fica nos repositórios clonados reais
+- o contexto de execução ativo fica no GitHub, Linear e em arquivos de contexto de trabalho locais ao repositório
+- notas mais amplas voltadas ao ser humano podem ficar em uma pasta de contexto/arquivo fora do repositório
+- a memória durável entre máquinas pertence à base de conhecimento, não a um workspace de repositório paralelo
 
-## When to Activate
+## Quando Ativar
 
-- User wants to save information to their knowledge base
-- Ingesting documents, conversations, or data into structured storage
-- Syncing knowledge across systems (local files, MCP memory, Supabase, Git repos)
-- Deduplicating or organizing existing knowledge
-- User says "save this to KB", "sync knowledge", "what do I know about X", "ingest this", "update the knowledge base"
-- Any knowledge management task beyond simple memory recall
+- O usuário quer salvar informações em sua base de conhecimento
+- Ingerir documentos, conversas ou dados em armazenamento estruturado
+- Sincronizar conhecimento entre sistemas (arquivos locais, memória MCP, Supabase, repositórios Git)
+- Deduplicar ou organizar conhecimento existente
+- O usuário diz "salvar isto na KB", "sincronizar conhecimento", "o que eu sei sobre X", "ingerir isto", "atualizar a base de conhecimento"
+- Qualquer tarefa de gestão de conhecimento além de simples recuperação de memória
 
-## Knowledge Architecture
+## Arquitetura de Conhecimento
 
-### Layer 1: Active execution truth
-- **Sources:** GitHub issues, PRs, discussions, release notes, Linear issues/projects/docs
-- **Use for:** the current operational state of the work
-- **Rule:** if something affects an active engineering plan, roadmap, rollout, or release, prefer putting it here first
+### Camada 1: Verdade de execução ativa
+- **Fontes:** issues, PRs, discussões e release notes do GitHub, issues/projetos/docs do Linear
+- **Use para:** o estado operacional atual do trabalho
+- **Regra:** se algo afeta um plano de engenharia ativo, roadmap, rollout ou release, prefira colocar aqui primeiro
 
-### Layer 2: Claude Code Memory (Quick Access)
-- **Path:** `~/.claude/projects/*/memory/`
-- **Format:** Markdown files with frontmatter
-- **Types:** user preferences, feedback, project context, reference
-- **Use for:** quick-access context that persists across conversations
-- **Automatically loaded at session start**
+### Camada 2: Memória do Claude Code (Acesso Rápido)
+- **Caminho:** `~/.claude/projects/*/memory/`
+- **Formato:** arquivos Markdown com frontmatter
+- **Tipos:** preferências do usuário, feedback, contexto de projeto, referência
+- **Use para:** contexto de acesso rápido que persiste entre conversas
+- **Carregado automaticamente no início da sessão**
 
-### Layer 3: MCP Memory Server (Structured Knowledge Graph)
-- **Access:** MCP memory tools (create_entities, create_relations, add_observations, search_nodes)
-- **Use for:** Semantic search across all stored memories, relationship mapping
-- **Cross-session persistence with queryable graph structure**
+### Camada 3: Servidor de Memória MCP (Grafo de Conhecimento Estruturado)
+- **Acesso:** tools de memória MCP (create_entities, create_relations, add_observations, search_nodes)
+- **Use para:** busca semântica em todas as memórias armazenadas, mapeamento de relacionamentos
+- **Persistência entre sessões com estrutura de grafo consultável**
 
-### Layer 4: Knowledge base repo / durable document store
-- **Use for:** curated durable notes, session exports, synthesized research, operator memory, long-form docs
-- **Rule:** this is the preferred durable store for cross-machine context when the content is not repo-owned code
+### Camada 4: Repositório da base de conhecimento / armazenamento durável de documentos
+- **Use para:** notas duráveis curadas, exportações de sessão, pesquisa sintetizada, memória do operador, docs de formato longo
+- **Regra:** este é o armazenamento durável preferido para contexto entre máquinas quando o conteúdo não é código de propriedade do repositório
 
-### Layer 5: External Data Store (Supabase, PostgreSQL, etc.)
-- **Use for:** Structured data, large document storage, full-text search
-- **Good for:** Documents too large for memory files, data needing SQL queries
+### Camada 5: Armazenamento de Dados Externo (Supabase, PostgreSQL, etc.)
+- **Use para:** dados estruturados, armazenamento de grandes documentos, busca full-text
+- **Bom para:** documentos grandes demais para arquivos de memória, dados que precisam de consultas SQL
 
-### Layer 6: Local context/archive folder
-- **Use for:** human-facing notes, archived gameplans, local media organization, temporary non-code docs
-- **Rule:** writable for information storage, but not a shadow code workspace
-- **Do not use for:** active code changes or repo truth that should live upstream
+### Camada 6: Pasta local de contexto/arquivo
+- **Use para:** notas voltadas ao ser humano, planos de jogo arquivados, organização de mídia local, docs temporários sem código
+- **Regra:** gravável para armazenamento de informações, mas não um workspace de código paralelo
+- **Não use para:** mudanças de código ativas ou verdade do repositório que deveria viver upstream
 
-## Ingestion Workflow
+## Fluxo de trabalho de Ingestão
 
-When new knowledge needs to be captured:
+Quando um novo conhecimento precisa ser capturado:
 
-### 1. Classify
-What type of knowledge is it?
-- Business decision -> memory file (project type) + MCP memory
-- Active roadmap / release / implementation state -> GitHub + Linear first
-- Personal preference -> memory file (user/feedback type)
-- Reference info -> memory file (reference type) + MCP memory
-- Large document -> external data store + summary in memory
-- Conversation/session -> knowledge base repo + short summary in memory
+### 1. Classificar
+Que tipo de conhecimento é?
+- Decisão de negócio -> arquivo de memória (tipo project) + memória MCP
+- Estado ativo de roadmap / release / implementação -> GitHub + Linear primeiro
+- Preferência pessoal -> arquivo de memória (tipo user/feedback)
+- Informação de referência -> arquivo de memória (tipo reference) + memória MCP
+- Documento grande -> armazenamento externo + resumo na memória
+- Conversa/sessão -> repositório da base de conhecimento + resumo curto na memória
 
-### 2. Deduplicate
-Check if this knowledge already exists:
-- Search memory files for existing entries
-- Query MCP memory with relevant terms
-- Check whether the information already exists in GitHub or Linear before creating another local note
-- Do not create duplicates. Update existing entries instead.
+### 2. Deduplicar
+Verifique se este conhecimento já existe:
+- Pesquise nos arquivos de memória por entradas existentes
+- Consulte a memória MCP com termos relevantes
+- Verifique se a informação já existe no GitHub ou Linear antes de criar outra nota local
+- Não crie duplicatas. Em vez disso, atualize as entradas existentes.
 
-### 3. Store
-Write to appropriate layer(s):
-- Always update Claude Code memory for quick access
-- Use MCP memory for semantic searchability and relationship mapping
-- Update GitHub / Linear first when the information changes live project truth
-- Commit to the knowledge base repo for durable long-form additions
+### 3. Armazenar
+Grave na(s) camada(s) apropriada(s):
+- Sempre atualize a memória do Claude Code para acesso rápido
+- Use a memória MCP para pesquisabilidade semântica e mapeamento de relacionamentos
+- Atualize GitHub / Linear primeiro quando a informação mudar a verdade ativa do projeto
+- Faça commit no repositório da base de conhecimento para adições duráveis de formato longo
 
-### 4. Index
-Update any relevant indexes or summary files.
+### 4. Indexar
+Atualize quaisquer índices ou arquivos de resumo relevantes.
 
-## Sync Operations
+## Operações de Sincronização
 
-### Conversation Sync
-Periodically sync conversation history into the knowledge base:
-- Sources: Claude session files, Codex sessions, other agent sessions
-- Destination: knowledge base repo
-- Generate a session index for quick browsing
-- Commit and push
+### Sincronização de Conversa
+Sincronize periodicamente o histórico de conversas com a base de conhecimento:
+- Fontes: arquivos de sessão do Claude, sessões do Codex, outras sessões de agent
+- Destino: repositório da base de conhecimento
+- Gere um índice de sessões para navegação rápida
+- Faça commit e push
 
-### Workspace State Sync
-Mirror important workspace configuration and scripts to the knowledge base:
-- Generate directory maps
-- Redact sensitive config before committing
-- Track changes over time
-- Do not treat the knowledge base or archive folder as the live code workspace
+### Sincronização do Estado do Workspace
+Espelhe configurações e scripts importantes do workspace para a base de conhecimento:
+- Gere mapas de diretórios
+- Remova dados sensíveis (redação) antes de fazer commit
+- Acompanhe mudanças ao longo do tempo
+- Não trate a base de conhecimento ou pasta de arquivo como o workspace de código ao vivo
 
-### GitHub / Linear Sync
-When the information affects active execution:
-- update the relevant GitHub issue, PR, discussion, release notes, or roadmap thread
-- attach supporting docs to Linear when the work needs durable planning context
-- only mirror a local note afterwards if it still adds value
+### Sincronização com GitHub / Linear
+Quando a informação afeta a execução ativa:
+- atualize a issue, PR, discussão, release notes ou thread de roadmap relevante do GitHub
+- anexe docs de apoio ao Linear quando o trabalho precisar de contexto de planejamento durável
+- só espelhe uma nota local depois se ainda agregar valor
 
-### Cross-Source Knowledge Sync
-Pull knowledge from multiple sources into one place:
-- Claude/ChatGPT/Grok conversation exports
-- Browser bookmarks
-- GitHub activity events
-- Write status summary, commit and push
+### Sincronização de Conhecimento entre Fontes
+Reúna conhecimento de múltiplas fontes em um único lugar:
+- Exportações de conversa do Claude/ChatGPT/Grok
+- Favoritos do navegador
+- Eventos de atividade do GitHub
+- Escreva resumo de status, faça commit e push
 
-## Memory Patterns
+## Padrões de Memória
 
 ```
-# Short-term: current session context
-Use TodoWrite for in-session task tracking
+# Curto prazo: contexto da sessão atual
+Use TodoWrite para acompanhamento de tarefas dentro da sessão
 
-# Medium-term: project memory files
-Write to ~/.claude/projects/*/memory/ for cross-session recall
+# Médio prazo: arquivos de memória do projeto
+Grave em ~/.claude/projects/*/memory/ para recuperação entre sessões
 
-# Long-term: GitHub / Linear / KB
-Put active execution truth in GitHub + Linear
-Put durable synthesized context in the knowledge base repo
+# Longo prazo: GitHub / Linear / KB
+Coloque a verdade de execução ativa no GitHub + Linear
+Coloque contexto sintetizado durável no repositório da base de conhecimento
 
-# Semantic layer: MCP knowledge graph
-Use mcp__memory__create_entities for permanent structured data
-Use mcp__memory__create_relations for relationship mapping
-Use mcp__memory__add_observations for new facts about known entities
-Use mcp__memory__search_nodes to find existing knowledge
+# Camada semântica: grafo de conhecimento MCP
+Use mcp__memory__create_entities para dados estruturados permanentes
+Use mcp__memory__create_relations para mapeamento de relacionamentos
+Use mcp__memory__add_observations para novos fatos sobre entidades conhecidas
+Use mcp__memory__search_nodes para encontrar conhecimento existente
 ```
 
-## Best Practices
+## Boas Práticas
 
-- Keep memory files concise. Archive old data rather than letting files grow unbounded.
-- Use frontmatter (YAML) for metadata on all knowledge files.
-- Deduplicate before storing. Search first, then create or update.
-- Prefer one canonical home per fact set. Avoid parallel copies of the same plan across local notes, repo files, and tracker docs.
-- Redact sensitive information (API keys, passwords) before committing to Git.
-- Use consistent naming conventions for knowledge files (lowercase-kebab-case).
-- Tag entries with topics/categories for easier retrieval.
+- Mantenha os arquivos de memória concisos. Arquive dados antigos em vez de deixar os arquivos crescerem sem limite.
+- Use frontmatter (YAML) para metadados em todos os arquivos de conhecimento.
+- Deduplique antes de armazenar. Pesquise primeiro, depois crie ou atualize.
+- Prefira um único lar canônico por conjunto de fatos. Evite cópias paralelas do mesmo plano em notas locais, arquivos de repositório e docs de tracker.
+- Remova informações sensíveis (chaves de API, senhas) antes de fazer commit no Git.
+- Use convenções de nomenclatura consistentes para arquivos de conhecimento (lowercase-kebab-case).
+- Marque entradas com tópicos/categorias para facilitar a recuperação.
 
-## Quality Gate
+## Portão de Qualidade
 
-Before completing any knowledge operation:
-- no duplicate entries created
-- sensitive data redacted from any Git-tracked files
-- indexes and summaries updated
-- appropriate storage layer chosen for the data type
-- cross-references added where relevant
+Antes de concluir qualquer operação de conhecimento:
+- nenhuma entrada duplicada foi criada
+- dados sensíveis removidos de quaisquer arquivos rastreados pelo Git
+- índices e resumos atualizados
+- camada de armazenamento apropriada escolhida para o tipo de dado
+- referências cruzadas adicionadas onde relevante

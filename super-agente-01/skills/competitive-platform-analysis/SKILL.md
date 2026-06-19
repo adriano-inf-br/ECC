@@ -1,214 +1,213 @@
 ---
 name: competitive-platform-analysis
 description: >-
-  Use when scoping a competitive landscape — identifying, categorising, and
-  score-filtering a competitor set before any benchmarking begins. Decides who
-  counts as a competitor, which tier they belong to, and which sources to mine.
-  First step in the three-skill competitive pipeline; precedes
-  benchmark-methodology.
+  Use ao delimitar um cenário competitivo — identificando, categorizando e
+  filtrando por pontuação um conjunto de concorrentes antes de qualquer
+  benchmarking começar. Decide quem conta como concorrente, a qual tier ele
+  pertence e quais fontes investigar. Primeiro passo do pipeline competitivo de
+  três skills; precede benchmark-methodology.
 ---
 
 # Competitive Platform Analysis
 
-Use this skill to decide **who to benchmark** and **where to find them** before
-any scoring begins. A competitive analysis is only as good as its frame: the
-wrong set makes the client look either unbeatable or doomed. The goal is a
-defensible, decision-relevant set — not an exhaustive census.
+Use esta skill para decidir **quem fazer benchmark** e **onde encontrá-los** antes
+de qualquer pontuação começar. Uma análise competitiva é tão boa quanto seu enquadramento: o
+conjunto errado faz o cliente parecer ou imbatível ou condenado. O objetivo é um
+conjunto defensável e relevante para a decisão — não um censo exaustivo.
 
 ## When to Activate
 
-- About to start a competitive benchmarking project and need to define the competitor set first.
-- Unsure which companies belong in Direct / Adjacent / Aspirational tiers.
-- Need a defensible, pruned scope for a market landscape report.
-- Has a positioning brief and wants to identify who contests that position.
-- First step before running benchmark-methodology.
+- Prestes a iniciar um projeto de benchmarking competitivo e precisa definir o conjunto de concorrentes primeiro.
+- Em dúvida sobre quais empresas pertencem aos tiers Direct / Adjacent / Aspirational.
+- Precisa de um escopo defensável e enxuto para um relatório de cenário de mercado.
+- Tem um positioning brief e quer identificar quem contesta essa posição.
+- Primeiro passo antes de executar benchmark-methodology.
 
-## Client positioning brief (establish first)
+## Positioning brief do cliente (estabeleça primeiro)
 
-Before scoping the set, establish the client's positioning brief. If you don't
-already have it, run a short brand-discovery interview to elicit it — do **not**
-invent one and do **not** scope the set blind. The brief supplies:
+Antes de delimitar o conjunto, estabeleça o positioning brief do cliente. Se você ainda não
+o tiver, conduza uma entrevista curta de brand-discovery para obtê-lo — **não**
+invente um e **não** delimite o conjunto às cegas. O brief fornece:
 
-- **Identity / aesthetic register** — what kind of studio or company this is and
-  how it presents itself.
-- **Offer** — what services or products it delivers.
-- **Target clients** — who it sells to.
-- **Differentiator** — the moat or positioning argument the client believes in.
-- **Scoping consequence** — the implication for how to weight competitors (e.g.,
-  prioritize by distinctiveness vs. capability overlap vs. price).
-- **Strategic tension** — the paired axes that define the client's white-space
-  (e.g., memorability × hireability).
+- **Identidade / registro estético** — que tipo de estúdio ou empresa é este e
+  como ele se apresenta.
+- **Oferta** — quais serviços ou produtos ele entrega.
+- **Clientes-alvo** — para quem ele vende.
+- **Diferenciador** — o moat ou argumento de posicionamento em que o cliente acredita.
+- **Consequência para o escopo** — a implicação de como ponderar os concorrentes (ex.:
+  priorizar por distintividade vs. sobreposição de capacidade vs. preço).
+- **Tensão estratégica** — os eixos pareados que definem o white-space do cliente
+  (ex.: memorabilidade × contratabilidade).
 
-**Do not proceed without the positioning brief.** A competitor list scoped
-without the client's lens is noise, not intelligence. The scoping consequence in
-particular determines which competitors are *strong* rivals (those that contest
-the client's moat) vs. merely overlapping on service menu.
+**Não prossiga sem o positioning brief.** Uma lista de concorrentes delimitada
+sem a lente do cliente é ruído, não inteligência. A consequência para o escopo, em
+particular, determina quais concorrentes são rivais *fortes* (os que contestam
+o moat do cliente) vs. meramente sobrepostos no menu de serviços.
 
-## Selection criteria
+## Critérios de seleção
 
-For each candidate, capture these axes — they decide both inclusion and tier:
+Para cada candidato, capture estes eixos — eles decidem tanto a inclusão quanto o tier:
 
-- **Size / model** — solo, micro-studio (2–8), boutique (sub-30), mid-size
-  agency. Match the client's own band; same-band studios are the realistic
-  head-to-head set.
-- **Niche / specialization** — how closely the candidate's focus overlaps with
-  the client's offer. Tighter overlap = more direct.
-- **Geography / market** — EU vs US vs global-remote; language; time-zone reach.
-  Note whether they win the same clients the client targets.
-- **Pricing & engagement model** — productized sprints, retainer, project,
-  day-rate; transparent vs "contact us". Signals positioning maturity.
-- **Portfolio style** — generic vs. opinionated/editorial vs. contrarian. Closer
-  to the client's aesthetic register = more they contest the client's
-  distinctiveness.
-- **Technical depth / craft maturity** — relevant if the client's credibility
-  story includes public process work, open tooling, or documented systems.
-- **Brand strength** — does the studio have an ownable verbal/visual identity, or
-  is it interchangeable? Weight this per the client's scoping consequence.
+- **Tamanho / modelo** — solo, micro-estúdio (2–8), boutique (abaixo de 30), agência
+  de médio porte. Corresponda à faixa do próprio cliente; estúdios da mesma faixa são o conjunto
+  realista de confronto direto.
+- **Nicho / especialização** — quão de perto o foco do candidato se sobrepõe à
+  oferta do cliente. Sobreposição mais estreita = mais direto.
+- **Geografia / mercado** — UE vs EUA vs global-remoto; idioma; alcance de fuso horário.
+  Note se eles conquistam os mesmos clientes que o cliente mira.
+- **Modelo de preço e engajamento** — sprints produtizados, retainer, projeto,
+  day-rate; transparente vs "fale conosco". Sinaliza maturidade de posicionamento.
+- **Estilo de portfólio** — genérico vs. opinativo/editorial vs. contrário. Quanto mais próximo
+  do registro estético do cliente = mais eles contestam a
+  distintividade do cliente.
+- **Profundidade técnica / maturidade de craft** — relevante se a história de credibilidade do cliente
+  inclui trabalho de processo público, ferramental aberto ou sistemas documentados.
+- **Força de marca** — o estúdio tem uma identidade verbal/visual apropriável, ou
+  é intercambiável? Pondere isso conforme a consequência para o escopo do cliente.
 
-## Player taxonomy — axes to populate across
+## Taxonomia de players — eixos a serem preenchidos
 
-Don't sort competitors into niche-specific buckets; sort them along a few
-generic axes so the landscape isn't skewed toward one archetype. These axes
-apply to any creative-service market (design, motion, copywriting, branding,
-content, film, etc.). Aim for breadth across each axis first, then prune to the
-most instructive.
+Não classifique os concorrentes em baldes específicos de nicho; classifique-os ao longo de alguns
+eixos genéricos para que o cenário não fique enviesado em direção a um arquétipo. Esses eixos
+se aplicam a qualquer mercado de serviços criativos (design, motion, copywriting, branding,
+conteúdo, filme, etc.). Busque primeiro amplitude em cada eixo, depois reduza aos
+mais instrutivos.
 
-1. **Positioning stance** — *brand-led / editorial* (competes on identity,
-   voice, POV) vs *capability-led* (competes on craft, throughput, outcomes).
-   Populate both poles; the client's closest mirror sits at its own end.
-2. **Specialization** — *specialist* (one tight discipline or vertical) vs
-   *generalist* (broad service menu). Tighter overlap with the client's focus =
-   more direct.
-3. **Size / model** — *solo / micro* vs *boutique* vs *mid-size* vs
-   *enterprise-scale*. Same-band players are the realistic head-to-head; larger
-   bands are the aspirational/commercial-maturity reference.
-4. **Engagement format** — *productized* (named sprints, audits, fixed packages)
-   vs *bespoke* (custom project / retainer). Signals positioning maturity.
-5. **Distinctiveness posture** — *conventional / safe* vs *contrarian /
-   manifesto-driven*. The opinionated end is key for distinctiveness
-   benchmarking in any niche.
-6. **Evidence / credibility model** — *outcome-led* (metrics, named clients,
-   case depth) vs *aesthetic-led* (portfolio, awards). Tells you how each player
-   earns trust.
-7. **Brand strength of the operator** — *interchangeable* vs *cult / ownable
-   identity* (including senior independents who prove the "memorable solo brand"
-   model).
-8. **Market / reach** — *local / regional* vs *global-remote*; note whether they
-   win the same clients the client targets.
+1. **Postura de posicionamento** — *brand-led / editorial* (compete em identidade,
+   voz, POV) vs *capability-led* (compete em craft, throughput, resultados).
+   Preencha ambos os polos; o espelho mais próximo do cliente fica no seu próprio extremo.
+2. **Especialização** — *especialista* (uma disciplina ou vertical estreita) vs
+   *generalista* (menu amplo de serviços). Sobreposição mais estreita com o foco do cliente =
+   mais direto.
+3. **Tamanho / modelo** — *solo / micro* vs *boutique* vs *médio porte* vs
+   *escala enterprise*. Players da mesma faixa são o confronto direto realista; faixas maiores
+   são a referência aspiracional/de maturidade comercial.
+4. **Formato de engajamento** — *produtizado* (sprints nomeados, auditorias, pacotes fixos)
+   vs *sob medida* (projeto customizado / retainer). Sinaliza maturidade de posicionamento.
+5. **Postura de distintividade** — *convencional / seguro* vs *contrário /
+   orientado a manifesto*. O extremo opinativo é fundamental para o benchmarking de
+   distintividade em qualquer nicho.
+6. **Modelo de evidência / credibilidade** — *outcome-led* (métricas, clientes nomeados,
+   profundidade de cases) vs *aesthetic-led* (portfólio, prêmios). Diz como cada player
+   conquista confiança.
+7. **Força de marca do operador** — *intercambiável* vs *cult / identidade apropriável*
+   (incluindo independentes seniores que comprovam o modelo de "marca solo memorável").
+8. **Mercado / alcance** — *local / regional* vs *global-remoto*; note se eles
+   conquistam os mesmos clientes que o cliente mira.
 
-Plot each candidate on the relevant axes; a competitor is *direct* when it sits
-near the client on positioning, specialization, size, and market at once.
+Posicione cada candidato nos eixos relevantes; um concorrente é *direto* quando fica
+próximo do cliente em posicionamento, especialização, tamanho e mercado ao mesmo tempo.
 
-## Competitive tiers (how the set resolves)
+## Tiers competitivos (como o conjunto se resolve)
 
-Group the final set into three tiers — this structure carries through to the
-report:
+Agrupe o conjunto final em três tiers — esta estrutura segue até o
+relatório:
 
-- **Direct** — same band, overlapping offer, same client targets. The realistic
-  head-to-head.
-- **Adjacent** — partial overlap (one capability, or a different client size)
-  that pressures at the edges.
-- **Aspirational** — players the client is not competing with today but whose
-  brand or commercial maturity sets the bar to aim at.
-- *(Watch also for substitutes: no-code/AI tools, in-house teams, generalist
-  freelancers — note as a threat vector, not a profiled competitor unless
-  materially relevant.)*
+- **Direct** — mesma faixa, oferta sobreposta, mesmos clientes-alvo. O confronto direto
+  realista.
+- **Adjacent** — sobreposição parcial (uma capacidade, ou um tamanho de cliente diferente)
+  que pressiona nas bordas.
+- **Aspirational** — players com os quais o cliente não compete hoje, mas cuja
+  marca ou maturidade comercial define o patamar a ser almejado.
+- *(Observe também os substitutos: ferramentas no-code/IA, equipes internas, freelancers
+  generalistas — anote como vetor de ameaça, não como concorrente perfilado, a menos que
+  seja materialmente relevante.)*
 
-## Data sources (where to look)
+## Fontes de dados (onde procurar)
 
-Match the source to the dimension you need. The platform *types* below are
-generic; substitute the ones native to the client's niche (e.g. Dribbble/Behance
-for design, showreel/Vimeo for motion, writing samples/published work for copy):
+Combine a fonte com a dimensão de que você precisa. Os *tipos* de plataforma abaixo são
+genéricos; substitua pelos nativos do nicho do cliente (ex.: Dribbble/Behance
+para design, showreel/Vimeo para motion, amostras de escrita/trabalho publicado para copy):
 
-- **Portfolio / craft platforms** — craft quality, range, aesthetic register
-  (e.g. Dribbble, Behance, Vimeo, or the niche's equivalent showcase).
-- **Awards / curated showcases** — craft ambition and editorial recognition;
-  over-indexes on flashy, so cross-check commercial credibility (e.g. Awwwards,
-  industry award lists).
-- **Competitor's own site** — primary source for positioning, voice, offer
-  packaging, pricing posture, named clients, manifesto/POV.
-- **LinkedIn** — team size/model, founder narrative, post cadence, client logos,
-  geography.
-- **Review directories** — reviews, named clients, project sizes, engagement
-  models; strongest signal for commercial credibility and enterprise-readiness
-  (e.g. Clutch.co or the niche's equivalent).
-- **Open / public work** — process repos, published samples, open creative
-  output: depth and craft-transparency evidence.
-- **Conference talks / podcasts / newsletters** — thought-leadership depth and
-  POV ownership.
+- **Plataformas de portfólio / craft** — qualidade de craft, abrangência, registro estético
+  (ex.: Dribbble, Behance, Vimeo, ou o showcase equivalente do nicho).
+- **Prêmios / showcases curados** — ambição de craft e reconhecimento editorial;
+  super-indexa o chamativo, então cruze com a credibilidade comercial (ex.: Awwwards,
+  listas de prêmios da indústria).
+- **Site do próprio concorrente** — fonte primária para posicionamento, voz, empacotamento de
+  oferta, postura de preço, clientes nomeados, manifesto/POV.
+- **LinkedIn** — tamanho/modelo de equipe, narrativa do fundador, cadência de posts, logos de clientes,
+  geografia.
+- **Diretórios de avaliações** — avaliações, clientes nomeados, tamanhos de projeto, modelos de
+  engajamento; o sinal mais forte para credibilidade comercial e prontidão para enterprise
+  (ex.: Clutch.co ou o equivalente do nicho).
+- **Trabalho aberto / público** — repos de processo, amostras publicadas, output criativo
+  aberto: evidência de profundidade e transparência de craft.
+- **Palestras de conferências / podcasts / newsletters** — profundidade de thought-leadership e
+  apropriação de POV.
 
-Always **verify claims across at least two sources** before treating a competitor
-attribute as fact (self-reported site copy ≠ verified outcome). Carry an
-adversarial-verification discipline into every profile.
+Sempre **verifique afirmações em pelo menos duas fontes** antes de tratar um atributo de
+concorrente como fato (copy do próprio site ≠ resultado verificado). Leve uma
+disciplina de verificação adversarial para cada perfil.
 
-## Scoring matrix template (selection stage)
+## Template de matriz de pontuação (etapa de seleção)
 
-A lightweight pre-filter to decide who graduates into full benchmarking. Score
-1–5; keep candidates that score high on **either** distinctiveness **or**
-credibility — the client's strategic tension means both poles are instructive.
+Um pré-filtro leve para decidir quem avança para o benchmarking completo. Pontue de
+1–5; mantenha candidatos que pontuem alto em distintividade **ou** em
+credibilidade — a tensão estratégica do cliente significa que ambos os polos são instrutivos.
 
-| Candidate | Positioning stance | Specialization | Size band | Tier | Offer overlap (1–5) | Distinctiveness (1–5) | Commercial credibility (1–5) | Craft proximity (1–5) | Include? |
+| Candidato | Postura de posicionamento | Especialização | Faixa de tamanho | Tier | Sobreposição de oferta (1–5) | Distintividade (1–5) | Credibilidade comercial (1–5) | Proximidade de craft (1–5) | Incluir? |
 |-----------|--------------------|----------------|-----------|------|---------------------|------------------------|------------------------------|------------------------|----------|
 
-Rules of thumb (apply per the client's scoping consequence in the positioning brief):
+Regras gerais (aplique conforme a consequência para o escopo do cliente no positioning brief):
 
-- High distinctiveness **and** high credibility → must-profile (proves the
-  client's target tension is achievable).
-- High distinctiveness, low credibility → cautionary case (memorable but
-  un-hireable — a potential failure mode to learn from).
-- High credibility, low distinctiveness → "competent but forgettable" mass the
-  client defines itself against.
-- Low on both → drop unless needed for landscape breadth.
+- Alta distintividade **e** alta credibilidade → perfilar obrigatoriamente (comprova que
+  a tensão-alvo do cliente é alcançável).
+- Alta distintividade, baixa credibilidade → caso de alerta (memorável mas
+  não-contratável — um possível modo de falha do qual aprender).
+- Alta credibilidade, baixa distintividade → a massa "competente mas esquecível" contra a qual o
+  cliente se define.
+- Baixo em ambos → descarte, a menos que seja necessário para a amplitude do cenário.
 
-## Output of this stage
+## Saída desta etapa
 
-A scoped, tiered competitor set (typically 10–18 candidates → 8–12 profiled),
-each tagged with its axis positions, tier, and source links, ready to hand to
+Um conjunto de concorrentes delimitado e dividido em tiers (tipicamente 10–18 candidatos → 8–12 perfilados),
+cada um marcado com suas posições de eixo, tier e links de fonte, pronto para entregar a
 `benchmark-methodology`.
 
 ## Anti-Patterns
 
-- **Scoping without a positioning brief.** A competitor list built without the client's lens is noise. The brief determines what counts as a real rival.
-- **Listing every similar company.** The goal is a defensible 10–18 candidate set, not a census. Breadth without pruning makes benchmarking unmanageable.
-- **Blurring the Direct/Adjacent/Aspirational tiers.** These tiers serve different strategic purposes. Mixing them produces a flat list that can't drive decisions.
-- **Relying on a single source per competitor.** Self-reported site copy is marketing, not fact. Verify attributes across at least two sources.
-- **Jumping straight to scoring.** This skill scopes and tiers the set. Benchmark-methodology handles scoring. Don't conflate the two steps.
+- **Delimitar sem um positioning brief.** Uma lista de concorrentes construída sem a lente do cliente é ruído. O brief determina o que conta como um rival real.
+- **Listar toda empresa semelhante.** O objetivo é um conjunto defensável de 10–18 candidatos, não um censo. Amplitude sem poda torna o benchmarking ingerenciável.
+- **Borrar os tiers Direct/Adjacent/Aspirational.** Esses tiers cumprem propósitos estratégicos diferentes. Misturá-los produz uma lista plana que não consegue orientar decisões.
+- **Depender de uma única fonte por concorrente.** O copy do próprio site é marketing, não fato. Verifique os atributos em pelo menos duas fontes.
+- **Pular direto para a pontuação.** Esta skill delimita e divide o conjunto em tiers. A benchmark-methodology cuida da pontuação. Não confunda os dois passos.
 
 ## Examples
 
-**Scenario:** A boutique brand-identity studio (2-person, EU-remote, productized
-sprints, contrarian/manifesto-driven aesthetic) wants to scope its competitive
-set before benchmarking. The strategic tension from the positioning brief is
-*memorability × hireability*.
+**Cenário:** Um estúdio boutique de identidade de marca (2 pessoas, UE-remoto, sprints
+produtizados, estética contrária/orientada a manifesto) quer delimitar seu conjunto
+competitivo antes do benchmarking. A tensão estratégica do positioning brief é
+*memorabilidade × contratabilidade*.
 
-**Step 1 — eight-axis population (sample candidates):**
+**Passo 1 — preenchimento dos oito eixos (candidatos de amostra):**
 
-| Candidate | Positioning stance | Specialization | Size band | Engagement | Distinctiveness | Evidence model | Brand strength | Market |
+| Candidato | Postura de posicionamento | Especialização | Faixa de tamanho | Engajamento | Distintividade | Modelo de evidência | Força de marca | Mercado |
 |---|---|---|---|---|---|---|---|---|
-| Studio A | brand-led / editorial | identity only | micro | productized | contrarian | aesthetic-led | cult | global-remote |
-| Studio B | capability-led | broad DS+motion | boutique | bespoke | conventional | outcome-led | interchangeable | US |
-| Agency C | capability-led | brand+digital | mid-size | retainer | conventional | outcome-led | interchangeable | EU |
-| Freelancer D | brand-led | brand voice only | solo | day-rate | editorial | aesthetic-led | ownable | global |
-| Studio E | brand-led | brand strategy | micro | productized | manifesto-driven | outcome-led | cult | EU-remote |
+| Studio A | brand-led / editorial | apenas identidade | micro | produtizado | contrário | aesthetic-led | cult | global-remoto |
+| Studio B | capability-led | DS+motion amplo | boutique | sob medida | convencional | outcome-led | intercambiável | EUA |
+| Agency C | capability-led | brand+digital | médio porte | retainer | convencional | outcome-led | intercambiável | UE |
+| Freelancer D | brand-led | apenas voz de marca | solo | day-rate | editorial | aesthetic-led | apropriável | global |
+| Studio E | brand-led | estratégia de marca | micro | produtizado | orientado a manifesto | outcome-led | cult | UE-remoto |
 
-**Step 2 — pre-filter scoring (client scoping consequence: weight distinctiveness
-because the client's moat is POV-first, not capability breadth):**
+**Passo 2 — pontuação de pré-filtro (consequência para o escopo do cliente: pondere a distintividade
+porque o moat do cliente é POV-first, não amplitude de capacidade):**
 
-| Candidate | Offer overlap (1–5) | Distinctiveness (1–5) | Commercial credibility (1–5) | Craft proximity (1–5) | Tier | Include? |
+| Candidato | Sobreposição de oferta (1–5) | Distintividade (1–5) | Credibilidade comercial (1–5) | Proximidade de craft (1–5) | Tier | Incluir? |
 |---|---|---|---|---|---|---|
-| Studio A | 5 | 5 | 3 | 5 | Direct | ✓ must-profile |
-| Studio B | 3 | 2 | 5 | 3 | Adjacent | ✓ credibility anchor |
-| Agency C | 2 | 1 | 5 | 2 | Aspirational | ✓ scale reference |
-| Freelancer D | 4 | 4 | 2 | 4 | Direct | ✓ cautionary case |
-| Studio E | 5 | 5 | 4 | 4 | Direct | ✓ must-profile |
+| Studio A | 5 | 5 | 3 | 5 | Direct | ✓ perfilar obrigatoriamente |
+| Studio B | 3 | 2 | 5 | 3 | Adjacent | ✓ âncora de credibilidade |
+| Agency C | 2 | 1 | 5 | 2 | Aspirational | ✓ referência de escala |
+| Freelancer D | 4 | 4 | 2 | 4 | Direct | ✓ caso de alerta |
+| Studio E | 5 | 5 | 4 | 4 | Direct | ✓ perfilar obrigatoriamente |
 
-**Step 3 — output handed to `benchmark-methodology`:**
-Five candidates (3 Direct, 1 Adjacent, 1 Aspirational), each tagged with
-axis positions, tier, and source links. Studio A and Studio E are the
-sharpest head-to-head rivals; Freelancer D is the "memorable but
-un-hireable" cautionary case to learn from.
+**Passo 3 — saída entregue a `benchmark-methodology`:**
+Cinco candidatos (3 Direct, 1 Adjacent, 1 Aspirational), cada um marcado com
+posições de eixo, tier e links de fonte. O Studio A e o Studio E são os
+rivais de confronto direto mais nítidos; o Freelancer D é o caso de alerta
+"memorável mas não-contratável" do qual aprender.
 
 ## Related Skills
 
-- `brand-discovery` — use first to establish the positioning brief and strategic tension that scopes the competitor set.
-- `benchmark-methodology` — the next step; takes the tiered set and scores each competitor across nine dimensions.
+- `brand-discovery` — use primeiro para estabelecer o positioning brief e a tensão estratégica que delimitam o conjunto de concorrentes.
+- `benchmark-methodology` — o próximo passo; pega o conjunto dividido em tiers e pontua cada concorrente em nove dimensões.

@@ -1,51 +1,51 @@
 ---
 name: enterprise-agent-ops
-description: Operate long-lived agent workloads with observability, security boundaries, and lifecycle management.
+description: Opere cargas de trabalho de Agent de longa duração com observabilidade, limites de segurança e gerenciamento de ciclo de vida.
 metadata:
   origin: ECC
 ---
 
 # Enterprise Agent Ops
 
-Use this skill for cloud-hosted or continuously running agent systems that need operational controls beyond single CLI sessions.
+Use esta skill para sistemas de Agent hospedados em nuvem ou em execução contínua que precisam de controles operacionais além de sessões únicas de CLI.
 
-## Operational Domains
+## Domínios Operacionais
 
-1. runtime lifecycle (start, pause, stop, restart)
-2. observability (logs, metrics, traces)
-3. safety controls (scopes, permissions, kill switches)
-4. change management (rollout, rollback, audit)
+1. ciclo de vida de runtime (iniciar, pausar, parar, reiniciar)
+2. observabilidade (logs, métricas, traces)
+3. controles de segurança (escopos, permissões, kill switches)
+4. gerenciamento de mudanças (rollout, rollback, auditoria)
 
-## Baseline Controls
+## Controles de Base
 
-- immutable deployment artifacts
-- least-privilege credentials
-- environment-level secret injection
-- hard timeout and retry budgets
-- audit log for high-risk actions
+- artefatos de deployment imutáveis
+- credenciais de menor privilégio
+- injeção de segredos em nível de ambiente
+- orçamentos rígidos de timeout e retry
+- log de auditoria para ações de alto risco
 
-## Metrics to Track
+## Métricas a Acompanhar
 
-- success rate
-- mean retries per task
-- time to recovery
-- cost per successful task
-- failure class distribution
+- taxa de sucesso
+- média de retries por tarefa
+- tempo até a recuperação
+- custo por tarefa bem-sucedida
+- distribuição de classes de falha
 
-## Incident Pattern
+## Padrão de Incidente
 
-When failure spikes:
-1. freeze new rollout
-2. capture representative traces
-3. isolate failing route
-4. patch with smallest safe change
-5. run regression + security checks
-6. resume gradually
+Quando as falhas disparam:
+1. congele novos rollouts
+2. capture traces representativos
+3. isole a rota em falha
+4. corrija com a menor mudança segura possível
+5. execute verificações de regressão + segurança
+6. retome gradualmente
 
-## Deployment Integrations
+## Integrações de Deployment
 
-This skill pairs with:
-- PM2 workflows
-- systemd services
-- container orchestrators
-- CI/CD gates
+Esta skill combina com:
+- fluxos de trabalho do PM2
+- serviços systemd
+- orquestradores de containers
+- gates de CI/CD

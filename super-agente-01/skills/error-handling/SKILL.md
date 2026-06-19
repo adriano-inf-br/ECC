@@ -1,36 +1,36 @@
 ---
 name: error-handling
-description: Patterns for robust error handling across TypeScript, Python, and Go. Covers typed errors, error boundaries, retries, circuit breakers, and user-facing error messages.
+description: Padrões para tratamento robusto de erros em TypeScript, Python e Go. Cobre erros tipados, error boundaries, retries, circuit breakers e mensagens de erro voltadas ao usuário.
 metadata:
   origin: ECC
 ---
 
-# Error Handling Patterns
+# Padrões de Tratamento de Erros
 
-Consistent, robust error handling patterns for production applications.
+Padrões consistentes e robustos de tratamento de erros para aplicações em produção.
 
-## When to Activate
+## Quando Ativar
 
-- Designing error types or exception hierarchies for a new module or service
-- Adding retry logic or circuit breakers for unreliable external dependencies
-- Reviewing API endpoints for missing error handling
-- Implementing user-facing error messages and feedback
-- Debugging cascading failures or silent error swallowing
+- Projetar tipos de erro ou hierarquias de exceção para um novo módulo ou serviço
+- Adicionar lógica de retry ou circuit breakers para dependências externas não confiáveis
+- Revisar endpoints de API em busca de tratamento de erro ausente
+- Implementar mensagens de erro e feedback voltados ao usuário
+- Depurar falhas em cascata ou supressão silenciosa de erros
 
-## Core Principles
+## Princípios Centrais
 
-1. **Fail fast and loudly** — surface errors at the boundary where they occur; don't bury them
-2. **Typed errors over string messages** — errors are first-class values with structure
-3. **User messages ≠ developer messages** — show friendly text to users, log full context server-side
-4. **Never swallow errors silently** — every `catch` block must either handle, re-throw, or log
-5. **Errors are part of your API contract** — document every error code a client may receive
+1. **Falhe rápido e de forma explícita** — exponha os erros no limite onde ocorrem; não os encubra
+2. **Erros tipados em vez de mensagens em string** — erros são valores de primeira classe com estrutura
+3. **Mensagens para o usuário ≠ mensagens para o desenvolvedor** — mostre texto amigável aos usuários, registre o contexto completo no servidor
+4. **Nunca suprima erros silenciosamente** — todo bloco `catch` deve tratar, relançar ou registrar
+5. **Erros fazem parte do contrato da sua API** — documente todo código de erro que um cliente possa receber
 
 ## TypeScript / JavaScript
 
-### Typed Error Classes
+### Classes de Erro Tipadas
 
 ```typescript
-// Define an error hierarchy for your domain
+// Define uma hierarquia de erros para o seu domínio
 export class AppError extends Error {
   constructor(
     message: string,
@@ -40,9 +40,9 @@ export class AppError extends Error {
   ) {
     super(message)
     this.name = this.constructor.name
-    // Maintain correct prototype chain in transpiled ES5 JavaScript.
-    // Required for `instanceof` checks (e.g., `error instanceof NotFoundError`)
-    // to work correctly when extending the built-in Error class.
+    // Mantém a cadeia de prototypes correta em JavaScript ES5 transpilado.
+    // Necessário para que verificações `instanceof` (ex.: `error instanceof NotFoundError`)
+    // funcionem corretamente ao estender a classe Error nativa.
     Object.setPrototypeOf(this, new.target.prototype)
   }
 }
@@ -72,9 +72,9 @@ export class RateLimitError extends AppError {
 }
 ```
 
-### Result Pattern (no-throw style)
+### Padrão Result (estilo sem throw)
 
-For operations where failure is expected and common (parsing, external calls):
+Para operações em que a falha é esperada e comum (parsing, chamadas externas):
 
 ```typescript
 type Result<T, E = AppError> =
@@ -89,7 +89,7 @@ function err<E>(error: E): Result<never, E> {
   return { ok: false, error }
 }
 
-// Usage
+// Uso
 async function fetchUser(id: string): Promise<Result<User>> {
   try {
     const user = await db.users.findUnique({ where: { id } })
@@ -102,21 +102,21 @@ async function fetchUser(id: string): Promise<Result<User>> {
 
 const result = await fetchUser('abc-123')
 if (!result.ok) {
-  // TypeScript knows result.error here
+  // O TypeScript reconhece result.error aqui
   logger.error('Failed to fetch user', { error: result.error })
   return
 }
-// TypeScript knows result.value here
+// O TypeScript reconhece result.value aqui
 console.log(result.value.email)
 ```
 
-### API Error Handler (Next.js / Express)
+### Handler de Erro de API (Next.js / Express)
 
 ```typescript
 import { NextRequest, NextResponse } from 'next/server'
 
 function handleApiError(error: unknown): NextResponse {
-  // Known application error
+  // Erro de aplicação conhecido
   if (error instanceof AppError) {
     return NextResponse.json(
       {
@@ -130,7 +130,7 @@ function handleApiError(error: unknown): NextResponse {
     )
   }
 
-  // Zod validation error
+  // Erro de validação do Zod
   if (error instanceof z.ZodError) {
     return NextResponse.json(
       {
@@ -147,7 +147,7 @@ function handleApiError(error: unknown): NextResponse {
     )
   }
 
-  // Unexpected error — log details, return generic message
+  // Erro inesperado — registre os detalhes, retorne mensagem genérica
   console.error('Unexpected error:', error)
   return NextResponse.json(
     { error: { code: 'INTERNAL_ERROR', message: 'An unexpected error occurred' } },
@@ -157,14 +157,14 @@ function handleApiError(error: unknown): NextResponse {
 
 export async function POST(req: NextRequest) {
   try {
-    // ... handler logic
+    // ... lógica do handler
   } catch (error) {
     return handleApiError(error)
   }
 }
 ```
 
-### React Error Boundary
+### Error Boundary do React
 
 ```typescript
 import { Component, ErrorInfo, ReactNode } from 'react'
@@ -189,7 +189,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, info: ErrorInfo) {
     this.props.onError?.(error, info)
-    console.error('Unhandled React error:', error, info)
+    console.error('Erro não tratado do React:', error, info)
   }
 
   render() {
@@ -198,19 +198,19 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 }
 
-// Usage
-<ErrorBoundary fallback={<p>Something went wrong. Please refresh.</p>}>
+// Uso
+<ErrorBoundary fallback={<p>Algo deu errado. Por favor, atualize a página.</p>}>
   <MyComponent />
 </ErrorBoundary>
 ```
 
 ## Python
 
-### Custom Exception Hierarchy
+### Hierarquia de Exceções Personalizada
 
 ```python
 class AppError(Exception):
-    """Base application error."""
+    """Erro base da aplicação."""
     def __init__(self, message: str, code: str, status_code: int = 500):
         super().__init__(message)
         self.code = code
@@ -226,7 +226,7 @@ class ValidationError(AppError):
         self.details = details or []
 ```
 
-### FastAPI Global Exception Handler
+### Handler Global de Exceções do FastAPI
 
 ```python
 from fastapi import FastAPI, Request
@@ -243,7 +243,7 @@ async def app_error_handler(request: Request, exc: AppError) -> JSONResponse:
 
 @app.exception_handler(Exception)
 async def generic_error_handler(request: Request, exc: Exception) -> JSONResponse:
-    # Log full details, return generic message
+    # Registra os detalhes completos, retorna mensagem genérica
     logger.exception("Unexpected error", exc_info=exc)
     return JSONResponse(
         status_code=500,
@@ -253,21 +253,21 @@ async def generic_error_handler(request: Request, exc: Exception) -> JSONRespons
 
 ## Go
 
-### Sentinel Errors and Error Wrapping
+### Erros Sentinela e Encapsulamento de Erros
 
 ```go
 package domain
 
 import "errors"
 
-// Sentinel errors for type-checking
+// Erros sentinela para verificação de tipo
 var (
     ErrNotFound    = errors.New("not found")
     ErrUnauthorized = errors.New("unauthorized")
     ErrConflict     = errors.New("conflict")
 )
 
-// Wrap errors with context — never lose the original
+// Encapsula erros com contexto — nunca perca o original
 func (r *UserRepository) FindByID(ctx context.Context, id string) (*User, error) {
     user, err := r.db.QueryRow(ctx, "SELECT * FROM users WHERE id = $1", id)
     if errors.Is(err, sql.ErrNoRows) {
@@ -279,7 +279,7 @@ func (r *UserRepository) FindByID(ctx context.Context, id string) (*User, error)
     return user, nil
 }
 
-// At the handler level, unwrap to determine response
+// No nível do handler, faça o unwrap para determinar a resposta
 func (h *Handler) GetUser(w http.ResponseWriter, r *http.Request) {
     user, err := h.service.GetUser(r.Context(), chi.URLParam(r, "id"))
     if err != nil {
@@ -298,7 +298,7 @@ func (h *Handler) GetUser(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
-## Retry with Exponential Backoff
+## Retry com Backoff Exponencial
 
 ```typescript
 interface RetryOptions {
@@ -337,25 +337,25 @@ async function withRetry<T>(
   throw lastError
 }
 
-// Usage: retry transient network errors, not 4xx
+// Uso: faça retry de erros transitórios de rede, não de 4xx
 const data = await withRetry(() => fetch('/api/data').then(r => r.json()), {
   maxAttempts: 3,
   retryIf: (error) => !(error instanceof AppError && error.statusCode < 500),
 })
 ```
 
-## User-Facing Error Messages
+## Mensagens de Erro Voltadas ao Usuário
 
-Map error codes to human-readable messages. Keep technical details out of user-visible text.
+Mapeie códigos de erro para mensagens legíveis por humanos. Mantenha detalhes técnicos fora do texto visível ao usuário.
 
 ```typescript
 const USER_ERROR_MESSAGES: Record<string, string> = {
-  NOT_FOUND: 'The requested item could not be found.',
-  UNAUTHORIZED: 'Please sign in to continue.',
-  FORBIDDEN: "You don't have permission to do that.",
-  VALIDATION_ERROR: 'Please check your input and try again.',
-  RATE_LIMITED: 'Too many requests. Please wait a moment and try again.',
-  INTERNAL_ERROR: 'Something went wrong on our end. Please try again later.',
+  NOT_FOUND: 'O item solicitado não pôde ser encontrado.',
+  UNAUTHORIZED: 'Por favor, faça login para continuar.',
+  FORBIDDEN: 'Você não tem permissão para fazer isso.',
+  VALIDATION_ERROR: 'Por favor, verifique seus dados e tente novamente.',
+  RATE_LIMITED: 'Muitas requisições. Por favor, aguarde um momento e tente novamente.',
+  INTERNAL_ERROR: 'Algo deu errado do nosso lado. Por favor, tente novamente mais tarde.',
 }
 
 export function getUserMessage(code: string): string {

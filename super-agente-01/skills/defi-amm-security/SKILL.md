@@ -1,37 +1,37 @@
 ---
 name: defi-amm-security
-description: Security checklist for Solidity AMM contracts, liquidity pools, and swap flows. Covers reentrancy, CEI ordering, donation or inflation attacks, oracle manipulation, slippage, admin controls, and integer math.
+description: Checklist de segurança para contratos AMM em Solidity, pools de liquidez e fluxos de swap. Cobre reentrância, ordenação CEI, ataques de doação ou inflação, manipulação de oráculo, slippage, controles de admin e aritmética de inteiros.
 metadata:
-  origin: ECC direct-port adaptation
+  origin: adaptação de port direto da ECC
 version: "1.0.0"
 ---
 
 # DeFi AMM Security
 
-Critical vulnerability patterns and hardened implementations for Solidity AMM contracts, LP vaults, and swap functions.
+Padrões críticos de vulnerabilidade e implementações endurecidas para contratos AMM em Solidity, cofres de LP e funções de swap.
 
 ## When to Use
 
-- Writing or auditing a Solidity AMM or liquidity-pool contract
-- Implementing swap, deposit, withdraw, mint, or burn flows that hold token balances
-- Reviewing any contract that uses `token.balanceOf(address(this))` in share or reserve math
-- Adding fee setters, pausers, oracle updates, or other admin functions to a DeFi protocol
+- Escrever ou auditar um contrato AMM ou de pool de liquidez em Solidity
+- Implementar fluxos de swap, depósito, saque, mint ou burn que mantêm saldos de token
+- Revisar qualquer contrato que usa `token.balanceOf(address(this))` em aritmética de share ou de reserva
+- Adicionar setters de fee, pausers, atualizações de oráculo ou outras funções de admin a um protocolo DeFi
 
 ## How It Works
 
-Use this as a checklist-plus-pattern library. Review every user entrypoint against the categories below and prefer the hardened examples over hand-rolled variants.
+Use isto como uma biblioteca de checklist mais padrões. Revise cada ponto de entrada de usuário em relação às categorias abaixo e prefira os exemplos endurecidos em vez de variantes feitas à mão.
 
-## Execution Safety
+## Segurança de Execução
 
-The shell commands in this skill are local audit examples. Run them only in a trusted checkout or disposable sandbox, and do not splice untrusted contract names, paths, RPC URLs, private keys, or user-supplied flags into shell commands. Ask before installing tools or running long fuzzing/static-analysis jobs that may consume significant local or paid resources.
+Os comandos de shell nesta skill são exemplos de auditoria local. Execute-os apenas em um checkout confiável ou sandbox descartável, e não insira nomes de contrato, paths, URLs de RPC, chaves privadas ou flags fornecidas pelo usuário não confiáveis em comandos de shell. Pergunte antes de instalar ferramentas ou executar jobs longos de fuzzing/análise estática que possam consumir recursos locais ou pagos significativos.
 
-Never include secrets, private keys, seed phrases, API tokens, or mainnet signing credentials in command examples, logs, or reports.
+Nunca inclua segredos, chaves privadas, seed phrases, tokens de API ou credenciais de assinatura de mainnet em exemplos de comando, logs ou relatórios.
 
 ## Examples
 
-### Reentrancy: enforce CEI order
+### Reentrância: imponha a ordem CEI
 
-Vulnerable:
+Vulnerável:
 
 ```solidity
 function withdraw(uint256 amount) external {
@@ -41,7 +41,7 @@ function withdraw(uint256 amount) external {
 }
 ```
 
-Safe:
+Seguro:
 
 ```solidity
 import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
@@ -56,21 +56,21 @@ function withdraw(uint256 amount) external nonReentrant {
 }
 ```
 
-Do not write your own guard when a hardened library exists.
+Não escreva seu próprio guard quando existe uma biblioteca endurecida.
 
-### Donation or inflation attacks
+### Ataques de doação ou inflação
 
-Using `token.balanceOf(address(this))` directly for share math lets attackers manipulate the denominator by sending tokens to the contract outside the intended path.
+Usar `token.balanceOf(address(this))` diretamente para aritmética de share permite que atacantes manipulem o denominador enviando tokens ao contrato fora do caminho pretendido.
 
 ```solidity
-// Vulnerable
+// Vulnerável
 function deposit(uint256 assets) external returns (uint256 shares) {
     shares = (assets * totalShares) / token.balanceOf(address(this));
 }
 ```
 
 ```solidity
-// Safe
+// Seguro
 uint256 private _totalAssets;
 
 function deposit(uint256 assets) external nonReentrant returns (uint256 shares) {
@@ -84,11 +84,11 @@ function deposit(uint256 assets) external nonReentrant returns (uint256 shares) 
 }
 ```
 
-Track internal accounting and measure actual tokens received.
+Rastreie a contabilidade interna e meça os tokens realmente recebidos.
 
-### Oracle manipulation
+### Manipulação de oráculo
 
-Spot prices are flash-loan manipulable. Prefer TWAP.
+Preços spot são manipuláveis por flash loan. Prefira TWAP.
 
 ```solidity
 uint32[] memory secondsAgos = new uint32[](2);
@@ -101,9 +101,9 @@ int24 twapTick = int24(
 uint160 sqrtPriceX96 = TickMath.getSqrtRatioAtTick(twapTick);
 ```
 
-### Slippage protection
+### Proteção de slippage
 
-Every swap path needs caller-provided slippage and a deadline.
+Todo caminho de swap precisa de slippage fornecido pelo chamador e de um deadline.
 
 ```solidity
 function swap(
@@ -118,7 +118,7 @@ function swap(
 }
 ```
 
-### Safe reserve math
+### Aritmética de reserva segura
 
 ```solidity
 import {FullMath} from "@uniswap/v3-core/contracts/libraries/FullMath.sol";
@@ -126,9 +126,9 @@ import {FullMath} from "@uniswap/v3-core/contracts/libraries/FullMath.sol";
 uint256 result = FullMath.mulDiv(a, b, c);
 ```
 
-For large reserve math, avoid naive `a * b / c` when overflow risk exists.
+Para aritmética de reserva grande, evite o ingênuo `a * b / c` quando houver risco de overflow.
 
-### Admin controls
+### Controles de admin
 
 ```solidity
 import {Ownable2Step} from "@openzeppelin/contracts/access/Ownable2Step.sol";
@@ -139,23 +139,23 @@ contract MyAMM is Ownable2Step {
 }
 ```
 
-Prefer explicit acceptance for ownership transfer and gate every privileged path.
+Prefira aceitação explícita para transferência de propriedade e proteja todo caminho privilegiado.
 
-## Security Checklist
+## Checklist de Segurança
 
-- Reentrancy-exposed entrypoints use `nonReentrant`
-- CEI ordering is respected
-- Share math does not depend on raw `balanceOf(address(this))`
-- ERC-20 transfers use `SafeERC20`
-- Deposits measure actual tokens received
-- Oracle reads use TWAP or another manipulation-resistant source
-- Swaps require `amountOutMin` and `deadline`
-- Overflow-sensitive reserve math uses safe primitives like `mulDiv`
-- Admin functions are access-controlled
-- Emergency pause exists and is tested
-- Static analysis and fuzzing are run before production
+- Pontos de entrada expostos a reentrância usam `nonReentrant`
+- A ordenação CEI é respeitada
+- A aritmética de share não depende de `balanceOf(address(this))` bruto
+- Transferências de ERC-20 usam `SafeERC20`
+- Depósitos medem os tokens realmente recebidos
+- Leituras de oráculo usam TWAP ou outra fonte resistente a manipulação
+- Swaps exigem `amountOutMin` e `deadline`
+- Aritmética de reserva sensível a overflow usa primitivas seguras como `mulDiv`
+- Funções de admin têm controle de acesso
+- Existe um pause de emergência e ele é testado
+- Análise estática e fuzzing são executados antes da produção
 
-## Audit Tools
+## Ferramentas de Auditoria
 
 ```bash
 pip install slither-analyzer

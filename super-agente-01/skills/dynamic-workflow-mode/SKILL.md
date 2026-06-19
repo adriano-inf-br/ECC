@@ -1,42 +1,42 @@
 ---
 name: dynamic-workflow-mode
-description: "Design task-local harnesses, eval gates, and reusable skill extraction for Claude dynamic workflow mode and other adaptive agent harnesses."
+description: "Projete harnesses locais à tarefa, eval gates e extração reutilizável de skills para o modo de fluxo de trabalho dinâmico do Claude e outros harnesses de agent adaptativos."
 metadata:
   origin: ECC
 ---
 
 # Dynamic Workflow Mode
 
-Use this skill when a coding agent can generate or adapt a task-local harness instead of only following a static command flow. The goal is to turn dynamic workflow mode into a disciplined system: temporary harnesses for one-off work, shared skill extraction for repeated work, and observable control pane checkpoints for teams.
+Use esta skill quando um agent de programação puder gerar ou adaptar um harness local à tarefa em vez de apenas seguir um fluxo de comandos estático. O objetivo é transformar o modo de fluxo de trabalho dinâmico em um sistema disciplinado: harnesses temporários para trabalho pontual, extração de skills compartilhadas para trabalho repetido e checkpoints observáveis no painel de controle para equipes.
 
-## When To Activate
+## Quando Ativar
 
-- The user mentions dynamic workflows, custom harnesses, harness-per-task, adaptive workflows, or Claude Code dynamic workflow mode.
-- A task needs a custom loop, evaluator, crawler, fixture generator, watcher, or local dashboard.
-- Multiple agents need the same repeatable process but the process is not yet captured as a shared skill.
-- A workflow needs durable handoff artifacts, eval evidence, or operator approval before merge.
+- O usuário menciona fluxos de trabalho dinâmicos, harnesses customizados, harness-por-tarefa, fluxos de trabalho adaptativos ou o modo de fluxo de trabalho dinâmico do Claude Code.
+- Uma tarefa precisa de um loop customizado, avaliador, crawler, gerador de fixtures, watcher ou dashboard local.
+- Vários agents precisam do mesmo processo repetível, mas o processo ainda não foi capturado como uma skill compartilhada.
+- Um fluxo de trabalho precisa de artefatos de handoff duráveis, evidências de eval ou aprovação do operador antes do merge.
 
-## Core Contract
+## Contrato Central
 
-Dynamic workflow mode should produce a task-local harness only when the harness is cheaper and safer than manually driving the same steps. The harness must have:
+O modo de fluxo de trabalho dinâmico deve produzir um harness local à tarefa apenas quando o harness for mais barato e mais seguro do que executar manualmente os mesmos passos. O harness deve ter:
 
-- **Objective**: the outcome it owns and the outcome it explicitly does not own.
-- **Inputs**: files, URLs, prompts, data sources, credentials policy, and user-provided constraints.
-- **Outputs**: commits, reports, screenshots, status files, or control pane snapshots.
-- **Eval**: at least one pass/fail check tied to the task, not only "it ran".
-- **Handoff**: a short artifact that tells the next operator what happened, what is blocked, and how to resume.
+- **Objetivo**: o resultado que ele detém e o resultado que ele explicitamente não detém.
+- **Entradas**: arquivos, URLs, prompts, fontes de dados, política de credenciais e restrições fornecidas pelo usuário.
+- **Saídas**: commits, relatórios, screenshots, arquivos de status ou snapshots do painel de controle.
+- **Eval**: ao menos uma verificação de passa/falha vinculada à tarefa, não apenas "ele rodou".
+- **Handoff**: um artefato curto que diz ao próximo operador o que aconteceu, o que está bloqueado e como retomar.
 
-## Dynamic Harness Decision Tree
+## Árvore de Decisão de Harness Dinâmico
 
-1. **One-shot task**: keep it inline. Do not invent a harness.
-2. **Repeated task with changing inputs**: create a task-local harness and keep it under a temp or project-local working area.
-3. **Repeated task across teammates or repos**: extract the pattern into a shared skill.
-4. **Task with external state, queueing, or approvals**: add control pane visibility before adding more automation.
-5. **Task with safety risk**: add an eval gate and a human merge gate before autonomous execution.
+1. **Tarefa de uma só vez**: mantenha inline. Não invente um harness.
+2. **Tarefa repetida com entradas variáveis**: crie um harness local à tarefa e mantenha-o sob uma área de trabalho temporária ou local ao projeto.
+3. **Tarefa repetida entre colegas de equipe ou repositórios**: extraia o padrão para uma skill compartilhada.
+4. **Tarefa com estado externo, enfileiramento ou aprovações**: adicione visibilidade no painel de controle antes de adicionar mais automação.
+5. **Tarefa com risco de segurança**: adicione um eval gate e um gate de merge humano antes da execução autônoma.
 
-## Task-Local Harness Template
+## Modelo de Harness Local à Tarefa
 
-Use this structure before writing code:
+Use esta estrutura antes de escrever código:
 
 ```markdown
 # Dynamic Workflow Harness
@@ -68,57 +68,57 @@ Handoff:
 - Next action:
 ```
 
-## Shared Skill Extraction
+## Extração de Skill Compartilhada
 
-Promote a task-local harness into a shared skill only when at least two of these are true:
+Promova um harness local à tarefa para uma skill compartilhada apenas quando ao menos dois destes forem verdadeiros:
 
-- The same workflow appears in multiple sessions, repos, teams, or launches.
-- The workflow needs specific language, tool, or safety sequencing.
-- Failures repeat because operators skip a gate or lose context.
-- The workflow has a stable input/output contract.
-- The workflow benefits from a control pane, status board, or team handoff.
+- O mesmo fluxo de trabalho aparece em várias sessões, repositórios, equipes ou lançamentos.
+- O fluxo de trabalho precisa de sequenciamento específico de linguagem, ferramenta ou segurança.
+- Falhas se repetem porque operadores pulam um gate ou perdem contexto.
+- O fluxo de trabalho tem um contrato estável de entrada/saída.
+- O fluxo de trabalho se beneficia de um painel de controle, quadro de status ou handoff de equipe.
 
-When extracting, write the skill first in `skills/<name>/SKILL.md`. Add command shims only if a legacy slash-entry surface is still required.
+Ao extrair, escreva primeiro a skill em `skills/<name>/SKILL.md`. Adicione shims de comando apenas se uma superfície legada de entrada via slash ainda for necessária.
 
-## Control Pane Checkpoints
+## Checkpoints do Painel de Controle
 
-Dynamic workflow mode becomes team-usable when it exposes state. Record these checkpoints whenever the task spans more than one session:
+O modo de fluxo de trabalho dinâmico torna-se utilizável por equipes quando expõe estado. Registre estes checkpoints sempre que a tarefa abranger mais de uma sessão:
 
-- **Plan**: objective, owner, acceptance criteria, and risky external systems.
-- **Queue**: work items, assigned agent role, branch/worktree, and dependency edges.
-- **Run**: active harness, current loop step, recent eval result, and token/cost signal if available.
-- **Gate**: test results, browser screenshots, security review, and merge readiness.
-- **Handoff**: what is done, what failed, what needs a human decision.
+- **Plano**: objetivo, responsável, critérios de aceitação e sistemas externos arriscados.
+- **Fila**: itens de trabalho, papel do agent atribuído, branch/worktree e arestas de dependência.
+- **Execução**: harness ativo, passo atual do loop, resultado de eval recente e sinal de token/custo, se disponível.
+- **Gate**: resultados de testes, screenshots de navegador, security review e prontidão para merge.
+- **Handoff**: o que está feito, o que falhou, o que precisa de uma decisão humana.
 
-If the repo has ECC2 state enabled, prefer adding or reading checkpoints through the ECC control pane or state-store-backed scripts instead of scattering untracked notes.
+Se o repositório tiver o estado do ECC2 habilitado, prefira adicionar ou ler checkpoints através do painel de controle do ECC ou de scripts apoiados por state-store, em vez de espalhar notas não rastreadas.
 
 ## Eval Gates
 
-Every dynamic harness needs a task-specific eval. Pick the cheapest reliable gate:
+Todo harness dinâmico precisa de um eval específico à tarefa. Escolha o gate confiável mais barato:
 
-| Work Type | Eval Gate |
+| Tipo de Trabalho | Eval Gate |
 | --- | --- |
-| Code feature | Focused test, lint, coverage, and one integration path |
-| UI/control pane | Browser smoke with screenshot and overflow/error checks |
-| Agent workflow | Fixture transcript or seeded work item with expected routing |
-| Research/content | Source-neutral brief, claim checklist, and publish-ready outline |
-| Integration | Dry-run command, config validation, and no-secret scan |
+| Feature de código | Teste focado, lint, cobertura e um caminho de integração |
+| UI/painel de controle | Smoke de navegador com screenshot e verificações de overflow/erro |
+| Fluxo de trabalho de agent | Transcript de fixture ou item de trabalho semeado com roteamento esperado |
+| Pesquisa/conteúdo | Brief neutro quanto à fonte, checklist de afirmações e outline pronto para publicação |
+| Integração | Comando em dry-run, validação de config e varredura sem segredos |
 
-Do not claim a dynamic workflow is reusable until the eval can be rerun by another teammate.
+Não afirme que um fluxo de trabalho dinâmico é reutilizável até que o eval possa ser reexecutado por outro colega de equipe.
 
-## Anti-Patterns
+## Anti-Padrões
 
-- Generating scripts that hide the real decision logic from the operator.
-- Treating dynamic workflow mode as permission to skip tests.
-- Creating one-off docs when a shared skill or status artifact is the real product.
-- Running multiple agents without ownership, merge gate, or conflict policy.
-- Letting raw private research data leak into public docs.
+- Gerar scripts que escondem a lógica de decisão real do operador.
+- Tratar o modo de fluxo de trabalho dinâmico como permissão para pular testes.
+- Criar docs pontuais quando uma skill compartilhada ou artefato de status é o produto real.
+- Executar vários agents sem responsabilidade, gate de merge ou política de conflito.
+- Deixar dados brutos de pesquisa privada vazarem para docs públicos.
 
-## Output Standard
+## Padrão de Saída
 
-Finish with:
+Finalize com:
 
-- The harness or skill path.
-- The eval commands and results.
-- The control pane or handoff artifact path.
-- The next reusable extraction candidate.
+- O caminho do harness ou da skill.
+- Os comandos e resultados do eval.
+- O caminho do artefato de painel de controle ou de handoff.
+- O próximo candidato de extração reutilizável.

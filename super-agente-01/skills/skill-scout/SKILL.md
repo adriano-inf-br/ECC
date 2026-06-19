@@ -1,67 +1,65 @@
 ---
 name: skill-scout
-description: Search existing local, marketplace, GitHub, and web skill sources before creating a new skill. Use when the user wants to create, build, fork, or find a skill for a workflow.
+description: Pesquise fontes de skills locais, no marketplace, no GitHub e na web antes de criar uma nova skill. Use quando o usuário quiser criar, construir, fazer fork ou encontrar uma skill para um fluxo de trabalho.
 metadata:
   origin: community
 ---
 
 # Skill Scout
 
-Use this skill before creating a new skill. The goal is to avoid duplicating
-existing community or marketplace work, while still vetting anything external
-before adoption.
+Use esta skill antes de criar uma nova skill. O objetivo é evitar a duplicação de
+trabalho existente da comunidade ou do marketplace, ao mesmo tempo em que verifica
+qualquer coisa externa antes da adoção.
 
-Source: salvaged from stale community PR #1232 by `redminwang`.
+Fonte: resgatado de PR da comunidade obsoleto #1232 por `redminwang`.
 
-## When to Use
+## Quando Usar
 
-- The user says "create a skill", "build a skill", "make a skill", or "new
-  skill".
-- The user asks "is there a skill for X?" or "does a skill exist that does Y?"
-- The user describes a workflow and you are about to suggest creating a new
-  skill.
-- The user wants to fork or extend an existing skill.
+- O usuário diz "criar uma skill", "construir uma skill", "fazer uma skill" ou "nova skill".
+- O usuário pergunta "existe uma skill para X?" ou "existe uma skill que faz Y?"
+- O usuário descreve um fluxo de trabalho e você está prestes a sugerir criar uma nova skill.
+- O usuário quer fazer fork ou estender uma skill existente.
 
-If the user explicitly says to skip search or create from scratch, acknowledge
-that and proceed with the requested creation workflow.
+Se o usuário disser explicitamente para pular a busca ou criar do zero, reconheça
+isso e prossiga com o fluxo de trabalho de criação solicitado.
 
-## How It Works
+## Como Funciona
 
-### Step 1 - Capture Intent
+### Passo 1 - Capturar a Intenção
 
-Extract:
+Extraia:
 
-- The task the skill should perform.
-- The trigger conditions for using it.
-- The domain, tools, frameworks, or data sources involved.
-- Three to five search keywords plus useful synonyms.
+- A tarefa que a skill deve executar.
+- As condições de gatilho para usá-la.
+- O domínio, tools, frameworks ou fontes de dados envolvidos.
+- Três a cinco palavras-chave de busca mais sinônimos úteis.
 
-### Step 2 - Search Local Sources
+### Passo 2 - Pesquisar Fontes Locais
 
-Search installed and marketplace skill names first. Local sources are preferred
-because they are already part of the user's environment.
+Pesquise nomes de skills instaladas e do marketplace primeiro. Fontes locais são preferidas
+porque já fazem parte do ambiente do usuário.
 
 ```bash
 find ~/.claude/skills -maxdepth 2 -name SKILL.md 2>/dev/null | grep -iE "keyword|synonym"
 find ~/.claude/plugins/marketplaces -path '*/skills/*/SKILL.md' 2>/dev/null | grep -iE "keyword|synonym"
 ```
 
-Then search frontmatter descriptions:
+Em seguida, pesquise nas descrições do frontmatter:
 
 ```bash
 grep -RilE "keyword|synonym" ~/.claude/skills ~/.claude/plugins/marketplaces 2>/dev/null
 ```
 
-### Step 3 - Search Remote Sources
+### Passo 3 - Pesquisar Fontes Remotas
 
-Use available GitHub and web search tools. Prefer concise queries:
+Use tools de busca no GitHub e na web disponíveis. Prefira consultas concisas:
 
 ```bash
 gh search repos "claude code skill keyword" --limit 10 --sort stars
 gh search code "name: keyword" --filename SKILL.md --limit 10
 ```
 
-For web search, use at most three targeted queries such as:
+Para busca na web, use no máximo três consultas direcionadas, como:
 
 ```text
 "claude code skill" keyword
@@ -69,73 +67,72 @@ For web search, use at most three targeted queries such as:
 "everything-claude-code" keyword
 ```
 
-### Step 4 - Vet External Matches
+### Passo 4 - Avaliar Correspondências Externas
 
-Before recommending any external skill for adoption or forking:
+Antes de recomendar qualquer skill externa para adoção ou fork:
 
-- Read the `SKILL.md` frontmatter and instructions.
-- Look for unexpected shell commands, file writes, network calls, credential
-  handling, or package installs.
-- Check whether the repository appears maintained.
-- Prefer copying into a fresh local branch and reviewing the diff over editing
-  marketplace originals.
+- Leia o frontmatter e as instruções do `SKILL.md`.
+- Procure por comandos shell inesperados, escritas de arquivo, chamadas de rede, tratamento
+  de credenciais ou instalações de pacotes.
+- Verifique se o repositório parece mantido.
+- Prefira copiar para um Branch local novo e revisar o diff a editar os originais do marketplace.
 
-### Step 5 - Rank Results
+### Passo 5 - Classificar os Resultados
 
-Rank candidates by:
+Classifique os candidatos por:
 
-1. Exact keyword match in the skill name.
-2. Keyword or synonym match in description.
-3. Local installed or marketplace source.
-4. Maintained GitHub source with recent activity.
-5. Web-only mention.
+1. Correspondência exata de palavra-chave no nome da skill.
+2. Correspondência de palavra-chave ou sinônimo na descrição.
+3. Fonte local instalada ou do marketplace.
+4. Fonte do GitHub mantida com atividade recente.
+5. Menção apenas na web.
 
-Cap the final list at 10 results.
+Limite a lista final a 10 resultados.
 
-### Step 6 - Present Decision Options
+### Passo 6 - Apresentar as Opções de Decisão
 
-Give the user a short table:
+Apresente ao usuário uma tabela curta:
 
-| Option | Meaning |
+| Opção | Significado |
 | --- | --- |
-| Use existing | Invoke or install a matching skill as-is. |
-| Fork or extend | Copy the closest skill and modify it. |
-| Create fresh | Build a new skill after confirming no close match exists. |
+| Usar existente | Invocar ou instalar uma skill correspondente como está. |
+| Fazer fork ou estender | Copiar a skill mais próxima e modificá-la. |
+| Criar nova | Construir uma nova skill após confirmar que não existe correspondência próxima. |
 
-Only create a new skill after the user chooses that path or after the search
-finds no close match.
+Crie uma nova skill somente depois que o usuário escolher esse caminho ou depois que a busca
+não encontrar correspondência próxima.
 
-## Examples
+## Exemplos
 
-### Result Table
+### Tabela de Resultados
 
 ```markdown
-| # | Skill | Source | Why it matches | Gap |
+| # | Skill | Fonte | Por que corresponde | Lacuna |
 | --- | --- | --- | --- | --- |
-| 1 | article-writing | Local ECC | Drafts articles and guides | Not focused on release notes |
-| 2 | content-engine | Local ECC | Multi-format content workflow | Heavier than needed |
-| 3 | blog-writer | GitHub | Blog writing skill with recent commits | Needs security review |
+| 1 | article-writing | ECC Local | Elabora artigos e guias | Não focada em notas de release |
+| 2 | content-engine | ECC Local | Fluxo de trabalho de conteúdo multi-formato | Mais pesada do que o necessário |
+| 3 | blog-writer | GitHub | Skill de escrita de blog com commits recentes | Precisa de revisão de segurança |
 ```
 
-### User-Facing Summary
+### Resumo para o Usuário
 
 ```markdown
-I found two close local matches and one external candidate. The closest fit is
-`article-writing`; it covers drafting and revision, but it does not include the
-release-note checklist you asked for. I can either use it as-is, fork it into a
-release-note variant, or create a fresh skill.
+Encontrei duas correspondências locais próximas e um candidato externo. A correspondência
+mais próxima é `article-writing`; ela cobre elaboração e revisão, mas não inclui o
+checklist de notas de release que você pediu. Posso usá-la como está, fazer fork para uma
+variante de notas de release ou criar uma nova skill.
 ```
 
-## Anti-Patterns
+## Anti-Padrões
 
-- Do not jump directly to new skill creation when a search is reasonable.
-- Do not install external skills without reading them first.
-- Do not present a long unranked list of weak matches.
-- Do not treat web-only mentions as trusted sources.
-- Do not edit installed marketplace originals in place.
+- Não pule direto para criar uma nova skill quando uma busca for razoável.
+- Não instale skills externas sem lê-las primeiro.
+- Não apresente uma longa lista não classificada de correspondências fracas.
+- Não trate menções apenas na web como fontes confiáveis.
+- Não edite os originais do marketplace instalados no lugar.
 
-## Related
+## Relacionado
 
-- `search-first` - General search-before-building workflow.
-- `skill-stocktake` - Audit installed skills for health, duplicates, and gaps.
-- `agent-sort` - Categorize and organize existing agents and skills.
+- `search-first` - Fluxo de trabalho geral de buscar antes de construir.
+- `skill-stocktake` - Auditar skills instaladas em busca de saúde, duplicatas e lacunas.
+- `agent-sort` - Categorizar e organizar agentes e skills existentes.

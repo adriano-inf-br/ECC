@@ -1,177 +1,177 @@
 ---
 name: django-verification
-description: "Verification loop for Django projects: migrations, linting, tests with coverage, security scans, and deployment readiness checks before release or PR."
+description: "Loop de verificação para projetos Django: migrações, linting, testes com cobertura, varreduras de segurança e checagens de prontidão para deploy antes de um release ou PR."
 metadata:
   origin: ECC
 ---
 
-# Django Verification Loop
+# Loop de Verificação do Django
 
-Run before PRs, after major changes, and pre-deploy to ensure Django application quality and security.
+Execute antes de PRs, após mudanças importantes e antes do deploy para garantir a qualidade e a segurança da aplicação Django.
 
-## When to Activate
+## Quando Ativar
 
-- Before opening a pull request for a Django project
-- After major model changes, migration updates, or dependency upgrades
-- Pre-deployment verification for staging or production
-- Running full environment → lint → test → security → deploy readiness pipeline
-- Validating migration safety and test coverage
+- Antes de abrir um pull request para um projeto Django
+- Após mudanças importantes em models, atualizações de migração ou upgrades de dependências
+- Verificação pré-deploy para staging ou produção
+- Executar o pipeline completo de ambiente → lint → teste → segurança → prontidão para deploy
+- Validar a segurança das migrações e a cobertura de testes
 
-## Phase 1: Environment Check
+## Fase 1: Verificação de Ambiente
 
 ```bash
-# Verify Python version
-python --version  # Should match project requirements
+# Verifica a versão do Python
+python --version  # Deve corresponder aos requisitos do projeto
 
-# Check virtual environment
+# Verifica o ambiente virtual
 which python
 pip list --outdated
 
-# Verify environment variables
+# Verifica as variáveis de ambiente
 python -c "import os; import environ; print('DJANGO_SECRET_KEY set' if os.environ.get('DJANGO_SECRET_KEY') else 'MISSING: DJANGO_SECRET_KEY')"
 ```
 
-If environment is misconfigured, stop and fix.
+Se o ambiente estiver mal configurado, pare e corrija.
 
-## Phase 2: Code Quality & Formatting
+## Fase 2: Qualidade e Formatação de Código
 
 ```bash
-# Type checking
+# Verificação de tipos
 mypy . --config-file pyproject.toml
 
-# Linting with ruff
+# Linting com ruff
 ruff check . --fix
 
-# Formatting with black
+# Formatação com black
 black . --check
-black .  # Auto-fix
+black .  # Correção automática
 
-# Import sorting
+# Ordenação de imports
 isort . --check-only
-isort .  # Auto-fix
+isort .  # Correção automática
 
-# Django-specific checks
+# Checagens específicas do Django
 python manage.py check --deploy
 ```
 
-Common issues:
-- Missing type hints on public functions
-- PEP 8 formatting violations
-- Unsorted imports
-- Debug settings left in production configuration
+Problemas comuns:
+- Type hints ausentes em funções públicas
+- Violações de formatação PEP 8
+- Imports não ordenados
+- Configurações de debug deixadas na configuração de produção
 
-## Phase 3: Migrations
+## Fase 3: Migrações
 
 ```bash
-# Check for unapplied migrations
+# Verifica migrações não aplicadas
 python manage.py showmigrations
 
-# Create missing migrations
+# Cria migrações ausentes
 python manage.py makemigrations --check
 
-# Dry-run migration application
+# Simulação (dry-run) da aplicação de migrações
 python manage.py migrate --plan
 
-# Apply migrations (test environment)
+# Aplica as migrações (ambiente de teste)
 python manage.py migrate
 
-# Check for migration conflicts
-python manage.py makemigrations --merge  # Only if conflicts exist
+# Verifica conflitos de migração
+python manage.py makemigrations --merge  # Apenas se houver conflitos
 ```
 
-Report:
-- Number of pending migrations
-- Any migration conflicts
-- Model changes without migrations
+Relate:
+- Número de migrações pendentes
+- Quaisquer conflitos de migração
+- Mudanças em models sem migrações
 
-## Phase 4: Tests + Coverage
+## Fase 4: Testes + Cobertura
 
 ```bash
-# Run all tests with pytest
+# Executa todos os testes com pytest
 pytest --cov=apps --cov-report=html --cov-report=term-missing --reuse-db
 
-# Run specific app tests
+# Executa os testes de um app específico
 pytest apps/users/tests/
 
-# Run with markers
-pytest -m "not slow"  # Skip slow tests
-pytest -m integration  # Only integration tests
+# Executa com markers
+pytest -m "not slow"  # Pula testes lentos
+pytest -m integration  # Apenas testes de integração
 
-# Coverage report
+# Relatório de cobertura
 open htmlcov/index.html
 ```
 
-Report:
-- Total tests: X passed, Y failed, Z skipped
-- Overall coverage: XX%
-- Per-app coverage breakdown
+Relate:
+- Total de testes: X aprovados, Y falharam, Z pulados
+- Cobertura geral: XX%
+- Detalhamento da cobertura por app
 
-Coverage targets:
+Metas de cobertura:
 
-| Component | Target |
+| Componente | Alvo |
 |-----------|--------|
 | Models | 90%+ |
 | Serializers | 85%+ |
 | Views | 80%+ |
 | Services | 90%+ |
-| Overall | 80%+ |
+| Geral | 80%+ |
 
-## Phase 5: Security Scan
+## Fase 5: Varredura de Segurança
 
 ```bash
-# Dependency vulnerabilities
+# Vulnerabilidades de dependências
 pip-audit
 safety check --full-report
 
-# Django security checks
+# Checagens de segurança do Django
 python manage.py check --deploy
 
-# Bandit security linter
+# Linter de segurança Bandit
 bandit -r . -f json -o bandit-report.json
 
-# Secret scanning (if gitleaks is installed)
+# Varredura de segredos (se o gitleaks estiver instalado)
 gitleaks detect --source . --verbose
 
-# Environment variable check
+# Verificação de variável de ambiente
 python -c "from django.core.exceptions import ImproperlyConfigured; from django.conf import settings; settings.DEBUG"
 ```
 
-Report:
-- Vulnerable dependencies found
-- Security configuration issues
-- Hardcoded secrets detected
-- DEBUG mode status (should be False in production)
+Relate:
+- Dependências vulneráveis encontradas
+- Problemas de configuração de segurança
+- Segredos hardcoded detectados
+- Status do modo DEBUG (deve ser False em produção)
 
-## Phase 6: Django Management Commands
+## Fase 6: Comandos de Gerenciamento do Django
 
 ```bash
-# Check for model issues
+# Verifica problemas em models
 python manage.py check
 
-# Collect static files
+# Coleta os arquivos estáticos
 python manage.py collectstatic --noinput --clear
 
-# Create superuser (if needed for tests)
+# Cria superusuário (se necessário para os testes)
 echo "from apps.users.models import User; User.objects.create_superuser('admin@example.com', 'admin')" | python manage.py shell
 
-# Database integrity
+# Integridade do banco de dados
 python manage.py check --database default
 
-# Cache verification (if using Redis)
+# Verificação de cache (se estiver usando Redis)
 python -c "from django.core.cache import cache; cache.set('test', 'value', 10); print(cache.get('test'))"
 ```
 
-## Phase 7: Performance Checks
+## Fase 7: Checagens de Performance
 
 ```bash
-# Django Debug Toolbar output (check for N+1 queries)
-# Run in dev mode with DEBUG=True and access a page
-# Look for duplicate queries in SQL panel
+# Saída do Django Debug Toolbar (verifique consultas N+1)
+# Execute em modo dev com DEBUG=True e acesse uma página
+# Procure por consultas duplicadas no painel SQL
 
-# Query count analysis
-django-admin debugsqlshell  # If django-debug-sqlshell installed
+# Análise de contagem de consultas
+django-admin debugsqlshell  # Se o django-debug-sqlshell estiver instalado
 
-# Check for missing indexes
+# Verifica índices ausentes
 python manage.py shell << EOF
 from django.db import connection
 with connection.cursor() as cursor:
@@ -180,35 +180,35 @@ with connection.cursor() as cursor:
 EOF
 ```
 
-Report:
-- Number of queries per page (should be < 50 for typical pages)
-- Missing database indexes
-- Duplicate queries detected
+Relate:
+- Número de consultas por página (deve ser < 50 para páginas típicas)
+- Índices de banco de dados ausentes
+- Consultas duplicadas detectadas
 
-## Phase 8: Static Assets
+## Fase 8: Assets Estáticos
 
 ```bash
-# Check for npm dependencies (if using npm)
+# Verifica dependências do npm (se estiver usando npm)
 npm audit
 npm audit fix
 
-# Build static files (if using webpack/vite)
+# Faz o build dos arquivos estáticos (se estiver usando webpack/vite)
 npm run build
 
-# Verify static files
+# Verifica os arquivos estáticos
 ls -la staticfiles/
 python manage.py findstatic css/style.css
 ```
 
-## Phase 9: Configuration Review
+## Fase 9: Revisão de Configuração
 
 ```python
-# Run in Python shell to verify settings
+# Execute no shell do Python para verificar as configurações
 python manage.py shell << EOF
 from django.conf import settings
 import os
 
-# Critical checks
+# Checagens críticas
 checks = {
     'DEBUG is False': not settings.DEBUG,
     'SECRET_KEY set': bool(settings.SECRET_KEY and len(settings.SECRET_KEY) > 30),
@@ -224,10 +224,10 @@ for check, result in checks.items():
 EOF
 ```
 
-## Phase 10: Logging Configuration
+## Fase 10: Configuração de Logging
 
 ```bash
-# Test logging output
+# Testa a saída de logging
 python manage.py shell << EOF
 import logging
 logger = logging.getLogger('django')
@@ -235,53 +235,53 @@ logger.warning('Test warning message')
 logger.error('Test error message')
 EOF
 
-# Check log files (if configured)
+# Verifica os arquivos de log (se configurados)
 tail -f /var/log/django/django.log
 ```
 
-## Phase 11: API Documentation (if DRF)
+## Fase 11: Documentação da API (se DRF)
 
 ```bash
-# Generate schema
+# Gera o schema
 python manage.py generateschema --format openapi-json > schema.json
 
-# Validate schema
-# Check if schema.json is valid JSON
+# Valida o schema
+# Verifica se schema.json é um JSON válido
 python -c "import json; json.load(open('schema.json'))"
 
-# Access Swagger UI (if using drf-yasg)
-# Visit http://localhost:8000/swagger/ in browser
+# Acessa a Swagger UI (se estiver usando drf-yasg)
+# Visite http://localhost:8000/swagger/ no navegador
 ```
 
-## Phase 12: Diff Review
+## Fase 12: Revisão do Diff
 
 ```bash
-# Show diff statistics
+# Mostra as estatísticas do diff
 git diff --stat
 
-# Show actual changes
+# Mostra as alterações de fato
 git diff
 
-# Show changed files
+# Mostra os arquivos alterados
 git diff --name-only
 
-# Check for common issues
+# Verifica problemas comuns
 git diff | grep -i "todo\|fixme\|hack\|xxx"
-git diff | grep "print("  # Debug statements
-git diff | grep "DEBUG = True"  # Debug mode
-git diff | grep "import pdb"  # Debugger
+git diff | grep "print("  # Declarações de debug
+git diff | grep "DEBUG = True"  # Modo debug
+git diff | grep "import pdb"  # Depurador
 ```
 
 Checklist:
-- No debugging statements (print, pdb, breakpoint())
-- No TODO/FIXME comments in critical code
-- No hardcoded secrets or credentials
-- Database migrations included for model changes
-- Configuration changes documented
-- Error handling present for external calls
-- Transaction management where needed
+- Sem declarações de debug (print, pdb, breakpoint())
+- Sem comentários TODO/FIXME em código crítico
+- Sem segredos ou credenciais hardcoded
+- Migrações de banco de dados incluídas para mudanças em models
+- Mudanças de configuração documentadas
+- Tratamento de erros presente para chamadas externas
+- Gerenciamento de transações onde necessário
 
-## Output Template
+## Template de Saída
 
 ```
 DJANGO VERIFICATION REPORT
@@ -366,28 +366,28 @@ NEXT STEPS:
 3. Deploy to staging for final testing
 ```
 
-## Pre-Deployment Checklist
+## Checklist Pré-Deploy
 
-- [ ] All tests passing
-- [ ] Coverage ≥ 80%
-- [ ] No security vulnerabilities
-- [ ] No unapplied migrations
-- [ ] DEBUG = False in production settings
-- [ ] SECRET_KEY properly configured
-- [ ] ALLOWED_HOSTS set correctly
-- [ ] Database backups enabled
-- [ ] Static files collected and served
-- [ ] Logging configured and working
-- [ ] Error monitoring (Sentry, etc.) configured
-- [ ] CDN configured (if applicable)
-- [ ] Redis/cache backend configured
-- [ ] Celery workers running (if applicable)
-- [ ] HTTPS/SSL configured
-- [ ] Environment variables documented
+- [ ] Todos os testes passando
+- [ ] Cobertura ≥ 80%
+- [ ] Sem vulnerabilidades de segurança
+- [ ] Sem migrações não aplicadas
+- [ ] DEBUG = False nas configurações de produção
+- [ ] SECRET_KEY configurada corretamente
+- [ ] ALLOWED_HOSTS definido corretamente
+- [ ] Backups do banco de dados habilitados
+- [ ] Arquivos estáticos coletados e servidos
+- [ ] Logging configurado e funcionando
+- [ ] Monitoramento de erros (Sentry, etc.) configurado
+- [ ] CDN configurado (se aplicável)
+- [ ] Backend de Redis/cache configurado
+- [ ] Workers do Celery em execução (se aplicável)
+- [ ] HTTPS/SSL configurado
+- [ ] Variáveis de ambiente documentadas
 
-## Continuous Integration
+## Integração Contínua
 
-### GitHub Actions Example
+### Exemplo de GitHub Actions
 
 ```yaml
 # .github/workflows/django-verification.yml
@@ -452,19 +452,19 @@ jobs:
         uses: codecov/codecov-action@v3
 ```
 
-## Quick Reference
+## Referência Rápida
 
-| Check | Command |
+| Verificação | Comando |
 |-------|---------|
-| Environment | `python --version` |
-| Type checking | `mypy .` |
+| Ambiente | `python --version` |
+| Verificação de tipos | `mypy .` |
 | Linting | `ruff check .` |
-| Formatting | `black . --check` |
-| Migrations | `python manage.py makemigrations --check` |
-| Tests | `pytest --cov=apps` |
-| Security | `pip-audit && bandit -r .` |
+| Formatação | `black . --check` |
+| Migrações | `python manage.py makemigrations --check` |
+| Testes | `pytest --cov=apps` |
+| Segurança | `pip-audit && bandit -r .` |
 | Django check | `python manage.py check --deploy` |
 | Collectstatic | `python manage.py collectstatic --noinput` |
-| Diff stats | `git diff --stat` |
+| Estatísticas do diff | `git diff --stat` |
 
-Remember: Automated verification catches common issues but doesn't replace manual code review and testing in staging environment.
+Lembre-se: a verificação automatizada detecta problemas comuns, mas não substitui a revisão manual de código nem os testes em ambiente de staging.

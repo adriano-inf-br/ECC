@@ -1,46 +1,46 @@
 ---
 name: verification-loop
-description: "A comprehensive verification system for Claude Code sessions."
+description: "Um sistema abrangente de verificação para sessões do Claude Code."
 metadata:
   origin: ECC
 ---
 
-# Verification Loop Skill
+# Skill de Loop de Verificação
 
-A comprehensive verification system for Claude Code sessions.
+Um sistema abrangente de verificação para sessões do Claude Code.
 
-## When to Use
+## Quando Usar
 
-Invoke this skill:
-- After completing a feature or significant code change
-- Before creating a PR
-- When you want to ensure quality gates pass
-- After refactoring
+Invoque esta skill:
+- Após concluir uma feature ou alteração significativa de código
+- Antes de criar um PR
+- Quando quiser garantir que os quality gates sejam aprovados
+- Após refatoração
 
-## Verification Phases
+## Fases de Verificação
 
-### Phase 1: Build Verification
+### Fase 1: Verificação de Build
 ```bash
-# Check if project builds
+# Verifica se o projeto compila
 npm run build 2>&1 | tail -20
-# OR
+# OU
 pnpm build 2>&1 | tail -20
 ```
 
-If build fails, STOP and fix before continuing.
+Se o Build falhar, PARE e corrija antes de continuar.
 
-### Phase 2: Type Check
+### Fase 2: Verificação de Tipos
 ```bash
-# TypeScript projects
+# Projetos TypeScript
 npx tsc --noEmit 2>&1 | head -30
 
-# Python projects
+# Projetos Python
 pyright . 2>&1 | head -30
 ```
 
-Report all type errors. Fix critical ones before continuing.
+Reporte todos os erros de tipo. Corrija os críticos antes de continuar.
 
-### Phase 3: Lint Check
+### Fase 3: Verificação de Lint
 ```bash
 # JavaScript/TypeScript
 npm run lint 2>&1 | head -30
@@ -49,79 +49,79 @@ npm run lint 2>&1 | head -30
 ruff check . 2>&1 | head -30
 ```
 
-### Phase 4: Test Suite
+### Fase 4: Suíte de Testes
 ```bash
-# Run tests with coverage
+# Executa testes com cobertura
 npm run test -- --coverage 2>&1 | tail -50
 
-# Check coverage threshold
-# Target: 80% minimum
+# Verifica o limite de cobertura
+# Meta: mínimo de 80%
 ```
 
-Report:
-- Total tests: X
-- Passed: X
-- Failed: X
-- Coverage: X%
+Reporte:
+- Total de testes: X
+- Aprovados: X
+- Reprovados: X
+- Cobertura: X%
 
-### Phase 5: Security Scan
+### Fase 5: Varredura de Segurança
 ```bash
-# Check for secrets
+# Verifica segredos
 grep -rn "sk-" --include="*.ts" --include="*.js" . 2>/dev/null | head -10
 grep -rn "api_key" --include="*.ts" --include="*.js" . 2>/dev/null | head -10
 
-# Check for console.log
+# Verifica console.log
 grep -rn "console.log" --include="*.ts" --include="*.tsx" src/ 2>/dev/null | head -10
 ```
 
-### Phase 6: Diff Review
+### Fase 6: Revisão do Diff
 ```bash
-# Show what changed
+# Mostra o que foi alterado
 git diff --stat
 git diff HEAD~1 --name-only
 ```
 
-Review each changed file for:
-- Unintended changes
-- Missing error handling
-- Potential edge cases
+Revise cada arquivo alterado quanto a:
+- Alterações não intencionais
+- Tratamento de erros ausente
+- Potenciais casos extremos
 
-## Output Format
+## Saída
 
-After running all phases, produce a verification report:
+Após executar todas as fases, produza um relatório de verificação:
 
 ```
-VERIFICATION REPORT
+RELATÓRIO DE VERIFICAÇÃO
 ==================
 
-Build:     [PASS/FAIL]
-Types:     [PASS/FAIL] (X errors)
-Lint:      [PASS/FAIL] (X warnings)
-Tests:     [PASS/FAIL] (X/Y passed, Z% coverage)
-Security:  [PASS/FAIL] (X issues)
-Diff:      [X files changed]
+Build:        [APROVADO/REPROVADO]
+Tipos:        [APROVADO/REPROVADO] (X erros)
+Lint:         [APROVADO/REPROVADO] (X avisos)
+Testes:       [APROVADO/REPROVADO] (X/Y aprovados, Z% de cobertura)
+Segurança:    [APROVADO/REPROVADO] (X problemas)
+Diff:         [X arquivos alterados]
 
-Overall:   [READY/NOT READY] for PR
+Geral:        [PRONTO/NÃO PRONTO] para PR
 
-Issues to Fix:
+Problemas a Corrigir:
 1. ...
 2. ...
 ```
 
-## Continuous Mode
+## Modo Contínuo
 
-For long sessions, run verification every 15 minutes or after major changes:
+Para sessões longas, execute a verificação a cada 15 minutos ou após grandes alterações:
 
 ```markdown
-Set a mental checkpoint:
-- After completing each function
-- After finishing a component
-- Before moving to next task
+Defina um ponto de controle mental:
+- Após concluir cada função
+- Após finalizar um componente
+- Antes de passar para a próxima tarefa
 
-Run: /verify
+Execute: /verify
 ```
 
-## Integration with Hooks
+## Integração com Hooks
 
-This skill complements PostToolUse hooks but provides deeper verification.
-Hooks catch issues immediately; this skill provides comprehensive review.
+Esta skill complementa os Hooks PostToolUse, mas fornece uma verificação mais aprofundada.
+Os Hooks detectam problemas imediatamente; esta skill oferece uma revisão abrangente.

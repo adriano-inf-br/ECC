@@ -1,185 +1,185 @@
 ---
 name: frontend-slides
-description: Create stunning, animation-rich HTML presentations from scratch or by converting PowerPoint files. Use when the user wants to build a presentation, convert a PPT/PPTX to web, or create slides for a talk/pitch. Helps non-designers discover their aesthetic through visual exploration rather than abstract choices.
+description: Crie apresentações HTML deslumbrantes e ricas em animação do zero ou convertendo arquivos PowerPoint. Use quando o usuário quiser construir uma apresentação, converter um PPT/PPTX para web ou criar slides para uma palestra/pitch. Ajuda quem não é designer a descobrir sua estética por meio da exploração visual em vez de escolhas abstratas.
 metadata:
   origin: ECC
 ---
 
 # Frontend Slides
 
-Create zero-dependency, animation-rich HTML presentations that run entirely in the browser.
+Crie apresentações HTML ricas em animação, sem dependências, que rodam inteiramente no navegador.
 
-Inspired by the visual exploration approach showcased in work by zarazhangrui (credit: @zarazhangrui).
+Inspirado na abordagem de exploração visual apresentada no trabalho de zarazhangrui (crédito: @zarazhangrui).
 
 ## When to Activate
 
-- Creating a talk deck, pitch deck, workshop deck, or internal presentation
-- Converting `.ppt` or `.pptx` slides into an HTML presentation
-- Improving an existing HTML presentation's layout, motion, or typography
-- Exploring presentation styles with a user who does not know their design preference yet
+- Criar um deck de palestra, deck de pitch, deck de workshop ou apresentação interna
+- Converter slides `.ppt` ou `.pptx` em uma apresentação HTML
+- Melhorar o layout, a movimentação ou a tipografia de uma apresentação HTML existente
+- Explorar estilos de apresentação com um usuário que ainda não conhece sua preferência de design
 
 ## Non-Negotiables
 
-1. **Zero dependencies**: default to one self-contained HTML file with inline CSS and JS.
-2. **Viewport fit is mandatory**: every slide must fit inside one viewport with no internal scrolling.
-3. **Show, don't tell**: use visual previews instead of abstract style questionnaires.
-4. **Distinctive design**: avoid generic purple-gradient, Inter-on-white, template-looking decks.
-5. **Production quality**: keep code commented, accessible, responsive, and performant.
+1. **Zero dependências**: opte por um único arquivo HTML autossuficiente com CSS e JS inline.
+2. **Ajuste à viewport é obrigatório**: cada slide deve caber dentro de uma viewport sem rolagem interna.
+3. **Mostre, não conte**: use prévias visuais em vez de questionários abstratos de estilo.
+4. **Design distinto**: evite decks genéricos com gradiente roxo, Inter sobre branco, com aparência de template.
+5. **Qualidade de produção**: mantenha o código comentado, acessível, responsivo e performático.
 
-Before generating, read `STYLE_PRESETS.md` for the viewport-safe CSS base, density limits, preset catalog, and CSS gotchas.
+Antes de gerar, leia `STYLE_PRESETS.md` para a base CSS segura para viewport, os limites de densidade, o catálogo de presets e os truques de CSS.
 
 ## Workflow
 
 ### 1. Detect Mode
 
-Choose one path:
-- **New presentation**: user has a topic, notes, or full draft
-- **PPT conversion**: user has `.ppt` or `.pptx`
-- **Enhancement**: user already has HTML slides and wants improvements
+Escolha um caminho:
+- **Nova apresentação**: o usuário tem um tema, anotações ou um rascunho completo
+- **Conversão de PPT**: o usuário tem `.ppt` ou `.pptx`
+- **Aprimoramento**: o usuário já tem slides HTML e quer melhorias
 
 ### 2. Discover Content
 
-Ask only the minimum needed:
-- purpose: pitch, teaching, conference talk, internal update
-- length: short (5-10), medium (10-20), long (20+)
-- content state: finished copy, rough notes, topic only
+Pergunte apenas o mínimo necessário:
+- propósito: pitch, ensino, palestra de conferência, atualização interna
+- extensão: curta (5-10), média (10-20), longa (20+)
+- estado do conteúdo: texto finalizado, anotações brutas, apenas o tema
 
-If the user has content, ask them to paste it before styling.
+Se o usuário tiver conteúdo, peça que ele o cole antes da estilização.
 
 ### 3. Discover Style
 
-Default to visual exploration.
+Opte pela exploração visual por padrão.
 
-If the user already knows the desired preset, skip previews and use it directly.
+Se o usuário já conhece o preset desejado, pule as prévias e use-o diretamente.
 
-Otherwise:
-1. Ask what feeling the deck should create: impressed, energized, focused, inspired.
-2. Generate **3 single-slide preview files** in `.ecc-design/slide-previews/`.
-3. Each preview must be self-contained, show typography/color/motion clearly, and stay under roughly 100 lines of slide content.
-4. Ask the user which preview to keep or what elements to mix.
+Caso contrário:
+1. Pergunte qual sensação o deck deve criar: impressionado, energizado, focado, inspirado.
+2. Gere **3 arquivos de prévia de slide único** em `.ecc-design/slide-previews/`.
+3. Cada prévia deve ser autossuficiente, mostrar tipografia/cor/movimentação claramente e ficar abaixo de aproximadamente 100 linhas de conteúdo de slide.
+4. Pergunte ao usuário qual prévia manter ou quais elementos mesclar.
 
-Use the preset guide in `STYLE_PRESETS.md` when mapping mood to style.
+Use o guia de presets em `STYLE_PRESETS.md` ao mapear humor para estilo.
 
 ### 4. Build the Presentation
 
-Output either:
+Produza:
 - `presentation.html`
 - `[presentation-name].html`
 
-Use an `assets/` folder only when the deck contains extracted or user-supplied images.
+Use uma pasta `assets/` apenas quando o deck contiver imagens extraídas ou fornecidas pelo usuário.
 
-Required structure:
-- semantic slide sections
-- a viewport-safe CSS base from `STYLE_PRESETS.md`
-- CSS custom properties for theme values
-- a presentation controller class for keyboard, wheel, and touch navigation
-- Intersection Observer for reveal animations
-- reduced-motion support
+Estrutura obrigatória:
+- seções de slide semânticas
+- uma base CSS segura para viewport de `STYLE_PRESETS.md`
+- propriedades customizadas de CSS para valores de tema
+- uma classe controladora de apresentação para navegação por teclado, roda do mouse e toque
+- Intersection Observer para animações de revelação
+- suporte a movimento reduzido
 
 ### 5. Enforce Viewport Fit
 
-Treat this as a hard gate.
+Trate isso como uma barreira rígida.
 
-Rules:
-- every `.slide` must use `height: 100vh; height: 100dvh; overflow: hidden;`
-- all type and spacing must scale with `clamp()`
-- when content does not fit, split into multiple slides
-- never solve overflow by shrinking text below readable sizes
-- never allow scrollbars inside a slide
+Regras:
+- cada `.slide` deve usar `height: 100vh; height: 100dvh; overflow: hidden;`
+- todo o tipo e espaçamento devem escalar com `clamp()`
+- quando o conteúdo não couber, divida em múltiplos slides
+- nunca resolva o estouro reduzindo o texto abaixo de tamanhos legíveis
+- nunca permita barras de rolagem dentro de um slide
 
-Use the density limits and mandatory CSS block in `STYLE_PRESETS.md`.
+Use os limites de densidade e o bloco CSS obrigatório em `STYLE_PRESETS.md`.
 
 ### 6. Validate
 
-Check the finished deck at these sizes:
+Verifique o deck finalizado nestes tamanhos:
 - 1920x1080
 - 1280x720
 - 768x1024
 - 375x667
 - 667x375
 
-If browser automation is available, use it to verify no slide overflows and that keyboard navigation works.
+Se houver automação de navegador disponível, use-a para verificar que nenhum slide estoura e que a navegação por teclado funciona.
 
 ### 7. Deliver
 
-At handoff:
-- delete temporary preview files unless the user wants to keep them
-- open the deck with the platform-appropriate opener when useful
-- summarize file path, preset used, slide count, and easy theme customization points
+Na entrega:
+- exclua arquivos de prévia temporários, a menos que o usuário queira mantê-los
+- abra o deck com o abridor apropriado para a plataforma quando útil
+- resuma o caminho do arquivo, o preset usado, a contagem de slides e os pontos fáceis de customização de tema
 
-Use the correct opener for the current OS:
+Use o abridor correto para o SO atual:
 - macOS: `open file.html`
 - Linux: `xdg-open file.html`
 - Windows: `start "" file.html`
 
 ## PPT / PPTX Conversion
 
-For PowerPoint conversion:
-1. Prefer `python3` with `python-pptx` to extract text, images, and notes.
-2. If `python-pptx` is unavailable, ask whether to install it or fall back to a manual/export-based workflow.
-3. Preserve slide order, speaker notes, and extracted assets.
-4. After extraction, run the same style-selection workflow as a new presentation.
+Para conversão de PowerPoint:
+1. Prefira `python3` com `python-pptx` para extrair texto, imagens e notas.
+2. Se `python-pptx` não estiver disponível, pergunte se deve instalá-lo ou recorrer a um fluxo de trabalho manual/baseado em exportação.
+3. Preserve a ordem dos slides, as notas do palestrante e os assets extraídos.
+4. Após a extração, execute o mesmo fluxo de trabalho de seleção de estilo de uma nova apresentação.
 
-Keep conversion cross-platform. Do not rely on macOS-only tools when Python can do the job.
+Mantenha a conversão multiplataforma. Não dependa de ferramentas exclusivas do macOS quando o Python puder fazer o trabalho.
 
 ## Implementation Requirements
 
 ### HTML / CSS
 
-- Use inline CSS and JS unless the user explicitly wants a multi-file project.
-- Fonts may come from Google Fonts or Fontshare.
-- Prefer atmospheric backgrounds, strong type hierarchy, and a clear visual direction.
-- Use abstract shapes, gradients, grids, noise, and geometry rather than illustrations.
+- Use CSS e JS inline, a menos que o usuário queira explicitamente um projeto multiarquivo.
+- As fontes podem vir do Google Fonts ou do Fontshare.
+- Prefira fundos atmosféricos, forte hierarquia de tipos e uma direção visual clara.
+- Use formas abstratas, gradientes, grids, ruído e geometria em vez de ilustrações.
 
 ### JavaScript
 
-Include:
-- keyboard navigation
-- touch / swipe navigation
-- mouse wheel navigation
-- progress indicator or slide index
-- reveal-on-enter animation triggers
+Inclua:
+- navegação por teclado
+- navegação por toque / swipe
+- navegação por roda do mouse
+- indicador de progresso ou índice de slide
+- gatilhos de animação de revelação ao entrar
 
 ### Accessibility
 
-- use semantic structure (`main`, `section`, `nav`)
-- keep contrast readable
-- support keyboard-only navigation
-- respect `prefers-reduced-motion`
+- use estrutura semântica (`main`, `section`, `nav`)
+- mantenha o contraste legível
+- suporte navegação apenas por teclado
+- respeite `prefers-reduced-motion`
 
 ## Content Density Limits
 
-Use these maxima unless the user explicitly asks for denser slides and readability still holds:
+Use estes máximos, a menos que o usuário peça explicitamente slides mais densos e a legibilidade ainda se mantenha:
 
-| Slide type | Limit |
+| Tipo de slide | Limite |
 |------------|-------|
-| Title | 1 heading + 1 subtitle + optional tagline |
-| Content | 1 heading + 4-6 bullets or 2 short paragraphs |
-| Feature grid | 6 cards max |
-| Code | 8-10 lines max |
-| Quote | 1 quote + attribution |
-| Image | 1 image constrained by viewport |
+| Título | 1 cabeçalho + 1 subtítulo + tagline opcional |
+| Conteúdo | 1 cabeçalho + 4-6 marcadores ou 2 parágrafos curtos |
+| Grade de recursos | 6 cards no máximo |
+| Código | 8-10 linhas no máximo |
+| Citação | 1 citação + atribuição |
+| Imagem | 1 imagem restrita pela viewport |
 
 ## Anti-Patterns
 
-- generic startup gradients with no visual identity
-- system-font decks unless intentionally editorial
-- long bullet walls
-- code blocks that need scrolling
-- fixed-height content boxes that break on short screens
-- invalid negated CSS functions like `-clamp(...)`
+- gradientes genéricos de startup sem identidade visual
+- decks com fontes do sistema, a menos que intencionalmente editoriais
+- longas paredes de marcadores
+- blocos de código que precisam de rolagem
+- caixas de conteúdo de altura fixa que quebram em telas curtas
+- funções CSS negadas inválidas como `-clamp(...)`
 
 ## Related ECC Skills
 
-- `frontend-patterns` for component and interaction patterns around the deck
-- `liquid-glass-design` when a presentation intentionally borrows Apple glass aesthetics
-- `e2e-testing` if you need automated browser verification for the final deck
+- `frontend-patterns` para padrões de componente e interação em torno do deck
+- `liquid-glass-design` quando uma apresentação intencionalmente toma emprestada a estética glass da Apple
+- `e2e-testing` se você precisar de verificação automatizada de navegador para o deck final
 
 ## Deliverable Checklist
 
-- presentation runs from a local file in a browser
-- every slide fits the viewport without scrolling
-- style is distinctive and intentional
-- animation is meaningful, not noisy
-- reduced motion is respected
-- file paths and customization points are explained at handoff
+- a apresentação roda a partir de um arquivo local em um navegador
+- cada slide cabe na viewport sem rolagem
+- o estilo é distinto e intencional
+- a animação é significativa, não ruidosa
+- o movimento reduzido é respeitado
+- os caminhos de arquivo e os pontos de customização são explicados na entrega

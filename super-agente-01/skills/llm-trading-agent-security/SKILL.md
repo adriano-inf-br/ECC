@@ -1,6 +1,6 @@
 ---
 name: llm-trading-agent-security
-description: Security patterns for autonomous trading agents with wallet or transaction authority. Covers prompt injection, spend limits, pre-send simulation, circuit breakers, MEV protection, and key handling.
+description: Padrões de segurança para agentes de trading autônomos com autoridade sobre carteiras ou transações. Cobre prompt injection, limites de gasto, simulação pré-envio, circuit breakers, proteção contra MEV e manuseio de chaves.
 metadata:
   origin: ECC direct-port adaptation
 version: "1.0.0"
@@ -8,22 +8,22 @@ version: "1.0.0"
 
 # LLM Trading Agent Security
 
-Autonomous trading agents have a harsher threat model than normal LLM apps: an injection or bad tool path can turn directly into asset loss.
+Agentes de trading autônomos têm um modelo de ameaça mais severo do que aplicações de LLM normais: uma injection ou um caminho de ferramenta ruim pode se converter diretamente em perda de ativos.
 
 ## When to Use
 
-- Building an AI agent that signs and sends transactions
-- Auditing a trading bot or on-chain execution assistant
-- Designing wallet key management for an agent
-- Giving an LLM access to order placement, swaps, or treasury operations
+- Construir um agente de IA que assina e envia transações
+- Auditar um bot de trading ou um assistente de execução on-chain
+- Projetar o gerenciamento de chaves de carteira para um agente
+- Dar a um LLM acesso a colocação de ordens, swaps ou operações de tesouraria
 
 ## How It Works
 
-Layer the defenses. No single check is enough. Treat prompt hygiene, spend policy, simulation, execution limits, and wallet isolation as independent controls.
+Empilhe as defesas. Nenhuma verificação isolada é suficiente. Trate higiene de prompt, política de gasto, simulação, limites de execução e isolamento de carteira como controles independentes.
 
 ## Examples
 
-### Treat prompt injection as a financial attack
+### Trate prompt injection como um ataque financeiro
 
 ```python
 import re
@@ -44,9 +44,9 @@ def sanitize_onchain_data(text: str) -> str:
     return text
 ```
 
-Do not blindly inject token names, pair labels, webhooks, or social feeds into an execution-capable prompt.
+Não injete cegamente nomes de tokens, rótulos de pares, webhooks ou feeds sociais em um prompt com capacidade de execução.
 
-### Hard spend limits
+### Limites rígidos de gasto
 
 ```python
 from decimal import Decimal
@@ -69,7 +69,7 @@ class SpendLimitGuard:
         self._record_spend(usd_amount)
 ```
 
-### Simulate before sending
+### Simule antes de enviar
 
 ```python
 class SlippageError(Exception):
@@ -109,7 +109,7 @@ class TradingCircuitBreaker:
             self.halt(f"Hourly PnL {hourly_pnl:.1%} below threshold")
 ```
 
-### Wallet isolation
+### Isolamento de carteira
 
 ```python
 import os
@@ -122,9 +122,9 @@ if not private_key:
 account = Account.from_key(private_key)
 ```
 
-Use a dedicated hot wallet with only the required session funds. Never point the agent at a primary treasury wallet.
+Use uma hot wallet dedicada apenas com os fundos de sessão necessários. Nunca aponte o agente para uma carteira de tesouraria principal.
 
-### MEV and deadline protection
+### Proteção contra MEV e deadline
 
 ```python
 import time
@@ -136,12 +136,12 @@ deadline = int(time.time()) + 60
 
 ## Pre-Deploy Checklist
 
-- External data is sanitized before entering the LLM context
-- Spend limits are enforced independently from model output
-- Transactions are simulated before send
-- `min_amount_out` is mandatory
-- Circuit breakers halt on drawdown or invalid state
-- Keys come from env or a secret manager, never code or logs
-- Private mempool or protected routing is used when appropriate
-- Slippage and deadlines are set per strategy
-- All agent decisions are audit-logged, not just successful sends
+- Dados externos são sanitizados antes de entrar no contexto do LLM
+- Limites de gasto são impostos de forma independente da saída do modelo
+- Transações são simuladas antes do envio
+- `min_amount_out` é obrigatório
+- Circuit breakers interrompem em caso de drawdown ou estado inválido
+- Chaves vêm de variáveis de ambiente ou de um secret manager, nunca de código ou logs
+- Mempool privado ou roteamento protegido é usado quando apropriado
+- Slippage e deadlines são definidos por estratégia
+- Todas as decisões do agente são registradas em log de auditoria, não apenas os envios bem-sucedidos

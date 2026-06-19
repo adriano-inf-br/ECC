@@ -1,39 +1,40 @@
 ---
 name: network-config-validation
-description: Pre-deployment checks for router and switch configuration, including dangerous commands, duplicate addresses, subnet overlaps, stale references, management-plane risk, and IOS-style security hygiene.
+description: Verificações pré-implantação para configuração de router e switch, incluindo comandos perigosos, endereços duplicados, sobreposições de sub-redes, referências obsoletas, risco do management-plane e higiene de segurança no estilo IOS.
 metadata:
   origin: community
 ---
 
-# Network Config Validation
+# Validação de Configuração de Rede
 
-Use this skill to review network configuration before a change window or before
-an automation run touches production devices.
+Use esta skill para revisar a configuração de rede antes de uma janela de mudança
+ou antes que uma execução de automação toque dispositivos de produção.
 
-## When to Use
+## Quando Usar
 
-- Reviewing Cisco IOS or IOS-XE style snippets before deployment.
-- Auditing generated config from scripts or templates.
-- Looking for dangerous commands, duplicate IP addresses, or subnet overlaps.
-- Checking whether ACLs, route-maps, prefix-lists, or line policies are referenced
-  but not defined.
-- Building lightweight pre-flight scripts for network automation.
+- Revisar trechos no estilo Cisco IOS ou IOS-XE antes da implantação.
+- Auditar config gerada por scripts ou templates.
+- Procurar comandos perigosos, endereços IP duplicados ou sobreposições de sub-redes.
+- Verificar se ACLs, route-maps, prefix-lists ou políticas de linha são referenciados
+  mas não definidos.
+- Construir scripts leves de pré-checagem (pre-flight) para automação de rede.
 
-## How It Works
+## Como Funciona
 
-Treat config validation as layered evidence, not as a complete parser. Regex
-checks are useful for pre-flight warnings, but final approval still needs a
-network engineer to review intent, platform syntax, and rollback steps.
+Trate a validação de config como evidência em camadas, não como um parser
+completo. As verificações por regex são úteis para avisos de pré-checagem, mas a
+aprovação final ainda precisa de um engenheiro de rede para revisar a intenção, a
+sintaxe da plataforma e as etapas de rollback.
 
-Validate in this order:
+Valide nesta ordem:
 
-1. Destructive commands.
-2. Credential and management-plane exposure.
-3. Duplicate addresses and overlapping subnets.
-4. Stale references to ACLs, route-maps, prefix-lists, and interfaces.
-5. Operational hygiene such as NTP, timestamps, remote logging, and banners.
+1. Comandos destrutivos.
+2. Exposição de credenciais e do management-plane.
+3. Endereços duplicados e sub-redes sobrepostas.
+4. Referências obsoletas a ACLs, route-maps, prefix-lists e interfaces.
+5. Higiene operacional como NTP, timestamps, logging remoto e banners.
 
-## Dangerous Command Detection
+## Detecção de Comandos Perigosos
 
 ```python
 import re
@@ -62,7 +63,7 @@ def find_dangerous_commands(lines: list[str]) -> list[dict[str, str | int]]:
     return findings
 ```
 
-## Duplicate IPs And Subnet Overlaps
+## IPs Duplicados e Sobreposições de Sub-redes
 
 ```python
 import ipaddress
@@ -106,10 +107,10 @@ def find_subnet_overlaps(config: str) -> list[tuple[str, str]]:
     return overlaps
 ```
 
-## Management-Plane Checks
+## Verificações do Management-Plane
 
-Parse VTY blocks by section so access-class checks do not spill across unrelated
-lines.
+Faça o parsing dos blocos VTY por seção para que as verificações de access-class
+não transbordem para linhas não relacionadas.
 
 ```python
 import re

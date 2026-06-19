@@ -1,63 +1,63 @@
 ---
 name: make-interfaces-feel-better
-description: Apply concrete design-engineering details that make interfaces feel polished. Use when reviewing or improving UI spacing, typography, borders, shadows, motion, hit areas, icons, text wrapping, and interaction states.
+description: Aplique detalhes concretos de design-engineering que tornam interfaces mais polidas. Use ao revisar ou melhorar espaçamento de UI, tipografia, bordas, sombras, motion, áreas de toque, ícones, quebra de texto e estados de interação.
 metadata:
   origin: community
 ---
 
-# Make Interfaces Feel Better
+# Deixe as Interfaces Melhores
 
-Use this skill for the small design-engineering details that compound into a
-more polished interface.
+Use esta skill para os pequenos detalhes de design-engineering que se acumulam em
+uma interface mais polida.
 
-Source: salvaged from stale community PR #1659 by `linus707`.
+Fonte: recuperada de PR comunitário obsoleto #1659 por `linus707`.
 
-## When to Use
+## Quando Usar
 
-- The user says the UI feels off, flat, generic, cramped, jumpy, or unfinished.
-- You are building controls, cards, lists, dashboards, navigation, forms, or
-  toolbars.
-- A component needs hover, active, focus, enter, exit, loading, or empty states.
-- A frontend review needs specific before/after recommendations.
+- O usuário diz que a UI parece estranha, plana, genérica, apertada, instável ou inacabada.
+- Você está construindo controles, cards, listas, dashboards, navegação, formulários ou
+  barras de ferramentas.
+- Um componente precisa de estados de hover, active, focus, entrada, saída, carregando ou vazio.
+- Uma revisão de Frontend precisa de recomendações específicas de antes/depois.
 
-## Core Principles
+## Princípios Fundamentais
 
-### Concentric Radius
+### Raio Concêntrico
 
-For nearby nested rounded surfaces:
+Para superfícies arredondadas aninhadas próximas:
 
 ```text
-outer radius = inner radius + padding
+raio externo = raio interno + padding
 ```
 
-If padding is large, treat layers as separate surfaces instead of forcing the
-math. The point is optical coherence, not formula worship.
+Se o padding for grande, trate as camadas como superfícies separadas em vez de forçar a
+matemática. O objetivo é coerência óptica, não adoração de fórmulas.
 
-### Optical Alignment
+### Alinhamento Óptico
 
-Geometric centering is not always visual centering. Icon buttons, play
-triangles, arrows, stars, and asymmetric icons often need a small offset. Fix the
-SVG when possible; otherwise adjust with a pixel-level margin or padding change.
+Centralização geométrica nem sempre é centralização visual. Botões de ícone, triângulos
+de play, setas, estrelas e ícones assimétricos frequentemente precisam de um pequeno deslocamento.
+Corrija o SVG quando possível; caso contrário, ajuste com uma mudança de margin ou padding em nível de pixel.
 
-### Shadows And Borders
+### Sombras e Bordas
 
-Use borders for separation and focus rings. Use layered shadows when a card,
-button, dropdown, or popover needs depth. Shadows should be transparent and
-subtle enough to work across backgrounds.
+Use bordas para separação e anéis de foco. Use sombras em camadas quando um card,
+botão, dropdown ou popover precisar de profundidade. As sombras devem ser transparentes e
+sutis o suficiente para funcionar em diferentes fundos.
 
-### Text Wrapping
+### Quebra de Texto
 
-- Use `text-wrap: balance` on headings and short titles.
-- Use `text-wrap: pretty` on short-to-medium body text, captions, descriptions,
-  and list items.
-- Avoid both on long prose, code, and preformatted content.
-- Use `font-variant-numeric: tabular-nums` for counters, timers, prices, tables,
-  and other updating numbers.
+- Use `text-wrap: balance` em títulos e subtítulos curtos.
+- Use `text-wrap: pretty` em textos de corpo curtos a médios, legendas, descrições
+  e itens de lista.
+- Evite ambos em prosa longa, código e conteúdo pré-formatado.
+- Use `font-variant-numeric: tabular-nums` para contadores, temporizadores, preços, tabelas
+  e outros números que se atualizam.
 
-### Font Smoothing
+### Suavização de Fonte
 
-On macOS, apply antialiased font smoothing at the root layout when the project
-does not already do so:
+No macOS, aplique suavização de fonte antialiased no layout raiz quando o projeto
+ainda não o fizer:
 
 ```css
 html {
@@ -66,10 +66,10 @@ html {
 }
 ```
 
-### Image Outlines
+### Contornos de Imagem
 
-Images often need a subtle inset outline so their edges do not blur into the
-surface.
+Imagens frequentemente precisam de um contorno interno sutil para que suas bordas não se misturem com a
+superfície.
 
 ```css
 img {
@@ -84,27 +84,26 @@ img {
 }
 ```
 
-Use neutral black or white alpha outlines. Do not tint image outlines with the
-brand palette.
+Use contornos em alfa neutro preto ou branco. Não tinja contornos de imagem com a
+paleta da marca.
 
 ### Motion
 
-Use CSS transitions for interactive state changes because they can retarget
-when the user changes intent mid-motion. Reserve keyframes for staged
-one-shot entrances or loading sequences.
+Use transições CSS para mudanças de estado interativas porque elas podem redirecionar
+quando o usuário muda de intenção durante o movimento. Reserve keyframes para entradas
+encenadas de uso único ou sequências de carregamento.
 
-Good motion defaults:
+Bons padrões de motion:
 
-- Enter: combine opacity, small `translateY`, and optionally blur.
-- Exit: shorter and quieter than enter, usually 150ms.
-- Press: `scale(0.96)` for tactile buttons, with a way to disable it when the
-  movement distracts.
-- Icon swaps: cross-fade with opacity, scale, and blur instead of instant
-  visibility toggles.
+- Entrada: combine opacity, pequeno `translateY` e opcionalmente blur.
+- Saída: mais curta e mais discreta do que a entrada, geralmente 150ms.
+- Pressionar: `scale(0.96)` para botões táteis, com uma forma de desabilitar quando o
+  movimento distrai.
+- Troca de ícones: cross-fade com opacity, scale e blur em vez de alternâncias de visibilidade instantâneas.
 
-### Transition Scope
+### Escopo de Transição
 
-Never use `transition: all`. Specify the changed properties:
+Nunca use `transition: all`. Especifique as propriedades alteradas:
 
 ```css
 .button {
@@ -114,39 +113,39 @@ Never use `transition: all`. Specify the changed properties:
 }
 ```
 
-Use `will-change` only for first-frame stutter on compositor-friendly
-properties such as `transform`, `opacity`, and `filter`. Never use
+Use `will-change` apenas para travamento no primeiro frame em
+propriedades compatíveis com compositor como `transform`, `opacity` e `filter`. Nunca use
 `will-change: all`.
 
-### Hit Areas
+### Áreas de Toque
 
-Interactive controls should have at least a 40x40px hit area, ideally 44x44px
-where the layout allows it. Expand with a pseudo-element when the visible icon
-is smaller, but do not let expanded hit areas overlap.
+Controles interativos devem ter pelo menos uma área de toque de 40x40px, idealmente 44x44px
+onde o layout permitir. Expanda com um pseudo-elemento quando o ícone visível
+for menor, mas não deixe áreas de toque expandidas se sobreponham.
 
-## Review Output
+## Saída de Revisão
 
-When reviewing a UI polish pass, report concrete changes in before/after rows:
+Ao revisar uma passagem de polimento de UI, reporte mudanças concretas em linhas de antes/depois:
 
-| Principle | Before | After |
+| Princípio | Antes | Depois |
 | --- | --- | --- |
-| Concentric radius | Same radius on parent and child | Parent radius accounts for padding |
-| Tabular numbers | Counter shifts as digits change | Counter uses `tabular-nums` |
-| Transition scope | `transition: all` | Explicit transition properties |
+| Raio concêntrico | Mesmo raio no pai e no filho | Raio do pai considera o padding |
+| Números tabulares | Contador muda conforme os dígitos mudam | Contador usa `tabular-nums` |
+| Escopo de transição | `transition: all` | Propriedades de transição explícitas |
 
-Include file paths and properties when they are not obvious from the snippets.
-Omit principles that you checked but did not change.
+Inclua caminhos de arquivo e propriedades quando não forem óbvios a partir dos trechos.
+Omita princípios que você verificou mas não alterou.
 
 ## Checklist
 
-- Nested rounded elements are optically coherent.
-- Icons are visually centered.
-- Buttons, cards, and popovers use borders or shadows for the right reason.
-- Headings and short text avoid awkward wrapping.
-- Dynamic numbers use tabular numerals.
-- Images have neutral outlines where needed.
-- Enter and exit animations are split, subtle, and interruptible where
-  appropriate.
-- Buttons have tactile active states without exaggerated motion.
-- `transition: all` and `will-change: all` are absent.
-- Small controls still have usable hit areas.
+- Elementos arredondados aninhados são opticamente coerentes.
+- Ícones estão visualmente centralizados.
+- Botões, cards e popovers usam bordas ou sombras pelo motivo certo.
+- Títulos e textos curtos evitam quebras de linha inadequadas.
+- Números dinâmicos usam numerais tabulares.
+- Imagens têm contornos neutros onde necessário.
+- Animações de entrada e saída são divididas, sutis e interrompíveis onde
+  apropriado.
+- Botões têm estados ativos táteis sem motion exagerado.
+- `transition: all` e `will-change: all` estão ausentes.
+- Controles pequenos ainda têm áreas de toque utilizáveis.

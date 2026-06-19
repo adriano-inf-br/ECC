@@ -7,37 +7,37 @@ metadata:
 
 # orch-change-feature
 
-Actor · action · target: **orch · change · feature**. Thin wrapper over the
-shared engine in [`orch-pipeline`](../orch-pipeline/SKILL.md).
+Ator · ação · alvo: **orch · change · feature**. Wrapper fino sobre o
+engine compartilhado em [`orch-pipeline`](../orch-pipeline/SKILL.md).
 
-## When to Use
+## Quando Usar
 
-- An existing feature **works**, but the desired behavior is different ("change",
+- Uma feature existente **funciona**, mas o comportamento desejado é diferente ("change",
   "adjust", "make it also …", "instead of X do Y").
-- Distinguish from siblings:
-  - **not** broken → not `orch-fix-defect` (no bug to reproduce).
-  - **not** new → not `orch-add-feature` (the capability already exists).
+- Distinga das irmãs:
+  - **não** está quebrada → não é `orch-fix-defect` (não há bug a reproduzir).
+  - **não** é nova → não é `orch-add-feature` (a capacidade já existe).
 
-## Operation settings
+## Configurações da operação
 
-- **Default size floor:** small — most tweaks are a function or two.
-- **Phase mask:** 0 → (1 only if the new behavior needs research) → light 2 →
+- **Piso de tamanho padrão:** small — a maioria dos ajustes é uma função ou duas.
+- **Máscara de fases:** 0 → (1 somente se o novo comportamento exigir pesquisa) → 2 leve →
   4 → 5 → 6.
-- **First move (phase 4):** update the *existing* tests to express the new
-  desired behavior, then change the implementation until they pass. Changing the
-  tests first is what separates a tweak from a fix.
+- **Primeiro movimento (fase 4):** atualize os testes *existentes* para expressar o novo
+  comportamento desejado e então altere a implementação até passarem. Alterar os
+  testes primeiro é o que separa um ajuste de uma correção.
 
-## How It Works
+## Como Funciona
 
-1. Run the `orch-pipeline` engine with the settings above.
-2. Keep the plan light — only `standard`+ size warrants the full `planner` pass.
-3. Stop at **Gate 1** (plan / changed-test approval) and **Gate 2** (pre-commit).
-4. Add `security-reviewer` if the change touches a security trigger.
+1. Rode o engine `orch-pipeline` com as configurações acima.
+2. Mantenha o plano leve — apenas tamanho `standard`+ justifica a passagem completa do `planner`.
+3. Pare no **Gate 1** (aprovação do plano / teste alterado) e no **Gate 2** (pré-commit).
+4. Adicione `security-reviewer` se a mudança tocar um gatilho de segurança.
 
-## Example
+## Exemplo
 
 ```
 orch-change-feature: make nws-poller alert at 2 warnings instead of 3
-→ update threshold tests to new spec → change impl to green
-→ code-review → commit  [GATE 2: confirm]
+→ atualizar os testes de limiar para a nova spec → alterar a impl até passar
+→ code-review → commit  [GATE 2: confirmar]
 ```

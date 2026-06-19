@@ -1,6 +1,6 @@
 ---
 name: evm-token-decimals
-description: Prevent silent decimal mismatch bugs across EVM chains. Covers runtime decimal lookup, chain-aware caching, bridged-token precision drift, and safe normalization for bots, dashboards, and DeFi tools.
+description: Previne bugs silenciosos de incompatibilidade de casas decimais entre chains EVM. Cobre a consulta de decimais em tempo de execução, cache por chain, deriva de precisão de tokens em bridge e normalização segura para bots, dashboards e ferramentas DeFi.
 metadata:
   origin: ECC direct-port adaptation
 version: "1.0.0"
@@ -8,23 +8,23 @@ version: "1.0.0"
 
 # EVM Token Decimals
 
-Silent decimal mismatches are one of the easiest ways to ship balances or USD values that are off by orders of magnitude without throwing an error.
+Incompatibilidades silenciosas de casas decimais são uma das formas mais fáceis de entregar saldos ou valores em USD errados por ordens de magnitude sem disparar nenhum erro.
 
 ## When to Use
 
-- Reading ERC-20 balances in Python, TypeScript, or Solidity
-- Calculating fiat values from on-chain balances
-- Comparing token amounts across multiple EVM chains
-- Handling bridged assets
-- Building portfolio trackers, bots, or aggregators
+- Ler saldos ERC-20 em Python, TypeScript ou Solidity
+- Calcular valores em moeda fiduciária a partir de saldos on-chain
+- Comparar quantidades de tokens em múltiplas chains EVM
+- Lidar com ativos transferidos por bridge
+- Construir rastreadores de portfólio, bots ou agregadores
 
 ## How It Works
 
-Never assume stablecoins use the same decimals everywhere. Query `decimals()` at runtime, cache by `(chain_id, token_address)`, and use decimal-safe math for value calculations.
+Nunca assuma que stablecoins usam as mesmas casas decimais em todos os lugares. Consulte `decimals()` em tempo de execução, faça cache por `(chain_id, token_address)` e use matemática segura para decimais nos cálculos de valor.
 
 ## Examples
 
-### Query decimals at runtime
+### Consultar decimais em tempo de execução
 
 ```python
 from decimal import Decimal
@@ -48,9 +48,9 @@ def get_token_balance(w3: Web3, token_address: str, wallet: str) -> Decimal:
     return Decimal(raw) / Decimal(10 ** decimals)
 ```
 
-Do not hardcode `1_000_000` because a symbol usually has 6 decimals somewhere else.
+Não cravar `1_000_000` só porque um símbolo normalmente tem 6 casas decimais em algum outro lugar.
 
-### Cache by chain and token
+### Fazer cache por chain e token
 
 ```python
 from functools import lru_cache
@@ -65,7 +65,7 @@ def get_decimals(chain_id: int, token_address: str) -> int:
     return contract.functions.decimals().call()
 ```
 
-### Handle odd tokens defensively
+### Lidar com tokens atípicos de forma defensiva
 
 ```python
 try:
@@ -79,9 +79,9 @@ except Exception:
     decimals = 18
 ```
 
-Log the fallback and keep it visible. Old or non-standard tokens still exist.
+Registre o fallback e mantenha-o visível. Tokens antigos ou fora do padrão ainda existem.
 
-### Normalize to 18-decimal WAD in Solidity
+### Normalizar para WAD de 18 casas decimais em Solidity
 
 ```solidity
 interface IERC20Metadata {
@@ -96,7 +96,7 @@ function normalizeToWad(address token, uint256 amount) internal view returns (ui
 }
 ```
 
-### TypeScript with ethers
+### TypeScript com ethers
 
 ```typescript
 import { Contract, formatUnits } from 'ethers';
@@ -116,7 +116,7 @@ async function getBalance(provider: any, tokenAddress: string, wallet: string): 
 }
 ```
 
-### Quick on-chain check
+### Verificação rápida on-chain
 
 ```bash
 cast call <token_address> "decimals()(uint8)" --rpc-url <rpc>
@@ -124,8 +124,8 @@ cast call <token_address> "decimals()(uint8)" --rpc-url <rpc>
 
 ## Rules
 
-- Always query `decimals()` at runtime
-- Cache by chain plus token address, not symbol
-- Use `Decimal`, `BigInt`, or equivalent exact math, not float
-- Re-query decimals after bridging or wrapper changes
-- Normalize internal accounting consistently before comparison or pricing
+- Sempre consulte `decimals()` em tempo de execução
+- Faça cache por chain mais endereço do token, não por símbolo
+- Use `Decimal`, `BigInt` ou matemática exata equivalente, não float
+- Reconsulte os decimais após bridging ou alterações de wrapper
+- Normalize a contabilidade interna de forma consistente antes de comparar ou precificar

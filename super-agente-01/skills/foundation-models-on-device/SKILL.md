@@ -1,24 +1,24 @@
 ---
 name: foundation-models-on-device
-description: Apple FoundationModels framework for on-device LLM — text generation, guided generation with @Generable, tool calling, and snapshot streaming in iOS 26+.
+description: Framework Apple FoundationModels para LLM on-device — geração de texto, geração guiada com @Generable, chamada de ferramentas e streaming de snapshots no iOS 26+.
 ---
 
-# FoundationModels: On-Device LLM (iOS 26)
+# FoundationModels: LLM On-Device (iOS 26)
 
-Patterns for integrating Apple's on-device language model into apps using the FoundationModels framework. Covers text generation, structured output with `@Generable`, custom tool calling, and snapshot streaming — all running on-device for privacy and offline support.
+Padrões para integrar o modelo de linguagem on-device da Apple em aplicativos usando o framework FoundationModels. Abrange geração de texto, saída estruturada com `@Generable`, chamada de ferramentas personalizadas e streaming de snapshots — tudo executado on-device para privacidade e suporte offline.
 
-## When to Activate
+## Quando Ativar
 
-- Building AI-powered features using Apple Intelligence on-device
-- Generating or summarizing text without cloud dependency
-- Extracting structured data from natural language input
-- Implementing custom tool calling for domain-specific AI actions
-- Streaming structured responses for real-time UI updates
-- Need privacy-preserving AI (no data leaves the device)
+- Construir recursos com IA usando o Apple Intelligence on-device
+- Gerar ou resumir texto sem dependência da nuvem
+- Extrair dados estruturados de entrada em linguagem natural
+- Implementar chamada de ferramentas personalizadas para ações de IA específicas do domínio
+- Fazer streaming de respostas estruturadas para atualizações de UI em tempo real
+- Necessidade de IA com preservação de privacidade (nenhum dado sai do dispositivo)
 
-## Core Pattern — Availability Check
+## Padrão Central — Verificação de Disponibilidade
 
-Always check model availability before creating a session:
+Sempre verifique a disponibilidade do modelo antes de criar uma sessão:
 
 ```swift
 struct GenerativeView: View {
@@ -29,27 +29,27 @@ struct GenerativeView: View {
         case .available:
             ContentView()
         case .unavailable(.deviceNotEligible):
-            Text("Device not eligible for Apple Intelligence")
+            Text("Dispositivo não elegível para o Apple Intelligence")
         case .unavailable(.appleIntelligenceNotEnabled):
-            Text("Please enable Apple Intelligence in Settings")
+            Text("Habilite o Apple Intelligence nos Ajustes")
         case .unavailable(.modelNotReady):
-            Text("Model is downloading or not ready")
+            Text("O modelo está baixando ou não está pronto")
         case .unavailable(let other):
-            Text("Model unavailable: \(other)")
+            Text("Modelo indisponível: \(other)")
         }
     }
 }
 ```
 
-## Core Pattern — Basic Session
+## Padrão Central — Sessão Básica
 
 ```swift
-// Single-turn: create a new session each time
+// Turno único: crie uma nova sessão a cada vez
 let session = LanguageModelSession()
 let response = try await session.respond(to: "What's a good month to visit Paris?")
 print(response.content)
 
-// Multi-turn: reuse session for conversation context
+// Múltiplos turnos: reutilize a sessão para o contexto da conversa
 let session = LanguageModelSession(instructions: """
     You are a cooking assistant.
     Provide recipe suggestions based on ingredients.
@@ -60,17 +60,17 @@ let first = try await session.respond(to: "I have chicken and rice")
 let followUp = try await session.respond(to: "What about a vegetarian option?")
 ```
 
-Key points for instructions:
-- Define the model's role ("You are a mentor")
-- Specify what to do ("Help extract calendar events")
-- Set style preferences ("Respond as briefly as possible")
-- Add safety measures ("Respond with 'I can't help with that' for dangerous requests")
+Pontos-chave para as instructions:
+- Defina o papel do modelo ("You are a mentor")
+- Especifique o que fazer ("Help extract calendar events")
+- Defina preferências de estilo ("Respond as briefly as possible")
+- Adicione medidas de segurança ("Respond with 'I can't help with that' for dangerous requests")
 
-## Core Pattern — Guided Generation with @Generable
+## Padrão Central — Geração Guiada com @Generable
 
-Generate structured Swift types instead of raw strings:
+Gere tipos Swift estruturados em vez de strings brutas:
 
-### 1. Define a Generable Type
+### 1. Definir um Tipo Generable
 
 ```swift
 @Generable(description: "Basic profile information about a cat")
@@ -85,7 +85,7 @@ struct CatProfile {
 }
 ```
 
-### 2. Request Structured Output
+### 2. Solicitar Saída Estruturada
 
 ```swift
 let response = try await session.respond(
@@ -93,23 +93,23 @@ let response = try await session.respond(
     generating: CatProfile.self
 )
 
-// Access structured fields directly
+// Acesse os campos estruturados diretamente
 print("Name: \(response.content.name)")
 print("Age: \(response.content.age)")
 print("Profile: \(response.content.profile)")
 ```
 
-### Supported @Guide Constraints
+### Restrições @Guide Suportadas
 
-- `.range(0...20)` — numeric range
-- `.count(3)` — array element count
-- `description:` — semantic guidance for generation
+- `.range(0...20)` — intervalo numérico
+- `.count(3)` — contagem de elementos do array
+- `description:` — orientação semântica para a geração
 
-## Core Pattern — Tool Calling
+## Padrão Central — Chamada de Ferramentas
 
-Let the model invoke custom code for domain-specific tasks:
+Permita que o modelo invoque código personalizado para tarefas específicas do domínio:
 
-### 1. Define a Tool
+### 1. Definir uma Ferramenta
 
 ```swift
 struct RecipeSearchTool: Tool {
@@ -132,14 +132,14 @@ struct RecipeSearchTool: Tool {
 }
 ```
 
-### 2. Create Session with Tools
+### 2. Criar uma Sessão com Ferramentas
 
 ```swift
 let session = LanguageModelSession(tools: [RecipeSearchTool()])
 let response = try await session.respond(to: "Find me some pasta recipes")
 ```
 
-### 3. Handle Tool Errors
+### 3. Tratar Erros de Ferramenta
 
 ```swift
 do {
@@ -147,14 +147,14 @@ do {
 } catch let error as LanguageModelSession.ToolCallError {
     print(error.tool.name)
     if case .databaseIsEmpty = error.underlyingError as? RecipeSearchToolError {
-        // Handle specific tool error
+        // Trate o erro específico da ferramenta
     }
 }
 ```
 
-## Core Pattern — Snapshot Streaming
+## Padrão Central — Streaming de Snapshots
 
-Stream structured responses for real-time UI with `PartiallyGenerated` types:
+Faça streaming de respostas estruturadas para UI em tempo real com tipos `PartiallyGenerated`:
 
 ```swift
 @Generable
@@ -169,12 +169,12 @@ let stream = session.streamResponse(
 )
 
 for try await partial in stream {
-    // partial: TripIdeas.PartiallyGenerated (all properties Optional)
+    // partial: TripIdeas.PartiallyGenerated (todas as propriedades Optional)
     print(partial)
 }
 ```
 
-### SwiftUI Integration
+### Integração com SwiftUI
 
 ```swift
 @State private var partialResult: TripIdeas.PartiallyGenerated?

@@ -1,57 +1,57 @@
 ---
 name: ml-adoption-playbook
-description: End-to-end methodology for AI agents and software engineers to add machine learning algorithms to existing non-ML codebases. Covers problem framing, data readiness, architectural decoupling, and baseline model integration.
+description: Metodologia ponta a ponta para agentes de IA e engenheiros de software adicionarem algoritmos de machine learning a bases de código existentes que não usam ML. Cobre enquadramento de problemas, prontidão de dados, desacoplamento arquitetural e integração de modelos baseline.
 origin: ECC
 ---
 
 # ML Adoption Playbook
 
-This skill provides an adaptive methodology for implementing machine learning models into existing software engineering projects. It bridges the gap between traditional SWE and MLOps by structuring how ML should be researched, decoupled, trained, and integrated.
+Esta skill fornece uma metodologia adaptativa para implementar modelos de machine learning em projetos de engenharia de software existentes. Ela faz a ponte entre a engenharia de software tradicional e o MLOps, estruturando como o ML deve ser pesquisado, desacoplado, treinado e integrado.
 
 ## When to Activate
 
-- A user asks to "add ML" or "add an algorithm" to their existing codebase.
-- Planning the integration of a new model (e.g., recommendation, classification, forecasting) into a non-ML application.
-- Structuring a workflow for an agent to build, train, and deploy an ML component adaptively.
+- Um usuário pede para "adicionar ML" ou "adicionar um algoritmo" à sua base de código existente.
+- Planejamento da integração de um novo modelo (ex.: recomendação, classificação, previsão) em uma aplicação que não usa ML.
+- Estruturação de um fluxo de trabalho para que um agent construa, treine e implante um componente de ML de forma adaptativa.
 
 ## Phase 1: Problem Framing & Feasibility
 
-Before writing model code, establish the "why" and "how".
-- **Heuristic Check:** Ask the user if a simple heuristic (e.g., regex, rule-based sorting) could solve the problem faster. If yes, start there.
-- **Metric Definition:** Define what business metric the ML model is trying to improve (e.g., click-through rate, reduced latency).
-- **Mistake Budget:** Define what a "bad" prediction looks like and how the system should handle it.
+Antes de escrever código de modelo, estabeleça o "porquê" e o "como".
+- **Heuristic Check:** Pergunte ao usuário se uma heurística simples (ex.: regex, ordenação baseada em regras) poderia resolver o problema mais rápido. Se sim, comece por aí.
+- **Metric Definition:** Defina qual métrica de negócio o modelo de ML está tentando melhorar (ex.: taxa de cliques, redução de latência).
+- **Mistake Budget:** Defina o que constitui uma previsão "ruim" e como o sistema deve lidar com ela.
 
 ## Phase 2: Data Readiness
 
-ML is useless without clean, accessible data.
-- **Audit Data Sources:** Identify where the training data lives. Is it a live database, a static CSV, or an API?
-- **Data Contract:** Establish a schema for the input data. What features are required? What happens if a feature is missing?
-- **Leakage Prevention:** Ensure the user's proposed data split does not accidentally leak future information into the training set (e.g., chronological splitting for time-series data).
+ML é inútil sem dados limpos e acessíveis.
+- **Audit Data Sources:** Identifique onde residem os dados de treinamento. É um banco de dados ativo, um CSV estático ou uma API?
+- **Data Contract:** Estabeleça um schema para os dados de entrada. Quais features são obrigatórias? O que acontece se uma feature estiver ausente?
+- **Leakage Prevention:** Garanta que a divisão de dados proposta pelo usuário não vaze acidentalmente informações futuras para o conjunto de treinamento (ex.: divisão cronológica para dados de séries temporais).
 
 ## Phase 3: Architectural Integration & Decoupling
 
-Do not tightly couple model inference to core business logic.
-- **API Boundary:** Suggest placing the model behind an API endpoint (e.g., using `fastapi-patterns` or `django-patterns`) or a dedicated service class.
-- **Fallback Mechanisms:** Design a default state. If the model takes too long to respond or throws an error, the system must gracefully fall back to a hardcoded rule.
-- **Feature Flags:** Wrap the new ML inference call in a feature flag so it can be rolled out (or rolled back) safely.
+Não acople fortemente a inferência do modelo à lógica de negócio central.
+- **API Boundary:** Sugira colocar o modelo atrás de um endpoint de API (ex.: usando `fastapi-patterns` ou `django-patterns`) ou de uma classe de serviço dedicada.
+- **Fallback Mechanisms:** Projete um estado padrão. Se o modelo demorar demais a responder ou lançar um erro, o sistema deve recorrer de forma elegante a uma regra fixa.
+- **Feature Flags:** Envolva a nova chamada de inferência de ML em uma feature flag para que ela possa ser liberada (ou revertida) com segurança.
 
 ## Phase 4: Model Implementation & Training
 
-Structure the code for reproducibility and iteration.
-- **Start Simple:** Build a baseline model first (e.g., a simple scikit-learn Logistic Regression or a barebones PyTorch linear layer).
-- **Reproducibility:** Apply `pytorch-patterns` or similar best practices: fix random seeds, make code device-agnostic, and explicitly document tensor/array shapes.
-- **Automated Evidence:** Require tests for the data transforms and inference schema. Do not accept a model without an evaluation script comparing it against the baseline.
+Estruture o código para reprodutibilidade e iteração.
+- **Start Simple:** Construa primeiro um modelo baseline (ex.: uma Regressão Logística simples do scikit-learn ou uma camada linear básica em PyTorch).
+- **Reproducibility:** Aplique `pytorch-patterns` ou boas práticas similares: fixe seeds aleatórias, torne o código agnóstico ao dispositivo e documente explicitamente os shapes de tensores/arrays.
+- **Automated Evidence:** Exija testes para as transformações de dados e o schema de inferência. Não aceite um modelo sem um script de avaliação que o compare ao baseline.
 
 ## Phase 5: Handoff to MLOps
 
-Once the baseline model is integrated, shift focus to continuous operations.
-- **Refer to `mle-workflow`:** Guide the user toward setting up experiment tracking, model registries, and drift detection.
-- **CI/CD:** Add the model evaluation step to the existing CI pipeline to ensure future commits do not degrade model performance.
+Uma vez que o modelo baseline esteja integrado, mude o foco para operações contínuas.
+- **Refer to `mle-workflow`:** Oriente o usuário a configurar rastreamento de experimentos, registros de modelos e detecção de drift.
+- **CI/CD:** Adicione a etapa de avaliação do modelo ao pipeline de CI existente para garantir que commits futuros não degradem o desempenho do modelo.
 
 ## Iterative Agent Workflow
 
-When assisting a user via this playbook, agents should:
-1. **Ask clarifying questions** to complete Phase 1 before proposing architectures.
-2. **Draft a data contract** in Phase 2 for user approval.
-3. **Write the decoupling interface** (API/Service) in Phase 3 *before* writing the training loop.
-4. **Deliver a reproducible script** in Phase 4 that trains the model and saves the artifact.
+Ao auxiliar um usuário por meio deste playbook, os agents devem:
+1. **Fazer perguntas esclarecedoras** para concluir a Fase 1 antes de propor arquiteturas.
+2. **Esboçar um data contract** na Fase 2 para aprovação do usuário.
+3. **Escrever a interface de desacoplamento** (API/Serviço) na Fase 3 *antes* de escrever o loop de treinamento.
+4. **Entregar um script reproduzível** na Fase 4 que treine o modelo e salve o artefato.

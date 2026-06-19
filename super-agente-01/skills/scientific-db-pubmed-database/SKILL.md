@@ -1,27 +1,27 @@
 ---
 name: pubmed-database
-description: Direct PubMed and NCBI E-utilities search workflows for biomedical literature, MeSH queries, PMID lookup, citation retrieval, and API-backed literature monitoring.
+description: Fluxos de trabalho de busca direta no PubMed e nos E-utilities do NCBI para literatura biomédica, consultas MeSH, busca por PMID, recuperação de citações e monitoramento de literatura com suporte de API.
 metadata:
   origin: community
 ---
 
-# PubMed Database
+# Banco de Dados PubMed
 
-Use this skill when a task needs biomedical literature from PubMed rather than
-general web search.
+Use esta skill quando uma tarefa precisar de literatura biomédica do PubMed em vez de
+busca geral na web.
 
-## When to Use
+## Quando Usar
 
-- Searching MEDLINE or life-sciences literature.
-- Building PubMed queries with MeSH terms, field tags, dates, or article types.
-- Looking up PMIDs, abstracts, publication metadata, or related citations.
-- Running systematic-review search passes that need repeatable search strings.
-- Using NCBI E-utilities directly from Python, shell, or another HTTP client.
+- Pesquisar MEDLINE ou literatura de ciências da vida.
+- Construir consultas no PubMed com termos MeSH, tags de campo, datas ou tipos de artigo.
+- Buscar PMIDs, resumos, metadados de publicação ou citações relacionadas.
+- Executar passagens de busca para revisões sistemáticas que precisem de strings de busca reproduzíveis.
+- Usar os E-utilities do NCBI diretamente em Python, shell ou outro cliente HTTP.
 
-## Query Construction
+## Construção de Consultas
 
-Start with the research question, split it into concepts, then combine concepts
-with Boolean operators.
+Comece com a questão de pesquisa, divida-a em conceitos e combine os conceitos
+com operadores booleanos.
 
 ```text
 concept_1 AND concept_2 AND filter
@@ -29,20 +29,20 @@ synonym_a OR synonym_b
 NOT exclusion_term
 ```
 
-Useful PubMed field tags:
+Tags de campo úteis do PubMed:
 
-- `[ti]`: title
-- `[ab]`: abstract
-- `[tiab]`: title or abstract
-- `[au]`: author
-- `[ta]`: journal title abbreviation
-- `[mh]`: MeSH term
-- `[majr]`: major MeSH topic
-- `[pt]`: publication type
-- `[dp]`: date of publication
-- `[la]`: language
+- `[ti]`: título
+- `[ab]`: resumo
+- `[tiab]`: título ou resumo
+- `[au]`: autor
+- `[ta]`: abreviação do título do periódico
+- `[mh]`: termo MeSH
+- `[majr]`: tópico MeSH principal
+- `[pt]`: tipo de publicação
+- `[dp]`: data de publicação
+- `[la]`: idioma
 
-Examples:
+Exemplos:
 
 ```text
 diabetes mellitus[mh] AND treatment[tiab] AND systematic review[pt] AND 2023:2026[dp]
@@ -50,24 +50,24 @@ diabetes mellitus[mh] AND treatment[tiab] AND systematic review[pt] AND 2023:202
 smith ja[au] AND cancer[tiab] AND 2026[dp] AND english[la]
 ```
 
-## MeSH and Subheadings
+## MeSH e Subcabeçalhos
 
-Prefer MeSH when the concept has a stable controlled-vocabulary term. Combine
-MeSH with title/abstract terms when the topic is new or terminology varies.
+Prefira MeSH quando o conceito tiver um termo estável em vocabulário controlado. Combine
+MeSH com termos de título/resumo quando o tema for novo ou a terminologia variar.
 
-Correct subheading syntax puts the subheading before the field tag:
+A sintaxe correta de subcabeçalho coloca o subcabeçalho antes da tag de campo:
 
 ```text
 diabetes mellitus, type 2/drug therapy[mh]
 cardiovascular diseases/prevention & control[mh]
 ```
 
-Use `[majr]` only when the topic must be central to the paper. It can improve
-precision but may miss relevant work.
+Use `[majr]` somente quando o tema deve ser central no artigo. Isso pode melhorar a
+precisão, mas pode deixar passar trabalhos relevantes.
 
-## Filters
+## Filtros
 
-Publication types:
+Tipos de publicação:
 
 - `clinical trial[pt]`
 - `meta-analysis[pt]`
@@ -76,7 +76,7 @@ Publication types:
 - `systematic review[pt]`
 - `guideline[pt]`
 
-Date filters:
+Filtros de data:
 
 ```text
 2026[dp]
@@ -84,24 +84,24 @@ Date filters:
 2026/03/15[dp]
 ```
 
-Availability filters:
+Filtros de disponibilidade:
 
 ```text
 free full text[sb]
 hasabstract[text]
 ```
 
-## E-utilities Workflow
+## Fluxo de Trabalho com E-utilities
 
-NCBI E-utilities supports repeatable API workflows:
+Os E-utilities do NCBI suportam fluxos de trabalho de API reproduzíveis:
 
-1. `esearch.fcgi`: search and return PMIDs.
-2. `esummary.fcgi`: return lightweight article metadata.
-3. `efetch.fcgi`: fetch abstracts or full records in XML, MEDLINE, or text.
-4. `elink.fcgi`: find related articles and linked resources.
+1. `esearch.fcgi`: busca e retorna PMIDs.
+2. `esummary.fcgi`: retorna metadados leves de artigos.
+3. `efetch.fcgi`: busca resumos ou registros completos em XML, MEDLINE ou texto.
+4. `elink.fcgi`: encontra artigos relacionados e recursos vinculados.
 
-Use an email and API key for production scripts. Store API keys in environment
-variables, never in committed files or command history.
+Use um e-mail e chave de API para scripts em produção. Armazene chaves de API em variáveis
+de ambiente, nunca em arquivos versionados ou no histórico de comandos.
 
 ```python
 import os
@@ -134,43 +134,42 @@ pmids = esearch("hypertension[mh] AND randomized controlled trial[pt] AND 2024:2
 print(pmids)
 ```
 
-For batches, prefer NCBI history server parameters (`usehistory=y`,
-`WebEnv`, `query_key`) instead of passing very long PMID lists through URLs.
+Para lotes, prefira os parâmetros do servidor de histórico do NCBI (`usehistory=y`,
+`WebEnv`, `query_key`) em vez de passar listas muito longas de PMIDs pelas URLs.
 
-## Output Discipline
+## Disciplina de Saída
 
-For each search pass, record:
+Para cada passagem de busca, registre:
 
-- exact search string
-- database searched
-- date searched
-- filters used
-- result count
-- export format
-- any manual exclusions
+- string de busca exata
+- banco de dados pesquisado
+- data da busca
+- filtros utilizados
+- contagem de resultados
+- formato de exportação
+- quaisquer exclusões manuais
 
-Example:
+Exemplo:
 
 ```markdown
-| Database | Date searched | Query | Filters | Results |
+| Banco de Dados | Data da busca | Consulta | Filtros | Resultados |
 | --- | --- | --- | --- | ---: |
 | PubMed | 2026-05-11 | `sickle cell disease[mh] AND CRISPR[tiab]` | 2020:2026[dp], English | 42 |
 ```
 
-## Review Checklist
+## Lista de Verificação da Revisão
 
-- Are field tags valid PubMed tags?
-- Are MeSH terms paired with free-text synonyms for newer topics?
-- Is the date range explicit and appropriate?
-- Does the search log include enough detail to reproduce the query?
-- Are API keys loaded from the environment?
-- Does HTTP code call `raise_for_status()` or otherwise handle non-200
-  responses before parsing?
-- Are rate limits respected?
+- As tags de campo são tags válidas do PubMed?
+- Os termos MeSH estão combinados com sinônimos de texto livre para temas mais recentes?
+- O intervalo de datas é explícito e apropriado?
+- O log de busca contém detalhes suficientes para reproduzir a consulta?
+- As chaves de API são carregadas do ambiente?
+- O código HTTP chama `raise_for_status()` ou trata respostas não-200 antes de fazer o parsing?
+- Os limites de taxa são respeitados?
 
-## References
+## Referências
 
-- [PubMed help](https://pubmed.ncbi.nlm.nih.gov/help/)
-- [NCBI E-utilities documentation](https://www.ncbi.nlm.nih.gov/books/NBK25501/)
-- [NCBI API key guidance](https://support.nlm.nih.gov/kbArticle/?pn=KA-05317)
-- NCBI support: <eutilities@ncbi.nlm.nih.gov>
+- [Ajuda do PubMed](https://pubmed.ncbi.nlm.nih.gov/help/)
+- [Documentação dos E-utilities do NCBI](https://www.ncbi.nlm.nih.gov/books/NBK25501/)
+- [Orientações sobre chave de API do NCBI](https://support.nlm.nih.gov/kbArticle/?pn=KA-05317)
+- Suporte NCBI: <eutilities@ncbi.nlm.nih.gov>

@@ -1,57 +1,57 @@
 ---
 name: config-gc
-description: Garbage collection for your Claude Code configuration. Periodically scans ~/.claude (skills, memory, hooks, permissions, MCP servers, caches) for redundant, stale, orphaned, or low-value items, then walks the user through a confirm-each-deletion cleanup. Use when the user says "clean up my config", "config GC", "too many skills", "audit my setup", "my .claude is bloated", or asks for a periodic config review.
+description: Coleta de lixo (garbage collection) para a sua configuração do Claude Code. Escaneia periodicamente ~/.claude (skills, memória, hooks, permissões, servidores MCP, caches) em busca de itens redundantes, obsoletos, órfãos ou de baixo valor, depois conduz o usuário por uma limpeza com confirmação a cada exclusão. Use quando o usuário disser "limpe minha config", "config GC", "skills demais", "audite meu setup", "meu .claude está inchado", ou pedir uma revisão periódica de configuração.
 metadata:
   origin: ECC
 ---
 
-# Config GC — Garbage Collection for Claude Code Setups
+# Config GC — Garbage Collection para Setups do Claude Code
 
-Borrowed from runtime garbage collection: periodically scan for objects that are no longer referenced, redundant, expired, or low-value, and reclaim the space. The critical difference: **here, collection requires a human in the loop. Never delete autonomously.**
+Emprestado da garbage collection de runtime: escaneie periodicamente por objetos que não são mais referenciados, são redundantes, expiraram ou têm baixo valor, e recupere o espaço. A diferença crítica: **aqui, a coleta exige um humano no loop. Nunca exclua autonomamente.**
 
 ## When to Activate
 
-- The user asks to clean up, audit, or slim down their Claude Code configuration
-- The user complains about too many skills, noisy hooks, or slow session startup
-- A monthly/periodic config review is due
-- After installing a large skill pack (e.g. this repo), to reconcile overlaps with existing setup
+- O usuário pede para limpar, auditar ou enxugar a configuração do Claude Code
+- O usuário reclama de skills demais, hooks barulhentos ou início de sessão lento
+- Uma revisão de configuração mensal/periódica está pendente
+- Após instalar um pacote grande de skills (ex.: este repositório), para reconciliar sobreposições com o setup existente
 
-Do NOT activate for: cleaning project source code (that's refactoring), clearing chat history, or uninstalling Claude Code itself.
+NÃO ative para: limpar o código-fonte do projeto (isso é refatoração), limpar o histórico de chat ou desinstalar o próprio Claude Code.
 
-## Design Philosophy
+## Filosofia de Design
 
-1. **Append-only configs leak.** Skills, memory files, hooks, and permission entries only ever get added. Without periodic review they rot silently.
-2. **Regular audits beat one-time purges.** Scan every ~30 days, propose a small batch of candidates each time.
-3. **Per-channel strategies.** Each accumulation type (skills, hooks, permissions, ...) has its own staleness signals — don't apply one rule everywhere.
-4. **Soft-delete first.** Rename to `.disabled` > move to `~/.claude/_gc_trash/` > real deletion. Always keep an undo path.
-5. **Forced human-in-the-loop.** Every candidate gets its own `[y/n/skip]` confirmation. No "yes to all" shortcut.
-6. **Keep a log.** Every GC run appends to `~/.claude/gc_log.md`: what was touched, why, and how to undo it.
+1. **Configs append-only vazam.** Skills, arquivos de memória, hooks e entradas de permissão só são adicionados. Sem revisão periódica, eles apodrecem silenciosamente.
+2. **Auditorias regulares vencem expurgos pontuais.** Escaneie a cada ~30 dias, proponha um pequeno lote de candidatos a cada vez.
+3. **Estratégias por canal.** Cada tipo de acumulação (skills, hooks, permissões, ...) tem seus próprios sinais de obsolescência — não aplique uma única regra em todos os lugares.
+4. **Soft-delete primeiro.** Renomear para `.disabled` > mover para `~/.claude/_gc_trash/` > exclusão real. Sempre mantenha um caminho de undo.
+5. **Humano no loop obrigatório.** Cada candidato recebe sua própria confirmação `[y/n/skip]`. Sem atalho de "sim para todos".
+6. **Mantenha um log.** Cada execução de GC anexa a `~/.claude/gc_log.md`: o que foi tocado, por quê e como desfazer.
 
-## Scan Channels
+## Canais de Varredura
 
-| # | Channel | Path | Staleness / redundancy signals |
+| # | Canal | Caminho | Sinais de obsolescência / redundância |
 |---|---------|------|--------------------------------|
-| 1 | Skills | `~/.claude/skills/*/` | Heavily overlapping names; never triggered in recent transcripts; domain mismatch with the user's actual work; broken or empty SKILL.md |
-| 2 | Memory | `~/.claude/**/memory/*.md` + its index | Multiple index entries for one topic; contents contradicting newer entries; dates that have passed; orphan files missing from the index; sub-100-word fragments that should merge |
-| 3 | Hooks | `~/.claude/hooks/` + settings | Scripts present on disk but referenced by no hook config; old versions superseded by rewrites |
-| 4 | Permissions | `permissions.allow` in `settings.json` / `settings.local.json` | Duplicate entries; specific entries already covered by a wildcard (e.g. `Bash(git push)` when `Bash(*)` is allowed); one-off grants from past experiments |
-| 5 | MCP servers | `~/.claude.json` or project `.mcp.json` | Servers that fail to connect; functional duplicates; long-unused |
-| 6 | Scheduled reminders / jobs | wherever the user keeps them | Fired one-shots older than 30 days; jobs whose target scripts no longer exist |
-| 7 | Project history | `~/.claude/projects/*/` | Stale handoff snapshots; session records superseded by newer state |
-| 8 | Runtime caches | `cache/`, `file-history/`, `logs/`, `shell-snapshots/` | Sort by size and mtime; propose items >30 days old and large |
+| 1 | Skills | `~/.claude/skills/*/` | Nomes fortemente sobrepostos; nunca acionadas em transcrições recentes; incompatibilidade de domínio com o trabalho real do usuário; SKILL.md quebrado ou vazio |
+| 2 | Memória | `~/.claude/**/memory/*.md` + seu índice | Múltiplas entradas de índice para um tópico; conteúdos contradizendo entradas mais novas; datas que já passaram; arquivos órfãos ausentes do índice; fragmentos com menos de 100 palavras que deveriam ser mesclados |
+| 3 | Hooks | `~/.claude/hooks/` + settings | Scripts presentes no disco mas referenciados por nenhuma configuração de hook; versões antigas substituídas por reescritas |
+| 4 | Permissões | `permissions.allow` em `settings.json` / `settings.local.json` | Entradas duplicadas; entradas específicas já cobertas por um wildcard (ex.: `Bash(git push)` quando `Bash(*)` é permitido); concessões pontuais de experimentos passados |
+| 5 | Servidores MCP | `~/.claude.json` ou `.mcp.json` do projeto | Servidores que falham ao conectar; duplicatas funcionais; sem uso há muito tempo |
+| 6 | Lembretes / jobs agendados | onde quer que o usuário os mantenha | One-shots disparados há mais de 30 dias; jobs cujos scripts-alvo não existem mais |
+| 7 | Histórico do projeto | `~/.claude/projects/*/` | Snapshots de handoff obsoletos; registros de sessão substituídos por estado mais novo |
+| 8 | Caches de runtime | `cache/`, `file-history/`, `logs/`, `shell-snapshots/` | Ordene por tamanho e mtime; proponha itens grandes e com mais de 30 dias |
 
-## Workflow
+## Fluxo de trabalho
 
-1. **Scan** all channels (or the subset the user names). Collect candidates with: path, channel, signal that flagged it, size, last-modified.
-2. **Rank** by confidence (broken/orphaned = high; merely old = low) and present as a numbered table. Cap each run at ~20 candidates — GC is periodic, not exhaustive.
-3. **Confirm one by one.** For each candidate show the evidence, then ask `[y/n/skip]`. The user can stop at any point.
-4. **Soft-delete confirmed items**: prefer `.disabled` rename for skills/hooks and `_gc_trash/<date>/` move for files. Permission entries live in JSON (no comments possible): back up the settings file, record each removed entry verbatim in `gc_log.md`, then remove it from the `allow` array with `jq`. Only hard-delete when the user explicitly asks.
-5. **Log** the run to `~/.claude/gc_log.md`: timestamp, items actioned, undo instructions.
-6. **Report**: reclaimed size, channels still healthy, suggested next review date.
+1. **Escaneie** todos os canais (ou o subconjunto que o usuário nomear). Colete candidatos com: caminho, canal, sinal que o sinalizou, tamanho, última modificação.
+2. **Classifique** por confiança (quebrado/órfão = alta; meramente antigo = baixa) e apresente como uma tabela numerada. Limite cada execução a ~20 candidatos — o GC é periódico, não exaustivo.
+3. **Confirme um a um.** Para cada candidato, mostre a evidência, depois pergunte `[y/n/skip]`. O usuário pode parar a qualquer momento.
+4. **Faça soft-delete dos itens confirmados**: prefira a renomeação para `.disabled` para skills/hooks e a movimentação para `_gc_trash/<date>/` para arquivos. As entradas de permissão ficam em JSON (sem comentários possíveis): faça backup do arquivo de settings, registre cada entrada removida literalmente em `gc_log.md`, depois remova-a do array `allow` com `jq`. Só faça hard-delete quando o usuário pedir explicitamente.
+5. **Registre** a execução em `~/.claude/gc_log.md`: timestamp, itens acionados, instruções de undo.
+6. **Reporte**: tamanho recuperado, canais ainda saudáveis, data sugerida para a próxima revisão.
 
-## Example Scan Commands
+## Exemplos de Comandos de Varredura
 
-Orphaned hook scripts (channel 3) — scripts on disk that no hook config references:
+Scripts de hook órfãos (canal 3) — scripts no disco que nenhuma configuração de hook referencia:
 
 ```bash
 for f in ~/.claude/hooks/*; do

@@ -1,17 +1,17 @@
 # Style Presets Reference
 
-Curated visual styles for `frontend-slides`.
+Estilos visuais curados para `frontend-slides`.
 
-Use this file for:
-- the mandatory viewport-fitting CSS base
-- preset selection and mood mapping
-- CSS gotchas and validation rules
+Use este arquivo para:
+- a base CSS obrigatória de ajuste à viewport
+- seleção de preset e mapeamento de humor
+- truques de CSS e regras de validação
 
-Abstract shapes only. Avoid illustrations unless the user explicitly asks for them.
+Apenas formas abstratas. Evite ilustrações, a menos que o usuário peça explicitamente por elas.
 
 ## Viewport Fit Is Non-Negotiable
 
-Every slide must fully fit in one viewport.
+Cada slide deve caber totalmente em uma viewport.
 
 ### Golden Rule
 
@@ -23,22 +23,22 @@ Never scroll inside a slide.
 
 ### Density Limits
 
-| Slide Type | Maximum Content |
+| Tipo de slide | Conteúdo Máximo |
 |------------|-----------------|
-| Title slide | 1 heading + 1 subtitle + optional tagline |
-| Content slide | 1 heading + 4-6 bullets or 2 paragraphs |
-| Feature grid | 6 cards maximum |
-| Code slide | 8-10 lines maximum |
-| Quote slide | 1 quote + attribution |
-| Image slide | 1 image, ideally under 60vh |
+| Slide de título | 1 cabeçalho + 1 subtítulo + tagline opcional |
+| Slide de conteúdo | 1 cabeçalho + 4-6 marcadores ou 2 parágrafos |
+| Grade de recursos | 6 cards no máximo |
+| Slide de código | 8-10 linhas no máximo |
+| Slide de citação | 1 citação + atribuição |
+| Slide de imagem | 1 imagem, idealmente abaixo de 60vh |
 
 ## Mandatory Base CSS
 
-Copy this block into every generated presentation and then theme on top of it.
+Copie este bloco em cada apresentação gerada e então aplique o tema sobre ele.
 
 ```css
 /* ===========================================
-   VIEWPORT FITTING: MANDATORY BASE STYLES
+   AJUSTE À VIEWPORT: ESTILOS BASE OBRIGATÓRIOS
    =========================================== */
 
 html, body {
@@ -165,148 +165,148 @@ img, .image-container {
 
 ## Viewport Checklist
 
-- every `.slide` has `height: 100vh`, `height: 100dvh`, and `overflow: hidden`
-- all typography uses `clamp()`
-- all spacing uses `clamp()` or viewport units
-- images have `max-height` constraints
-- grids adapt with `auto-fit` + `minmax()`
-- short-height breakpoints exist at `700px`, `600px`, and `500px`
-- if anything feels cramped, split the slide
+- cada `.slide` tem `height: 100vh`, `height: 100dvh` e `overflow: hidden`
+- toda a tipografia usa `clamp()`
+- todo o espaçamento usa `clamp()` ou unidades de viewport
+- as imagens têm restrições de `max-height`
+- as grids se adaptam com `auto-fit` + `minmax()`
+- existem breakpoints de altura curta em `700px`, `600px` e `500px`
+- se algo parecer apertado, divida o slide
 
 ## Mood to Preset Mapping
 
-| Mood | Good Presets |
+| Humor | Bons Presets |
 |------|--------------|
-| Impressed / Confident | Bold Signal, Electric Studio, Dark Botanical |
-| Excited / Energized | Creative Voltage, Neon Cyber, Split Pastel |
-| Calm / Focused | Notebook Tabs, Paper & Ink, Swiss Modern |
-| Inspired / Moved | Dark Botanical, Vintage Editorial, Pastel Geometry |
+| Impressionado / Confiante | Bold Signal, Electric Studio, Dark Botanical |
+| Animado / Energizado | Creative Voltage, Neon Cyber, Split Pastel |
+| Calmo / Focado | Notebook Tabs, Paper & Ink, Swiss Modern |
+| Inspirado / Tocado | Dark Botanical, Vintage Editorial, Pastel Geometry |
 
 ## Preset Catalog
 
 ### 1. Bold Signal
 
-- Vibe: confident, high-impact, keynote-ready
-- Best for: pitch decks, launches, statements
-- Fonts: Archivo Black + Space Grotesk
-- Palette: charcoal base, hot orange focal card, crisp white text
-- Signature: oversized section numbers, high-contrast card on dark field
+- Vibe: confiante, de alto impacto, pronto para keynote
+- Melhor para: decks de pitch, lançamentos, declarações
+- Fontes: Archivo Black + Space Grotesk
+- Paleta: base carvão, card focal laranja vibrante, texto branco nítido
+- Assinatura: números de seção superdimensionados, card de alto contraste em campo escuro
 
 ### 2. Electric Studio
 
-- Vibe: clean, bold, agency-polished
-- Best for: client presentations, strategic reviews
-- Fonts: Manrope only
-- Palette: black, white, saturated cobalt accent
-- Signature: two-panel split and sharp editorial alignment
+- Vibe: limpo, ousado, polido como agência
+- Melhor para: apresentações para clientes, revisões estratégicas
+- Fontes: apenas Manrope
+- Paleta: preto, branco, acento cobalto saturado
+- Assinatura: divisão em dois painéis e alinhamento editorial nítido
 
 ### 3. Creative Voltage
 
-- Vibe: energetic, retro-modern, playful confidence
-- Best for: creative studios, brand work, product storytelling
-- Fonts: Syne + Space Mono
-- Palette: electric blue, neon yellow, deep navy
-- Signature: halftone textures, badges, punchy contrast
+- Vibe: energético, retrô-moderno, confiança brincalhona
+- Melhor para: estúdios criativos, trabalho de marca, narrativa de produto
+- Fontes: Syne + Space Mono
+- Paleta: azul elétrico, amarelo neon, azul-marinho profundo
+- Assinatura: texturas halftone, badges, contraste marcante
 
 ### 4. Dark Botanical
 
-- Vibe: elegant, premium, atmospheric
-- Best for: luxury brands, thoughtful narratives, premium product decks
-- Fonts: Cormorant + IBM Plex Sans
-- Palette: near-black, warm ivory, blush, gold, terracotta
-- Signature: blurred abstract circles, fine rules, restrained motion
+- Vibe: elegante, premium, atmosférico
+- Melhor para: marcas de luxo, narrativas reflexivas, decks de produto premium
+- Fontes: Cormorant + IBM Plex Sans
+- Paleta: quase preto, marfim quente, blush, dourado, terracota
+- Assinatura: círculos abstratos desfocados, linhas finas, movimentação contida
 
 ### 5. Notebook Tabs
 
-- Vibe: editorial, organized, tactile
-- Best for: reports, reviews, structured storytelling
-- Fonts: Bodoni Moda + DM Sans
-- Palette: cream paper on charcoal with pastel tabs
-- Signature: paper sheet, colored side tabs, binder details
+- Vibe: editorial, organizado, tátil
+- Melhor para: relatórios, revisões, narrativa estruturada
+- Fontes: Bodoni Moda + DM Sans
+- Paleta: papel creme sobre carvão com abas pastel
+- Assinatura: folha de papel, abas laterais coloridas, detalhes de fichário
 
 ### 6. Pastel Geometry
 
-- Vibe: approachable, modern, friendly
-- Best for: product overviews, onboarding, lighter brand decks
-- Fonts: Plus Jakarta Sans only
-- Palette: pale blue field, cream card, soft pink/mint/lavender accents
-- Signature: vertical pills, rounded cards, soft shadows
+- Vibe: acessível, moderno, amigável
+- Melhor para: visões gerais de produto, onboarding, decks de marca mais leves
+- Fontes: apenas Plus Jakarta Sans
+- Paleta: campo azul pálido, card creme, acentos suaves rosa/menta/lavanda
+- Assinatura: pílulas verticais, cards arredondados, sombras suaves
 
 ### 7. Split Pastel
 
-- Vibe: playful, modern, creative
-- Best for: agency intros, workshops, portfolios
-- Fonts: Outfit only
-- Palette: peach + lavender split with mint badges
-- Signature: split backdrop, rounded tags, light grid overlays
+- Vibe: brincalhão, moderno, criativo
+- Melhor para: introduções de agência, workshops, portfólios
+- Fontes: apenas Outfit
+- Paleta: divisão pêssego + lavanda com badges menta
+- Assinatura: pano de fundo dividido, tags arredondadas, sobreposições de grid leves
 
 ### 8. Vintage Editorial
 
-- Vibe: witty, personality-driven, magazine-inspired
-- Best for: personal brands, opinionated talks, storytelling
-- Fonts: Fraunces + Work Sans
-- Palette: cream, charcoal, dusty warm accents
-- Signature: geometric accents, bordered callouts, punchy serif headlines
+- Vibe: espirituoso, conduzido por personalidade, inspirado em revistas
+- Melhor para: marcas pessoais, palestras opinativas, narrativa
+- Fontes: Fraunces + Work Sans
+- Paleta: creme, carvão, acentos quentes empoeirados
+- Assinatura: acentos geométricos, callouts com borda, manchetes serifadas marcantes
 
 ### 9. Neon Cyber
 
-- Vibe: futuristic, techy, kinetic
-- Best for: AI, infra, dev tools, future-of-X talks
-- Fonts: Clash Display + Satoshi
-- Palette: midnight navy, cyan, magenta
-- Signature: glow, particles, grids, data-radar energy
+- Vibe: futurista, tech, cinético
+- Melhor para: IA, infraestrutura, ferramentas de desenvolvimento, palestras sobre o futuro de X
+- Fontes: Clash Display + Satoshi
+- Paleta: azul-marinho meia-noite, ciano, magenta
+- Assinatura: brilho, partículas, grids, energia de data-radar
 
 ### 10. Terminal Green
 
-- Vibe: developer-focused, hacker-clean
-- Best for: APIs, CLI tools, engineering demos
-- Fonts: JetBrains Mono only
-- Palette: GitHub dark + terminal green
-- Signature: scan lines, command-line framing, precise monospace rhythm
+- Vibe: focado em desenvolvedor, hacker-limpo
+- Melhor para: APIs, ferramentas de CLI, demonstrações de engenharia
+- Fontes: apenas JetBrains Mono
+- Paleta: GitHub dark + verde de terminal
+- Assinatura: linhas de varredura, enquadramento de linha de comando, ritmo monoespaçado preciso
 
 ### 11. Swiss Modern
 
-- Vibe: minimal, precise, data-forward
-- Best for: corporate, product strategy, analytics
-- Fonts: Archivo + Nunito
-- Palette: white, black, signal red
-- Signature: visible grids, asymmetry, geometric discipline
+- Vibe: minimalista, preciso, orientado a dados
+- Melhor para: corporativo, estratégia de produto, analytics
+- Fontes: Archivo + Nunito
+- Paleta: branco, preto, vermelho de sinalização
+- Assinatura: grids visíveis, assimetria, disciplina geométrica
 
 ### 12. Paper & Ink
 
-- Vibe: literary, thoughtful, story-driven
-- Best for: essays, keynote narratives, manifesto decks
-- Fonts: Cormorant Garamond + Source Serif 4
-- Palette: warm cream, charcoal, crimson accent
-- Signature: pull quotes, drop caps, elegant rules
+- Vibe: literário, reflexivo, conduzido por história
+- Melhor para: ensaios, narrativas de keynote, decks de manifesto
+- Fontes: Cormorant Garamond + Source Serif 4
+- Paleta: creme quente, carvão, acento carmesim
+- Assinatura: pull quotes, capitulares, linhas elegantes
 
 ## Direct Selection Prompts
 
-If the user already knows the style they want, let them pick directly from the preset names above instead of forcing preview generation.
+Se o usuário já conhece o estilo que quer, permita que ele escolha diretamente entre os nomes de preset acima em vez de forçar a geração de prévias.
 
 ## Animation Feel Mapping
 
-| Feeling | Motion Direction |
+| Sensação | Direção da Movimentação |
 |---------|------------------|
-| Dramatic / Cinematic | slow fades, parallax, large scale-ins |
-| Techy / Futuristic | glow, particles, grid motion, scramble text |
-| Playful / Friendly | springy easing, rounded shapes, floating motion |
-| Professional / Corporate | subtle 200-300ms transitions, clean slides |
-| Calm / Minimal | very restrained movement, whitespace-first |
-| Editorial / Magazine | strong hierarchy, staggered text and image interplay |
+| Dramático / Cinematográfico | fades lentos, parallax, scale-ins grandes |
+| Tech / Futurista | brilho, partículas, movimentação de grid, texto scramble |
+| Brincalhão / Amigável | easing com mola, formas arredondadas, movimentação flutuante |
+| Profissional / Corporativo | transições sutis de 200-300ms, slides limpos |
+| Calmo / Minimalista | movimento muito contido, espaço em branco em primeiro lugar |
+| Editorial / Revista | hierarquia forte, jogo escalonado de texto e imagem |
 
 ## CSS Gotcha: Negating Functions
 
-Never write these:
+Nunca escreva isto:
 
 ```css
 right: -clamp(28px, 3.5vw, 44px);
 margin-left: -min(10vw, 100px);
 ```
 
-Browsers ignore them silently.
+Os navegadores os ignoram silenciosamente.
 
-Always write this instead:
+Sempre escreva isto em vez disso:
 
 ```css
 right: calc(-1 * clamp(28px, 3.5vw, 44px));
@@ -315,16 +315,16 @@ margin-left: calc(-1 * min(10vw, 100px));
 
 ## Validation Sizes
 
-Test at minimum:
+Teste no mínimo em:
 - Desktop: `1920x1080`, `1440x900`, `1280x720`
 - Tablet: `1024x768`, `768x1024`
 - Mobile: `375x667`, `414x896`
-- Landscape phone: `667x375`, `896x414`
+- Celular em paisagem: `667x375`, `896x414`
 
 ## Anti-Patterns
 
-Do not use:
-- purple-on-white startup templates
-- Inter / Roboto / Arial as the visual voice unless the user explicitly wants utilitarian neutrality
-- bullet walls, tiny type, or code blocks that require scrolling
-- decorative illustrations when abstract geometry would do the job better
+Não use:
+- templates de startup roxo sobre branco
+- Inter / Roboto / Arial como a voz visual, a menos que o usuário queira explicitamente neutralidade utilitária
+- paredes de marcadores, tipos minúsculos ou blocos de código que exigem rolagem
+- ilustrações decorativas quando a geometria abstrata faria o trabalho melhor

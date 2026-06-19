@@ -1,30 +1,31 @@
 ---
 name: exa-search
-description: Neural search via Exa MCP for web, code, and company research. Use when the user needs web search, code examples, company intel, people lookup, or AI-powered deep research with Exa's neural search engine.
+description: Busca neural via Exa MCP para pesquisa de web, código e empresas. Use quando o usuário precisar de busca na web, exemplos de código, inteligência sobre empresas, busca de pessoas ou pesquisa profunda com IA usando o mecanismo de busca neural da Exa.
 metadata:
   origin: ECC
 ---
 
 # Exa Search
 
-> **Drift-prone skill.** Exa MCP tool names, parameters, and account limits can
-> change. Confirm the exposed tool surface and current Exa docs before relying
-> on a specific search mode, category, or livecrawl behavior.
+> **Skill propensa a deriva.** Os nomes das ferramentas, parâmetros e limites de
+> conta do Exa MCP podem mudar. Confirme a superfície de ferramentas exposta e a
+> documentação atual da Exa antes de depender de um modo de busca, categoria ou
+> comportamento de livecrawl específico.
 
-Neural search for web content, code, companies, and people via the Exa MCP server.
+Busca neural para conteúdo web, código, empresas e pessoas via servidor Exa MCP.
 
 ## When to Activate
 
-- User needs current web information or news
-- Searching for code examples, API docs, or technical references
-- Researching companies, competitors, or market players
-- Finding professional profiles or people in a domain
-- Running background research for any development task
-- User says "search for", "look up", "find", or "what's the latest on"
+- O usuário precisa de informações atuais da web ou notícias
+- Buscar exemplos de código, documentação de API ou referências técnicas
+- Pesquisar empresas, concorrentes ou participantes do mercado
+- Encontrar perfis profissionais ou pessoas em um domínio
+- Executar pesquisa de fundo para qualquer tarefa de desenvolvimento
+- O usuário diz "busque por", "pesquise", "encontre" ou "qual é a novidade sobre"
 
-## MCP Requirement
+## Requisito de MCP
 
-Exa MCP server must be configured. Add to `~/.claude.json`:
+O servidor Exa MCP deve estar configurado. Adicione a `~/.claude.json`:
 
 ```json
 "exa-web-search": {
@@ -34,75 +35,75 @@ Exa MCP server must be configured. Add to `~/.claude.json`:
 }
 ```
 
-Get an API key at [exa.ai](https://exa.ai).
-This repo's current Exa setup documents the tool surface exposed here: `web_search_exa` and `get_code_context_exa`.
-If your Exa server exposes additional tools, verify their exact names before depending on them in docs or prompts.
+Obtenha uma chave de API em [exa.ai](https://exa.ai).
+A configuração atual da Exa neste repositório documenta a superfície de ferramentas exposta aqui: `web_search_exa` e `get_code_context_exa`.
+Se o seu servidor Exa expuser ferramentas adicionais, verifique os nomes exatos delas antes de depender delas em documentação ou prompts.
 
-## Core Tools
+## Ferramentas Principais
 
 ### web_search_exa
-General web search for current information, news, or facts.
+Busca geral na web para informações atuais, notícias ou fatos.
 
 ```
 web_search_exa(query: "latest AI developments 2026", numResults: 5)
 ```
 
-**Parameters:**
+**Parâmetros:**
 
-| Param | Type | Default | Notes |
+| Param | Tipo | Padrão | Observações |
 |-------|------|---------|-------|
-| `query` | string | required | Search query |
-| `numResults` | number | 8 | Number of results |
-| `type` | string | `auto` | Search mode |
-| `livecrawl` | string | `fallback` | Prefer live crawling when needed |
-| `category` | string | none | Optional focus such as `company` or `research paper` |
+| `query` | string | obrigatório | Consulta de busca |
+| `numResults` | number | 8 | Número de resultados |
+| `type` | string | `auto` | Modo de busca |
+| `livecrawl` | string | `fallback` | Prefere crawling ao vivo quando necessário |
+| `category` | string | nenhum | Foco opcional, como `company` ou `research paper` |
 
 ### get_code_context_exa
-Find code examples and documentation from GitHub, Stack Overflow, and docs sites.
+Encontra exemplos de código e documentação do GitHub, Stack Overflow e sites de documentação.
 
 ```
 get_code_context_exa(query: "Python asyncio patterns", tokensNum: 3000)
 ```
 
-**Parameters:**
+**Parâmetros:**
 
-| Param | Type | Default | Notes |
+| Param | Tipo | Padrão | Observações |
 |-------|------|---------|-------|
-| `query` | string | required | Code or API search query |
-| `tokensNum` | number | 5000 | Content tokens (1000-50000) |
+| `query` | string | obrigatório | Consulta de busca de código ou API |
+| `tokensNum` | number | 5000 | Tokens de conteúdo (1000-50000) |
 
-## Usage Patterns
+## Padrões de Uso
 
-### Quick Lookup
+### Consulta Rápida
 ```
 web_search_exa(query: "Node.js 22 new features", numResults: 3)
 ```
 
-### Code Research
+### Pesquisa de Código
 ```
 get_code_context_exa(query: "Rust error handling patterns Result type", tokensNum: 3000)
 ```
 
-### Company or People Research
+### Pesquisa de Empresas ou Pessoas
 ```
 web_search_exa(query: "Vercel funding valuation 2026", numResults: 3, category: "company")
 web_search_exa(query: "site:linkedin.com/in AI safety researchers Anthropic", numResults: 5)
 ```
 
-### Technical Deep Dive
+### Mergulho Técnico Profundo
 ```
 web_search_exa(query: "WebAssembly component model status and adoption", numResults: 5)
 get_code_context_exa(query: "WebAssembly component model examples", tokensNum: 4000)
 ```
 
-## Tips
+## Dicas
 
-- Use `web_search_exa` for current information, company lookups, and broad discovery
-- Use search operators like `site:`, quoted phrases, and `intitle:` to narrow results
-- Lower `tokensNum` (1000-2000) for focused code snippets, higher (5000+) for comprehensive context
-- Use `get_code_context_exa` when you need API usage or code examples rather than general web pages
+- Use `web_search_exa` para informações atuais, buscas de empresas e descoberta ampla
+- Use operadores de busca como `site:`, frases entre aspas e `intitle:` para refinar os resultados
+- Diminua `tokensNum` (1000-2000) para trechos de código focados, aumente (5000+) para contexto abrangente
+- Use `get_code_context_exa` quando precisar de uso de API ou exemplos de código em vez de páginas web genéricas
 
-## Related Skills
+## Skills Relacionadas
 
-- `deep-research` — Full research workflow using firecrawl + exa together
-- `market-research` — Business-oriented research with decision frameworks
+- `deep-research` — Fluxo de trabalho completo de pesquisa usando firecrawl + exa juntos
+- `market-research` — Pesquisa orientada a negócios com frameworks de decisão

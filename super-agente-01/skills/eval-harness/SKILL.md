@@ -1,6 +1,6 @@
 ---
 name: eval-harness
-description: Formal evaluation framework for Claude Code sessions implementing eval-driven development (EDD) principles
+description: Framework formal de avaliação para sessões do Claude Code que implementa os princípios de desenvolvimento orientado a avaliações (EDD)
 metadata:
   origin: ECC
 tools: Read, Write, Edit, Bash, Grep, Glob
@@ -8,28 +8,28 @@ tools: Read, Write, Edit, Bash, Grep, Glob
 
 # Eval Harness Skill
 
-A formal evaluation framework for Claude Code sessions, implementing eval-driven development (EDD) principles.
+Um framework formal de avaliação para sessões do Claude Code, que implementa os princípios de desenvolvimento orientado a avaliações (EDD).
 
 ## When to Activate
 
-- Setting up eval-driven development (EDD) for AI-assisted workflows
-- Defining pass/fail criteria for Claude Code task completion
-- Measuring agent reliability with pass@k metrics
-- Creating regression test suites for prompt or agent changes
-- Benchmarking agent performance across model versions
+- Configurar desenvolvimento orientado a avaliações (EDD) para fluxos de trabalho assistidos por IA
+- Definir critérios de aprovação/reprovação para a conclusão de tarefas no Claude Code
+- Medir a confiabilidade do agent com métricas pass@k
+- Criar suítes de testes de regressão para alterações de prompt ou de agent
+- Avaliar o desempenho do agent em diferentes versões de modelo (benchmarking)
 
-## Philosophy
+## Filosofia
 
-Eval-Driven Development treats evals as the "unit tests of AI development":
-- Define expected behavior BEFORE implementation
-- Run evals continuously during development
-- Track regressions with each change
-- Use pass@k metrics for reliability measurement
+O Desenvolvimento Orientado a Avaliações trata as avaliações como os "testes unitários do desenvolvimento de IA":
+- Defina o comportamento esperado ANTES da implementação
+- Execute as avaliações continuamente durante o desenvolvimento
+- Acompanhe regressões a cada alteração
+- Use métricas pass@k para medir a confiabilidade
 
-## Eval Types
+## Tipos de Avaliação
 
-### Capability Evals
-Test if Claude can do something it couldn't before:
+### Avaliações de Capacidade
+Testam se o Claude consegue fazer algo que antes não conseguia:
 ```markdown
 [CAPABILITY EVAL: feature-name]
 Task: Description of what Claude should accomplish
@@ -40,8 +40,8 @@ Success Criteria:
 Expected Output: Description of expected result
 ```
 
-### Regression Evals
-Ensure changes don't break existing functionality:
+### Avaliações de Regressão
+Garantem que as alterações não quebrem funcionalidades existentes:
 ```markdown
 [REGRESSION EVAL: feature-name]
 Baseline: SHA or checkpoint name
@@ -52,10 +52,10 @@ Tests:
 Result: X/Y passed (previously Y/Y)
 ```
 
-## Grader Types
+## Tipos de Avaliador (Grader)
 
-### 1. Code-Based Grader
-Deterministic checks using code:
+### 1. Avaliador Baseado em Código
+Verificações determinísticas usando código:
 ```bash
 # Check if file contains expected pattern
 grep -q "export function handleAuth" src/auth.ts && echo "PASS" || echo "FAIL"
@@ -67,8 +67,8 @@ npm test -- --testPathPattern="auth" && echo "PASS" || echo "FAIL"
 npm run build && echo "PASS" || echo "FAIL"
 ```
 
-### 2. Model-Based Grader
-Use Claude to evaluate open-ended outputs:
+### 2. Avaliador Baseado em Modelo
+Use o Claude para avaliar saídas abertas:
 ```markdown
 [MODEL GRADER PROMPT]
 Evaluate the following code change:
@@ -81,8 +81,8 @@ Score: 1-5 (1=poor, 5=excellent)
 Reasoning: [explanation]
 ```
 
-### 3. Human Grader
-Flag for manual review:
+### 3. Avaliador Humano
+Sinalize para revisão manual:
 ```markdown
 [HUMAN REVIEW REQUIRED]
 Change: Description of what changed
@@ -90,23 +90,23 @@ Reason: Why human review is needed
 Risk Level: LOW/MEDIUM/HIGH
 ```
 
-## Metrics
+## Métricas
 
 ### pass@k
-"At least one success in k attempts"
-- pass@1: First attempt success rate
-- pass@3: Success within 3 attempts
-- Typical target: pass@3 > 90%
+"Ao menos um sucesso em k tentativas"
+- pass@1: taxa de sucesso na primeira tentativa
+- pass@3: sucesso em até 3 tentativas
+- Meta típica: pass@3 > 90%
 
 ### pass^k
-"All k trials succeed"
-- Higher bar for reliability
-- pass^3: 3 consecutive successes
-- Use for critical paths
+"Todas as k tentativas têm sucesso"
+- Critério mais rigoroso de confiabilidade
+- pass^3: 3 sucessos consecutivos
+- Use para caminhos críticos
 
-## Eval Workflow
+## Fluxo de Trabalho de Avaliação
 
-### 1. Define (Before Coding)
+### 1. Definir (Antes de Codificar)
 ```markdown
 ## EVAL DEFINITION: feature-xyz
 
@@ -125,10 +125,10 @@ Risk Level: LOW/MEDIUM/HIGH
 - pass^3 = 100% for regression evals
 ```
 
-### 2. Implement
-Write code to pass the defined evals.
+### 2. Implementar
+Escreva o código para passar nas avaliações definidas.
 
-### 3. Evaluate
+### 3. Avaliar
 ```bash
 # Run capability evals
 [Run each capability eval, record PASS/FAIL]
@@ -139,7 +139,7 @@ npm test -- --testPathPattern="existing"
 # Generate report
 ```
 
-### 4. Report
+### 4. Reportar
 ```markdown
 EVAL REPORT: feature-xyz
 ========================
@@ -163,29 +163,29 @@ Metrics:
 Status: READY FOR REVIEW
 ```
 
-## Integration Patterns
+## Padrões de Integração
 
-### Pre-Implementation
+### Pré-Implementação
 ```
 /eval define feature-name
 ```
-Creates eval definition file at `.claude/evals/feature-name.md`
+Cria um arquivo de definição de avaliação em `.claude/evals/feature-name.md`
 
-### During Implementation
+### Durante a Implementação
 ```
 /eval check feature-name
 ```
-Runs current evals and reports status
+Executa as avaliações atuais e reporta o status
 
-### Post-Implementation
+### Pós-Implementação
 ```
 /eval report feature-name
 ```
-Generates full eval report
+Gera o relatório completo de avaliação
 
-## Eval Storage
+## Armazenamento de Avaliações
 
-Store evals in project:
+Armazene as avaliações no projeto:
 ```
 .claude/
   evals/
@@ -194,17 +194,17 @@ Store evals in project:
     baseline.json       # Regression baselines
 ```
 
-## Best Practices
+## Boas Práticas
 
-1. **Define evals BEFORE coding** - Forces clear thinking about success criteria
-2. **Run evals frequently** - Catch regressions early
-3. **Track pass@k over time** - Monitor reliability trends
-4. **Use code graders when possible** - Deterministic > probabilistic
-5. **Human review for security** - Never fully automate security checks
-6. **Keep evals fast** - Slow evals don't get run
-7. **Version evals with code** - Evals are first-class artifacts
+1. **Defina as avaliações ANTES de codificar** - Força um raciocínio claro sobre os critérios de sucesso
+2. **Execute as avaliações com frequência** - Detecte regressões cedo
+3. **Acompanhe pass@k ao longo do tempo** - Monitore tendências de confiabilidade
+4. **Use avaliadores de código quando possível** - Determinístico > probabilístico
+5. **Revisão humana para segurança** - Nunca automatize totalmente verificações de segurança
+6. **Mantenha as avaliações rápidas** - Avaliações lentas não são executadas
+7. **Versione as avaliações junto com o código** - Avaliações são artefatos de primeira classe
 
-## Example: Adding Authentication
+## Exemplo: Adicionando Autenticação
 
 ```markdown
 ## EVAL: add-authentication
@@ -236,36 +236,36 @@ Regression: 3/3 passed (pass^3: 100%)
 Status: SHIP IT
 ```
 
-## Product Evals (v1.8)
+## Avaliações de Produto (v1.8)
 
-Use product evals when behavior quality cannot be captured by unit tests alone.
+Use avaliações de produto quando a qualidade do comportamento não puder ser capturada apenas por testes unitários.
 
-### Grader Types
+### Tipos de Avaliador (Grader)
 
-1. Code grader (deterministic assertions)
-2. Rule grader (regex/schema constraints)
-3. Model grader (LLM-as-judge rubric)
-4. Human grader (manual adjudication for ambiguous outputs)
+1. Avaliador de código (asserções determinísticas)
+2. Avaliador de regras (restrições de regex/esquema)
+3. Avaliador de modelo (rubrica de LLM como juiz)
+4. Avaliador humano (julgamento manual para saídas ambíguas)
 
-### pass@k Guidance
+### Orientações sobre pass@k
 
-- `pass@1`: direct reliability
-- `pass@3`: practical reliability under controlled retries
-- `pass^3`: stability test (all 3 runs must pass)
+- `pass@1`: confiabilidade direta
+- `pass@3`: confiabilidade prática sob retentativas controladas
+- `pass^3`: teste de estabilidade (todas as 3 execuções devem passar)
 
-Recommended thresholds:
-- Capability evals: pass@3 >= 0.90
-- Regression evals: pass^3 = 1.00 for release-critical paths
+Limiares recomendados:
+- Avaliações de capacidade: pass@3 >= 0.90
+- Avaliações de regressão: pass^3 = 1.00 para caminhos críticos de lançamento
 
-### Eval Anti-Patterns
+### Antipadrões de Avaliação
 
-- Overfitting prompts to known eval examples
-- Measuring only happy-path outputs
-- Ignoring cost and latency drift while chasing pass rates
-- Allowing flaky graders in release gates
+- Overfitting de prompts a exemplos de avaliação conhecidos
+- Medir apenas saídas do caminho feliz
+- Ignorar a deriva de custo e latência ao perseguir taxas de aprovação
+- Permitir avaliadores instáveis nos portões de lançamento
 
-### Minimal Eval Artifact Layout
+### Layout Mínimo de Artefatos de Avaliação
 
-- `.claude/evals/<feature>.md` definition
-- `.claude/evals/<feature>.log` run history
-- `docs/releases/<version>/eval-summary.md` release snapshot
+- `.claude/evals/<feature>.md` definição
+- `.claude/evals/<feature>.log` histórico de execução
+- `docs/releases/<version>/eval-summary.md` snapshot de lançamento

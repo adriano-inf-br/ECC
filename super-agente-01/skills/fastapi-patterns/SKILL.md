@@ -1,30 +1,30 @@
 ---
 name: fastapi-patterns
-description: FastAPI best practices covering project structure, Pydantic v2 schemas, dependency injection, async handlers, authentication, authorization, transactional service layers, and testing with httpx and pytest.
+description: Boas práticas de FastAPI cobrindo estrutura de projeto, schemas Pydantic v2, injeção de dependência, handlers assíncronos, autenticação, autorização, camadas de serviço transacionais e testes com httpx e pytest.
 metadata:
   origin: ECC
 ---
 
-# FastAPI Patterns
+# Padrões de FastAPI
 
-Modern, production-grade FastAPI development: project layout, Pydantic v2 schemas, dependency injection, async patterns, auth, transactional service methods, and testing.
+Desenvolvimento FastAPI moderno e de nível de produção: organização de projeto, schemas Pydantic v2, injeção de dependência, padrões assíncronos, autenticação, métodos de serviço transacionais e testes.
 
-## Project Structure
+## Estrutura do Projeto
 
 ```text
 my_app/
 |-- app/
-|   |-- main.py               # App factory, lifespan, middleware
-|   |-- config.py             # Settings via pydantic-settings
-|   |-- dependencies.py       # Shared FastAPI dependencies
-|   |-- database.py           # SQLAlchemy engine + session
+|   |-- main.py               # Factory da app, lifespan, middleware
+|   |-- config.py             # Configurações via pydantic-settings
+|   |-- dependencies.py       # Dependências compartilhadas do FastAPI
+|   |-- database.py           # Engine + sessão do SQLAlchemy
 |   |-- routers/
 |   |   `-- users.py
-|   |-- models/               # SQLAlchemy ORM models
+|   |-- models/               # Modelos ORM do SQLAlchemy
 |   |   `-- user.py
-|   |-- schemas/              # Pydantic request/response schemas
+|   |-- schemas/              # Schemas Pydantic de requisição/resposta
 |   |   `-- user.py
-|   `-- services/             # Business logic layer
+|   `-- services/             # Camada de lógica de negócio
 |       `-- user_service.py
 |-- tests/
 |   |-- conftest.py
@@ -35,7 +35,7 @@ my_app/
 
 ---
 
-## App Factory and Lifespan
+## Factory da App e Lifespan
 
 ```python
 # app/main.py
@@ -50,12 +50,12 @@ from app.routers import users
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Automatically create tables on startup for ease of use in dev/demo environments.
-    # For strict production applications, manage schemas via Alembic migrations instead.
+    # Cria as tabelas automaticamente na inicialização para facilitar o uso em ambientes de dev/demo.
+    # Para aplicações de produção rigorosas, gerencie os schemas via migrações do Alembic.
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
     yield
-    # Shutdown: close pooled resources.
+    # Encerramento: fecha os recursos do pool.
     await engine.dispose()
 
 
@@ -84,7 +84,7 @@ app = create_app()
 
 ---
 
-## Configuration with pydantic-settings
+## Configuração com pydantic-settings
 
 ```python
 # app/config.py
@@ -103,7 +103,7 @@ class Settings(BaseSettings):
     algorithm: str = "HS256"
     access_token_expire_minutes: int = 30
 
-    # Pydantic-settings v2 safely evaluates mutable list literals directly
+    # O pydantic-settings v2 avalia literais de lista mutáveis diretamente de forma segura
     allowed_origins: list[str] = ["http://localhost:3000"]
     allowed_methods: list[str] = ["GET", "POST", "PATCH", "DELETE", "OPTIONS"]
     allowed_headers: list[str] = ["Authorization", "Content-Type"]
@@ -115,7 +115,7 @@ settings = Settings()
 
 ---
 
-## Pydantic Schemas (v2)
+## Schemas Pydantic (v2)
 
 ```python
 # app/schemas/user.py
@@ -135,7 +135,7 @@ class UserCreate(UserBase):
     @model_validator(mode="after")
     def passwords_match(self) -> "UserCreate":
         if self.password != self.password_confirm:
-            raise ValueError("Passwords do not match")
+            raise ValueError("As senhas não coincidem")
         return self
 
 
@@ -159,7 +159,7 @@ class UserListResponse(BaseModel):
 
 ---
 
-## Dependency Injection
+## Injeção de Dependência
 
 ```python
 # app/dependencies.py
@@ -191,7 +191,7 @@ async def get_current_user(
 ) -> User:
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
+        detail="Não foi possível validar as credenciais",
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:

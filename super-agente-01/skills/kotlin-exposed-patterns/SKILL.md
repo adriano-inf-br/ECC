@@ -49,7 +49,7 @@ suspend fun createUser(request: CreateUserRequest): User =
     }
 ```
 
-### HikariCP Configuration
+### Configuração do HikariCP
 
 ```kotlin
 val hikariConfig = HikariConfig().apply {
@@ -64,9 +64,9 @@ val hikariConfig = HikariConfig().apply {
 }
 ```
 
-## Database Setup
+## Configuração do Banco de Dados
 
-### HikariCP Connection Pooling
+### Pool de Conexões HikariCP
 
 ```kotlin
 // DatabaseFactory.kt
@@ -96,7 +96,7 @@ data class DatabaseConfig(
 )
 ```
 
-### Flyway Migrations
+### Migrações Flyway
 
 ```kotlin
 // FlywayMigration.kt
@@ -109,7 +109,7 @@ fun runMigrations(config: DatabaseConfig) {
         .migrate()
 }
 
-// Application startup
+// Inicialização da aplicação
 fun Application.module() {
     val config = DatabaseConfig(
         url = environment.config.property("database.url").getString(),
@@ -122,7 +122,7 @@ fun Application.module() {
 }
 ```
 
-### Migration Files
+### Arquivos de Migração
 
 ```sql
 -- src/main/resources/db/migration/V1__create_users.sql
@@ -140,9 +140,9 @@ CREATE INDEX idx_users_email ON users(email);
 CREATE INDEX idx_users_role ON users(role);
 ```
 
-## Table Definitions
+## Definições de Tabela
 
-### DSL Style Tables
+### Tabelas no Estilo DSL
 
 ```kotlin
 // tables/UsersTable.kt
@@ -171,7 +171,7 @@ object OrderItemsTable : UUIDTable("order_items") {
 }
 ```
 
-### Composite Tables
+### Tabelas Compostas
 
 ```kotlin
 object UserRolesTable : Table("user_roles") {
@@ -181,9 +181,9 @@ object UserRolesTable : Table("user_roles") {
 }
 ```
 
-## DSL Queries
+## Consultas DSL
 
-### Basic CRUD
+### CRUD Básico
 
 ```kotlin
 // Insert
@@ -196,7 +196,7 @@ suspend fun insertUser(name: String, email: String, role: Role): UUID =
         }.value
     }
 
-// Select by ID
+// Select por ID
 suspend fun findUserById(id: UUID): UserRow? =
     newSuspendedTransaction {
         UsersTable.selectAll()
@@ -205,7 +205,7 @@ suspend fun findUserById(id: UUID): UserRow? =
             .singleOrNull()
     }
 
-// Select with conditions
+// Select com condições
 suspend fun findActiveAdmins(): List<UserRow> =
     newSuspendedTransaction {
         UsersTable.selectAll()
@@ -229,7 +229,7 @@ suspend fun deleteUser(id: UUID): Boolean =
         UsersTable.deleteWhere { UsersTable.id eq id } > 0
     }
 
-// Row mapping
+// Mapeamento de linha
 private fun ResultRow.toUser() = UserRow(
     id = this[UsersTable.id].value,
     name = this[UsersTable.name],
@@ -241,10 +241,10 @@ private fun ResultRow.toUser() = UserRow(
 )
 ```
 
-### Advanced Queries
+### Consultas Avançadas
 
 ```kotlin
-// Join queries
+// Consultas com join
 suspend fun findOrdersWithUser(userId: UUID): List<OrderWithUser> =
     newSuspendedTransaction {
         (OrdersTable innerJoin UsersTable)

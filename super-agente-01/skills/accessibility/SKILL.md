@@ -9,7 +9,7 @@ metadata:
 
 Esta skill garante que interfaces digitais sejam Perceptíveis, Operáveis, Compreensíveis e Robustas (POUR) para todos os usuários, incluindo aqueles que usam leitores de tela, controles por switch ou navegação por teclado. Ela foca na implementação técnica dos critérios de sucesso da WCAG 2.2.
 
-## When to Use
+## Quando Usar
 
 - Definir especificações de componentes de UI para Web, iOS ou Android.
 - Auditar código existente em busca de barreiras de acessibilidade ou lacunas de conformidade.
@@ -24,7 +24,7 @@ Esta skill garante que interfaces digitais sejam Perceptíveis, Operáveis, Comp
 - **Gerenciamento de Foco**: Controlar a ordem e a visibilidade do cursor de teclado/leitor de tela.
 - **Rotulagem e Hints**: Fornecer contexto por meio de `aria-label`, `accessibilityLabel` e `contentDescription`.
 
-## How It Works
+## Como Funciona
 
 ### Passo 1: Identificar o Papel do Componente
 
@@ -76,7 +76,7 @@ flowchart TD
 | **Papel de Ação**    | `role="button"`          | `.accessibilityAddTraits(.isButton)` | `Modifier.semantics { role = Role.Button }`                 |
 | **Atualizações em Tempo Real**   | `aria-live="polite"`     | `.accessibilityLiveRegion(.polite)`  | `Modifier.semantics { liveRegion = LiveRegionMode.Polite }` |
 
-## Examples
+## Exemplos
 
 ### Web: Busca Acessível
 

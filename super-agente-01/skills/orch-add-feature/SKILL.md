@@ -7,39 +7,39 @@ metadata:
 
 # orch-add-feature
 
-Actor · action · target: **orch · add · feature**. Thin wrapper over the shared
-engine in [`orch-pipeline`](../orch-pipeline/SKILL.md).
+Ator · ação · alvo: **orch · add · feature**. Wrapper fino sobre o engine
+compartilhado em [`orch-pipeline`](../orch-pipeline/SKILL.md).
 
-## When to Use
+## Quando Usar
 
-- The user wants a capability that does **not exist yet** ("add", "build",
+- O usuário quer uma capacidade que **ainda não existe** ("add", "build",
   "implement", "support …").
-- It is net-new behavior — not a correction (`orch-fix-defect`) and not an
-  alteration of existing behavior (`orch-change-feature`).
+- É comportamento totalmente novo — não uma correção (`orch-fix-defect`) e não uma
+  alteração de comportamento existente (`orch-change-feature`).
 
-## Operation settings
+## Configurações da operação
 
-- **Default size floor:** standard — run Research + Plan unless clearly small.
-- **Phase mask:** 0 → 1 → 2 → 4 → 5 → 6 (skip 3 Scaffold; that is MVP-only).
-- **First move (phase 4):** write *new* failing tests for the new behavior, then
-  implement to green.
+- **Piso de tamanho padrão:** standard — rode Research + Plan a menos que seja claramente pequeno.
+- **Máscara de fases:** 0 → 1 → 2 → 4 → 5 → 6 (pule o 3 Scaffold; ele é exclusivo de MVP).
+- **Primeiro movimento (fase 4):** escreva testes *novos* que falham para o novo comportamento e então
+  implemente até passarem.
 
-## How It Works
+## Como Funciona
 
-1. Run the `orch-pipeline` engine with the settings above.
-2. Classify size first; small / trivial features collapse toward 4 → 5 → 6.
-3. Stop at **Gate 1** (plan approval) and **Gate 2** (pre-commit).
-4. Add `security-reviewer` if the feature touches a security trigger.
+1. Rode o engine `orch-pipeline` com as configurações acima.
+2. Classifique o tamanho primeiro; features pequenas / triviais se reduzem a 4 → 5 → 6.
+3. Pare no **Gate 1** (aprovação do plano) e no **Gate 2** (pré-commit).
+4. Adicione `security-reviewer` se a feature tocar um gatilho de segurança.
 
-> Related: `/feature-dev` is a standalone version of this flow. `orch-add-feature`
-> differs by sharing the `orch-pipeline` engine — the size classifier and the two
-> gates — with the rest of the family, so it right-sizes trivial features to 4 → 5 → 6.
+> Relacionado: `/feature-dev` é uma versão autônoma deste fluxo. `orch-add-feature`
+> difere por compartilhar o engine `orch-pipeline` — o classificador de tamanho e os dois
+> gates — com o resto da família, de modo que ajusta o tamanho de features triviais para 4 → 5 → 6.
 
-## Example
+## Exemplo
 
 ```
 orch-add-feature: add OAuth2 login to nws-poller
-→ research existing auth libs → plan task_list  [GATE 1: approve]
-→ TDD each task → code-review (+ security-reviewer: auth path)
-→ commit  [GATE 2: confirm]
+→ pesquisar libs de auth existentes → planejar task_list  [GATE 1: aprovar]
+→ TDD em cada tarefa → code-review (+ security-reviewer: caminho de auth)
+→ commit  [GATE 2: confirmar]
 ```

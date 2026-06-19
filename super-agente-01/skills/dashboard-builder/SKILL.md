@@ -1,6 +1,6 @@
 ---
 name: dashboard-builder
-description: Build monitoring dashboards that answer real operator questions for Grafana, SigNoz, and similar platforms. Use when turning metrics into a working dashboard instead of a vanity board.
+description: Construa dashboards de monitoramento que respondam a perguntas reais de operadores para Grafana, SigNoz e plataformas similares. Use ao transformar métricas em um dashboard funcional em vez de um painel de vaidade.
 metadata:
   origin: ECC direct-port adaptation
 version: "1.0.0"
@@ -8,101 +8,101 @@ version: "1.0.0"
 
 # Dashboard Builder
 
-Use this when the task is to build a dashboard people can operate from.
+Use esta skill quando a tarefa é construir um dashboard a partir do qual as pessoas possam operar.
 
-The goal is not "show every metric." The goal is to answer:
+O objetivo não é "mostrar todas as métricas". O objetivo é responder:
 
-- is it healthy?
-- where is the bottleneck?
-- what changed?
-- what action should someone take?
+- está saudável?
+- onde está o gargalo?
+- o que mudou?
+- que ação alguém deve tomar?
 
-## When to Use
+## Quando Usar
 
-- "Build a Kafka monitoring dashboard"
-- "Create a Grafana dashboard for Elasticsearch"
-- "Make a SigNoz dashboard for this service"
-- "Turn this metrics list into a real operational dashboard"
+- "Construa um dashboard de monitoramento do Kafka"
+- "Crie um dashboard Grafana para Elasticsearch"
+- "Faça um dashboard SigNoz para este serviço"
+- "Transforme esta lista de métricas em um dashboard operacional real"
 
-## Guardrails
+## Restrições
 
-- do not start from visual layout; start from operator questions
-- do not include every available metric just because it exists
-- do not mix health, throughput, and resource panels without structure
-- do not ship panels without titles, units, and sane thresholds
+- não comece pelo layout visual; comece pelas perguntas dos operadores
+- não inclua todas as métricas disponíveis apenas porque existem
+- não misture painéis de saúde, throughput e recursos sem estrutura
+- não entregue painéis sem títulos, unidades e limiares razoáveis
 
-## Workflow
+## Fluxo de Trabalho
 
-### 1. Define the operating questions
+### 1. Defina as perguntas operacionais
 
-Organize around:
+Organize em torno de:
 
-- health / availability
-- latency / performance
+- saúde / disponibilidade
+- latência / desempenho
 - throughput / volume
-- saturation / resources
-- service-specific risk
+- saturação / recursos
+- risco específico do serviço
 
-### 2. Study the target platform schema
+### 2. Estude o schema da plataforma alvo
 
-Inspect existing dashboards first:
+Inspecione os dashboards existentes primeiro:
 
-- JSON structure
-- query language
-- variables
-- threshold styling
-- section layout
+- estrutura JSON
+- linguagem de consulta
+- variáveis
+- estilização de limiares
+- layout de seções
 
-### 3. Build the minimum useful board
+### 3. Construa o board mínimo útil
 
-Recommended structure:
+Estrutura recomendada:
 
-1. overview
-2. performance
-3. resources
-4. service-specific section
+1. visão geral
+2. desempenho
+3. recursos
+4. seção específica do serviço
 
-### 4. Cut vanity panels
+### 4. Corte painéis de vaidade
 
-Every panel should answer a real question. If it does not, remove it.
+Cada painel deve responder a uma pergunta real. Se não responder, remova-o.
 
-## Example Panel Sets
+## Conjuntos de Painéis de Exemplo
 
 ### Elasticsearch
 
-- cluster health
-- shard allocation
-- search latency
-- indexing rate
+- saúde do cluster
+- alocação de shards
+- latência de busca
+- taxa de indexação
 - JVM heap / GC
 
 ### Kafka
 
-- broker count
-- under-replicated partitions
-- messages in / out
-- consumer lag
-- disk and network pressure
+- contagem de brokers
+- partições sub-replicadas
+- mensagens de entrada / saída
+- lag do consumidor
+- pressão de disco e rede
 
 ### API gateway / ingress
 
-- request rate
-- p50 / p95 / p99 latency
-- error rate
-- upstream health
-- active connections
+- taxa de requisições
+- latência p50 / p95 / p99
+- taxa de erros
+- saúde upstream
+- conexões ativas
 
-## Quality Checklist
+## Checklist de Qualidade
 
-- [ ] valid dashboard JSON
-- [ ] clear section grouping
-- [ ] titles and units are present
-- [ ] thresholds/status colors are meaningful
-- [ ] variables exist for common filters
-- [ ] default time range and refresh are sensible
-- [ ] no vanity panels with no operator value
+- [ ] JSON do dashboard válido
+- [ ] agrupamento claro de seções
+- [ ] títulos e unidades presentes
+- [ ] limiares/cores de status são significativos
+- [ ] variáveis existem para filtros comuns
+- [ ] intervalo de tempo padrão e refresh são razoáveis
+- [ ] nenhum painel de vaidade sem valor operacional
 
-## Related Skills
+## Skills Relacionadas
 
 - `research-ops`
 - `backend-patterns`

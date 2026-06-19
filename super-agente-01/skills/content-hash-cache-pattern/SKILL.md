@@ -1,35 +1,35 @@
 ---
 name: content-hash-cache-pattern
-description: Cache expensive file processing results using SHA-256 content hashes — path-independent, auto-invalidating, with service layer separation.
+description: Armazene em cache resultados custosos de processamento de arquivos usando hashes SHA-256 de conteúdo — independente de caminho, com invalidação automática e separação em camada de serviço.
 metadata:
   origin: ECC
 ---
 
-# Content-Hash File Cache Pattern
+# Padrão de Cache por Hash de Conteúdo de Arquivo
 
-Cache expensive file processing results (PDF parsing, text extraction, image analysis) using SHA-256 content hashes as cache keys. Unlike path-based caching, this approach survives file moves/renames and auto-invalidates when content changes.
+Armazene em cache resultados custosos de processamento de arquivos (parsing de PDF, extração de texto, análise de imagem) usando hashes SHA-256 do conteúdo como chaves de cache. Ao contrário do cache baseado em caminho, essa abordagem sobrevive a movimentações/renomeações de arquivos e invalida automaticamente quando o conteúdo muda.
 
-## When to Activate
+## Quando Ativar
 
-- Building file processing pipelines (PDF, images, text extraction)
-- Processing cost is high and same files are processed repeatedly
-- Need a `--cache/--no-cache` CLI option
-- Want to add caching to existing pure functions without modifying them
+- Construindo pipelines de processamento de arquivos (PDF, imagens, extração de texto)
+- O custo de processamento é alto e os mesmos arquivos são processados repetidamente
+- Necessidade de uma opção `--cache/--no-cache` na CLI
+- Quer adicionar cache a funções puras existentes sem modificá-las
 
-## Core Pattern
+## Padrão Central
 
-### 1. Content-Hash Based Cache Key
+### 1. Chave de Cache Baseada em Hash de Conteúdo
 
-Use file content (not path) as the cache key:
+Use o conteúdo do arquivo (não o caminho) como chave de cache:
 
 ```python
 import hashlib
 from pathlib import Path
 
-_HASH_CHUNK_SIZE = 65536  # 64KB chunks for large files
+_HASH_CHUNK_SIZE = 65536  # Chunks de 64KB para arquivos grandes
 
 def compute_file_hash(path: Path) -> str:
-    """SHA-256 of file contents (chunked for large files)."""
+    """SHA-256 do conteúdo do arquivo (em chunks para arquivos grandes)."""
     if not path.is_file():
         raise FileNotFoundError(f"File not found: {path}")
     sha256 = hashlib.sha256()
@@ -42,9 +42,9 @@ def compute_file_hash(path: Path) -> str:
     return sha256.hexdigest()
 ```
 
-**Why content hash?** File rename/move = cache hit. Content change = automatic invalidation. No index file needed.
+**Por que hash de conteúdo?** Renomear/mover arquivo = cache hit. Mudança de conteúdo = invalidação automática. Nenhum arquivo de índice necessário.
 
-### 2. Frozen Dataclass for Cache Entry
+### 2. Dataclass Imutável para Entrada de Cache
 
 ```python
 from dataclasses import dataclass
@@ -53,12 +53,12 @@ from dataclasses import dataclass
 class CacheEntry:
     file_hash: str
     source_path: str
-    document: ExtractedDocument  # The cached result
+    document: ExtractedDocument  # O resultado em cache
 ```
 
-### 3. File-Based Cache Storage
+### 3. Armazenamento de Cache em Arquivo
 
-Each cache entry is stored as `{hash}.json` — O(1) lookup by hash, no index file required.
+Cada entrada de cache é armazenada como `{hash}.json` — busca O(1) por hash, sem arquivo de índice necessário.
 
 ```python
 import json
@@ -79,12 +79,12 @@ def read_cache(cache_dir: Path, file_hash: str) -> CacheEntry | None:
         data = json.loads(raw)
         return deserialize_entry(data)
     except (json.JSONDecodeError, ValueError, KeyError):
-        return None  # Treat corruption as cache miss
+        return None  # Trata corrupção como cache miss
 ```
 
-### 4. Service Layer Wrapper (SRP)
+### 4. Wrapper em Camada de Serviço (SRP)
 
-Keep the processing function pure. Add caching as a separate service layer.
+Mantenha a função de processamento pura. Adicione cache como uma camada de serviço separada.
 
 ```python
 def extract_with_cache(
@@ -93,19 +93,19 @@ def extract_with_cache(
     cache_enabled: bool = True,
     cache_dir: Path = Path(".cache"),
 ) -> ExtractedDocument:
-    """Service layer: cache check -> extraction -> cache write."""
+    """Camada de serviço: verificação de cache -> extração -> gravação no cache."""
     if not cache_enabled:
-        return extract_text(file_path)  # Pure function, no cache knowledge
+        return extract_text(file_path)  # Função pura, sem conhecimento de cache
 
     file_hash = compute_file_hash(file_path)
 
-    # Check cache
+    # Verificar cache
     cached = read_cache(cache_dir, file_hash)
     if cached is not None:
         logger.info("Cache hit: %s (hash=%s)", file_path.name, file_hash[:12])
         return cached.document
 
-    # Cache miss -> extract -> store
+    # Cache miss -> extrair -> armazenar
     logger.info("Cache miss: %s (hash=%s)", file_path.name, file_hash[:12])
     doc = extract_text(file_path)
     entry = CacheEntry(file_hash=file_hash, source_path=str(file_path), document=doc)
@@ -113,50 +113,50 @@ def extract_with_cache(
     return doc
 ```
 
-## Key Design Decisions
+## Decisões-Chave de Design
 
-| Decision | Rationale |
+| Decisão | Justificativa |
 |----------|-----------|
-| SHA-256 content hash | Path-independent, auto-invalidates on content change |
-| `{hash}.json` file naming | O(1) lookup, no index file needed |
-| Service layer wrapper | SRP: extraction stays pure, cache is a separate concern |
-| Manual JSON serialization | Full control over frozen dataclass serialization |
-| Corruption returns `None` | Graceful degradation, re-processes on next run |
-| `cache_dir.mkdir(parents=True)` | Lazy directory creation on first write |
+| Hash SHA-256 do conteúdo | Independente de caminho, invalida automaticamente com mudança de conteúdo |
+| Nomenclatura de arquivo `{hash}.json` | Busca O(1), sem arquivo de índice necessário |
+| Wrapper em camada de serviço | SRP: extração permanece pura, cache é uma preocupação separada |
+| Serialização JSON manual | Controle total sobre serialização de dataclass imutável |
+| Corrupção retorna `None` | Degradação graciosa, reprocessa na próxima execução |
+| `cache_dir.mkdir(parents=True)` | Criação lazy de diretório na primeira gravação |
 
-## Best Practices
+## Boas Práticas
 
-- **Hash content, not paths** — paths change, content identity doesn't
-- **Chunk large files** when hashing — avoid loading entire files into memory
-- **Keep processing functions pure** — they should know nothing about caching
-- **Log cache hit/miss** with truncated hashes for debugging
-- **Handle corruption gracefully** — treat invalid cache entries as misses, never crash
+- **Faça hash do conteúdo, não dos caminhos** — caminhos mudam, identidade do conteúdo não
+- **Processe arquivos grandes em chunks** ao fazer hash — evite carregar arquivos inteiros na memória
+- **Mantenha funções de processamento puras** — elas não devem saber nada sobre cache
+- **Registre cache hit/miss** com hashes truncados para depuração
+- **Trate corrupção graciosamente** — entradas de cache inválidas como misses, nunca trave
 
-## Anti-Patterns to Avoid
+## Anti-Patterns a Evitar
 
 ```python
-# BAD: Path-based caching (breaks on file move/rename)
+# RUIM: Cache baseado em caminho (quebra ao mover/renomear arquivo)
 cache = {"/path/to/file.pdf": result}
 
-# BAD: Adding cache logic inside the processing function (SRP violation)
+# RUIM: Adicionar lógica de cache dentro da função de processamento (violação de SRP)
 def extract_text(path, *, cache_enabled=False, cache_dir=None):
-    if cache_enabled:  # Now this function has two responsibilities
+    if cache_enabled:  # Agora esta função tem duas responsabilidades
         ...
 
-# BAD: Using dataclasses.asdict() with nested frozen dataclasses
-# (can cause issues with complex nested types)
-data = dataclasses.asdict(entry)  # Use manual serialization instead
+# RUIM: Usar dataclasses.asdict() com dataclasses imutáveis aninhadas
+# (pode causar problemas com tipos aninhados complexos)
+data = dataclasses.asdict(entry)  # Use serialização manual em vez disso
 ```
 
-## When to Use
+## Quando Usar
 
-- File processing pipelines (PDF parsing, OCR, text extraction, image analysis)
-- CLI tools that benefit from `--cache/--no-cache` options
-- Batch processing where the same files appear across runs
-- Adding caching to existing pure functions without modifying them
+- Pipelines de processamento de arquivos (parsing de PDF, OCR, extração de texto, análise de imagem)
+- Ferramentas CLI que se beneficiam de opções `--cache/--no-cache`
+- Processamento em lote onde os mesmos arquivos aparecem em várias execuções
+- Adicionar cache a funções puras existentes sem modificá-las
 
-## When NOT to Use
+## Quando NÃO Usar
 
-- Data that must always be fresh (real-time feeds)
-- Cache entries that would be extremely large (consider streaming instead)
-- Results that depend on parameters beyond file content (e.g., different extraction configs)
+- Dados que devem estar sempre atualizados (feeds em tempo real)
+- Entradas de cache que seriam extremamente grandes (considere streaming em vez disso)
+- Resultados que dependem de parâmetros além do conteúdo do arquivo (ex.: diferentes configurações de extração)

@@ -7,43 +7,43 @@ metadata:
 
 # orch-build-mvp
 
-Actor · action · target: **orch · build · mvp**. Thin wrapper over the shared
-engine in [`orch-pipeline`](../orch-pipeline/SKILL.md).
+Ator · ação · alvo: **orch · build · mvp**. Wrapper fino sobre o engine
+compartilhado em [`orch-pipeline`](../orch-pipeline/SKILL.md).
 
-## When to Use
+## Quando Usar
 
-- The user has a **design / spec document** (SDD, PRD, system_design) and wants a
-  working vertical slice bootstrapped from it.
-- Takes a doc path as its argument, e.g. `civicpulse/docs/SDD-v0.6.md`.
+- O usuário tem um **documento de design / spec** (SDD, PRD, system_design) e quer uma
+  fatia vertical funcional iniciada a partir dele.
+- Recebe um caminho de documento como argumento, ex.: `civicpulse/docs/SDD-v0.6.md`.
 
-## Operation settings
+## Configurações da operação
 
-- **Default size floor:** large — this is the full pipeline including Scaffold.
-- **Phase mask:** 0 (read the spec) → 1 → 2 (heavy) → 3 (scaffold) → 4 → 5 → 6.
-- **First move (phase 0 → 2):** read the doc; extract scope, locked decisions,
-  and the feature list; order it into **thin vertical slices** (one end-to-end
-  path first, not all-models-then-all-views). Phase 3 stands up that first slice.
+- **Piso de tamanho padrão:** large — este é o pipeline completo, incluindo o Scaffold.
+- **Máscara de fases:** 0 (ler a spec) → 1 → 2 (pesada) → 3 (scaffold) → 4 → 5 → 6.
+- **Primeiro movimento (fase 0 → 2):** leia o documento; extraia escopo, decisões travadas
+  e a lista de features; ordene-a em **fatias verticais finas** (um caminho end-to-end
+  primeiro, não todos-os-modelos-depois-todas-as-views). A fase 3 levanta essa primeira fatia.
 
-## How It Works
+## Como Funciona
 
-1. Run the `orch-pipeline` engine with the settings above.
-2. **Reuse the existing GAN harness** instead of hand-rolling an iterate loop:
-   - Translate the SDD into `gan-harness/spec.md` + `gan-harness/eval-rubric.md`
-     (this stands in for what `gan-planner` would generate — you already have the spec).
-   - Drive the build with `/gan-build "<one-line brief>" --skip-planner`
-     (defaults: `--max-iterations 15`, `--pass-threshold 7.0`,
-     `--eval-mode playwright`; use `--eval-mode code-only` for non-UI slices).
-   - That command runs the `gan-generator` → `gan-evaluator` loop and writes
-     `gan-harness/feedback/feedback-NNN.md` until the score passes or plateaus.
-3. Stop at **Gate 1** (slice plan) and **Gate 2** (pre-commit). Commit the
-   scaffold and each slice as separate `feat:` commits.
-4. Add `security-reviewer` for any slice touching a security trigger.
+1. Rode o engine `orch-pipeline` com as configurações acima.
+2. **Reutilize o harness GAN existente** em vez de montar um loop de iteração à mão:
+   - Traduza o SDD para `gan-harness/spec.md` + `gan-harness/eval-rubric.md`
+     (isso faz o papel do que o `gan-planner` geraria — você já tem a spec).
+   - Conduza o build com `/gan-build "<brief de uma linha>" --skip-planner`
+     (padrões: `--max-iterations 15`, `--pass-threshold 7.0`,
+     `--eval-mode playwright`; use `--eval-mode code-only` para fatias sem UI).
+   - Esse comando roda o loop `gan-generator` → `gan-evaluator` e escreve
+     `gan-harness/feedback/feedback-NNN.md` até a pontuação passar ou estabilizar.
+3. Pare no **Gate 1** (plano de fatias) e no **Gate 2** (pré-commit). Faça commit do
+   scaffold e de cada fatia como commits `feat:` separados.
+4. Adicione `security-reviewer` para qualquer fatia que toque um gatilho de segurança.
 
-## Example
+## Exemplo
 
 ```
 orch-build-mvp: civicpulse/docs/SDD-v0.6.md
-→ read SDD → slice list (vertical) → scaffold slice 1  [GATE 1: approve]
-→ /gan-build --skip-planner (generator → evaluator loop) scores vs spec → review
-→ commit feat:  [GATE 2: confirm] → next slice
+→ ler SDD → lista de fatias (vertical) → scaffold da fatia 1  [GATE 1: aprovar]
+→ /gan-build --skip-planner (loop generator → evaluator) pontua vs spec → review
+→ commit feat:  [GATE 2: confirmar] → próxima fatia
 ```

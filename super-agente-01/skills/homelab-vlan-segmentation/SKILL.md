@@ -1,100 +1,100 @@
 ---
 name: homelab-vlan-segmentation
-description: Segmenting home networks into VLANs for IoT, guest, trusted, and server traffic using UniFi, pfSense/OPNsense, and MikroTik — including switch trunk config, firewall rules, and wireless SSID mapping.
+description: Segmentação de redes domésticas em VLANs para tráfego de IoT, convidados, confiáveis e servidores usando UniFi, pfSense/OPNsense e MikroTik — incluindo configuração de trunk de switch, regras de firewall e mapeamento de SSID sem fio.
 metadata:
   origin: community
 ---
 
 # Homelab VLAN Segmentation
 
-How to split a home network into isolated VLANs so IoT devices, guests, and your main
-PCs cannot talk to each other. The most impactful security upgrade for a home network.
+Como dividir uma rede doméstica em VLANs isoladas para que dispositivos IoT, convidados e seus
+PCs principais não consigam se comunicar entre si. O upgrade de segurança mais impactante para uma rede doméstica.
 
-All firewall rules shown here add isolation between segments — they do not remove
-existing protections. Apply changes in a maintenance window and verify connectivity
-between segments after each step before moving on.
+Todas as regras de firewall mostradas aqui adicionam isolamento entre segmentos — elas não removem
+proteções existentes. Aplique as mudanças em uma janela de manutenção e verifique a conectividade
+entre segmentos após cada passo antes de prosseguir.
 
-## When to Use
+## Quando Usar
 
-- Setting up VLANs on a home network for the first time
-- Isolating IoT devices (smart bulbs, cameras, TVs) from trusted devices
-- Creating a guest Wi-Fi network that cannot reach home devices
-- Explaining how VLANs work to someone unfamiliar with the concept
-- Configuring trunk ports, access ports, and SSID-to-VLAN mapping
-- Troubleshooting inter-VLAN routing or firewall rule issues on pfSense/OPNsense/UniFi
+- Configurar VLANs em uma rede doméstica pela primeira vez
+- Isolar dispositivos IoT (lâmpadas inteligentes, câmeras, TVs) dos dispositivos confiáveis
+- Criar uma rede Wi-Fi de convidados que não consiga alcançar os dispositivos domésticos
+- Explicar como as VLANs funcionam para alguém não familiarizado com o conceito
+- Configurar portas trunk, portas de acesso e mapeamento de SSID para VLAN
+- Solucionar problemas de roteamento entre VLANs ou de regras de firewall no pfSense/OPNsense/UniFi
 
-## How It Works
-
-```
-Without VLANs — flat network:
-  All devices on 192.168.1.0/24
-  Smart TV (potential malware) → can reach your NAS, PCs, everything
-
-With VLANs:
-  VLAN 10 — Trusted    192.168.10.0/24  (PCs, phones, laptops)
-  VLAN 20 — IoT        192.168.20.0/24  (smart TV, bulbs, cameras)
-  VLAN 30 — Servers    192.168.30.0/24  (NAS, Pi, VMs)
-  VLAN 40 — Guest      192.168.40.0/24  (visitor Wi-Fi)
-  VLAN 99 — Management 192.168.99.0/24  (switch/AP web UIs)
-
-  Smart TV → blocked from reaching 192.168.10.0/24 and 192.168.30.0/24
-  Guests → internet only, cannot see any home devices
-```
-
-## VLAN Design Template
+## Como Funciona
 
 ```
-VLAN  Name        Subnet              Gateway         Purpose
-10    trusted     192.168.10.0/24     192.168.10.1    PCs, phones, laptops
-20    iot         192.168.20.0/24     192.168.20.1    Smart home devices
-30    servers     192.168.30.0/24     192.168.30.1    NAS, Pi, self-hosted
-40    guest       192.168.40.0/24     192.168.40.1    Visitor Wi-Fi
-99    management  192.168.99.0/24     192.168.99.1    Network gear web UIs
+Sem VLANs — rede plana:
+  Todos os dispositivos em 192.168.1.0/24
+  Smart TV (potencial malware) → consegue alcançar seu NAS, PCs, tudo
+
+Com VLANs:
+  VLAN 10 — Confiável   192.168.10.0/24  (PCs, celulares, laptops)
+  VLAN 20 — IoT         192.168.20.0/24  (smart TV, lâmpadas, câmeras)
+  VLAN 30 — Servidores  192.168.30.0/24  (NAS, Pi, VMs)
+  VLAN 40 — Convidados  192.168.40.0/24  (Wi-Fi de visitantes)
+  VLAN 99 — Gerência    192.168.99.0/24  (UIs web de switch/AP)
+
+  Smart TV → bloqueada de alcançar 192.168.10.0/24 e 192.168.30.0/24
+  Convidados → apenas internet, não conseguem ver nenhum dispositivo doméstico
 ```
 
-## Examples
-
-**Typical homelab with UniFi AP and managed switch:**
+## Modelo de Design de VLAN
 
 ```
-Scenario: 3-bedroom house, UniFi Dream Machine + UniFi 8-port switch + 2 APs
+VLAN  Nome        Subnet              Gateway         Finalidade
+10    trusted     192.168.10.0/24     192.168.10.1    PCs, celulares, laptops
+20    iot         192.168.20.0/24     192.168.20.1    Dispositivos de casa inteligente
+30    servers     192.168.30.0/24     192.168.30.1    NAS, Pi, auto-hospedados
+40    guest       192.168.40.0/24     192.168.40.1    Wi-Fi de visitantes
+99    management  192.168.99.0/24     192.168.99.1    UIs web de equipamentos de rede
+```
 
-VLAN 10 — Trusted    192.168.10.0/24   MacBook, iPhones, iPad
-VLAN 20 — IoT        192.168.20.0/24   Nest thermostat, Philips Hue, Ring doorbell, smart TVs
-VLAN 30 — Servers    192.168.30.0/24   Synology NAS (192.168.30.10), Pi-hole (192.168.30.2)
-VLAN 40 — Guest      192.168.40.0/24   Visitor Wi-Fi — internet only
+## Exemplos
 
-SSID → VLAN mapping:
-  "Home"      → VLAN 10 (WPA2, strong password, trusted devices only)
-  "IoT"       → VLAN 20 (WPA2, separate password, printed on router for setup)
-  "Guest"     → VLAN 40 (WPA2, simple password you can share freely)
+**Homelab típico com AP UniFi e switch gerenciável:**
 
-Switch port behavior:
-  Port 1  → trunk to router (tagged VLANs 10,20,30,40,99)
-  Port 2  → trunk to APs (tagged VLANs 10,20,40; AP handles per-SSID tagging)
-  Port 3  → access VLAN 30 (NAS — untagged, no VLAN awareness needed)
-  Port 4  → access VLAN 30 (Pi-hole — untagged)
-  Port 5–8 → access VLAN 10 (wired workstations)
+```
+Cenário: casa de 3 quartos, UniFi Dream Machine + switch UniFi de 8 portas + 2 APs
 
-Firewall rules applied (all rules add isolation, none remove existing protections):
-  IoT → Trusted: BLOCK
-  IoT → Servers: BLOCK except 192.168.30.2:53 (Pi-hole DNS allowed)
+VLAN 10 — Confiável  192.168.10.0/24   MacBook, iPhones, iPad
+VLAN 20 — IoT        192.168.20.0/24   termostato Nest, Philips Hue, campainha Ring, smart TVs
+VLAN 30 — Servidores 192.168.30.0/24   Synology NAS (192.168.30.10), Pi-hole (192.168.30.2)
+VLAN 40 — Convidados 192.168.40.0/24   Wi-Fi de visitantes — apenas internet
+
+Mapeamento SSID → VLAN:
+  "Home"      → VLAN 10 (WPA2, senha forte, apenas dispositivos confiáveis)
+  "IoT"       → VLAN 20 (WPA2, senha separada, impressa no roteador para configuração)
+  "Guest"     → VLAN 40 (WPA2, senha simples que você pode compartilhar livremente)
+
+Comportamento das portas do switch:
+  Porta 1  → trunk para o roteador (VLANs tagged 10,20,30,40,99)
+  Porta 2  → trunk para os APs (VLANs tagged 10,20,40; o AP faz o tagging por SSID)
+  Porta 3  → acesso VLAN 30 (NAS — untagged, não precisa de consciência de VLAN)
+  Porta 4  → acesso VLAN 30 (Pi-hole — untagged)
+  Porta 5–8 → acesso VLAN 10 (estações de trabalho cabeadas)
+
+Regras de firewall aplicadas (todas as regras adicionam isolamento, nenhuma remove proteções existentes):
+  IoT → Confiável: BLOCK
+  IoT → Servidores: BLOCK exceto 192.168.30.2:53 (DNS do Pi-hole permitido)
   IoT → Internet: ALLOW
-  Guest → Local networks: BLOCK
-  Guest → Internet: ALLOW
-  Trusted → everywhere: ALLOW
+  Convidados → Redes locais: BLOCK
+  Convidados → Internet: ALLOW
+  Confiável → tudo: ALLOW
 ```
 
-## UniFi Configuration
+## Configuração do UniFi
 
-### Create Networks in UniFi Controller
+### Criar Redes no UniFi Controller
 
 ```
 Settings → Networks → Create New Network
 
-For each VLAN:
+Para cada VLAN:
   Name: IoT
-  Purpose: Corporate  (gives DHCP + routing)
+  Purpose: Corporate  (fornece DHCP + roteamento)
   VLAN ID: 20
   Network: 192.168.20.0/24
   Gateway IP: 192.168.20.1
@@ -102,145 +102,145 @@ For each VLAN:
   DHCP Range: 192.168.20.100 – 192.168.20.254
 ```
 
-### Map SSIDs to VLANs (UniFi)
+### Mapear SSIDs para VLANs (UniFi)
 
 ```
 Settings → WiFi → Create New WiFi
 
   Name: IoT-Network
-  Password: <separate password>
-  Network: IoT  ← select your VLAN here
-  # All devices connecting to this SSID land in VLAN 20
+  Password: <senha separada>
+  Network: IoT  ← selecione sua VLAN aqui
+  # Todos os dispositivos que se conectam a este SSID caem na VLAN 20
 
   Name: Guest
-  Password: <guest password>
+  Password: <senha de convidado>
   Network: Guest
-  Guest Policy: Enable  ← isolates guests from each other too
+  Guest Policy: Enable  ← isola os convidados entre si também
 ```
 
-### UniFi Firewall Rules (Traffic Rules)
+### Regras de Firewall do UniFi (Traffic Rules)
 
 ```
 Settings → Traffic & Security → Traffic Rules
 
-# Block IoT from reaching Trusted VLAN
+# Bloqueia IoT de alcançar a VLAN Confiável
   Action: Block
   Category: Local Network
   Source: IoT (192.168.20.0/24)
   Destination: Trusted (192.168.10.0/24)
 
-# Allow IoT to reach internet only
+# Permite IoT alcançar apenas a internet
   Action: Allow
   Source: IoT
   Destination: Internet
 
-# Block Guest from all local networks
+# Bloqueia Convidados de todas as redes locais
   Action: Block
   Source: Guest
   Destination: Local Networks
 ```
 
-## pfSense / OPNsense Configuration
+## Configuração pfSense / OPNsense
 
-### Create VLANs
+### Criar VLANs
 
 ```
 Interfaces → Assignments → VLANs → Add
 
-  Parent Interface: em1  (your LAN NIC)
+  Parent Interface: em1  (sua NIC de LAN)
   VLAN Tag: 20
   Description: IoT
 
-# Repeat for each VLAN, then assign each VLAN to an interface:
+# Repita para cada VLAN, depois atribua cada VLAN a uma interface:
 Interfaces → Assignments → Add
-  Select the VLAN you created → click Add
-  Enable the interface, set IP to gateway address (192.168.20.1/24)
+  Selecione a VLAN que você criou → clique em Add
+  Habilite a interface, defina o IP como endereço de gateway (192.168.20.1/24)
 ```
 
-### DHCP for Each VLAN
+### DHCP para Cada VLAN
 
 ```
-Services → DHCP Server → Select your VLAN interface
+Services → DHCP Server → Selecione a interface da sua VLAN
 
   Enable DHCP
   Range: 192.168.20.100 to 192.168.20.254
-  DNS Servers: 192.168.30.2  ← Pi-hole IP if you have one
+  DNS Servers: 192.168.30.2  ← IP do Pi-hole, se você tiver um
 ```
 
-### Firewall Rules (pfSense/OPNsense)
+### Regras de Firewall (pfSense/OPNsense)
 
 ```
-# Rules are processed top-to-bottom, first match wins.
+# As regras são processadas de cima para baixo, a primeira correspondência vence.
 
-# On the IoT interface (VLAN 20):
-  Rule 1: Allow IoT → Pi-hole DNS  ← MUST come before the RFC1918 block rule
+# Na interface IoT (VLAN 20):
+  Regra 1: Permitir IoT → DNS do Pi-hole  ← DEVE vir antes da regra de bloqueio RFC1918
     Protocol: UDP/TCP
     Source: IoT net
     Destination: 192.168.30.2 port 53
     Action: Allow
 
-  Rule 2: Block IoT → RFC1918 (all private IP ranges)
+  Regra 2: Bloquear IoT → RFC1918 (todas as faixas de IP privadas)
     Protocol: any
     Source: IoT net
     Destination: RFC1918  (192.168.0.0/16, 10.0.0.0/8, 172.16.0.0/12)
     Action: Block
 
-  Rule 3: Allow IoT → internet
+  Regra 3: Permitir IoT → internet
     Protocol: any
     Source: IoT net
     Destination: any
     Action: Allow
 
-# On the Trusted interface (VLAN 10):
-  Allow all (trusted devices can reach everything)
+# Na interface Confiável (VLAN 10):
+  Permitir tudo (dispositivos confiáveis podem alcançar tudo)
     Source: Trusted net
     Destination: any
     Action: Allow
 
-# Additional exceptions for IoT devices that need specific local services:
-  Insert before Rule 2 (the RFC1918 block):
+# Exceções adicionais para dispositivos IoT que precisam de serviços locais específicos:
+  Insira antes da Regra 2 (o bloqueio RFC1918):
     Protocol: TCP
     Source: IoT net
     Destination: 192.168.30.x port 8123  ← Home Assistant
     Action: Allow
 ```
 
-## MikroTik Configuration
+## Configuração MikroTik
 
 ```
-# Step 1: Create a bridge with VLAN filtering enabled
+# Passo 1: Crie uma bridge com filtragem de VLAN habilitada
 /interface bridge
 add name=bridge vlan-filtering=yes
 
-# Step 2: Add physical ports to the bridge
-# Trunk port to router/uplink (tagged for all VLANs)
+# Passo 2: Adicione as portas físicas à bridge
+# Porta trunk para roteador/uplink (tagged para todas as VLANs)
 /interface bridge port
 add bridge=bridge interface=ether1 frame-types=admit-only-vlan-tagged
 
-# Access port for trusted devices (untagged VLAN 10)
+# Porta de acesso para dispositivos confiáveis (VLAN 10 untagged)
 /interface bridge port
 add bridge=bridge interface=ether2 pvid=10 frame-types=admit-only-untagged-and-priority-tagged
 
-# Access port for IoT devices (untagged VLAN 20)
+# Porta de acesso para dispositivos IoT (VLAN 20 untagged)
 /interface bridge port
 add bridge=bridge interface=ether3 pvid=20 frame-types=admit-only-untagged-and-priority-tagged
 
-# Step 3: Define which VLANs are allowed on which ports
+# Passo 3: Defina quais VLANs são permitidas em quais portas
 /interface bridge vlan
 add bridge=bridge tagged=ether1 untagged=ether2 vlan-ids=10
 add bridge=bridge tagged=ether1 untagged=ether3 vlan-ids=20
 
-# Step 4: Create VLAN interfaces on the bridge (gateway IPs)
+# Passo 4: Crie as interfaces de VLAN na bridge (IPs de gateway)
 /interface vlan
 add interface=bridge name=vlan10 vlan-id=10
 add interface=bridge name=vlan20 vlan-id=20
 
-# Step 5: Assign gateway IPs
+# Passo 5: Atribua os IPs de gateway
 /ip address
 add interface=vlan10 address=192.168.10.1/24
 add interface=vlan20 address=192.168.20.1/24
 
-# Step 6: DHCP pools and servers
+# Passo 6: Pools e servidores DHCP
 /ip pool
 add name=pool-trusted ranges=192.168.10.100-192.168.10.254
 add name=pool-iot ranges=192.168.20.100-192.168.20.254
@@ -253,59 +253,59 @@ add interface=vlan20 address-pool=pool-iot name=dhcp-iot
 add address=192.168.10.0/24 gateway=192.168.10.1
 add address=192.168.20.0/24 gateway=192.168.20.1
 
-# Step 7: Firewall — block IoT from reaching trusted VLAN
+# Passo 7: Firewall — bloqueia IoT de alcançar a VLAN confiável
 /ip firewall filter
 add chain=forward src-address=192.168.20.0/24 dst-address=192.168.10.0/24 \
     action=drop comment="Block IoT to Trusted"
 ```
 
-## Switch Trunk vs Access Ports
+## Portas Trunk vs Acesso no Switch
 
 ```
-# Trunk port: carries multiple VLANs (tagged) — connects switch-to-switch, switch-to-router, switch-to-AP
-# Access port: carries one VLAN (untagged) — connects to end devices (PC, camera, NAS)
+# Porta trunk: carrega múltiplas VLANs (tagged) — conecta switch-a-switch, switch-a-roteador, switch-a-AP
+# Porta de acesso: carrega uma VLAN (untagged) — conecta a dispositivos finais (PC, câmera, NAS)
 
-# A managed switch port connected to your router should be a trunk:
-  Allowed VLANs: 10, 20, 30, 40, 99
+# Uma porta de switch gerenciável conectada ao seu roteador deve ser um trunk:
+  VLANs permitidas: 10, 20, 30, 40, 99
 
-# A port connecting to a PC should be an access port:
-  VLAN: 10 (trusted)
-  No tagging — the PC does not know or care about VLANs
+# Uma porta conectando a um PC deve ser uma porta de acesso:
+  VLAN: 10 (confiável)
+  Sem tagging — o PC não sabe nem se importa com VLANs
 
-# A port connecting to an AP must be a trunk:
-  The AP tags traffic from each SSID with the right VLAN ID
-  Allowed VLANs: 10, 20, 40  (whichever SSIDs the AP serves)
+# Uma porta conectando a um AP deve ser um trunk:
+  O AP marca (tag) o tráfego de cada SSID com o VLAN ID correto
+  VLANs permitidas: 10, 20, 40  (quaisquer SSIDs que o AP atenda)
 ```
 
-## Anti-Patterns
+## Anti-Padrões
 
 ```
-# BAD: Creating VLANs without adding firewall rules
-# VLANs without firewall rules do not provide security — inter-VLAN routing is open by default
-# GOOD: Add explicit block rules immediately after creating VLANs
+# RUIM: Criar VLANs sem adicionar regras de firewall
+# VLANs sem regras de firewall não fornecem segurança — o roteamento entre VLANs é aberto por padrão
+# BOM: Adicione regras de bloqueio explícitas imediatamente após criar as VLANs
 
-# BAD: Putting the Pi-hole in the IoT VLAN
-# IoT devices can reach it but trusted devices cannot (without extra rules)
-# GOOD: Pi-hole in the Servers VLAN with a rule allowing all VLANs to reach port 53
+# RUIM: Colocar o Pi-hole na VLAN IoT
+# Dispositivos IoT conseguem alcançá-lo, mas dispositivos confiáveis não (sem regras extras)
+# BOM: Pi-hole na VLAN de Servidores com uma regra permitindo que todas as VLANs alcancem a porta 53
 
-# BAD: Native VLAN equals management VLAN
-# Untagged traffic landing in your management VLAN enables VLAN hopping attacks
-# GOOD: Use a dedicated unused VLAN as native (e.g. VLAN 999), keep management traffic tagged
+# RUIM: VLAN nativa igual à VLAN de gerência
+# Tráfego untagged caindo na sua VLAN de gerência habilita ataques de VLAN hopping
+# BOM: Use uma VLAN dedicada e não utilizada como nativa (ex.: VLAN 999), mantenha o tráfego de gerência tagged
 
-# BAD: Same Wi-Fi password for IoT SSID and trusted SSID
-# Anyone who learns the password can connect IoT devices to the wrong segment
+# RUIM: Mesma senha de Wi-Fi para o SSID IoT e o SSID confiável
+# Qualquer um que descubra a senha pode conectar dispositivos IoT ao segmento errado
 ```
 
-## Best Practices
+## Boas Práticas
 
-- Start with 4 VLANs: Trusted, IoT, Servers, Guest — add more as needed
-- Put Pi-hole in the Servers VLAN (192.168.30.x)
-- Add a firewall rule allowing DNS (port 53) from all VLANs to the Pi-hole IP — before any RFC1918 block rule
-- Test isolation after every rule change: from the IoT VLAN, try to ping a trusted device — it should fail
-- Use a management VLAN for switch and AP web UIs and restrict access to the Trusted VLAN only
-- Document your VLAN design in a table (VLAN ID, name, subnet, purpose)
+- Comece com 4 VLANs: Confiável, IoT, Servidores, Convidados — adicione mais conforme necessário
+- Coloque o Pi-hole na VLAN de Servidores (192.168.30.x)
+- Adicione uma regra de firewall permitindo DNS (porta 53) de todas as VLANs para o IP do Pi-hole — antes de qualquer regra de bloqueio RFC1918
+- Teste o isolamento após cada mudança de regra: a partir da VLAN IoT, tente fazer ping em um dispositivo confiável — deve falhar
+- Use uma VLAN de gerência para as UIs web do switch e do AP e restrinja o acesso apenas à VLAN Confiável
+- Documente o design das suas VLANs em uma tabela (VLAN ID, nome, subnet, finalidade)
 
-## Related Skills
+## Skills Relacionadas
 
 - homelab-network-setup
 - homelab-pihole-dns

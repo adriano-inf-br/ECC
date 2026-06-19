@@ -1,6 +1,6 @@
 ---
 name: motion-patterns
-description: Production-ready animation patterns for React / Next.js — button, modal, toast, stagger, page transitions, exit animations, scroll, and layout — built on motion-foundations tokens and springs.
+description: Padrões de animação prontos para produção para React / Next.js — botão, modal, toast, stagger, transições de página, animações de saída, scroll e layout — construídos sobre os tokens e springs do motion-foundations.
 version: 1.0
 tags: [motion, animation, ui-patterns]
 category: frontend
@@ -9,87 +9,87 @@ author: jeff
 
 # Motion Patterns
 
-Copy-paste patterns for the most common UI animation needs.
-Every pattern here is built on `motion-foundations` tokens and springs.
-Do not define new duration or easing values here — import them.
+Padrões de copiar e colar para as necessidades mais comuns de animação de UI.
+Todo padrão aqui é construído sobre os tokens e springs do `motion-foundations`.
+Não defina novos valores de duração ou easing aqui — importe-os.
 
 ## When to Activate
 
-- Animating a button, card, modal, or toast notification
-- Building list entrances with stagger
-- Setting up page transitions in Next.js App Router
-- Adding entrance or exit animations to conditional content
-- Implementing scroll-reveal, scroll-linked progress, or sticky story sections
-- Building expanding cards, accordions, or shared-element transitions
+- Animar um botão, card, modal ou notificação toast
+- Construir entradas de listas com stagger
+- Configurar transições de página no Next.js App Router
+- Adicionar animações de entrada ou saída a conteúdo condicional
+- Implementar scroll-reveal, progresso vinculado ao scroll ou seções de história fixas (sticky)
+- Construir cards expansíveis, accordions ou transições de elemento compartilhado
 
 ## Outputs
 
-This skill produces:
+Esta skill produz:
 
-- Accessible, SSR-safe animation for all standard UI components
-- `AnimatePresence`-wrapped conditional renders with correct exit behavior
-- Page transition wrapper component for Next.js App Router
-- Scroll-reveal and scroll-linked patterns using `useScroll` + `useTransform`
-- Layout animation patterns (`layout`, `layoutId`) for expanding and crossfading elements
+- Animação acessível e segura para SSR para todos os componentes de UI padrão
+- Renderizações condicionais envolvidas por `AnimatePresence` com comportamento de saída correto
+- Componente wrapper de transição de página para o Next.js App Router
+- Padrões de scroll-reveal e vinculados ao scroll usando `useScroll` + `useTransform`
+- Padrões de animação de layout (`layout`, `layoutId`) para elementos expansíveis e em crossfade
 
 ## Principles
 
-- Every pattern imports from `motion-foundations`. No raw numbers.
-- Every conditional render is wrapped in `AnimatePresence` with a `key`.
-- Exit animations are always defined alongside enter animations — never as an afterthought.
-- `layout` is used only for small, isolated shifts. Large subtrees get explicit transforms.
+- Todo padrão importa do `motion-foundations`. Nada de números soltos.
+- Toda renderização condicional é envolvida em `AnimatePresence` com uma `key`.
+- Animações de saída são sempre definidas junto com as de entrada — nunca como algo secundário.
+- `layout` é usado apenas para deslocamentos pequenos e isolados. Subárvores grandes recebem transforms explícitos.
 
 ## Rules
 
-1. **Always wrap conditional renders in `AnimatePresence` with a `key`** on the direct child. Without a key, exit animations never fire.
-2. **Always define `exit` when defining `initial` + `animate`.** An animation without an exit is incomplete.
-3. **Use `mode="wait"` on page transitions.** Enter must not start until exit completes.
-4. **Never use `layout` on subtrees with more than ~5 children or deeply nested DOM.** Use explicit `x`/`y` transforms instead.
-5. **Stagger interval must stay between `0.05s` and `0.10s`.** Below feels mechanical; above feels sluggish.
-6. **Modals must always include:** focus trap, Escape-key close, scroll lock, `role="dialog"`, `aria-modal="true"`.
-7. **Scroll reveals use `viewport={{ once: true }}`.** Repeating on scroll-out is distracting, not informative.
-8. **All token values are imported from `motion-foundations`.** No inline numbers.
+1. **Sempre envolva renderizações condicionais em `AnimatePresence` com uma `key`** no filho direto. Sem uma key, as animações de saída nunca disparam.
+2. **Sempre defina `exit` ao definir `initial` + `animate`.** Uma animação sem saída está incompleta.
+3. **Use `mode="wait"` em transições de página.** A entrada não deve começar antes que a saída termine.
+4. **Nunca use `layout` em subárvores com mais de ~5 filhos ou DOM profundamente aninhado.** Use transforms explícitos de `x`/`y` em vez disso.
+5. **O intervalo de stagger deve ficar entre `0.05s` e `0.10s`.** Abaixo disso parece mecânico; acima parece lento.
+6. **Modais devem sempre incluir:** focus trap, fechamento com tecla Escape, bloqueio de scroll, `role="dialog"`, `aria-modal="true"`.
+7. **Scroll reveals usam `viewport={{ once: true }}`.** Repetir ao sair da tela distrai, em vez de informar.
+8. **Todos os valores de token são importados do `motion-foundations`.** Nada de números inline.
 
 ## Decision Guidance
 
 ### Choosing the right pattern
 
-| Situation | Pattern |
+| Situação | Padrão |
 | ---------------------------------------- | ---------------------- |
-| Element appears / disappears             | `AnimatePresence`      |
-| List of items loading in sequence        | Stagger variants       |
-| Navigating between routes                | Page transition wrapper|
-| Element changes size in place            | `layout` prop          |
-| Same element moves across page contexts  | `layoutId`             |
-| Element enters when scrolled into view   | `whileInView`          |
-| Value tied to scroll position            | `useScroll` + `useTransform` |
+| Elemento aparece / desaparece            | `AnimatePresence`      |
+| Lista de itens carregando em sequência   | Variantes de stagger   |
+| Navegar entre rotas                      | Wrapper de transição de página|
+| Elemento muda de tamanho no lugar        | prop `layout`          |
+| Mesmo elemento se move entre contextos da página | `layoutId`        |
+| Elemento entra ao ser rolado para a visão | `whileInView`         |
+| Valor atrelado à posição do scroll       | `useScroll` + `useTransform` |
 
 ### When to use `mode="wait"` vs `mode="sync"`
 
-| Mode | Use when |
+| Modo | Use quando |
 | ------- | --------------------------------------- |
-| `wait` | Page transitions, content swaps (one at a time) |
-| `sync` | Stacked notifications, list items (overlap is fine) |
-| `popLayout` | Items removed from a reflow list |
+| `wait` | Transições de página, troca de conteúdo (um de cada vez) |
+| `sync` | Notificações empilhadas, itens de lista (sobreposição é aceitável) |
+| `popLayout` | Itens removidos de uma lista que faz reflow |
 
 ## Core Concepts
 
 ### AnimatePresence contract
 
-Three things must always be true:
+Três coisas devem ser sempre verdadeiras:
 
-1. `AnimatePresence` wraps the conditional
-2. The direct child has a `key`
-3. The child has an `exit` prop
+1. `AnimatePresence` envolve o condicional
+2. O filho direto tem uma `key`
+3. O filho tem uma prop `exit`
 
-Miss any one of these and the exit animation silently fails.
+Se faltar qualquer uma delas, a animação de saída falha silenciosamente.
 
 ### layout vs layoutId
 
-- `layout` — animates the element's own size/position change in place
-- `layoutId` — links two separate elements, crossfading between them across renders
+- `layout` — anima a própria mudança de tamanho/posição do elemento no lugar
+- `layoutId` — vincula dois elementos separados, fazendo crossfade entre eles ao longo das renderizações
 
-Use `layout="position"` on text inside an expanding container to prevent text reflow from animating.
+Use `layout="position"` em texto dentro de um container que expande para evitar que o reflow do texto seja animado.
 
 ## Code Examples
 
@@ -118,7 +118,7 @@ const container = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.08,   // within the 0.05–0.10 rule
+      staggerChildren: 0.08,   // dentro da regra 0.05–0.10
       delayChildren: 0.1,
     },
   },
@@ -143,7 +143,7 @@ const item = {
 import { motion, AnimatePresence } from "motion/react"
 import { motionTokens, springs } from "@/lib/motion-tokens"
 
-// Wrap at the call site:
+// Envolva no ponto de chamada:
 // <AnimatePresence>{isOpen && <Modal key="modal" />}</AnimatePresence>
 
 export function Modal({ onClose }: { onClose: () => void }) {
@@ -158,8 +158,8 @@ export function Modal({ onClose }: { onClose: () => void }) {
         onClick={onClose}
       />
 
-      {/* Panel — accessibility requirements: focus trap, Escape close,
-          scroll lock, role="dialog", aria-modal="true" */}
+      {/* Painel — requisitos de acessibilidade: focus trap, fechamento com Escape,
+          bloqueio de scroll, role="dialog", aria-modal="true" */}
       <motion.div
         role="dialog"
         aria-modal="true"
@@ -258,7 +258,7 @@ import { motionTokens, springs } from "@/lib/motion-tokens"
 <motion.div
   initial={{ opacity: 0, y: motionTokens.distance.lg }}
   whileInView={{ opacity: 1, y: 0 }}
-  viewport={{ once: true, margin: "-80px" }}   // once: true — rule 7
+  viewport={{ once: true, margin: "-80px" }}   // once: true — regra 7
   transition={{ duration: motionTokens.duration.slow, ease: motionTokens.easing.smooth }}
 />
 ```
@@ -293,7 +293,7 @@ export function ExpandingCard({ title, body }: { title: string; body: string }) 
 
   return (
     <motion.div layout onClick={() => setExpanded(!expanded)} className="cursor-pointer">
-      {/* layout="position" prevents text reflow from animating */}
+      {/* layout="position" evita que o reflow do texto seja animado */}
       <motion.h2 layout="position" className="font-semibold">
         {title}
       </motion.h2>
@@ -319,10 +319,10 @@ export function ExpandingCard({ title, body }: { title: string; body: string }) 
 ### Shared-element crossfade
 
 ```tsx
-// Source context
+// Contexto de origem
 <motion.img layoutId="hero-image" src={src} className="w-16 h-16 rounded" />
 
-// Destination context (same layoutId — motion handles the transition)
+// Contexto de destino (mesmo layoutId — o motion cuida da transição)
 <motion.img layoutId="hero-image" src={src} className="w-full rounded-xl" />
 ```
 
@@ -343,9 +343,9 @@ export function ExpandingCard({ title, body }: { title: string; body: string }) 
 
 ## End-to-End Example
 
-A staggered list that enters on mount, handles conditional presence, and
-respects reduced motion — combining tokens, springs, AnimatePresence, and
-the accessibility hook from `motion-foundations`:
+Uma lista com stagger que entra ao montar, lida com presença condicional e
+respeita movimento reduzido — combinando tokens, springs, AnimatePresence e
+o hook de acessibilidade do `motion-foundations`:
 
 ```tsx
 "use client"
@@ -406,29 +406,29 @@ export function AnimatedList({ items, onRemove }: {
 
 ## Constraints / Non-Goals
 
-This skill does **not** cover:
+Esta skill **não** cobre:
 
-- Token and spring definitions → see `motion-foundations`
-- Drag interactions, swipe gestures, reorderable lists → see `motion-advanced`
-- Text animations (word/character reveal, counters) → see `motion-advanced`
-- SVG path drawing or morphing → see `motion-advanced`
-- Custom animation hooks → see `motion-advanced`
-- CSS-only transitions not using `motion/react`
+- Definições de tokens e springs → veja `motion-foundations`
+- Interações de arrastar (drag), gestos de swipe, listas reordenáveis → veja `motion-advanced`
+- Animações de texto (revelação de palavra/caractere, contadores) → veja `motion-advanced`
+- Desenho ou morphing de paths SVG → veja `motion-advanced`
+- Hooks de animação customizados → veja `motion-advanced`
+- Transições somente em CSS que não usam `motion/react`
 
 ## Anti-Patterns
 
-| Anti-pattern | Rule violated | Fix |
+| Antipadrão | Regra violada | Correção |
 | -------------------------------------------- | ------- | ------------------------------------------ |
-| `AnimatePresence` child missing `key` | Rule 1 | Add stable `key` to the direct child |
-| `initial` + `animate` without `exit` | Rule 2 | Always define all three together |
-| Page transition without `mode="wait"` | Rule 3 | Add `mode="wait"` to `AnimatePresence` |
-| `layout` on a 50-item list | Rule 4 | Use `mode="popLayout"` or explicit transforms |
-| `staggerChildren: 0.2` on a 10-item list | Rule 5 | Cap at `0.08–0.10` |
-| Modal without focus trap | Rule 6 | Add `focus-trap-react` or Radix Dialog |
-| `whileInView` without `viewport={{ once: true }}` | Rule 7 | Repeating entrances distract, not inform |
-| `transition={{ duration: 0.3 }}` inline | Rule 8 | Use `motionTokens.duration.normal` |
+| Filho de `AnimatePresence` sem `key` | Regra 1 | Adicione uma `key` estável ao filho direto |
+| `initial` + `animate` sem `exit` | Regra 2 | Sempre defina os três juntos |
+| Transição de página sem `mode="wait"` | Regra 3 | Adicione `mode="wait"` ao `AnimatePresence` |
+| `layout` em uma lista de 50 itens | Regra 4 | Use `mode="popLayout"` ou transforms explícitos |
+| `staggerChildren: 0.2` em uma lista de 10 itens | Regra 5 | Limite a `0.08–0.10` |
+| Modal sem focus trap | Regra 6 | Adicione `focus-trap-react` ou Radix Dialog |
+| `whileInView` sem `viewport={{ once: true }}` | Regra 7 | Entradas repetidas distraem, não informam |
+| `transition={{ duration: 0.3 }}` inline | Regra 8 | Use `motionTokens.duration.normal` |
 
 ## Related Skills
 
-- **`motion-foundations`** — defines all tokens, springs, the `useSafeMotion` hook, and SSR guards that every pattern here imports. Must be set up first.
-- **`motion-advanced`** — extends these patterns with drag, gestures, SVG, text, custom hooks, and imperative sequencing. Does not redefine any patterns from this skill.
+- **`motion-foundations`** — define todos os tokens, springs, o hook `useSafeMotion` e os guards de SSR que todo padrão aqui importa. Deve ser configurada primeiro.
+- **`motion-advanced`** — estende esses padrões com drag, gestos, SVG, texto, hooks customizados e sequenciamento imperativo. Não redefine nenhum padrão desta skill.

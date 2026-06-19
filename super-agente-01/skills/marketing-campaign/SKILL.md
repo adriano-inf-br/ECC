@@ -1,114 +1,114 @@
 ---
 name: marketing-campaign
-description: End-to-end marketing campaign planning and execution. Covers audience research, positioning, campaign angle definition, landing page copy, email sequences, social posts, ad copy, short-form video scripts, and content calendars. Use as the orchestration layer for multi-channel product launches.
+description: Planejamento e execução de campanhas de marketing de ponta a ponta. Cobre pesquisa de público, posicionamento, definição do ângulo da campanha, copy de landing page, sequências de e-mail, posts em redes sociais, copy de anúncios, roteiros de vídeo de formato curto e calendários de conteúdo. Use como a camada de orquestração para lançamentos de produto multicanal.
 metadata:
   origin: ECC
 ---
 
 # Marketing Campaign
 
-Plan and execute launch campaigns that convert — not just campaigns that ship.
+Planeje e execute campanhas de lançamento que convertem — não apenas campanhas que são publicadas.
 
 ## When to Activate
 
-- planning a product or feature launch
-- building a full content suite from a single product brief
-- defining positioning and campaign angle before writing any copy
-- orchestrating multiple content types across channels
-- reviewing copy for conversion quality and brand consistency
+- planejando o lançamento de um produto ou recurso
+- construindo um conjunto completo de conteúdo a partir de um único brief de produto
+- definindo posicionamento e ângulo da campanha antes de escrever qualquer copy
+- orquestrando múltiplos tipos de conteúdo entre canais
+- revisando copy quanto à qualidade de conversão e consistência de marca
 
 ## Non-Negotiables
 
-1. Define positioning before writing any copy. All copy flows from the angle.
-2. Research the audience before assuming you know their language or fears.
-3. Each deliverable must serve one clear purpose in the campaign arc.
-4. Specificity beats adjectives in every format and on every channel.
-5. The same voice must run across every channel and every piece.
-6. No copy ships without passing the quality gate.
+1. Defina o posicionamento antes de escrever qualquer copy. Todo o copy flui do ângulo.
+2. Pesquise o público antes de presumir que conhece sua linguagem ou seus medos.
+3. Cada entregável deve servir a um propósito claro no arco da campanha.
+4. Especificidade vence adjetivos em todo formato e em todo canal.
+5. A mesma voz deve percorrer todos os canais e todas as peças.
+6. Nenhum copy é publicado sem passar pelo Quality Gate.
 
 ## Campaign Workflow
 
 ### Phase 1: Research
 
-Use `market-research` to:
-- profile the target audience (jobs-to-be-done, fears, language, alternatives they use)
-- map 3+ direct or adjacent competitors (positioning, gaps, messaging weaknesses)
-- identify 1–3 audience insights the campaign angle will exploit
+Use `market-research` para:
+- traçar o perfil do público-alvo (jobs-to-be-done, medos, linguagem, alternativas que utilizam)
+- mapear 3+ concorrentes diretos ou adjacentes (posicionamento, lacunas, fraquezas de mensagem)
+- identificar de 1 a 3 insights de público que o ângulo da campanha vai explorar
 
-Deliverable: a short research brief (audience profile + competitive summary + key insights).
+Entregável: um breve research brief (perfil do público + resumo competitivo + principais insights).
 
 ### Phase 2: Positioning
 
-Produce:
-- core benefit statement (one sentence, no feature list, no jargon)
-- positioning formula: "[Product] helps [audience] [achieve outcome] by [mechanism]"
-- campaign angle: the specific tension, insight, or moment the whole campaign lives in
-- tone profile: lock before writing (delegate to `brand-voice` for durable, session-reusable voice capture)
+Produza:
+- declaração de benefício central (uma frase, sem lista de recursos, sem jargão)
+- fórmula de posicionamento: "[Produto] ajuda [público] a [alcançar resultado] por meio de [mecanismo]"
+- ângulo da campanha: a tensão, o insight ou o momento específico em que toda a campanha vive
+- perfil de tom: defina antes de escrever (delegue ao `brand-voice` para captura de voz durável e reutilizável na sessão)
 
-Do not write any copy until positioning and angle are approved.
+Não escreva nenhum copy até que o posicionamento e o ângulo sejam aprovados.
 
 ### Phase 3: Content Production
 
-Produce in this order — each layer informs the next:
+Produza nesta ordem — cada camada embasa a próxima:
 
-1. **Landing page copy** (all sections: hero, problem, solution, features, how it works, proof, CTA)
-2. **Email sequence** (each email has one purpose; follow the arc: problem → education → agitation → solution → proof → urgency → final CTA)
-3. **Social posts** (platform-native via `content-engine`; LinkedIn and X are different formats, not the same copy resized)
-4. **Short-form video scripts** (timestamp-blocked; written for screen and ear, not the page)
-5. **Ad copy variants** (3–4 variants testing different angles or audience segments)
-6. **Content calendar** (day-by-day schedule with channel, type, timing, and dependencies)
+1. **Copy de landing page** (todas as seções: hero, problema, solução, recursos, como funciona, prova, CTA)
+2. **Sequência de e-mail** (cada e-mail tem um propósito; siga o arco: problema → educação → agitação → solução → prova → urgência → CTA final)
+3. **Posts em redes sociais** (nativos da plataforma via `content-engine`; LinkedIn e X são formatos diferentes, não o mesmo copy redimensionado)
+4. **Roteiros de vídeo de formato curto** (em blocos de timestamp; escritos para a tela e o ouvido, não para a página)
+5. **Variantes de copy de anúncio** (3–4 variantes testando ângulos ou segmentos de público diferentes)
+6. **Calendário de conteúdo** (cronograma dia a dia com canal, tipo, timing e dependências)
 
 ### Phase 4: Review
 
-Gate every deliverable:
-- 5-second test on all hero / above-fold copy (clear who it's for, what it does, why act now)
-- CTA audit (one per piece, specific, earned — not demanded)
-- Tone consistency check across all channels
-- Claim audit (every claim is specific and supportable)
-- Cross-channel consistency (ad claims match landing page; email body matches subject)
+Aprove cada entregável:
+- teste de 5 segundos em todo copy de hero / acima da dobra (claro para quem é, o que faz, por que agir agora)
+- auditoria de CTA (um por peça, específico, conquistado — não exigido)
+- verificação de consistência de tom entre todos os canais
+- auditoria de afirmações (toda afirmação é específica e sustentável)
+- consistência entre canais (afirmações do anúncio batem com a landing page; corpo do e-mail bate com o assunto)
 
 ## Output Contract
 
-A full campaign delivers:
+Uma campanha completa entrega:
 
-1. **Positioning brief** — angle, core benefit statement, tone profile
-2. **Landing page copy** — hero, problem, solution, features, how it works, proof, CTA
-3. **Email sequence** — subject + preview + body + CTA for each email, labelled by day and purpose
-4. **LinkedIn posts** — 3+ platform-native posts with distinct angles
-5. **X posts** — 5+ standalone posts + 1 thread
-6. **Short-form video scripts** — 2+ timestamp-blocked scripts with visual direction notes
-7. **Ad copy variants** — short headline / long headline / body per variant
-8. **Content calendar** — day-by-day schedule with channel, content type, timing, and dependencies
-9. **Copy review summary** — flagged issues and open questions before anything goes live
+1. **Brief de posicionamento** — ângulo, declaração de benefício central, perfil de tom
+2. **Copy de landing page** — hero, problema, solução, recursos, como funciona, prova, CTA
+3. **Sequência de e-mail** — assunto + preview + corpo + CTA para cada e-mail, rotulado por dia e propósito
+4. **Posts no LinkedIn** — 3+ posts nativos da plataforma com ângulos distintos
+5. **Posts no X** — 5+ posts independentes + 1 thread
+6. **Roteiros de vídeo de formato curto** — 2+ roteiros em blocos de timestamp com notas de direção visual
+7. **Variantes de copy de anúncio** — headline curta / headline longa / corpo por variante
+8. **Calendário de conteúdo** — cronograma dia a dia com canal, tipo de conteúdo, timing e dependências
+9. **Resumo da revisão de copy** — questões sinalizadas e perguntas em aberto antes de qualquer coisa ir ao ar
 
 ## Quality Gate
 
-Before delivering any piece:
+Antes de entregar qualquer peça:
 
-- every deliverable sounds like the same author
-- no hollow superlatives or filler adjectives remain
-- every CTA is specific and earned (never "learn more" or "click here")
-- no copy is duplicated verbatim across platforms
-- hero copy passes the 5-second test
-- email subjects match email body (no bait-and-switch)
-- ad claims match landing page claims exactly
-- no copy would work unchanged for any other product in the category
+- todo entregável soa como se fosse do mesmo autor
+- nenhum superlativo vazio ou adjetivo de enchimento permanece
+- todo CTA é específico e conquistado (nunca "saiba mais" ou "clique aqui")
+- nenhum copy é duplicado literalmente entre plataformas
+- o copy de hero passa no teste de 5 segundos
+- os assuntos dos e-mails batem com o corpo do e-mail (sem isca enganosa)
+- as afirmações dos anúncios batem exatamente com as afirmações da landing page
+- nenhum copy funcionaria sem alterações para qualquer outro produto da categoria
 
 ## Hard Bans
 
-Delete and rewrite any:
+Apague e reescreva qualquer:
 
-- "game-changing", "revolutionary", "world-class", "cutting-edge"
-- "In today's competitive landscape"
-- fake urgency not backed by a real deadline
-- hollow social proof without specifics ("thousands trust us")
-- generic CTAs ("learn more", "find out more", "click here")
-- copy that could be unplugged and dropped into a competitor's campaign unchanged
+- "transformador", "revolucionário", "de classe mundial", "de ponta"
+- "No cenário competitivo de hoje"
+- urgência falsa não respaldada por um prazo real
+- prova social vazia sem especificidades ("milhares confiam em nós")
+- CTAs genéricos ("saiba mais", "descubra mais", "clique aqui")
+- copy que poderia ser desplugado e colocado na campanha de um concorrente sem alterações
 
 ## Related Skills
 
-- `brand-voice` — source-derived voice capture (run before content production)
-- `content-engine` — platform-native content production
-- `crosspost` — multi-platform distribution
-- `market-research` — audience and competitive intelligence
-- `seo` — on-page optimisation for landing page copy
+- `brand-voice` — captura de voz derivada da fonte (execute antes da produção de conteúdo)
+- `content-engine` — produção de conteúdo nativo da plataforma
+- `crosspost` — distribuição multiplataforma
+- `market-research` — inteligência de público e competitiva
+- `seo` — otimização on-page para copy de landing page

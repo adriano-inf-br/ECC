@@ -64,13 +64,13 @@ show ip route <peer>
 show bgp neighbors <peer> | include BGP state|Last reset|Local host|Foreign host
 ```
 
-If the peer is sourced from a loopback, confirm both directions route to the
-loopback addresses and that the neighbor config uses the expected update source.
+Se o peer tem origem em uma loopback, confirme que ambas as direções roteiam para
+os endereços de loopback e que a config do vizinho usa o update source esperado.
 
-Avoid disabling ACLs or firewall policy as a diagnostic shortcut. Read hit
-counters, logs, and path state first.
+Evite desabilitar ACLs ou política de firewall como atalho de diagnóstico. Leia
+primeiro os contadores de hit, os logs e o estado do caminho.
 
-## Route Policy Checks
+## Verificações de Política de Rota
 
 ```text
 show bgp neighbors <peer> advertised-routes
@@ -80,11 +80,11 @@ show route-map <name>
 show bgp <prefix>
 ```
 
-Some platforms require additional configuration before `received-routes` is
-available. Do not add that configuration during incident triage unless the
-operator approves the change.
+Algumas plataformas exigem configuração adicional antes que `received-routes`
+fique disponível. Não adicione essa configuração durante a triagem de incidente,
+a menos que o operador aprove a mudança.
 
-## AS Path And Prefix Review
+## Revisão de AS Path e Prefixos
 
 ```text
 show bgp regexp _65001_
@@ -93,10 +93,10 @@ show bgp <prefix>
 show bgp neighbors <peer> advertised-routes | include Network|Path|<prefix>
 ```
 
-Use AS-path regex carefully. `_65001_` matches AS 65001 as a token. Plain
-`65001` can match longer ASNs or unrelated text.
+Use regex de AS-path com cuidado. `_65001_` casa com o AS 65001 como um token. Um
+`65001` simples pode casar com ASNs mais longos ou texto não relacionado.
 
-## Parser Pattern
+## Padrão de Parser
 
 ```python
 import re
@@ -136,32 +136,33 @@ def parse_bgp_summary(raw: str) -> list[dict[str, Any]]:
     return rows
 ```
 
-Prefer structured parser output when available, but store raw output with the
-incident record because BGP summary formats vary by platform and address family.
+Prefira a saída estruturada do parser quando disponível, mas armazene a saída
+bruta junto ao registro do incidente, pois os formatos do BGP summary variam por
+plataforma e address family.
 
-## Change-Window Only
+## Apenas em Janela de Mudança
 
-These actions can affect routing and should not be suggested as automatic
-diagnostics:
+Estas ações podem afetar o roteamento e não devem ser sugeridas como
+diagnósticos automáticos:
 
-- Clearing a BGP session.
-- Changing neighbor authentication, timers, update source, route-maps, or
+- Limpar uma sessão BGP.
+- Alterar autenticação do vizinho, timers, update source, route-maps ou
   prefix-lists.
-- Enabling additional received-route storage.
-- Relaxing firewall, ACL, or control-plane policy.
+- Habilitar armazenamento adicional de rotas recebidas.
+- Afrouxar política de firewall, ACL ou do control-plane.
 
-If a reset is approved, prefer the least disruptive soft or route-refresh option
-supported by the platform and document exactly why it is safe.
+Se um reset for aprovado, prefira a opção soft ou de route-refresh menos
+disruptiva suportada pela plataforma e documente exatamente por que ela é segura.
 
-## Anti-Patterns
+## Anti-Padrões
 
-- Assuming `Active` always means the remote side is down.
-- Ignoring VRF, address family, or update-source differences.
-- Using broad AS-path regex without token boundaries.
-- Hard-resetting a peer before reading last reset reason and logs.
-- Treating missing `received-routes` output as proof that no routes arrived.
+- Presumir que `Active` sempre significa que o lado remoto está caído.
+- Ignorar diferenças de VRF, address family ou update-source.
+- Usar regex de AS-path ampla sem limites de token.
+- Fazer hard-reset de um peer antes de ler o motivo do último reset e os logs.
+- Tratar a ausência da saída `received-routes` como prova de que nenhuma rota chegou.
 
-## See Also
+## Veja Também
 
 - Skill: `cisco-ios-patterns`
 - Skill: `network-config-validation`

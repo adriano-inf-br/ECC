@@ -225,20 +225,20 @@ data class ItemUiModel(
 )
 ```
 
-### Use `key()` and Lazy Lists Correctly
+### Use `key()` e Lazy Lists Corretamente
 
 ```kotlin
 LazyColumn {
     items(
         items = items,
-        key = { it.id }  // Stable keys enable item reuse and animations
+        key = { it.id }  // Chaves estáveis habilitam reuso de itens e animações
     ) { item ->
         ItemRow(item = item)
     }
 }
 ```
 
-### Defer Reads with `derivedStateOf`
+### Adie Leituras com `derivedStateOf`
 
 ```kotlin
 val listState = rememberLazyListState()
@@ -247,13 +247,13 @@ val showScrollToTop by remember {
 }
 ```
 
-### Avoid Allocations in Recomposition
+### Evite Alocações na Recomposição
 
 ```kotlin
-// BAD — new lambda and list every recomposition
+// RUIM — nova lambda e lista a cada recomposição
 items.filter { it.isActive }.forEach { ActiveItem(it, onClick = { handle(it) }) }
 
-// GOOD — key each item so callbacks stay attached to the right row
+// BOM — faça key de cada item para que os callbacks fiquem ligados à linha correta
 val activeItems = remember(items) { items.filter { it.isActive } }
 activeItems.forEach { item ->
     key(item.id) {
@@ -264,7 +264,7 @@ activeItems.forEach { item ->
 
 ## Theming
 
-### Material 3 Dynamic Theming
+### Theming Dinâmico do Material 3
 
 ```kotlin
 @Composable
@@ -288,13 +288,13 @@ fun AppTheme(
 
 ## Anti-Patterns to Avoid
 
-- Using `mutableStateOf` in ViewModels when `MutableStateFlow` with `collectAsStateWithLifecycle` is safer for lifecycle
-- Passing `NavController` deep into composables — pass lambda callbacks instead
-- Heavy computation inside `@Composable` functions — move to ViewModel or `remember {}`
-- Using `LaunchedEffect(Unit)` as a substitute for ViewModel init — it re-runs on configuration change in some setups
-- Creating new object instances in composable parameters — causes unnecessary recomposition
+- Usar `mutableStateOf` em ViewModels quando `MutableStateFlow` com `collectAsStateWithLifecycle` é mais seguro para o lifecycle
+- Passar `NavController` para o fundo dos composables — em vez disso, passe callbacks lambda
+- Computação pesada dentro de funções `@Composable` — mova para o ViewModel ou para `remember {}`
+- Usar `LaunchedEffect(Unit)` como substituto para a init do ViewModel — ele roda novamente em mudanças de configuração em alguns setups
+- Criar novas instâncias de objeto nos parâmetros do composable — causa recomposição desnecessária
 
 ## References
 
-See skill: `android-clean-architecture` for module structure and layering.
-See skill: `kotlin-coroutines-flows` for coroutine and Flow patterns.
+Veja a skill: `android-clean-architecture` para estrutura de módulos e camadas.
+Veja a skill: `kotlin-coroutines-flows` para padrões de coroutine e Flow.

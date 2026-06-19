@@ -164,40 +164,40 @@ class User with _$User {
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 }
 
-// Usage
+// Uso
 final user = User(id: '1', name: 'Alice', email: 'alice@example.com');
-final updated = user.copyWith(name: 'Alice Smith'); // immutable update
+final updated = user.copyWith(name: 'Alice Smith'); // atualização imutável
 final json = user.toJson();
 final fromJson = User.fromJson(json);
 ```
 
 ---
 
-## 3. Async Composition
+## 3. Composição Assíncrona
 
-### Structured Concurrency with Future.wait
+### Concorrência Estruturada com Future.wait
 
 ```dart
 Future<DashboardData> loadDashboard(UserRepository users, OrderRepository orders) async {
-  // Run concurrently — don't await sequentially
+  // Rode concorrentemente — não use await sequencialmente
   final (userList, orderList) = await (
     users.getAll(),
     orders.getRecent(),
-  ).wait; // Dart 3 record destructuring + Future.wait extension
+  ).wait; // desestruturação de record do Dart 3 + extensão Future.wait
 
   return DashboardData(users: userList, orders: orderList);
 }
 ```
 
-### Stream Patterns
+### Padrões de Stream
 
 ```dart
-// Repository exposes reactive streams for live data
+// O repository expõe streams reativos para dados ao vivo
 Stream<List<Item>> watchCartItems() => _db
     .watchTable('cart_items')
     .map((rows) => rows.map(Item.fromRow).toList());
 
-// In widget layer — declarative, no manual subscription
+// Na camada de widget — declarativo, sem subscription manual
 StreamBuilder<List<Item>>(
   stream: cartRepository.watchCartItems(),
   builder: (context, snapshot) => switch (snapshot) {
@@ -210,15 +210,15 @@ StreamBuilder<List<Item>>(
 )
 ```
 
-### BuildContext After Await
+### BuildContext Após Await
 
 ```dart
-// CRITICAL — always check mounted after any await in StatefulWidget
+// CRÍTICO — sempre verifique mounted após qualquer await em StatefulWidget
 Future<void> _handleSubmit() async {
   setState(() => _isLoading = true);
   try {
     await authService.login(_email, _password);
-    if (!mounted) return; // ← guard before using context
+    if (!mounted) return; // ← guard antes de usar o context
     context.go('/home');
   } on AuthException catch (e) {
     if (!mounted) return;
@@ -231,12 +231,12 @@ Future<void> _handleSubmit() async {
 
 ---
 
-## 4. Widget Architecture
+## 4. Arquitetura de Widgets
 
-### Extract to Classes, Not Methods
+### Extraia para Classes, Não Métodos
 
 ```dart
-// BAD — private method returning widget, prevents optimization
+// RUIM — método privado retornando widget, impede otimização
 Widget _buildHeader() {
   return Container(
     padding: const EdgeInsets.all(16),
@@ -244,7 +244,7 @@ Widget _buildHeader() {
   );
 }
 
-// GOOD — separate widget class, enables const, element reuse
+// BOM — classe de widget separada, habilita const, reutilização de element
 class _PageHeader extends StatelessWidget {
   const _PageHeader(this.title);
   final String title;
@@ -259,41 +259,41 @@ class _PageHeader extends StatelessWidget {
 }
 ```
 
-### const Propagation
+### Propagação de const
 
 ```dart
-// BAD — new instances every rebuild
+// RUIM — novas instâncias a cada rebuild
 child: Padding(
-  padding: EdgeInsets.all(16.0),       // not const
-  child: Icon(Icons.home, size: 24.0), // not const
+  padding: EdgeInsets.all(16.0),       // não é const
+  child: Icon(Icons.home, size: 24.0), // não é const
 )
 
-// GOOD — const stops rebuild propagation
+// BOM — const interrompe a propagação do rebuild
 child: const Padding(
   padding: EdgeInsets.all(16.0),
   child: Icon(Icons.home, size: 24.0),
 )
 ```
 
-### Scoped Rebuilds
+### Rebuilds com Escopo
 
 ```dart
-// BAD — entire page rebuilds on every counter change
+// RUIM — a página inteira é reconstruída a cada mudança do contador
 class CounterPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final count = ref.watch(counterProvider); // rebuilds everything
+    final count = ref.watch(counterProvider); // reconstrói tudo
     return Scaffold(
       body: Column(children: [
-        const ExpensiveHeader(), // unnecessarily rebuilt
+        const ExpensiveHeader(), // reconstruído desnecessariamente
         Text('$count'),
-        const ExpensiveFooter(), // unnecessarily rebuilt
+        const ExpensiveFooter(), // reconstruído desnecessariamente
       ]),
     );
   }
 }
 
-// GOOD — isolate the rebuilding part
+// BOM — isole a parte que é reconstruída
 class CounterPage extends StatelessWidget {
   const CounterPage({super.key});
 
@@ -301,9 +301,9 @@ class CounterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Column(children: [
-        ExpensiveHeader(),        // never rebuilt (const)
-        _CounterDisplay(),        // only this rebuilds
-        ExpensiveFooter(),        // never rebuilt (const)
+        ExpensiveHeader(),        // nunca reconstruído (const)
+        _CounterDisplay(),        // só este reconstrói
+        ExpensiveFooter(),        // nunca reconstruído (const)
       ]),
     );
   }
@@ -322,10 +322,10 @@ class _CounterDisplay extends ConsumerWidget {
 
 ---
 
-## 5. State Management: BLoC/Cubit
+## 5. Gerenciamento de Estado: BLoC/Cubit
 
 ```dart
-// Cubit — synchronous or simple async state
+// Cubit — estado síncrono ou assíncrono simples
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit(this._authService) : super(const AuthState.initial());
   final AuthService _authService;
@@ -346,7 +346,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 }
 
-// In widget
+// No widget
 BlocBuilder<AuthCubit, AuthState>(
   builder: (context, state) => switch (state) {
     AuthInitial() => const LoginForm(),
@@ -359,17 +359,17 @@ BlocBuilder<AuthCubit, AuthState>(
 
 ---
 
-## 6. State Management: Riverpod
+## 6. Gerenciamento de Estado: Riverpod
 
 ```dart
-// Auto-dispose async provider
+// Provider assíncrono com auto-dispose
 @riverpod
 Future<List<Product>> products(Ref ref) async {
   final repo = ref.watch(productRepositoryProvider);
   return repo.getAll();
 }
 
-// Notifier with complex mutations
+// Notifier com mutações complexas
 @riverpod
 class CartNotifier extends _$CartNotifier {
   @override
@@ -394,7 +394,7 @@ class CartNotifier extends _$CartNotifier {
   void clear() => state = [];
 }
 
-// Derived provider (selector pattern)
+// Provider derivado (padrão selector)
 @riverpod
 int cartCount(Ref ref) => ref.watch(cartNotifierProvider).length;
 
@@ -403,7 +403,7 @@ double cartTotal(Ref ref) {
   final cart = ref.watch(cartNotifierProvider);
   final products = ref.watch(productsProvider).valueOrNull ?? [];
   return cart.fold(0.0, (total, item) {
-    // firstWhereOrNull (from collection package) avoids StateError when product is missing
+    // firstWhereOrNull (do pacote collection) evita StateError quando o produto está ausente
     final product = products.firstWhereOrNull((p) => p.id == item.productId);
     return total + (product?.price ?? 0) * item.quantity;
   });

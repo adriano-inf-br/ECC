@@ -7,37 +7,37 @@ metadata:
 
 # orch-fix-defect
 
-Actor · action · target: **orch · fix · defect**. Thin wrapper over the shared
-engine in [`orch-pipeline`](../orch-pipeline/SKILL.md).
+Ator · ação · alvo: **orch · fix · defect**. Wrapper fino sobre o engine
+compartilhado em [`orch-pipeline`](../orch-pipeline/SKILL.md).
 
-## When to Use
+## Quando Usar
 
-- Something is **broken**: wrong output, an error, a crash, a regression.
-- Distinguish from siblings:
-  - behavior is correct but you want it different → `orch-change-feature`.
-  - the capability does not exist yet → `orch-add-feature`.
+- Algo está **quebrado**: saída errada, um erro, um crash, uma regressão.
+- Distinga das irmãs:
+  - o comportamento está correto mas você o quer diferente → `orch-change-feature`.
+  - a capacidade ainda não existe → `orch-add-feature`.
 
-## Operation settings
+## Configurações da operação
 
-- **Default size floor:** small (often trivial).
-- **Phase mask:** 0 → (light 2 only if root cause is non-obvious or standard+) →
-  4 → 5 → 6. Research (1) is usually skipped.
-- **First move (phase 4):** reproduce the bug as a **new failing** test
-  (regression test), then fix until it goes green. Proving the bug exists first
-  is what separates a fix from a tweak.
+- **Piso de tamanho padrão:** small (frequentemente trivial).
+- **Máscara de fases:** 0 → (2 leve somente se a causa-raiz não for óbvia ou for standard+) →
+  4 → 5 → 6. A Research (1) costuma ser pulada.
+- **Primeiro movimento (fase 4):** reproduza o bug como um **novo teste que falha**
+  (teste de regressão) e então corrija até passar. Provar primeiro que o bug existe
+  é o que separa uma correção de um ajuste.
 
-## How It Works
+## Como Funciona
 
-1. Run the `orch-pipeline` engine with the settings above.
-2. If the root cause is unclear, scope it with `code-explorer` before the red
-   test; escalate build breaks to `build-error-resolver` / `/build-fix`.
-3. Stop at **Gate 1** (only if a plan was produced) and **Gate 2** (pre-commit).
-4. Add `security-reviewer` if the defect sits in a security-sensitive path.
+1. Rode o engine `orch-pipeline` com as configurações acima.
+2. Se a causa-raiz não estiver clara, delimite-a com `code-explorer` antes do teste
+   vermelho; escale quebras de build para `build-error-resolver` / `/build-fix`.
+3. Pare no **Gate 1** (somente se um plano foi produzido) e no **Gate 2** (pré-commit).
+4. Adicione `security-reviewer` se o defeito estiver em um caminho sensível à segurança.
 
-## Example
+## Exemplo
 
 ```
 orch-fix-defect: poller crashes on empty NWS response
-→ write failing test reproducing the crash → fix to green
-→ code-review → commit  [GATE 2: confirm]   (commit: fix:)
+→ escrever teste que falha reproduzindo o crash → corrigir até passar
+→ code-review → commit  [GATE 2: confirmar]   (commit: fix:)
 ```

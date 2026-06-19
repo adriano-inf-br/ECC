@@ -1,136 +1,136 @@
 ---
 name: context-budget
-description: Audits Claude Code context window consumption across agents, skills, MCP servers, and rules. Identifies bloat, redundant components, and produces prioritized token-savings recommendations.
+description: Audita o consumo da janela de contexto do Claude Code em agents, skills, servidores MCP e regras. Identifica inchaço, componentes redundantes e produz recomendações priorizadas de economia de tokens.
 metadata:
   origin: ECC
 ---
 
 # Context Budget
 
-Analyze token overhead across every loaded component in a Claude Code session and surface actionable optimizations to reclaim context space.
+Analise a sobrecarga de tokens em todos os componentes carregados em uma sessão do Claude Code e apresente otimizações acionáveis para recuperar espaço de contexto.
 
-## When to Use
+## Quando Usar
 
-- Session performance feels sluggish or output quality is degrading
-- You've recently added many skills, agents, or MCP servers
-- You want to know how much context headroom you actually have
-- Planning to add more components and need to know if there's room
-- Running `/context-budget` command (this skill backs it)
+- O desempenho da sessão parece lento ou a qualidade do output está degradando
+- Você adicionou recentemente muitas skills, agents ou servidores MCP
+- Você quer saber quanta margem de contexto você realmente tem
+- Planejando adicionar mais componentes e precisa saber se há espaço
+- Executando o comando `/context-budget` (esta skill o sustenta)
 
-## How It Works
+## Como Funciona
 
-### Phase 1: Inventory
+### Fase 1: Inventário
 
-Scan all component directories and estimate token consumption:
+Escaneie todos os diretórios de componentes e estime o consumo de tokens:
 
 **Agents** (`agents/*.md`)
-- Count lines and tokens per file (words × 1.3)
-- Extract `description` frontmatter length
-- Flag: files >200 lines (heavy), description >30 words (bloated frontmatter)
+- Conte linhas e tokens por arquivo (palavras × 1,3)
+- Extraia o comprimento do frontmatter `description`
+- Sinalize: arquivos >200 linhas (pesados), description >30 palavras (frontmatter inflado)
 
 **Skills** (`skills/*/SKILL.md`)
-- Count tokens per SKILL.md
-- Flag: files >400 lines
-- Check for duplicate copies in `.agents/skills/` — skip identical copies to avoid double-counting
+- Conte tokens por SKILL.md
+- Sinalize: arquivos >400 linhas
+- Verifique cópias duplicadas em `.agents/skills/` — pule cópias idênticas para evitar contagem dupla
 
 **Rules** (`rules/**/*.md`)
-- Count tokens per file
-- Flag: files >100 lines
-- Detect content overlap between rule files in the same language module
+- Conte tokens por arquivo
+- Sinalize: arquivos >100 linhas
+- Detecte sobreposição de conteúdo entre arquivos de regra no mesmo módulo de linguagem
 
-**MCP Servers** (`.mcp.json` or active MCP config)
-- Count configured servers and total tool count
-- Estimate schema overhead at ~500 tokens per tool
-- Flag: servers with >20 tools, servers that wrap simple CLI commands (`gh`, `git`, `npm`, `supabase`, `vercel`)
+**Servidores MCP** (`.mcp.json` ou config MCP ativa)
+- Conte servidores configurados e contagem total de ferramentas
+- Estime sobrecarga de schema em ~500 tokens por ferramenta
+- Sinalize: servidores com >20 ferramentas, servidores que encapsulam comandos CLI simples (`gh`, `git`, `npm`, `supabase`, `vercel`)
 
-**CLAUDE.md** (project + user-level)
-- Count tokens per file in the CLAUDE.md chain
-- Flag: combined total >300 lines
+**CLAUDE.md** (nível de projeto + usuário)
+- Conte tokens por arquivo na cadeia CLAUDE.md
+- Sinalize: total combinado >300 linhas
 
-### Phase 2: Classify
+### Fase 2: Classificar
 
-Sort every component into a bucket:
+Ordene cada componente em um bucket:
 
-| Bucket | Criteria | Action |
+| Bucket | Critério | Ação |
 |--------|----------|--------|
-| **Always needed** | Referenced in CLAUDE.md, backs an active command, or matches current project type | Keep |
-| **Sometimes needed** | Domain-specific (e.g. language patterns), not referenced in CLAUDE.md | Consider on-demand activation |
-| **Rarely needed** | No command reference, overlapping content, or no obvious project match | Remove or lazy-load |
+| **Sempre necessário** | Referenciado no CLAUDE.md, sustenta um comando ativo, ou corresponde ao tipo de projeto atual | Manter |
+| **Às vezes necessário** | Específico de domínio (ex.: padrões de linguagem), não referenciado no CLAUDE.md | Considerar ativação sob demanda |
+| **Raramente necessário** | Sem referência de comando, conteúdo sobreposto, ou sem correspondência óbvia com o projeto | Remover ou carregar preguiçosamente |
 
-### Phase 3: Detect Issues
+### Fase 3: Detectar Problemas
 
-Identify the following problem patterns:
+Identifique os seguintes padrões problemáticos:
 
-- **Bloated agent descriptions** — description >30 words in frontmatter loads into every Task tool invocation
-- **Heavy agents** — files >200 lines inflate Task tool context on every spawn
-- **Redundant components** — skills that duplicate agent logic, rules that duplicate CLAUDE.md
-- **MCP over-subscription** — >10 servers, or servers wrapping CLI tools available for free
-- **CLAUDE.md bloat** — verbose explanations, outdated sections, instructions that should be rules
+- **Descriptions infladas de agents** — description >30 palavras no frontmatter carrega em cada invocação da ferramenta Task
+- **Agents pesados** — arquivos >200 linhas inflam o contexto da ferramenta Task em cada spawn
+- **Componentes redundantes** — skills que duplicam lógica de agent, regras que duplicam CLAUDE.md
+- **Subscrição excessiva de MCP** — >10 servidores, ou servidores encapsulando ferramentas CLI disponíveis gratuitamente
+- **Inchaço do CLAUDE.md** — explicações verbosas, seções desatualizadas, instruções que deveriam ser regras
 
-### Phase 4: Report
+### Fase 4: Relatório
 
-Produce the context budget report:
+Produza o relatório de context budget:
 
 ```
-Context Budget Report
+Relatório de Context Budget
 ═══════════════════════════════════════
 
-Total estimated overhead: ~XX,XXX tokens
-Context model: Claude Sonnet (200K window)
-Effective available context: ~XXX,XXX tokens (XX%)
+Total estimado de sobrecarga: ~XX.XXX tokens
+Modelo de contexto: Claude Sonnet (janela de 200K)
+Contexto disponível efetivo: ~XXX.XXX tokens (XX%)
 
-Component Breakdown:
+Detalhamento por Componente:
 ┌─────────────────┬────────┬───────────┐
-│ Component       │ Count  │ Tokens    │
+│ Componente      │ Qtd    │ Tokens    │
 ├─────────────────┼────────┼───────────┤
-│ Agents          │ N      │ ~X,XXX    │
-│ Skills          │ N      │ ~X,XXX    │
-│ Rules           │ N      │ ~X,XXX    │
-│ MCP tools       │ N      │ ~XX,XXX   │
-│ CLAUDE.md       │ N      │ ~X,XXX    │
+│ Agents          │ N      │ ~X.XXX    │
+│ Skills          │ N      │ ~X.XXX    │
+│ Rules           │ N      │ ~X.XXX    │
+│ Ferramentas MCP │ N      │ ~XX.XXX   │
+│ CLAUDE.md       │ N      │ ~X.XXX    │
 └─────────────────┴────────┴───────────┘
 
-WARNING: Issues Found (N):
-[ranked by token savings]
+AVISO: Problemas Encontrados (N):
+[ranqueados por economia de tokens]
 
-Top 3 Optimizations:
-1. [action] → save ~X,XXX tokens
-2. [action] → save ~X,XXX tokens
-3. [action] → save ~X,XXX tokens
+Top 3 Otimizações:
+1. [ação] → economiza ~X.XXX tokens
+2. [ação] → economiza ~X.XXX tokens
+3. [ação] → economiza ~X.XXX tokens
 
-Potential savings: ~XX,XXX tokens (XX% of current overhead)
+Economia potencial: ~XX.XXX tokens (XX% da sobrecarga atual)
 ```
 
-In verbose mode, additionally output per-file token counts, line-by-line breakdown of the heaviest files, specific redundant lines between overlapping components, and MCP tool list with per-tool schema size estimates.
+No modo verbose, adicionalmente exiba contagens de tokens por arquivo, detalhamento linha a linha dos arquivos mais pesados, linhas redundantes específicas entre componentes sobrepostos e lista de ferramentas MCP com estimativas de tamanho de schema por ferramenta.
 
-## Examples
+## Exemplos
 
-**Basic audit**
+**Auditoria básica**
 ```
-User: /context-budget
-Skill: Scans setup → 16 agents (12,400 tokens), 28 skills (6,200), 87 MCP tools (43,500), 2 CLAUDE.md (1,200)
-       Flags: 3 heavy agents, 14 MCP servers (3 CLI-replaceable)
-       Top saving: remove 3 MCP servers → -27,500 tokens (47% overhead reduction)
-```
-
-**Verbose mode**
-```
-User: /context-budget --verbose
-Skill: Full report + per-file breakdown showing planner.md (213 lines, 1,840 tokens),
-       MCP tool list with per-tool sizes, duplicated rule lines side by side
+Usuário: /context-budget
+Skill: Escaneia configuração → 16 agents (12.400 tokens), 28 skills (6.200), 87 ferramentas MCP (43.500), 2 CLAUDE.md (1.200)
+       Sinaliza: 3 agents pesados, 14 servidores MCP (3 substituíveis por CLI)
+       Maior economia: remover 3 servidores MCP → -27.500 tokens (redução de 47% da sobrecarga)
 ```
 
-**Pre-expansion check**
+**Modo verbose**
 ```
-User: I want to add 5 more MCP servers, do I have room?
-Skill: Current overhead 33% → adding 5 servers (~50 tools) would add ~25,000 tokens → pushes to 45% overhead
-       Recommendation: remove 2 CLI-replaceable servers first to stay under 40%
+Usuário: /context-budget --verbose
+Skill: Relatório completo + detalhamento por arquivo mostrando planner.md (213 linhas, 1.840 tokens),
+       lista de ferramentas MCP com tamanhos por ferramenta, linhas de regra duplicadas lado a lado
 ```
 
-## Best Practices
+**Verificação pré-expansão**
+```
+Usuário: Quero adicionar 5 servidores MCP a mais, há espaço?
+Skill: Sobrecarga atual 33% → adicionar 5 servidores (~50 ferramentas) adicionaria ~25.000 tokens → empurra para 45% de sobrecarga
+       Recomendação: remover 2 servidores substituíveis por CLI primeiro para ficar abaixo de 40%
+```
 
-- **Token estimation**: use `words × 1.3` for prose, `chars / 4` for code-heavy files
-- **MCP is the biggest lever**: each tool schema costs ~500 tokens; a 30-tool server costs more than all your skills combined
-- **Agent descriptions are loaded always**: even if the agent is never invoked, its description field is present in every Task tool context
-- **Verbose mode for debugging**: use when you need to pinpoint the exact files driving overhead, not for regular audits
-- **Audit after changes**: run after adding any agent, skill, or MCP server to catch creep early
+## Boas Práticas
+
+- **Estimativa de tokens**: use `palavras × 1,3` para prosa, `chars / 4` para arquivos com muito código
+- **MCP é a maior alavanca**: cada schema de ferramenta custa ~500 tokens; um servidor com 30 ferramentas custa mais do que todas as suas skills combinadas
+- **Descriptions de agents são sempre carregadas**: mesmo se o agent nunca for invocado, seu campo description está presente em todo contexto da ferramenta Task
+- **Modo verbose para depuração**: use quando precisar identificar os arquivos exatos que geram sobrecarga, não para auditorias regulares
+- **Audite após mudanças**: execute após adicionar qualquer agent, skill ou servidor MCP para detectar o crescimento cedo

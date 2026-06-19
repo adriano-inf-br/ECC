@@ -1,26 +1,26 @@
 ---
 name: cost-aware-llm-pipeline
-description: Cost optimization patterns for LLM API usage — model routing by task complexity, budget tracking, retry logic, and prompt caching.
+description: Padrões de otimização de custo para uso de APIs de LLM — roteamento de modelo por complexidade da tarefa, rastreamento de orçamento, lógica de retry e prompt caching.
 metadata:
   origin: ECC
 ---
 
 # Cost-Aware LLM Pipeline
 
-Patterns for controlling LLM API costs while maintaining quality. Combines model routing, budget tracking, retry logic, and prompt caching into a composable pipeline.
+Padrões para controlar os custos de APIs de LLM mantendo a qualidade. Combina roteamento de modelo, rastreamento de orçamento, lógica de retry e prompt caching em um pipeline componível.
 
-## When to Activate
+## Quando Ativar
 
-- Building applications that call LLM APIs (Claude, GPT, etc.)
-- Processing batches of items with varying complexity
-- Need to stay within a budget for API spend
-- Optimizing cost without sacrificing quality on complex tasks
+- Construir aplicações que chamam APIs de LLM (Claude, GPT, etc.)
+- Processar lotes de itens com complexidade variável
+- Necessidade de permanecer dentro de um orçamento de gasto com API
+- Otimizar custo sem sacrificar qualidade em tarefas complexas
 
-## Core Concepts
+## Conceitos Centrais
 
-### 1. Model Routing by Task Complexity
+### 1. Roteamento de Modelo por Complexidade da Tarefa
 
-Automatically select cheaper models for simple tasks, reserving expensive models for complex ones.
+Selecione automaticamente modelos mais baratos para tarefas simples, reservando modelos caros para as complexas.
 
 ```python
 MODEL_SONNET = "claude-sonnet-4-6"

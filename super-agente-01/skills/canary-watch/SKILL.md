@@ -1,55 +1,55 @@
 ---
 name: canary-watch
-description: Use this skill to monitor and verify a deployed URL after releases — checks HTTP endpoints, SSE streams, static assets, console errors, and performance regressions after deploys, merges, or dependency upgrades. Smoke / canary / post-deploy verification.
+description: Use esta skill para monitorar e verificar uma URL implantada após releases — verifica endpoints HTTP, streams SSE, ativos estáticos, erros de console e regressões de desempenho após deploys, merges ou upgrades de dependências. Verificação de smoke / canary / pós-deploy.
 metadata:
   origin: ECC
 ---
 
-# Canary Watch — Post-Deploy Monitoring
+# Canary Watch — Monitoramento Pós-Deploy
 
-## When to Use
+## Quando Usar
 
-- After deploying to production or staging
-- After merging a risky PR
-- When you want to verify a fix actually fixed it
-- Continuous monitoring during a launch window
-- After dependency upgrades
+- Depois de implantar em produção ou staging
+- Depois de fazer merge de um PR arriscado
+- Quando você quer verificar se uma correção realmente corrigiu o problema
+- Monitoramento contínuo durante uma janela de lançamento
+- Após upgrades de dependências
 
-## How It Works
+## Como Funciona
 
-Monitors a deployed URL for regressions. Runs in a loop until stopped or until the watch window expires.
+Monitora uma URL implantada em busca de regressões. Roda em loop até ser interrompido ou até a janela de observação expirar.
 
-### What It Watches
+### O Que Ele Observa
 
 ```
-1. HTTP Status — is the page returning 200?
-2. Console Errors — new errors that weren't there before?
-3. Network Failures — failed API calls, 5xx responses?
-4. Performance — LCP/CLS/INP regression vs baseline?
-5. Content — did key elements disappear? (h1, nav, footer, CTA)
-6. API Health — are critical endpoints responding within SLA?
-7. Static Assets — are JS, CSS, image, and font requests returning 2xx/3xx with expected content types?
-8. SSE Streams — do event-stream endpoints connect and receive an initial event or heartbeat?
+1. Status HTTP — a página está retornando 200?
+2. Erros de Console — novos erros que não existiam antes?
+3. Falhas de Rede — chamadas de API falhando, respostas 5xx?
+4. Desempenho — regressão de LCP/CLS/INP vs baseline?
+5. Conteúdo — elementos-chave sumiram? (h1, nav, footer, CTA)
+6. Saúde de API — endpoints críticos respondem dentro do SLA?
+7. Ativos Estáticos — requisições de JS, CSS, imagem e fonte retornam 2xx/3xx com os content types esperados?
+8. Streams SSE — endpoints de event-stream conectam e recebem um evento inicial ou heartbeat?
 ```
 
-### Watch Modes
+### Modos de Observação
 
-**Quick check** (default): single pass, report results
+**Verificação rápida** (padrão): passada única, reporta resultados
 ```
 /canary-watch https://myapp.com
 ```
 
-**Sustained watch**: check every N minutes for M hours
+**Observação sustentada**: verifica a cada N minutos por M horas
 ```
 /canary-watch https://myapp.com --interval 5m --duration 2h
 ```
 
-**Diff mode**: compare staging vs production
+**Modo diff**: compara staging vs produção
 ```
 /canary-watch --compare https://staging.myapp.com https://myapp.com
 ```
 
-### Alert Thresholds
+### Limiares de Alerta
 
 ```yaml
 critical:  # immediate alert
@@ -73,36 +73,36 @@ info:      # log only
   - New network requests (third-party scripts added?)
 ```
 
-### Notifications
+### Notificações
 
-When a critical threshold is crossed:
-- Desktop notification (macOS/Linux)
-- Optional: Slack/Discord webhook
-- Log to `~/.claude/canary-watch.log`
+Quando um limiar crítico é ultrapassado:
+- Notificação de desktop (macOS/Linux)
+- Opcional: webhook do Slack/Discord
+- Registrar em `~/.claude/canary-watch.log`
 
-## Output
+## Saída
 
 ```markdown
-## Canary Report — myapp.com — 2026-03-23 03:15 PST
+## Relatório de Canary — myapp.com — 2026-03-23 03:15 PST
 
 ### Status: HEALTHY ✓
 
-| Check | Result | Baseline | Delta |
+| Verificação | Resultado | Baseline | Delta |
 |-------|--------|----------|-------|
 | HTTP | 200 ✓ | 200 | — |
-| Console errors | 0 ✓ | 0 | — |
+| Erros de console | 0 ✓ | 0 | — |
 | LCP | 1.8s ✓ | 1.6s | +200ms |
 | CLS | 0.01 ✓ | 0.01 | — |
 | API /health | 145ms ✓ | 120ms | +25ms |
-| Static assets | 42/42 ✓ | 42/42 | — |
-| SSE /events | connected ✓ | connected | +80ms heartbeat |
+| Ativos estáticos | 42/42 ✓ | 42/42 | — |
+| SSE /events | conectado ✓ | conectado | +80ms heartbeat |
 
-### No regressions detected. Deploy is clean.
+### Nenhuma regressão detectada. O deploy está limpo.
 ```
 
-## Integration
+## Integração
 
-Pair with:
-- `/browser-qa` for pre-deploy verification
-- Hooks: add as a PostToolUse hook on `git push` to auto-check after deploys
-- CI: run in GitHub Actions after deploy step
+Combine com:
+- `/browser-qa` para verificação pré-deploy
+- Hooks: adicione como um hook PostToolUse no `git push` para verificar automaticamente após deploys
+- CI: rode no GitHub Actions após a etapa de deploy

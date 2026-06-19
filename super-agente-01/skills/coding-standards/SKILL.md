@@ -1,102 +1,102 @@
 ---
 name: coding-standards
-description: Baseline cross-project coding conventions for naming, readability, immutability, and code-quality review. Use detailed frontend or backend skills for framework-specific patterns.
+description: Convenções de código de baseline aplicáveis entre projetos para nomenclatura, legibilidade, imutabilidade e revisão de qualidade de código. Use as skills detalhadas de frontend ou backend para padrões específicos de framework.
 metadata:
   origin: ECC
 ---
 
 # Coding Standards & Best Practices
 
-Baseline coding conventions applicable across projects.
+Convenções de código de baseline aplicáveis entre projetos.
 
-This skill is the shared floor, not the detailed framework playbook.
+Esta skill é o piso compartilhado, não o playbook detalhado de framework.
 
-- Use `frontend-patterns` for React, state, forms, rendering, and UI architecture.
-- Use `backend-patterns` or `api-design` for repository/service layers, endpoint design, validation, and server-specific concerns.
-- Use `rules/common/coding-style.md` when you need the shortest reusable rule layer instead of a full skill walkthrough.
+- Use `frontend-patterns` para React, estado, formulários, renderização e arquitetura de UI.
+- Use `backend-patterns` ou `api-design` para camadas de repository/service, design de endpoints, validação e preocupações específicas de servidor.
+- Use `rules/common/coding-style.md` quando precisar da camada de regra reutilizável mais curta em vez de um passo a passo completo de skill.
 
 ## When to Activate
 
-- Starting a new project or module
-- Reviewing code for quality and maintainability
-- Refactoring existing code to follow conventions
-- Enforcing naming, formatting, or structural consistency
-- Setting up linting, formatting, or type-checking rules
-- Onboarding new contributors to coding conventions
+- Iniciar um novo projeto ou módulo
+- Revisar código para qualidade e manutenibilidade
+- Refatorar código existente para seguir as convenções
+- Impor consistência de nomenclatura, formatação ou estrutura
+- Configurar regras de linting, formatação ou checagem de tipos
+- Fazer o onboarding de novos contribuidores nas convenções de código
 
-## Scope Boundaries
+## Limites de Escopo
 
-Activate this skill for:
-- descriptive naming
-- immutability defaults
-- readability, KISS, DRY, and YAGNI enforcement
-- error-handling expectations and code-smell review
+Ative esta skill para:
+- nomenclatura descritiva
+- imutabilidade por padrão
+- imposição de legibilidade, KISS, DRY e YAGNI
+- expectativas de tratamento de erros e revisão de code smells
 
-Do not use this skill as the primary source for:
-- React composition, hooks, or rendering patterns
-- backend architecture, API design, or database layering
-- domain-specific framework guidance when a narrower ECC skill already exists
+Não use esta skill como fonte primária para:
+- composição React, hooks ou padrões de renderização
+- arquitetura de backend, design de API ou camadas de banco de dados
+- orientação específica de domínio de framework quando já existe uma skill ECC mais especializada
 
-## Code Quality Principles
+## Princípios de Qualidade de Código
 
-### 1. Readability First
-- Code is read more than written
-- Clear variable and function names
-- Self-documenting code preferred over comments
-- Consistent formatting
+### 1. Legibilidade em Primeiro Lugar
+- Código é mais lido do que escrito
+- Nomes claros de variáveis e funções
+- Código autodocumentado preferível a comentários
+- Formatação consistente
 
 ### 2. KISS (Keep It Simple, Stupid)
-- Simplest solution that works
-- Avoid over-engineering
-- No premature optimization
-- Easy to understand > clever code
+- A solução mais simples que funciona
+- Evite over-engineering
+- Sem otimização prematura
+- Fácil de entender > código esperto
 
 ### 3. DRY (Don't Repeat Yourself)
-- Extract common logic into functions
-- Create reusable components
-- Share utilities across modules
-- Avoid copy-paste programming
+- Extraia lógica comum para funções
+- Crie componentes reutilizáveis
+- Compartilhe utilitários entre módulos
+- Evite programação por copiar e colar
 
 ### 4. YAGNI (You Aren't Gonna Need It)
-- Don't build features before they're needed
-- Avoid speculative generality
-- Add complexity only when required
-- Start simple, refactor when needed
+- Não construa features antes de serem necessárias
+- Evite generalidade especulativa
+- Adicione complexidade apenas quando necessário
+- Comece simples, refatore quando preciso
 
 ## TypeScript/JavaScript Standards
 
-### Variable Naming
+### Nomenclatura de Variáveis
 
 ```typescript
-// PASS: GOOD: Descriptive names
+// PASS: BOM: Nomes descritivos
 const marketSearchQuery = 'election'
 const isUserAuthenticated = true
 const totalRevenue = 1000
 
-// FAIL: BAD: Unclear names
+// FAIL: RUIM: Nomes pouco claros
 const q = 'election'
 const flag = true
 const x = 1000
 ```
 
-### Function Naming
+### Nomenclatura de Funções
 
 ```typescript
-// PASS: GOOD: Verb-noun pattern
+// PASS: BOM: Padrão verbo-substantivo
 async function fetchMarketData(marketId: string) { }
 function calculateSimilarity(a: number[], b: number[]) { }
 function isValidEmail(email: string): boolean { }
 
-// FAIL: BAD: Unclear or noun-only
+// FAIL: RUIM: Pouco claro ou apenas substantivo
 async function market(id: string) { }
 function similarity(a, b) { }
 function email(e) { }
 ```
 
-### Immutability Pattern (CRITICAL)
+### Padrão de Imutabilidade (CRÍTICO)
 
 ```typescript
-// PASS: ALWAYS use spread operator
+// PASS: SEMPRE use o spread operator
 const updatedUser = {
   ...user,
   name: 'New Name'
@@ -104,15 +104,15 @@ const updatedUser = {
 
 const updatedArray = [...items, newItem]
 
-// FAIL: NEVER mutate directly
-user.name = 'New Name'  // BAD
-items.push(newItem)     // BAD
+// FAIL: NUNCA mute diretamente
+user.name = 'New Name'  // RUIM
+items.push(newItem)     // RUIM
 ```
 
-### Error Handling
+### Tratamento de Erros
 
 ```typescript
-// PASS: GOOD: Comprehensive error handling
+// PASS: BOM: Tratamento de erros abrangente
 async function fetchData(url: string) {
   try {
     const response = await fetch(url)
@@ -128,24 +128,24 @@ async function fetchData(url: string) {
   }
 }
 
-// FAIL: BAD: No error handling
+// FAIL: RUIM: Sem tratamento de erros
 async function fetchData(url) {
   const response = await fetch(url)
   return response.json()
 }
 ```
 
-### Async/Await Best Practices
+### Boas Práticas de Async/Await
 
 ```typescript
-// PASS: GOOD: Parallel execution when possible
+// PASS: BOM: Execução em paralelo quando possível
 const [users, markets, stats] = await Promise.all([
   fetchUsers(),
   fetchMarkets(),
   fetchStats()
 ])
 
-// FAIL: BAD: Sequential when unnecessary
+// FAIL: RUIM: Sequencial quando desnecessário
 const users = await fetchUsers()
 const markets = await fetchMarkets()
 const stats = await fetchStats()
@@ -154,7 +154,7 @@ const stats = await fetchStats()
 ### Type Safety
 
 ```typescript
-// PASS: GOOD: Proper types
+// PASS: BOM: Tipos apropriados
 interface Market {
   id: string
   name: string
@@ -163,21 +163,21 @@ interface Market {
 }
 
 function getMarket(id: string): Promise<Market> {
-  // Implementation
+  // Implementação
 }
 
-// FAIL: BAD: Using 'any'
+// FAIL: RUIM: Usando 'any'
 function getMarket(id: any): Promise<any> {
-  // Implementation
+  // Implementação
 }
 ```
 
 ## React Best Practices
 
-### Component Structure
+### Estrutura de Componente
 
 ```typescript
-// PASS: GOOD: Functional component with types
+// PASS: BOM: Componente funcional com tipos
 interface ButtonProps {
   children: React.ReactNode
   onClick: () => void
@@ -202,7 +202,7 @@ export function Button({
   )
 }
 
-// FAIL: BAD: No types, unclear structure
+// FAIL: RUIM: Sem tipos, estrutura pouco clara
 export function Button(props) {
   return <button onClick={props.onClick}>{props.children}</button>
 }
@@ -211,7 +211,7 @@ export function Button(props) {
 ### Custom Hooks
 
 ```typescript
-// PASS: GOOD: Reusable custom hook
+// PASS: BOM: Custom hook reutilizável
 export function useDebounce<T>(value: T, delay: number): T {
   const [debouncedValue, setDebouncedValue] = useState<T>(value)
 
@@ -226,55 +226,55 @@ export function useDebounce<T>(value: T, delay: number): T {
   return debouncedValue
 }
 
-// Usage
+// Uso
 const debouncedQuery = useDebounce(searchQuery, 500)
 ```
 
-### State Management
+### Gerenciamento de Estado
 
 ```typescript
-// PASS: GOOD: Proper state updates
+// PASS: BOM: Atualizações de estado apropriadas
 const [count, setCount] = useState(0)
 
-// Functional update for state based on previous state
+// Atualização funcional para estado baseado no estado anterior
 setCount(prev => prev + 1)
 
-// FAIL: BAD: Direct state reference
-setCount(count + 1)  // Can be stale in async scenarios
+// FAIL: RUIM: Referência direta ao estado
+setCount(count + 1)  // Pode ficar obsoleto em cenários assíncronos
 ```
 
-### Conditional Rendering
+### Renderização Condicional
 
 ```typescript
-// PASS: GOOD: Clear conditional rendering
+// PASS: BOM: Renderização condicional clara
 {isLoading && <Spinner />}
 {error && <ErrorMessage error={error} />}
 {data && <DataDisplay data={data} />}
 
-// FAIL: BAD: Ternary hell
+// FAIL: RUIM: Inferno de ternários
 {isLoading ? <Spinner /> : error ? <ErrorMessage error={error} /> : data ? <DataDisplay data={data} /> : null}
 ```
 
 ## API Design Standards
 
-### REST API Conventions
+### Convenções de REST API
 
 ```
-GET    /api/markets              # List all markets
-GET    /api/markets/:id          # Get specific market
-POST   /api/markets              # Create new market
-PUT    /api/markets/:id          # Update market (full)
-PATCH  /api/markets/:id          # Update market (partial)
-DELETE /api/markets/:id          # Delete market
+GET    /api/markets              # Listar todos os markets
+GET    /api/markets/:id          # Obter um market específico
+POST   /api/markets              # Criar um novo market
+PUT    /api/markets/:id          # Atualizar market (completo)
+PATCH  /api/markets/:id          # Atualizar market (parcial)
+DELETE /api/markets/:id          # Excluir market
 
-# Query parameters for filtering
+# Parâmetros de query para filtragem
 GET /api/markets?status=active&limit=10&offset=0
 ```
 
-### Response Format
+### Formato de Resposta
 
 ```typescript
-// PASS: GOOD: Consistent response structure
+// PASS: BOM: Estrutura de resposta consistente
 interface ApiResponse<T> {
   success: boolean
   data?: T

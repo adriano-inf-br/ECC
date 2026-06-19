@@ -1,44 +1,44 @@
 ---
 name: codehealth-mcp
-description: Real-time structural Code Health via CodeScene MCP — review before edits, verify score deltas after changes, gate commits and PRs. Use when reviewing code quality, refactoring, checking if AI changes degraded a file, or before commit/PR.
+description: Code Health estrutural em tempo real via CodeScene MCP — revise antes das edições, verifique os deltas de pontuação após as mudanças, faça o gating de commits e PRs. Use ao revisar qualidade de código, refatorar, verificar se mudanças de IA degradaram um arquivo, ou antes de commit/PR.
 metadata:
   origin: community
 ---
 
 # Code Health MCP (CodeScene)
 
-Structural maintainability feedback for AI-assisted coding. Complements style/lint skills (`coding-standards`, `plankton-code-quality`) with **design-level** health scores and regression gates.
+Feedback estrutural de manutenibilidade para código assistido por IA. Complementa as skills de estilo/lint (`coding-standards`, `plankton-code-quality`) com pontuações de saúde em **nível de design** e gates de regressão.
 
 **Upstream:** [codescene-oss/codescene-mcp-server](https://github.com/codescene-oss/codescene-mcp-server)
-**Package:** `@codescene/codehealth-mcp` (stdio via npx)
+**Pacote:** `@codescene/codehealth-mcp` (stdio via npx)
 
-## Security and boundaries
+## Segurança e limites
 
-**Opt-in (ECC):** The `codescene` block in `mcp-configs/mcp-servers.json` is a template only. ECC plugin installs do not auto-enable bundled MCP servers. Copy the entry into your config only if you want it. You can exclude it during ECC install/sync with `ECC_DISABLED_MCPS=codescene,...`.
+**Opt-in (ECC):** O bloco `codescene` em `mcp-configs/mcp-servers.json` é apenas um template. Instalações do plugin ECC não habilitam automaticamente servidores MCP empacotados. Copie a entrada para a sua configuração apenas se quiser. Você pode excluí-la durante o install/sync do ECC com `ECC_DISABLED_MCPS=codescene,...`.
 
-**Credentials:** No bundled token. Set `CS_ACCESS_TOKEN` yourself (see [getting-a-personal-access-token.md](https://github.com/codescene-oss/codescene-mcp-server/blob/main/docs/getting-a-personal-access-token.md) in the upstream repo). Never commit tokens to the repo.
+**Credenciais:** Sem token empacotado. Defina o `CS_ACCESS_TOKEN` você mesmo (veja [getting-a-personal-access-token.md](https://github.com/codescene-oss/codescene-mcp-server/blob/main/docs/getting-a-personal-access-token.md) no repositório upstream). Nunca faça commit de tokens no repositório.
 
-**What the tools read:** When invoked, tools analyze files and git state **in the local repository** you point them at (paths you pass, plus branch context for `analyze_change_set`). They do not run by themselves. For standalone mode, follow upstream privacy docs: [codescene-mcp-server README](https://github.com/codescene-oss/codescene-mcp-server#frequently-asked-questions) and [CodeScene policies](https://codescene.com/policies). Do not use this skill for secrets, credentials, or paths you do not want analyzed.
+**O que as tools leem:** Quando invocadas, as tools analisam arquivos e o estado do git **no repositório local** para o qual você as aponta (os caminhos que você passa, mais o contexto de branch para `analyze_change_set`). Elas não rodam sozinhas. Para o modo standalone, siga a documentação de privacidade upstream: [README do codescene-mcp-server](https://github.com/codescene-oss/codescene-mcp-server#frequently-asked-questions) e [políticas da CodeScene](https://codescene.com/policies). Não use esta skill para segredos, credenciais ou caminhos que você não queira que sejam analisados.
 
-**If the MCP is unavailable (offline, bad token, server crash):** Do not invent Code Health scores. Tell the user the check was skipped. Continue only with explicit user approval. Prefer lint/tests/verification-loop for gating when MCP is down. Re-enable checks once the server connects.
+**Se o MCP estiver indisponível (offline, token inválido, crash do servidor):** Não invente pontuações de Code Health. Avise o usuário que a verificação foi pulada. Continue apenas com aprovação explícita do usuário. Prefira lint/tests/verification-loop para o gating quando o MCP estiver fora do ar. Reabilite as verificações assim que o servidor conectar.
 
 ## When to Use
 
-- User asks to **review code quality**, **refactor** a file, or check if **AI changes degraded** maintainability
-- Before editing a **hotspot**, legacy module, or unfamiliar file
-- Before **commit** or **pull request** when you need a maintainability safeguard
-- After a large agent-written diff — verify Code Health did not regress
-- Pair with `verification-loop`, `tdd-workflow`, or `/quality-gate` as a structural check (not a replacement for tests/lint)
+- O usuário pede para **revisar a qualidade do código**, **refatorar** um arquivo, ou verificar se **mudanças de IA degradaram** a manutenibilidade
+- Antes de editar um **hotspot**, módulo legado ou arquivo desconhecido
+- Antes de **commit** ou **pull request** quando você precisa de uma salvaguarda de manutenibilidade
+- Após um diff grande escrito por agent — verifique se o Code Health não regrediu
+- Combine com `verification-loop`, `tdd-workflow` ou `/quality-gate` como uma verificação estrutural (não um substituto para tests/lint)
 
 ## When to Activate
 
-Same triggers as **When to Use** above — this heading is what ECC uses for skill auto-activation.
+Os mesmos gatilhos de **When to Use** acima — este cabeçalho é o que o ECC usa para a auto-ativação da skill.
 
 ## How It Works
 
-### 1. Connect the MCP server
+### 1. Conectar o servidor MCP
 
-Copy the `codescene` entry from `mcp-configs/mcp-servers.json` into your harness MCP config.
+Copie a entrada `codescene` de `mcp-configs/mcp-servers.json` para a configuração MCP do seu harness.
 
 **Claude Code** (`~/.claude.json` → `mcpServers`):
 
@@ -52,116 +52,116 @@ Copy the `codescene` entry from `mcp-configs/mcp-servers.json` into your harness
 }
 ```
 
-**Project-scoped:** merge the same block into `.mcp.json` at the repo root.
+**Escopo de projeto:** faça o merge do mesmo bloco em `.mcp.json` na raiz do repositório.
 
-Token setup is documented in the upstream repo (link above). Standalone mode does not require a paid CodeScene platform account for the four tools listed below. Restart the session and confirm the `codescene` server is connected before relying on scores.
+A configuração do token está documentada no repositório upstream (link acima). O modo standalone não requer uma conta paga da plataforma CodeScene para as quatro tools listadas abaixo. Reinicie a sessão e confirme que o servidor `codescene` está conectado antes de confiar nas pontuações.
 
-### 2. Call standalone tools only
+### 2. Chame apenas as tools standalone
 
-| Tool | When to use |
+| Tool | Quando usar |
 |------|-------------|
-| `code_health_review` | Full structural analysis **before** modifying a file |
-| `code_health_score` | Quick numeric score after each change (delta check) |
-| `pre_commit_code_health_safeguard` | Block commits that introduce Code Health regressions |
-| `analyze_change_set` | Branch-level check **before** opening a PR |
+| `code_health_review` | Análise estrutural completa **antes** de modificar um arquivo |
+| `code_health_score` | Pontuação numérica rápida após cada mudança (verificação de delta) |
+| `pre_commit_code_health_safeguard` | Bloqueia commits que introduzem regressões de Code Health |
+| `analyze_change_set` | Verificação em nível de branch **antes** de abrir um PR |
 
-Do **not** call platform-only tools (e.g. repository-wide technical debt hotspot lists). Do **not** reference `delta_analysis` — not available on standalone.
+**Não** chame tools exclusivas da plataforma (ex.: listas de hotspots de dívida técnica de todo o repositório). **Não** referencie `delta_analysis` — não disponível no standalone.
 
-### 3. Interpret scores (1–10)
+### 3. Interprete as pontuações (1–10)
 
-| Range | Meaning | Agent behavior |
+| Faixa | Significado | Comportamento do agent |
 |-------|---------|----------------|
-| **9.0–10.0** | Green — healthy | Safer to extend; still prefer vertical slices |
-| **4.0–8.9** | Yellow — debt | Tread carefully; no drive-by refactors |
-| **1.0–3.9** | Red — severe debt | Narrow scope only |
+| **9.0–10.0** | Verde — saudável | Mais seguro estender; ainda prefira fatias verticais |
+| **4.0–8.9** | Amarelo — dívida | Pise com cuidado; nada de refatorações de oportunidade |
+| **1.0–3.9** | Vermelho — dívida severa | Apenas escopo restrito |
 
-### 4. Run the feedback loop
+### 4. Execute o loop de feedback
 
-**Before touching a file**
+**Antes de tocar em um arquivo**
 
-1. Run `code_health_review` on the target path.
-2. Record baseline score and listed code smells.
-3. Plan the smallest change that addresses the task.
+1. Execute `code_health_review` no caminho-alvo.
+2. Registre a pontuação de baseline e os code smells listados.
+3. Planeje a menor mudança que atenda à tarefa.
 
-Scope by score: **below 5** — minimal diff only; **5–7** — no broad refactors; **above 7** — safer to refactor, still verify after each edit.
+Defina o escopo pela pontuação: **abaixo de 5** — apenas diff mínimo; **5–7** — nenhuma refatoração ampla; **acima de 7** — mais seguro refatorar, ainda verifique após cada edição.
 
-**After each change**
+**Após cada mudança**
 
-1. Run `code_health_score` on the same file.
-2. Compare to the baseline from `code_health_review`.
-3. If the score **regressed**, fix before continuing. Never mark the task done while the score is lower than when you started.
+1. Execute `code_health_score` no mesmo arquivo.
+2. Compare com a baseline de `code_health_review`.
+3. Se a pontuação **regrediu**, corrija antes de continuar. Nunca marque a tarefa como concluída enquanto a pontuação estiver mais baixa do que quando você começou.
 
-**Before every commit** — run `pre_commit_code_health_safeguard` on the repository path.
+**Antes de cada commit** — execute `pre_commit_code_health_safeguard` no caminho do repositório.
 
-**Before a PR** — run `analyze_change_set` against the base branch (e.g. `main`).
+**Antes de um PR** — execute `analyze_change_set` contra a branch base (ex.: `main`).
 
 ## Examples
 
-### Example: Flask maintainability improvement
+### Example: melhoria de manutenibilidade no Flask
 
-On `pallets/flask`, an agent loop using only standalone tools:
+Em `pallets/flask`, um loop de agent usando apenas tools standalone:
 
-1. `code_health_review` on a target module (baseline **4.82**)
-2. Targeted refactor addressing listed smells
-3. `code_health_score` after each edit
-4. `pre_commit_code_health_safeguard` before commit
-5. `analyze_change_set` before PR
+1. `code_health_review` em um módulo-alvo (baseline **4.82**)
+2. Refatoração direcionada tratando os smells listados
+3. `code_health_score` após cada edição
+4. `pre_commit_code_health_safeguard` antes do commit
+5. `analyze_change_set` antes do PR
 
-Result: Code Health **4.82 → 9.1** (free standalone token only).
+Resultado: Code Health **4.82 → 9.1** (apenas com o token standalone gratuito).
 
-### Example: AGENTS.md enforcement block
+### Example: bloco de enforcement do AGENTS.md
 
-Paste into the project `AGENTS.md` or `CLAUDE.md`:
+Cole no `AGENTS.md` ou no `CLAUDE.md` do projeto:
 
 ```md
 ## Code Health (CodeScene MCP)
 
-Before modifying any file: run `code_health_review`, note score and issues.
+Antes de modificar qualquer arquivo: execute `code_health_review`, anote a pontuação e os problemas.
 
-- Score below 5: problematic range — scope changes narrowly.
-- Score 5–7: warning range — no broad refactors.
+- Pontuação abaixo de 5: faixa problemática — restrinja o escopo das mudanças.
+- Pontuação 5–7: faixa de alerta — nenhuma refatoração ampla.
 
-After each change: run `code_health_score` to verify delta.
+Após cada mudança: execute `code_health_score` para verificar o delta.
 
-- If score regressed: fix before continuing; never declare done if score dropped.
+- Se a pontuação regrediu: corrija antes de continuar; nunca declare concluído se a pontuação caiu.
 
-Before every commit: run `pre_commit_code_health_safeguard`.
+Antes de cada commit: execute `pre_commit_code_health_safeguard`.
 
-Before PR: run `analyze_change_set`.
+Antes do PR: execute `analyze_change_set`.
 ```
 
-### Example: anti-patterns vs correct loop
+### Example: anti-patterns vs. loop correto
 
 ```markdown
-# BAD: Edit first, check later
-[large refactor without code_health_review]
+# RUIM: Editar primeiro, verificar depois
+[refatoração grande sem code_health_review]
 
-# BAD: Ignore score drop
-"Tests pass" → mark task done while Code Health decreased
+# RUIM: Ignorar a queda de pontuação
+"Os testes passam" → marcar tarefa como concluída enquanto o Code Health diminuiu
 
-# BAD: Broad refactor on red-score file (below 5)
-Drive-by cleanup across the module
+# RUIM: Refatoração ampla em arquivo com pontuação vermelha (abaixo de 5)
+Limpeza de oportunidade pelo módulo inteiro
 
-# GOOD: review → small change → score → commit safeguard → analyze_change_set
+# BOM: review → mudança pequena → score → safeguard de commit → analyze_change_set
 ```
 
-## Pairing with ECC
+## Combinando com o ECC
 
-| ECC skill / flow | Code Health MCP role |
+| Skill / fluxo do ECC | Papel do Code Health MCP |
 |------------------|----------------------|
-| `coding-standards` | Style/naming; Code Health = structure/complexity |
-| `plankton-code-quality` | Write-time lint/format; Code Health = pre/post edit structural gate |
-| `verification-loop` / `/quality-gate` | Add structural regression check before "done" |
-| `security-review` | Security vs maintainability — use both when relevant |
-| `tdd-workflow` | Tests pass ≠ healthy design — check score after refactors |
+| `coding-standards` | Estilo/nomenclatura; Code Health = estrutura/complexidade |
+| `plankton-code-quality` | Lint/format em tempo de escrita; Code Health = gate estrutural pré/pós edição |
+| `verification-loop` / `/quality-gate` | Adiciona verificação de regressão estrutural antes do "done" |
+| `security-review` | Segurança vs. manutenibilidade — use ambos quando relevante |
+| `tdd-workflow` | Testes passam ≠ design saudável — verifique a pontuação após refatorações |
 
-**Context tip:** ECC recommends keeping MCP count low. Enable `codescene` when doing substantive edits; disable when not needed.
+**Dica de contexto:** O ECC recomenda manter baixa a contagem de MCP. Habilite o `codescene` ao fazer edições substanciais; desabilite quando não for necessário.
 
 ## Related Skills
 
-- `coding-standards` — baseline conventions
-- `plankton-code-quality` — write-time lint/format hooks
-- `verification-loop` — build/test/lint gate
-- `tdd-workflow` — test-first development
-- `security-review` — security checklist
-- `documentation-lookup` — library docs via Context7 (orthogonal)
+- `coding-standards` — convenções de baseline
+- `plankton-code-quality` — hooks de lint/format em tempo de escrita
+- `verification-loop` — gate de build/test/lint
+- `tdd-workflow` — desenvolvimento test-first
+- `security-review` — checklist de segurança
+- `documentation-lookup` — docs de bibliotecas via Context7 (ortogonal)

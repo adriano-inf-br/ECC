@@ -1,234 +1,234 @@
 ---
 name: codebase-onboarding
-description: Analyze an unfamiliar codebase and generate a structured onboarding guide with architecture map, key entry points, conventions, and a starter CLAUDE.md. Use when joining a new project or setting up Claude Code for the first time in a repo.
+description: Analise um código desconhecido e gere um guia de onboarding estruturado com mapa de arquitetura, principais pontos de entrada, convenções e um CLAUDE.md inicial. Use ao ingressar em um novo projeto ou ao configurar o Claude Code pela primeira vez em um repositório.
 metadata:
   origin: ECC
 ---
 
 # Codebase Onboarding
 
-Systematically analyze an unfamiliar codebase and produce a structured onboarding guide. Designed for developers joining a new project or setting up Claude Code in an existing repo for the first time.
+Analise sistematicamente um código desconhecido e produza um guia de onboarding estruturado. Projetado para desenvolvedores que ingressam em um novo projeto ou que configuram o Claude Code em um repositório existente pela primeira vez.
 
 ## When to Use
 
-- First time opening a project with Claude Code
-- Joining a new team or repository
-- User asks "help me understand this codebase"
-- User asks to generate a CLAUDE.md for a project
-- User says "onboard me" or "walk me through this repo"
+- Primeira vez abrindo um projeto com o Claude Code
+- Ingressar em uma nova equipe ou repositório
+- O usuário pede "me ajude a entender este código"
+- O usuário pede para gerar um CLAUDE.md para um projeto
+- O usuário diz "faça meu onboarding" ou "me guie por este repositório"
 
 ## How It Works
 
-### Phase 1: Reconnaissance
+### Phase 1: Reconhecimento
 
-Gather raw signals about the project without reading every file. Run these checks in parallel:
+Reúna sinais brutos sobre o projeto sem ler cada arquivo. Execute estas verificações em paralelo:
 
 ```
-1. Package manifest detection
+1. Detecção de manifesto de pacote
    → package.json, go.mod, Cargo.toml, pyproject.toml, pom.xml, build.gradle,
      Gemfile, composer.json, mix.exs, pubspec.yaml
 
-2. Framework fingerprinting
+2. Fingerprinting de framework
    → next.config.*, nuxt.config.*, angular.json, vite.config.*,
      django settings, flask app factory, fastapi main, rails config
 
-3. Entry point identification
+3. Identificação do ponto de entrada
    → main.*, index.*, app.*, server.*, cmd/, src/main/
 
-4. Directory structure snapshot
-   → Top 2 levels of the directory tree, ignoring node_modules, vendor,
+4. Snapshot da estrutura de diretórios
+   → 2 primeiros níveis da árvore de diretórios, ignorando node_modules, vendor,
      .git, dist, build, __pycache__, .next
 
-5. Config and tooling detection
+5. Detecção de configuração e ferramental
    → .eslintrc*, .prettierrc*, tsconfig.json, Makefile, Dockerfile,
-     docker-compose*, .github/workflows/, .env.example, CI configs
+     docker-compose*, .github/workflows/, .env.example, configs de CI
 
-6. Test structure detection
+6. Detecção de estrutura de testes
    → tests/, test/, __tests__/, *_test.go, *.spec.ts, *.test.js,
      pytest.ini, jest.config.*, vitest.config.*
 ```
 
-### Phase 2: Architecture Mapping
+### Phase 2: Mapeamento de Arquitetura
 
-From the reconnaissance data, identify:
+A partir dos dados de reconhecimento, identifique:
 
 **Tech Stack**
-- Language(s) and version constraints
-- Framework(s) and major libraries
-- Database(s) and ORMs
-- Build tools and bundlers
-- CI/CD platform
+- Linguagem(ns) e restrições de versão
+- Framework(s) e principais bibliotecas
+- Banco(s) de dados e ORMs
+- Ferramentas de build e bundlers
+- Plataforma de CI/CD
 
-**Architecture Pattern**
-- Monolith, monorepo, microservices, or serverless
-- Frontend/backend split or full-stack
-- API style: REST, GraphQL, gRPC, tRPC
+**Padrão de Arquitetura**
+- Monolito, monorepo, microservices ou serverless
+- Divisão frontend/backend ou full-stack
+- Estilo de API: REST, GraphQL, gRPC, tRPC
 
-**Key Directories**
-Map the top-level directories to their purpose:
+**Diretórios Principais**
+Mapeie os diretórios de nível superior ao seu propósito:
 
-<!-- Example for a React project — replace with detected directories -->
+<!-- Exemplo para um projeto React — substitua pelos diretórios detectados -->
 ```
-src/components/  → React UI components
-src/api/         → API route handlers
-src/lib/         → Shared utilities
-src/db/          → Database models and migrations
-tests/           → Test suites
-scripts/         → Build and deployment scripts
+src/components/  → componentes de UI React
+src/api/         → handlers de rota da API
+src/lib/         → utilitários compartilhados
+src/db/          → modelos de banco de dados e migrações
+tests/           → suítes de teste
+scripts/         → scripts de build e deploy
 ```
 
-**Data Flow**
-Trace one request from entry to response:
-- Where does a request enter? (router, handler, controller)
-- How is it validated? (middleware, schemas, guards)
-- Where is business logic? (services, models, use cases)
-- How does it reach the database? (ORM, raw queries, repositories)
+**Fluxo de Dados**
+Rastreie uma requisição da entrada à resposta:
+- Onde uma requisição entra? (router, handler, controller)
+- Como ela é validada? (middleware, schemas, guards)
+- Onde está a lógica de negócio? (services, models, use cases)
+- Como ela chega ao banco de dados? (ORM, queries raw, repositories)
 
-### Phase 3: Convention Detection
+### Phase 3: Detecção de Convenções
 
-Identify patterns the codebase already follows:
+Identifique padrões que o código já segue:
 
-**Naming Conventions**
-- File naming: kebab-case, camelCase, PascalCase, snake_case
-- Component/class naming patterns
-- Test file naming: `*.test.ts`, `*.spec.ts`, `*_test.go`
+**Convenções de Nomenclatura**
+- Nomenclatura de arquivos: kebab-case, camelCase, PascalCase, snake_case
+- Padrões de nomenclatura de componentes/classes
+- Nomenclatura de arquivos de teste: `*.test.ts`, `*.spec.ts`, `*_test.go`
 
-**Code Patterns**
-- Error handling style: try/catch, Result types, error codes
-- Dependency injection or direct imports
-- State management approach
-- Async patterns: callbacks, promises, async/await, channels
+**Padrões de Código**
+- Estilo de tratamento de erros: try/catch, tipos Result, códigos de erro
+- Injeção de dependência ou imports diretos
+- Abordagem de gerenciamento de estado
+- Padrões assíncronos: callbacks, promises, async/await, channels
 
-**Git Conventions**
-- Branch naming from recent branches
-- Commit message style from recent commits
-- PR workflow (squash, merge, rebase)
-- If the repo has no commits yet or only a shallow history (e.g. `git clone --depth 1`), skip this section and note "Git history unavailable or too shallow to detect conventions"
+**Convenções do Git**
+- Nomenclatura de branches a partir de branches recentes
+- Estilo de mensagem de Commit a partir de commits recentes
+- Fluxo de trabalho de PR (squash, merge, rebase)
+- Se o repositório ainda não tem commits ou apenas um histórico raso (ex.: `git clone --depth 1`), pule esta seção e anote "Histórico do Git indisponível ou raso demais para detectar convenções"
 
-### Phase 4: Generate Onboarding Artifacts
+### Phase 4: Gerar Artefatos de Onboarding
 
-Produce two outputs:
+Produza duas saídas:
 
-#### Output 1: Onboarding Guide
+#### Output 1: Guia de Onboarding
 
 ```markdown
-# Onboarding Guide: [Project Name]
+# Guia de Onboarding: [Nome do Projeto]
 
-## Overview
-[2-3 sentences: what this project does and who it serves]
+## Visão Geral
+[2-3 frases: o que este projeto faz e a quem ele serve]
 
 ## Tech Stack
-<!-- Example for a Next.js project — replace with detected stack -->
-| Layer | Technology | Version |
+<!-- Exemplo para um projeto Next.js — substitua pelo stack detectado -->
+| Camada | Tecnologia | Versão |
 |-------|-----------|---------|
-| Language | TypeScript | 5.x |
+| Linguagem | TypeScript | 5.x |
 | Framework | Next.js | 14.x |
-| Database | PostgreSQL | 16 |
+| Banco de dados | PostgreSQL | 16 |
 | ORM | Prisma | 5.x |
-| Testing | Jest + Playwright | - |
+| Testes | Jest + Playwright | - |
 
-## Architecture
-[Diagram or description of how components connect]
+## Arquitetura
+[Diagrama ou descrição de como os componentes se conectam]
 
-## Key Entry Points
-<!-- Example for a Next.js project — replace with detected paths -->
-- **API routes**: `src/app/api/` — Next.js route handlers
-- **UI pages**: `src/app/(dashboard)/` — authenticated pages
-- **Database**: `prisma/schema.prisma` — data model source of truth
-- **Config**: `next.config.ts` — build and runtime config
+## Principais Pontos de Entrada
+<!-- Exemplo para um projeto Next.js — substitua pelos caminhos detectados -->
+- **Rotas de API**: `src/app/api/` — handlers de rota Next.js
+- **Páginas de UI**: `src/app/(dashboard)/` — páginas autenticadas
+- **Banco de dados**: `prisma/schema.prisma` — fonte da verdade do modelo de dados
+- **Config**: `next.config.ts` — configuração de build e runtime
 
-## Directory Map
-[Top-level directory → purpose mapping]
+## Mapa de Diretórios
+[Mapeamento diretório de nível superior → propósito]
 
-## Request Lifecycle
-[Trace one API request from entry to response]
+## Ciclo de Vida da Requisição
+[Rastreie uma requisição de API da entrada à resposta]
 
-## Conventions
-- [File naming pattern]
-- [Error handling approach]
-- [Testing patterns]
-- [Git workflow]
+## Convenções
+- [Padrão de nomenclatura de arquivos]
+- [Abordagem de tratamento de erros]
+- [Padrões de teste]
+- [Fluxo de trabalho do Git]
 
-## Common Tasks
-<!-- Example for a Node.js project — replace with detected commands -->
-- **Run dev server**: `npm run dev`
-- **Run tests**: `npm test`
-- **Run linter**: `npm run lint`
-- **Database migrations**: `npx prisma migrate dev`
-- **Build for production**: `npm run build`
+## Tarefas Comuns
+<!-- Exemplo para um projeto Node.js — substitua pelos comandos detectados -->
+- **Rodar o dev server**: `npm run dev`
+- **Rodar os testes**: `npm test`
+- **Rodar o linter**: `npm run lint`
+- **Migrações de banco de dados**: `npx prisma migrate dev`
+- **Build para produção**: `npm run build`
 
-## Where to Look
-<!-- Example for a Next.js project — replace with detected paths -->
-| I want to... | Look at... |
+## Onde Procurar
+<!-- Exemplo para um projeto Next.js — substitua pelos caminhos detectados -->
+| Eu quero... | Veja em... |
 |--------------|-----------|
-| Add an API endpoint | `src/app/api/` |
-| Add a UI page | `src/app/(dashboard)/` |
-| Add a database table | `prisma/schema.prisma` |
-| Add a test | `tests/` matching the source path |
-| Change build config | `next.config.ts` |
+| Adicionar um endpoint de API | `src/app/api/` |
+| Adicionar uma página de UI | `src/app/(dashboard)/` |
+| Adicionar uma tabela de banco de dados | `prisma/schema.prisma` |
+| Adicionar um teste | `tests/` correspondente ao caminho do código-fonte |
+| Mudar a configuração de build | `next.config.ts` |
 ```
 
-#### Output 2: Starter CLAUDE.md
+#### Output 2: CLAUDE.md Inicial
 
-Generate or update a project-specific CLAUDE.md based on detected conventions. If `CLAUDE.md` already exists, read it first and enhance it — preserve existing project-specific instructions and clearly call out what was added or changed.
+Gere ou atualize um CLAUDE.md específico do projeto com base nas convenções detectadas. Se já existir um `CLAUDE.md`, leia-o primeiro e aprimore-o — preserve as instruções específicas do projeto existentes e destaque claramente o que foi adicionado ou alterado.
 
 ```markdown
 # Project Instructions
 
 ## Tech Stack
-[Detected stack summary]
+[Resumo do stack detectado]
 
 ## Code Style
-- [Detected naming conventions]
-- [Detected patterns to follow]
+- [Convenções de nomenclatura detectadas]
+- [Padrões detectados a seguir]
 
 ## Testing
-- Run tests: `[detected test command]`
-- Test pattern: [detected test file convention]
-- Coverage: [if configured, the coverage command]
+- Rodar os testes: `[comando de teste detectado]`
+- Padrão de teste: [convenção de arquivo de teste detectada]
+- Cobertura: [se configurado, o comando de cobertura]
 
 ## Build & Run
-- Dev: `[detected dev command]`
-- Build: `[detected build command]`
-- Lint: `[detected lint command]`
+- Dev: `[comando de dev detectado]`
+- Build: `[comando de build detectado]`
+- Lint: `[comando de lint detectado]`
 
 ## Project Structure
-[Key directory → purpose map]
+[Mapa diretório-chave → propósito]
 
 ## Conventions
-- [Commit style if detectable]
-- [PR workflow if detectable]
-- [Error handling patterns]
+- [Estilo de Commit se detectável]
+- [Fluxo de trabalho de PR se detectável]
+- [Padrões de tratamento de erros]
 ```
 
 ## Best Practices
 
-1. **Don't read everything** — reconnaissance should use Glob and Grep, not Read on every file. Read selectively only for ambiguous signals.
-2. **Verify, don't guess** — if a framework is detected from config but the actual code uses something different, trust the code.
-3. **Respect existing CLAUDE.md** — if one already exists, enhance it rather than replacing it. Call out what's new vs existing.
-4. **Stay concise** — the onboarding guide should be scannable in 2 minutes. Details belong in the code, not the guide.
-5. **Flag unknowns** — if a convention can't be confidently detected, say so rather than guessing. "Could not determine test runner" is better than a wrong answer.
+1. **Não leia tudo** — o reconhecimento deve usar Glob e Grep, não Read em cada arquivo. Leia seletivamente apenas para sinais ambíguos.
+2. **Verifique, não adivinhe** — se um framework for detectado pela configuração, mas o código real usar algo diferente, confie no código.
+3. **Respeite o CLAUDE.md existente** — se já existir um, aprimore-o em vez de substituí-lo. Destaque o que é novo vs. existente.
+4. **Seja conciso** — o guia de onboarding deve ser escaneável em 2 minutos. Os detalhes pertencem ao código, não ao guia.
+5. **Sinalize incertezas** — se uma convenção não puder ser detectada com confiança, diga isso em vez de adivinhar. "Não foi possível determinar o test runner" é melhor do que uma resposta errada.
 
 ## Anti-Patterns to Avoid
 
-- Generating a CLAUDE.md that's longer than 100 lines — keep it focused
-- Listing every dependency — highlight only the ones that shape how you write code
-- Describing obvious directory names — `src/` doesn't need an explanation
-- Copying the README — the onboarding guide adds structural insight the README lacks
+- Gerar um CLAUDE.md com mais de 100 linhas — mantenha-o focado
+- Listar cada dependência — destaque apenas as que moldam como você escreve código
+- Descrever nomes óbvios de diretório — `src/` não precisa de explicação
+- Copiar o README — o guia de onboarding adiciona o insight estrutural que falta no README
 
 ## Examples
 
-### Example 1: First time in a new repo
+### Example 1: Primeira vez em um repositório novo
 **User**: "Onboard me to this codebase"
-**Action**: Run full 4-phase workflow → produce Onboarding Guide + Starter CLAUDE.md
-**Output**: Onboarding Guide printed directly to the conversation, plus a `CLAUDE.md` written to the project root
+**Action**: Execute o fluxo completo de 4 fases → produza o Guia de Onboarding + CLAUDE.md inicial
+**Output**: Guia de Onboarding impresso diretamente na conversa, mais um `CLAUDE.md` gravado na raiz do projeto
 
-### Example 2: Generate CLAUDE.md for existing project
+### Example 2: Gerar CLAUDE.md para um projeto existente
 **User**: "Generate a CLAUDE.md for this project"
-**Action**: Run Phases 1-3, skip Onboarding Guide, produce only CLAUDE.md
-**Output**: Project-specific `CLAUDE.md` with detected conventions
+**Action**: Execute as Fases 1-3, pule o Guia de Onboarding, produza apenas o CLAUDE.md
+**Output**: `CLAUDE.md` específico do projeto com as convenções detectadas
 
-### Example 3: Enhance existing CLAUDE.md
+### Example 3: Aprimorar um CLAUDE.md existente
 **User**: "Update the CLAUDE.md with current project conventions"
-**Action**: Read existing CLAUDE.md, run Phases 1-3, merge new findings
-**Output**: Updated `CLAUDE.md` with additions clearly marked
+**Action**: Leia o CLAUDE.md existente, execute as Fases 1-3, faça o merge das novas descobertas
+**Output**: `CLAUDE.md` atualizado com as adições claramente marcadas

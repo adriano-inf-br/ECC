@@ -365,7 +365,7 @@ public:
 };
 
 void fetch_data(const std::string& url) {
-    // E.2: Throw to signal failure
+    // E.2: Lance para sinalizar falha
     throw NetworkError("connection refused", 503);
 }
 
@@ -377,90 +377,90 @@ void run() {
     } catch (const AppError& e) {
         log_error(e.what());
     }
-    // E.17: Don't catch everything here -- let unexpected errors propagate
+    // E.17: Não capture tudo aqui -- deixe erros inesperados se propagarem
 }
 ```
 
-### Anti-Patterns
+### Anti-Padrões
 
-- Throwing built-in types like `int` or string literals (E.14)
-- Catching by value (slicing risk) (E.15)
-- Empty catch blocks that silently swallow errors
-- Using exceptions for flow control (E.3)
-- Error handling based on global state like `errno` (E.28)
+- Lançar tipos embutidos como `int` ou literais de string (E.14)
+- Capturar por valor (risco de slicing) (E.15)
+- Blocos catch vazios que engolem erros silenciosamente
+- Usar exceções para controle de fluxo (E.3)
+- Tratamento de erros baseado em estado global como `errno` (E.28)
 
-## Constants & Immutability (Con.*)
+## Constantes e Imutabilidade (Con.*)
 
-### All Rules
+### Todas as Regras
 
-| Rule | Summary |
+| Regra | Resumo |
 |------|---------|
-| **Con.1** | By default, make objects immutable |
-| **Con.2** | By default, make member functions `const` |
-| **Con.3** | By default, pass pointers and references to `const` |
-| **Con.4** | Use `const` for values that don't change after construction |
-| **Con.5** | Use `constexpr` for values computable at compile time |
+| **Con.1** | Por padrão, torne os objetos imutáveis |
+| **Con.2** | Por padrão, torne as funções membro `const` |
+| **Con.3** | Por padrão, passe ponteiros e referências para `const` |
+| **Con.4** | Use `const` para valores que não mudam após a construção |
+| **Con.5** | Use `constexpr` para valores computáveis em tempo de compilação |
 
 ```cpp
-// Con.1 through Con.5: Immutability by default
+// Con.1 até Con.5: Imutabilidade por padrão
 class Sensor {
 public:
     explicit Sensor(std::string id) : id_(std::move(id)) {}
 
-    // Con.2: const member functions by default
+    // Con.2: funções membro const por padrão
     const std::string& id() const { return id_; }
     double last_reading() const { return reading_; }
 
-    // Only non-const when mutation is required
+    // Não-const apenas quando a mutação é necessária
     void record(double value) { reading_ = value; }
 
 private:
-    const std::string id_;  // Con.4: never changes after construction
+    const std::string id_;  // Con.4: nunca muda após a construção
     double reading_{0.0};
 };
 
-// Con.3: Pass by const reference
+// Con.3: Passe por referência const
 void display(const Sensor& s) {
     std::cout << s.id() << ": " << s.last_reading() << '\n';
 }
 
-// Con.5: Compile-time constants
+// Con.5: Constantes de tempo de compilação
 constexpr double PI = 3.14159265358979;
 constexpr int MAX_SENSORS = 256;
 ```
 
-## Concurrency & Parallelism (CP.*)
+## Concorrência e Paralelismo (CP.*)
 
-### Key Rules
+### Regras Principais
 
-| Rule | Summary |
+| Regra | Resumo |
 |------|---------|
-| **CP.2** | Avoid data races |
-| **CP.3** | Minimize explicit sharing of writable data |
-| **CP.4** | Think in terms of tasks, rather than threads |
-| **CP.8** | Don't use `volatile` for synchronization |
-| **CP.20** | Use RAII, never plain `lock()`/`unlock()` |
-| **CP.21** | Use `std::scoped_lock` to acquire multiple mutexes |
-| **CP.22** | Never call unknown code while holding a lock |
-| **CP.42** | Don't wait without a condition |
-| **CP.44** | Remember to name your `lock_guard`s and `unique_lock`s |
-| **CP.100** | Don't use lock-free programming unless you absolutely have to |
+| **CP.2** | Evite data races |
+| **CP.3** | Minimize o compartilhamento explícito de dados graváveis |
+| **CP.4** | Pense em termos de tasks, em vez de threads |
+| **CP.8** | Não use `volatile` para sincronização |
+| **CP.20** | Use RAII, nunca `lock()`/`unlock()` direto |
+| **CP.21** | Use `std::scoped_lock` para adquirir múltiplos mutexes |
+| **CP.22** | Nunca chame código desconhecido enquanto segura um lock |
+| **CP.42** | Não espere sem uma condição |
+| **CP.44** | Lembre-se de nomear seus `lock_guard`s e `unique_lock`s |
+| **CP.100** | Não use programação lock-free a menos que seja absolutamente necessário |
 
-### Safe Locking
+### Locking Seguro
 
 ```cpp
-// CP.20 + CP.44: RAII locks, always named
+// CP.20 + CP.44: Locks RAII, sempre nomeados
 class ThreadSafeQueue {
 public:
     void push(int value) {
-        std::lock_guard<std::mutex> lock(mutex_);  // CP.44: named!
+        std::lock_guard<std::mutex> lock(mutex_);  // CP.44: nomeado!
         queue_.push(value);
         cv_.notify_one();
     }
 
     int pop() {
         std::unique_lock<std::mutex> lock(mutex_);
-        // CP.42: Always wait with a condition
+        // CP.42: Sempre espere com uma condição
         cv_.wait(lock, [this] { return !queue_.empty(); });
         const int value = queue_.front();
         queue_.pop();
@@ -468,16 +468,16 @@ public:
     }
 
 private:
-    std::mutex mutex_;             // CP.50: mutex with its data
+    std::mutex mutex_;             // CP.50: mutex junto com seus dados
     std::condition_variable cv_;
     std::queue<int> queue_;
 };
 ```
 
-### Multiple Mutexes
+### Múltiplos Mutexes
 
 ```cpp
-// CP.21: std::scoped_lock for multiple mutexes (deadlock-free)
+// CP.21: std::scoped_lock para múltiplos mutexes (livre de deadlock)
 void transfer(Account& from, Account& to, double amount) {
     std::scoped_lock lock(from.mutex_, to.mutex_);
     from.balance_ -= amount;
@@ -485,35 +485,35 @@ void transfer(Account& from, Account& to, double amount) {
 }
 ```
 
-### Anti-Patterns
+### Anti-Padrões
 
-- `volatile` for synchronization (CP.8 -- it's for hardware I/O only)
-- Detaching threads (CP.26 -- lifetime management becomes nearly impossible)
-- Unnamed lock guards: `std::lock_guard<std::mutex>(m);` destroys immediately (CP.44)
-- Holding locks while calling callbacks (CP.22 -- deadlock risk)
-- Lock-free programming without deep expertise (CP.100)
+- `volatile` para sincronização (CP.8 -- é apenas para I/O de hardware)
+- Desanexar threads (CP.26 -- o gerenciamento de tempo de vida fica quase impossível)
+- Lock guards sem nome: `std::lock_guard<std::mutex>(m);` é destruído imediatamente (CP.44)
+- Segurar locks enquanto chama callbacks (CP.22 -- risco de deadlock)
+- Programação lock-free sem expertise profunda (CP.100)
 
-## Templates & Generic Programming (T.*)
+## Templates e Programação Genérica (T.*)
 
-### Key Rules
+### Regras Principais
 
-| Rule | Summary |
+| Regra | Resumo |
 |------|---------|
-| **T.1** | Use templates to raise the level of abstraction |
-| **T.2** | Use templates to express algorithms for many argument types |
-| **T.10** | Specify concepts for all template arguments |
-| **T.11** | Use standard concepts whenever possible |
-| **T.13** | Prefer shorthand notation for simple concepts |
-| **T.43** | Prefer `using` over `typedef` |
-| **T.120** | Use template metaprogramming only when you really need to |
-| **T.144** | Don't specialize function templates (overload instead) |
+| **T.1** | Use templates para elevar o nível de abstração |
+| **T.2** | Use templates para expressar algoritmos para muitos tipos de argumento |
+| **T.10** | Especifique concepts para todos os argumentos de template |
+| **T.11** | Use concepts padrão sempre que possível |
+| **T.13** | Prefira a notação abreviada para concepts simples |
+| **T.43** | Prefira `using` a `typedef` |
+| **T.120** | Use metaprogramação de template apenas quando realmente precisar |
+| **T.144** | Não especialize templates de função (faça overload em vez disso) |
 
 ### Concepts (C++20)
 
 ```cpp
 #include <concepts>
 
-// T.10 + T.11: Constrain templates with standard concepts
+// T.10 + T.11: Restrinja templates com concepts padrão
 template<std::integral T>
 T gcd(T a, T b) {
     while (b != 0) {
@@ -522,12 +522,12 @@ T gcd(T a, T b) {
     return a;
 }
 
-// T.13: Shorthand concept syntax
+// T.13: Sintaxe abreviada de concept
 void sort(std::ranges::random_access_range auto& range) {
     std::ranges::sort(range);
 }
 
-// Custom concept for domain-specific constraints
+// Concept personalizado para restrições específicas de domínio
 template<typename T>
 concept Serializable = requires(const T& t) {
     { t.serialize() } -> std::convertible_to<std::string>;
@@ -537,85 +537,85 @@ template<Serializable T>
 void save(const T& obj, const std::string& path);
 ```
 
-### Anti-Patterns
+### Anti-Padrões
 
-- Unconstrained templates in visible namespaces (T.47)
-- Specializing function templates instead of overloading (T.144)
-- Template metaprogramming where `constexpr` suffices (T.120)
-- `typedef` instead of `using` (T.43)
+- Templates sem restrição em namespaces visíveis (T.47)
+- Especializar templates de função em vez de fazer overload (T.144)
+- Metaprogramação de template onde `constexpr` basta (T.120)
+- `typedef` em vez de `using` (T.43)
 
-## Standard Library (SL.*)
+## Biblioteca Padrão (SL.*)
 
-### Key Rules
+### Regras Principais
 
-| Rule | Summary |
+| Regra | Resumo |
 |------|---------|
-| **SL.1** | Use libraries wherever possible |
-| **SL.2** | Prefer the standard library to other libraries |
-| **SL.con.1** | Prefer `std::array` or `std::vector` over C arrays |
-| **SL.con.2** | Prefer `std::vector` by default |
-| **SL.str.1** | Use `std::string` to own character sequences |
-| **SL.str.2** | Use `std::string_view` to refer to character sequences |
-| **SL.io.50** | Avoid `endl` (use `'\n'` -- `endl` forces a flush) |
+| **SL.1** | Use bibliotecas sempre que possível |
+| **SL.2** | Prefira a biblioteca padrão a outras bibliotecas |
+| **SL.con.1** | Prefira `std::array` ou `std::vector` a arrays C |
+| **SL.con.2** | Prefira `std::vector` por padrão |
+| **SL.str.1** | Use `std::string` para deter sequências de caracteres |
+| **SL.str.2** | Use `std::string_view` para referenciar sequências de caracteres |
+| **SL.io.50** | Evite `endl` (use `'\n'` -- `endl` força um flush) |
 
 ```cpp
-// SL.con.1 + SL.con.2: Prefer vector/array over C arrays
+// SL.con.1 + SL.con.2: Prefira vector/array a arrays C
 const std::array<int, 4> fixed_data{1, 2, 3, 4};
 std::vector<std::string> dynamic_data;
 
-// SL.str.1 + SL.str.2: string owns, string_view observes
+// SL.str.1 + SL.str.2: string detém posse, string_view observa
 std::string build_greeting(std::string_view name) {
     return "Hello, " + std::string(name) + "!";
 }
 
-// SL.io.50: Use '\n' not endl
+// SL.io.50: Use '\n', não endl
 std::cout << "result: " << value << '\n';
 ```
 
-## Enumerations (Enum.*)
+## Enumerações (Enum.*)
 
-### Key Rules
+### Regras Principais
 
-| Rule | Summary |
+| Regra | Resumo |
 |------|---------|
-| **Enum.1** | Prefer enumerations over macros |
-| **Enum.3** | Prefer `enum class` over plain `enum` |
-| **Enum.5** | Don't use ALL_CAPS for enumerators |
-| **Enum.6** | Avoid unnamed enumerations |
+| **Enum.1** | Prefira enumerações a macros |
+| **Enum.3** | Prefira `enum class` a `enum` simples |
+| **Enum.5** | Não use ALL_CAPS para enumeradores |
+| **Enum.6** | Evite enumerações sem nome |
 
 ```cpp
-// Enum.3 + Enum.5: Scoped enum, no ALL_CAPS
+// Enum.3 + Enum.5: Enum com escopo, sem ALL_CAPS
 enum class Color { red, green, blue };
 enum class LogLevel { debug, info, warning, error };
 
-// BAD: plain enum leaks names, ALL_CAPS clashes with macros
-enum { RED, GREEN, BLUE };           // Enum.3 + Enum.5 + Enum.6 violation
-#define MAX_SIZE 100                  // Enum.1 violation -- use constexpr
+// RUIM: enum simples vaza nomes, ALL_CAPS conflita com macros
+enum { RED, GREEN, BLUE };           // violação de Enum.3 + Enum.5 + Enum.6
+#define MAX_SIZE 100                  // violação de Enum.1 -- use constexpr
 ```
 
-## Source Files & Naming (SF.*, NL.*)
+## Arquivos-Fonte e Nomenclatura (SF.*, NL.*)
 
-### Key Rules
+### Regras Principais
 
-| Rule | Summary |
+| Regra | Resumo |
 |------|---------|
-| **SF.1** | Use `.cpp` for code files and `.h` for interface files |
-| **SF.7** | Don't write `using namespace` at global scope in a header |
-| **SF.8** | Use `#include` guards for all `.h` files |
-| **SF.11** | Header files should be self-contained |
-| **NL.5** | Avoid encoding type information in names (no Hungarian notation) |
-| **NL.8** | Use a consistent naming style |
-| **NL.9** | Use ALL_CAPS for macro names only |
-| **NL.10** | Prefer `underscore_style` names |
+| **SF.1** | Use `.cpp` para arquivos de código e `.h` para arquivos de interface |
+| **SF.7** | Não escreva `using namespace` em escopo global em um header |
+| **SF.8** | Use guardas de `#include` para todos os arquivos `.h` |
+| **SF.11** | Arquivos de header devem ser autocontidos |
+| **NL.5** | Evite codificar informação de tipo nos nomes (sem notação húngara) |
+| **NL.8** | Use um estilo de nomenclatura consistente |
+| **NL.9** | Use ALL_CAPS apenas para nomes de macro |
+| **NL.10** | Prefira nomes em `underscore_style` |
 
-### Header Guard
+### Guarda de Header
 
 ```cpp
-// SF.8: Include guard (or #pragma once)
+// SF.8: Guarda de include (ou #pragma once)
 #ifndef PROJECT_MODULE_WIDGET_H
 #define PROJECT_MODULE_WIDGET_H
 
-// SF.11: Self-contained -- include everything this header needs
+// SF.11: Autocontido -- inclua tudo o que este header precisa
 #include <string>
 #include <vector>
 
@@ -635,52 +635,52 @@ private:
 #endif  // PROJECT_MODULE_WIDGET_H
 ```
 
-### Naming Conventions
+### Convenções de Nomenclatura
 
 ```cpp
-// NL.8 + NL.10: Consistent underscore_style
+// NL.8 + NL.10: underscore_style consistente
 namespace my_project {
 
-constexpr int max_buffer_size = 4096;  // NL.9: not ALL_CAPS (it's not a macro)
+constexpr int max_buffer_size = 4096;  // NL.9: não é ALL_CAPS (não é uma macro)
 
-class tcp_connection {                 // underscore_style class
+class tcp_connection {                 // classe em underscore_style
 public:
     void send_message(std::string_view msg);
     bool is_connected() const;
 
 private:
-    std::string host_;                 // trailing underscore for members
+    std::string host_;                 // underscore final para membros
     int port_;
 };
 
 }  // namespace my_project
 ```
 
-### Anti-Patterns
+### Anti-Padrões
 
-- `using namespace std;` in a header at global scope (SF.7)
-- Headers that depend on inclusion order (SF.10, SF.11)
-- Hungarian notation like `strName`, `iCount` (NL.5)
-- ALL_CAPS for anything other than macros (NL.9)
+- `using namespace std;` em um header em escopo global (SF.7)
+- Headers que dependem da ordem de inclusão (SF.10, SF.11)
+- Notação húngara como `strName`, `iCount` (NL.5)
+- ALL_CAPS para qualquer coisa que não seja macro (NL.9)
 
-## Performance (Per.*)
+## Desempenho (Per.*)
 
-### Key Rules
+### Regras Principais
 
-| Rule | Summary |
+| Regra | Resumo |
 |------|---------|
-| **Per.1** | Don't optimize without reason |
-| **Per.2** | Don't optimize prematurely |
-| **Per.6** | Don't make claims about performance without measurements |
-| **Per.7** | Design to enable optimization |
-| **Per.10** | Rely on the static type system |
-| **Per.11** | Move computation from run time to compile time |
-| **Per.19** | Access memory predictably |
+| **Per.1** | Não otimize sem motivo |
+| **Per.2** | Não otimize prematuramente |
+| **Per.6** | Não faça afirmações sobre desempenho sem medições |
+| **Per.7** | Projete para habilitar a otimização |
+| **Per.10** | Conte com o sistema de tipos estático |
+| **Per.11** | Mova a computação do tempo de execução para o tempo de compilação |
+| **Per.19** | Acesse a memória de forma previsível |
 
-### Guidelines
+### Diretrizes
 
 ```cpp
-// Per.11: Compile-time computation where possible
+// Per.11: Computação em tempo de compilação quando possível
 constexpr auto lookup_table = [] {
     std::array<int, 256> table{};
     for (int i = 0; i < 256; ++i) {
@@ -689,36 +689,36 @@ constexpr auto lookup_table = [] {
     return table;
 }();
 
-// Per.19: Prefer contiguous data for cache-friendliness
-std::vector<Point> points;           // GOOD: contiguous
-std::vector<std::unique_ptr<Point>> indirect_points; // BAD: pointer chasing
+// Per.19: Prefira dados contíguos para amigabilidade com cache
+std::vector<Point> points;           // BOM: contíguo
+std::vector<std::unique_ptr<Point>> indirect_points; // RUIM: perseguição de ponteiros
 ```
 
-### Anti-Patterns
+### Anti-Padrões
 
-- Optimizing without profiling data (Per.1, Per.6)
-- Choosing "clever" low-level code over clear abstractions (Per.4, Per.5)
-- Ignoring data layout and cache behavior (Per.19)
+- Otimizar sem dados de profiling (Per.1, Per.6)
+- Escolher código "esperto" de baixo nível em vez de abstrações claras (Per.4, Per.5)
+- Ignorar o layout de dados e o comportamento de cache (Per.19)
 
-## Quick Reference Checklist
+## Checklist de Referência Rápida
 
-Before marking C++ work complete:
+Antes de marcar o trabalho em C++ como concluído:
 
-- [ ] No raw `new`/`delete` -- use smart pointers or RAII (R.11)
-- [ ] Objects initialized at declaration (ES.20)
-- [ ] Variables are `const`/`constexpr` by default (Con.1, ES.25)
-- [ ] Member functions are `const` where possible (Con.2)
-- [ ] `enum class` instead of plain `enum` (Enum.3)
-- [ ] `nullptr` instead of `0`/`NULL` (ES.47)
-- [ ] No narrowing conversions (ES.46)
-- [ ] No C-style casts (ES.48)
-- [ ] Single-argument constructors are `explicit` (C.46)
-- [ ] Rule of Zero or Rule of Five applied (C.20, C.21)
-- [ ] Base class destructors are public virtual or protected non-virtual (C.35)
-- [ ] Templates are constrained with concepts (T.10)
-- [ ] No `using namespace` in headers at global scope (SF.7)
-- [ ] Headers have include guards and are self-contained (SF.8, SF.11)
-- [ ] Locks use RAII (`scoped_lock`/`lock_guard`) (CP.20)
-- [ ] Exceptions are custom types, thrown by value, caught by reference (E.14, E.15)
-- [ ] `'\n'` instead of `std::endl` (SL.io.50)
-- [ ] No magic numbers (ES.45)
+- [ ] Sem `new`/`delete` nus -- use smart pointers ou RAII (R.11)
+- [ ] Objetos inicializados na declaração (ES.20)
+- [ ] Variáveis são `const`/`constexpr` por padrão (Con.1, ES.25)
+- [ ] Funções membro são `const` quando possível (Con.2)
+- [ ] `enum class` em vez de `enum` simples (Enum.3)
+- [ ] `nullptr` em vez de `0`/`NULL` (ES.47)
+- [ ] Sem conversões de estreitamento (ES.46)
+- [ ] Sem casts no estilo C (ES.48)
+- [ ] Construtores de argumento único são `explicit` (C.46)
+- [ ] Rule of Zero ou Rule of Five aplicada (C.20, C.21)
+- [ ] Destrutores de classe base são public virtual ou protected não-virtual (C.35)
+- [ ] Templates são restringidos com concepts (T.10)
+- [ ] Sem `using namespace` em headers em escopo global (SF.7)
+- [ ] Headers têm guardas de include e são autocontidos (SF.8, SF.11)
+- [ ] Locks usam RAII (`scoped_lock`/`lock_guard`) (CP.20)
+- [ ] Exceções são tipos personalizados, lançadas por valor, capturadas por referência (E.14, E.15)
+- [ ] `'\n'` em vez de `std::endl` (SL.io.50)
+- [ ] Sem números mágicos (ES.45)

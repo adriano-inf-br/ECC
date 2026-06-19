@@ -1,6 +1,6 @@
 ---
 name: blender-motion-state-inspection
-description: Use this skill when inspecting Blender characters, rigs, poses, animation retargeting, ground contact, facing direction, or model-vs-motion alignment where screenshots alone are not enough.
+description: Use esta Skill ao inspecionar personagens, rigs, poses, retargeting de animação, contato com o solo, direção de orientação ou alinhamento modelo-vs-movimento no Blender, onde capturas de tela sozinhas não bastam.
 metadata:
   origin: ECC
 tools: Read, Write, Edit, Bash, Grep, Glob
@@ -10,65 +10,65 @@ tools: Read, Write, Edit, Bash, Grep, Glob
 
 ## When to Use
 
-- A Blender character looks twisted, mirrored, flattened, offset, or foot-sliding in an animation.
-- A user asks whether an imported avatar, armature, or retargeted motion matches an expected pose.
-- You need to compare rendered evidence with structured facts such as bones, bounding boxes, contacts, and facing vectors.
-- A workflow depends on deciding whether a model is a character, prop, proxy mesh, control rig, or broken import.
+- Um personagem do Blender parece torcido, espelhado, achatado, deslocado ou deslizando os pés (foot-sliding) em uma animação.
+- Um usuário pergunta se um avatar importado, armature ou movimento retargetado corresponde a uma pose esperada.
+- Você precisa comparar evidência renderizada com fatos estruturados, como ossos, bounding boxes, contatos e vetores de orientação.
+- Um workflow depende de decidir se um modelo é um personagem, prop, malha proxy, control rig ou uma importação quebrada.
 
-## Core Principle
+## Princípio Central
 
-Do not judge animated 3D assets only from screenshots. Screenshots are review evidence, but they hide axis conventions, bone names, object scale, local transforms, parented meshes, material slots, and frame-by-frame contact state.
+Não julgue assets 3D animados apenas por capturas de tela. Capturas de tela são evidência de revisão, mas escondem convenções de eixos, nomes de ossos, escala de objetos, transforms locais, malhas parenteadas, slots de material e o estado de contato quadro a quadro.
 
-First extract structured Blender state, then use viewport screenshots or renders to confirm what the facts imply.
+Primeiro extraia o estado estruturado do Blender, depois use capturas de tela do viewport ou renders para confirmar o que os fatos implicam.
 
 ## How It Works
 
-1. Establish the clean scene and asset baseline before judging motion.
-2. Extract structured facts from Blender using an exporter or Blender Python run inside Blender's own interpreter.
-3. Sample the frames most likely to expose contact, orientation, scale, and retargeting errors.
-4. Compare the measured facts against the user's expected pose, direction, ground plane, and render goal.
-5. Return a concise report that separates confirmed facts, likely causes, and required fixes.
+1. Estabeleça a cena limpa e a linha de base do asset antes de julgar o movimento.
+2. Extraia fatos estruturados do Blender usando um exportador ou rodando Blender Python dentro do próprio interpretador do Blender.
+3. Amostre os quadros com maior probabilidade de expor erros de contato, orientação, escala e retargeting.
+4. Compare os fatos medidos contra a pose esperada do usuário, direção, plano do solo e meta de render.
+5. Retorne um relatório conciso que separa fatos confirmados, causas prováveis e correções necessárias.
 
-## Inspection Workflow
+## Fluxo de Inspeção
 
-1. Inventory the scene.
-   - List meshes, armatures, empties, cameras, lights, modifiers, parent relationships, and hidden objects.
-   - Separate character meshes from helper/proxy geometry before judging the avatar.
-   - Record object-space and world-space bounding boxes.
+1. Inventarie a cena.
+   - Liste malhas, armatures, empties, câmeras, luzes, modificadores, relações de parentesco e objetos ocultos.
+   - Separe as malhas do personagem da geometria auxiliar/proxy antes de julgar o avatar.
+   - Registre as bounding boxes em object-space e world-space.
 
-2. Identify the skeleton.
-   - Capture armature names, pose bones, bone heads/tails, roll, parent chains, constraints, and rest-pose axes.
-   - Map semantic bones such as hips, spine, neck, head, shoulders, elbows, hands, thighs, knees, ankles, and feet.
-   - Flag missing left/right pairs and unusual naming schemes.
+2. Identifique o esqueleto.
+   - Capture nomes de armatures, pose bones, heads/tails dos ossos, roll, cadeias de parentesco, constraints e eixos de rest-pose.
+   - Mapeie ossos semânticos como quadris (hips), coluna (spine), pescoço (neck), cabeça (head), ombros, cotovelos, mãos, coxas, joelhos, tornozelos e pés.
+   - Sinalize pares esquerda/direita ausentes e esquemas de nomenclatura incomuns.
 
-3. Determine forward, up, and side axes.
-   - Use the pelvis, spine, shoulders, hips, head, and feet together; do not rely on a single mesh normal.
-   - Compare local armature axes with world axes and imported file conventions such as glTF Y-up vs Blender Z-up.
-   - Mark likely mirrored or backwards imports when face/head/feet direction conflicts with root motion.
+3. Determine os eixos forward, up e side.
+   - Use a pelve, coluna, ombros, quadris, cabeça e pés em conjunto; não confie em uma única normal de malha.
+   - Compare os eixos locais do armature com os eixos do mundo e as convenções do arquivo importado, como glTF Y-up vs Blender Z-up.
+   - Marque importações provavelmente espelhadas ou invertidas quando a direção da face/cabeça/pés conflita com o root motion.
 
-4. Sample animation frames.
-   - Inspect first, middle, contact, airborne, and extreme frames.
-   - Record root location, root heading, pelvis height, torso lean, limb directions, foot clearance, and mesh bounds.
-   - For long or fast motion, sample more densely around flips, landings, turns, collisions, and floor contacts.
+4. Amostre os quadros da animação.
+   - Inspecione o primeiro quadro, o do meio, os de contato, os no ar (airborne) e os extremos.
+   - Registre a localização do root, o heading do root, a altura da pelve, a inclinação do tronco, as direções dos membros, a folga dos pés e os limites da malha.
+   - Para movimento longo ou rápido, amostre de forma mais densa em torno de flips, aterrissagens, viradas, colisões e contatos com o piso.
 
-5. Check model integrity before retargeting blame.
-   - Confirm the clean baseline shape before applying animation.
-   - Preserve original mesh, materials, armature, and skinning unless the user explicitly asks for repair.
-   - Treat unexplained sphere-like blobs, giant proxy meshes, or crushed bodies as import/selection issues until proven otherwise.
+5. Verifique a integridade do modelo antes de culpar o retargeting.
+   - Confirme a forma da linha de base limpa antes de aplicar a animação.
+   - Preserve a malha original, materiais, armature e skinning, a menos que o usuário peça explicitamente o reparo.
+   - Trate blobs inexplicáveis em forma de esfera, malhas proxy gigantes ou corpos esmagados como problemas de importação/seleção até prova em contrário.
 
-6. Diagnose contact and motion issues.
-   - Ground penetration: compare lowest foot or shoe vertices with floor height per frame.
-   - Foot sliding: compare foot world positions across planted frames.
-   - Leg crossover: compare left/right thigh, knee, ankle, and foot side ordering.
-   - Twist damage: compare bone swing direction separately from roll/twist around the limb axis.
-   - Scale drift: compare animated mesh bounds against the clean baseline bounds.
+6. Diagnostique problemas de contato e movimento.
+   - Penetração no solo: compare os vértices mais baixos do pé ou do calçado com a altura do piso por quadro.
+   - Deslizamento de pé (foot sliding): compare as posições do pé no mundo entre os quadros plantados.
+   - Cruzamento de pernas: compare a ordenação de lado de coxa, joelho, tornozelo e pé esquerdo/direito.
+   - Dano de torção (twist): compare a direção de swing do osso separadamente do roll/twist em torno do eixo do membro.
+   - Deriva de escala: compare os limites da malha animada contra os limites da linha de base limpa.
 
-7. Report facts before opinions.
-   - Include frame numbers, object names, bone names, world coordinates, and thresholds.
-   - Separate confirmed failures from visual suspicions.
-   - Attach screenshots only after the structured state explains what to look for.
+7. Reporte fatos antes de opiniões.
+   - Inclua números de quadro, nomes de objetos, nomes de ossos, coordenadas do mundo e limiares.
+   - Separe as falhas confirmadas das suspeitas visuais.
+   - Anexe capturas de tela apenas depois que o estado estruturado explicar o que procurar.
 
-## Recommended Report Shape
+## Formato de Relatório Recomendado
 
 ```markdown
 ## Blender Motion Inspection
@@ -105,17 +105,17 @@ First extract structured Blender state, then use viewport screenshots or renders
 
 ## Examples
 
-### Walk Cycle With Foot Sliding
+### Ciclo de Caminhada Com Deslizamento de Pé
 
-Scenario: a retargeted character appears to skate during a walk cycle, but the front camera angle makes the foot contact hard to judge.
+Cenário: um personagem retargetado parece patinar durante um ciclo de caminhada, mas o ângulo da câmera frontal dificulta julgar o contato do pé.
 
-Apply the workflow:
-- Inventory the scene: character mesh `HeroBody`, armature `HeroRig`, ground plane `Floor`, no hidden proxy meshes.
-- Identify the skeleton: semantic feet are `foot.L` and `foot.R`; hips are `pelvis`; root bone is `root`.
-- Sample animation frames: inspect frames 1, 18, 24, 30, 42, and 48 around planted-foot moments.
-- Diagnose contact and motion issues: compare world-space foot locations during planted frames.
+Aplique o workflow:
+- Inventarie a cena: malha do personagem `HeroBody`, armature `HeroRig`, plano do solo `Floor`, sem malhas proxy ocultas.
+- Identifique o esqueleto: os pés semânticos são `foot.L` e `foot.R`; os quadris são `pelvis`; o osso root é `root`.
+- Amostre os quadros da animação: inspecione os quadros 1, 18, 24, 30, 42 e 48 em torno dos momentos de pé plantado.
+- Diagnostique problemas de contato e movimento: compare as localizações dos pés em world-space durante os quadros plantados.
 
-Extracted facts:
+Fatos extraídos:
 
 | Frame | Fact | Evidence |
 | --- | --- | --- |
@@ -123,18 +123,18 @@ Extracted facts:
 | 24 | Left foot slides while planted | `foot.L x = 0.21 -> 0.28` over six frames |
 | 30 | Pelvis keeps moving forward | `pelvis y = 1.14 -> 1.31` |
 
-Verdict: fail for render readiness. The motion needs foot-lock cleanup or retargeting constraint review; the body mesh does not need proportion changes.
+Veredito: reprovado para prontidão de render. O movimento precisa de limpeza de foot-lock ou revisão de constraint de retargeting; a malha do corpo não precisa de mudanças de proporção.
 
-### Backwards Imported Character
+### Personagem Importado Invertido
 
-Scenario: a character looks correct in a still frame, but the animation moves opposite the expected travel direction.
+Cenário: um personagem parece correto em um quadro estático, mas a animação se move no sentido oposto à direção de deslocamento esperada.
 
-Apply the workflow:
-- Determine forward, up, and side axes: compare head, chest, feet, and root motion.
-- Sample animation frames: inspect frame 1 and the midpoint of the travel path.
-- Report facts before opinions: include the root heading and model-facing direction separately.
+Aplique o workflow:
+- Determine os eixos forward, up e side: compare cabeça, peito, pés e root motion.
+- Amostre os quadros da animação: inspecione o quadro 1 e o ponto médio do trajeto de deslocamento.
+- Reporte fatos antes de opiniões: inclua o heading do root e a direção de orientação do modelo separadamente.
 
-Extracted facts:
+Fatos extraídos:
 
 | Frame | Fact | Evidence |
 | --- | --- | --- |
@@ -142,24 +142,24 @@ Extracted facts:
 | 72 | Root motion travels toward world `+Y` | `root y = 0.0 -> 2.8` |
 | 72 | Feet remain visually forward-facing opposite travel | toe bones point `-Y` while displacement is `+Y` |
 
-Verdict: likely backwards import or retargeting forward-axis mismatch. Fix the import/retarget axis mapping before editing animation curves.
+Veredito: provavelmente importação invertida ou incompatibilidade do eixo forward de retargeting. Corrija o mapeamento de eixo da importação/retarget antes de editar as curvas de animação.
 
-## Practical Thresholds
+## Limiares Práticos
 
-- Assume Blender's default meter-scale units unless the scene unit scale says otherwise.
-- Treat ground penetration above 1-2 cm as visible unless the floor is soft or intentionally stylized.
-- Treat a sudden scale change above 5% as a likely rig, constraint, or transform inheritance problem.
-- Treat left/right ankle side-order flips during airborne inverted motion as leg crossover risk even if it recovers later.
-- Treat root heading jumps above 30 degrees per frame as suspicious unless the source motion includes a snap turn.
+- Assuma as unidades padrão de escala em metros do Blender, a menos que a escala de unidade da cena diga o contrário.
+- Trate penetração no solo acima de 1-2 cm como visível, a menos que o piso seja macio ou intencionalmente estilizado.
+- Trate uma mudança súbita de escala acima de 5% como provável problema de rig, constraint ou herança de transform.
+- Trate inversões de ordem de lado do tornozelo esquerdo/direito durante movimento invertido no ar como risco de cruzamento de pernas, mesmo que se recupere depois.
+- Trate saltos de heading do root acima de 30 graus por quadro como suspeitos, a menos que o movimento de origem inclua uma virada brusca.
 
 ## Anti-Patterns
 
-- Do not modify body proportions to force pose matching unless the task is explicitly mesh repair.
-- Do not bake away the clean baseline before recording it.
-- Do not use one rendered camera angle as proof that a pose is correct.
-- Do not delete helper objects until you have recorded why they are not part of the character.
-- Do not assume an avatar faces +Y, -Y, +X, or -X without checking head, feet, torso, and root motion together.
+- Não modifique as proporções do corpo para forçar a correspondência de pose, a menos que a tarefa seja explicitamente reparo de malha.
+- Não faça bake da linha de base limpa antes de registrá-la.
+- Não use um único ângulo de câmera renderizado como prova de que uma pose está correta.
+- Não exclua objetos auxiliares até ter registrado por que eles não fazem parte do personagem.
+- Não presuma que um avatar aponta para +Y, -Y, +X ou -X sem checar cabeça, pés, tronco e root motion em conjunto.
 
-## Tooling Notes
+## Notas de Ferramental
 
-If a Blender state exporter is available, prefer JSON that includes meshes, armatures, pose bones, materials, contacts, bounding boxes, and sampled animation frames. If no exporter exists, run a small Blender Python script through Blender itself, for example `blender --background scene.blend --python collect_motion_state.py`, because `bpy` is not available in a normal system Python interpreter.
+Se um exportador de estado do Blender estiver disponível, prefira JSON que inclua malhas, armatures, pose bones, materiais, contatos, bounding boxes e quadros de animação amostrados. Se nenhum exportador existir, rode um pequeno script Blender Python através do próprio Blender, por exemplo `blender --background scene.blend --python collect_motion_state.py`, porque `bpy` não está disponível em um interpretador Python de sistema normal.

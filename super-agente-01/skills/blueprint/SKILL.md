@@ -1,89 +1,89 @@
 ---
 name: blueprint
 description: >-
-  Turn a one-line objective into a step-by-step construction plan for
-  multi-session, multi-agent engineering projects. Each step has a
-  self-contained context brief so a fresh agent can execute it cold.
-  Includes adversarial review gate, dependency graph, parallel step
-  detection, anti-pattern catalog, and plan mutation protocol.
-  TRIGGER when: user requests a plan, blueprint, or roadmap for a
-  complex multi-PR task, or describes work that needs multiple sessions.
-  DO NOT TRIGGER when: task is completable in a single PR or fewer
-  than 3 tool calls, or user says "just do it".
+  Transforme um objetivo de uma linha em um plano de construção passo a passo para
+  projetos de engenharia multi-sessão e multi-agent. Cada passo tem um
+  brief de contexto autocontido para que um agent novo possa executá-lo do zero.
+  Inclui portão de revisão adversarial, grafo de dependências, detecção de passos
+  paralelos, catálogo de anti-padrões e protocolo de mutação de plano.
+  TRIGGER quando: o usuário solicita um plano, blueprint ou roadmap para uma
+  tarefa complexa de múltiplos PRs, ou descreve trabalho que precisa de múltiplas sessões.
+  DO NOT TRIGGER quando: a tarefa é concluível em um único PR ou em menos
+  de 3 chamadas de ferramenta, ou o usuário diz "apenas faça".
 metadata:
   origin: community
 ---
 
-# Blueprint — Construction Plan Generator
+# Blueprint — Gerador de Plano de Construção
 
-Turn a one-line objective into a step-by-step construction plan that any coding agent can execute cold.
+Transforme um objetivo de uma linha em um plano de construção passo a passo que qualquer agent de código possa executar do zero.
 
 ## When to Use
 
-- Breaking a large feature into multiple PRs with clear dependency order
-- Planning a refactor or migration that spans multiple sessions
-- Coordinating parallel workstreams across sub-agents
-- Any task where context loss between sessions would cause rework
+- Quebrar uma feature grande em múltiplos PRs com ordem de dependência clara
+- Planejar uma refatoração ou migração que abrange múltiplas sessões
+- Coordenar fluxos de trabalho paralelos entre sub-agents
+- Qualquer tarefa onde a perda de contexto entre sessões causaria retrabalho
 
-**Do not use** for tasks completable in a single PR, fewer than 3 tool calls, or when the user says "just do it."
+**Não use** para tarefas concluíveis em um único PR, em menos de 3 chamadas de ferramenta, ou quando o usuário diz "apenas faça".
 
 ## How It Works
 
-Blueprint runs a 5-phase pipeline:
+O Blueprint roda um pipeline de 5 fases:
 
-1. **Research** — Pre-flight checks (git, gh auth, remote, default branch), then reads project structure, existing plans, and memory files to gather context.
-2. **Design** — Breaks the objective into one-PR-sized steps (3–12 typical). Assigns dependency edges, parallel/serial ordering, model tier (strongest vs default), and rollback strategy per step.
-3. **Draft** — Writes a self-contained Markdown plan file to `plans/`. Every step includes a context brief, task list, verification commands, and exit criteria — so a fresh agent can execute any step without reading prior steps.
-4. **Review** — Delegates adversarial review to a strongest-model sub-agent (e.g., Opus) against a checklist and anti-pattern catalog. Fixes all critical findings before finalizing.
-5. **Register** — Saves the plan, updates memory index, and presents the step count and parallelism summary to the user.
+1. **Research** — Verificações pré-voo (git, gh auth, remote, branch padrão), depois lê a estrutura do projeto, planos existentes e arquivos de memória para reunir contexto.
+2. **Design** — Quebra o objetivo em passos do tamanho de um PR (3–12 típico). Atribui arestas de dependência, ordenação paralela/serial, tier de modelo (mais forte vs padrão) e estratégia de rollback por passo.
+3. **Draft** — Escreve um arquivo de plano em Markdown autocontido em `plans/`. Cada passo inclui um brief de contexto, lista de tarefas, comandos de verificação e critérios de saída — para que um agent novo possa executar qualquer passo sem ler os passos anteriores.
+4. **Review** — Delega a revisão adversarial a um sub-agent de modelo mais forte (ex.: Opus) contra um checklist e um catálogo de anti-padrões. Corrige todos os achados críticos antes de finalizar.
+5. **Register** — Salva o plano, atualiza o índice de memória e apresenta a contagem de passos e o resumo de paralelismo ao usuário.
 
-Blueprint detects git/gh availability automatically. With git + GitHub CLI, it generates full branch/PR/CI workflow plans. Without them, it switches to direct mode (edit-in-place, no branches).
+O Blueprint detecta a disponibilidade de git/gh automaticamente. Com git + GitHub CLI, ele gera planos completos de workflow de branch/PR/CI. Sem eles, muda para o modo direto (edição in-place, sem branches).
 
 ## Examples
 
-### Basic usage
+### Uso básico
 
 ```
 /blueprint myapp "migrate database to PostgreSQL"
 ```
 
-Produces `plans/myapp-migrate-database-to-postgresql.md` with steps like:
+Produz `plans/myapp-migrate-database-to-postgresql.md` com passos como:
 - Step 1: Add PostgreSQL driver and connection config
 - Step 2: Create migration scripts for each table
 - Step 3: Update repository layer to use new driver
 - Step 4: Add integration tests against PostgreSQL
 - Step 5: Remove old database code and config
 
-### Multi-agent project
+### Projeto multi-agent
 
 ```
 /blueprint chatbot "extract LLM providers into a plugin system"
 ```
 
-Produces a plan with parallel steps where possible (e.g., "implement Anthropic plugin" and "implement OpenAI plugin" run in parallel after the plugin interface step is done), model tier assignments (strongest for the interface design step, default for implementation), and invariants verified after every step (e.g., "all existing tests pass", "no provider imports in core").
+Produz um plano com passos paralelos onde possível (ex.: "implement Anthropic plugin" e "implement OpenAI plugin" rodam em paralelo após o passo de interface do plugin estar pronto), atribuições de tier de modelo (mais forte para o passo de design da interface, padrão para a implementação) e invariantes verificadas após cada passo (ex.: "all existing tests pass", "no provider imports in core").
 
-## Key Features
+## Recursos Principais
 
-- **Cold-start execution** — Every step includes a self-contained context brief. No prior context needed.
-- **Adversarial review gate** — Every plan is reviewed by a strongest-model sub-agent against a checklist covering completeness, dependency correctness, and anti-pattern detection.
-- **Branch/PR/CI workflow** — Built into every step. Degrades gracefully to direct mode when git/gh is absent.
-- **Parallel step detection** — Dependency graph identifies steps with no shared files or output dependencies.
-- **Plan mutation protocol** — Steps can be split, inserted, skipped, reordered, or abandoned with formal protocols and audit trail.
-- **Zero runtime risk** — Pure Markdown skill. The entire repository contains only `.md` files — no hooks, no shell scripts, no executable code, no `package.json`, no build step. Nothing runs on install or invocation beyond Claude Code's native Markdown skill loader.
+- **Execução cold-start** — Cada passo inclui um brief de contexto autocontido. Nenhum contexto anterior necessário.
+- **Portão de revisão adversarial** — Todo plano é revisado por um sub-agent de modelo mais forte contra um checklist que cobre completude, correção de dependências e detecção de anti-padrões.
+- **Workflow de branch/PR/CI** — Embutido em cada passo. Degrada graciosamente para o modo direto quando git/gh está ausente.
+- **Detecção de passos paralelos** — O grafo de dependências identifica passos sem arquivos compartilhados ou dependências de saída.
+- **Protocolo de mutação de plano** — Os passos podem ser divididos, inseridos, pulados, reordenados ou abandonados com protocolos formais e trilha de auditoria.
+- **Risco zero em tempo de execução** — Skill em Markdown puro. O repositório inteiro contém apenas arquivos `.md` — sem hooks, sem scripts de shell, sem código executável, sem `package.json`, sem etapa de build. Nada roda na instalação ou invocação além do carregador nativo de Skills em Markdown do Claude Code.
 
 ## Installation
 
-This skill ships with Everything Claude Code. No separate installation is needed when ECC is installed.
+Esta Skill vem com o Everything Claude Code. Nenhuma instalação separada é necessária quando o ECC está instalado.
 
-### Full ECC install
+### Instalação completa do ECC
 
-If you are working from the ECC repository checkout, verify the skill is present with:
+Se você estiver trabalhando a partir do checkout do repositório do ECC, verifique se a Skill está presente com:
 
 ```bash
 test -f skills/blueprint/SKILL.md
 ```
 
-To update later, review the ECC diff before updating:
+Para atualizar depois, revise o diff do ECC antes de atualizar:
 
 ```bash
 cd /path/to/everything-claude-code
@@ -92,15 +92,15 @@ git log --oneline HEAD..origin/main       # review new commits before updating
 git checkout <reviewed-full-sha>          # pin to a specific reviewed commit
 ```
 
-### Vendored standalone install
+### Instalação vendorizada independente
 
-If you are vendoring only this skill outside the full ECC install, copy the reviewed file from the ECC repository into `~/.claude/skills/blueprint/SKILL.md`. Vendored copies do not have a git remote, so update them by re-copying the file from a reviewed ECC commit rather than running `git pull`.
+Se você estiver vendorizando apenas esta Skill fora da instalação completa do ECC, copie o arquivo revisado do repositório do ECC para `~/.claude/skills/blueprint/SKILL.md`. Cópias vendorizadas não têm um remote git, então atualize-as recopiando o arquivo a partir de um commit revisado do ECC em vez de rodar `git pull`.
 
 ## Requirements
 
-- Claude Code (for `/blueprint` slash command)
-- Git + GitHub CLI (optional — enables full branch/PR/CI workflow; Blueprint detects absence and auto-switches to direct mode)
+- Claude Code (para o comando `/blueprint`)
+- Git + GitHub CLI (opcional — habilita o workflow completo de branch/PR/CI; o Blueprint detecta a ausência e muda automaticamente para o modo direto)
 
 ## Source
 
-Inspired by antbotlab/blueprint — upstream project and reference design.
+Inspirado em antbotlab/blueprint — projeto upstream e design de referência.

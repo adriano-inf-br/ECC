@@ -1,6 +1,6 @@
 ---
 name: benchmark-optimization-loop
-description: Use when the user asks to make something faster, try many variants, run recursive optimization, benchmark latency/throughput/cost, or choose the best implementation by repeated measured tests.
+description: Use quando o usuário pede para tornar algo mais rápido, testar muitas variantes, rodar otimização recursiva, medir latência/throughput/custo via benchmark ou escolher a melhor implementação por testes medidos repetidos.
 metadata:
   origin: ECC
 tools: Read, Write, Edit, Bash, Grep, Glob
@@ -8,36 +8,36 @@ tools: Read, Write, Edit, Bash, Grep, Glob
 
 # Benchmark Optimization Loop
 
-Use this skill to convert "make it 20x faster" or "try 50 recursive
-optimizations" into a bounded measured loop that can actually improve a system.
+Use esta Skill para converter "deixe 20x mais rápido" ou "tente 50 otimizações
+recursivas" em um loop medido e delimitado que de fato consiga melhorar um sistema.
 
-## Required Baseline
+## Linha de Base Obrigatória
 
-Do not optimize until these exist:
+Não otimize até que estes existam:
 
-- the operation being optimized;
-- the correctness gate that must stay green;
-- the metric: wall time, p95 latency, rows/sec, cost/run, memory, error rate;
-- the current baseline;
-- the search budget: max variants, max time, max spend, max data impact.
+- a operação sendo otimizada;
+- o portão de correção que deve permanecer verde;
+- a métrica: tempo de relógio, latência p95, linhas/s, custo/execução, memória, taxa de erro;
+- a linha de base atual;
+- o orçamento de busca: máximo de variantes, tempo máximo, gasto máximo, impacto máximo de dados.
 
-If the user asks for an unrealistic target, keep the ambition but make the loop
-bounded and measurable.
+Se o usuário pedir uma meta irrealista, mantenha a ambição, mas torne o loop
+delimitado e mensurável.
 
 ## Loop
 
-1. Measure the baseline.
-2. Identify bottlenecks from evidence.
-3. Generate variants that test one hypothesis each.
-4. Run variants with the same input shape.
-5. Reject variants that fail correctness, safety, or reproducibility.
-6. Promote the fastest safe variant.
-7. Codify the winning path in a script, command, test, config, or doc.
-8. Rerun the baseline and winner to confirm the delta.
+1. Meça a linha de base.
+2. Identifique os gargalos a partir de evidências.
+3. Gere variantes que testem uma hipótese cada.
+4. Rode as variantes com o mesmo formato de entrada.
+5. Rejeite variantes que falham na correção, segurança ou reprodutibilidade.
+6. Promova a variante segura mais rápida.
+7. Codifique o caminho vencedor em um script, comando, teste, config ou doc.
+8. Rode novamente a linha de base e o vencedor para confirmar o delta.
 
-## Variant Table
+## Tabela de Variantes
 
-Track variants like this:
+Acompanhe as variantes assim:
 
 ```text
 Variant | Hypothesis | Command | Time | Correct? | Notes
@@ -46,25 +46,25 @@ batch-500 | fewer round trips | npm run job -- --batch 500 | 42s | yes | winner
 parallel-8 | more workers | npm run job -- --workers 8 | 31s | no | rate limited
 ```
 
-## Recursive Search
+## Busca Recursiva
 
-For recursive or hyperparameter work:
+Para trabalho recursivo ou de hiperparâmetros:
 
-- persist every run to a ledger;
-- compare against the prior accepted winner, not only the previous run;
-- keep a holdout or replay check;
-- stop when improvement is within noise, correctness fails, cost exceeds the
-  budget, or the search starts changing more variables than it can explain.
+- persista cada execução em um registro (ledger);
+- compare contra o vencedor aceito anterior, não apenas a execução anterior;
+- mantenha uma verificação de holdout ou replay;
+- pare quando a melhoria estiver dentro do ruído, a correção falhar, o custo exceder o
+  orçamento ou a busca começar a mudar mais variáveis do que consegue explicar.
 
-Use phrases like "best measured safe variant" instead of "global optimum" unless
-the search space was actually exhaustive.
+Use expressões como "melhor variante segura medida" em vez de "ótimo global", a menos que
+o espaço de busca tenha sido de fato exaustivo.
 
-## Promotion Gate
+## Portão de Promoção
 
-A variant cannot become the new default until:
+Uma variante não pode se tornar o novo padrão até que:
 
-- correctness tests pass;
-- the performance delta is repeated or explained;
-- rollback is obvious;
-- the change is encoded in source control or a durable runbook;
-- the final summary includes exact commands and measurements.
+- os testes de correção passem;
+- o delta de desempenho seja repetido ou explicado;
+- o rollback seja óbvio;
+- a mudança esteja codificada no controle de versão ou em um runbook durável;
+- o resumo final inclua os comandos e medições exatos.

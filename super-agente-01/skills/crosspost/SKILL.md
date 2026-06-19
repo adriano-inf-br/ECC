@@ -1,112 +1,112 @@
 ---
 name: crosspost
-description: Multi-platform content distribution across X, LinkedIn, Threads, and Bluesky. Adapts content per platform using content-engine patterns. Never posts identical content cross-platform. Use when the user wants to distribute content across social platforms.
+description: Distribuição de conteúdo multiplataforma entre X, LinkedIn, Threads e Bluesky. Adapta o conteúdo por plataforma usando padrões do content-engine. Nunca publica conteúdo idêntico entre plataformas. Use quando o usuário quiser distribuir conteúdo entre plataformas sociais.
 metadata:
   origin: ECC
 ---
 
 # Crosspost
 
-Distribute content across platforms without turning it into the same fake post in four costumes.
+Distribua conteúdo entre plataformas sem transformá-lo no mesmo post falso em quatro fantasias.
 
-## When to Activate
+## Quando Ativar
 
-- the user wants to publish the same underlying idea across multiple platforms
-- a launch, update, release, or essay needs platform-specific versions
-- the user says "crosspost", "post this everywhere", or "adapt this for X and LinkedIn"
+- o usuário quer publicar a mesma ideia subjacente em múltiplas plataformas
+- um lançamento, atualização, release ou ensaio precisa de versões específicas por plataforma
+- o usuário diz "crosspost", "poste isto em todo lugar" ou "adapte isto para X e LinkedIn"
 
-## Core Rules
+## Regras Centrais
 
-1. Do not publish identical copy across platforms.
-2. Preserve the author's voice across platforms.
-3. Adapt for constraints, not stereotypes.
-4. One post should still be about one thing.
-5. Do not invent a CTA, question, or moral if the source did not earn one.
+1. Não publique cópia idêntica entre plataformas.
+2. Preserve a voz do autor entre plataformas.
+3. Adapte para restrições, não para estereótipos.
+4. Um post ainda deve ser sobre uma só coisa.
+5. Não invente um CTA, pergunta ou moral se a fonte não os mereceu.
 
-## Workflow
+## Fluxo de Trabalho
 
-### Step 1: Start with the Primary Version
+### Passo 1: Comece com a Versão Primária
 
-Pick the strongest source version first:
-- the original X post
-- the original article
-- the launch note
-- the thread
-- the memo or changelog
+Escolha primeiro a versão de origem mais forte:
+- o post original do X
+- o artigo original
+- a nota de lançamento
+- a thread
+- o memorando ou changelog
 
-Use `content-engine` first if the source still needs voice shaping.
+Use `content-engine` primeiro se a fonte ainda precisar de modelagem de voz.
 
-### Step 2: Capture the Voice Fingerprint
+### Passo 2: Capture a Impressão Digital da Voz
 
-Run `brand-voice` first if the source voice is not already captured in the current session.
+Rode `brand-voice` primeiro se a voz da fonte ainda não tiver sido capturada na sessão atual.
 
-Reuse the resulting `VOICE PROFILE` directly.
-Do not build a second ad hoc voice checklist here unless the user explicitly wants a fresh override for this campaign.
+Reutilize o `VOICE PROFILE` resultante diretamente.
+Não construa um segundo checklist de voz ad hoc aqui, a menos que o usuário queira explicitamente uma nova substituição para esta campanha.
 
-### Step 3: Adapt by Platform Constraint
+### Passo 3: Adapte por Restrição de Plataforma
 
 ### X
 
-- keep it compressed
-- lead with the sharpest claim or artifact
-- use a thread only when a single post would collapse the argument
-- avoid hashtags and generic filler
+- mantenha comprimido
+- comece com a afirmação ou artefato mais incisivo
+- use uma thread apenas quando um único post colapsaria o argumento
+- evite hashtags e enchimento genérico
 
 ### LinkedIn
 
-- add only the context needed for people outside the niche
-- do not turn it into a fake founder-reflection post
-- do not add a closing question just because it is LinkedIn
-- do not force a polished "professional tone" if the author is naturally sharper
+- adicione apenas o contexto necessário para pessoas fora do nicho
+- não o transforme em um post falso de reflexão de fundador
+- não adicione uma pergunta de encerramento só porque é o LinkedIn
+- não force um "tom profissional" polido se o autor é naturalmente mais incisivo
 
 ### Threads
 
-- keep it readable and direct
-- do not write fake hyper-casual creator copy
-- do not paste the LinkedIn version and shorten it
+- mantenha legível e direto
+- não escreva cópia falsa de criador hipercasual
+- não cole a versão do LinkedIn e a encurte
 
 ### Bluesky
 
-- keep it concise
-- preserve the author's cadence
-- do not rely on hashtags or feed-gaming language
+- mantenha conciso
+- preserve a cadência do autor
+- não dependa de hashtags ou linguagem para manipular o feed
 
-## Posting Order
+## Ordem de Publicação
 
-Default:
-1. post the strongest native version first
-2. adapt for the secondary platforms
-3. stagger timing only if the user wants sequencing help
+Padrão:
+1. publique primeiro a versão nativa mais forte
+2. adapte para as plataformas secundárias
+3. escalone o timing apenas se o usuário quiser ajuda com a sequência
 
-Do not add cross-platform references unless useful. Most of the time, the post should stand on its own.
+Não adicione referências entre plataformas a menos que sejam úteis. Na maioria das vezes, o post deve se sustentar sozinho.
 
-## Banned Patterns
+## Padrões Proibidos
 
-Delete and rewrite any of these:
-- "Excited to share"
-- "Here's what I learned"
-- "What do you think?"
-- "link in bio" unless that is literally true
-- generic "professional takeaway" paragraphs that were not in the source
+Apague e reescreva qualquer um destes:
+- "Animado para compartilhar"
+- "Aqui está o que aprendi"
+- "O que você acha?"
+- "link na bio", a menos que isso seja literalmente verdade
+- parágrafos genéricos de "lição profissional" que não estavam na fonte
 
-## Output Format
+## Formato de Saída
 
-Return:
-- the primary platform version
-- adapted variants for each requested platform
-- a short note on what changed and why
-- any publishing constraint the user still needs to resolve
+Retorne:
+- a versão da plataforma primária
+- variantes adaptadas para cada plataforma solicitada
+- uma nota curta sobre o que mudou e por quê
+- qualquer restrição de publicação que o usuário ainda precise resolver
 
-## Quality Gate
+## Portão de Qualidade
 
-Before delivering:
-- each version reads like the same author under different constraints
-- no platform version feels padded or sanitized
-- no copy is duplicated verbatim across platforms
-- any extra context added for LinkedIn or newsletter use is actually necessary
+Antes de entregar:
+- cada versão se lê como o mesmo autor sob restrições diferentes
+- nenhuma versão de plataforma parece enchida ou higienizada
+- nenhuma cópia é duplicada literalmente entre plataformas
+- qualquer contexto extra adicionado para uso no LinkedIn ou newsletter é realmente necessário
 
-## Related Skills
+## Skills Relacionadas
 
-- `brand-voice` for reusable source-derived voice capture
-- `content-engine` for voice capture and source shaping
-- `x-api` for X publishing workflows
+- `brand-voice` para captura reutilizável de voz derivada da fonte
+- `content-engine` para captura de voz e modelagem da fonte
+- `x-api` para fluxos de trabalho de publicação no X

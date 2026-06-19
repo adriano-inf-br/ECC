@@ -1,33 +1,33 @@
 ---
 name: csharp-testing
-description: C# and .NET testing patterns with xUnit, FluentAssertions, mocking, integration tests, and test organization best practices.
+description: Padrões de teste para C# e .NET com xUnit, FluentAssertions, mocking, testes de integração e boas práticas de organização de testes.
 metadata:
   origin: ECC
 ---
 
 # C# Testing Patterns
 
-Comprehensive testing patterns for .NET applications using xUnit, FluentAssertions, and modern testing practices.
+Padrões de teste abrangentes para aplicações .NET usando xUnit, FluentAssertions e práticas modernas de teste.
 
-## When to Activate
+## Quando Ativar
 
-- Writing new tests for C# code
-- Reviewing test quality and coverage
-- Setting up test infrastructure for .NET projects
-- Debugging flaky or slow tests
+- Escrever novos testes para código C#
+- Revisar a qualidade e cobertura dos testes
+- Configurar infraestrutura de testes para projetos .NET
+- Depurar testes flaky ou lentos
 
-## Test Framework Stack
+## Pilha de Frameworks de Teste
 
-| Tool | Purpose |
+| Tool | Propósito |
 |---|---|
-| **xUnit** | Test framework (preferred for .NET) |
-| **FluentAssertions** | Readable assertion syntax |
-| **NSubstitute** or **Moq** | Mocking dependencies |
-| **Testcontainers** | Real infrastructure in integration tests |
-| **WebApplicationFactory** | ASP.NET Core integration tests |
-| **Bogus** | Realistic test data generation |
+| **xUnit** | Framework de testes (preferido para .NET) |
+| **FluentAssertions** | Sintaxe de assertion legível |
+| **NSubstitute** ou **Moq** | Mock de dependências |
+| **Testcontainers** | Infraestrutura real em testes de integração |
+| **WebApplicationFactory** | Testes de integração do ASP.NET Core |
+| **Bogus** | Geração realista de dados de teste |
 
-## Unit Test Structure
+## Estrutura de Teste Unitário
 
 ### Arrange-Act-Assert
 
@@ -46,17 +46,17 @@ public sealed class OrderServiceTests
     [Fact]
     public async Task PlaceOrderAsync_ReturnsSuccess_WhenRequestIsValid()
     {
-        // Arrange
+        // Arrange (preparar)
         var request = new CreateOrderRequest
         {
             CustomerId = "cust-123",
             Items = [new OrderItem("SKU-001", 2, 29.99m)]
         };
 
-        // Act
+        // Act (agir)
         var result = await _sut.PlaceOrderAsync(request, CancellationToken.None);
 
-        // Assert
+        // Assert (verificar)
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().NotBeNull();
         result.Value!.CustomerId.Should().Be("cust-123");
@@ -65,24 +65,24 @@ public sealed class OrderServiceTests
     [Fact]
     public async Task PlaceOrderAsync_ReturnsFailure_WhenNoItems()
     {
-        // Arrange
+        // Arrange (preparar)
         var request = new CreateOrderRequest
         {
             CustomerId = "cust-123",
             Items = []
         };
 
-        // Act
+        // Act (agir)
         var result = await _sut.PlaceOrderAsync(request, CancellationToken.None);
 
-        // Assert
+        // Assert (verificar)
         result.IsSuccess.Should().BeFalse();
         result.Error.Should().Contain("at least one item");
     }
 }
 ```
 
-### Parameterized Tests with Theory
+### Testes Parametrizados com Theory
 
 ```csharp
 [Theory]
@@ -114,7 +114,7 @@ public static TheoryData<CreateOrderRequest, string> InvalidOrderCases => new()
 };
 ```
 
-## Mocking with NSubstitute
+## Mock com NSubstitute
 
 ```csharp
 [Fact]
@@ -125,10 +125,10 @@ public async Task GetOrderAsync_ReturnsNull_WhenNotFound()
     _repository.FindByIdAsync(orderId, Arg.Any<CancellationToken>())
         .Returns((Order?)null);
 
-    // Act
+    // Act (agir)
     var result = await _sut.GetOrderAsync(orderId, CancellationToken.None);
 
-    // Assert
+    // Assert (verificar)
     result.Should().BeNull();
 }
 
@@ -141,7 +141,7 @@ public async Task PlaceOrderAsync_PersistsOrder()
     // Act
     await _sut.PlaceOrderAsync(request, CancellationToken.None);
 
-    // Assert — verify the repository was called
+    // Assert (verificar) — verifica que o repositório foi chamado
     await _repository.Received(1).AddAsync(
         Arg.Is<Order>(o => o.CustomerId == request.CustomerId),
         Arg.Any<CancellationToken>());

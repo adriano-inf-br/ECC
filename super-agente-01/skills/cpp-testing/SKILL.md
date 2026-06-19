@@ -1,52 +1,52 @@
 ---
 name: cpp-testing
-description: Use only when writing/updating/fixing C++ tests, configuring GoogleTest/CTest, diagnosing failing or flaky tests, or adding coverage/sanitizers.
+description: Use somente ao escrever/atualizar/corrigir testes C++, configurar GoogleTest/CTest, diagnosticar testes que falham ou são flaky, ou adicionar cobertura/sanitizers.
 metadata:
   origin: ECC
 ---
 
 # C++ Testing (Agent Skill)
 
-Agent-focused testing workflow for modern C++ (C++17/20) using GoogleTest/GoogleMock with CMake/CTest.
+Fluxo de trabalho de testes focado em agent para C++ moderno (C++17/20) usando GoogleTest/GoogleMock com CMake/CTest.
 
-## When to Use
+## Quando Usar
 
-- Writing new C++ tests or fixing existing tests
-- Designing unit/integration test coverage for C++ components
-- Adding test coverage, CI gating, or regression protection
-- Configuring CMake/CTest workflows for consistent execution
-- Investigating test failures or flaky behavior
-- Enabling sanitizers for memory/race diagnostics
+- Escrever novos testes C++ ou corrigir testes existentes
+- Projetar cobertura de testes unitários/de integração para componentes C++
+- Adicionar cobertura de testes, portões de CI ou proteção contra regressão
+- Configurar fluxos de trabalho CMake/CTest para execução consistente
+- Investigar falhas de teste ou comportamento flaky
+- Habilitar sanitizers para diagnósticos de memória/race
 
-### When NOT to Use
+### Quando NÃO Usar
 
-- Implementing new product features without test changes
-- Large-scale refactors unrelated to test coverage or failures
-- Performance tuning without test regressions to validate
-- Non-C++ projects or non-test tasks
+- Implementar novos recursos de produto sem alterações de teste
+- Refatorações de grande escala não relacionadas a cobertura ou falhas de testes
+- Ajuste de desempenho sem regressões de teste para validar
+- Projetos que não são C++ ou tarefas que não envolvem testes
 
-## Core Concepts
+## Conceitos Centrais
 
-- **TDD loop**: red → green → refactor (tests first, minimal fix, then cleanups).
-- **Isolation**: prefer dependency injection and fakes over global state.
-- **Test layout**: `tests/unit`, `tests/integration`, `tests/testdata`.
-- **Mocks vs fakes**: mock for interactions, fake for stateful behavior.
-- **CTest discovery**: use `gtest_discover_tests()` for stable test discovery.
-- **CI signal**: run subset first, then full suite with `--output-on-failure`.
+- **Loop de TDD**: red → green → refactor (testes primeiro, correção mínima, depois limpezas).
+- **Isolamento**: prefira injeção de dependência e fakes a estado global.
+- **Layout de testes**: `tests/unit`, `tests/integration`, `tests/testdata`.
+- **Mocks vs fakes**: mock para interações, fake para comportamento com estado.
+- **Descoberta no CTest**: use `gtest_discover_tests()` para descoberta de testes estável.
+- **Sinal de CI**: rode um subconjunto primeiro, depois a suíte completa com `--output-on-failure`.
 
-## TDD Workflow
+## Fluxo de Trabalho de TDD
 
-Follow the RED → GREEN → REFACTOR loop:
+Siga o loop RED → GREEN → REFACTOR:
 
-1. **RED**: write a failing test that captures the new behavior
-2. **GREEN**: implement the smallest change to pass
-3. **REFACTOR**: clean up while tests stay green
+1. **RED**: escreva um teste que falha capturando o novo comportamento
+2. **GREEN**: implemente a menor mudança para passar
+3. **REFACTOR**: faça a limpeza mantendo os testes verdes
 
 ```cpp
 // tests/add_test.cpp
 #include <gtest/gtest.h>
 
-int Add(int a, int b); // Provided by production code.
+int Add(int a, int b); // Fornecido pelo código de produção.
 
 TEST(AddTest, AddsTwoNumbers) { // RED
   EXPECT_EQ(Add(2, 3), 5);
@@ -57,18 +57,18 @@ int Add(int a, int b) { // GREEN
   return a + b;
 }
 
-// REFACTOR: simplify/rename once tests pass
+// REFACTOR: simplifique/renomeie quando os testes passarem
 ```
 
-## Code Examples
+## Exemplos de Código
 
-### Basic Unit Test (gtest)
+### Teste Unitário Básico (gtest)
 
 ```cpp
 // tests/calculator_test.cpp
 #include <gtest/gtest.h>
 
-int Add(int a, int b); // Provided by production code.
+int Add(int a, int b); // Fornecido pelo código de produção.
 
 TEST(CalculatorTest, AddsTwoNumbers) {
     EXPECT_EQ(Add(2, 3), 5);
@@ -79,7 +79,7 @@ TEST(CalculatorTest, AddsTwoNumbers) {
 
 ```cpp
 // tests/user_store_test.cpp
-// Pseudocode stub: replace UserStore/User with project types.
+// Stub em pseudocódigo: substitua UserStore/User pelos tipos do projeto.
 #include <gtest/gtest.h>
 #include <memory>
 #include <optional>
@@ -147,10 +147,10 @@ TEST(ServiceTest, SendsNotifications) {
 }
 ```
 
-### CMake/CTest Quickstart
+### Início Rápido com CMake/CTest
 
 ```cmake
-# CMakeLists.txt (excerpt)
+# CMakeLists.txt (trecho)
 cmake_minimum_required(VERSION 3.20)
 project(example LANGUAGES CXX)
 
@@ -158,11 +158,11 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include(FetchContent)
-# Prefer project-locked versions. If using a tag, use a pinned version per project policy.
-set(GTEST_VERSION v1.17.0) # Adjust to project policy.
+# Prefira versões travadas pelo projeto. Se usar uma tag, use uma versão fixada conforme a política do projeto.
+set(GTEST_VERSION v1.17.0) # Ajuste conforme a política do projeto.
 FetchContent_Declare(
   googletest
-  # Google Test framework (official repository)
+  # Framework Google Test (repositório oficial)
   URL https://github.com/google/googletest/archive/refs/tags/${GTEST_VERSION}.zip
 )
 FetchContent_MakeAvailable(googletest)
@@ -184,7 +184,7 @@ cmake --build build -j
 ctest --test-dir build --output-on-failure
 ```
 
-## Running Tests
+## Executando os Testes
 
 ```bash
 ctest --test-dir build --output-on-failure
@@ -197,16 +197,16 @@ ctest --test-dir build -R "UserStoreTest.*" --output-on-failure
 ./build/example_tests --gtest_filter=UserStoreTest.FindsExistingUser
 ```
 
-## Debugging Failures
+## Depurando Falhas
 
-1. Re-run the single failing test with gtest filter.
-2. Add scoped logging around the failing assertion.
-3. Re-run with sanitizers enabled.
-4. Expand to full suite once the root cause is fixed.
+1. Reexecute o único teste que falha com o filtro do gtest.
+2. Adicione logging com escopo ao redor da assertion que falha.
+3. Reexecute com sanitizers habilitados.
+4. Expanda para a suíte completa quando a causa raiz estiver corrigida.
 
-## Coverage
+## Cobertura
 
-Prefer target-level settings instead of global flags.
+Prefira configurações em nível de target em vez de flags globais.
 
 ```cmake
 option(ENABLE_COVERAGE "Enable coverage flags" OFF)
@@ -264,48 +264,48 @@ if(ENABLE_TSAN)
 endif()
 ```
 
-## Flaky Tests Guardrails
+## Proteções contra Testes Flaky
 
-- Never use `sleep` for synchronization; use condition variables or latches.
-- Make temp directories unique per test and always clean them.
-- Avoid real time, network, or filesystem dependencies in unit tests.
-- Use deterministic seeds for randomized inputs.
+- Nunca use `sleep` para sincronização; use condition variables ou latches.
+- Torne os diretórios temporários únicos por teste e sempre os limpe.
+- Evite dependências de tempo real, rede ou sistema de arquivos em testes unitários.
+- Use seeds determinísticas para entradas randomizadas.
 
-## Best Practices
+## Boas Práticas
 
-### DO
+### FAÇA
 
-- Keep tests deterministic and isolated
-- Prefer dependency injection over globals
-- Use `ASSERT_*` for preconditions, `EXPECT_*` for multiple checks
-- Separate unit vs integration tests in CTest labels or directories
-- Run sanitizers in CI for memory and race detection
+- Mantenha os testes determinísticos e isolados
+- Prefira injeção de dependência a globais
+- Use `ASSERT_*` para precondições, `EXPECT_*` para múltiplas verificações
+- Separe testes unitários vs de integração em labels ou diretórios do CTest
+- Rode sanitizers no CI para detecção de memória e race
 
-### DON'T
+### NÃO FAÇA
 
-- Don't depend on real time or network in unit tests
-- Don't use sleeps as synchronization when a condition variable can be used
-- Don't over-mock simple value objects
-- Don't use brittle string matching for non-critical logs
+- Não dependa de tempo real ou rede em testes unitários
+- Não use sleeps como sincronização quando uma condition variable pode ser usada
+- Não faça mock excessivo de objetos de valor simples
+- Não use correspondência de string frágil para logs não críticos
 
-### Common Pitfalls
+### Armadilhas Comuns
 
-- **Using fixed temp paths** → Generate unique temp directories per test and clean them.
-- **Relying on wall clock time** → Inject a clock or use fake time sources.
-- **Flaky concurrency tests** → Use condition variables/latches and bounded waits.
-- **Hidden global state** → Reset global state in fixtures or remove globals.
-- **Over-mocking** → Prefer fakes for stateful behavior and only mock interactions.
-- **Missing sanitizer runs** → Add ASan/UBSan/TSan builds in CI.
-- **Coverage on debug-only builds** → Ensure coverage targets use consistent flags.
+- **Usar caminhos temporários fixos** → Gere diretórios temporários únicos por teste e os limpe.
+- **Depender do tempo de relógio de parede** → Injete um relógio ou use fontes de tempo fake.
+- **Testes de concorrência flaky** → Use condition variables/latches e esperas limitadas.
+- **Estado global oculto** → Resete o estado global em fixtures ou remova os globais.
+- **Mock excessivo** → Prefira fakes para comportamento com estado e só faça mock de interações.
+- **Ausência de execuções com sanitizer** → Adicione builds com ASan/UBSan/TSan no CI.
+- **Cobertura em builds somente de debug** → Garanta que os targets de cobertura usem flags consistentes.
 
-## Optional Appendix: Fuzzing / Property Testing
+## Apêndice Opcional: Fuzzing / Property Testing
 
-Only use if the project already supports LLVM/libFuzzer or a property-testing library.
+Use apenas se o projeto já suportar LLVM/libFuzzer ou uma biblioteca de property-testing.
 
-- **libFuzzer**: best for pure functions with minimal I/O.
-- **RapidCheck**: property-based tests to validate invariants.
+- **libFuzzer**: melhor para funções puras com I/O mínimo.
+- **RapidCheck**: testes baseados em propriedades para validar invariantes.
 
-Minimal libFuzzer harness (pseudocode: replace ParseConfig):
+Harness mínimo de libFuzzer (pseudocódigo: substitua ParseConfig):
 
 ```cpp
 #include <cstddef>
@@ -314,12 +314,12 @@ Minimal libFuzzer harness (pseudocode: replace ParseConfig):
 
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     std::string input(reinterpret_cast<const char *>(data), size);
-    // ParseConfig(input); // project function
+    // ParseConfig(input); // função do projeto
     return 0;
 }
 ```
 
-## Alternatives to GoogleTest
+## Alternativas ao GoogleTest
 
-- **Catch2**: header-only, expressive matchers
-- **doctest**: lightweight, minimal compile overhead
+- **Catch2**: header-only, matchers expressivos
+- **doctest**: leve, overhead mínimo de compilação

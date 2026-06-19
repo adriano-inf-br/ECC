@@ -1,153 +1,153 @@
 ---
 name: seo
-description: Audit, plan, and implement SEO improvements across technical SEO, on-page optimization, structured data, Core Web Vitals, and content strategy. Use when the user wants better search visibility, SEO remediation, schema markup, sitemap/robots work, or keyword mapping.
+description: Audite, planeje e implemente melhorias de SEO em SEO técnico, otimização on-page, dados estruturados, Core Web Vitals e estratégia de conteúdo. Use quando o usuário quiser melhor visibilidade nos mecanismos de busca, correção de SEO, marcação de schema, trabalho com sitemap/robots ou mapeamento de palavras-chave.
 metadata:
   origin: ECC
 ---
 
 # SEO
 
-Improve search visibility through technical correctness, performance, and content relevance, not gimmicks.
+Melhore a visibilidade nos mecanismos de busca por meio de correção técnica, desempenho e relevância de conteúdo, não de truques.
 
-## When to Use
+## Quando Usar
 
-Use this skill when:
-- auditing crawlability, indexability, canonicals, or redirects
-- improving title tags, meta descriptions, and heading structure
-- adding or validating structured data
-- improving Core Web Vitals
-- doing keyword research and mapping keywords to URLs
-- planning internal linking or sitemap / robots changes
+Use esta skill quando:
+- auditar rastreabilidade, indexabilidade, canonicals ou redirecionamentos
+- melhorar tags de título, meta descriptions e estrutura de headings
+- adicionar ou validar dados estruturados
+- melhorar Core Web Vitals
+- fazer pesquisa de palavras-chave e mapear palavras-chave para URLs
+- planejar linking interno ou mudanças em sitemap/robots
 
-## How It Works
+## Como Funciona
 
-### Principles
+### Princípios
 
-1. Fix technical blockers before content optimization.
-2. One page should have one clear primary search intent.
-3. Prefer long-term quality signals over manipulative patterns.
-4. Mobile-first assumptions matter because indexing is mobile-first.
-5. Recommendations should be page-specific and implementable.
+1. Corrija bloqueadores técnicos antes da otimização de conteúdo.
+2. Uma página deve ter uma intenção de busca principal clara.
+3. Prefira sinais de qualidade de longo prazo a padrões manipulativos.
+4. Premissas mobile-first importam porque a indexação é mobile-first.
+5. As recomendações devem ser específicas para a página e implementáveis.
 
-### Technical SEO checklist
+### Checklist de SEO Técnico
 
-#### Crawlability
+#### Rastreabilidade
 
-- `robots.txt` should allow important pages and block low-value surfaces
-- no important page should be unintentionally `noindex`
-- important pages should be reachable within a shallow click depth
-- avoid redirect chains longer than two hops
-- canonical tags should be self-consistent and non-looping
+- `robots.txt` deve permitir páginas importantes e bloquear superfícies de baixo valor
+- nenhuma página importante deve ter `noindex` não intencional
+- páginas importantes devem ser alcançáveis dentro de uma profundidade rasa de cliques
+- evite cadeias de redirecionamento com mais de dois saltos
+- tags canonical devem ser autoconsistentes e sem loops
 
-#### Indexability
+#### Indexabilidade
 
-- preferred URL format should be consistent
-- multilingual pages need correct hreflang if used
-- sitemaps should reflect the intended public surface
-- no duplicate URLs should compete without canonical control
+- o formato de URL preferido deve ser consistente
+- páginas multilíngues precisam de hreflang correto se usado
+- sitemaps devem refletir a superfície pública pretendida
+- nenhuma URL duplicada deve competir sem controle canonical
 
-#### Performance
+#### Desempenho
 
-- LCP < 2.5s
+- LCP < 2,5s
 - INP < 200ms
-- CLS < 0.1
-- common fixes: preload hero assets, reduce render-blocking work, reserve layout space, trim heavy JS
+- CLS < 0,1
+- correções comuns: pré-carregar assets hero, reduzir trabalho de render-blocking, reservar espaço de layout, reduzir JS pesado
 
-#### Structured data
+#### Dados Estruturados
 
-- homepage: organization or business schema where appropriate
-- editorial pages: `Article` / `BlogPosting`
-- product pages: `Product` and `Offer`
-- interior pages: `BreadcrumbList`
-- Q&A sections: `FAQPage` only when the content truly matches
+- homepage: schema de organização ou empresa quando apropriado
+- páginas editoriais: `Article` / `BlogPosting`
+- páginas de produto: `Product` e `Offer`
+- páginas internas: `BreadcrumbList`
+- seções de Q&A: `FAQPage` apenas quando o conteúdo realmente corresponder
 
-### On-page rules
+### Regras On-Page
 
-#### Title tags
+#### Tags de Título
 
-- aim for roughly 50-60 characters
-- put the primary keyword or concept near the front
-- make the title legible to humans, not stuffed for bots
+- mire em aproximadamente 50-60 caracteres
+- coloque a palavra-chave ou conceito principal perto do início
+- torne o título legível para humanos, não recheado para bots
 
-#### Meta descriptions
+#### Meta Descriptions
 
-- aim for roughly 120-160 characters
-- describe the page honestly
-- include the main topic naturally
+- mire em aproximadamente 120-160 caracteres
+- descreva a página com honestidade
+- inclua o tema principal de forma natural
 
-#### Heading structure
+#### Estrutura de Headings
 
-- one clear `H1`
-- `H2` and `H3` should reflect actual content hierarchy
-- do not skip structure just for visual styling
+- um `H1` claro
+- `H2` e `H3` devem refletir a hierarquia real do conteúdo
+- não pule a estrutura apenas por estilização visual
 
-### Keyword mapping
+### Mapeamento de Palavras-Chave
 
-1. define the search intent
-2. gather realistic keyword variants
-3. prioritize by intent match, likely value, and competition
-4. map one primary keyword/theme to one URL
-5. detect and avoid cannibalization
+1. defina a intenção de busca
+2. reúna variantes realistas de palavras-chave
+3. priorize por correspondência de intenção, valor provável e concorrência
+4. mapeie uma palavra-chave/tema principal para uma URL
+5. detecte e evite canibalização
 
-### Internal linking
+### Linking Interno
 
-- link from strong pages to pages you want to rank
-- use descriptive anchor text
-- avoid generic anchors when a more specific one is possible
-- backfill links from new pages to relevant existing ones
+- vincule de páginas fortes para páginas que você quer ranquear
+- use anchor text descritivo
+- evite âncoras genéricas quando uma mais específica for possível
+- adicione links retroativos de novas páginas para páginas existentes relevantes
 
-## Examples
+## Exemplos
 
-### Title formula
-
-```text
-Primary Topic - Specific Modifier | Brand
-```
-
-### Meta description formula
+### Fórmula de título
 
 ```text
-Action + topic + value proposition + one supporting detail
+Tópico Principal - Modificador Específico | Marca
 ```
 
-### JSON-LD example
+### Fórmula de meta description
+
+```text
+Ação + tópico + proposta de valor + um detalhe de suporte
+```
+
+### Exemplo JSON-LD
 
 ```json
 {
   "@context": "https://schema.org",
   "@type": "Article",
-  "headline": "Page Title Here",
+  "headline": "Título da Página Aqui",
   "author": {
     "@type": "Person",
-    "name": "Author Name"
+    "name": "Nome do Autor"
   },
   "publisher": {
     "@type": "Organization",
-    "name": "Brand Name"
+    "name": "Nome da Marca"
   }
 }
 ```
 
-### Audit output shape
+### Formato de saída de auditoria
 
 ```text
-[HIGH] Duplicate title tags on product pages
-Location: src/routes/products/[slug].tsx
-Issue: Dynamic titles collapse to the same default string, which weakens relevance and creates duplicate signals.
-Fix: Generate a unique title per product using the product name and primary category.
+[ALTO] Tags de título duplicadas nas páginas de produto
+Localização: src/routes/products/[slug].tsx
+Problema: Títulos dinâmicos colapsam para a mesma string padrão, o que enfraquece a relevância e cria sinais duplicados.
+Correção: Gere um título único por produto usando o nome do produto e a categoria principal.
 ```
 
-## Anti-Patterns
+## Anti-Padrões
 
-| Anti-pattern | Fix |
+| Anti-padrão | Correção |
 | --- | --- |
-| keyword stuffing | write for users first |
-| thin near-duplicate pages | consolidate or differentiate them |
-| schema for content that is not actually present | match schema to reality |
-| content advice without checking the actual page | read the real page first |
-| generic “improve SEO” outputs | tie every recommendation to a page or asset |
+| keyword stuffing | escreva para usuários primeiro |
+| páginas quase duplicadas e rasas | consolide ou diferencie-as |
+| schema para conteúdo que não está realmente presente | faça o schema corresponder à realidade |
+| conselhos de conteúdo sem verificar a página real | leia a página real primeiro |
+| saídas genéricas de "melhorar SEO" | vincule cada recomendação a uma página ou ativo |
 
-## Related Skills
+## Skills Relacionadas
 
 - `seo-specialist`
 - `frontend-patterns`

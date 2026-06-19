@@ -1,124 +1,124 @@
 ---
 name: security-scan
-description: Scan your Claude Code configuration (.claude/ directory) for security vulnerabilities, misconfigurations, and injection risks using AgentShield. Checks CLAUDE.md, settings.json, MCP servers, hooks, and agent definitions.
+description: Escaneia sua configuração do Claude Code (diretório .claude/) em busca de vulnerabilidades de segurança, configurações incorretas e riscos de injeção usando o AgentShield. Verifica CLAUDE.md, settings.json, servidores MCP, hooks e definições de agentes.
 metadata:
   origin: ECC
 ---
 
-# Security Scan Skill
+# Skill de Varredura de Segurança
 
-Audit your Claude Code configuration for security issues using [AgentShield](https://github.com/affaan-m/agentshield).
+Audite sua configuração do Claude Code em busca de problemas de segurança usando o [AgentShield](https://github.com/affaan-m/agentshield).
 
-## When to Activate
+## Quando Ativar
 
-- Setting up a new Claude Code project
-- After modifying `.claude/settings.json`, `CLAUDE.md`, or MCP configs
-- Before committing configuration changes
-- When onboarding to a new repository with existing Claude Code configs
-- Periodic security hygiene checks
+- Ao configurar um novo projeto do Claude Code
+- Após modificar `.claude/settings.json`, `CLAUDE.md` ou configs MCP
+- Antes de versionar mudanças de configuração
+- Ao integrar um novo repositório com configs existentes do Claude Code
+- Verificações periódicas de higiene de segurança
 
-## What It Scans
+## O Que É Verificado
 
-| File | Checks |
+| Arquivo | Verificações |
 |------|--------|
-| `CLAUDE.md` | Hardcoded secrets, auto-run instructions, prompt injection patterns |
-| `settings.json` | Overly permissive allow lists, missing deny lists, dangerous bypass flags |
-| `mcp.json` | Risky MCP servers, hardcoded env secrets, npx supply chain risks |
-| `hooks/` | Command injection via interpolation, data exfiltration, silent error suppression |
-| `agents/*.md` | Unrestricted tool access, prompt injection surface, missing model specs |
+| `CLAUDE.md` | Segredos hardcoded, instruções de execução automática, padrões de injeção de Prompt |
+| `settings.json` | Listas de permissão excessivamente permissivas, listas de negação ausentes, flags de bypass perigosas |
+| `mcp.json` | Servidores MCP arriscados, segredos de env hardcoded, riscos de supply chain com npx |
+| `hooks/` | Command injection via interpolação, exfiltração de dados, supressão silenciosa de erros |
+| `agents/*.md` | Acesso irrestrito a tools, superfície de injeção de Prompt, specs de modelo ausentes |
 
-## Prerequisites
+## Pré-requisitos
 
-AgentShield must be installed. Check and install if needed:
+O AgentShield deve estar instalado. Verifique e instale se necessário:
 
 ```bash
-# Check if installed
+# Verificar se está instalado
 npx ecc-agentshield --version
 
-# Install globally (recommended)
+# Instalar globalmente (recomendado)
 npm install -g ecc-agentshield
 
-# Or run directly via npx (no install needed)
+# Ou executar diretamente via npx (sem instalação)
 npx ecc-agentshield scan .
 ```
 
-## Usage
+## Uso
 
-### Basic Scan
+### Varredura Básica
 
-Run against the current project's `.claude/` directory:
+Execute no diretório `.claude/` do projeto atual:
 
 ```bash
-# Scan current project
+# Escanear projeto atual
 npx ecc-agentshield scan
 
-# Scan a specific path
+# Escanear um caminho específico
 npx ecc-agentshield scan --path /path/to/.claude
 
-# Scan with minimum severity filter
+# Escanear com filtro de severidade mínima
 npx ecc-agentshield scan --min-severity medium
 ```
 
-### Output Formats
+### Formatos de Saída
 
 ```bash
-# Terminal output (default) — colored report with grade
+# Saída no terminal (padrão) — relatório colorido com nota
 npx ecc-agentshield scan
 
-# JSON — for CI/CD integration
+# JSON — para integração com CI/CD
 npx ecc-agentshield scan --format json
 
-# Markdown — for documentation
+# Markdown — para documentação
 npx ecc-agentshield scan --format markdown
 
-# HTML — self-contained dark-theme report
+# HTML — relatório de tema escuro autocontido
 npx ecc-agentshield scan --format html > security-report.html
 ```
 
-### Auto-Fix
+### Correção Automática
 
-Apply safe fixes automatically (only fixes marked as auto-fixable):
+Aplicar correções seguras automaticamente (apenas correções marcadas como auto-corrigíveis):
 
 ```bash
 npx ecc-agentshield scan --fix
 ```
 
-This will:
-- Replace hardcoded secrets with environment variable references
-- Tighten wildcard permissions to scoped alternatives
-- Never modify manual-only suggestions
+Isso irá:
+- Substituir segredos hardcoded por referências a variáveis de ambiente
+- Restringir permissões de wildcard para alternativas com escopo
+- Nunca modificar sugestões apenas manuais
 
-### Opus 4.6 Deep Analysis
+### Análise Profunda com Opus 4.6
 
-Run the adversarial three-agent pipeline for deeper analysis:
+Execute o pipeline adversarial de três agentes para análise mais profunda:
 
 ```bash
-# Requires ANTHROPIC_API_KEY
+# Requer ANTHROPIC_API_KEY
 export ANTHROPIC_API_KEY=your-key
 npx ecc-agentshield scan --opus --stream
 ```
 
-This runs:
-1. **Attacker (Red Team)** — finds attack vectors
-2. **Defender (Blue Team)** — recommends hardening
-3. **Auditor (Final Verdict)** — synthesizes both perspectives
+Isso executa:
+1. **Atacante (Red Team)** — encontra vetores de ataque
+2. **Defensor (Blue Team)** — recomenda hardening
+3. **Auditor (Veredicto Final)** — sintetiza ambas as perspectivas
 
-### Initialize Secure Config
+### Inicializar Configuração Segura
 
-Scaffold a new secure `.claude/` configuration from scratch:
+Criar um novo `.claude/` de configuração segura do zero:
 
 ```bash
 npx ecc-agentshield init
 ```
 
-Creates:
-- `settings.json` with scoped permissions and deny list
-- `CLAUDE.md` with security best practices
-- `mcp.json` placeholder
+Cria:
+- `settings.json` com permissões com escopo e lista de negação
+- `CLAUDE.md` com boas práticas de segurança
+- placeholder `mcp.json`
 
 ### GitHub Action
 
-Add to your CI pipeline:
+Adicionar ao seu pipeline de CI:
 
 ```yaml
 - uses: affaan-m/agentshield@v1
@@ -128,37 +128,37 @@ Add to your CI pipeline:
     fail-on-findings: true
 ```
 
-## Severity Levels
+## Níveis de Severidade
 
-| Grade | Score | Meaning |
+| Nota | Pontuação | Significado |
 |-------|-------|---------|
-| A | 90-100 | Secure configuration |
-| B | 75-89 | Minor issues |
-| C | 60-74 | Needs attention |
-| D | 40-59 | Significant risks |
-| F | 0-39 | Critical vulnerabilities |
+| A | 90-100 | Configuração segura |
+| B | 75-89 | Problemas menores |
+| C | 60-74 | Requer atenção |
+| D | 40-59 | Riscos significativos |
+| F | 0-39 | Vulnerabilidades críticas |
 
-## Interpreting Results
+## Interpretando os Resultados
 
-### Critical Findings (fix immediately)
-- Hardcoded API keys or tokens in config files
-- `Bash(*)` in the allow list (unrestricted shell access)
-- Command injection in hooks via `${file}` interpolation
-- Shell-running MCP servers
+### Achados Críticos (corrigir imediatamente)
+- Chaves de API ou tokens hardcoded em arquivos de configuração
+- `Bash(*)` na lista de permissão (acesso irrestrito ao shell)
+- Command injection em hooks via interpolação `${file}`
+- Servidores MCP que executam shell
 
-### High Findings (fix before production)
-- Auto-run instructions in CLAUDE.md (prompt injection vector)
-- Missing deny lists in permissions
-- Agents with unnecessary Bash access
+### Achados Altos (corrigir antes de produção)
+- Instruções de execução automática no CLAUDE.md (vetor de injeção de Prompt)
+- Listas de negação ausentes nas permissões
+- Agentes com acesso desnecessário ao Bash
 
-### Medium Findings (recommended)
-- Silent error suppression in hooks (`2>/dev/null`, `|| true`)
-- Missing PreToolUse security hooks
-- `npx -y` auto-install in MCP server configs
+### Achados Médios (recomendado)
+- Supressão silenciosa de erros em hooks (`2>/dev/null`, `|| true`)
+- Hooks de segurança PreToolUse ausentes
+- `npx -y` com auto-install em configs de servidor MCP
 
-### Info Findings (awareness)
-- Missing descriptions on MCP servers
-- Prohibitive instructions correctly flagged as good practice
+### Achados Informativos (conscientização)
+- Descrições ausentes em servidores MCP
+- Instruções proibitivas corretamente sinalizadas como boa prática
 
 ## Links
 

@@ -1,59 +1,59 @@
 ---
 name: skill-comply
-description: Visualize whether skills, rules, and agent definitions are actually followed — auto-generates scenarios at 3 prompt strictness levels, runs agents, classifies behavioral sequences, and reports compliance rates with full tool call timelines
+description: Visualize se skills, regras e definições de agentes são realmente seguidas — gera automaticamente cenários em 3 níveis de rigor de Prompt, executa agentes, classifica sequências de comportamento e reporta taxas de conformidade com timelines completas de chamadas de tools
 metadata:
   origin: ECC
 tools: Read, Bash
 ---
 
-# skill-comply: Automated Compliance Measurement
+# skill-comply: Medição Automatizada de Conformidade
 
-Measures whether coding agents actually follow skills, rules, or agent definitions by:
-1. Auto-generating expected behavioral sequences (specs) from any .md file
-2. Auto-generating scenarios with decreasing prompt strictness (supportive → neutral → competing)
-3. Running `claude -p` and capturing tool call traces via stream-json
-4. Classifying tool calls against spec steps using LLM (not regex)
-5. Checking temporal ordering deterministically
-6. Generating self-contained reports with spec, prompts, and timelines
+Mede se agentes de codificação realmente seguem skills, regras ou definições de agentes ao:
+1. Gerar automaticamente sequências comportamentais esperadas (specs) a partir de qualquer arquivo .md
+2. Gerar automaticamente cenários com rigor decrescente de Prompt (suportivo → neutro → concorrente)
+3. Executar `claude -p` e capturar rastros de chamadas de tools via stream-json
+4. Classificar chamadas de tools em relação aos passos da spec usando LLM (não regex)
+5. Verificar ordenação temporal de forma determinística
+6. Gerar relatórios autocontidos com spec, prompts e timelines
 
-## Supported Targets
+## Alvos Suportados
 
-- **Skills** (`skills/*/SKILL.md`): Workflow skills like search-first, TDD guides
-- **Rules** (`rules/common/*.md`): Mandatory rules like testing.md, security.md, git-workflow.md
-- **Agent definitions** (`agents/*.md`): Whether an agent gets invoked when expected (internal workflow verification not yet supported)
+- **Skills** (`skills/*/SKILL.md`): Skills de fluxo de trabalho como search-first, guias TDD
+- **Regras** (`rules/common/*.md`): Regras obrigatórias como testing.md, security.md, git-workflow.md
+- **Definições de agentes** (`agents/*.md`): Se um agente é invocado quando esperado (verificação de fluxo de trabalho interno ainda não suportada)
 
-## When to Activate
+## Quando Ativar
 
-- User runs `/skill-comply <path>`
-- User asks "is this rule actually being followed?"
-- After adding new rules/skills, to verify agent compliance
-- Periodically as part of quality maintenance
+- Usuário executa `/skill-comply <caminho>`
+- Usuário pergunta "esta regra está sendo realmente seguida?"
+- Após adicionar novas regras/skills, para verificar a conformidade do agente
+- Periodicamente como parte da manutenção de qualidade
 
-## Usage
+## Uso
 
 ```bash
-# Full run
+# Execução completa
 uv run python -m scripts.run ~/.claude/rules/common/testing.md
 
-# Dry run (no cost, spec + scenarios only)
+# Execução seca (sem custo, apenas spec + cenários)
 uv run python -m scripts.run --dry-run ~/.claude/skills/search-first/SKILL.md
 
-# Custom models
-uv run python -m scripts.run --gen-model haiku --model sonnet <path>
+# Modelos customizados
+uv run python -m scripts.run --gen-model haiku --model sonnet <caminho>
 ```
 
-## Key Concept: Prompt Independence
+## Conceito-Chave: Independência de Prompt
 
-Measures whether a skill/rule is followed even when the prompt doesn't explicitly support it.
+Mede se uma skill/regra é seguida mesmo quando o Prompt não a suporta explicitamente.
 
-## Report Contents
+## Conteúdo do Relatório
 
-Reports are self-contained and include:
-1. Expected behavioral sequence (auto-generated spec)
-2. Scenario prompts (what was asked at each strictness level)
-3. Compliance scores per scenario
-4. Tool call timelines with LLM classification labels
+Os relatórios são autocontidos e incluem:
+1. Sequência comportamental esperada (spec gerada automaticamente)
+2. Prompts de cenário (o que foi pedido em cada nível de rigor)
+3. Pontuações de conformidade por cenário
+4. Timelines de chamadas de tools com rótulos de classificação por LLM
 
-### Advanced (optional)
+### Avançado (opcional)
 
-For users familiar with hooks, reports also include hook promotion recommendations for steps with low compliance. This is informational — the main value is the compliance visibility itself.
+Para usuários familiarizados com hooks, os relatórios também incluem recomendações de promoção de Hook para passos com baixa conformidade. Isso é informativo — o valor principal é a própria visibilidade de conformidade.

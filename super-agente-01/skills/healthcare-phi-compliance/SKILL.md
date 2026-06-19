@@ -1,41 +1,41 @@
 ---
 name: healthcare-phi-compliance
-description: Protected Health Information (PHI) and Personally Identifiable Information (PII) compliance patterns for healthcare applications. Covers data classification, access control, audit trails, encryption, and common leak vectors.
+description: Padrões de conformidade de Informações de Saúde Protegidas (PHI) e Informações de Identificação Pessoal (PII) para aplicações de saúde. Abrange classificação de dados, controle de acesso, trilhas de auditoria, criptografia e vetores comuns de vazamento.
 metadata:
   origin: Health1 Super Speciality Hospitals — contributed by Dr. Keyur Patel
 version: "1.0.0"
 ---
 
-# Healthcare PHI/PII Compliance Patterns
+# Padrões de Conformidade PHI/PII em Saúde
 
-Patterns for protecting patient data, clinician data, and financial data in healthcare applications. Applicable to HIPAA (US), DISHA (India), GDPR (EU), and general healthcare data protection.
+Padrões para proteger dados de pacientes, dados de clínicos e dados financeiros em aplicações de saúde. Aplicável a HIPAA (EUA), DISHA (Índia), GDPR (UE) e proteção geral de dados de saúde.
 
-## When to Use
+## Quando Usar
 
-- Building any feature that touches patient records
-- Implementing access control or authentication for clinical systems
-- Designing database schemas for healthcare data
-- Building APIs that return patient or clinician data
-- Implementing audit trails or logging
-- Reviewing code for data exposure vulnerabilities
-- Setting up Row-Level Security (RLS) for multi-tenant healthcare systems
+- Construindo qualquer feature que toque registros de pacientes
+- Implementando controle de acesso ou autenticação para sistemas clínicos
+- Projetando esquemas de banco de dados para dados de saúde
+- Construindo APIs que retornam dados de pacientes ou clínicos
+- Implementando trilhas de auditoria ou logging
+- Revisando código para vulnerabilidades de exposição de dados
+- Configurando Row-Level Security (RLS) para sistemas de saúde multi-tenant
 
-## How It Works
+## Como Funciona
 
-Healthcare data protection operates on three layers: **classification** (what is sensitive), **access control** (who can see it), and **audit** (who did see it).
+A proteção de dados de saúde opera em três camadas: **classificação** (o que é sensível), **controle de acesso** (quem pode ver) e **auditoria** (quem viu).
 
-### Data Classification
+### Classificação de Dados
 
-**PHI (Protected Health Information)** — any data that can identify a patient AND relates to their health: patient name, date of birth, address, phone, email, national ID numbers (SSN, Aadhaar, NHS number), medical record numbers, diagnoses, medications, lab results, imaging, insurance policy and claim details, appointment and admission records, or any combination of the above.
+**PHI (Informações de Saúde Protegidas)** — qualquer dado que possa identificar um paciente E se relacione à sua saúde: nome do paciente, data de nascimento, endereço, telefone, e-mail, números de identificação nacional (CPF, Aadhaar, número NHS), números de registro médico, diagnósticos, medicamentos, resultados laboratoriais, imagens, detalhes de apólice e sinistros de seguro, registros de consultas e internações, ou qualquer combinação do acima.
 
-**PII (Non-patient-sensitive data)** in healthcare systems: clinician/staff personal details, doctor fee structures and payout amounts, employee salary and bank details, vendor payment information.
+**PII (Dados pessoais não relacionados ao paciente)** em sistemas de saúde: dados pessoais de clínicos/equipe, estruturas de honorários e valores de pagamento de médicos, detalhes de salário e dados bancários de funcionários, informações de pagamento a fornecedores.
 
-### Access Control: Row-Level Security
+### Controle de Acesso: Row-Level Security
 
 ```sql
 ALTER TABLE patients ENABLE ROW LEVEL SECURITY;
 
--- Scope access by facility
+-- Escopo de acesso por instalação
 CREATE POLICY "staff_read_own_facility"
   ON patients FOR SELECT TO authenticated
   USING (facility_id IN (
@@ -43,16 +43,16 @@ CREATE POLICY "staff_read_own_facility"
     WHERE user_id = auth.uid() AND role IN ('doctor','nurse','lab_tech','admin')
   ));
 
--- Audit log: insert-only (tamper-proof)
+-- Log de auditoria: somente inserção (à prova de adulteração)
 CREATE POLICY "audit_insert_only" ON audit_log FOR INSERT
   TO authenticated WITH CHECK (user_id = auth.uid());
 CREATE POLICY "audit_no_modify" ON audit_log FOR UPDATE USING (false);
 CREATE POLICY "audit_no_delete" ON audit_log FOR DELETE USING (false);
 ```
 
-### Audit Trail
+### Trilha de Auditoria
 
-Every PHI access or modification must be logged:
+Todo acesso ou modificação de PHI deve ser registrado:
 
 ```typescript
 interface AuditEntry {
@@ -68,23 +68,23 @@ interface AuditEntry {
 }
 ```
 
-### Common Leak Vectors
+### Vetores Comuns de Vazamento
 
-**Error messages:** Never include patient-identifying data in error messages thrown to the client. Log details server-side only.
+**Mensagens de erro:** Nunca inclua dados de identificação do paciente em mensagens de erro enviadas ao cliente. Registre detalhes somente no lado do servidor.
 
-**Console output:** Never log full patient objects. Use opaque internal record IDs (UUIDs) — not medical record numbers, national IDs, or names.
+**Saída do console:** Nunca registre objetos completos de pacientes. Use IDs de registro internos opacos (UUIDs) — não números de registro médico, IDs nacionais ou nomes.
 
-**URL parameters:** Never put patient-identifying data in query strings or path segments that could appear in logs or browser history. Use opaque UUIDs only.
+**Parâmetros de URL:** Nunca coloque dados de identificação do paciente em strings de consulta ou segmentos de caminho que possam aparecer em logs ou no histórico do navegador. Use apenas UUIDs opacos.
 
-**Browser storage:** Never store PHI in localStorage or sessionStorage. Keep PHI in memory only, fetch on demand.
+**Armazenamento do navegador:** Nunca armazene PHI em localStorage ou sessionStorage. Mantenha PHI somente na memória, busque sob demanda.
 
-**Service role keys:** Never use the service_role key in client-side code. Always use the anon/publishable key and let RLS enforce access.
+**Chaves de service role:** Nunca use a chave service_role em código do lado cliente. Sempre use a chave anon/publishable e deixe o RLS aplicar o acesso.
 
-**Logs and monitoring:** Never log full patient records. Use opaque record IDs only (not medical record numbers). Sanitize stack traces before sending to error tracking services.
+**Logs e monitoramento:** Nunca registre registros completos de pacientes. Use apenas IDs de registro opacos (não números de registro médico). Sanitize stack traces antes de enviar para serviços de rastreamento de erros.
 
-### Database Schema Tagging
+### Tagging de Esquema de Banco de Dados
 
-Mark PHI/PII columns at the schema level:
+Marque colunas PHI/PII no nível do esquema:
 
 ```sql
 COMMENT ON COLUMN patients.name IS 'PHI: patient_name';
@@ -93,54 +93,54 @@ COMMENT ON COLUMN patients.aadhaar IS 'PHI: national_id';
 COMMENT ON COLUMN doctor_payouts.amount IS 'PII: financial';
 ```
 
-### Deployment Checklist
+### Lista de Verificação de Implantação
 
-Before every deployment:
-- No PHI in error messages or stack traces
-- No PHI in console.log/console.error
-- No PHI in URL parameters
-- No PHI in browser storage
-- No service_role key in client code
-- RLS enabled on all PHI/PII tables
-- Audit trail for all data modifications
-- Session timeout configured
-- API authentication on all PHI endpoints
-- Cross-facility data isolation verified
+Antes de cada implantação:
+- Sem PHI em mensagens de erro ou stack traces
+- Sem PHI em console.log/console.error
+- Sem PHI em parâmetros de URL
+- Sem PHI no armazenamento do navegador
+- Sem chave service_role no código cliente
+- RLS habilitado em todas as tabelas PHI/PII
+- Trilha de auditoria para todas as modificações de dados
+- Timeout de sessão configurado
+- Autenticação de API em todos os endpoints de PHI
+- Isolamento de dados entre instalações verificado
 
-## Examples
+## Exemplos
 
-### Example 1: Safe vs Unsafe Error Handling
+### Exemplo 1: Tratamento de Erros Seguro vs Inseguro
 
 ```typescript
-// BAD — leaks PHI in error
+// RUIM — vaza PHI no erro
 throw new Error(`Patient ${patient.name} not found in ${patient.facility}`);
 
-// GOOD — generic error, details logged server-side with opaque IDs only
+// BOM — erro genérico, detalhes registrados no servidor com apenas IDs opacos
 logger.error('Patient lookup failed', { recordId: patient.id, facilityId });
 throw new Error('Record not found');
 ```
 
-### Example 2: RLS Policy for Multi-Facility Isolation
+### Exemplo 2: Política RLS para Isolamento Multi-Instalação
 
 ```sql
--- Doctor at Facility A cannot see Facility B patients
+-- Médico na Instalação A não pode ver pacientes da Instalação B
 CREATE POLICY "facility_isolation"
   ON patients FOR SELECT TO authenticated
   USING (facility_id IN (
     SELECT facility_id FROM staff_assignments WHERE user_id = auth.uid()
   ));
 
--- Test: login as doctor-facility-a, query facility-b patients
--- Expected: 0 rows returned
+-- Teste: login como doctor-facility-a, consultar pacientes da facility-b
+-- Esperado: 0 linhas retornadas
 ```
 
-### Example 3: Safe Logging
+### Exemplo 3: Logging Seguro
 
 ```typescript
-// BAD — logs identifiable patient data
+// RUIM — registra dados identificáveis do paciente
 console.log('Processing patient:', patient);
 
-// GOOD — logs only opaque internal record ID
+// BOM — registra apenas ID de registro interno opaco
 console.log('Processing record:', patient.id);
-// Note: even patient.id should be an opaque UUID, not a medical record number
+// Nota: mesmo patient.id deve ser um UUID opaco, não um número de registro médico
 ```

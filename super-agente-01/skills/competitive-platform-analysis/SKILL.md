@@ -15,7 +15,7 @@ de qualquer pontuação começar. Uma análise competitiva é tão boa quanto se
 conjunto errado faz o cliente parecer ou imbatível ou condenado. O objetivo é um
 conjunto defensável e relevante para a decisão — não um censo exaustivo.
 
-## When to Activate
+## Quando Ativar
 
 - Prestes a iniciar um projeto de benchmarking competitivo e precisa definir o conjunto de concorrentes primeiro.
 - Em dúvida sobre quais empresas pertencem aos tiers Direct / Adjacent / Aspirational.
@@ -23,7 +23,7 @@ conjunto defensável e relevante para a decisão — não um censo exaustivo.
 - Tem um positioning brief e quer identificar quem contesta essa posição.
 - Primeiro passo antes de executar benchmark-methodology.
 
-## Positioning brief do cliente (estabeleça primeiro)
+## Positioning Brief do Cliente (Estabeleça Primeiro)
 
 Antes de delimitar o conjunto, estabeleça o positioning brief do cliente. Se você ainda não
 o tiver, conduza uma entrevista curta de brand-discovery para obtê-lo — **não**
@@ -44,7 +44,7 @@ sem a lente do cliente é ruído, não inteligência. A consequência para o esc
 particular, determina quais concorrentes são rivais *fortes* (os que contestam
 o moat do cliente) vs. meramente sobrepostos no menu de serviços.
 
-## Critérios de seleção
+## Critérios de Seleção
 
 Para cada candidato, capture estes eixos — eles decidem tanto a inclusão quanto o tier:
 
@@ -65,7 +65,7 @@ Para cada candidato, capture estes eixos — eles decidem tanto a inclusão quan
 - **Força de marca** — o estúdio tem uma identidade verbal/visual apropriável, ou
   é intercambiável? Pondere isso conforme a consequência para o escopo do cliente.
 
-## Taxonomia de players — eixos a serem preenchidos
+## Taxonomia de Players — Eixos a Serem Preenchidos
 
 Não classifique os concorrentes em baldes específicos de nicho; classifique-os ao longo de alguns
 eixos genéricos para que o cenário não fique enviesado em direção a um arquétipo. Esses eixos
@@ -98,7 +98,7 @@ mais instrutivos.
 Posicione cada candidato nos eixos relevantes; um concorrente é *direto* quando fica
 próximo do cliente em posicionamento, especialização, tamanho e mercado ao mesmo tempo.
 
-## Tiers competitivos (como o conjunto se resolve)
+## Tiers Competitivos (Como o Conjunto se Resolve)
 
 Agrupe o conjunto final em três tiers — esta estrutura segue até o
 relatório:
@@ -113,7 +113,7 @@ relatório:
   generalistas — anote como vetor de ameaça, não como concorrente perfilado, a menos que
   seja materialmente relevante.)*
 
-## Fontes de dados (onde procurar)
+## Fontes de Dados (Onde Procurar)
 
 Combine a fonte com a dimensão de que você precisa. Os *tipos* de plataforma abaixo são
 genéricos; substitua pelos nativos do nicho do cliente (ex.: Dribbble/Behance
@@ -140,7 +140,7 @@ Sempre **verifique afirmações em pelo menos duas fontes** antes de tratar um a
 concorrente como fato (copy do próprio site ≠ resultado verificado). Leve uma
 disciplina de verificação adversarial para cada perfil.
 
-## Template de matriz de pontuação (etapa de seleção)
+## Template de Matriz de Pontuação (Etapa de Seleção)
 
 Um pré-filtro leve para decidir quem avança para o benchmarking completo. Pontue de
 1–5; mantenha candidatos que pontuem alto em distintividade **ou** em
@@ -159,7 +159,7 @@ Regras gerais (aplique conforme a consequência para o escopo do cliente no posi
   cliente se define.
 - Baixo em ambos → descarte, a menos que seja necessário para a amplitude do cenário.
 
-## Saída desta etapa
+## Saída desta Etapa
 
 Um conjunto de concorrentes delimitado e dividido em tiers (tipicamente 10–18 candidatos → 8–12 perfilados),
 cada um marcado com suas posições de eixo, tier e links de fonte, pronto para entregar a
@@ -173,7 +173,7 @@ cada um marcado com suas posições de eixo, tier e links de fonte, pronto para 
 - **Depender de uma única fonte por concorrente.** O copy do próprio site é marketing, não fato. Verifique os atributos em pelo menos duas fontes.
 - **Pular direto para a pontuação.** Esta skill delimita e divide o conjunto em tiers. A benchmark-methodology cuida da pontuação. Não confunda os dois passos.
 
-## Examples
+## Exemplos
 
 **Cenário:** Um estúdio boutique de identidade de marca (2 pessoas, UE-remoto, sprints
 produtizados, estética contrária/orientada a manifesto) quer delimitar seu conjunto
@@ -207,7 +207,7 @@ posições de eixo, tier e links de fonte. O Studio A e o Studio E são os
 rivais de confronto direto mais nítidos; o Freelancer D é o caso de alerta
 "memorável mas não-contratável" do qual aprender.
 
-## Related Skills
+## Skills Relacionadas
 
 - `brand-discovery` — use primeiro para estabelecer o positioning brief e a tensão estratégica que delimitam o conjunto de concorrentes.
 - `benchmark-methodology` — o próximo passo; pega o conjunto dividido em tiers e pontua cada concorrente em nove dimensões.

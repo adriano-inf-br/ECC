@@ -7,7 +7,7 @@ metadata:
 
 # Benchmark — Linha de Base de Desempenho e Detecção de Regressão
 
-## When to Use
+## Quando Usar
 
 - Antes e depois de um PR para medir o impacto no desempenho
 - Configurar linhas de base de desempenho para um projeto
@@ -15,7 +15,7 @@ metadata:
 - Antes de um lançamento — garantir que você atinge as metas de desempenho
 - Comparar sua stack com alternativas
 
-## How It Works
+## Como Funciona
 
 ### Modo 1: Desempenho de Página
 
@@ -83,11 +83,11 @@ Saída:
 | Build | 12s | 14s | +2s | WARNING: WARN |
 ```
 
-## Output
+## Saída
 
 Armazena as linhas de base em `.ecc/benchmarks/` como JSON. Versionado no Git para que a equipe compartilhe as linhas de base.
 
-## Integration
+## Integração
 
 - CI: rode `/benchmark compare` em cada PR
 - Combine com `/canary-watch` para monitoramento pós-deploy

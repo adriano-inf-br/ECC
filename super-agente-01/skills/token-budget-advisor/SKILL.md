@@ -1,134 +1,134 @@
 ---
 name: token-budget-advisor
 description: >-
-  Offers the user an informed choice about how much response depth to
-  consume before answering. Use this skill when the user explicitly
-  wants to control response length, depth, or token budget.
-  TRIGGER when: "token budget", "token count", "token usage", "token limit",
+  Oferece ao usuário uma escolha informada sobre quanta profundidade de resposta
+  consumir antes de responder. Use esta skill quando o usuário quiser
+  controlar explicitamente o comprimento, profundidade ou orçamento de tokens da resposta.
+  ACIONAR quando: "token budget", "token count", "token usage", "token limit",
   "response length", "answer depth", "short version", "brief answer",
-  "detailed answer", "exhaustive answer", "respuesta corta vs larga",
+  "detailed answer", "exhaustive answer", "resposta corta vs larga",
   "cuántos tokens", "ahorrar tokens", "responde al 50%", "dame la versión
-  corta", "quiero controlar cuánto usas", or clear variants where the
-  user is explicitly asking to control answer size or depth.
-  DO NOT TRIGGER when: user has already specified a level in the current
-  session (maintain it), the request is clearly a one-word answer, or
-  "token" refers to auth/session/payment tokens rather than response size.
+  corta", "quiero controlar cuánto usas", ou variantes claras onde o
+  usuário está explicitamente pedindo para controlar o tamanho ou profundidade da resposta.
+  NÃO ACIONAR quando: o usuário já especificou um nível na sessão atual
+  (mantenha-o), a requisição é claramente uma resposta de uma palavra, ou
+  "token" se refere a tokens de autenticação/sessão/pagamento em vez de tamanho de resposta.
 metadata:
   origin: community
 ---
 
 # Token Budget Advisor (TBA)
 
-Intercept the response flow to offer the user a choice about response depth **before** Claude answers.
+Intercepte o fluxo de resposta para oferecer ao usuário uma escolha sobre profundidade de resposta **antes** de o Claude responder.
 
-## When to Use
+## Quando Usar
 
-- User wants to control how long or detailed a response is
-- User mentions tokens, budget, depth, or response length
-- User says "short version", "tldr", "brief", "al 25%", "exhaustive", etc.
-- Any time the user wants to choose depth/detail level upfront
+- Usuário quer controlar o comprimento ou nível de detalhe de uma resposta
+- Usuário menciona tokens, orçamento, profundidade ou comprimento de resposta
+- Usuário diz "short version", "tldr", "brief", "al 25%", "exhaustive", etc.
+- Qualquer vez que o usuário queira escolher o nível de profundidade/detalhe antecipadamente
 
-**Do not trigger** when: user already set a level this session (maintain it silently), or the answer is trivially one line.
+**Não acionar** quando: o usuário já definiu um nível nesta sessão (mantenha-o silenciosamente), ou a resposta é trivialmente de uma linha.
 
-## How It Works
+## Como Funciona
 
-### Step 1 — Estimate input tokens
+### Passo 1 — Estimar tokens de entrada
 
-Use the repository's canonical context-budget heuristics to estimate the prompt's token count mentally.
+Use a heurística canônica de orçamento de contexto do repositório para estimar mentalmente a contagem de tokens do Prompt.
 
-Use the same calibration guidance as [context-budget](../context-budget/SKILL.md):
+Use a mesma orientação de calibração de [context-budget](../context-budget/SKILL.md):
 
-- prose: `words × 1.3`
-- code-heavy or mixed/code blocks: `chars / 4`
+- prosa: `palavras × 1,3`
+- blocos de código pesado ou conteúdo misto/código: `chars / 4`
 
-For mixed content, use the dominant content type and keep the estimate heuristic.
+Para conteúdo misto, use o tipo de conteúdo dominante e mantenha a heurística de estimativa.
 
-### Step 2 — Estimate response size by complexity
+### Passo 2 — Estimar tamanho de resposta por complexidade
 
-Classify the prompt, then apply the multiplier range to get the full response window:
+Classifique o Prompt e aplique o intervalo multiplicador para obter a janela completa de resposta:
 
-| Complexity   | Multiplier range | Example prompts                                      |
+| Complexidade   | Intervalo multiplicador | Exemplos de Prompt                                      |
 |--------------|------------------|------------------------------------------------------|
-| Simple       | 3× – 8×          | "What is X?", yes/no, single fact                   |
-| Medium       | 8× – 20×         | "How does X work?"                                  |
-| Medium-High  | 10× – 25×        | Code request with context                           |
-| Complex      | 15× – 40×        | Multi-part analysis, comparisons, architecture      |
-| Creative     | 10× – 30×        | Stories, essays, narrative writing                  |
+| Simples       | 3× – 8×          | "O que é X?", sim/não, fato único                   |
+| Médio       | 8× – 20×         | "Como funciona X?"                                  |
+| Médio-Alto  | 10× – 25×        | Requisição de código com contexto                           |
+| Complexo      | 15× – 40×        | Análise multiparte, comparações, arquitetura      |
+| Criativo     | 10× – 30×        | Histórias, ensaios, escrita narrativa                  |
 
-Response window = `input_tokens × mult_min` to `input_tokens × mult_max` (but don’t exceed your model’s configured output-token limit).
+Janela de resposta = `input_tokens × mult_min` a `input_tokens × mult_max` (mas não exceda o limite de tokens de saída configurado do seu modelo).
 
-### Step 3 — Present depth options
+### Passo 3 — Apresentar opções de profundidade
 
-Present this block **before** answering, using the actual estimated numbers:
+Apresente este bloco **antes** de responder, usando os números estimados reais:
 
 ```
-Analyzing your prompt...
+Analisando seu Prompt...
 
-Input: ~[N] tokens  |  Type: [type]  |  Complexity: [level]  |  Language: [lang]
+Entrada: ~[N] tokens  |  Tipo: [tipo]  |  Complexidade: [nível]  |  Idioma: [idioma]
 
-Choose your depth level:
+Escolha seu nível de profundidade:
 
-[1] Essential   (25%)  ->  ~[tokens]   Direct answer only, no preamble
-[2] Moderate    (50%)  ->  ~[tokens]   Answer + context + 1 example
-[3] Detailed    (75%)  ->  ~[tokens]   Full answer with alternatives
-[4] Exhaustive (100%)  ->  ~[tokens]   Everything, no limits
+[1] Essencial   (25%)  ->  ~[tokens]   Resposta direta apenas, sem preâmbulo
+[2] Moderado    (50%)  ->  ~[tokens]   Resposta + contexto + 1 exemplo
+[3] Detalhado   (75%)  ->  ~[tokens]   Resposta completa com alternativas
+[4] Exaustivo  (100%)  ->  ~[tokens]   Tudo, sem limites
 
-Which level? (1-4 or say "25% depth", "50% depth", "75% depth", "100% depth")
+Qual nível? (1-4 ou diga "25% depth", "50% depth", "75% depth", "100% depth")
 
-Precision: heuristic estimate ~85-90% accuracy (±15%).
+Precisão: estimativa heurística ~85-90% de acurácia (±15%).
 ```
 
-Level token estimates (within the response window):
-- 25%  → `min + (max - min) × 0.25`
-- 50%  → `min + (max - min) × 0.50`
-- 75%  → `min + (max - min) × 0.75`
+Estimativas de tokens por nível (dentro da janela de resposta):
+- 25%  → `min + (max - min) × 0,25`
+- 50%  → `min + (max - min) × 0,50`
+- 75%  → `min + (max - min) × 0,75`
 - 100% → `max`
 
-### Step 4 — Respond at the chosen level
+### Passo 4 — Responder no nível escolhido
 
-| Level            | Target length       | Include                                             | Omit                                              |
+| Nível            | Comprimento alvo       | Incluir                                             | Omitir                                              |
 |------------------|---------------------|-----------------------------------------------------|---------------------------------------------------|
-| 25% Essential    | 2-4 sentences max   | Direct answer, key conclusion                       | Context, examples, nuance, alternatives           |
-| 50% Moderate     | 1-3 paragraphs      | Answer + necessary context + 1 example              | Deep analysis, edge cases, references             |
-| 75% Detailed     | Structured response | Multiple examples, pros/cons, alternatives          | Extreme edge cases, exhaustive references         |
-| 100% Exhaustive  | No restriction      | Everything — full analysis, all code, all perspectives | Nothing                                        |
+| 25% Essencial    | Máx. 2-4 frases   | Resposta direta, conclusão principal                       | Contexto, exemplos, nuance, alternativas           |
+| 50% Moderado     | 1-3 parágrafos      | Resposta + contexto necessário + 1 exemplo              | Análise profunda, casos extremos, referências             |
+| 75% Detalhado    | Resposta estruturada | Múltiplos exemplos, prós/contras, alternativas          | Casos extremos raros, referências exaustivas         |
+| 100% Exaustivo  | Sem restrição      | Tudo — análise completa, todo código, todas as perspectivas | Nada                                        |
 
-## Shortcuts — skip the question
+## Atalhos — ignore a pergunta
 
-If the user already signals a level, respond at that level immediately without asking:
+Se o usuário já sinaliza um nível, responda naquele nível imediatamente sem perguntar:
 
-| What they say                                      | Level |
+| O que eles dizem                                      | Nível |
 |----------------------------------------------------|-------|
 | "1" / "25% depth" / "short version" / "brief answer" / "tldr"  | 25%   |
 | "2" / "50% depth" / "moderate depth" / "balanced answer"        | 50%   |
 | "3" / "75% depth" / "detailed answer" / "thorough answer"       | 75%   |
 | "4" / "100% depth" / "exhaustive answer" / "full deep dive"     | 100%  |
 
-If the user set a level earlier in the session, **maintain it silently** for subsequent responses unless they change it.
+Se o usuário definiu um nível anteriormente na sessão, **mantenha-o silenciosamente** para respostas subsequentes a menos que ele o mude.
 
-## Precision note
+## Nota de precisão
 
-This skill uses heuristic estimation — no real tokenizer. Accuracy ~85-90%, variance ±15%. Always show the disclaimer.
+Esta skill usa estimativa heurística — sem tokenizador real. Acurácia ~85-90%, variância ±15%. Sempre mostre o aviso.
 
-## Examples
+## Exemplos
 
-### Triggers
+### Acionadores
 
-- "Give me the short version first."
-- "How many tokens will your answer use?"
-- "Respond at 50% depth."
-- "I want the exhaustive answer, not the summary."
+- "Primeiro me dê a versão curta."
+- "Quantos tokens sua resposta vai usar?"
+- "Responda com 50% de profundidade."
+- "Quero a resposta exaustiva, não o resumo."
 - "Dame la version corta y luego la detallada."
 
-### Does Not Trigger
+### Não Aciona
 
-- "What is a JWT token?"
-- "The checkout flow uses a payment token."
-- "Is this normal?"
-- "Complete the refactor."
-- Follow-up questions after the user already chose a depth for the session
+- "O que é um token JWT?"
+- "O fluxo de checkout usa um token de pagamento."
+- "Isso é normal?"
+- "Complete a refatoração."
+- Perguntas de acompanhamento após o usuário já ter escolhido uma profundidade para a sessão
 
-## Source
+## Fonte
 
-Standalone skill from [TBA — Token Budget Advisor for Claude Code](https://github.com/Xabilimon1/Token-Budget-Advisor-Claude-Code-).
-Original project also ships a Python estimator script, but this repository keeps the skill self-contained and heuristic-only.
+Skill independente de [TBA — Token Budget Advisor for Claude Code](https://github.com/Xabilimon1/Token-Budget-Advisor-Claude-Code-).
+O projeto original também inclui um script estimador Python, mas este repositório mantém a skill autocontida e apenas com heurísticas.

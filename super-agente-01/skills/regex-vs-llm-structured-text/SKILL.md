@@ -1,53 +1,53 @@
 ---
 name: regex-vs-llm-structured-text
-description: Decision framework for choosing between regex and LLM when parsing structured text — start with regex, add LLM only for low-confidence edge cases.
+description: Framework de decisão para escolher entre regex e LLM ao fazer parsing de texto estruturado — comece com regex, adicione LLM apenas para casos extremos de baixa confiança.
 metadata:
   origin: ECC
 ---
 
-# Regex vs LLM for Structured Text Parsing
+# Regex vs LLM para Parsing de Texto Estruturado
 
-A practical decision framework for parsing structured text (quizzes, forms, invoices, documents). The key insight: regex handles 95-98% of cases cheaply and deterministically. Reserve expensive LLM calls for the remaining edge cases.
+Um framework de decisão prático para fazer parsing de texto estruturado (questionários, formulários, faturas, documentos). A percepção chave: regex trata 95-98% dos casos de forma barata e determinística. Reserve chamadas custosas ao LLM para os casos extremos restantes.
 
-## When to Activate
+## Quando Ativar
 
-- Parsing structured text with repeating patterns (questions, forms, tables)
-- Deciding between regex and LLM for text extraction
-- Building hybrid pipelines that combine both approaches
-- Optimizing cost/accuracy tradeoffs in text processing
+- Fazendo parsing de texto estruturado com padrões repetitivos (perguntas, formulários, tabelas)
+- Decidindo entre regex e LLM para extração de texto
+- Construindo pipelines híbridos que combinam ambas as abordagens
+- Otimizando trade-offs de custo/precisão no processamento de texto
 
-## Decision Framework
-
-```
-Is the text format consistent and repeating?
-├── Yes (>90% follows a pattern) → Start with Regex
-│   ├── Regex handles 95%+ → Done, no LLM needed
-│   └── Regex handles <95% → Add LLM for edge cases only
-└── No (free-form, highly variable) → Use LLM directly
-```
-
-## Architecture Pattern
+## Framework de Decisão
 
 ```
-Source Text
+O formato do texto é consistente e repetitivo?
+├── Sim (>90% segue um padrão) → Comece com Regex
+│   ├── Regex trata 95%+ → Pronto, sem LLM necessário
+│   └── Regex trata <95% → Adicione LLM apenas para casos extremos
+└── Não (forma livre, altamente variável) → Use LLM diretamente
+```
+
+## Padrão de Arquitetura
+
+```
+Texto Fonte
     │
     ▼
-[Regex Parser] ─── Extracts structure (95-98% accuracy)
+[Parser Regex] ─── Extrai estrutura (95-98% de precisão)
     │
     ▼
-[Text Cleaner] ─── Removes noise (markers, page numbers, artifacts)
+[Limpador de Texto] ─── Remove ruído (marcadores, números de página, artefatos)
     │
     ▼
-[Confidence Scorer] ─── Flags low-confidence extractions
+[Scorer de Confiança] ─── Sinaliza extrações de baixa confiança
     │
-    ├── High confidence (≥0.95) → Direct output
+    ├── Alta confiança (≥0.95) → Saída direta
     │
-    └── Low confidence (<0.95) → [LLM Validator] → Output
+    └── Baixa confiança (<0.95) → [Validador LLM] → Saída
 ```
 
-## Implementation
+## Implementação
 
-### 1. Regex Parser (Handles the Majority)
+### 1. Parser Regex (Trata a Maioria)
 
 ```python
 import re
@@ -62,7 +62,7 @@ class ParsedItem:
     confidence: float = 1.0
 
 def parse_structured_text(content: str) -> list[ParsedItem]:
-    """Parse structured text using regex patterns."""
+    """Faz parsing de texto estruturado usando padrões regex."""
     pattern = re.compile(
         r"(?P<id>\d+)\.\s*(?P<text>.+?)\n"
         r"(?P<choices>(?:[A-D]\..+?\n)+)"
@@ -83,9 +83,9 @@ def parse_structured_text(content: str) -> list[ParsedItem]:
     return items
 ```
 
-### 2. Confidence Scoring
+### 2. Scoring de Confiança
 
-Flag items that may need LLM review:
+Sinalize itens que podem precisar de revisão pelo LLM:
 
 ```python
 @dataclass(frozen=True)
@@ -95,20 +95,20 @@ class ConfidenceFlag:
     reasons: tuple[str, ...]
 
 def score_confidence(item: ParsedItem) -> ConfidenceFlag:
-    """Score extraction confidence and flag issues."""
+    """Pontua a confiança da extração e sinaliza problemas."""
     reasons = []
     score = 1.0
 
     if len(item.choices) < 3:
-        reasons.append("few_choices")
+        reasons.append("poucas_escolhas")
         score -= 0.3
 
     if not item.answer:
-        reasons.append("missing_answer")
+        reasons.append("resposta_ausente")
         score -= 0.5
 
     if len(item.text) < 10:
-        reasons.append("short_text")
+        reasons.append("texto_curto")
         score -= 0.2
 
     return ConfidenceFlag(
@@ -121,12 +121,12 @@ def identify_low_confidence(
     items: list[ParsedItem],
     threshold: float = 0.95,
 ) -> list[ConfidenceFlag]:
-    """Return items below confidence threshold."""
+    """Retorna itens abaixo do limiar de confiança."""
     flags = [score_confidence(item) for item in items]
     return [f for f in flags if f.score < threshold]
 ```
 
-### 3. LLM Validator (Edge Cases Only)
+### 3. Validador LLM (Apenas para Casos Extremos)
 
 ```python
 def validate_with_llm(
@@ -134,25 +134,25 @@ def validate_with_llm(
     original_text: str,
     client,
 ) -> ParsedItem:
-    """Use LLM to fix low-confidence extractions."""
+    """Usa LLM para corrigir extrações de baixa confiança."""
     response = client.messages.create(
-        model="claude-haiku-4-5-20251001",  # Cheapest model for validation
+        model="claude-haiku-4-5-20251001",  # Modelo mais barato para validação
         max_tokens=500,
         messages=[{
             "role": "user",
             "content": (
-                f"Extract the question, choices, and answer from this text.\n\n"
-                f"Text: {original_text}\n\n"
-                f"Current extraction: {item}\n\n"
-                f"Return corrected JSON if needed, or 'CORRECT' if accurate."
+                f"Extraia a pergunta, escolhas e resposta deste texto.\n\n"
+                f"Texto: {original_text}\n\n"
+                f"Extração atual: {item}\n\n"
+                f"Retorne JSON corrigido se necessário, ou 'CORRETO' se preciso."
             ),
         }],
     )
-    # Parse LLM response and return corrected item...
+    # Faça o parsing da resposta do LLM e retorne o item corrigido...
     return corrected_item
 ```
 
-### 4. Hybrid Pipeline
+### 4. Pipeline Híbrido
 
 ```python
 def process_document(
@@ -161,17 +161,17 @@ def process_document(
     llm_client=None,
     confidence_threshold: float = 0.95,
 ) -> list[ParsedItem]:
-    """Full pipeline: regex -> confidence check -> LLM for edge cases."""
-    # Step 1: Regex extraction (handles 95-98%)
+    """Pipeline completo: regex -> verificação de confiança -> LLM para casos extremos."""
+    # Passo 1: Extração com regex (trata 95-98%)
     items = parse_structured_text(content)
 
-    # Step 2: Confidence scoring
+    # Passo 2: Scoring de confiança
     low_confidence = identify_low_confidence(items, confidence_threshold)
 
     if not low_confidence or llm_client is None:
         return items
 
-    # Step 3: LLM validation (only for flagged items)
+    # Passo 3: Validação LLM (apenas para itens sinalizados)
     low_conf_ids = {f.item_id for f in low_confidence}
     result = []
     for item in items:
@@ -183,39 +183,39 @@ def process_document(
     return result
 ```
 
-## Real-World Metrics
+## Métricas do Mundo Real
 
-From a production quiz parsing pipeline (410 items):
+De um pipeline de parsing de quiz em produção (410 itens):
 
-| Metric | Value |
+| Métrica | Valor |
 |--------|-------|
-| Regex success rate | 98.0% |
-| Low confidence items | 8 (2.0%) |
-| LLM calls needed | ~5 |
-| Cost savings vs all-LLM | ~95% |
-| Test coverage | 93% |
+| Taxa de sucesso do regex | 98,0% |
+| Itens de baixa confiança | 8 (2,0%) |
+| Chamadas LLM necessárias | ~5 |
+| Economia de custo vs tudo-LLM | ~95% |
+| Cobertura de testes | 93% |
 
-## Best Practices
+## Boas Práticas
 
-- **Start with regex** — even imperfect regex gives you a baseline to improve
-- **Use confidence scoring** to programmatically identify what needs LLM help
-- **Use the cheapest LLM** for validation (Haiku-class models are sufficient)
-- **Never mutate** parsed items — return new instances from cleaning/validation steps
-- **TDD works well** for parsers — write tests for known patterns first, then edge cases
-- **Log metrics** (regex success rate, LLM call count) to track pipeline health
+- **Comece com regex** — mesmo um regex imperfeito fornece uma baseline para melhorar
+- **Use scoring de confiança** para identificar programaticamente o que precisa de ajuda do LLM
+- **Use o LLM mais barato** para validação (modelos da classe Haiku são suficientes)
+- **Nunca mute** itens parseados — retorne novas instâncias das etapas de limpeza/validação
+- **TDD funciona bem** para parsers — escreva testes para padrões conhecidos primeiro, depois casos extremos
+- **Registre métricas** (taxa de sucesso do regex, contagem de chamadas LLM) para monitorar a saúde do pipeline
 
-## Anti-Patterns to Avoid
+## Anti-Padrões a Evitar
 
-- Sending all text to an LLM when regex handles 95%+ of cases (expensive and slow)
-- Using regex for free-form, highly variable text (LLM is better here)
-- Skipping confidence scoring and hoping regex "just works"
-- Mutating parsed objects during cleaning/validation steps
-- Not testing edge cases (malformed input, missing fields, encoding issues)
+- Enviar todo o texto ao LLM quando o regex trata 95%+ dos casos (caro e lento)
+- Usar regex para texto livre e altamente variável (o LLM é melhor aqui)
+- Pular o scoring de confiança e torcer para que o regex "simplesmente funcione"
+- Mutar objetos parseados durante as etapas de limpeza/validação
+- Não testar casos extremos (entrada malformada, campos ausentes, problemas de codificação)
 
-## When to Use
+## Quando Usar
 
-- Quiz/exam question parsing
-- Form data extraction
-- Invoice/receipt processing
-- Document structure parsing (headers, sections, tables)
-- Any structured text with repeating patterns where cost matters
+- Parsing de perguntas de quiz/prova
+- Extração de dados de formulários
+- Processamento de faturas/recibos
+- Parsing de estrutura de documentos (cabeçalhos, seções, tabelas)
+- Qualquer texto estruturado com padrões repetitivos onde o custo importa

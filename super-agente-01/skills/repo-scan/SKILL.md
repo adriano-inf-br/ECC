@@ -1,25 +1,25 @@
 ---
 name: repo-scan
-description: Cross-stack source code asset audit — classifies every file, detects embedded third-party libraries, and delivers actionable four-level verdicts per module with interactive HTML reports.
+description: Auditoria de ativos de código-fonte cross-stack — classifica cada arquivo, detecta bibliotecas de terceiros embutidas e entrega veredictos acionáveis de quatro níveis por módulo com relatórios HTML interativos.
 metadata:
   origin: community
 ---
 
 # repo-scan
 
-> Every ecosystem has its own dependency manager, but no tool looks across C++, Android, iOS, and Web to tell you: how much code is actually yours, what's third-party, and what's dead weight.
+> Cada ecossistema tem seu próprio gerenciador de dependências, mas nenhuma ferramenta olha através de C++, Android, iOS e Web para dizer: quanto código é realmente seu, o que é de terceiros e o que é peso morto.
 
-## When to Use
+## Quando Usar
 
-- Taking over a large legacy codebase and need a structural overview
-- Before major refactoring — identify what's core, what's duplicate, what's dead
-- Auditing third-party dependencies embedded directly in source (not declared in package managers)
-- Preparing architecture decision records for monorepo reorganization
+- Assumindo uma grande base de código legada e precisando de uma visão geral estrutural
+- Antes de grandes refatorações — identifique o que é central, o que é duplicado, o que está morto
+- Auditando dependências de terceiros embutidas diretamente no código-fonte (não declaradas nos gerenciadores de pacotes)
+- Preparando registros de decisão de arquitetura para reorganização de monorepo
 
-## Installation
+## Instalação
 
 ```bash
-# Fetch only the pinned commit for reproducibility
+# Busque apenas o commit fixado para reprodutibilidade
 mkdir -p ~/.claude/skills/repo-scan
 git init repo-scan
 cd repo-scan
@@ -29,51 +29,51 @@ git checkout --detach FETCH_HEAD
 cp -r . ~/.claude/skills/repo-scan
 ```
 
-> Review the source before installing any agent skill.
+> Revise o código-fonte antes de instalar qualquer skill de agent.
 
-## Core Capabilities
+## Capacidades Principais
 
-| Capability | Description |
+| Capacidade | Descrição |
 |---|---|
-| **Cross-stack scanning** | C/C++, Java/Android, iOS (OC/Swift), Web (TS/JS/Vue) in one pass |
-| **File classification** | Every file tagged as project code, third-party, or build artifact |
-| **Library detection** | 50+ known libraries (FFmpeg, Boost, OpenSSL…) with version extraction |
-| **Four-level verdicts** | Core Asset / Extract & Merge / Rebuild / Deprecate |
-| **HTML reports** | Interactive dark-theme pages with drill-down navigation |
-| **Monorepo support** | Hierarchical scanning with summary + sub-project reports |
+| **Varredura cross-stack** | C/C++, Java/Android, iOS (OC/Swift), Web (TS/JS/Vue) em uma única passagem |
+| **Classificação de arquivos** | Cada arquivo rotulado como código do projeto, de terceiros ou artefato de build |
+| **Detecção de bibliotecas** | 50+ bibliotecas conhecidas (FFmpeg, Boost, OpenSSL…) com extração de versão |
+| **Veredictos de quatro níveis** | Core Asset / Extrair & Mesclar / Reconstruir / Deprecar |
+| **Relatórios HTML** | Páginas interativas com tema escuro e navegação drill-down |
+| **Suporte a monorepo** | Varredura hierárquica com resumo + relatórios de sub-projetos |
 
-## Analysis Depth Levels
+## Níveis de Profundidade de Análise
 
-| Level | Files Read | Use Case |
+| Nível | Arquivos Lidos | Caso de Uso |
 |---|---|---|
-| `fast` | 1-2 per module | Quick inventory of huge directories |
-| `standard` | 2-5 per module | Default audit with full dependency + architecture checks |
-| `deep` | 5-10 per module | Adds thread safety, memory management, API consistency |
-| `full` | All files | Pre-merge comprehensive review |
+| `fast` | 1-2 por módulo | Inventário rápido de diretórios enormes |
+| `standard` | 2-5 por módulo | Auditoria padrão com verificações completas de dependência + arquitetura |
+| `deep` | 5-10 por módulo | Adiciona segurança de thread, gerenciamento de memória, consistência de API |
+| `full` | Todos os arquivos | Revisão abrangente pré-merge |
 
-## How It Works
+## Como Funciona
 
-1. **Classify the repo surface**: enumerate files, then tag each as project code, embedded third-party code, or build artifact.
-2. **Detect embedded libraries**: inspect directory names, headers, license files, and version markers to identify bundled dependencies and likely versions.
-3. **Score each module**: group files by module or subsystem, then assign one of the four verdicts based on ownership, duplication, and maintenance cost.
-4. **Highlight structural risks**: call out dead-weight artifacts, duplicated wrappers, outdated vendored code, and modules that should be extracted, rebuilt, or deprecated.
-5. **Produce the report**: return a concise summary plus the interactive HTML output with per-module drill-down so the audit can be reviewed asynchronously.
+1. **Classifique a superfície do repositório**: enumere os arquivos, depois rotule cada um como código do projeto, código de terceiros embutido ou artefato de build.
+2. **Detecte bibliotecas embutidas**: inspecione nomes de diretórios, cabeçalhos, arquivos de licença e marcadores de versão para identificar dependências empacotadas e prováveis versões.
+3. **Pontue cada módulo**: agrupe arquivos por módulo ou subsistema, depois atribua um dos quatro veredictos com base em propriedade, duplicação e custo de manutenção.
+4. **Destaque riscos estruturais**: aponte artefatos de peso morto, wrappers duplicados, código vendored desatualizado e módulos que devem ser extraídos, reconstruídos ou deprecados.
+5. **Produza o relatório**: retorne um resumo conciso mais a saída HTML interativa com drill-down por módulo para que a auditoria possa ser revisada assincronamente.
 
-## Examples
+## Exemplos
 
-On a 50,000-file C++ monorepo:
-- Found FFmpeg 2.x (2015 vintage) still in production
-- Discovered the same SDK wrapper duplicated 3 times
-- Identified 636 MB of committed Debug/ipch/obj build artifacts
-- Classified: 3 MB project code vs 596 MB third-party
+Em um monorepo C++ de 50.000 arquivos:
+- Encontrou FFmpeg 2.x (vintage de 2015) ainda em produção
+- Descobriu o mesmo wrapper de SDK duplicado 3 vezes
+- Identificou 636 MB de artefatos de build Debug/ipch/obj commitados
+- Classificado: 3 MB de código do projeto vs 596 MB de terceiros
 
-## Best Practices
+## Boas Práticas
 
-- Start with `standard` depth for first-time audits
-- Use `fast` for monorepos with 100+ modules to get a quick inventory
-- Run `deep` incrementally on modules flagged for refactoring
-- Review the cross-module analysis for duplicate detection across sub-projects
+- Comece com profundidade `standard` para primeiras auditorias
+- Use `fast` para monorepos com 100+ módulos para obter um inventário rápido
+- Execute `deep` incrementalmente em módulos sinalizados para refatoração
+- Revise a análise cross-módulo para detecção de duplicatas entre sub-projetos
 
 ## Links
 
-- [GitHub Repository](https://github.com/haibindev/repo-scan)
+- [Repositório GitHub](https://github.com/haibindev/repo-scan)

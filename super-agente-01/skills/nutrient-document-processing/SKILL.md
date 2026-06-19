@@ -1,46 +1,46 @@
 ---
 name: nutrient-document-processing
-description: Process, convert, OCR, extract, redact, sign, and fill documents using the Nutrient DWS API. Works with PDFs, DOCX, XLSX, PPTX, HTML, and images.
+description: Processe, converta, faça OCR, extraia, redija, assine e preencha documentos usando a API Nutrient DWS. Funciona com PDFs, DOCX, XLSX, PPTX, HTML e imagens.
 metadata:
   origin: ECC
 ---
 
-# Nutrient Document Processing
+# Processamento de Documentos com Nutrient
 
-> **Note:** This skill integrates with the Nutrient commercial API. Review their terms before use.
+> **Nota:** Esta skill integra com a API comercial do Nutrient. Revise os termos de uso antes de utilizá-la.
 
-Process documents with the [Nutrient DWS Processor API](https://www.nutrient.io/api/). Convert formats, extract text and tables, OCR scanned documents, redact PII, add watermarks, digitally sign, and fill PDF forms.
+Processe documentos com a [API Nutrient DWS Processor](https://www.nutrient.io/api/). Converta formatos, extraia texto e tabelas, faça OCR em documentos digitalizados, redija PII, adicione marcas d'água, assine digitalmente e preencha formulários PDF.
 
-## Setup
+## Configuração
 
-Get a free API key at **[nutrient.io](https://dashboard.nutrient.io/sign_up/?product=processor)**
+Obtenha uma chave de API gratuita em **[nutrient.io](https://dashboard.nutrient.io/sign_up/?product=processor)**
 
 ```bash
 export NUTRIENT_API_KEY="pdf_live_..."
 ```
 
-All requests go to `https://api.nutrient.io/build` as multipart POST with an `instructions` JSON field.
+Todas as requisições vão para `https://api.nutrient.io/build` como POST multipart com um campo JSON `instructions`.
 
-## Operations
+## Operações
 
-### Convert Documents
+### Converter Documentos
 
 ```bash
-# DOCX to PDF
+# DOCX para PDF
 curl -X POST https://api.nutrient.io/build \
   -H "Authorization: Bearer $NUTRIENT_API_KEY" \
   -F "document.docx=@document.docx" \
   -F 'instructions={"parts":[{"file":"document.docx"}]}' \
   -o output.pdf
 
-# PDF to DOCX
+# PDF para DOCX
 curl -X POST https://api.nutrient.io/build \
   -H "Authorization: Bearer $NUTRIENT_API_KEY" \
   -F "document.pdf=@document.pdf" \
   -F 'instructions={"parts":[{"file":"document.pdf"}],"output":{"type":"docx"}}' \
   -o output.docx
 
-# HTML to PDF
+# HTML para PDF
 curl -X POST https://api.nutrient.io/build \
   -H "Authorization: Bearer $NUTRIENT_API_KEY" \
   -F "index.html=@index.html" \
@@ -48,19 +48,19 @@ curl -X POST https://api.nutrient.io/build \
   -o output.pdf
 ```
 
-Supported inputs: PDF, DOCX, XLSX, PPTX, DOC, XLS, PPT, PPS, PPSX, ODT, RTF, HTML, JPG, PNG, TIFF, HEIC, GIF, WebP, SVG, TGA, EPS.
+Entradas suportadas: PDF, DOCX, XLSX, PPTX, DOC, XLS, PPT, PPS, PPSX, ODT, RTF, HTML, JPG, PNG, TIFF, HEIC, GIF, WebP, SVG, TGA, EPS.
 
-### Extract Text and Data
+### Extrair Texto e Dados
 
 ```bash
-# Extract plain text
+# Extrair texto simples
 curl -X POST https://api.nutrient.io/build \
   -H "Authorization: Bearer $NUTRIENT_API_KEY" \
   -F "document.pdf=@document.pdf" \
   -F 'instructions={"parts":[{"file":"document.pdf"}],"output":{"type":"text"}}' \
   -o output.txt
 
-# Extract tables as Excel
+# Extrair tabelas como Excel
 curl -X POST https://api.nutrient.io/build \
   -H "Authorization: Bearer $NUTRIENT_API_KEY" \
   -F "document.pdf=@document.pdf" \
@@ -68,10 +68,10 @@ curl -X POST https://api.nutrient.io/build \
   -o tables.xlsx
 ```
 
-### OCR Scanned Documents
+### OCR em Documentos Digitalizados
 
 ```bash
-# OCR to searchable PDF (supports 100+ languages)
+# OCR para PDF pesquisável (suporta mais de 100 idiomas)
 curl -X POST https://api.nutrient.io/build \
   -H "Authorization: Bearer $NUTRIENT_API_KEY" \
   -F "scanned.pdf=@scanned.pdf" \
@@ -79,19 +79,19 @@ curl -X POST https://api.nutrient.io/build \
   -o searchable.pdf
 ```
 
-Languages: Supports 100+ languages via ISO 639-2 codes (e.g., `eng`, `deu`, `fra`, `spa`, `jpn`, `kor`, `chi_sim`, `chi_tra`, `ara`, `hin`, `rus`). Full language names like `english` or `german` also work. See the [complete OCR language table](https://www.nutrient.io/guides/document-engine/ocr/language-support/) for all supported codes.
+Idiomas: Suporta mais de 100 idiomas via códigos ISO 639-2 (ex.: `eng`, `deu`, `fra`, `spa`, `jpn`, `kor`, `chi_sim`, `chi_tra`, `ara`, `hin`, `rus`). Nomes completos de idiomas como `english` ou `german` também funcionam. Veja a [tabela completa de idiomas OCR](https://www.nutrient.io/guides/document-engine/ocr/language-support/) para todos os códigos suportados.
 
-### Redact Sensitive Information
+### Redigir Informações Sensíveis
 
 ```bash
-# Pattern-based (SSN, email)
+# Baseado em padrão (CPF, e-mail)
 curl -X POST https://api.nutrient.io/build \
   -H "Authorization: Bearer $NUTRIENT_API_KEY" \
   -F "document.pdf=@document.pdf" \
   -F 'instructions={"parts":[{"file":"document.pdf"}],"actions":[{"type":"redaction","strategy":"preset","strategyOptions":{"preset":"social-security-number"}},{"type":"redaction","strategy":"preset","strategyOptions":{"preset":"email-address"}}]}' \
   -o redacted.pdf
 
-# Regex-based
+# Baseado em regex
 curl -X POST https://api.nutrient.io/build \
   -H "Authorization: Bearer $NUTRIENT_API_KEY" \
   -F "document.pdf=@document.pdf" \
@@ -101,7 +101,7 @@ curl -X POST https://api.nutrient.io/build \
 
 Presets: `social-security-number`, `email-address`, `credit-card-number`, `international-phone-number`, `north-american-phone-number`, `date`, `time`, `url`, `ipv4`, `ipv6`, `mac-address`, `us-zip-code`, `vin`.
 
-### Add Watermarks
+### Adicionar Marcas d'Água
 
 ```bash
 curl -X POST https://api.nutrient.io/build \
@@ -111,10 +111,10 @@ curl -X POST https://api.nutrient.io/build \
   -o watermarked.pdf
 ```
 
-### Digital Signatures
+### Assinaturas Digitais
 
 ```bash
-# Self-signed CMS signature
+# Assinatura CMS autoassinada
 curl -X POST https://api.nutrient.io/build \
   -H "Authorization: Bearer $NUTRIENT_API_KEY" \
   -F "document.pdf=@document.pdf" \
@@ -122,7 +122,7 @@ curl -X POST https://api.nutrient.io/build \
   -o signed.pdf
 ```
 
-### Fill PDF Forms
+### Preencher Formulários PDF
 
 ```bash
 curl -X POST https://api.nutrient.io/build \
@@ -132,9 +132,9 @@ curl -X POST https://api.nutrient.io/build \
   -o filled.pdf
 ```
 
-## MCP Server (Alternative)
+## Servidor MCP (Alternativa)
 
-For native tool integration, use the MCP server instead of curl:
+Para integração nativa de tools, use o servidor MCP em vez de curl:
 
 ```json
 {
@@ -151,18 +151,18 @@ For native tool integration, use the MCP server instead of curl:
 }
 ```
 
-## When to Use
+## Quando Usar
 
-- Converting documents between formats (PDF, DOCX, XLSX, PPTX, HTML, images)
-- Extracting text, tables, or key-value pairs from PDFs
-- OCR on scanned documents or images
-- Redacting PII before sharing documents
-- Adding watermarks to drafts or confidential documents
-- Digitally signing contracts or agreements
-- Filling PDF forms programmatically
+- Convertendo documentos entre formatos (PDF, DOCX, XLSX, PPTX, HTML, imagens)
+- Extraindo texto, tabelas ou pares chave-valor de PDFs
+- OCR em documentos ou imagens digitalizados
+- Redigindo PII antes de compartilhar documentos
+- Adicionando marcas d'água a rascunhos ou documentos confidenciais
+- Assinando digitalmente contratos ou acordos
+- Preenchendo formulários PDF programaticamente
 
 ## Links
 
-- [API Playground](https://dashboard.nutrient.io/processor-api/playground/)
-- [Full API Docs](https://www.nutrient.io/guides/dws-processor/)
-- [npm MCP Server](https://www.npmjs.com/package/@nutrient-sdk/dws-mcp-server)
+- [Playground da API](https://dashboard.nutrient.io/processor-api/playground/)
+- [Documentação Completa da API](https://www.nutrient.io/guides/dws-processor/)
+- [Servidor MCP no npm](https://www.npmjs.com/package/@nutrient-sdk/dws-mcp-server)

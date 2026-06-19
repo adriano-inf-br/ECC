@@ -1,25 +1,25 @@
 ---
 name: laravel-plugin-discovery
-description: Discover and evaluate Laravel packages via LaraPlugins.io MCP. Use when the user wants to find plugins, check package health, or assess Laravel/PHP compatibility.
+description: Descubra e avalie pacotes Laravel via MCP LaraPlugins.io. Use quando o usuário quiser encontrar plugins, verificar a saúde de um pacote ou avaliar compatibilidade com Laravel/PHP.
 metadata:
   origin: ECC
 ---
 
-# Laravel Plugin Discovery
+# Descoberta de Plugins Laravel
 
-Find, evaluate, and choose healthy Laravel packages using the LaraPlugins.io MCP server.
+Encontre, avalie e escolha pacotes Laravel saudáveis usando o servidor MCP LaraPlugins.io.
 
-## When to Use
+## Quando Usar
 
-- User wants to find Laravel packages for a specific feature (e.g. "auth", "permissions", "admin panel")
-- User asks "what package should I use for..." or "is there a Laravel package for..."
-- User wants to check if a package is actively maintained
-- User needs to verify Laravel version compatibility
-- User wants to assess package health before adding to a project
+- O usuário quer encontrar pacotes Laravel para uma funcionalidade específica (ex.: "auth", "permissions", "admin panel")
+- O usuário pergunta "qual pacote devo usar para..." ou "existe um pacote Laravel para..."
+- O usuário quer verificar se um pacote está sendo mantido ativamente
+- O usuário precisa verificar a compatibilidade com a versão do Laravel
+- O usuário quer avaliar a saúde de um pacote antes de adicioná-lo ao projeto
 
-## MCP Requirement
+## Requisito MCP
 
-LaraPlugins MCP server must be configured. Add to your `~/.claude.json` mcpServers:
+O servidor MCP LaraPlugins deve estar configurado. Adicione ao `mcpServers` do seu `~/.claude.json`:
 
 ```json
 "laraplugins": {
@@ -28,64 +28,64 @@ LaraPlugins MCP server must be configured. Add to your `~/.claude.json` mcpServe
 }
 ```
 
-No API key required — the server is free for the Laravel community.
+Nenhuma chave de API é necessária — o servidor é gratuito para a comunidade Laravel.
 
-## MCP Tools
+## Ferramentas MCP
 
-The LaraPlugins MCP provides two primary tools:
+O MCP LaraPlugins fornece duas ferramentas principais:
 
 ### SearchPluginTool
 
-Search packages by keyword, health score, vendor, and version compatibility.
+Busque pacotes por palavra-chave, pontuação de saúde, vendor e compatibilidade de versão.
 
-**Parameters:**
-- `text_search` (string, optional): Keyword to search (e.g. "permission", "admin", "api")
-- `health_score` (string, optional): Filter by health band — `Healthy`, `Medium`, `Unhealthy`, or `Unrated`
-- `laravel_compatibility` (string, optional): Filter by Laravel version — `"5"`, `"6"`, `"7"`, `"8"`, `"9"`, `"10"`, `"11"`, `"12"`, `"13"`
-- `php_compatibility` (string, optional): Filter by PHP version — `"7.4"`, `"8.0"`, `"8.1"`, `"8.2"`, `"8.3"`, `"8.4"`, `"8.5"`
-- `vendor_filter` (string, optional): Filter by vendor name (e.g. "spatie", "laravel")
-- `page` (number, optional): Page number for pagination
+**Parâmetros:**
+- `text_search` (string, opcional): Palavra-chave para buscar (ex.: "permission", "admin", "api")
+- `health_score` (string, opcional): Filtrar por faixa de saúde — `Healthy`, `Medium`, `Unhealthy` ou `Unrated`
+- `laravel_compatibility` (string, opcional): Filtrar por versão do Laravel — `"5"`, `"6"`, `"7"`, `"8"`, `"9"`, `"10"`, `"11"`, `"12"`, `"13"`
+- `php_compatibility` (string, opcional): Filtrar por versão do PHP — `"7.4"`, `"8.0"`, `"8.1"`, `"8.2"`, `"8.3"`, `"8.4"`, `"8.5"`
+- `vendor_filter` (string, opcional): Filtrar por nome de vendor (ex.: "spatie", "laravel")
+- `page` (number, opcional): Número da página para paginação
 
 ### GetPluginDetailsTool
 
-Fetch detailed metrics, readme content, and version history for a specific package.
+Busque métricas detalhadas, conteúdo do readme e histórico de versões de um pacote específico.
 
-**Parameters:**
-- `package` (string, required): Full Composer package name (e.g. "spatie/laravel-permission")
-- `include_versions` (boolean, optional): Include version history in response
-
----
-
-## How It Works
-
-### Finding Packages
-
-When the user wants to discover packages for a feature:
-
-1. Use `SearchPluginTool` with relevant keywords
-2. Apply filters for health score, Laravel version, or PHP version
-3. Review the results with package names, descriptions, and health indicators
-
-### Evaluating Packages
-
-When the user wants to assess a specific package:
-
-1. Use `GetPluginDetailsTool` with the package name
-2. Review health score, last updated date, Laravel version support
-3. Check vendor reputation and risk indicators
-
-### Checking Compatibility
-
-When the user needs Laravel or PHP version compatibility:
-
-1. Search with `laravel_compatibility` filter set to their version
-2. Or get details on a specific package to see its supported versions
+**Parâmetros:**
+- `package` (string, obrigatório): Nome completo do pacote Composer (ex.: "spatie/laravel-permission")
+- `include_versions` (boolean, opcional): Inclua o histórico de versões na resposta
 
 ---
 
-## Examples
+## Como Funciona
 
-### Example: Find Authentication Packages
+### Encontrando Pacotes
+
+Quando o usuário quer descobrir pacotes para uma funcionalidade:
+
+1. Use `SearchPluginTool` com palavras-chave relevantes
+2. Aplique filtros de pontuação de saúde, versão do Laravel ou versão do PHP
+3. Revise os resultados com nomes, descrições e indicadores de saúde dos pacotes
+
+### Avaliando Pacotes
+
+Quando o usuário quer avaliar um pacote específico:
+
+1. Use `GetPluginDetailsTool` com o nome do pacote
+2. Revise a pontuação de saúde, data da última atualização e suporte a versões do Laravel
+3. Verifique a reputação do vendor e indicadores de risco
+
+### Verificando Compatibilidade
+
+Quando o usuário precisa de compatibilidade com versão do Laravel ou PHP:
+
+1. Busque com o filtro `laravel_compatibility` definido para a versão dele
+2. Ou obtenha detalhes de um pacote específico para ver suas versões suportadas
+
+---
+
+## Exemplos
+
+### Exemplo: Encontrar Pacotes de Autenticação
 
 ```
 SearchPluginTool({
@@ -94,13 +94,13 @@ SearchPluginTool({
 })
 ```
 
-Returns packages matching "authentication" with healthy status:
+Retorna pacotes que correspondem a "authentication" com status saudável:
 - spatie/laravel-permission
 - laravel/breeze
 - laravel/passport
 - etc.
 
-### Example: Find Laravel 12 Compatible Packages
+### Exemplo: Encontrar Pacotes Compatíveis com Laravel 12
 
 ```
 SearchPluginTool({
@@ -109,9 +109,9 @@ SearchPluginTool({
 })
 ```
 
-Returns packages compatible with Laravel 12.
+Retorna pacotes compatíveis com Laravel 12.
 
-### Example: Get Package Details
+### Exemplo: Obter Detalhes de um Pacote
 
 ```
 GetPluginDetailsTool({
@@ -120,14 +120,14 @@ GetPluginDetailsTool({
 })
 ```
 
-Returns:
-- Health score and last activity
-- Laravel/PHP version support
-- Vendor reputation (risk score)
-- Version history
-- Brief description
+Retorna:
+- Pontuação de saúde e última atividade
+- Suporte a versões de Laravel/PHP
+- Reputação do vendor (pontuação de risco)
+- Histórico de versões
+- Breve descrição
 
-### Example: Find Packages by Vendor
+### Exemplo: Encontrar Pacotes por Vendor
 
 ```
 SearchPluginTool({
@@ -136,39 +136,39 @@ SearchPluginTool({
 })
 ```
 
-Returns all healthy packages from vendor "spatie".
+Retorna todos os pacotes saudáveis do vendor "spatie".
 
 ---
 
-## Filtering Best Practices
+## Boas Práticas de Filtragem
 
-### By Health Score
+### Por Pontuação de Saúde
 
-| Health Band | Meaning |
+| Faixa de Saúde | Significado |
 |-------------|---------|
-| `Healthy` | Active maintenance, recent updates |
-| `Medium` | Occasional updates, may need attention |
-| `Unhealthy` | Abandoned or infrequently maintained |
-| `Unrated` | Not yet assessed |
+| `Healthy` | Manutenção ativa, atualizações recentes |
+| `Medium` | Atualizações ocasionais, pode precisar de atenção |
+| `Unhealthy` | Abandonado ou com manutenção infrequente |
+| `Unrated` | Ainda não avaliado |
 
-**Recommendation**: Prefer `Healthy` packages for production applications.
+**Recomendação**: Prefira pacotes `Healthy` para aplicações em produção.
 
-### By Laravel Version
+### Por Versão do Laravel
 
-| Version | Notes |
+| Versão | Notas |
 |---------|-------|
-| `13` | Latest Laravel |
-| `12` | Current stable |
-| `11` | Still widely used |
-| `10` | Legacy but common |
-| `5`-`9` | Deprecated |
+| `13` | Laravel mais recente |
+| `12` | Estável atual |
+| `11` | Ainda amplamente usado |
+| `10` | Legado mas comum |
+| `5`-`9` | Descontinuado |
 
-**Recommendation**: Match the target project's Laravel version.
+**Recomendação**: Combine com a versão do Laravel do projeto alvo.
 
-### Combining Filters
+### Combinando Filtros
 
 ```typescript
-// Find healthy, Laravel 12 compatible packages for permissions
+// Encontre pacotes saudáveis, compatíveis com Laravel 12 para permissões
 SearchPluginTool({
   text_search: "permission",
   health_score: "Healthy",
@@ -178,53 +178,53 @@ SearchPluginTool({
 
 ---
 
-## Response Interpretation
+## Interpretação da Resposta
 
-### Search Results
+### Resultados da Busca
 
-Each result includes:
-- Package name (e.g. `spatie/laravel-permission`)
-- Brief description
-- Health status indicator
-- Laravel version support badges
+Cada resultado inclui:
+- Nome do pacote (ex.: `spatie/laravel-permission`)
+- Breve descrição
+- Indicador de status de saúde
+- Badges de suporte a versão do Laravel
 
-### Package Details
+### Detalhes do Pacote
 
-The detailed response includes:
-- **Health Score**: Numeric or band indicator
-- **Last Activity**: When the package was last updated
-- **Laravel Support**: Version compatibility matrix
-- **PHP Support**: PHP version compatibility
-- **Risk Score**: Vendor trust indicators
-- **Version History**: Recent release timeline
+A resposta detalhada inclui:
+- **Pontuação de Saúde**: Indicador numérico ou por faixa
+- **Última Atividade**: Quando o pacote foi atualizado pela última vez
+- **Suporte Laravel**: Matriz de compatibilidade de versões
+- **Suporte PHP**: Compatibilidade com versões do PHP
+- **Pontuação de Risco**: Indicadores de confiança do vendor
+- **Histórico de Versões**: Cronograma de lançamentos recentes
 
 ---
 
-## Common Use Cases
+## Casos de Uso Comuns
 
-| Scenario | Recommended Approach |
+| Cenário | Abordagem Recomendada |
 |----------|---------------------|
-| "What package for auth?" | Search "auth" with healthy filter |
-| "Is spatie/package still maintained?" | Get details, check health score |
-| "Need Laravel 12 packages" | Search with laravel_compatibility: "12" |
-| "Find admin panel packages" | Search "admin panel", review results |
-| "Check vendor reputation" | Search by vendor, check details |
+| "Qual pacote para auth?" | Busque "auth" com filtro healthy |
+| "O spatie/pacote ainda é mantido?" | Obtenha detalhes, verifique a pontuação de saúde |
+| "Preciso de pacotes para Laravel 12" | Busque com laravel_compatibility: "12" |
+| "Encontre pacotes de admin panel" | Busque "admin panel", revise os resultados |
+| "Verifique a reputação do vendor" | Busque por vendor, verifique os detalhes |
 
 ---
 
-## Best Practices
+## Boas Práticas
 
-1. **Always filter by health** — Use `health_score: "Healthy"` for production projects
-2. **Match Laravel version** — Always check `laravel_compatibility` matches the target project
-3. **Check vendor reputation** — Prefer packages from known vendors (spatie, laravel, etc.)
-4. **Review before recommending** — Use GetPluginDetailsTool for a comprehensive assessment
-5. **No API key needed** — The MCP is free, no authentication required
+1. **Sempre filtre por saúde** — Use `health_score: "Healthy"` para projetos em produção
+2. **Combine a versão do Laravel** — Sempre verifique se `laravel_compatibility` corresponde ao projeto alvo
+3. **Verifique a reputação do vendor** — Prefira pacotes de vendors conhecidos (spatie, laravel, etc.)
+4. **Revise antes de recomendar** — Use GetPluginDetailsTool para uma avaliação abrangente
+5. **Nenhuma chave de API necessária** — O MCP é gratuito, sem autenticação necessária
 
 ---
 
-## Related Skills
+## Skills Relacionadas
 
-- `laravel-patterns` — Laravel architecture and patterns
-- `laravel-tdd` — Test-driven development for Laravel
-- `laravel-security` — Laravel security best practices
-- `documentation-lookup` — General library documentation lookup (Context7)
+- `laravel-patterns` — Arquitetura e padrões Laravel
+- `laravel-tdd` — Desenvolvimento orientado a testes para Laravel
+- `laravel-security` — Boas práticas de segurança no Laravel
+- `documentation-lookup` — Consulta geral de documentação de bibliotecas (Context7)

@@ -1,108 +1,108 @@
 ---
 name: plankton-code-quality
-description: "Write-time code quality enforcement using Plankton — auto-formatting, linting, and Claude-powered fixes on every file edit via hooks."
+description: "Aplicação de qualidade de código em tempo de escrita usando Plankton — formatação automática, linting e correções via Claude em cada edição de arquivo através de hooks."
 metadata:
   origin: community
 ---
 
-# Plankton Code Quality Skill
+# Skill de Qualidade de Código Plankton
 
-Integration reference for Plankton (credit: @alxfazio), a write-time code quality enforcement system for Claude Code. Plankton runs formatters and linters on every file edit via PostToolUse hooks, then spawns Claude subprocesses to fix violations the agent didn't catch.
+Referência de integração para o Plankton (crédito: @alxfazio), um sistema de aplicação de qualidade de código em tempo de escrita para o Claude Code. O Plankton executa formatadores e linters em cada edição de arquivo via hooks PostToolUse, em seguida gera subprocessos Claude para corrigir violações que o agent não capturou.
 
-## When to Use
+## Quando Usar
 
-- You want automatic formatting and linting on every file edit (not just at commit time)
-- You need defense against agents modifying linter configs to pass instead of fixing code
-- You want tiered model routing for fixes (Haiku for simple style, Sonnet for logic, Opus for types)
-- You work with multiple languages (Python, TypeScript, Shell, YAML, JSON, TOML, Markdown, Dockerfile)
+- Você quer formatação e linting automáticos em cada edição de arquivo (não apenas no momento do commit)
+- Você precisa de defesa contra agents que modificam configurações do linter para passar em vez de corrigir o código
+- Você quer roteamento de modelo em camadas para correções (Haiku para estilo simples, Sonnet para lógica, Opus para tipos)
+- Você trabalha com múltiplas linguagens (Python, TypeScript, Shell, YAML, JSON, TOML, Markdown, Dockerfile)
 
-## How It Works
+## Como Funciona
 
-### Three-Phase Architecture
+### Arquitetura em Três Fases
 
-Every time Claude Code edits or writes a file, Plankton's `multi_linter.sh` PostToolUse hook runs:
+Toda vez que o Claude Code edita ou escreve um arquivo, o hook PostToolUse `multi_linter.sh` do Plankton é executado:
 
 ```
-Phase 1: Auto-Format (Silent)
-├─ Runs formatters (ruff format, biome, shfmt, taplo, markdownlint)
-├─ Fixes 40-50% of issues silently
-└─ No output to main agent
+Fase 1: Auto-Formatação (Silenciosa)
+├─ Executa formatadores (ruff format, biome, shfmt, taplo, markdownlint)
+├─ Corrige 40-50% dos problemas silenciosamente
+└─ Sem saída para o agent principal
 
-Phase 2: Collect Violations (JSON)
-├─ Runs linters and collects unfixable violations
-├─ Returns structured JSON: {line, column, code, message, linter}
-└─ Still no output to main agent
+Fase 2: Coletar Violações (JSON)
+├─ Executa linters e coleta violações não corrigíveis
+├─ Retorna JSON estruturado: {line, column, code, message, linter}
+└─ Ainda sem saída para o agent principal
 
-Phase 3: Delegate + Verify
-├─ Spawns claude -p subprocess with violations JSON
-├─ Routes to model tier based on violation complexity:
-│   ├─ Haiku: formatting, imports, style (E/W/F codes) — 120s timeout
-│   ├─ Sonnet: complexity, refactoring (C901, PLR codes) — 300s timeout
-│   └─ Opus: type system, deep reasoning (unresolved-attribute) — 600s timeout
-├─ Re-runs Phase 1+2 to verify fixes
-└─ Exit 0 if clean, Exit 2 if violations remain (reported to main agent)
+Fase 3: Delegar + Verificar
+├─ Gera subprocesso claude -p com JSON de violações
+├─ Roteia para camada de modelo com base na complexidade da violação:
+│   ├─ Haiku: formatação, imports, estilo (códigos E/W/F) — timeout 120s
+│   ├─ Sonnet: complexidade, refatoração (códigos C901, PLR) — timeout 300s
+│   └─ Opus: sistema de tipos, raciocínio profundo (unresolved-attribute) — timeout 600s
+├─ Re-executa Fases 1+2 para verificar as correções
+└─ Exit 0 se limpo, Exit 2 se violações permanecerem (reportado ao agent principal)
 ```
 
-### What the Main Agent Sees
+### O que o Agent Principal Vê
 
-| Scenario | Agent sees | Hook exit |
+| Cenário | Agent vê | Exit do hook |
 |----------|-----------|-----------|
-| No violations | Nothing | 0 |
-| All fixed by subprocess | Nothing | 0 |
-| Violations remain after subprocess | `[hook] N violation(s) remain` | 2 |
-| Advisory (duplicates, old tooling) | `[hook:advisory] ...` | 0 |
+| Sem violações | Nada | 0 |
+| Tudo corrigido pelo subprocesso | Nada | 0 |
+| Violações permanecem após o subprocesso | `[hook] N violation(s) remain` | 2 |
+| Aviso (duplicatas, ferramentas antigas) | `[hook:advisory] ...` | 0 |
 
-The main agent only sees issues the subprocess couldn't fix. Most quality problems are resolved transparently.
+O agent principal só vê problemas que o subprocesso não conseguiu corrigir. A maioria dos problemas de qualidade é resolvida de forma transparente.
 
-### Config Protection (Defense Against Rule-Gaming)
+### Proteção de Configuração (Defesa Contra Manipulação de Regras)
 
-LLMs will modify `.ruff.toml` or `biome.json` to disable rules rather than fix code. Plankton blocks this with three layers:
+LLMs modificarão `.ruff.toml` ou `biome.json` para desabilitar regras em vez de corrigir o código. O Plankton bloqueia isso com três camadas:
 
-1. **PreToolUse hook** — `protect_linter_configs.sh` blocks edits to all linter configs before they happen
-2. **Stop hook** — `stop_config_guardian.sh` detects config changes via `git diff` at session end
-3. **Protected files list** — `.ruff.toml`, `biome.json`, `.shellcheckrc`, `.yamllint`, `.hadolint.yaml`, and more
+1. **Hook PreToolUse** — `protect_linter_configs.sh` bloqueia edições em todas as configurações de linter antes que aconteçam
+2. **Hook Stop** — `stop_config_guardian.sh` detecta alterações de configuração via `git diff` no final da sessão
+3. **Lista de arquivos protegidos** — `.ruff.toml`, `biome.json`, `.shellcheckrc`, `.yamllint`, `.hadolint.yaml`, e outros
 
-### Package Manager Enforcement
+### Aplicação do Gerenciador de Pacotes
 
-A PreToolUse hook on Bash blocks legacy package managers:
-- `pip`, `pip3`, `poetry`, `pipenv` → Blocked (use `uv`)
-- `npm`, `yarn`, `pnpm` → Blocked (use `bun`)
-- Allowed exceptions: `npm audit`, `npm view`, `npm publish`
+Um hook PreToolUse em Bash bloqueia gerenciadores de pacotes legados:
+- `pip`, `pip3`, `poetry`, `pipenv` → Bloqueados (use `uv`)
+- `npm`, `yarn`, `pnpm` → Bloqueados (use `bun`)
+- Exceções permitidas: `npm audit`, `npm view`, `npm publish`
 
-## Setup
+## Configuração
 
-### Quick Start
+### Início Rápido
 
-> **Note:** Plankton requires manual installation from its repository. Review the code before installing.
+> **Nota:** O Plankton requer instalação manual a partir do seu repositório. Revise o código antes de instalar.
 
 ```bash
-# Install core dependencies
+# Instalar dependências principais
 brew install jaq ruff uv
 
-# Install Python linters
+# Instalar linters Python
 uv sync --all-extras
 
-# Start Claude Code — hooks activate automatically
+# Iniciar o Claude Code — os hooks são ativados automaticamente
 claude
 ```
 
-No install command, no plugin config. The hooks in `.claude/settings.json` are picked up automatically when you run Claude Code in the Plankton directory.
+Sem comando de instalação, sem configuração de plugin. Os hooks em `.claude/settings.json` são capturados automaticamente quando você executa o Claude Code no diretório do Plankton.
 
-### Per-Project Integration
+### Integração por Projeto
 
-To use Plankton hooks in your own project:
+Para usar os hooks do Plankton em seu próprio projeto:
 
-1. Copy `.claude/hooks/` directory to your project
-2. Copy `.claude/settings.json` hook configuration
-3. Copy linter config files (`.ruff.toml`, `biome.json`, etc.)
-4. Install the linters for your languages
+1. Copie o diretório `.claude/hooks/` para o seu projeto
+2. Copie a configuração de hooks `.claude/settings.json`
+3. Copie os arquivos de configuração do linter (`.ruff.toml`, `biome.json`, etc.)
+4. Instale os linters para as suas linguagens
 
-### Language-Specific Dependencies
+### Dependências Específicas por Linguagem
 
-| Language | Required | Optional |
+| Linguagem | Obrigatório | Opcional |
 |----------|----------|----------|
-| Python | `ruff`, `uv` | `ty` (types), `vulture` (dead code), `bandit` (security) |
-| TypeScript/JS | `biome` | `oxlint`, `semgrep`, `knip` (dead exports) |
+| Python | `ruff`, `uv` | `ty` (tipos), `vulture` (código morto), `bandit` (segurança) |
+| TypeScript/JS | `biome` | `oxlint`, `semgrep`, `knip` (exports mortos) |
 | Shell | `shellcheck`, `shfmt` | — |
 | YAML | `yamllint` | — |
 | Markdown | `markdownlint-cli2` | — |
@@ -110,36 +110,36 @@ To use Plankton hooks in your own project:
 | TOML | `taplo` | — |
 | JSON | `jaq` | — |
 
-## Pairing with ECC
+## Combinação com ECC
 
-### Complementary, Not Overlapping
+### Complementar, Não Sobreposto
 
-| Concern | ECC | Plankton |
+| Preocupação | ECC | Plankton |
 |---------|-----|----------|
-| Code quality enforcement | PostToolUse hooks (Prettier, tsc) | PostToolUse hooks (20+ linters + subprocess fixes) |
-| Security scanning | AgentShield, security-reviewer agent | Bandit (Python), Semgrep (TypeScript) |
-| Config protection | — | PreToolUse blocks + Stop hook detection |
-| Package manager | Detection + setup | Enforcement (blocks legacy PMs) |
-| CI integration | — | Pre-commit hooks for git |
-| Model routing | Manual (`/model opus`) | Automatic (violation complexity → tier) |
+| Aplicação de qualidade de código | Hooks PostToolUse (Prettier, tsc) | Hooks PostToolUse (20+ linters + correções por subprocesso) |
+| Varredura de segurança | AgentShield, agent security-reviewer | Bandit (Python), Semgrep (TypeScript) |
+| Proteção de configuração | — | Bloqueios PreToolUse + detecção por hook Stop |
+| Gerenciador de pacotes | Detecção + configuração | Aplicação (bloqueia gerenciadores legados) |
+| Integração CI | — | Hooks de pre-commit para git |
+| Roteamento de modelo | Manual (`/model opus`) | Automático (complexidade da violação → camada) |
 
-### Recommended Combination
+### Combinação Recomendada
 
-1. Install ECC as your plugin (agents, skills, commands, rules)
-2. Add Plankton hooks for write-time quality enforcement
-3. Use AgentShield for security audits
-4. Use ECC's verification-loop as a final gate before PRs
+1. Instale o ECC como seu plugin (agents, skills, commands, rules)
+2. Adicione os hooks do Plankton para aplicação de qualidade em tempo de escrita
+3. Use o AgentShield para auditorias de segurança
+4. Use o loop de verificação do ECC como portão final antes de PRs
 
-### Avoiding Hook Conflicts
+### Evitando Conflitos de Hook
 
-If running both ECC and Plankton hooks:
-- ECC's Prettier hook and Plankton's biome formatter may conflict on JS/TS files
-- Resolution: disable ECC's Prettier PostToolUse hook when using Plankton (Plankton's biome is more comprehensive)
-- Both can coexist on different file types (ECC handles what Plankton doesn't cover)
+Se estiver executando tanto os hooks do ECC quanto os do Plankton:
+- O hook Prettier do ECC e o formatador biome do Plankton podem conflitar em arquivos JS/TS
+- Resolução: desabilite o hook PostToolUse do Prettier do ECC ao usar o Plankton (o biome do Plankton é mais abrangente)
+- Ambos podem coexistir em diferentes tipos de arquivo (o ECC cuida do que o Plankton não cobre)
 
-## Configuration Reference
+## Referência de Configuração
 
-Plankton's `.claude/hooks/config.json` controls all behavior:
+O `.claude/hooks/config.json` do Plankton controla todo o comportamento:
 
 ```json
 {
@@ -173,31 +173,31 @@ Plankton's `.claude/hooks/config.json` controls all behavior:
 }
 ```
 
-**Key settings:**
-- Disable languages you don't use to speed up hooks
-- `volume_threshold` — violations > this count auto-escalate to a higher model tier
-- `subprocess_delegation: false` — skip Phase 3 entirely (just report violations)
+**Configurações chave:**
+- Desabilite linguagens que você não usa para acelerar os hooks
+- `volume_threshold` — violações acima desta contagem escalam automaticamente para uma camada de modelo superior
+- `subprocess_delegation: false` — ignora a Fase 3 completamente (apenas reporta violações)
 
-## Environment Overrides
+## Substituições de Ambiente
 
-| Variable | Purpose |
+| Variável | Finalidade |
 |----------|---------|
-| `HOOK_SKIP_SUBPROCESS=1` | Skip Phase 3, report violations directly |
-| `HOOK_SUBPROCESS_TIMEOUT=N` | Override tier timeout |
-| `HOOK_DEBUG_MODEL=1` | Log model selection decisions |
-| `HOOK_SKIP_PM=1` | Bypass package manager enforcement |
+| `HOOK_SKIP_SUBPROCESS=1` | Ignorar Fase 3, reportar violações diretamente |
+| `HOOK_SUBPROCESS_TIMEOUT=N` | Substituir timeout da camada |
+| `HOOK_DEBUG_MODEL=1` | Registrar decisões de seleção de modelo |
+| `HOOK_SKIP_PM=1` | Ignorar aplicação do gerenciador de pacotes |
 
-## References
+## Referências
 
-- Plankton (credit: @alxfazio)
-- Plankton REFERENCE.md — Full architecture documentation (credit: @alxfazio)
-- Plankton SETUP.md — Detailed installation guide (credit: @alxfazio)
+- Plankton (crédito: @alxfazio)
+- Plankton REFERENCE.md — Documentação completa da arquitetura (crédito: @alxfazio)
+- Plankton SETUP.md — Guia de instalação detalhado (crédito: @alxfazio)
 
-## ECC v1.8 Additions
+## Adições do ECC v1.8
 
-### Copyable Hook Profile
+### Perfil de Hook Copiável
 
-Set strict quality behavior:
+Definir comportamento de qualidade rigoroso:
 
 ```bash
 export ECC_HOOK_PROFILE=strict
@@ -205,33 +205,33 @@ export ECC_QUALITY_GATE_FIX=true
 export ECC_QUALITY_GATE_STRICT=true
 ```
 
-### Language Gate Table
+### Tabela de Portão de Linguagem
 
-- TypeScript/JavaScript: Biome preferred, Prettier fallback
+- TypeScript/JavaScript: Biome preferido, Prettier como fallback
 - Python: Ruff format/check
 - Go: gofmt
 
-### Config Tamper Guard
+### Guarda de Adulteração de Configuração
 
-During quality enforcement, flag changes to config files in same iteration:
+Durante a aplicação de qualidade, sinalize alterações nos arquivos de configuração na mesma iteração:
 
 - `biome.json`, `.eslintrc*`, `prettier.config*`, `tsconfig.json`, `pyproject.toml`
 
-If config is changed to suppress violations, require explicit review before merge.
+Se a configuração for alterada para suprimir violações, exija revisão explícita antes do merge.
 
-### CI Integration Pattern
+### Padrão de Integração CI
 
-Use the same commands in CI as local hooks:
+Use os mesmos comandos no CI que nos hooks locais:
 
-1. run formatter checks
-2. run lint/type checks
-3. fail fast on strict mode
-4. publish remediation summary
+1. executar verificações do formatador
+2. executar verificações de lint/tipo
+3. falhar rapidamente no modo strict
+4. publicar resumo de remediação
 
-### Health Metrics
+### Métricas de Saúde
 
-Track:
-- edits flagged by gates
-- average remediation time
-- repeat violations by category
-- merge blocks due to gate failures
+Acompanhe:
+- edições sinalizadas pelos portões
+- tempo médio de remediação
+- violações repetidas por categoria
+- bloqueios de merge por falhas de portão

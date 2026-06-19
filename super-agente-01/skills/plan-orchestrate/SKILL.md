@@ -1,124 +1,124 @@
 ---
 name: plan-orchestrate
-description: Read a plan document, decompose it into steps, design a per-step agent chain from the ECC catalogue, and emit ready-to-paste /orchestrate custom prompts. Generative only — never invokes /orchestrate itself. Use when the user has a multi-step plan and wants to drive it through orchestrate without composing chains by hand.
+description: Lê um documento de plano, decompõe em etapas, projeta uma cadeia de agents por etapa a partir do catálogo ECC e emite prompts prontos para colar no /orchestrate custom. Apenas generativo — nunca invoca /orchestrate por conta própria. Use quando o usuário tem um plano de múltiplas etapas e quer executá-lo via orchestrate sem compor cadeias manualmente.
 metadata:
   origin: ECC
 ---
 
 # Plan Orchestrate
 
-Bridge a plan document to `/orchestrate custom` by emitting one ready-to-paste invocation per step. The skill is generative only — it never executes `/orchestrate`. The user pastes each line when ready.
+Faz a ponte entre um documento de plano e `/orchestrate custom` emitindo uma invocação pronta para colar por etapa. A skill é apenas generativa — ela nunca executa `/orchestrate`. O usuário cola cada linha quando estiver pronto.
 
-## When to Activate
+## Quando Ativar
 
-- User has a multi-step plan document (PRD, RFC, implementation plan) and wants to drive it through `/orchestrate`.
-- User says "orchestrate this plan", "give me orchestrate prompts for each step", "compose chains for this plan".
-- A step-by-step plan exists but the user does not want to manually pick agents per step.
+- O usuário tem um documento de plano de múltiplas etapas (PRD, RFC, plano de implementação) e quer executá-lo via `/orchestrate`.
+- O usuário diz "orchestrate este plano", "me dê prompts de orchestrate para cada etapa", "componha cadeias para este plano".
+- Existe um plano passo a passo, mas o usuário não quer escolher agents manualmente por etapa.
 
-Skip when:
-- The work is one ad-hoc step → call `/orchestrate custom` directly.
-- The plan is unreadable or empty. Lack of explicit numbering alone is not a skip condition — see the "No clear steps" edge case below.
+Pular quando:
+- O trabalho é uma única etapa ad hoc → chame `/orchestrate custom` diretamente.
+- O plano é ilegível ou vazio. A falta de numeração explícita sozinha não é condição de pulo — veja o caso extremo "Sem etapas claras" abaixo.
 
-## Inputs
+## Entradas
 
 ```
 <plan-doc-path> [--lang=python|typescript|go|rust|cpp|java|kotlin|flutter|auto] [--scope=all|step:<n>|range:<a>-<b>] [--dry-run]
 ```
 
-- `<plan-doc-path>` — required; relative or absolute path (`@docs/...` accepted).
-- `--lang` — reviewer language variant; defaults to `auto` (detected from project).
-- `--scope` — limits emitted steps; defaults to `all`.
-- `--dry-run` — print decomposition + chain rationale only; do not emit final prompts.
+- `<plan-doc-path>` — obrigatório; caminho relativo ou absoluto (`@docs/...` aceito).
+- `--lang` — variante de linguagem do revisor; padrão é `auto` (detectado do projeto).
+- `--scope` — limita as etapas emitidas; padrão é `all`.
+- `--dry-run` — imprime apenas decomposição + rationale da cadeia; não emite prompts finais.
 
-## Authoritative `/orchestrate` shape (do not deviate)
+## Formato autoritativo do `/orchestrate` (não desvie)
 
 ```
-{ORCH_CMD} custom "<agent1>,<agent2>,...,<agentN>" "<task description>"
+{ORCH_CMD} custom "<agent1>,<agent2>,...,<agentN>" "<descrição da tarefa>"
 ```
 
-Where `{ORCH_CMD}` is determined in Phase 0 (see below). The command string in the emitted output **always uses one concrete form** — never both, never a placeholder.
+Onde `{ORCH_CMD}` é determinado na Fase 0 (veja abaixo). A string de comando na saída emitida **sempre usa uma forma concreta** — nunca ambas, nunca um placeholder.
 
-- `custom` is a sequential chain; each agent's HANDOFF feeds the next.
-- Comma-separated agent list. No spaces preferred; one space tolerated.
-- No `--mode` / `--gate` / `--agents=...` flags exist — never invent them.
-- Agent names come from the catalogue in this skill. Embedded double quotes in the task description are escaped as `\"`.
+- `custom` é uma cadeia sequencial; o HANDOFF de cada agent alimenta o próximo.
+- Lista de agents separada por vírgulas. Sem espaços preferido; um espaço tolerado.
+- Não existem flags `--mode` / `--gate` / `--agents=...` — nunca os invente.
+- Os nomes dos agents vêm do catálogo nesta skill. Aspas duplas embutidas na descrição da tarefa são escapadas como `\"`.
 
-## ECC install form and namespacing
+## Forma de instalação do ECC e namespacing
 
-Two install forms determine the prefix on **both** the slash command and every agent name. The two MUST stay in sync — one form per output, never mixed:
+Duas formas de instalação determinam o prefixo no **comando slash e em cada nome de agent**. As duas DEVEM permanecer em sincronia — uma forma por saída, nunca misturadas:
 
-Let `<claude-home>` denote the Claude Code home directory: `~/.claude` on macOS/Linux, `%USERPROFILE%\.claude` on Windows. Resolve it the way the host platform resolves the user home directory (do not hardcode `~`).
+Seja `<claude-home>` o diretório home do Claude Code: `~/.claude` no macOS/Linux, `%USERPROFILE%\.claude` no Windows. Resolva-o da forma como a plataforma host resolve o diretório home do usuário (não codifique `~` diretamente).
 
-| Form | Detection | `{ORCH_CMD}` | Agent name format |
+| Forma | Detecção | `{ORCH_CMD}` | Formato do nome do agent |
 |---|---|---|---|
-| Plugin install (1.9.0+) | `<claude-home>/plugins/marketplaces/everything-claude-code/` exists | `/everything-claude-code:orchestrate` | `everything-claude-code:<name>` |
-| Legacy bare install | Above absent; agent files under `<claude-home>/agents/` | `/orchestrate` | `<name>` |
+| Instalação Plugin (1.9.0+) | `<claude-home>/plugins/marketplaces/everything-claude-code/` existe | `/everything-claude-code:orchestrate` | `everything-claude-code:<name>` |
+| Instalação bare legada | Acima ausente; arquivos de agent em `<claude-home>/agents/` | `/orchestrate` | `<name>` |
 
-Why this matters: under the plugin install, agents register as `everything-claude-code:tdd-guide`. Bare names force fuzzy matching, which fails intermittently under parallel calls. Under legacy, the prefixed forms are not registered and fail outright.
+Por que isso importa: na instalação plugin, os agents se registram como `everything-claude-code:tdd-guide`. Nomes bare forçam correspondência fuzzy, que falha intermitentemente em chamadas paralelas. Na instalação legada, as formas prefixadas não estão registradas e falham completamente.
 
-## Available agent catalogue (must pick from these)
+## Catálogo de agents disponíveis (deve escolher destes)
 
-General:
-- `planner` — requirement restatement, risk decomposition, step planning
-- `architect` — architecture, system design, refactor proposals
-- `tdd-guide` — write tests → implement → 80%+ coverage
-- `code-reviewer` — generic code review
-- `security-reviewer` — security audit, OWASP, secret leakage
-- `refactor-cleaner` — dead code, duplicates, knip-class cleanup
-- `doc-updater` — documentation, codemap, README
-- `docs-lookup` — third-party library API lookups (Context7)
-- `e2e-runner` — end-to-end test orchestration
-- `database-reviewer` — PostgreSQL schema, migration, performance
-- `harness-optimizer` — local agent harness configuration
-- `loop-operator` — long-running autonomous loops
-- `chief-of-staff` — multi-channel triage (rarely a fit for plan steps)
+Gerais:
+- `planner` — reformulação de requisito, decomposição de risco, planejamento de etapas
+- `architect` — arquitetura, design de sistema, propostas de refatoração
+- `tdd-guide` — escrever testes → implementar → cobertura 80%+
+- `code-reviewer` — revisão de código genérica
+- `security-reviewer` — auditoria de segurança, OWASP, vazamento de segredos
+- `refactor-cleaner` — código morto, duplicatas, limpeza de classe knip
+- `doc-updater` — documentação, codemap, README
+- `docs-lookup` — consultas de API de bibliotecas de terceiros (Context7)
+- `e2e-runner` — orquestração de testes end-to-end
+- `database-reviewer` — schema PostgreSQL, migração, performance
+- `harness-optimizer` — configuração do harness de agent local
+- `loop-operator` — loops autônomos de longa duração
+- `chief-of-staff` — triagem multicanal (raramente adequado para etapas de plano)
 
-Build error resolvers:
-- `build-error-resolver` (generic) / `cpp-build-resolver` / `go-build-resolver` / `java-build-resolver` / `kotlin-build-resolver` / `rust-build-resolver` / `pytorch-build-resolver`
+Resolvedores de erros de build:
+- `build-error-resolver` (genérico) / `cpp-build-resolver` / `go-build-resolver` / `java-build-resolver` / `kotlin-build-resolver` / `rust-build-resolver` / `pytorch-build-resolver`
 
-Code reviewers:
+Revisores de código:
 - `python-reviewer` / `typescript-reviewer` / `go-reviewer` / `rust-reviewer` / `cpp-reviewer` / `java-reviewer` / `kotlin-reviewer` / `flutter-reviewer`
 
-A misspelled agent name fails `/orchestrate`. Cross-check against this list before emitting.
+Um nome de agent com erro de ortografia falha no `/orchestrate`. Verifique contra esta lista antes de emitir.
 
-## How It Works
+## Como Funciona
 
-### Phase 0 — Detect ECC mode + language
+### Fase 0 — Detectar modo ECC + linguagem
 
-1. Read `<plan-doc-path>`. If missing or empty, report and stop.
-2. Detect ECC install form once and freeze it into `ECC_MODE`. Algorithm (run in order, stop at the first match):
-   1. If `<claude-home>/plugins/marketplaces/everything-claude-code/` exists → `ECC_MODE=plugin`.
-   2. Else if `<claude-home>/agents/` exists and contains at least one ECC agent file (e.g. `tdd-guide.md`, `code-reviewer.md`) → `ECC_MODE=legacy`.
-   3. Else → default to `ECC_MODE=legacy` and emit a one-line warning at the top of the output: `> Warning: could not detect ECC install; defaulting to legacy form. If you use the plugin install, edit the prefixes manually.`
-   4. If both markers exist (mixed install), `plugin` wins — the plugin namespace is the only one that resolves agent names without fuzzy matching.
+1. Leia `<plan-doc-path>`. Se estiver faltando ou vazio, reporte e pare.
+2. Detecte a forma de instalação do ECC uma vez e congele-a em `ECC_MODE`. Algoritmo (execute em ordem, pare no primeiro match):
+   1. Se `<claude-home>/plugins/marketplaces/everything-claude-code/` existir → `ECC_MODE=plugin`.
+   2. Senão se `<claude-home>/agents/` existir e contiver pelo menos um arquivo de agent ECC (ex.: `tdd-guide.md`, `code-reviewer.md`) → `ECC_MODE=legacy`.
+   3. Senão → padrão para `ECC_MODE=legacy` e emita um aviso de uma linha no topo da saída: `> Warning: could not detect ECC install; defaulting to legacy form. If you use the plugin install, edit the prefixes manually.`
+   4. Se ambos os marcadores existirem (instalação mista), `plugin` vence — o namespace do plugin é o único que resolve nomes de agents sem correspondência fuzzy.
 
-   From this point on, every emitted line uses the matching prefix on **both** the slash command and every agent name. **Never emit both forms in the same output.**
-3. Resolve `--lang`. When `auto`, run a polyglot-aware detection:
-   - Probe markers: `pyproject.toml` / `uv.lock` / `requirements.txt` → python; `package.json` → typescript; `go.mod` → go; `Cargo.toml` → rust; `CMakeLists.txt` or top-level `*.cpp` → cpp; `pom.xml` / `build.gradle` (Java) → java; `build.gradle.kts` or top-level Kotlin → kotlin; `pubspec.yaml` → flutter.
-   - **Polyglot tie-break**: if more than one marker matches, pick the language whose source files outnumber the others (count via `git ls-files`, excluding `vendor/`, `node_modules/`, `dist/`, `build/`, `.venv/`, generated files, and obvious test fixtures). On a tie or when no language exceeds 60% of source files, set `lang=unknown`.
-   - No marker matched → set `lang=unknown`.
-   - `lang=unknown` is a sentinel — it is **not** an agent name. Phase 2 rules 4 and 5 turn it into `code-reviewer` / `build-error-resolver` at chain composition time.
-4. Detect a **PyTorch sub-profile**: when `lang=python` and any of `pyproject.toml` / `requirements.txt` / `uv.lock` declares a dependency on `torch`, set `pytorch=true`. This only affects `build` chain selection (Phase 2 rule below); the reviewer remains `python-reviewer`.
-5. **Normalize any agent names declared in the plan**: if the plan text references agents by their plugin-prefixed form (e.g. `everything-claude-code:tdd-guide`), strip the prefix to get the bare catalogue name before validating or composing chains. Re-prefixing happens only at output time per `ECC_MODE` (Phase 4). Never let a pre-prefixed name flow into chain composition — it would double-prefix in plugin mode.
+   A partir deste ponto, cada linha emitida usa o prefixo correspondente no **comando slash e em cada nome de agent**. **Nunca emita ambas as formas na mesma saída.**
+3. Resolva `--lang`. Quando `auto`, execute detecção ciente de múltiplas linguagens:
+   - Marcadores de sondagem: `pyproject.toml` / `uv.lock` / `requirements.txt` → python; `package.json` → typescript; `go.mod` → go; `Cargo.toml` → rust; `CMakeLists.txt` ou `*.cpp` de nível superior → cpp; `pom.xml` / `build.gradle` (Java) → java; `build.gradle.kts` ou Kotlin de nível superior → kotlin; `pubspec.yaml` → flutter.
+   - **Desempate poliglota**: se mais de um marcador corresponder, escolha a linguagem cujos arquivos fonte superem em número os demais (conte via `git ls-files`, excluindo `vendor/`, `node_modules/`, `dist/`, `build/`, `.venv/`, arquivos gerados e fixtures de teste óbvios). Em empate ou quando nenhuma linguagem supera 60% dos arquivos fonte, defina `lang=unknown`.
+   - Nenhum marcador encontrado → defina `lang=unknown`.
+   - `lang=unknown` é um sentinela — **não** é um nome de agent. As regras 4 e 5 da Fase 2 o transformam em `code-reviewer` / `build-error-resolver` no momento de composição da cadeia.
+4. Detecte um **sub-perfil PyTorch**: quando `lang=python` e qualquer um de `pyproject.toml` / `requirements.txt` / `uv.lock` declarar uma dependência em `torch`, defina `pytorch=true`. Isso afeta apenas a seleção de cadeia `build` (regra da Fase 2 abaixo); o revisor permanece `python-reviewer`.
+5. **Normalize quaisquer nomes de agents declarados no plano**: se o texto do plano referencia agents pela forma prefixada de plugin (ex.: `everything-claude-code:tdd-guide`), remova o prefixo para obter o nome bare do catálogo antes de validar ou compor cadeias. O re-prefixo acontece apenas no momento de saída per `ECC_MODE` (Fase 4). Nunca deixe um nome pré-prefixado fluir para a composição da cadeia — ele ficaria com prefixo duplo no modo plugin.
 
-### Phase 1 — Decompose steps
+### Fase 1 — Decompor etapas
 
-Identify "step units" in priority order:
+Identifique "unidades de etapa" em ordem de prioridade:
 
-1. Explicit numbering: `## Step N` / `### Phase N` / `## N. ...` / top-level ordered list.
-2. A "Step" column in a table.
-3. `---`-separated blocks with verb-led headings.
-4. Otherwise treat each H2 as one step.
+1. Numeração explícita: `## Step N` / `### Phase N` / `## N. ...` / lista ordenada de nível superior.
+2. Uma coluna "Step" em uma tabela.
+3. Blocos separados por `---` com cabeçalhos iniciados por verbo.
+4. Caso contrário, trate cada H2 como uma etapa.
 
-Per step extract `id` (1-based), `title` (≤ 80 chars), `intent` (1–3 sentences), `tags`.
+Por etapa extraia `id` (base 1), `title` (≤ 80 chars), `intent` (1–3 frases), `tags`.
 
-### Phase 2 — Tag and pick chain
+### Fase 2 — Rotular e escolher cadeia
 
-Tag by intent (multi-tag allowed; chain built from primary + stacked secondaries):
+Rotule por intenção (multi-rótulo permitido; cadeia construída do primário + secundários empilhados):
 
-Trigger words below are matched case-insensitively. Multilingual plans are supported by matching the word stems in any language as long as the meaning aligns with the listed English trigger words.
+As palavras-gatilho abaixo são correspondidas sem distinção de maiúsculas/minúsculas. Planos multilíngues são suportados combinando os radicais das palavras em qualquer idioma, desde que o significado se alinhe com as palavras-gatilho inglesas listadas.
 
-| Tag | Trigger words | Default chain |
+| Rótulo | Palavras-gatilho | Cadeia padrão |
 |---|---|---|
 | `design` | architecture, design, choose, evaluate, RFC | `planner,architect` |
 | `plan` | plan, breakdown, milestone | `planner` |
@@ -128,136 +128,136 @@ Trigger words below are matched case-insensitively. Multilingual plans are suppo
 | `migration` | migrate, upgrade, rewrite, port | `architect,tdd-guide,<lang>-reviewer` |
 | `db` | schema, migration, index, SQL, Postgres, alembic, sqlmodel | `database-reviewer,<lang>-reviewer` |
 | `security` | encrypt, auth, secret, OWASP, PII | `security-reviewer,<lang>-reviewer` |
-| `build` | build, compile, lint failure, CI | `<lang>-build-resolver` (falls back to `build-error-resolver`) |
+| `build` | build, compile, lint failure, CI | `<lang>-build-resolver` (cai de volta para `build-error-resolver`) |
 | `docs` | docs, readme, codemap, changelog | `doc-updater` |
 | `lookup` | lookup, reference, API usage | `docs-lookup` |
 | `review` | review, audit, verify | `<lang>-reviewer,code-reviewer` |
 | `loop` | loop, autonomous, watchdog | `loop-operator` |
 
-Chain composition rules:
-1. **Primary tag selection**: when a step matches multiple tags, the **first one in table order** (top of the table = highest priority) is the primary; the rest are secondaries. Composition rules 2 and 3 below handle specific multi-tag combinations explicitly; otherwise, append secondary chains in tag table order.
+Regras de composição de cadeia:
+1. **Seleção de rótulo primário**: quando uma etapa corresponde a múltiplos rótulos, o **primeiro na ordem da tabela** (topo da tabela = maior prioridade) é o primário; os demais são secundários. As regras de composição 2 e 3 abaixo tratam combinações multi-rótulo específicas explicitamente; caso contrário, acrescente cadeias secundárias na ordem da tabela de rótulos.
 2. `impl` + `security` → `tdd-guide,<lang>-reviewer,security-reviewer`.
 3. `impl` + `db` → `tdd-guide,database-reviewer,<lang>-reviewer`.
-4. **Deduplicate** the resulting chain (preserve first occurrence). E.g. `review` + `lang=unknown` would yield `code-reviewer,code-reviewer` after rule 5; deduplication collapses it to `code-reviewer`.
-5. `<lang>-reviewer` resolves to `code-reviewer` when `lang=unknown`.
-6. `<lang>-build-resolver` resolves to `build-error-resolver` when `lang=unknown`. **Special case**: if Phase 0 set `pytorch=true`, use `pytorch-build-resolver` for `build` chains regardless of `<lang>`. There is no `python-build-resolver`; `--lang=python` without `pytorch=true` resolves to `build-error-resolver`.
-7. **Zero-tag steps**: if no trigger word matches, set chain to `code-reviewer` and write `no tag matched; default review-only chain` under "Chain rationale".
-8. Chain length ≤ 4 after deduplication. If exceeded, drop weakest tag (`lookup` and `docs` first).
-9. Do not pair `planner` and `architect` in an `impl` chain (token waste). Pair them only on `design` steps.
-10. Steps tagged `impl`, `refactor`, or `migration` end with a **reviewer-class** agent — any of `<lang>-reviewer`, `code-reviewer`, `security-reviewer`, or `database-reviewer`. The most domain-specific reviewer wins the tail position (e.g. rule 2's `impl+security` ends with `security-reviewer`; rule 3's `impl+db` ends with `<lang>-reviewer` because `database-reviewer` already gates the migration earlier in the chain). `test` and `build` steps are gated by their own validators (`e2e-runner` and the build resolver respectively) and do not require an additional reviewer.
+4. **Deduplique** a cadeia resultante (preserve a primeira ocorrência). Ex.: `review` + `lang=unknown` renderia `code-reviewer,code-reviewer` após a regra 5; a deduplicação colapsa para `code-reviewer`.
+5. `<lang>-reviewer` resolve para `code-reviewer` quando `lang=unknown`.
+6. `<lang>-build-resolver` resolve para `build-error-resolver` quando `lang=unknown`. **Caso especial**: se a Fase 0 definiu `pytorch=true`, use `pytorch-build-resolver` para cadeias `build` independentemente de `<lang>`. Não existe `python-build-resolver`; `--lang=python` sem `pytorch=true` resolve para `build-error-resolver`.
+7. **Etapas sem rótulo**: se nenhuma palavra-gatilho corresponder, defina a cadeia como `code-reviewer` e escreva `no tag matched; default review-only chain` sob "Rationale da cadeia".
+8. Comprimento da cadeia ≤ 4 após deduplicação. Se excedido, remova o rótulo mais fraco (`lookup` e `docs` primeiro).
+9. Não emparelhe `planner` e `architect` em uma cadeia `impl` (desperdício de tokens). Emparelhe-os apenas em etapas `design`.
+10. Etapas rotuladas `impl`, `refactor` ou `migration` terminam com um agent da **classe revisora** — qualquer um de `<lang>-reviewer`, `code-reviewer`, `security-reviewer` ou `database-reviewer`. O revisor mais específico do domínio vence a posição final (ex.: `impl+security` da regra 2 termina com `security-reviewer`; `impl+db` da regra 3 termina com `<lang>-reviewer` porque `database-reviewer` já faz a verificação mais cedo na cadeia). Etapas `test` e `build` são controladas pelos seus próprios validadores (`e2e-runner` e o resolvedor de build respectivamente) e não precisam de um revisor adicional.
 
-### Phase 3 — Compress task description
+### Fase 3 — Comprimir a descrição da tarefa
 
-Each emitted `<task description>` must:
-- Be self-contained (the first agent does not need the plan document open).
-- Start with `[Plan: <path>#step-<id>]`.
-- Include 1–3 verifiable Acceptance criteria.
-- Include a Scope guard (`Out of scope: ...`) **only if the plan declares one for this step**. Inherit verbatim. If the plan has no out-of-scope statement, omit the clause entirely — do not invent one.
-- Be 200–600 characters; one line; embedded `"` escaped as `\"`; no literal newlines.
+Cada `<descrição da tarefa>` emitida deve:
+- Ser autossuficiente (o primeiro agent não precisa do documento do plano aberto).
+- Começar com `[Plan: <path>#step-<id>]`.
+- Incluir 1–3 critérios de aceitação verificáveis.
+- Incluir um guarda de escopo (`Out of scope: ...`) **somente se o plano declarar um para esta etapa**. Herde verbatim. Se o plano não tiver declaração de fora de escopo, omita a cláusula inteiramente — não a invente.
+- Ter 200–600 caracteres; uma linha; `"` embutido escapado como `\"`; sem quebras de linha literais.
 
-### Phase 4 — Output
+### Fase 4 — Saída
 
-Emit Markdown using **the form determined by `ECC_MODE`**. The output uses one form throughout — every `{ORCH_CMD}` and every agent name is rendered with the matching prefix from Phase 0. **Do not emit both forms; do not include "this is plugin form" / "strip the prefix" instructions in the rendered output.**
+Emita Markdown usando **a forma determinada por `ECC_MODE`**. A saída usa uma forma ao longo de todo o documento — cada `{ORCH_CMD}` e cada nome de agent é renderizado com o prefixo correspondente da Fase 0. **Não emita ambas as formas; não inclua instruções "esta é a forma plugin" / "remova o prefixo" na saída renderizada.**
 
-Concrete rendering rules:
+Regras de renderização concretas:
 
-- `{ORCH_CMD}` = `/everything-claude-code:orchestrate` under `plugin`, `/orchestrate` under `legacy`.
-- `{AGENT(name)}` = `everything-claude-code:<name>` under `plugin`, `<name>` under `legacy`.
-- The overview-table "Chain" column uses the same `{AGENT(name)}` rendering.
-- Per-step bash blocks contain only the runnable command. **No `# plugin form` or `# legacy form` comments** — the form is implicit and uniform across the whole output.
+- `{ORCH_CMD}` = `/everything-claude-code:orchestrate` sob `plugin`, `/orchestrate` sob `legacy`.
+- `{AGENT(name)}` = `everything-claude-code:<name>` sob `plugin`, `<name>` sob `legacy`.
+- A coluna "Chain" da tabela de visão geral usa a mesma renderização `{AGENT(name)}`.
+- Os blocos bash por etapa contêm apenas o comando executável. **Sem comentários `# plugin form` ou `# legacy form`** — a forma é implícita e uniforme ao longo de toda a saída.
 
-Output structure:
+Estrutura de saída:
 
 ````markdown
-# Plan-Orchestrate Result
+# Resultado do Plan-Orchestrate
 
-**Plan**: `<path>`
-**Lang**: `<detected-or-given>`
-**ECC mode**: `<plugin | legacy>`
-**Steps**: <N>
-**Scope**: <all | step:n | range:a-b>
+**Plano**: `<path>`
+**Linguagem**: `<detected-or-given>`
+**Modo ECC**: `<plugin | legacy>`
+**Etapas**: <N>
+**Escopo**: <all | step:n | range:a-b>
 
-## Steps overview
+## Visão geral das etapas
 
-| # | Title | Tags | Chain |
+| # | Título | Rótulos | Cadeia |
 |---|---|---|---|
 | 1 | ... | impl, db | `{AGENT(tdd-guide)},{AGENT(database-reviewer)},{AGENT(python-reviewer)}` |
 | ... | | | |
 
 ---
 
-## Step 1 — <title>
+## Etapa 1 — <título>
 
-**Intent**: <1–3 sentences>
-**Tags**: <a, b>
-**Chain rationale**: <why this chain; which agent closes the loop>
+**Intenção**: <1–3 frases>
+**Rótulos**: <a, b>
+**Rationale da cadeia**: <por que esta cadeia; qual agent fecha o ciclo>
 
 ```bash
-{ORCH_CMD} custom "{AGENT(tdd-guide)},{AGENT(database-reviewer)},{AGENT(python-reviewer)}" "[Plan: docs/foo.md#step-1] <compressed task description>; Acceptance: <1–3 items>; Out of scope: <…>"
+{ORCH_CMD} custom "{AGENT(tdd-guide)},{AGENT(database-reviewer)},{AGENT(python-reviewer)}" "[Plan: docs/foo.md#step-1] <descrição comprimida da tarefa>; Acceptance: <1–3 itens>; Out of scope: <…>"
 ```
 ````
 
-> The `{ORCH_CMD}` and `{AGENT(...)}` notation above describes the substitution this skill performs at runtime. The actual emitted Markdown contains the resolved strings, never the placeholders.
+> A notação `{ORCH_CMD}` e `{AGENT(...)}` acima descreve a substituição que esta skill realiza em tempo de execução. O Markdown emitido real contém as strings resolvidas, nunca os placeholders.
 
-Append a final "Batch execution" block aggregating every step's command in order so the user can paste them all at once. **Skip the Batch block in overview-only mode** (see "Large plan" edge case): when only the overview table is being emitted, there are no per-step commands to aggregate.
+Acrescente um bloco final de "Execução em lote" agregando o comando de cada etapa em ordem para que o usuário possa colar todos de uma vez. **Pule o bloco de lote no modo somente-visão-geral** (veja o caso extremo "Plano grande"): quando apenas a tabela de visão geral é emitida, não há comandos por etapa para agregar.
 
-### Phase 5 — Self-check (run before emitting)
+### Fase 5 — Autoavaliação (execute antes de emitir)
 
-- [ ] Every agent in every chain comes from the catalogue (after stripping any `everything-claude-code:` prefix that appeared in the plan; see Phase 0 step 5).
-- [ ] Resolved `{ORCH_CMD}` and every resolved `{AGENT(...)}` use the **same** form (`plugin` or `legacy`) — never mixed in one output.
-- [ ] No `# plugin form` / `# legacy form` annotations and no "strip the prefix" instructions remain in the rendered output.
-- [ ] No invented `--mode` / `--gate` / `--agents=...` fields.
-- [ ] Each task description is single-line, double-quoted, with embedded `"` escaped.
-- [ ] Each task description begins with `[Plan: <path>#step-<id>]` and includes Acceptance (1–3 items). The `Out of scope:` clause is present only when inherited from the plan.
-- [ ] No duplicate agent in any chain after Phase 2 dedup.
-- [ ] Chain length ≤ 4.
-- [ ] Steps tagged `impl`/`refactor`/`migration` end with a reviewer-class agent (`<lang>-reviewer`, `code-reviewer`, `security-reviewer`, or `database-reviewer`). `test` and `build` are exempt — see Phase 2 rule 10.
-- [ ] Zero-tag steps emit `code-reviewer` with the rationale `no tag matched; default review-only chain`.
-- [ ] Overview table lists every step in the plan, regardless of `--scope`.
-- [ ] Per-step detail block count matches the resolved `--scope` (full plan when `--scope=all`; one block for `step:n`; range size for `range:a-b`). In overview-only mode, no per-step blocks and no Batch block are emitted.
+- [ ] Cada agent em cada cadeia vem do catálogo (após remover qualquer prefixo `everything-claude-code:` que apareceu no plano; veja Fase 0 etapa 5).
+- [ ] `{ORCH_CMD}` resolvido e cada `{AGENT(...)}` resolvido usam a **mesma** forma (`plugin` ou `legacy`) — nunca misturados em uma saída.
+- [ ] Nenhuma anotação `# plugin form` / `# legacy form` e nenhuma instrução "remova o prefixo" permanecem na saída renderizada.
+- [ ] Nenhum campo inventado `--mode` / `--gate` / `--agents=...`.
+- [ ] Cada descrição de tarefa é de linha única, entre aspas duplas, com `"` embutido escapado.
+- [ ] Cada descrição de tarefa começa com `[Plan: <path>#step-<id>]` e inclui Aceitação (1–3 itens). A cláusula `Out of scope:` está presente somente quando herdada do plano.
+- [ ] Nenhum agent duplicado em qualquer cadeia após dedup da Fase 2.
+- [ ] Comprimento da cadeia ≤ 4.
+- [ ] Etapas rotuladas `impl`/`refactor`/`migration` terminam com um agent de classe revisora (`<lang>-reviewer`, `code-reviewer`, `security-reviewer` ou `database-reviewer`). `test` e `build` são isentos — veja regra 10 da Fase 2.
+- [ ] Etapas sem rótulo emitem `code-reviewer` com o rationale `no tag matched; default review-only chain`.
+- [ ] A tabela de visão geral lista cada etapa do plano, independentemente de `--scope`.
+- [ ] A contagem de blocos de detalhe por etapa corresponde ao `--scope` resolvido (plano completo quando `--scope=all`; um bloco para `step:n`; tamanho do intervalo para `range:a-b`). No modo somente-visão-geral, nenhum bloco de detalhe por etapa e nenhum bloco de lote são emitidos.
 
-## Edge cases
+## Casos Extremos
 
-- **No clear steps**: prefer H2/H3 splitting; if still ambiguous, report "no structured steps detected" with the document outline and ask the user to confirm running by outline.
-- **Large plan (>1500 lines)**: enter **overview-only mode** — emit only the overview table and ask the user to narrow with `--scope` before re-running for details. In this mode, skip per-step detail blocks and skip the Batch execution block.
-- **Step too broad** (e.g. "complete all backend work"): do not force a single chain. Suggest splitting into N.a and N.b and propose a split.
-- **Plan declares agents** (rare): first **strip any `everything-claude-code:` prefix** to get the bare catalogue name (Phase 0 step 5), then validate against the catalogue. Replace invalid agents and explain under "Chain rationale". The bare name is re-prefixed at output time per `ECC_MODE`.
-- **Polyglot project where `--lang=auto` cannot pick a winner**: set `lang=unknown`; reviewer resolves to `code-reviewer` and build resolver to `build-error-resolver`. Mention the fallback under "Chain rationale".
+- **Sem etapas claras**: prefira divisão por H2/H3; se ainda ambíguo, reporte "nenhuma etapa estruturada detectada" com o esboço do documento e peça ao usuário para confirmar execução por esboço.
+- **Plano grande (>1500 linhas)**: entre no **modo somente-visão-geral** — emita apenas a tabela de visão geral e peça ao usuário para restringir com `--scope` antes de reexecutar para detalhes. Neste modo, pule os blocos de detalhe por etapa e o bloco de execução em lote.
+- **Etapa muito ampla** (ex.: "completar todo o trabalho de Backend"): não force uma única cadeia. Sugira dividir em N.a e N.b e proponha uma divisão.
+- **Plano declara agents** (raro): primeiro **remova qualquer prefixo `everything-claude-code:`** para obter o nome bare do catálogo (Fase 0 etapa 5), então valide contra o catálogo. Substitua agents inválidos e explique sob "Rationale da cadeia". O nome bare é re-prefixado no momento de saída per `ECC_MODE`.
+- **Projeto poliglota onde `--lang=auto` não consegue escolher um vencedor**: defina `lang=unknown`; o revisor resolve para `code-reviewer` e o resolvedor de build para `build-error-resolver`. Mencione o fallback sob "Rationale da cadeia".
 
-## Examples
+## Exemplos
 
-### Example 1 — Plugin mode, Python plan
+### Exemplo 1 — Modo Plugin, plano Python
 
-Input:
+Entrada:
 ```
 plan-orchestrate @docs/plan/example-feature.md --lang=python
 ```
 
-Excerpt of expected output:
+Trecho da saída esperada:
 ````markdown
-## Step 2 — Encrypt sensitive UserProfile fields
+## Etapa 2 — Criptografar campos sensíveis de UserProfile
 
-**Intent**: Introduce an `EncryptedString` SQLAlchemy type and AES-GCM encrypt `birth_datetime` / `location` before persistence; load the key from an environment variable.
-**Tags**: impl, security, db
-**Chain rationale**: Security-sensitive write path, so `security-reviewer` closes the chain; `database-reviewer` validates the alembic migration; `python-reviewer` covers typing and PEP 8.
+**Intenção**: Introduzir um tipo SQLAlchemy `EncryptedString` e criptografar com AES-GCM `birth_datetime` / `location` antes da persistência; carregar a chave de uma variável de ambiente.
+**Rótulos**: impl, security, db
+**Rationale da cadeia**: Caminho de escrita sensível à segurança, então `security-reviewer` fecha a cadeia; `database-reviewer` valida a migração alembic; `python-reviewer` cobre tipagem e PEP 8.
 
 ```bash
 /everything-claude-code:orchestrate custom "everything-claude-code:tdd-guide,everything-claude-code:database-reviewer,everything-claude-code:python-reviewer,everything-claude-code:security-reviewer" "[Plan: docs/plan/example-feature.md#step-2] Implement EncryptedString SQLAlchemy type and migrate UserProfile.birth_datetime/location columns; key from ENV APP_DB_KEY; Acceptance: encrypt/decrypt roundtrip tests pass; alembic upgrade/downgrade clean on empty DB; no plaintext in DB after migrate; Out of scope: cross-tenant profile sharing logic"
 ```
 ````
 
-### Example 2 — Legacy mode, same step
+### Exemplo 2 — Modo Legacy, mesma etapa
 
-If `ECC_MODE=legacy` were detected, the same step would be emitted as a single uniform command (no plugin-prefixed forms anywhere in the output):
+Se `ECC_MODE=legacy` fosse detectado, a mesma etapa seria emitida como um único comando uniforme (sem formas prefixadas de plugin em lugar nenhum na saída):
 
 ```bash
 /orchestrate custom "tdd-guide,database-reviewer,python-reviewer,security-reviewer" "[Plan: docs/plan/example-feature.md#step-2] ..."
 ```
 
-The two examples above illustrate **the two possible outputs** for two different environments. A single skill invocation produces only one of them, end to end.
+Os dois exemplos acima ilustram **as duas saídas possíveis** para dois ambientes diferentes. Uma única invocação de skill produz apenas uma delas, do início ao fim.
 
-## Notes
+## Notas
 
-- Generative only. Never invoke `/orchestrate` from inside this skill.
-- Match the language of the plan document for task descriptions (agent names always remain English).
-- Do not insert "Co-Authored-By" lines or emoji in the output unless the user explicitly asks.
+- Apenas generativo. Nunca invoque `/orchestrate` dentro desta skill.
+- Corresponda ao idioma do documento do plano para as descrições de tarefas (nomes de agents sempre permanecem em inglês).
+- Não insira linhas "Co-Authored-By" ou emoji na saída, a menos que o usuário solicite explicitamente.

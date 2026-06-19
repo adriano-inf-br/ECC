@@ -1,78 +1,78 @@
 ---
 name: hexagonal-architecture
-description: Design, implement, and refactor Ports & Adapters systems with clear domain boundaries, dependency inversion, and testable use-case orchestration across TypeScript, Java, Kotlin, and Go services.
+description: Projete, implemente e refatore sistemas de Portas e Adaptadores com fronteiras de domínio claras, inversão de dependências e orquestração de casos de uso testável em serviços TypeScript, Java, Kotlin e Go.
 metadata:
   origin: ECC
 ---
 
-# Hexagonal Architecture
+# Arquitetura Hexagonal
 
-Hexagonal architecture (Ports and Adapters) keeps business logic independent from frameworks, transport, and persistence details. The core app depends on abstract ports, and adapters implement those ports at the edges.
+A arquitetura hexagonal (Portas e Adaptadores) mantém a lógica de negócio independente de frameworks, transporte e detalhes de persistência. A aplicação central depende de portas abstratas, e adaptadores implementam essas portas nas bordas.
 
-## When to Use
+## Quando Usar
 
-- Building new features where long-term maintainability and testability matter.
-- Refactoring layered or framework-heavy code where domain logic is mixed with I/O concerns.
-- Supporting multiple interfaces for the same use case (HTTP, CLI, queue workers, cron jobs).
-- Replacing infrastructure (database, external APIs, message bus) without rewriting business rules.
+- Construindo novas features onde manutenibilidade e testabilidade de longo prazo importam.
+- Refatorando código em camadas ou com muito framework onde a lógica de domínio está misturada com preocupações de I/O.
+- Suportando múltiplas interfaces para o mesmo caso de uso (HTTP, CLI, workers de fila, cron jobs).
+- Substituindo infraestrutura (banco de dados, APIs externas, barramento de mensagens) sem reescrever regras de negócio.
 
-Use this skill when the request involves boundaries, domain-centric design, refactoring tightly coupled services, or decoupling application logic from specific libraries.
+Use esta skill quando a solicitação envolver fronteiras, design centrado em domínio, refatoração de serviços fortemente acoplados ou desacoplamento da lógica de aplicação de bibliotecas específicas.
 
-## Core Concepts
+## Conceitos Fundamentais
 
-- **Domain model**: Business rules and entities/value objects. No framework imports.
-- **Use cases (application layer)**: Orchestrate domain behavior and workflow steps.
-- **Inbound ports**: Contracts describing what the application can do (commands/queries/use-case interfaces).
-- **Outbound ports**: Contracts for dependencies the application needs (repositories, gateways, event publishers, clock, UUID, etc.).
-- **Adapters**: Infrastructure and delivery implementations of ports (HTTP controllers, DB repositories, queue consumers, SDK wrappers).
-- **Composition root**: Single wiring location where concrete adapters are bound to use cases.
+- **Modelo de domínio**: Regras de negócio e entidades/objetos de valor. Sem imports de framework.
+- **Casos de uso (camada de aplicação)**: Orquestram comportamento de domínio e passos de fluxo de trabalho.
+- **Portas de entrada**: Contratos descrevendo o que a aplicação pode fazer (interfaces de comandos/consultas/casos de uso).
+- **Portas de saída**: Contratos para dependências que a aplicação precisa (repositórios, gateways, publicadores de eventos, relógio, UUID, etc.).
+- **Adaptadores**: Implementações de infraestrutura e entrega de portas (controladores HTTP, repositórios de BD, consumidores de fila, wrappers de SDK).
+- **Raiz de composição**: Local único de conexão onde adaptadores concretos são vinculados a casos de uso.
 
-Outbound port interfaces usually live in the application layer (or in domain only when the abstraction is truly domain-level), while infrastructure adapters implement them.
+Interfaces de portas de saída geralmente residem na camada de aplicação (ou somente no domínio quando a abstração é verdadeiramente de nível de domínio), enquanto adaptadores de infraestrutura as implementam.
 
-Dependency direction is always inward:
+A direção de dependência é sempre para dentro:
 
-- Adapters -> application/domain
-- Application -> port interfaces (inbound/outbound contracts)
-- Domain -> domain-only abstractions (no framework or infrastructure dependencies)
-- Domain -> nothing external
+- Adaptadores -> aplicação/domínio
+- Aplicação -> interfaces de portas (contratos de entrada/saída)
+- Domínio -> abstrações somente de domínio (sem dependências de framework ou infraestrutura)
+- Domínio -> nada externo
 
-## How It Works
+## Como Funciona
 
-### Step 1: Model a use case boundary
+### Passo 1: Modelar uma fronteira de caso de uso
 
-Define a single use case with a clear input and output DTO. Keep transport details (Express `req`, GraphQL `context`, job payload wrappers) outside this boundary.
+Defina um único caso de uso com um DTO de entrada e saída claros. Mantenha detalhes de transporte (Express `req`, GraphQL `context`, wrappers de payload de job) fora desta fronteira.
 
-### Step 2: Define outbound ports first
+### Passo 2: Definir portas de saída primeiro
 
-Identify every side effect as a port:
+Identifique cada efeito colateral como uma porta:
 
-- persistence (`UserRepositoryPort`)
-- external calls (`BillingGatewayPort`)
-- cross-cutting (`LoggerPort`, `ClockPort`)
+- persistência (`UserRepositoryPort`)
+- chamadas externas (`BillingGatewayPort`)
+- transversais (`LoggerPort`, `ClockPort`)
 
-Ports should model capabilities, not technologies.
+Portas devem modelar capacidades, não tecnologias.
 
-### Step 3: Implement the use case with pure orchestration
+### Passo 3: Implementar o caso de uso com orquestração pura
 
-Use case class/function receives ports via constructor/arguments. It validates application-level invariants, coordinates domain rules, and returns plain data structures.
+A classe/função de caso de uso recebe portas via construtor/argumentos. Ela valida invariantes de nível de aplicação, coordena regras de domínio e retorna estruturas de dados simples.
 
-### Step 4: Build adapters at the edge
+### Passo 4: Construir adaptadores na borda
 
-- Inbound adapter converts protocol input to use-case input.
-- Outbound adapter maps app contracts to concrete APIs/ORM/query builders.
-- Mapping stays in adapters, not inside use cases.
+- Adaptador de entrada converte entrada de protocolo em entrada de caso de uso.
+- Adaptador de saída mapeia contratos de aplicação para APIs/ORM/query builders concretos.
+- O mapeamento fica nos adaptadores, não dentro dos casos de uso.
 
-### Step 5: Wire everything in a composition root
+### Passo 5: Conectar tudo em uma raiz de composição
 
-Instantiate adapters, then inject them into use cases. Keep this wiring centralized to avoid hidden service-locator behavior.
+Instancie adaptadores, então injete-os nos casos de uso. Mantenha essa conexão centralizada para evitar comportamento oculto de service-locator.
 
-### Step 6: Test per boundary
+### Passo 6: Testar por fronteira
 
-- Unit test use cases with fake ports.
-- Integration test adapters with real infra dependencies.
-- E2E test user-facing flows through inbound adapters.
+- Teste unitário de casos de uso com portas falsas.
+- Teste de integração de adaptadores com dependências de infraestrutura reais.
+- Teste E2E de fluxos voltados ao usuário por meio de adaptadores de entrada.
 
-## Architecture Diagram
+## Diagrama de Arquitetura
 
 ```mermaid
 flowchart LR
@@ -84,9 +84,9 @@ flowchart LR
   UseCase --> DomainModel["DomainModel"]
 ```
 
-## Suggested Module Layout
+## Organização de Módulos Sugerida
 
-Use feature-first organization with explicit boundaries:
+Use organização por feature com fronteiras explícitas:
 
 ```text
 src/
@@ -117,9 +117,9 @@ src/
         ordersContainer.ts
 ```
 
-## TypeScript Example
+## Exemplo TypeScript
 
-### Port definitions
+### Definições de porta
 
 ```typescript
 export interface OrderRepositoryPort {
@@ -132,7 +132,7 @@ export interface PaymentGatewayPort {
 }
 ```
 
-### Use case
+### Caso de uso
 
 ```typescript
 type CreateOrderInput = {
@@ -159,7 +159,7 @@ export class CreateOrderUseCase {
       amountCents: order.amountCents,
     });
 
-    // markAuthorized returns a new Order instance; it does not mutate in place.
+    // markAuthorized retorna uma nova instância de Order; não muta in place.
     const authorizedOrder = order.markAuthorized(auth.authorizationId);
     await this.orderRepository.save(authorizedOrder);
 
@@ -171,7 +171,7 @@ export class CreateOrderUseCase {
 }
 ```
 
-### Outbound adapter
+### Adaptador de saída
 
 ```typescript
 export class PostgresOrderRepository implements OrderRepositoryPort {
@@ -191,7 +191,7 @@ export class PostgresOrderRepository implements OrderRepositoryPort {
 }
 ```
 
-### Composition root
+### Raiz de composição
 
 ```typescript
 export const buildCreateOrderUseCase = (deps: { db: SqlClient; stripe: StripeClient }) => {
@@ -202,76 +202,76 @@ export const buildCreateOrderUseCase = (deps: { db: SqlClient; stripe: StripeCli
 };
 ```
 
-## Multi-Language Mapping
+## Mapeamento Multi-Linguagem
 
-Use the same boundary rules across ecosystems; only syntax and wiring style change.
+Use as mesmas regras de fronteira em diferentes ecossistemas; apenas a sintaxe e o estilo de conexão mudam.
 
 - **TypeScript/JavaScript**
-  - Ports: `application/ports/*` as interfaces/types.
-  - Use cases: classes/functions with constructor/argument injection.
-  - Adapters: `adapters/inbound/*`, `adapters/outbound/*`.
-  - Composition: explicit factory/container module (no hidden globals).
+  - Portas: `application/ports/*` como interfaces/tipos.
+  - Casos de uso: classes/funções com injeção via construtor/argumento.
+  - Adaptadores: `adapters/inbound/*`, `adapters/outbound/*`.
+  - Composição: módulo de fábrica/container explícito (sem globais ocultos).
 - **Java**
-  - Packages: `domain`, `application.port.in`, `application.port.out`, `application.usecase`, `adapter.in`, `adapter.out`.
-  - Ports: interfaces in `application.port.*`.
-  - Use cases: plain classes (Spring `@Service` is optional, not required).
-  - Composition: Spring config or manual wiring class; keep wiring out of domain/use-case classes.
+  - Pacotes: `domain`, `application.port.in`, `application.port.out`, `application.usecase`, `adapter.in`, `adapter.out`.
+  - Portas: interfaces em `application.port.*`.
+  - Casos de uso: classes simples (`@Service` do Spring é opcional, não obrigatório).
+  - Composição: classe de configuração Spring ou classe de conexão manual; mantenha a conexão fora das classes de domínio/caso de uso.
 - **Kotlin**
-  - Modules/packages mirror the Java split (`domain`, `application.port`, `application.usecase`, `adapter`).
-  - Ports: Kotlin interfaces.
-  - Use cases: classes with constructor injection (Koin/Dagger/Spring/manual).
-  - Composition: module definitions or dedicated composition functions; avoid service locator patterns.
+  - Módulos/pacotes espelham a divisão Java (`domain`, `application.port`, `application.usecase`, `adapter`).
+  - Portas: interfaces Kotlin.
+  - Casos de uso: classes com injeção via construtor (Koin/Dagger/Spring/manual).
+  - Composição: definições de módulo ou funções de composição dedicadas; evite padrões de service locator.
 - **Go**
-  - Packages: `internal/<feature>/domain`, `application`, `ports`, `adapters/inbound`, `adapters/outbound`.
-  - Ports: small interfaces owned by the consuming application package.
-  - Use cases: structs with interface fields plus explicit `New...` constructors.
-  - Composition: wire in `cmd/<app>/main.go` (or dedicated wiring package), keep constructors explicit.
+  - Pacotes: `internal/<feature>/domain`, `application`, `ports`, `adapters/inbound`, `adapters/outbound`.
+  - Portas: interfaces pequenas de propriedade do pacote de aplicação consumidor.
+  - Casos de uso: structs com campos de interface mais construtores `New...` explícitos.
+  - Composição: conecte em `cmd/<app>/main.go` (ou pacote de conexão dedicado), mantenha construtores explícitos.
 
-## Anti-Patterns to Avoid
+## Anti-Padrões a Evitar
 
-- Domain entities importing ORM models, web framework types, or SDK clients.
-- Use cases reading directly from `req`, `res`, or queue metadata.
-- Returning database rows directly from use cases without domain/application mapping.
-- Letting adapters call each other directly instead of flowing through use-case ports.
-- Spreading dependency wiring across many files with hidden global singletons.
+- Entidades de domínio importando modelos ORM, tipos de framework web ou clientes SDK.
+- Casos de uso lendo diretamente de `req`, `res` ou metadados de fila.
+- Retornando linhas de banco de dados diretamente de casos de uso sem mapeamento de domínio/aplicação.
+- Deixar adaptadores chamar uns aos outros diretamente em vez de fluir por portas de caso de uso.
+- Espalhar a conexão de dependências por muitos arquivos com singletons globais ocultos.
 
-## Migration Playbook
+## Guia de Migração
 
-1. Pick one vertical slice (single endpoint/job) with frequent change pain.
-2. Extract a use-case boundary with explicit input/output types.
-3. Introduce outbound ports around existing infrastructure calls.
-4. Move orchestration logic from controllers/services into the use case.
-5. Keep old adapters, but make them delegate to the new use case.
-6. Add tests around the new boundary (unit + adapter integration).
-7. Repeat slice-by-slice; avoid full rewrites.
+1. Escolha uma fatia vertical (único endpoint/job) com dor frequente de mudança.
+2. Extraia uma fronteira de caso de uso com tipos explícitos de entrada/saída.
+3. Introduza portas de saída em torno de chamadas de infraestrutura existentes.
+4. Mova a lógica de orquestração de controladores/serviços para o caso de uso.
+5. Mantenha os adaptadores antigos, mas faça-os delegar ao novo caso de uso.
+6. Adicione testes em torno da nova fronteira (unidade + integração de adaptador).
+7. Repita fatia por fatia; evite reescritas completas.
 
-### Refactoring Existing Systems
+### Refatorando Sistemas Existentes
 
-- **Strangler approach**: keep current endpoints, route one use case at a time through new ports/adapters.
-- **No big-bang rewrites**: migrate per feature slice and preserve behavior with characterization tests.
-- **Facade first**: wrap legacy services behind outbound ports before replacing internals.
-- **Composition freeze**: centralize wiring early so new dependencies do not leak into domain/use-case layers.
-- **Slice selection rule**: prioritize high-churn, low-blast-radius flows first.
-- **Rollback path**: keep a reversible toggle or route switch per migrated slice until production behavior is verified.
+- **Abordagem Strangler**: mantenha os endpoints atuais, roteie um caso de uso por vez por novas portas/adaptadores.
+- **Sem reescritas big-bang**: migre por fatia de feature e preserve o comportamento com testes de caracterização.
+- **Facade primeiro**: envolva serviços legados atrás de portas de saída antes de substituir os internos.
+- **Congelamento de composição**: centralize a conexão cedo para que novas dependências não vazem para as camadas de domínio/caso de uso.
+- **Regra de seleção de fatia**: priorize fluxos de alta rotatividade e baixo raio de explosão primeiro.
+- **Caminho de rollback**: mantenha um toggle reversível ou chave de rota por fatia migrada até que o comportamento em produção seja verificado.
 
-## Testing Guidance (Same Hexagonal Boundaries)
+## Orientação de Testes (Mesmas Fronteiras Hexagonais)
 
-- **Domain tests**: test entities/value objects as pure business rules (no mocks, no framework setup).
-- **Use-case unit tests**: test orchestration with fakes/stubs for outbound ports; assert business outcomes and port interactions.
-- **Outbound adapter contract tests**: define shared contract suites at port level and run them against each adapter implementation.
-- **Inbound adapter tests**: verify protocol mapping (HTTP/CLI/queue payload to use-case input and output/error mapping back to protocol).
-- **Adapter integration tests**: run against real infrastructure (DB/API/queue) for serialization, schema/query behavior, retries, and timeouts.
-- **End-to-end tests**: cover critical user journeys through inbound adapter -> use case -> outbound adapter.
-- **Refactor safety**: add characterization tests before extraction; keep them until new boundary behavior is stable and equivalent.
+- **Testes de domínio**: teste entidades/objetos de valor como regras de negócio puras (sem mocks, sem configuração de framework).
+- **Testes unitários de caso de uso**: teste orquestração com fakes/Stubs para portas de saída; afirme resultados de negócio e interações de porta.
+- **Testes de contrato de adaptador de saída**: defina suítes de contrato compartilhadas no nível de porta e execute-as em cada implementação de adaptador.
+- **Testes de adaptador de entrada**: verifique o mapeamento de protocolo (HTTP/CLI/payload de fila para entrada de caso de uso e mapeamento de saída/erro de volta ao protocolo).
+- **Testes de integração de adaptador**: execute contra infraestrutura real (BD/API/fila) para serialização, comportamento de esquema/consulta, retries e timeouts.
+- **Testes de ponta a ponta**: cubra jornadas críticas do usuário por adaptador de entrada -> caso de uso -> adaptador de saída.
+- **Segurança de refatoração**: adicione testes de caracterização antes da extração; mantenha-os até que o comportamento da nova fronteira seja estável e equivalente.
 
-## Best Practices Checklist
+## Lista de Verificação de Melhores Práticas
 
-- Domain and use-case layers import only internal types and ports.
-- Every external dependency is represented by an outbound port.
-- Validation occurs at boundaries (inbound adapter + use-case invariants).
-- Use immutable transformations (return new values/entities instead of mutating shared state).
-- Errors are translated across boundaries (infra errors -> application/domain errors).
-- Composition root is explicit and easy to audit.
-- Use cases are testable with simple in-memory fakes for ports.
-- Refactoring starts from one vertical slice with behavior-preserving tests.
-- Language/framework specifics stay in adapters, never in domain rules.
+- As camadas de domínio e caso de uso importam apenas tipos internos e portas.
+- Toda dependência externa é representada por uma porta de saída.
+- A validação ocorre nas fronteiras (adaptador de entrada + invariantes de caso de uso).
+- Use transformações imutáveis (retorne novos valores/entidades em vez de mutar estado compartilhado).
+- Erros são traduzidos entre fronteiras (erros de infraestrutura -> erros de aplicação/domínio).
+- A raiz de composição é explícita e fácil de auditar.
+- Casos de uso são testáveis com fakes simples em memória para portas.
+- A refatoração começa de uma fatia vertical com testes de preservação de comportamento.
+- Especificidades de linguagem/framework ficam nos adaptadores, nunca nas regras de domínio.

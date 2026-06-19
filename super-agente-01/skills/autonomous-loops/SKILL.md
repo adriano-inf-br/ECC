@@ -14,7 +14,7 @@ metadata:
 
 Padrões, arquiteturas e implementações de referência para rodar o Claude Code autonomamente em loops. Cobre tudo, de pipelines simples de `claude -p` à orquestração completa de DAG multi-agent orientada por RFC.
 
-## When to Use
+## Quando Usar
 
 - Configurar workflows de desenvolvimento autônomos que rodam sem intervenção humana
 - Escolher a arquitetura de loop certa para o seu problema (simples vs complexo)

@@ -41,7 +41,7 @@ são traduzidos.
 | 3 | `commands/` | 92 | ✅ Concluída |
 | 4 | `rules/` | 114 | ✅ Concluída |
 | 5 | `skills/` (384 .md) | 384 | ✅ Concluída |
-| 6 | `docs/` (restante em inglês) | ~900 | 🔄 Em andamento |
+| 6 | `docs/` (restante em inglês) | ~900 | ✅ Concluída |
 | 7 | `scripts/`, `tests/`, `src/` (comentários/strings) | ~400 | ⬜ Pendente |
 | 8 | Demais (`examples/`, `contexts/`, configs com prosa) | restante | ⬜ Pendente |
 
@@ -67,3 +67,6 @@ são traduzidos.
 - **Sessão 2 (2026-06-19):** Fases 3, 4 e 5 concluídas (`commands/`, `rules/`,
   `skills/`). Todos os 271 SKILL.md + 14 arquivos de referência em skills/
   traduzidos. Fase 6 (`docs/`) iniciada.
+- **Sessão 3 (2026-06-19):** Fase 6 concluída. `ECC-2.0-GA-ROADMAP.md` (1273 linhas
+  no original, 1138 no PT após compactação de linhas equivalentes) traduzido em
+  múltiplos chunks via append. Todos os ~94 arquivos `.md` de `docs/` estão em PT-BR.

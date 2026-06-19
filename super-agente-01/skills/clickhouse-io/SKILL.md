@@ -267,10 +267,10 @@ ORDER BY query_duration_ms DESC
 LIMIT 10;
 ```
 
-### Table Statistics
+### Estatísticas de Tabela
 
 ```sql
--- Check table sizes
+-- Verificar tamanhos de tabela
 SELECT
     database,
     table,

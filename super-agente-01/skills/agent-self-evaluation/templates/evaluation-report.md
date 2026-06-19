@@ -1,6 +1,6 @@
-# Agent Self-Evaluation Report Template
+# Template de Relatório de Autoavaliação de Agent
 
-Copy this template and fill in after completing a task. The format matches `scripts/evaluate.py` output.
+Copie este template e preencha após concluir uma tarefa. O formato corresponde à saída de `scripts/evaluate.py`.
 
 ```
 ============================================================
@@ -49,38 +49,38 @@ TOP IMPROVEMENTS:
 VERDICT: [Deliver as-is / Fix N issues then deliver / Redo from scratch]
 ```
 
-## Quick Reference: Scoring Triggers
+## Referência Rápida: Gatilhos de Pontuação
 
-| If you see this... | Accuracy | Completeness | Clarity | Actionability | Conciseness |
+| Se você vir isto... | Precisão | Completude | Clareza | Acionabilidade | Concisão |
 |---|---|---|---|---|---|
 | "should work" / "probably fine" | ≤4 | — | — | — | — |
 | "I think" / "I believe" | ≤4 | — | — | — | — |
-| No test output cited | ≤4 | — | — | — | — |
-| "TODO" / "FIXME" left behind | ≤3 | ≤3 | — | ≤3 | — |
-| Missing error handling | — | ≤3 | — | — | — |
-| Only happy path covered | — | ≤3 | — | — | — |
-| Wall-of-text paragraph (>200 words) | — | — | ≤3 | — | — |
-| No headings or structure | — | — | ≤3 | — | — |
-| "You should..." without specifics | — | — | — | ≤3 | — |
-| No PR or file created | — | — | — | ≤3 | — |
-| User needs to figure out next step | — | — | — | ≤2 | — |
-| Repeated points (3+ times) | — | — | — | — | ≤3 |
+| Nenhuma saída de teste citada | ≤4 | — | — | — | — |
+| "TODO" / "FIXME" deixados para trás | ≤3 | ≤3 | — | ≤3 | — |
+| Tratamento de erro ausente | — | ≤3 | — | — | — |
+| Apenas o happy path coberto | — | ≤3 | — | — | — |
+| Parágrafo em parede de texto (>200 palavras) | — | — | ≤3 | — | — |
+| Sem títulos ou estrutura | — | — | ≤3 | — | — |
+| "You should..." sem especificidade | — | — | — | ≤3 | — |
+| Nenhum PR ou arquivo criado | — | — | — | ≤3 | — |
+| O usuário precisa descobrir o próximo passo | — | — | — | ≤2 | — |
+| Pontos repetidos (3+ vezes) | — | — | — | — | ≤3 |
 | "Let me explain..." / "To summarize..." x3+ | — | — | — | — | ≤3 |
-| Output >15x longer than task | — | — | — | — | ≤3 |
+| Saída >15x mais longa que a tarefa | — | — | — | — | ≤3 |
 
-## When to Skip
+## Quando Pular
 
-Skip the evaluation if:
-- Task was a single tool call (e.g., "read this file" — nothing to evaluate)
-- User explicitly says "don't evaluate" or "just do it"
-- Task is purely conversational (greeting, small talk)
-- You're mid-workflow and the user will judge the final output, not intermediate steps
+Pule a avaliação se:
+- A tarefa foi uma única chamada de tool (ex.: "leia este arquivo" — nada a avaliar)
+- O usuário diz explicitamente "não avalie" ou "apenas faça"
+- A tarefa é puramente conversacional (saudação, conversa fiada)
+- Você está no meio de um fluxo de trabalho e o usuário vai julgar a saída final, não os passos intermediários
 
-## Post-Evaluation Actions
+## Ações Pós-Avaliação
 
-| Overall Score | What to do |
+| Pontuação Geral | O que fazer |
 |---|---|
-| ≥4.5 | Deliver as-is. No changes needed. |
-| 3.5–4.4 | Flag top improvement but deliver. Fix if <30 seconds. |
-| 2.5–3.4 | State what you'd change. Ask user: "Should I redo [axis] or deliver as-is?" |
-| <2.5 | Don't deliver. Say: "This scored [score] because [evidence]. Let me redo this with [specific fix]." Then redo. |
+| ≥4.5 | Entregue como está. Nenhuma mudança necessária. |
+| 3.5–4.4 | Sinalize a melhoria principal mas entregue. Corrija se levar <30 segundos. |
+| 2.5–3.4 | Declare o que você mudaria. Pergunte ao usuário: "Devo refazer [eixo] ou entregar como está?" |
+| <2.5 | Não entregue. Diga: "Isto pontuou [pontuação] porque [evidência]. Deixe-me refazer isto com [correção específica]." Então refaça. |

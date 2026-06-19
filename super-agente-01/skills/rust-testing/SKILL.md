@@ -1,47 +1,47 @@
 ---
 name: rust-testing
-description: Rust testing patterns including unit tests, integration tests, async testing, property-based testing, mocking, and coverage. Follows TDD methodology.
+description: Padrões de teste Rust incluindo testes unitários, testes de integração, testes assíncronos, testes baseados em propriedades, mocking e cobertura. Segue a metodologia TDD.
 metadata:
   origin: ECC
 ---
 
-# Rust Testing Patterns
+# Padrões de Testes Rust
 
-Comprehensive Rust testing patterns for writing reliable, maintainable tests following TDD methodology.
+Padrões abrangentes de testes Rust para escrever testes confiáveis e fáceis de manter seguindo a metodologia TDD.
 
-## When to Use
+## Quando Usar
 
-- Writing new Rust functions, methods, or traits
-- Adding test coverage to existing code
-- Creating benchmarks for performance-critical code
-- Implementing property-based tests for input validation
-- Following TDD workflow in Rust projects
+- Escrevendo novas funções, métodos ou traits Rust
+- Adicionando cobertura de testes ao código existente
+- Criando benchmarks para código crítico de desempenho
+- Implementando testes baseados em propriedades para validação de entrada
+- Seguindo o fluxo de trabalho TDD em projetos Rust
 
-## How It Works
+## Como Funciona
 
-1. **Identify target code** — Find the function, trait, or module to test
-2. **Write a test** — Use `#[test]` in a `#[cfg(test)]` module, rstest for parameterized tests, or proptest for property-based tests
-3. **Mock dependencies** — Use mockall to isolate the unit under test
-4. **Run tests (RED)** — Verify the test fails with the expected error
-5. **Implement (GREEN)** — Write minimal code to pass
-6. **Refactor** — Improve while keeping tests green
-7. **Check coverage** — Use cargo-llvm-cov, target 80%+
+1. **Identifique o código alvo** — Encontre a função, trait ou módulo para testar
+2. **Escreva um teste** — Use `#[test]` em um módulo `#[cfg(test)]`, rstest para testes parametrizados ou proptest para testes baseados em propriedades
+3. **Mocke dependências** — Use mockall para isolar a unidade sob teste
+4. **Execute os testes (RED)** — Verifique se o teste falha com o erro esperado
+5. **Implemente (GREEN)** — Escreva código mínimo para passar
+6. **Refatore** — Melhore enquanto mantém os testes verdes
+7. **Verifique a cobertura** — Use cargo-llvm-cov, meta de 80%+
 
-## TDD Workflow for Rust
+## Fluxo de Trabalho TDD para Rust
 
-### The RED-GREEN-REFACTOR Cycle
+### O Ciclo RED-GREEN-REFACTOR
 
 ```
-RED     → Write a failing test first
-GREEN   → Write minimal code to pass the test
-REFACTOR → Improve code while keeping tests green
-REPEAT  → Continue with next requirement
+RED     → Escreva um teste falhando primeiro
+GREEN   → Escreva código mínimo para passar no teste
+REFACTOR → Melhore o código mantendo os testes verdes
+REPEAT  → Continue com o próximo requisito
 ```
 
-### Step-by-Step TDD in Rust
+### TDD Passo a Passo em Rust
 
 ```rust
-// RED: Write test first, use todo!() as placeholder
+// RED: Escreva o teste primeiro, use todo!() como placeholder
 pub fn add(a: i32, b: i32) -> i32 { todo!() }
 
 #[cfg(test)]
@@ -50,18 +50,18 @@ mod tests {
     #[test]
     fn test_add() { assert_eq!(add(2, 3), 5); }
 }
-// cargo test → panics at 'not yet implemented'
+// cargo test → entra em pânico em 'ainda não implementado'
 ```
 
 ```rust
-// GREEN: Replace todo!() with minimal implementation
+// GREEN: Substitua todo!() pela implementação mínima
 pub fn add(a: i32, b: i32) -> i32 { a + b }
-// cargo test → PASS, then REFACTOR while keeping tests green
+// cargo test → PASS, depois REFACTOR mantendo os testes verdes
 ```
 
-## Unit Tests
+## Testes Unitários
 
-### Module-Level Test Organization
+### Organização de Testes em Nível de Módulo
 
 ```rust
 // src/user.rs
@@ -74,7 +74,7 @@ impl User {
     pub fn new(name: impl Into<String>, email: impl Into<String>) -> Result<Self, String> {
         let email = email.into();
         if !email.contains('@') {
-            return Err(format!("invalid email: {email}"));
+            return Err(format!("email inválido: {email}"));
         }
         Ok(Self { name: name.into(), email })
     }
@@ -99,24 +99,24 @@ mod tests {
     fn rejects_invalid_email() {
         let result = User::new("Bob", "not-an-email");
         assert!(result.is_err());
-        assert!(result.unwrap_err().contains("invalid email"));
+        assert!(result.unwrap_err().contains("email inválido"));
     }
 }
 ```
 
-### Assertion Macros
+### Macros de Asserção
 
 ```rust
-assert_eq!(2 + 2, 4);                                    // Equality
-assert_ne!(2 + 2, 5);                                    // Inequality
-assert!(vec![1, 2, 3].contains(&2));                     // Boolean
-assert_eq!(value, 42, "expected 42 but got {value}");    // Custom message
-assert!((0.1_f64 + 0.2 - 0.3).abs() < f64::EPSILON);   // Float comparison
+assert_eq!(2 + 2, 4);                                    // Igualdade
+assert_ne!(2 + 2, 5);                                    // Desigualdade
+assert!(vec![1, 2, 3].contains(&2));                     // Booleano
+assert_eq!(value, 42, "esperava 42 mas obteve {value}"); // Mensagem customizada
+assert!((0.1_f64 + 0.2 - 0.3).abs() < f64::EPSILON);   // Comparação de float
 ```
 
-## Error and Panic Testing
+## Testes de Erro e Pânico
 
-### Testing `Result` Returns
+### Testando Retornos de `Result`
 
 ```rust
 #[test]
@@ -124,7 +124,7 @@ fn parse_returns_error_for_invalid_input() {
     let result = parse_config("}{invalid");
     assert!(result.is_err());
 
-    // Assert specific error variant
+    // Verifique variante específica de erro
     let err = result.unwrap_err();
     assert!(matches!(err, ConfigError::ParseError(_)));
 }
@@ -133,11 +133,11 @@ fn parse_returns_error_for_invalid_input() {
 fn parse_succeeds_for_valid_input() -> Result<(), Box<dyn std::error::Error>> {
     let config = parse_config(r#"{"port": 8080}"#)?;
     assert_eq!(config.port, 8080);
-    Ok(()) // Test fails if any ? returns Err
+    Ok(()) // Teste falha se qualquer ? retornar Err
 }
 ```
 
-### Testing Panics
+### Testando Pânicos
 
 ```rust
 #[test]
@@ -154,22 +154,22 @@ fn panics_with_specific_message() {
 }
 ```
 
-## Integration Tests
+## Testes de Integração
 
-### File Structure
+### Estrutura de Arquivos
 
 ```text
 my_crate/
 ├── src/
 │   └── lib.rs
-├── tests/              # Integration tests
-│   ├── api_test.rs     # Each file is a separate test binary
+├── tests/              # Testes de integração
+│   ├── api_test.rs     # Cada arquivo é um binário de teste separado
 │   ├── db_test.rs
-│   └── common/         # Shared test utilities
+│   └── common/         # Utilitários de teste compartilhados
 │       └── mod.rs
 ```
 
-### Writing Integration Tests
+### Escrevendo Testes de Integração
 
 ```rust
 // tests/api_test.rs
@@ -186,9 +186,9 @@ fn full_request_lifecycle() {
 }
 ```
 
-## Async Tests
+## Testes Assíncronos
 
-### With Tokio
+### Com Tokio
 
 ```rust
 #[tokio::test]
@@ -207,13 +207,13 @@ async fn handles_timeout() {
         slow_operation(),
     ).await;
 
-    assert!(result.is_err(), "should have timed out");
+    assert!(result.is_err(), "deveria ter expirado");
 }
 ```
 
-## Test Organization Patterns
+## Padrões de Organização de Testes
 
-### Parameterized Tests with `rstest`
+### Testes Parametrizados com `rstest`
 
 ```rust
 use rstest::{rstest, fixture};
@@ -239,14 +239,14 @@ fn test_insert(test_db: TestDb) {
 }
 ```
 
-### Test Helpers
+### Helpers de Teste
 
 ```rust
 #[cfg(test)]
 mod tests {
     use super::*;
 
-    /// Creates a test user with sensible defaults.
+    /// Cria um usuário de teste com valores padrão razoáveis.
     fn make_user(name: &str) -> User {
         User::new(name, &format!("{name}@test.com")).unwrap()
     }
@@ -259,9 +259,9 @@ mod tests {
 }
 ```
 
-## Property-Based Testing with `proptest`
+## Testes Baseados em Propriedades com `proptest`
 
-### Basic Property Tests
+### Testes de Propriedade Básicos
 
 ```rust
 use proptest::prelude::*;
@@ -291,7 +291,7 @@ proptest! {
 }
 ```
 
-### Custom Strategies
+### Estratégias Customizadas
 
 ```rust
 use proptest::prelude::*;
@@ -309,9 +309,9 @@ proptest! {
 }
 ```
 
-## Mocking with `mockall`
+## Mocking com `mockall`
 
-### Trait-Based Mocking
+### Mocking Baseado em Trait
 
 ```rust
 use mockall::{automock, predicate::eq};
@@ -348,12 +348,12 @@ fn service_returns_none_when_not_found() {
 
 ## Doc Tests
 
-### Executable Documentation
+### Documentação Executável
 
 ```rust
-/// Adds two numbers together.
+/// Soma dois números.
 ///
-/// # Examples
+/// # Exemplos
 ///
 /// ```
 /// use my_crate::add;
@@ -365,11 +365,11 @@ pub fn add(a: i32, b: i32) -> i32 {
     a + b
 }
 
-/// Parses a config string.
+/// Faz o parsing de uma string de configuração.
 ///
-/// # Errors
+/// # Erros
 ///
-/// Returns `Err` if the input is not valid TOML.
+/// Retorna `Err` se a entrada não for TOML válido.
 ///
 /// ```no_run
 /// use my_crate::parse_config;
@@ -388,7 +388,7 @@ pub fn parse_config(input: &str) -> Result<Config, ParseError> {
 }
 ```
 
-## Benchmarking with Criterion
+## Benchmarks com Criterion
 
 ```toml
 # Cargo.toml
@@ -419,59 +419,59 @@ criterion_group!(benches, bench_fibonacci);
 criterion_main!(benches);
 ```
 
-## Test Coverage
+## Cobertura de Testes
 
-### Running Coverage
+### Executando a Cobertura
 
 ```bash
-# Install: cargo install cargo-llvm-cov (or use taiki-e/install-action in CI)
-cargo llvm-cov                    # Summary
-cargo llvm-cov --html             # HTML report
-cargo llvm-cov --lcov > lcov.info # LCOV format for CI
-cargo llvm-cov --fail-under-lines 80  # Fail if below threshold
+# Instale: cargo install cargo-llvm-cov (ou use taiki-e/install-action no CI)
+cargo llvm-cov                    # Resumo
+cargo llvm-cov --html             # Relatório HTML
+cargo llvm-cov --lcov > lcov.info # Formato LCOV para CI
+cargo llvm-cov --fail-under-lines 80  # Falha se abaixo do limiar
 ```
 
-### Coverage Targets
+### Metas de Cobertura
 
-| Code Type | Target |
+| Tipo de Código | Meta |
 |-----------|--------|
-| Critical business logic | 100% |
-| Public API | 90%+ |
-| General code | 80%+ |
-| Generated / FFI bindings | Exclude |
+| Lógica de negócio crítica | 100% |
+| API pública | 90%+ |
+| Código geral | 80%+ |
+| Gerado / bindings FFI | Excluir |
 
-## Testing Commands
+## Comandos de Teste
 
 ```bash
-cargo test                        # Run all tests
-cargo test -- --nocapture         # Show println output
-cargo test test_name              # Run tests matching pattern
-cargo test --lib                  # Unit tests only
-cargo test --test api_test        # Integration tests only
-cargo test --doc                  # Doc tests only
-cargo test --no-fail-fast         # Don't stop on first failure
-cargo test -- --ignored           # Run ignored tests
+cargo test                        # Executar todos os testes
+cargo test -- --nocapture         # Mostrar saída do println
+cargo test test_name              # Executar testes correspondentes ao padrão
+cargo test --lib                  # Apenas testes unitários
+cargo test --test api_test        # Apenas testes de integração
+cargo test --doc                  # Apenas doc tests
+cargo test --no-fail-fast         # Não pare na primeira falha
+cargo test -- --ignored           # Executar testes ignorados
 ```
 
-## Best Practices
+## Boas Práticas
 
-**DO:**
-- Write tests FIRST (TDD)
-- Use `#[cfg(test)]` modules for unit tests
-- Test behavior, not implementation
-- Use descriptive test names that explain the scenario
-- Prefer `assert_eq!` over `assert!` for better error messages
-- Use `?` in tests that return `Result` for cleaner error output
-- Keep tests independent — no shared mutable state
+**FAÇA:**
+- Escreva os testes PRIMEIRO (TDD)
+- Use módulos `#[cfg(test)]` para testes unitários
+- Teste comportamento, não implementação
+- Use nomes de testes descritivos que expliquem o cenário
+- Prefira `assert_eq!` a `assert!` para melhores mensagens de erro
+- Use `?` em testes que retornam `Result` para saída de erro mais limpa
+- Mantenha os testes independentes — sem estado mutável compartilhado
 
-**DON'T:**
-- Use `#[should_panic]` when you can test `Result::is_err()` instead
-- Mock everything — prefer integration tests when feasible
-- Ignore flaky tests — fix or quarantine them
-- Use `sleep()` in tests — use channels, barriers, or `tokio::time::pause()`
-- Skip error path testing
+**NÃO FAÇA:**
+- Use `#[should_panic]` quando puder testar `Result::is_err()`
+- Mocke tudo — prefira testes de integração quando viável
+- Ignore testes instáveis — corrija ou coloque em quarentena
+- Use `sleep()` em testes — use canais, barreiras ou `tokio::time::pause()`
+- Pule testes de caminho de erro
 
-## CI Integration
+## Integração CI
 
 ```yaml
 # GitHub Actions
@@ -483,19 +483,19 @@ test:
       with:
         components: clippy, rustfmt
 
-    - name: Check formatting
+    - name: Verificar formatação
       run: cargo fmt --check
 
     - name: Clippy
       run: cargo clippy -- -D warnings
 
-    - name: Run tests
+    - name: Executar testes
       run: cargo test
 
     - uses: taiki-e/install-action@cargo-llvm-cov
 
-    - name: Coverage
+    - name: Cobertura
       run: cargo llvm-cov --fail-under-lines 80
 ```
 
-**Remember**: Tests are documentation. They show how your code is meant to be used. Write them clearly and keep them up to date.
+**Lembre-se**: Testes são documentação. Eles mostram como seu código deve ser usado. Escreva-os com clareza e mantenha-os atualizados.

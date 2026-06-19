@@ -1,76 +1,76 @@
 ---
 name: safety-guard
-description: Use this skill to prevent destructive operations when working on production systems or running agents autonomously.
+description: Use esta skill para prevenir operações destrutivas ao trabalhar em sistemas de produção ou executar agents de forma autônoma.
 metadata:
   origin: ECC
 ---
 
-# Safety Guard — Prevent Destructive Operations
+# Safety Guard — Prevenir Operações Destrutivas
 
-## When to Use
+## Quando Usar
 
-- When working on production systems
-- When agents are running autonomously (full-auto mode)
-- When you want to restrict edits to a specific directory
-- During sensitive operations (migrations, deploys, data changes)
+- Ao trabalhar em sistemas de produção
+- Quando agents estão executando de forma autônoma (modo totalmente automático)
+- Quando você quer restringir edições a um diretório específico
+- Durante operações sensíveis (migrações, deploys, alterações de dados)
 
-## How It Works
+## Como Funciona
 
-Three modes of protection:
+Três modos de proteção:
 
-### Mode 1: Careful Mode
+### Modo 1: Careful Mode (Modo Cuidadoso)
 
-Intercepts destructive commands before execution and warns:
+Intercepta comandos destrutivos antes da execução e emite avisos:
 
 ```
-Watched patterns:
-- rm -rf (especially /, ~, or project root)
+Padrões monitorados:
+- rm -rf (especialmente /, ~, ou raiz do projeto)
 - git push --force
 - git reset --hard
-- git checkout . (discard all changes)
+- git checkout . (descartar todas as alterações)
 - DROP TABLE / DROP DATABASE
 - docker system prune
 - kubectl delete
 - chmod 777
 - sudo rm
-- npm publish (accidental publishes)
-- Any command with --no-verify
+- npm publish (publicações acidentais)
+- Qualquer comando com --no-verify
 ```
 
-When detected: shows what the command does, asks for confirmation, suggests safer alternative.
+Quando detectado: mostra o que o comando faz, solicita confirmação, sugere alternativa mais segura.
 
-### Mode 2: Freeze Mode
+### Modo 2: Freeze Mode (Modo Congelado)
 
-Locks file edits to a specific directory tree:
+Bloqueia edições de arquivo em uma árvore de diretório específica:
 
 ```
 /safety-guard freeze src/components/
 ```
 
-Any Write/Edit outside `src/components/` is blocked with an explanation. Useful when you want an agent to focus on one area without touching unrelated code.
+Qualquer Write/Edit fora de `src/components/` é bloqueado com uma explicação. Útil quando você quer que um agent se concentre em uma área sem tocar em código não relacionado.
 
-### Mode 3: Guard Mode (Careful + Freeze combined)
+### Modo 3: Guard Mode (Modo Guarda — Careful + Freeze combinados)
 
-Both protections active. Maximum safety for autonomous agents.
+Ambas as proteções ativas. Segurança máxima para agents autônomos.
 
 ```
 /safety-guard guard --dir src/api/ --allow-read-all
 ```
 
-Agents can read anything but only write to `src/api/`. Destructive commands are blocked everywhere.
+Agents podem ler qualquer coisa, mas só podem escrever em `src/api/`. Comandos destrutivos são bloqueados em qualquer lugar.
 
-### Unlock
+### Desativar
 
 ```
 /safety-guard off
 ```
 
-## Implementation
+## Implementação
 
-Uses PreToolUse hooks to intercept Bash, Write, Edit, and MultiEdit tool calls. Checks the command/path against the active rules before allowing execution.
+Usa hooks PreToolUse para interceptar chamadas de ferramentas Bash, Write, Edit e MultiEdit. Verifica o comando/caminho contra as regras ativas antes de permitir a execução.
 
-## Integration
+## Integração
 
-- Enable by default for `codex -a never` sessions
-- Pair with observability risk scoring in ECC 2.0
-- Logs all blocked actions to `~/.claude/safety-guard.log`
+- Ative por padrão para sessões `codex -a never`
+- Combine com pontuação de risco de observabilidade no ECC 2.0
+- Registra todas as ações bloqueadas em `~/.claude/safety-guard.log`

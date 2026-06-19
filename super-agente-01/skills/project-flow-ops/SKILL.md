@@ -1,112 +1,112 @@
 ---
 name: project-flow-ops
-description: Operate execution flow across GitHub and Linear by triaging issues and pull requests, linking active work, and keeping GitHub public-facing while Linear remains the internal execution layer. Use when the user wants backlog control, PR triage, or GitHub-to-Linear coordination.
+description: Operar o fluxo de execução entre GitHub e Linear triando issues e pull requests, vinculando trabalho ativo e mantendo o GitHub como camada pública enquanto o Linear permanece como a camada de execução interna. Use quando o usuário quiser controle do backlog, triagem de PR ou coordenação GitHub-para-Linear.
 metadata:
   origin: ECC
 ---
 
 # Project Flow Ops
 
-This skill turns disconnected GitHub issues, PRs, and Linear tasks into one execution flow.
+Esta skill transforma issues do GitHub, PRs e tarefas do Linear desconectados em um único fluxo de execução.
 
-Use it when the problem is coordination, not coding.
+Use quando o problema for coordenação, não codificação.
 
-## When to Use
+## Quando Usar
 
-- Triage open PR or issue backlogs
-- Decide what belongs in Linear vs what should remain GitHub-only
-- Link active GitHub work to internal execution lanes
-- Classify PRs into merge, port/rebuild, close, or park
-- Audit whether review comments, CI failures, or stale issues are blocking execution
+- Triagem de backlogs abertos de PR ou issue
+- Decidir o que pertence ao Linear vs. o que deve permanecer apenas no GitHub
+- Vincular trabalho ativo do GitHub a lanes de execução internas
+- Classificar PRs em merge, port/rebuild, fechar ou estacionar
+- Auditar se comentários de revisão, falhas de CI ou issues obsoletas estão bloqueando a execução
 
-## Operating Model
+## Modelo Operacional
 
-- **GitHub** is the public and community truth
-- **Linear** is the internal execution truth for active scheduled work
-- Not every GitHub issue needs a Linear issue
-- Create or update Linear only when the work is:
-  - active
-  - delegated
-  - scheduled
-  - cross-functional
-  - important enough to track internally
+- **GitHub** é a verdade pública e da comunidade
+- **Linear** é a verdade de execução interna para trabalho agendado ativo
+- Nem toda issue do GitHub precisa de uma issue no Linear
+- Crie ou atualize o Linear apenas quando o trabalho for:
+  - ativo
+  - delegado
+  - agendado
+  - multi-funcional
+  - importante o suficiente para rastrear internamente
 
-## Core Workflow
+## Fluxo de Trabalho Principal
 
-### 1. Read the public surface first
+### 1. Leia a superfície pública primeiro
 
-Gather:
+Colete:
 
-- GitHub issue or PR state
-- author and branch status
-- review comments
-- CI status
-- linked issues
+- Estado da issue ou PR do GitHub
+- Autor e status do branch
+- Comentários de revisão
+- Status do CI
+- Issues vinculadas
 
-### 2. Classify the work
+### 2. Classifique o trabalho
 
-Every item should end up in one of these states:
+Cada item deve terminar em um desses estados:
 
-| State | Meaning |
+| Estado | Significado |
 |-------|---------|
-| Merge | self-contained, policy-compliant, ready |
-| Port/Rebuild | useful idea, but should be manually re-landed inside ECC |
-| Close | wrong direction, stale, unsafe, or duplicated |
-| Park | potentially useful, but not scheduled now |
+| Merge | autossuficiente, em conformidade com a política, pronto |
+| Port/Rebuild | ideia útil, mas deve ser reimplantada manualmente dentro do ECC |
+| Fechar | direção errada, obsoleto, inseguro ou duplicado |
+| Estacionar | potencialmente útil, mas não agendado agora |
 
-### 3. Decide whether Linear is warranted
+### 3. Decida se o Linear é justificado
 
-Create or update Linear only if:
+Crie ou atualize o Linear apenas se:
 
-- execution is actively planned
-- multiple repos or workstreams are involved
-- the work needs internal ownership or sequencing
-- the issue is part of a larger program lane
+- a execução está ativamente planejada
+- múltiplos repositórios ou workstreams estão envolvidos
+- o trabalho precisa de propriedade interna ou sequenciamento
+- a issue faz parte de uma lane de programa maior
 
-Do not mirror everything mechanically.
+Não espelhe tudo mecanicamente.
 
-### 4. Keep the two systems consistent
+### 4. Mantenha os dois sistemas consistentes
 
-When work is active:
+Quando o trabalho estiver ativo:
 
-- GitHub issue/PR should say what is happening publicly
-- Linear should track owner, priority, and execution lane internally
+- A issue/PR do GitHub deve dizer o que está acontecendo publicamente
+- O Linear deve rastrear proprietário, prioridade e lane de execução internamente
 
-When work ships or is rejected:
+Quando o trabalho for entregue ou rejeitado:
 
-- post the public resolution back to GitHub
-- mark the Linear task accordingly
+- publique a resolução pública de volta ao GitHub
+- marque a tarefa do Linear correspondentemente
 
-## Review Rules
+## Regras de Revisão
 
-- Never merge from title, summary, or trust alone; use the full diff
-- External-source features should be rebuilt inside ECC when they are valuable but not self-contained
-- CI red means classify and fix or block; do not pretend it is merge-ready
-- If the real blocker is product direction, say so instead of hiding behind tooling
+- Nunca faça merge a partir do título, resumo ou confiança sozinhos; use o diff completo
+- Features de fonte externa devem ser reconstruídas dentro do ECC quando forem valiosas mas não autossuficientes
+- CI vermelho significa classificar e corrigir ou bloquear; não finja que está pronto para merge
+- Se o bloqueador real for a direção do produto, diga isso em vez de se esconder por trás de ferramentas
 
-## Output Format
+## Formato de Saída
 
-Return:
+Retorne:
 
 ```text
-PUBLIC STATUS
-- issue / PR state
-- CI / review state
+STATUS PÚBLICO
+- estado da issue / PR
+- estado do CI / revisão
 
-CLASSIFICATION
-- merge / port-rebuild / close / park
-- one-paragraph rationale
+CLASSIFICAÇÃO
+- merge / port-rebuild / fechar / estacionar
+- justificativa em um parágrafo
 
-LINEAR ACTION
-- create / update / no Linear item needed
-- project / lane if applicable
+AÇÃO LINEAR
+- criar / atualizar / nenhum item Linear necessário
+- projeto / lane se aplicável
 
-NEXT OPERATOR ACTION
-- exact next move
+PRÓXIMA AÇÃO DO OPERADOR
+- próximo movimento exato
 ```
 
-## Good Use Cases
+## Bons Casos de Uso
 
-- "Audit the open PR backlog and tell me what to merge vs rebuild"
-- "Map GitHub issues into our ECC 1.x and ECC 2.0 program lanes"
-- "Check whether this needs a Linear issue or should stay GitHub-only"
+- "Audite o backlog de PR aberto e me diga o que fazer merge vs. reconstruir"
+- "Mapeie as issues do GitHub em nossas lanes de programa ECC 1.x e ECC 2.0"
+- "Verifique se isso precisa de uma issue no Linear ou deve ficar apenas no GitHub"

@@ -1,50 +1,50 @@
 ---
 name: rust-patterns
-description: Idiomatic Rust patterns, ownership, error handling, traits, concurrency, and best practices for building safe, performant applications.
+description: Padrões Rust idiomáticos, ownership, tratamento de erros, traits, concorrência e boas práticas para construir aplicações seguras e de alto desempenho.
 metadata:
   origin: ECC
 ---
 
-# Rust Development Patterns
+# Padrões de Desenvolvimento Rust
 
-Idiomatic Rust patterns and best practices for building safe, performant, and maintainable applications.
+Padrões Rust idiomáticos e boas práticas para construir aplicações seguras, de alto desempenho e fáceis de manter.
 
-## When to Use
+## Quando Usar
 
-- Writing new Rust code
-- Reviewing Rust code
-- Refactoring existing Rust code
-- Designing crate structure and module layout
+- Escrevendo novo código Rust
+- Revisando código Rust
+- Refatorando código Rust existente
+- Projetando estrutura de crate e organização de módulos
 
-## How It Works
+## Como Funciona
 
-This skill enforces idiomatic Rust conventions across six key areas: ownership and borrowing to prevent data races at compile time, `Result`/`?` error propagation with `thiserror` for libraries and `anyhow` for applications, enums and exhaustive pattern matching to make illegal states unrepresentable, traits and generics for zero-cost abstraction, safe concurrency via `Arc<Mutex<T>>`, channels, and async/await, and minimal `pub` surfaces organized by domain.
+Esta skill aplica convenções Rust idiomáticas em seis áreas principais: ownership e borrowing para prevenir condições de corrida em tempo de compilação, propagação de erros `Result`/`?` com `thiserror` para bibliotecas e `anyhow` para aplicações, enums e pattern matching exaustivo para tornar estados ilegais irrepresentáveis, traits e generics para abstração de custo zero, concorrência segura via `Arc<Mutex<T>>`, canais e async/await, e superfícies `pub` mínimas organizadas por domínio.
 
-## Core Principles
+## Princípios Fundamentais
 
-### 1. Ownership and Borrowing
+### 1. Ownership e Borrowing
 
-Rust's ownership system prevents data races and memory bugs at compile time.
+O sistema de ownership do Rust previne condições de corrida e bugs de memória em tempo de compilação.
 
 ```rust
-// Good: Pass references when you don't need ownership
+// Bom: Passe referências quando não precisar de ownership
 fn process(data: &[u8]) -> usize {
     data.len()
 }
 
-// Good: Take ownership only when you need to store or consume
+// Bom: Tome ownership apenas quando precisar armazenar ou consumir
 fn store(data: Vec<u8>) -> Record {
     Record { payload: data }
 }
 
-// Bad: Cloning unnecessarily to avoid borrow checker
+// Ruim: Clonagem desnecessária para evitar o borrow checker
 fn process_bad(data: &Vec<u8>) -> usize {
-    let cloned = data.clone(); // Wasteful — just borrow
+    let cloned = data.clone(); // Desperdício — apenas empreste
     cloned.len()
 }
 ```
 
-### Use `Cow` for Flexible Ownership
+### Use `Cow` para Ownership Flexível
 
 ```rust
 use std::borrow::Cow;
@@ -53,73 +53,73 @@ fn normalize(input: &str) -> Cow<'_, str> {
     if input.contains(' ') {
         Cow::Owned(input.replace(' ', "_"))
     } else {
-        Cow::Borrowed(input) // Zero-cost when no mutation needed
+        Cow::Borrowed(input) // Custo zero quando não há mutação necessária
     }
 }
 ```
 
-## Error Handling
+## Tratamento de Erros
 
-### Use `Result` and `?` — Never `unwrap()` in Production
+### Use `Result` e `?` — Nunca `unwrap()` em Produção
 
 ```rust
-// Good: Propagate errors with context
+// Bom: Propague erros com contexto
 use anyhow::{Context, Result};
 
 fn load_config(path: &str) -> Result<Config> {
     let content = std::fs::read_to_string(path)
-        .with_context(|| format!("failed to read config from {path}"))?;
+        .with_context(|| format!("falha ao ler config de {path}"))?;
     let config: Config = toml::from_str(&content)
-        .with_context(|| format!("failed to parse config from {path}"))?;
+        .with_context(|| format!("falha ao fazer parsing da config de {path}"))?;
     Ok(config)
 }
 
-// Bad: Panics on error
+// Ruim: Entra em pânico ao encontrar erro
 fn load_config_bad(path: &str) -> Config {
-    let content = std::fs::read_to_string(path).unwrap(); // Panics!
+    let content = std::fs::read_to_string(path).unwrap(); // Entra em pânico!
     toml::from_str(&content).unwrap()
 }
 ```
 
-### Library Errors with `thiserror`, Application Errors with `anyhow`
+### Erros de Biblioteca com `thiserror`, Erros de Aplicação com `anyhow`
 
 ```rust
-// Library code: structured, typed errors
+// Código de biblioteca: erros estruturados e tipados
 use thiserror::Error;
 
 #[derive(Debug, Error)]
 pub enum StorageError {
-    #[error("record not found: {id}")]
+    #[error("registro não encontrado: {id}")]
     NotFound { id: String },
-    #[error("connection failed")]
+    #[error("conexão falhou")]
     Connection(#[from] std::io::Error),
-    #[error("invalid data: {0}")]
+    #[error("dados inválidos: {0}")]
     InvalidData(String),
 }
 
-// Application code: flexible error handling
+// Código de aplicação: tratamento de erros flexível
 use anyhow::{bail, Result};
 
 fn run() -> Result<()> {
     let config = load_config("app.toml")?;
     if config.workers == 0 {
-        bail!("worker count must be > 0");
+        bail!("contagem de workers deve ser > 0");
     }
     Ok(())
 }
 ```
 
-### `Option` Combinators Over Nested Matching
+### Combinadores `Option` em vez de Matching Aninhado
 
 ```rust
-// Good: Combinator chain
+// Bom: Cadeia de combinadores
 fn find_user_email(users: &[User], id: u64) -> Option<String> {
     users.iter()
         .find(|u| u.id == id)
         .map(|u| u.email.clone())
 }
 
-// Bad: Deeply nested matching
+// Ruim: Matching profundamente aninhado
 fn find_user_email_bad(users: &[User], id: u64) -> Option<String> {
     match users.iter().find(|u| u.id == id) {
         Some(user) => match &user.email {
@@ -130,12 +130,12 @@ fn find_user_email_bad(users: &[User], id: u64) -> Option<String> {
 }
 ```
 
-## Enums and Pattern Matching
+## Enums e Pattern Matching
 
-### Model States as Enums
+### Modele Estados como Enums
 
 ```rust
-// Good: Impossible states are unrepresentable
+// Bom: Estados impossíveis são irrepresentáveis
 enum ConnectionState {
     Disconnected,
     Connecting { attempt: u32 },
@@ -155,46 +155,46 @@ fn handle(state: &ConnectionState) {
 }
 ```
 
-### Exhaustive Matching — No Catch-All for Business Logic
+### Matching Exaustivo — Sem Catch-All para Lógica de Negócio
 
 ```rust
-// Good: Handle every variant explicitly
+// Bom: Trate cada variante explicitamente
 match command {
     Command::Start => start_service(),
     Command::Stop => stop_service(),
     Command::Restart => restart_service(),
-    // Adding a new variant forces handling here
+    // Adicionar uma nova variante força o tratamento aqui
 }
 
-// Bad: Wildcard hides new variants
+// Ruim: Wildcard oculta novas variantes
 match command {
     Command::Start => start_service(),
-    _ => {} // Silently ignores Stop, Restart, and future variants
+    _ => {} // Ignora silenciosamente Stop, Restart e futuras variantes
 }
 ```
 
-## Traits and Generics
+## Traits e Generics
 
-### Accept Generics, Return Concrete Types
+### Aceite Generics, Retorne Tipos Concretos
 
 ```rust
-// Good: Generic input, concrete output
+// Bom: Entrada genérica, saída concreta
 fn read_all(reader: &mut impl Read) -> std::io::Result<Vec<u8>> {
     let mut buf = Vec::new();
     reader.read_to_end(&mut buf)?;
     Ok(buf)
 }
 
-// Good: Trait bounds for multiple constraints
+// Bom: Bounds de trait para múltiplas restrições
 fn process<T: Display + Send + 'static>(item: T) -> String {
-    format!("processed: {item}")
+    format!("processado: {item}")
 }
 ```
 
-### Trait Objects for Dynamic Dispatch
+### Trait Objects para Dispatch Dinâmico
 
 ```rust
-// Use when you need heterogeneous collections or plugin systems
+// Use quando precisar de coleções heterogêneas ou sistemas de plugin
 trait Handler: Send + Sync {
     fn handle(&self, request: &Request) -> Response;
 }
@@ -203,33 +203,33 @@ struct Router {
     handlers: Vec<Box<dyn Handler>>,
 }
 
-// Use generics when you need performance (monomorphization)
+// Use generics quando precisar de desempenho (monomorphization)
 fn fast_process<H: Handler>(handler: &H, request: &Request) -> Response {
     handler.handle(request)
 }
 ```
 
-### Newtype Pattern for Type Safety
+### Padrão Newtype para Segurança de Tipos
 
 ```rust
-// Good: Distinct types prevent mixing up arguments
+// Bom: Tipos distintos impedem mistura de argumentos
 struct UserId(u64);
 struct OrderId(u64);
 
 fn get_order(user: UserId, order: OrderId) -> Result<Order> {
-    // Can't accidentally swap user and order IDs
+    // Não é possível trocar acidentalmente IDs de usuário e pedido
     todo!()
 }
 
-// Bad: Easy to swap arguments
+// Ruim: Fácil de trocar argumentos
 fn get_order_bad(user_id: u64, order_id: u64) -> Result<Order> {
     todo!()
 }
 ```
 
-## Structs and Data Modeling
+## Structs e Modelagem de Dados
 
-### Builder Pattern for Complex Construction
+### Padrão Builder para Construção Complexa
 
 ```rust
 struct ServerConfig {
@@ -253,21 +253,21 @@ impl ServerConfigBuilder {
     }
 }
 
-// Usage: ServerConfig::builder("localhost", 8080).max_connections(200).build()
+// Uso: ServerConfig::builder("localhost", 8080).max_connections(200).build()
 ```
 
-## Iterators and Closures
+## Iteradores e Closures
 
-### Prefer Iterator Chains Over Manual Loops
+### Prefira Cadeias de Iteradores a Loops Manuais
 
 ```rust
-// Good: Declarative, lazy, composable
+// Bom: Declarativo, lazy, composável
 let active_emails: Vec<String> = users.iter()
     .filter(|u| u.is_active)
     .map(|u| u.email.clone())
     .collect();
 
-// Bad: Imperative accumulation
+// Ruim: Acumulação imperativa
 let mut active_emails = Vec::new();
 for user in &users {
     if user.is_active {
@@ -276,21 +276,21 @@ for user in &users {
 }
 ```
 
-### Use `collect()` with Type Annotation
+### Use `collect()` com Anotação de Tipo
 
 ```rust
-// Collect into different types
+// Colete em tipos diferentes
 let names: Vec<_> = items.iter().map(|i| &i.name).collect();
 let lookup: HashMap<_, _> = items.iter().map(|i| (i.id, i)).collect();
 let combined: String = parts.iter().copied().collect();
 
-// Collect Results — short-circuits on first error
+// Colete Results — curto-circuita no primeiro erro
 let parsed: Result<Vec<i32>, _> = strings.iter().map(|s| s.parse()).collect();
 ```
 
-## Concurrency
+## Concorrência
 
-### `Arc<Mutex<T>>` for Shared Mutable State
+### `Arc<Mutex<T>>` para Estado Mutável Compartilhado
 
 ```rust
 use std::sync::{Arc, Mutex};
@@ -299,37 +299,37 @@ let counter = Arc::new(Mutex::new(0));
 let handles: Vec<_> = (0..10).map(|_| {
     let counter = Arc::clone(&counter);
     std::thread::spawn(move || {
-        let mut num = counter.lock().expect("mutex poisoned");
+        let mut num = counter.lock().expect("mutex envenenado");
         *num += 1;
     })
 }).collect();
 
 for handle in handles {
-    handle.join().expect("worker thread panicked");
+    handle.join().expect("thread worker entrou em pânico");
 }
 ```
 
-### Channels for Message Passing
+### Canais para Passagem de Mensagens
 
 ```rust
 use std::sync::mpsc;
 
-let (tx, rx) = mpsc::sync_channel(16); // Bounded channel with backpressure
+let (tx, rx) = mpsc::sync_channel(16); // Canal limitado com backpressure
 
 for i in 0..5 {
     let tx = tx.clone();
     std::thread::spawn(move || {
-        tx.send(format!("message {i}")).expect("receiver disconnected");
+        tx.send(format!("mensagem {i}")).expect("receptor desconectado");
     });
 }
-drop(tx); // Close sender so rx iterator terminates
+drop(tx); // Fecha o sender para que o iterador rx termine
 
 for msg in rx {
     println!("{msg}");
 }
 ```
 
-### Async with Tokio
+### Async com Tokio
 
 ```rust
 use tokio::time::Duration;
@@ -340,13 +340,13 @@ async fn fetch_with_timeout(url: &str) -> Result<String> {
         reqwest::get(url),
     )
     .await
-    .context("request timed out")?
-    .context("request failed")?;
+    .context("requisição expirou")?
+    .context("requisição falhou")?;
 
-    response.text().await.context("failed to read body")
+    response.text().await.context("falha ao ler corpo")
 }
 
-// Spawn concurrent tasks
+// Spawne tasks concorrentes
 async fn fetch_all(urls: Vec<String>) -> Vec<Result<String>> {
     let handles: Vec<_> = urls.into_iter()
         .map(|url| tokio::spawn(async move {
@@ -356,145 +356,145 @@ async fn fetch_all(urls: Vec<String>) -> Vec<Result<String>> {
 
     let mut results = Vec::with_capacity(handles.len());
     for handle in handles {
-        results.push(handle.await.unwrap_or_else(|e| panic!("spawned task panicked: {e}")));
+        results.push(handle.await.unwrap_or_else(|e| panic!("task spawnada entrou em pânico: {e}")));
     }
     results
 }
 ```
 
-## Unsafe Code
+## Código Unsafe
 
-### When Unsafe Is Acceptable
+### Quando Unsafe é Aceitável
 
 ```rust
-// Acceptable: FFI boundary with documented invariants (Rust 2024+)
+// Aceitável: Limite de FFI com invariantes documentados (Rust 2024+)
 /// # Safety
-/// `ptr` must be a valid, aligned pointer to an initialized `Widget`.
+/// `ptr` deve ser um ponteiro válido e alinhado para um `Widget` inicializado.
 unsafe fn widget_from_raw<'a>(ptr: *const Widget) -> &'a Widget {
-    // SAFETY: caller guarantees ptr is valid and aligned
+    // SAFETY: o chamador garante que ptr é válido e alinhado
     unsafe { &*ptr }
 }
 
-// Acceptable: Performance-critical path with proof of correctness
-// SAFETY: index is always < len due to the loop bound
+// Aceitável: Caminho crítico de desempenho com prova de correção
+// SAFETY: index é sempre < len devido ao limite do loop
 unsafe { slice.get_unchecked(index) }
 ```
 
-### When Unsafe Is NOT Acceptable
+### Quando Unsafe NÃO é Aceitável
 
 ```rust
-// Bad: Using unsafe to bypass borrow checker
-// Bad: Using unsafe for convenience
-// Bad: Using unsafe without a Safety comment
-// Bad: Transmuting between unrelated types
+// Ruim: Usar unsafe para ignorar o borrow checker
+// Ruim: Usar unsafe por conveniência
+// Ruim: Usar unsafe sem comentário Safety
+// Ruim: Transmutar entre tipos não relacionados
 ```
 
-## Module System and Crate Structure
+## Sistema de Módulos e Estrutura de Crate
 
-### Organize by Domain, Not by Type
+### Organize por Domínio, Não por Tipo
 
 ```text
 my_app/
 ├── src/
 │   ├── main.rs
 │   ├── lib.rs
-│   ├── auth/          # Domain module
+│   ├── auth/          # Módulo de domínio
 │   │   ├── mod.rs
 │   │   ├── token.rs
 │   │   └── middleware.rs
-│   ├── orders/        # Domain module
+│   ├── orders/        # Módulo de domínio
 │   │   ├── mod.rs
 │   │   ├── model.rs
 │   │   └── service.rs
-│   └── db/            # Infrastructure
+│   └── db/            # Infraestrutura
 │       ├── mod.rs
 │       └── pool.rs
-├── tests/             # Integration tests
+├── tests/             # Testes de integração
 ├── benches/           # Benchmarks
 └── Cargo.toml
 ```
 
-### Visibility — Expose Minimally
+### Visibilidade — Exponha Minimamente
 
 ```rust
-// Good: pub(crate) for internal sharing
+// Bom: pub(crate) para compartilhamento interno
 pub(crate) fn validate_input(input: &str) -> bool {
     !input.is_empty()
 }
 
-// Good: Re-export public API from lib.rs
+// Bom: Re-exporte a API pública de lib.rs
 pub mod auth;
 pub use auth::AuthMiddleware;
 
-// Bad: Making everything pub
-pub fn internal_helper() {} // Should be pub(crate) or private
+// Ruim: Tornar tudo pub
+pub fn internal_helper() {} // Deveria ser pub(crate) ou privado
 ```
 
-## Tooling Integration
+## Integração de Ferramentas
 
-### Essential Commands
+### Comandos Essenciais
 
 ```bash
-# Build and check
+# Build e verificação
 cargo build
-cargo check              # Fast type checking without codegen
-cargo clippy             # Lints and suggestions
-cargo fmt                # Format code
+cargo check              # Verificação de tipos rápida sem geração de código
+cargo clippy             # Lints e sugestões
+cargo fmt                # Formatar código
 
-# Testing
+# Testes
 cargo test
-cargo test -- --nocapture    # Show println output
-cargo test --lib             # Unit tests only
-cargo test --test integration # Integration tests only
+cargo test -- --nocapture    # Mostrar saída do println
+cargo test --lib             # Apenas testes unitários
+cargo test --test integration # Apenas testes de integração
 
-# Dependencies
-cargo audit              # Security audit
-cargo tree               # Dependency tree
-cargo update             # Update dependencies
+# Dependências
+cargo audit              # Auditoria de segurança
+cargo tree               # Árvore de dependências
+cargo update             # Atualizar dependências
 
-# Performance
-cargo bench              # Run benchmarks
+# Desempenho
+cargo bench              # Executar benchmarks
 ```
 
-## Quick Reference: Rust Idioms
+## Referência Rápida: Idiomas Rust
 
-| Idiom | Description |
+| Idioma | Descrição |
 |-------|-------------|
-| Borrow, don't clone | Pass `&T` instead of cloning unless ownership is needed |
-| Make illegal states unrepresentable | Use enums to model valid states only |
-| `?` over `unwrap()` | Propagate errors, never panic in library/production code |
-| Parse, don't validate | Convert unstructured data to typed structs at the boundary |
-| Newtype for type safety | Wrap primitives in newtypes to prevent argument swaps |
-| Prefer iterators over loops | Declarative chains are clearer and often faster |
-| `#[must_use]` on Results | Ensure callers handle return values |
-| `Cow` for flexible ownership | Avoid allocations when borrowing suffices |
-| Exhaustive matching | No wildcard `_` for business-critical enums |
-| Minimal `pub` surface | Use `pub(crate)` for internal APIs |
+| Empreste, não clone | Passe `&T` em vez de clonar, a menos que ownership seja necessário |
+| Torne estados ilegais irrepresentáveis | Use enums para modelar apenas estados válidos |
+| `?` em vez de `unwrap()` | Propague erros, nunca entre em pânico em código de biblioteca/produção |
+| Parse, não valide | Converta dados não estruturados em structs tipadas na fronteira |
+| Newtype para segurança de tipos | Envolva primitivos em newtypes para prevenir trocas de argumentos |
+| Prefira iteradores a loops | Cadeias declarativas são mais claras e frequentemente mais rápidas |
+| `#[must_use]` em Results | Garanta que os chamadores tratem os valores de retorno |
+| `Cow` para ownership flexível | Evite alocações quando o borrowing é suficiente |
+| Matching exaustivo | Sem wildcard `_` para enums críticos de negócio |
+| Superfície `pub` mínima | Use `pub(crate)` para APIs internas |
 
-## Anti-Patterns to Avoid
+## Anti-Padrões a Evitar
 
 ```rust
-// Bad: .unwrap() in production code
+// Ruim: .unwrap() em código de produção
 let value = map.get("key").unwrap();
 
-// Bad: .clone() to satisfy borrow checker without understanding why
+// Ruim: .clone() para satisfazer o borrow checker sem entender por quê
 let data = expensive_data.clone();
 process(&original, &data);
 
-// Bad: Using String when &str suffices
-fn greet(name: String) { /* should be &str */ }
+// Ruim: Usar String quando &str é suficiente
+fn greet(name: String) { /* deveria ser &str */ }
 
-// Bad: Box<dyn Error> in libraries (use thiserror instead)
+// Ruim: Box<dyn Error> em bibliotecas (use thiserror)
 fn parse(input: &str) -> Result<Data, Box<dyn std::error::Error>> { todo!() }
 
-// Bad: Ignoring must_use warnings
-let _ = validate(input); // Silently discarding a Result
+// Ruim: Ignorar avisos must_use
+let _ = validate(input); // Descartando silenciosamente um Result
 
-// Bad: Blocking in async context
+// Ruim: Bloquear em contexto async
 async fn bad_async() {
-    std::thread::sleep(Duration::from_secs(1)); // Blocks the executor!
+    std::thread::sleep(Duration::from_secs(1)); // Bloqueia o executor!
     // Use: tokio::time::sleep(Duration::from_secs(1)).await;
 }
 ```
 
-**Remember**: If it compiles, it's probably correct — but only if you avoid `unwrap()`, minimize `unsafe`, and let the type system work for you.
+**Lembre-se**: Se compila, provavelmente está correto — mas apenas se você evitar `unwrap()`, minimizar `unsafe` e deixar o sistema de tipos trabalhar por você.

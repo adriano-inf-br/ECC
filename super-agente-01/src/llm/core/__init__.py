@@ -1,1 +1,1 @@
-"""Core module for LLM abstraction layer."""
+"""Módulo central da camada de abstração de LLM."""

@@ -1,20 +1,20 @@
 /**
- * Transcript context-size helpers for the strategic-compact hook (#2155).
+ * Auxiliares de tamanho de contexto de transcript para o hook strategic-compact (#2155).
  *
- * Reads the latest assistant `usage` record from a Claude Code session
- * transcript (JSONL) and derives a context-size signal:
+ * Lê o registro `usage` de assistant mais recente de um transcript de sessão
+ * do Claude Code (JSONL) e deriva um sinal de tamanho de contexto:
  *
  * - `input_tokens + cache_read_input_tokens + cache_creation_input_tokens`
- *   partition the prompt, so their sum is the true context size of the turn.
- * - The context window is detected from the model id (`[1m]` marker) or from
- *   the observed token count (anything above 200k implies a 1M window even
- *   when logs drop the suffix).
- * - Thresholds are window-scaled and env-overridable; re-reminders fire in
- *   fixed token "buckets" above the threshold so the suggestion only repeats
- *   after real context growth.
+ *   particionam o prompt, então sua soma é o verdadeiro tamanho de contexto do turno.
+ * - A janela de contexto é detectada a partir do id do modelo (marcador `[1m]`) ou
+ *   a partir da contagem de tokens observada (qualquer valor acima de 200k implica
+ *   uma janela de 1M mesmo quando os logs descartam o sufixo).
+ * - Os limiares são escalados pela janela e podem ser sobrescritos por variável de
+ *   ambiente; os re-lembretes disparam em "buckets" fixos de tokens acima do limiar,
+ *   de modo que a sugestão só se repita após um crescimento real do contexto.
  *
- * Only the tail of the transcript is read (latest records live at the end),
- * keeping the PreToolUse hook fast even for very large sessions.
+ * Apenas a cauda do transcript é lida (os registros mais recentes ficam no final),
+ * mantendo o hook PreToolUse rápido mesmo para sessões muito grandes.
  */
 
 const fs = require('fs');

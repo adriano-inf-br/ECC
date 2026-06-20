@@ -1,15 +1,15 @@
 /**
- * Tests for worktree project-ID mismatch fix
+ * Testes para a correção de incompatibilidade de project-ID em worktree
  *
- * Validates that detect-project.sh uses -e (not -d) for .git existence
- * checks, so that git worktrees (where .git is a file) are detected
- * correctly.
+ * Valida que detect-project.sh usa -e (não -d) para verificações de
+ * existência de .git, para que worktrees do git (onde .git é um arquivo)
+ * sejam detectados corretamente.
  *
- * Run with: node tests/hooks/detect-project-worktree.test.js
+ * Execute com: node tests/hooks/detect-project-worktree.test.js
  */
 
 
-// Skip on Windows — these tests invoke bash scripts directly
+// Pula no Windows — estes testes invocam scripts bash diretamente
 if (process.platform === 'win32') {
   console.log('Skipping bash-dependent worktree tests on Windows\n');
   process.exit(0);
@@ -43,7 +43,7 @@ function cleanupDir(dir) {
   try {
     fs.rmSync(dir, { recursive: true, force: true });
   } catch {
-    // ignore cleanup errors
+    // ignora erros de limpeza
   }
 }
 
@@ -73,7 +73,7 @@ const detectProjectPath = path.join(
 console.log('\n=== Worktree Project-ID Mismatch Tests ===\n');
 
 // ──────────────────────────────────────────────────────
-// Group 1: Content checks on detect-project.sh
+// Grupo 1: Verificações de conteúdo em detect-project.sh
 // ──────────────────────────────────────────────────────
 
 console.log('--- Content checks on detect-project.sh ---');
@@ -107,7 +107,7 @@ test('uses git -C for safe directory operations', () => {
 });
 
 // ──────────────────────────────────────────────────────
-// Group 2: Behavior test — -e vs -d
+// Grupo 2: Teste de comportamento — -e vs -d
 // ──────────────────────────────────────────────────────
 
 console.log('\n--- Behavior test: -e vs -d ---');
@@ -156,7 +156,7 @@ test('[ -e ] returns false when .git does not exist', () => {
 cleanupDir(behaviorDir);
 
 // ──────────────────────────────────────────────────────
-// Group 3: E2E test — detect-project.sh with worktree .git file
+// Grupo 3: Teste E2E — detect-project.sh com arquivo .git de worktree
 // ──────────────────────────────────────────────────────
 
 console.log('\n--- E2E: detect-project.sh with worktree .git file ---');
@@ -165,7 +165,7 @@ test('detect-project.sh sets PROJECT_NAME and non-global PROJECT_ID for worktree
   const testDir = createTempDir();
 
   try {
-    // Create a "main" repo with git init so we have real git structures
+    // Cria um repositório "main" com git init para termos estruturas reais do git
     const mainRepo = path.join(testDir, 'main-repo');
     fs.mkdirSync(mainRepo, { recursive: true });
     execSync('git init', { cwd: mainRepo, stdio: 'pipe' });
@@ -191,7 +191,7 @@ test('detect-project.sh sets PROJECT_NAME and non-global PROJECT_ID for worktree
       'linked worktree should expose .git as a file'
     );
 
-    // Source detect-project.sh from the worktree directory and capture results
+    // Faz o source de detect-project.sh a partir do diretório do worktree e captura os resultados
     const script = `
       export CLAUDE_PROJECT_DIR="${toBashPath(worktreeDir)}"
       export HOME="${toBashPath(testDir)}"
@@ -289,7 +289,7 @@ test('detect-project.sh uses the main worktree hash when no remote exists', () =
 });
 
 // ──────────────────────────────────────────────────────
-// Summary
+// Resumo
 // ──────────────────────────────────────────────────────
 
 console.log('\n=== Test Results ===');

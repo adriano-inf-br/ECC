@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 /**
- * Refactored ECC installer runtime.
+ * Runtime do instalador ECC refatorado.
  *
- * Keeps the legacy language-based install entrypoint intact while moving
- * target-specific mutation logic into testable Node code.
+ * Mantém intacto o ponto de entrada de instalação legado baseado em linguagem,
+ * ao mesmo tempo em que move a lógica de mutação específica de cada alvo para
+ * código Node testável.
  */
 
 const os = require('os');

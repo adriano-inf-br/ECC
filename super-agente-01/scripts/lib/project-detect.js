@@ -1,8 +1,8 @@
 /**
- * Project type and framework detection
+ * Detecção de tipo de projeto e framework
  *
- * Cross-platform (Windows, macOS, Linux) project type detection
- * by inspecting files in the working directory.
+ * Detecção multiplataforma (Windows, macOS, Linux) de tipo de projeto
+ * inspecionando arquivos no diretório de trabalho.
  *
  * Resolves: https://github.com/affaan-m/everything-claude-code/issues/293
  */
@@ -11,8 +11,8 @@ const fs = require('fs');
 const path = require('path');
 
 /**
- * Language detection rules.
- * Each rule checks for marker files or glob patterns in the project root.
+ * Regras de detecção de linguagem.
+ * Cada regra verifica arquivos marcadores ou padrões glob na raiz do projeto.
  */
 const LANGUAGE_RULES = [
   {
@@ -88,16 +88,16 @@ const LANGUAGE_RULES = [
 ];
 
 /**
- * Framework detection rules.
- * Checked after language detection for more specific identification.
+ * Regras de detecção de framework.
+ * Verificadas após a detecção de linguagem para identificação mais específica.
  */
 const FRAMEWORK_RULES = [
-  // Python frameworks
+  // Frameworks Python
   { framework: 'django', language: 'python', markers: ['manage.py'], packageKeys: ['django'] },
   { framework: 'fastapi', language: 'python', markers: [], packageKeys: ['fastapi'] },
   { framework: 'flask', language: 'python', markers: [], packageKeys: ['flask'] },
 
-  // JavaScript/TypeScript frameworks
+  // Frameworks JavaScript/TypeScript
   { framework: 'nextjs', language: 'typescript', markers: ['next.config.js', 'next.config.mjs', 'next.config.ts'], packageKeys: ['next'] },
   { framework: 'react', language: 'typescript', markers: [], packageKeys: ['react'] },
   { framework: 'vue', language: 'typescript', markers: ['vue.config.js'], packageKeys: ['vue'] },
@@ -110,32 +110,32 @@ const FRAMEWORK_RULES = [
   { framework: 'nuxt', language: 'typescript', markers: ['nuxt.config.js', 'nuxt.config.ts'], packageKeys: ['nuxt'] },
   { framework: 'electron', language: 'typescript', markers: [], packageKeys: ['electron'] },
 
-  // Ruby frameworks
+  // Frameworks Ruby
   { framework: 'rails', language: 'ruby', markers: ['config/routes.rb', 'bin/rails'], packageKeys: [] },
 
-  // Go frameworks
+  // Frameworks Go
   { framework: 'gin', language: 'golang', markers: [], packageKeys: ['github.com/gin-gonic/gin'] },
   { framework: 'echo', language: 'golang', markers: [], packageKeys: ['github.com/labstack/echo'] },
 
-  // Rust frameworks
+  // Frameworks Rust
   { framework: 'actix', language: 'rust', markers: [], packageKeys: ['actix-web'] },
   { framework: 'axum', language: 'rust', markers: [], packageKeys: ['axum'] },
 
-  // Java frameworks
+  // Frameworks Java
   { framework: 'spring', language: 'java', markers: [], packageKeys: ['spring-boot', 'org.springframework'] },
 
-  // PHP frameworks
+  // Frameworks PHP
   { framework: 'laravel', language: 'php', markers: ['artisan'], packageKeys: ['laravel/framework'] },
   { framework: 'symfony', language: 'php', markers: ['symfony.lock'], packageKeys: ['symfony/framework-bundle'] },
 
-  // Elixir frameworks
+  // Frameworks Elixir
   { framework: 'phoenix', language: 'elixir', markers: [], packageKeys: ['phoenix'] }
 ];
 
 /**
- * Check if a file exists relative to the project directory
- * @param {string} projectDir - Project root directory
- * @param {string} filePath - Relative file path
+ * Verifica se um arquivo existe relativo ao diretório do projeto
+ * @param {string} projectDir - Diretório raiz do projeto
+ * @param {string} filePath - Caminho de arquivo relativo
  * @returns {boolean}
  */
 function fileExists(projectDir, filePath) {
@@ -147,9 +147,9 @@ function fileExists(projectDir, filePath) {
 }
 
 /**
- * Check if any file with given extension exists in the project root (non-recursive, top-level only)
- * @param {string} projectDir - Project root directory
- * @param {string[]} extensions - File extensions to check
+ * Verifica se algum arquivo com a extensão dada existe na raiz do projeto (não recursivo, apenas nível superior)
+ * @param {string} projectDir - Diretório raiz do projeto
+ * @param {string[]} extensions - Extensões de arquivo a verificar
  * @returns {boolean}
  */
 function hasFileWithExtension(projectDir, extensions) {
@@ -166,9 +166,9 @@ function hasFileWithExtension(projectDir, extensions) {
 }
 
 /**
- * Read and parse package.json dependencies
- * @param {string} projectDir - Project root directory
- * @returns {string[]} Array of dependency names
+ * Lê e faz o parse das dependências do package.json
+ * @param {string} projectDir - Diretório raiz do projeto
+ * @returns {string[]} Array de nomes de dependências
  */
 function getPackageJsonDeps(projectDir) {
   try {
@@ -182,9 +182,9 @@ function getPackageJsonDeps(projectDir) {
 }
 
 /**
- * Read requirements.txt or pyproject.toml for Python package names
- * @param {string} projectDir - Project root directory
- * @returns {string[]} Array of dependency names (lowercase)
+ * Lê requirements.txt ou pyproject.toml para obter nomes de pacotes Python
+ * @param {string} projectDir - Diretório raiz do projeto
+ * @returns {string[]} Array de nomes de dependências (minúsculas)
  */
 function getPythonDeps(projectDir) {
   const deps = [];
@@ -206,10 +206,10 @@ function getPythonDeps(projectDir) {
       });
     }
   } catch {
-    /* ignore */
+    /* ignorar */
   }
 
-  // pyproject.toml — simple extraction of dependency names
+  // pyproject.toml — extração simples de nomes de dependências
   try {
     const tomlPath = path.join(projectDir, 'pyproject.toml');
     if (fs.existsSync(tomlPath)) {
@@ -228,16 +228,16 @@ function getPythonDeps(projectDir) {
       }
     }
   } catch {
-    /* ignore */
+    /* ignorar */
   }
 
   return deps;
 }
 
 /**
- * Read go.mod for Go module dependencies
- * @param {string} projectDir - Project root directory
- * @returns {string[]} Array of module paths
+ * Lê go.mod para obter as dependências de módulo Go
+ * @param {string} projectDir - Diretório raiz do projeto
+ * @returns {string[]} Array de caminhos de módulo
  */
 function getGoDeps(projectDir) {
   try {
@@ -262,9 +262,9 @@ function getGoDeps(projectDir) {
 }
 
 /**
- * Read Cargo.toml for Rust crate dependencies
- * @param {string} projectDir - Project root directory
- * @returns {string[]} Array of crate names
+ * Lê Cargo.toml para obter as dependências de crate Rust
+ * @param {string} projectDir - Diretório raiz do projeto
+ * @returns {string[]} Array de nomes de crate
  */
 function getRustDeps(projectDir) {
   try {
@@ -272,7 +272,7 @@ function getRustDeps(projectDir) {
     if (!fs.existsSync(cargoPath)) return [];
     const content = fs.readFileSync(cargoPath, 'utf8');
     const deps = [];
-    // Match [dependencies] and [dev-dependencies] sections
+    // Casa as seções [dependencies] e [dev-dependencies]
     const sections = content.match(/\[(dev-)?dependencies\]([\s\S]*?)(?=\n\[|$)/g);
     if (sections) {
       sections.forEach(section => {
@@ -291,9 +291,9 @@ function getRustDeps(projectDir) {
 }
 
 /**
- * Read composer.json for PHP package dependencies
- * @param {string} projectDir - Project root directory
- * @returns {string[]} Array of package names
+ * Lê composer.json para obter as dependências de pacote PHP
+ * @param {string} projectDir - Diretório raiz do projeto
+ * @returns {string[]} Array de nomes de pacote
  */
 function getComposerDeps(projectDir) {
   try {
@@ -307,9 +307,9 @@ function getComposerDeps(projectDir) {
 }
 
 /**
- * Read mix.exs for Elixir dependencies (simple pattern match)
- * @param {string} projectDir - Project root directory
- * @returns {string[]} Array of dependency atom names
+ * Lê mix.exs para obter as dependências Elixir (casamento de padrão simples)
+ * @param {string} projectDir - Diretório raiz do projeto
+ * @returns {string[]} Array de nomes de átomo de dependência
  */
 function getElixirDeps(projectDir) {
   try {
@@ -328,8 +328,8 @@ function getElixirDeps(projectDir) {
 }
 
 /**
- * Detect project languages and frameworks
- * @param {string} [projectDir] - Project directory (defaults to cwd)
+ * Detecta as linguagens e frameworks do projeto
+ * @param {string} [projectDir] - Diretório do projeto (padrão: cwd)
  * @returns {{ languages: string[], frameworks: string[], primary: string, projectDir: string }}
  */
 function detectProjectType(projectDir) {
@@ -337,7 +337,7 @@ function detectProjectType(projectDir) {
   const languages = [];
   const frameworks = [];
 
-  // Step 1: Detect languages
+  // Passo 1: Detectar linguagens
   for (const rule of LANGUAGE_RULES) {
     const hasMarker = rule.markers.some(m => fileExists(projectDir, m));
     const hasExt = rule.extensions.length > 0 && hasFileWithExtension(projectDir, rule.extensions);
@@ -347,13 +347,13 @@ function detectProjectType(projectDir) {
     }
   }
 
-  // Deduplicate: if both typescript and javascript detected, keep typescript
+  // Remover duplicatas: se detectados typescript e javascript, manter typescript
   if (languages.includes('typescript') && languages.includes('javascript')) {
     const idx = languages.indexOf('javascript');
     if (idx !== -1) languages.splice(idx, 1);
   }
 
-  // Step 2: Detect frameworks based on markers and dependencies
+  // Passo 2: Detectar frameworks com base em marcadores e dependências
   const npmDeps = getPackageJsonDeps(projectDir);
   const pyDeps = getPythonDeps(projectDir);
   const goDeps = getGoDeps(projectDir);
@@ -362,10 +362,10 @@ function detectProjectType(projectDir) {
   const elixirDeps = getElixirDeps(projectDir);
 
   for (const rule of FRAMEWORK_RULES) {
-    // Check marker files
+    // Verificar arquivos marcadores
     const hasMarker = rule.markers.some(m => fileExists(projectDir, m));
 
-    // Check package dependencies
+    // Verificar dependências de pacote
     let hasDep = false;
     if (rule.packageKeys.length > 0) {
       let depList = [];
@@ -390,12 +390,12 @@ function detectProjectType(projectDir) {
           depList = elixirDeps;
           break;
       }
-      // Boundary-aware match: a dependency matches a packageKey only when it
-      // equals the key, or the key is a prefix immediately followed by a
-      // delimiter (/ . _ -). Plain substring matching wrongly classified
-      // `preact` / `reactive` as `react`. This still matches the real cases:
-      // react-dom, @remix-run/node, spring-boot-starter, org.springframework.boot,
-      // github.com/labstack/echo/v4, phoenix_live_view.
+      // Casamento sensível a limites: uma dependência casa com um packageKey
+      // apenas quando é igual à chave, ou a chave é um prefixo imediatamente
+      // seguido por um delimitador (/ . _ -). O casamento por substring simples
+      // classificava erroneamente `preact` / `reactive` como `react`. Isso ainda
+      // casa os casos reais: react-dom, @remix-run/node, spring-boot-starter,
+      // org.springframework.boot, github.com/labstack/echo/v4, phoenix_live_view.
       hasDep = rule.packageKeys.some(key => {
         const k = key.toLowerCase();
         return depList.some(dep => {
@@ -411,7 +411,7 @@ function detectProjectType(projectDir) {
     }
   }
 
-  // Step 3: Determine primary type
+  // Passo 3: Determinar o tipo primário
   let primary = 'unknown';
   if (frameworks.length > 0) {
     primary = frameworks[0];
@@ -419,7 +419,7 @@ function detectProjectType(projectDir) {
     primary = languages[0];
   }
 
-  // Determine if fullstack (both frontend and backend languages)
+  // Determinar se é fullstack (linguagens frontend e backend)
   const frontendSignals = ['react', 'vue', 'angular', 'svelte', 'nextjs', 'nuxt', 'astro', 'remix'];
   const backendSignals = ['django', 'fastapi', 'flask', 'express', 'nestjs', 'rails', 'spring', 'laravel', 'phoenix', 'gin', 'echo', 'actix', 'axum'];
   const hasFrontend = frameworks.some(f => frontendSignals.includes(f));
@@ -441,7 +441,7 @@ module.exports = {
   detectProjectType,
   LANGUAGE_RULES,
   FRAMEWORK_RULES,
-  // Exported for testing
+  // Exportado para testes
   getPackageJsonDeps,
   getPythonDeps,
   getGoDeps,

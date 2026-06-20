@@ -1,5 +1,5 @@
 /**
- * Tests for the SQLite-backed ECC state store and CLI commands.
+ * Testes para o state store do ECC baseado em SQLite e os comandos de CLI.
  */
 
 const assert = require('assert');

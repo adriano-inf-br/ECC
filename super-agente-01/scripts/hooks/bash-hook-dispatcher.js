@@ -122,11 +122,11 @@ function normalizeHookResult(previousRaw, output) {
 
 function runHooks(rawInput, hooks) {
   let currentRaw = rawInput;
-  // Track whether a sub-hook deliberately produced stdout (a string or
-  // {stdout}) versus currentRaw still being the untouched input event.
-  // Echoing the unmodified input event back to stdout fails Claude Code's
-  // hook-output JSON schema validation ("(root): Invalid input"), so in the
-  // pass-through case we must emit nothing instead.
+  // Acompanha se um sub-hook produziu stdout deliberadamente (uma string ou
+  // {stdout}) versus currentRaw ainda sendo o evento de entrada intocado.
+  // Repassar o evento de entrada não modificado de volta para o stdout falha na
+  // validação de schema JSON da saída de hook do Claude Code ("(root): Invalid input"),
+  // então no caso de pass-through devemos emitir nada.
   let rawModified = false;
   let stderr = '';
   let additionalContext = '';

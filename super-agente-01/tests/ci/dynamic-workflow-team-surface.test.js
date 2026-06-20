@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Validate the dynamic workflow and team-orchestration public surface.
+ * Valida a superfície pública do fluxo de trabalho dinâmico e da orquestração de equipe.
  */
 
 'use strict';

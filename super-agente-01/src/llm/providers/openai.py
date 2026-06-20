@@ -1,4 +1,4 @@
-"""OpenAI provider adapter."""
+"""Adaptador de provedor OpenAI."""
 
 from __future__ import annotations
 

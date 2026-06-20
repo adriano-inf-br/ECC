@@ -1,7 +1,7 @@
 """
-LLM Abstraction Layer
+Camada de Abstração de LLM
 
-Provider-agnostic interface for multiple LLM backends.
+Interface agnóstica de provedor para múltiplos backends de LLM.
 """
 
 from llm.core.interface import LLMProvider

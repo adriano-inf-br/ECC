@@ -121,10 +121,10 @@ function determineInstallCwd(record, repoRoot) {
   return repoRoot;
 }
 
-// Recognized ECC package names. A repo root is only trusted to run its
-// install-apply.js if its package.json identifies it as ECC — otherwise a
-// cloned project that ships a nested `evil/{package.json,scripts/install-apply.js}`
-// could drive auto-update into executing attacker code (GHSA-hfpv-w6mp-5g95).
+// Nomes de pacote ECC reconhecidos. Um repo root só é confiável para executar seu
+// install-apply.js se seu package.json o identificar como ECC — caso contrário, um
+// projeto clonado que inclua um `evil/{package.json,scripts/install-apply.js}` aninhado
+// poderia levar o auto-update a executar código do atacante (GHSA-hfpv-w6mp-5g95).
 const ECC_PACKAGE_NAMES = new Set(['ecc-universal', 'everything-claude-code']);
 
 function validateRepoRoot(repoRoot) {

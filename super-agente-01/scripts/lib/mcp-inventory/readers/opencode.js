@@ -4,12 +4,12 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 
-// OpenCode stores MCP servers under "mcp" in ~/.config/opencode/opencode.json.
-// Shape differs from Claude/Codex:
+// O opencode armazena os servidores MCP em "mcp" no
+// ~/.config/opencode/opencode.json. O formato difere do Claude/Codex:
 //   { type: "local"|"remote", command: ["npx","-y","pkg"], environment: {},
 //     enabled: bool, url: "https://..." }
-// command is an ARRAY (binary + args combined); environment (not env) holds
-// secrets; type "local" => stdio, "remote" => http/sse.
+// command é um ARRAY (binário + args combinados); environment (não env) guarda
+// os segredos; type "local" => stdio, "remote" => http/sse.
 function mapOpencodeServer(name, raw, configPath) {
   if (!raw || typeof raw !== 'object') {
     return null;

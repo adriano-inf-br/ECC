@@ -19,21 +19,21 @@ const PLUGIN_ROOT_SEGMENTS = [
 ];
 
 /**
- * Resolve the ECC source root directory.
+ * Resolve o diretório raiz do código-fonte do ECC.
  *
- * Tries, in order:
- *   1. CLAUDE_PLUGIN_ROOT env var (set by Claude Code for hooks, or by user)
- *   2. Standard install location (~/.claude/) — when scripts exist there
- *   3. Known plugin roots under ~/.claude/plugins/ (current + legacy slugs)
- *   4. Plugin cache auto-detection — scans ~/.claude/plugins/cache/{ecc,everything-claude-code}/
- *   5. Fallback to ~/.claude/ (original behaviour)
+ * Tenta, na ordem:
+ *   1. variável de ambiente CLAUDE_PLUGIN_ROOT (definida pelo Claude Code para hooks, ou pelo usuário)
+ *   2. Local de instalação padrão (~/.claude/) — quando há scripts ali
+ *   3. Raízes de plugin conhecidas em ~/.claude/plugins/ (slugs atual + legado)
+ *   4. Detecção automática no cache de plugins — varre ~/.claude/plugins/cache/{ecc,everything-claude-code}/
+ *   5. Fallback para ~/.claude/ (comportamento original)
  *
  * @param {object} [options]
- * @param {string} [options.homeDir]  Override home directory (for testing)
- * @param {string} [options.envRoot]  Override CLAUDE_PLUGIN_ROOT (for testing)
- * @param {string} [options.probe]    Relative path used to verify a candidate root
- *                                    contains ECC scripts. Default: 'scripts/lib/utils.js'
- * @returns {string} Resolved ECC root path
+ * @param {string} [options.homeDir]  Sobrescreve o diretório home (para testes)
+ * @param {string} [options.envRoot]  Sobrescreve CLAUDE_PLUGIN_ROOT (para testes)
+ * @param {string} [options.probe]    Caminho relativo usado para verificar se uma raiz candidata
+ *                                    contém scripts do ECC. Padrão: 'scripts/lib/utils.js'
+ * @returns {string} Caminho da raiz do ECC resolvido
  */
 function resolveEccRoot(options = {}) {
   const envRoot = options.envRoot !== undefined
@@ -48,13 +48,13 @@ function resolveEccRoot(options = {}) {
   const claudeDir = path.join(homeDir, '.claude');
   const probe = options.probe || path.join('scripts', 'lib', 'utils.js');
 
-  // Standard install — files are copied directly into ~/.claude/
+  // Instalação padrão — os arquivos são copiados diretamente para ~/.claude/
   if (fs.existsSync(path.join(claudeDir, probe))) {
     return claudeDir;
   }
 
-  // Exact legacy plugin install locations. These preserve backwards
-  // compatibility without scanning arbitrary plugin trees.
+  // Locais exatos de instalação de plugin legado. Eles preservam a
+  // compatibilidade retroativa sem varrer árvores de plugin arbitrárias.
   const legacyPluginRoots = PLUGIN_ROOT_SEGMENTS.map((segments) =>
     path.join(claudeDir, 'plugins', ...segments)
   );
@@ -65,7 +65,7 @@ function resolveEccRoot(options = {}) {
     }
   }
 
-  // Plugin cache — Claude Code stores marketplace plugins under
+  // Cache de plugins — o Claude Code armazena plugins de marketplace em
   // ~/.claude/plugins/cache/<plugin-name>/<org>/<version>/
   try {
     for (const slug of PLUGIN_CACHE_SLUGS) {
@@ -93,20 +93,20 @@ function resolveEccRoot(options = {}) {
       }
     }
   } catch {
-    // Plugin cache doesn't exist or isn't readable — continue to fallback
+    // O cache de plugins não existe ou não pode ser lido — segue para o fallback
   }
 
   return claudeDir;
 }
 
 /**
- * Compact inline version for embedding in command .md code blocks.
+ * Versão inline compacta para embutir em blocos de código de comandos .md.
  *
- * This is the minified form of resolveEccRoot() suitable for use in
- * node -e "..." scripts where require() is not available before the
- * root is known.
+ * Esta é a forma minificada de resolveEccRoot() adequada para uso em
+ * scripts node -e "..." onde require() não está disponível antes de a
+ * raiz ser conhecida.
  *
- * Usage in commands:
+ * Uso em comandos:
  *   const _r = <paste INLINE_RESOLVE>;
  *   const sm = require(_r + '/scripts/lib/session-manager');
  */

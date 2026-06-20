@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Validate safety guardrails on agent-facing instruction artifacts.
+ * Valida as proteções de segurança nos artefatos de instrução voltados a agents.
  */
 
 const assert = require('assert');

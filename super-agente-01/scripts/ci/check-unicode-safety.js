@@ -115,29 +115,29 @@ function isDangerousInvisibleCodePoint(codePoint) {
     (codePoint >= 0x2066 && codePoint <= 0x2069) ||
     (codePoint >= 0xFE00 && codePoint <= 0xFE0F) ||
     (codePoint >= 0xE0100 && codePoint <= 0xE01EF) ||
-    // Unicode Tag block (U+E0000–U+E007F). Tag characters were proposed
-    // for language tagging in Unicode 3.1 and have been deprecated since
-    // Unicode 5.1, so no legitimate text uses them. They are the canonical
-    // vector for "ASCII smuggling" / "Tag smuggling" prompt injection:
-    // an attacker hides instructions inside ASCII-looking strings (PR
-    // bodies, SKILL.md, frontmatter), the LLM consumes the tag bytes,
-    // and the human reviewer sees nothing.
+    // Bloco Unicode Tag (U+E0000–U+E007F). Caracteres de tag foram propostos
+    // para marcação de idioma no Unicode 3.1 e estão obsoletos desde o
+    // Unicode 5.1, portanto nenhum texto legítimo os utiliza. São o vetor
+    // canônico de prompt injection por "ASCII smuggling" / "Tag smuggling":
+    // um atacante esconde instruções dentro de strings que parecem ASCII (corpos
+    // de PR, SKILL.md, frontmatter), o LLM consome os bytes de tag,
+    // e o revisor humano não vê nada.
     (codePoint >= 0xE0000 && codePoint <= 0xE007F) ||
-    // U+180E MONGOLIAN VOWEL SEPARATOR — formerly classified as a space
-    // separator, reclassified as a format control in Unicode 6.3; renders
-    // as zero-width and routinely abused for homograph / smuggling.
+    // U+180E MONGOLIAN VOWEL SEPARATOR — antes classificado como separador
+    // de espaço, reclassificado como controle de formato no Unicode 6.3; renderiza
+    // com largura zero e é rotineiramente abusado para homógrafo / smuggling.
     codePoint === 0x180E ||
-    // U+115F / U+1160 HANGUL CHOSEONG/JUNGSEONG FILLER — zero-width fillers
-    // used in Korean text shaping; abused as invisible characters.
+    // U+115F / U+1160 HANGUL CHOSEONG/JUNGSEONG FILLER — preenchedores de largura
+    // zero usados na formatação de texto coreano; abusados como caracteres invisíveis.
     codePoint === 0x115F ||
     codePoint === 0x1160 ||
-    // U+2061–U+2064 invisible math operators (FUNCTION APPLICATION,
-    // INVISIBLE TIMES, INVISIBLE SEPARATOR, INVISIBLE PLUS). Zero-width
-    // and not used outside math typesetting; legitimate Markdown / source
-    // does not contain them.
+    // U+2061–U+2064 operadores matemáticos invisíveis (FUNCTION APPLICATION,
+    // INVISIBLE TIMES, INVISIBLE SEPARATOR, INVISIBLE PLUS). Largura zero
+    // e não usados fora da composição matemática; Markdown / código-fonte
+    // legítimo não os contém.
     (codePoint >= 0x2061 && codePoint <= 0x2064) ||
-    // U+3164 HANGUL FILLER — zero-width filler reportedly used in Discord
-    // / Twitter smuggling attacks; not used in legitimate Korean text.
+    // U+3164 HANGUL FILLER — preenchedor de largura zero supostamente usado em
+    // ataques de smuggling no Discord / Twitter; não usado em texto coreano legítimo.
     codePoint === 0x3164
   );
 }

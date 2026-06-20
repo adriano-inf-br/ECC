@@ -1,4 +1,4 @@
-"""Core type definitions for LLM abstraction layer."""
+"""Definições de tipos centrais da camada de abstração de LLM."""
 
 from __future__ import annotations
 

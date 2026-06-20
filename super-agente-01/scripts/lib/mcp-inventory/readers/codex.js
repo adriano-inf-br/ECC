@@ -4,15 +4,16 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 
-// Codex stores MCP servers in ~/.codex/config.toml as TOML tables:
+// O Codex armazena os servidores MCP no ~/.codex/config.toml como tabelas TOML:
 //   [mcp_servers.NAME]
 //   command = "npx"
 //   args = ["-y", "pkg"]
 //   url = "https://..."          # http transport
-//   [mcp_servers.NAME.env]       # secret values live here
+//   [mcp_servers.NAME.env]       # os valores secretos ficam aqui
 //   [mcp_servers.NAME.http_headers]
-// We parse with @iarna/toml when available and fall back to a minimal
-// section parser so the reader degrades gracefully without the dependency.
+// Fazemos o parse com @iarna/toml quando disponível e recorremos a um parser de
+// seções mínimo como fallback, para que o reader degrade graciosamente sem a
+// dependência.
 function loadTomlParser(parseTomlImpl) {
   if (typeof parseTomlImpl === 'function') {
     return parseTomlImpl;

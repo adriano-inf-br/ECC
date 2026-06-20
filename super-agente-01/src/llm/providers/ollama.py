@@ -1,4 +1,4 @@
-"""Ollama provider adapter for local models."""
+"""Adaptador de provedor Ollama para modelos locais."""
 
 from __future__ import annotations
 

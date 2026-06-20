@@ -55,7 +55,7 @@ function readValue(args, index, flagName) {
   return value;
 }
 
-// Boolean flags: map flag string → setter(parsed)
+// Flags booleanas: mapeia a string da flag → setter(parsed)
 const BOOL_FLAGS = new Map([
   ['--help',    p => { p.help = true; }],
   ['-h',        p => { p.help = true; }],

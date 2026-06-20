@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Validate the Codex-facing .agents/skills surface.
+ * Valida a superfície .agents/skills voltada ao Codex.
  */
 
 const assert = require('assert');

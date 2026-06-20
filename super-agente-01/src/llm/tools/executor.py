@@ -1,4 +1,4 @@
-"""Tool executor for handling tool calls from LLM responses."""
+"""Executor de tools para tratar chamadas de tools das respostas de LLM."""
 
 from __future__ import annotations
 

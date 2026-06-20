@@ -33,7 +33,7 @@ function cleanup(dir) {
   try {
     fs.rmSync(dir, { recursive: true, force: true });
   } catch {
-    // ignore cleanup errors
+    // ignora erros de limpeza
   }
 }
 

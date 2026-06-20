@@ -24,12 +24,13 @@ function resolveStateStorePath(options = {}) {
 }
 
 /**
- * Wraps a sql.js Database with a better-sqlite3-compatible API surface so
- * that the rest of the state-store code (migrations.js, queries.js) can
- * operate without knowing which driver is in use.
+ * Encapsula um Database do sql.js com uma superfície de API compatível com
+ * better-sqlite3, de modo que o restante do código do state-store
+ * (migrations.js, queries.js) possa operar sem saber qual driver está em uso.
  *
- * IMPORTANT: sql.js db.export() implicitly ends any active transaction, so
- * we must defer all disk writes until after the transaction commits.
+ * IMPORTANTE: o db.export() do sql.js encerra implicitamente qualquer transação
+ * ativa, então devemos adiar todas as gravações em disco até que a transação
+ * seja confirmada (commit).
  */
 function wrapSqlJsDatabase(rawDb, dbPath) {
   let inTransaction = false;
@@ -53,7 +54,7 @@ function wrapSqlJsDatabase(rawDb, dbPath) {
       try {
         rawDb.run(`PRAGMA ${pragmaStr}`);
       } catch (_error) {
-        // Ignore unsupported pragmas (e.g. WAL for in-memory databases).
+        // Ignora pragmas não suportados (ex.: WAL para bancos de dados em memória).
       }
     },
 
@@ -121,7 +122,7 @@ function wrapSqlJsDatabase(rawDb, dbPath) {
           try {
             rawDb.run('ROLLBACK');
           } catch (_rollbackError) {
-            // Transaction may already be rolled back.
+            // A transação pode já ter sido revertida (rollback).
           }
           inTransaction = false;
           throw error;
@@ -156,7 +157,7 @@ async function openDatabase(SQL, dbPath) {
   try {
     db.pragma('journal_mode = WAL');
   } catch (_error) {
-    // Some SQLite environments reject WAL for in-memory or readonly contexts.
+    // Alguns ambientes SQLite rejeitam WAL em contextos em memória ou somente leitura.
   }
   return db;
 }

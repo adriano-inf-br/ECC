@@ -1,4 +1,4 @@
-"""Prompt module for prompt building and normalization."""
+"""Módulo de prompt para construção e normalização de prompts."""
 
 from llm.prompt.builder import PromptBuilder, adapt_messages_for_provider, get_provider_builder
 from llm.prompt.templates import (

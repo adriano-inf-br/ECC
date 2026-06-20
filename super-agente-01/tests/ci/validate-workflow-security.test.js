@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Validate workflow security guardrails for privileged GitHub Actions events.
+ * Valida as proteções de segurança do fluxo de trabalho para eventos privilegiados do GitHub Actions.
  */
 
 const assert = require('assert');
@@ -81,8 +81,8 @@ function run() {
     assert.match(result.stderr, /pull_request\.head\.sha/);
   })) passed++; else failed++;
 
-  // Quoted action names are valid YAML. The checkout-step filter must still
-  // inspect their `with.ref` values in privileged workflows.
+  // Nomes de action entre aspas são YAML válido. O filtro do passo de checkout ainda deve
+  // inspecionar os valores de `with.ref` deles em fluxos de trabalho privilegiados.
   if (test('rejects pull_request_target checkout when uses is double-quoted', () => {
     const result = runValidator({
       'unsafe-double-quoted.yml': `name: Unsafe\non:\n  pull_request_target:\n    branches: [main]\njobs:\n  inspect:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: "actions/checkout@v4"\n        with:\n          ref: \${{ github.event.pull_request.head.sha }}\n`,
@@ -99,10 +99,10 @@ function run() {
     assert.match(result.stderr, /pull_request\.head\.sha/);
   })) passed++; else failed++;
 
-  // `refs/pull/<N>/{head,merge}` under `pull_request_target` is the canonical
-  // privilege-escalation pattern that the standard `github.event.pull_request.head.*`
-  // expression check did not cover. Either form pulls attacker-controlled code
-  // into a privileged workflow.
+  // `refs/pull/<N>/{head,merge}` sob `pull_request_target` é o padrão canônico
+  // de escalonamento de privilégios que a verificação de expressão padrão
+  // `github.event.pull_request.head.*` não cobria. Qualquer uma das formas traz código
+  // controlado por atacante para um fluxo de trabalho privilegiado.
 
   if (test('rejects pull_request_target checkout fetching refs/pull/N/merge', () => {
     const result = runValidator({
@@ -127,18 +127,18 @@ function run() {
     assert.strictEqual(result.status, 0, result.stderr || result.stdout);
   })) passed++; else failed++;
 
-  // When a checkout step matches both the expression-based rule
-  // (`github.event.pull_request.head.sha`) and the refPattern fallback
-  // (`refs/pull/...`), only one violation should be emitted — the
-  // expression match is the more specific signal and printing both would
-  // duplicate an otherwise identical ERROR line.
+  // Quando um passo de checkout corresponde tanto à regra baseada em expressão
+  // (`github.event.pull_request.head.sha`) quanto ao fallback de refPattern
+  // (`refs/pull/...`), apenas uma violação deve ser emitida — a
+  // correspondência por expressão é o sinal mais específico e imprimir ambas
+  // duplicaria uma linha de ERROR que de outra forma seria idêntica.
 
   if (test('emits a single violation when both expressionPattern and refPattern match the same step', () => {
     const result = runValidator({
       'unsafe-pr-target-both.yml': `name: Unsafe\non:\n  pull_request_target:\njobs:\n  inspect:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n        with:\n          ref: refs/pull/\${{ github.event.pull_request.head.sha }}/merge\n          persist-credentials: false\n`,
     });
     assert.notStrictEqual(result.status, 0, 'Expected validator to fail');
-    // Count ERROR: lines for this rule's description. Should be exactly 1.
+    // Conta as linhas de ERROR: para a descrição desta regra. Deve ser exatamente 1.
     const matches = (result.stderr || '').match(/ERROR:.*pull_request_target must not checkout an untrusted pull_request head ref/g) || [];
     assert.strictEqual(matches.length, 1, `Expected exactly 1 violation, got ${matches.length}: ${result.stderr}`);
   })) passed++; else failed++;
@@ -199,13 +199,13 @@ function run() {
     assert.strictEqual(result.status, 0, result.stderr || result.stdout);
   })) passed++; else failed++;
 
-  // `permissions: write-all` is GitHub Actions' shorthand for granting every
-  // scope write access. The named-scope pattern only catches `contents: write`,
-  // `issues: write`, etc., so workflows that opt into write-all were silently
-  // exempted from the persist-credentials gate (the lifecycle-script gate
-  // already fires unconditionally for every workflow). The tests below
-  // exercise the persist-credentials path specifically — that's the gate the
-  // WRITE_ALL_PATTERN OR-clause newly activates.
+  // `permissions: write-all` é o atalho do GitHub Actions para conceder acesso de
+  // escrita a todos os escopos. O padrão de escopo nomeado só captura `contents: write`,
+  // `issues: write`, etc., então fluxos de trabalho que optam por write-all eram
+  // silenciosamente isentos do gate de persist-credentials (o gate de lifecycle-script
+  // já dispara incondicionalmente para todo fluxo de trabalho). Os testes abaixo
+  // exercitam especificamente o caminho de persist-credentials — esse é o gate que a
+  // cláusula OR de WRITE_ALL_PATTERN ativa de forma nova.
 
   if (test('rejects checkout credential persistence in workflows with permissions: write-all', () => {
     const result = runValidator({
@@ -215,9 +215,9 @@ function run() {
     assert.match(result.stderr, /write permissions must disable checkout credential persistence/);
   })) passed++; else failed++;
 
-  // Quoted YAML forms (`"write-all"` and `'write-all'`) are valid YAML for the
-  // same scalar value. Verify the WRITE_ALL_PATTERN regex covers them — without
-  // the quote markers it silently slips the same persist-credentials gate.
+  // As formas YAML entre aspas (`"write-all"` e `'write-all'`) são YAML válido para o
+  // mesmo valor escalar. Verifica se a regex WRITE_ALL_PATTERN as cobre — sem
+  // os marcadores de aspas, ela escapa silenciosamente do mesmo gate de persist-credentials.
 
   if (test('rejects double-quoted permissions: "write-all"', () => {
     const result = runValidator({

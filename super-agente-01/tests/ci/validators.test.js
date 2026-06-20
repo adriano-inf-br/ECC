@@ -19,7 +19,7 @@ const modulesSchemaPath = path.join(repoRoot, 'schemas', 'install-modules.schema
 const profilesSchemaPath = path.join(repoRoot, 'schemas', 'install-profiles.schema.json');
 const componentsSchemaPath = path.join(repoRoot, 'schemas', 'install-components.schema.json');
 
-// Test helpers
+// Funções auxiliares de teste
 function test(name, fn) {
   try {
     fn();
@@ -63,9 +63,9 @@ function stripShebang(source) {
 }
 
 /**
- * Run modified source via a temp file (avoids Windows node -e shebang issues).
- * The temp file is written inside the repo so require() can resolve node_modules.
- * @param {string} source - JavaScript source to execute
+ * Executa código-fonte modificado via um arquivo temporário (evita problemas de shebang com node -e no Windows).
+ * O arquivo temporário é escrito dentro do repositório para que require() consiga resolver node_modules.
+ * @param {string} source - código-fonte JavaScript a executar
  * @returns {{code: number, stdout: string, stderr: string}}
  */
 function runSourceViaTempFile(source) {
@@ -86,29 +86,29 @@ function runSourceViaTempFile(source) {
       stderr: err.stderr || '',
     };
   } finally {
-    try { fs.unlinkSync(tmpFile); } catch (_) { /* ignore cleanup errors */ }
+    try { fs.unlinkSync(tmpFile); } catch (_) { /* ignora erros de limpeza */ }
   }
 }
 
 /**
- * Run a validator script via a wrapper that overrides its directory constant.
- * This allows testing error cases without modifying real project files.
+ * Executa um script validador via um wrapper que sobrescreve sua constante de diretório.
+ * Isso permite testar casos de erro sem modificar arquivos reais do projeto.
  *
- * @param {string} validatorName - e.g., 'validate-agents'
- * @param {string} dirConstant - the constant name to override (e.g., 'AGENTS_DIR')
- * @param {string} overridePath - the temp directory to use
+ * @param {string} validatorName - ex.: 'validate-agents'
+ * @param {string} dirConstant - o nome da constante a sobrescrever (ex.: 'AGENTS_DIR')
+ * @param {string} overridePath - o diretório temporário a usar
  * @returns {{code: number, stdout: string, stderr: string}}
  */
 function runValidatorWithDir(validatorName, dirConstant, overridePath) {
   const validatorPath = path.join(validatorsDir, `${validatorName}.js`);
 
-  // Read the validator source, replace the directory constant, and run as a wrapper
+  // Lê o código-fonte do validador, substitui a constante de diretório e executa como um wrapper
   let source = fs.readFileSync(validatorPath, 'utf8');
 
-  // Remove the shebang line so wrappers also work against CRLF-checked-out files on Windows.
+  // Remove a linha de shebang para que os wrappers também funcionem com arquivos com checkout em CRLF no Windows.
   source = stripShebang(source);
 
-  // Replace the directory constant with our override path
+  // Substitui a constante de diretório pelo nosso caminho de sobrescrita
   const dirRegex = new RegExp(`const ${dirConstant} = .*?;`);
   source = source.replace(dirRegex, `const ${dirConstant} = ${JSON.stringify(overridePath)};`);
 
@@ -116,9 +116,9 @@ function runValidatorWithDir(validatorName, dirConstant, overridePath) {
 }
 
 /**
- * Run a validator script with multiple directory overrides.
+ * Executa um script validador com múltiplas sobrescritas de diretório.
  * @param {string} validatorName
- * @param {Record<string, string>} overrides - map of constant name to path
+ * @param {Record<string, string>} overrides - mapa de nome de constante para caminho
  */
 function runValidatorWithDirs(validatorName, overrides) {
   const validatorPath = path.join(validatorsDir, `${validatorName}.js`);
@@ -132,7 +132,7 @@ function runValidatorWithDirs(validatorName, overrides) {
 }
 
 /**
- * Run a validator script directly (tests real project)
+ * Executa um script validador diretamente (testa o projeto real)
  */
 function runValidator(validatorName) {
   const validatorPath = path.join(validatorsDir, `${validatorName}.js`);
@@ -182,14 +182,14 @@ function runCatalogValidator(overrides = {}) {
   return runSourceViaTempFile(source);
 }
 
-// Run validate-skills.js against a fixture dir, optionally passing
-// extra argv (e.g. '--strict') and env overrides (e.g.
-// CI_STRICT_SKILLS=1) so the frontmatter finding suite can exercise
-// both warn and strict modes via argv and env code paths.
+// Executa validate-skills.js contra um diretório de fixture, opcionalmente passando
+// argv extra (ex.: '--strict') e sobrescritas de env (ex.:
+// CI_STRICT_SKILLS=1) para que a suíte de detecção de frontmatter consiga exercitar
+// tanto o modo warn quanto o strict via caminhos de código de argv e env.
 //
-// Captures stderr on both success and failure (the shared
-// runSourceViaTempFile helper only surfaces stderr when the child
-// exits non-zero, which hides WARN lines in the default mode).
+// Captura o stderr tanto em sucesso quanto em falha (o auxiliar compartilhado
+// runSourceViaTempFile só expõe o stderr quando o processo filho
+// sai com código diferente de zero, o que oculta as linhas WARN no modo padrão).
 function runSkillsValidator(testDir, argv = [], envOverrides = {}) {
   const validatorPath = path.join(validatorsDir, 'validate-skills.js');
   let source = fs.readFileSync(validatorPath, 'utf8');
@@ -220,7 +220,7 @@ function runSkillsValidator(testDir, argv = [], envOverrides = {}) {
       stderr: r.stderr || '',
     };
   } finally {
-    try { fs.unlinkSync(tmpFile); } catch (_) { /* ignore */ }
+    try { fs.unlinkSync(tmpFile); } catch (_) { /* ignora */ }
   }
 }
 
@@ -832,7 +832,7 @@ function runTests() {
   if (test('fails on skill directory without SKILL.md', () => {
     const testDir = createTestDir();
     fs.mkdirSync(path.join(testDir, 'broken-skill'));
-    // No SKILL.md inside
+    // Sem SKILL.md dentro
 
     const result = runValidatorWithDir('validate-skills', 'SKILLS_DIR', testDir);
     assert.strictEqual(result.code, 1, 'Should fail on missing SKILL.md');
@@ -955,8 +955,8 @@ function runTests() {
 
   if (test('skips hidden directories under skills/', () => {
     const testDir = createTestDir();
-    // A dot-prefixed directory (e.g. .DS_Store-adjacent junk or legacy
-    // cache) must not count as a skill and must not error.
+    // Um diretório prefixado com ponto (ex.: lixo adjacente a .DS_Store ou
+    // cache legado) não deve contar como skill nem causar erro.
     fs.mkdirSync(path.join(testDir, '.cache'));
     fs.writeFileSync(path.join(testDir, '.cache', 'SKILL.md'), '# ignored');
     const real = path.join(testDir, 'real-skill');
@@ -975,7 +975,7 @@ function runTests() {
     const testDir = createTestDir();
     const skillDir = path.join(testDir, 'empty-name-skill');
     fs.mkdirSync(skillDir);
-    // `name:` key present but value is blank.
+    // chave `name:` presente, mas o valor está em branco.
     fs.writeFileSync(path.join(skillDir, 'SKILL.md'),
       '---\nname:    \ndescription: "X"\norigin: ECC\n---\n# Skill');
 
@@ -1006,7 +1006,7 @@ function runTests() {
     const testDir = createTestDir();
     const skillDir = path.join(testDir, 'indent-desc-skill');
     fs.mkdirSync(skillDir);
-    // `|-2  # note` is still a literal block scalar in YAML 1.2.
+    // `|-2  # note` ainda é um escalar de bloco literal em YAML 1.2.
     fs.writeFileSync(path.join(skillDir, 'SKILL.md'),
       '---\nname: indent-desc-skill\ndescription: |-2  # trimmed two-space indent\n    line one\n    line two\norigin: ECC\n---\n# Skill');
 
@@ -1046,10 +1046,10 @@ function runTests() {
   })) passed++; else failed++;
 
   if (test('tolerates ---trailing text outside frontmatter block', () => {
-    // A SKILL.md whose body contains a line starting with '---text'
-    // must not be parsed as frontmatter. Regression guard for
-    // closing-delimiter tightening: the old regex would greedily
-    // match '---trailing'.
+    // Um SKILL.md cujo corpo contém uma linha começando com '---text'
+    // não deve ser interpretado como frontmatter. Proteção de regressão para
+    // o aperto do delimitador de fechamento: a regex antiga casaria de forma
+    // gananciosa com '---trailing'.
     const testDir = createTestDir();
     const skillDir = path.join(testDir, 'no-frontmatter-dashes');
     fs.mkdirSync(skillDir);
@@ -1173,7 +1173,7 @@ function runTests() {
     const testDir = createTestDir();
     const agentsDir = createTestDir();
     const skillsDir = createTestDir();
-    // "Creates: `/new-table`" should NOT flag /new-table as a broken ref
+    // "Creates: `/new-table`" NÃO deve sinalizar /new-table como referência quebrada
     fs.writeFileSync(path.join(testDir, 'gen.md'),
       '# Generator\n\n→ Creates: `/new-table`\nWould create: `/new-endpoint`');
 
@@ -1203,14 +1203,14 @@ function runTests() {
     const testDir = createTestDir();
     const agentsDir = createTestDir();
     const skillsDir = createTestDir();
-    // Unclosed code block: the ``` regex won't strip it, so refs inside are checked
+    // Bloco de código não fechado: a regex de ``` não o remove, então as referências dentro são verificadas
     fs.writeFileSync(path.join(testDir, 'bad.md'),
       '# Command\n\n```\n`/phantom-cmd`\nno closing block');
 
     const result = runValidatorWithDirs('validate-commands', {
       COMMANDS_DIR: testDir, AGENTS_DIR: agentsDir, SKILLS_DIR: skillsDir
     });
-    // Unclosed code blocks are NOT stripped, so refs inside are validated
+    // Blocos de código não fechados NÃO são removidos, então as referências dentro são validadas
     assert.strictEqual(result.code, 1, 'Should check refs in unclosed code blocks');
     assert.ok(result.stderr.includes('phantom-cmd'), 'Should report broken ref from unclosed block');
     cleanupTestDir(testDir); cleanupTestDir(agentsDir); cleanupTestDir(skillsDir);
@@ -1220,7 +1220,7 @@ function runTests() {
     const testDir = createTestDir();
     const agentsDir = createTestDir();
     const skillsDir = createTestDir();
-    // Line with two command references — both should be detected
+    // Linha com duas referências de comando — ambas devem ser detectadas
     fs.writeFileSync(path.join(testDir, 'multi.md'),
       '# Multi\nUse `/ghost-a` and `/ghost-b` together.');
 
@@ -1228,7 +1228,7 @@ function runTests() {
       COMMANDS_DIR: testDir, AGENTS_DIR: agentsDir, SKILLS_DIR: skillsDir
     });
     assert.strictEqual(result.code, 1, 'Should fail on broken refs');
-    // BOTH ghost-a AND ghost-b must be reported (this was the greedy regex bug)
+    // TANTO ghost-a QUANTO ghost-b devem ser reportados (este era o bug da regex gananciosa)
     assert.ok(result.stderr.includes('ghost-a'), 'Should report first ref /ghost-a');
     assert.ok(result.stderr.includes('ghost-b'), 'Should report second ref /ghost-b');
     cleanupTestDir(testDir); cleanupTestDir(agentsDir); cleanupTestDir(skillsDir);
@@ -1255,7 +1255,7 @@ function runTests() {
     const testDir = createTestDir();
     const agentsDir = createTestDir();
     const skillsDir = createTestDir();
-    // "real-cmd" exists, "fake-cmd" does not
+    // "real-cmd" existe, "fake-cmd" não
     fs.writeFileSync(path.join(testDir, 'real-cmd.md'), '# Real\nA real command.');
     fs.writeFileSync(path.join(testDir, 'mixed.md'),
       '# Mixed\nRun `/real-cmd` then `/fake-cmd`.');
@@ -1265,7 +1265,7 @@ function runTests() {
     });
     assert.strictEqual(result.code, 1, 'Should fail for the fake ref');
     assert.ok(result.stderr.includes('fake-cmd'), 'Should report /fake-cmd');
-    // real-cmd should NOT appear in errors
+    // real-cmd NÃO deve aparecer nos erros
     assert.ok(!result.stderr.includes('real-cmd'), 'Should not report valid /real-cmd');
     cleanupTestDir(testDir); cleanupTestDir(agentsDir); cleanupTestDir(skillsDir);
   })) passed++; else failed++;
@@ -1274,7 +1274,7 @@ function runTests() {
     const testDir = createTestDir();
     const agentsDir = createTestDir();
     const skillsDir = createTestDir();
-    // Both refs on a "Creates:" line should be skipped entirely
+    // Ambas as referências em uma linha "Creates:" devem ser ignoradas por completo
     fs.writeFileSync(path.join(testDir, 'gen.md'),
       '# Generator\nCreates: `/new-a` and `/new-b`');
 
@@ -1360,10 +1360,10 @@ function runTests() {
   })) passed++; else failed++;
 
   // ==========================================
-  // Round 19: Whitespace and edge-case tests
+  // Rodada 19: Testes de espaços em branco e casos extremos
   // ==========================================
 
-  // --- validate-hooks.js whitespace/null edge cases ---
+  // --- casos extremos de espaços em branco/null do validate-hooks.js ---
   console.log('\nvalidate-hooks.js (whitespace edge cases):');
 
   if (test('rejects whitespace-only command string', () => {
@@ -1411,7 +1411,7 @@ function runTests() {
     cleanupTestDir(testDir);
   })) passed++; else failed++;
 
-  // --- validate-agents.js whitespace edge cases ---
+  // --- casos extremos de espaços em branco do validate-agents.js ---
   console.log('\nvalidate-agents.js (whitespace edge cases):');
 
   if (test('rejects agent with whitespace-only model value', () => {
@@ -1454,7 +1454,7 @@ function runTests() {
     cleanupTestDir(testDir);
   })) passed++; else failed++;
 
-  // --- validate-commands.js additional edge cases ---
+  // --- casos extremos adicionais do validate-commands.js ---
   console.log('\nvalidate-commands.js (additional edge cases):');
 
   if (test('reports all invalid agents in mixed agent references', () => {
@@ -1494,24 +1494,24 @@ function runTests() {
     const testDir = createTestDir();
     const agentsDir = createTestDir();
     const skillsDir = createTestDir();
-    // Reference a non-existent skill directory
+    // Referencia um diretório de skill inexistente
     fs.writeFileSync(path.join(testDir, 'cmd.md'),
       '# Command\nSee skills/nonexistent-skill/ for details.');
 
     const result = runValidatorWithDirs('validate-commands', {
       COMMANDS_DIR: testDir, AGENTS_DIR: agentsDir, SKILLS_DIR: skillsDir
     });
-    // Should pass (warnings don't cause exit 1) but stderr should have warning
+    // Deve passar (avisos não causam exit 1), mas o stderr deve ter o aviso
     assert.strictEqual(result.code, 0, 'Skill warnings should not cause failure');
     assert.ok(result.stdout.includes('warning'), 'Should report warning count');
     cleanupTestDir(testDir); cleanupTestDir(agentsDir); cleanupTestDir(skillsDir);
   })) passed++; else failed++;
 
   // ==========================================
-  // Round 22: Hook schema edge cases & empty directory paths
+  // Rodada 22: Casos extremos de schema de Hook e caminhos de diretório vazios
   // ==========================================
 
-  // --- validate-hooks.js: schema edge cases ---
+  // --- validate-hooks.js: casos extremos de schema ---
   console.log('\nvalidate-hooks.js (schema edge cases):');
 
   if (test('rejects event type value that is not an array', () => {
@@ -1667,7 +1667,7 @@ function runTests() {
   if (test('validates object format without wrapping hooks key', () => {
     const testDir = createTestDir();
     const hooksFile = path.join(testDir, 'hooks.json');
-    // data.hooks is undefined, so fallback to data itself
+    // data.hooks é undefined, então faz fallback para o próprio data
     fs.writeFileSync(hooksFile, JSON.stringify({
       PreToolUse: [{ matcher: 'test', hooks: [{ type: 'command', command: 'echo ok' }] }]
     }));
@@ -1677,7 +1677,7 @@ function runTests() {
     cleanupTestDir(testDir);
   })) passed++; else failed++;
 
-  // --- validate-hooks.js: legacy format error paths ---
+  // --- validate-hooks.js: caminhos de erro do formato legado ---
   console.log('\nvalidate-hooks.js (legacy format errors):');
 
   if (test('legacy format: rejects matcher missing matcher field', () => {
@@ -1706,12 +1706,12 @@ function runTests() {
     cleanupTestDir(testDir);
   })) passed++; else failed++;
 
-  // --- validate-agents.js: empty directory ---
+  // --- validate-agents.js: diretório vazio ---
   console.log('\nvalidate-agents.js (empty directory):');
 
   if (test('passes on empty agents directory', () => {
     const testDir = createTestDir();
-    // No .md files, just an empty dir
+    // Sem arquivos .md, apenas um diretório vazio
 
     const result = runValidatorWithDir('validate-agents', 'AGENTS_DIR', testDir);
     assert.strictEqual(result.code, 0, 'Should pass on empty directory');
@@ -1719,7 +1719,7 @@ function runTests() {
     cleanupTestDir(testDir);
   })) passed++; else failed++;
 
-  // --- validate-commands.js: whitespace-only file ---
+  // --- validate-commands.js: arquivo só com espaços em branco ---
   console.log('\nvalidate-commands.js (whitespace edge cases):');
 
   if (test('fails on whitespace-only command file', () => {
@@ -1736,7 +1736,7 @@ function runTests() {
     const testDir = createTestDir();
     const agentsDir = createTestDir();
     const skillsDir = createTestDir();
-    // Create a matching skill directory
+    // Cria um diretório de skill correspondente
     fs.mkdirSync(path.join(skillsDir, 'my-skill'));
     fs.writeFileSync(path.join(testDir, 'cmd.md'),
       '# Command\nSee skills/my-skill/ for details.');
@@ -1749,7 +1749,7 @@ function runTests() {
     cleanupTestDir(testDir); cleanupTestDir(agentsDir); cleanupTestDir(skillsDir);
   })) passed++; else failed++;
 
-  // --- validate-rules.js: mixed valid/invalid ---
+  // --- validate-rules.js: mistura de válidos/inválidos ---
   console.log('\nvalidate-rules.js (mixed files):');
 
   if (test('fails on mix of valid and empty rule files', () => {
@@ -1763,7 +1763,7 @@ function runTests() {
     cleanupTestDir(testDir);
   })) passed++; else failed++;
 
-  // ── Round 27: hook validation edge cases ──
+  // ── Rodada 27: casos extremos de validação de Hook ──
   console.log('\nvalidate-hooks.js (Round 27 edge cases):');
 
   if (test('rejects array command with empty string element', () => {
@@ -1818,7 +1818,7 @@ function runTests() {
     for (let i = 0; i < 5; i++) {
       manyHooks.push({ type: 'command', command: 'echo ok' });
     }
-    // Add an invalid hook at index 5
+    // Adiciona um hook inválido no índice 5
     manyHooks.push({ type: 'command', command: '' });
     fs.writeFileSync(hooksFile, JSON.stringify({
       hooks: {
@@ -1863,17 +1863,17 @@ function runTests() {
     cleanupTestDir(testDir);
   })) passed++; else failed++;
 
-  // ── Round 27: command validation edge cases ──
+  // ── Rodada 27: casos extremos de validação de comando ──
   console.log('\nvalidate-commands.js (Round 27 edge cases):');
 
   if (test('validates multiple command refs on same non-creates line', () => {
     const testDir = createTestDir();
     const agentsDir = createTestDir();
     const skillsDir = createTestDir();
-    // Create two valid commands
+    // Cria dois comandos válidos
     fs.writeFileSync(path.join(testDir, 'cmd-a.md'), '# Command A\nBasic command.');
     fs.writeFileSync(path.join(testDir, 'cmd-b.md'), '# Command B\nBasic command.');
-    // Create a third command that references both on one line
+    // Cria um terceiro comando que referencia ambos em uma linha
     fs.writeFileSync(path.join(testDir, 'cmd-c.md'),
       '# Command C\nUse `/cmd-a` and `/cmd-b` together.');
 
@@ -1888,9 +1888,9 @@ function runTests() {
     const testDir = createTestDir();
     const agentsDir = createTestDir();
     const skillsDir = createTestDir();
-    // Only cmd-a exists
+    // Apenas cmd-a existe
     fs.writeFileSync(path.join(testDir, 'cmd-a.md'), '# Command A\nBasic command.');
-    // cmd-c references cmd-a (valid) and cmd-z (invalid) on same line
+    // cmd-c referencia cmd-a (válido) e cmd-z (inválido) na mesma linha
     fs.writeFileSync(path.join(testDir, 'cmd-c.md'),
       '# Command C\nUse `/cmd-a` and `/cmd-z` together.');
 
@@ -1906,7 +1906,7 @@ function runTests() {
     const testDir = createTestDir();
     const agentsDir = createTestDir();
     const skillsDir = createTestDir();
-    // Reference inside a code block should not be validated
+    // Referência dentro de um bloco de código não deve ser validada
     fs.writeFileSync(path.join(testDir, 'cmd-x.md'),
       '# Command X\n```\n`/nonexistent-cmd` in code block\n```\nEnd.');
 
@@ -1917,19 +1917,19 @@ function runTests() {
     cleanupTestDir(testDir); cleanupTestDir(agentsDir); cleanupTestDir(skillsDir);
   })) passed++; else failed++;
 
-  // --- validate-skills.js: mixed valid/invalid ---
+  // --- validate-skills.js: mistura de válidos/inválidos ---
   console.log('\nvalidate-skills.js (mixed dirs):');
 
   if (test('fails on mix of valid and invalid skill directories', () => {
     const testDir = createTestDir();
-    // Valid skill
+    // Skill válida
     const goodSkill = path.join(testDir, 'good-skill');
     fs.mkdirSync(goodSkill);
     fs.writeFileSync(path.join(goodSkill, 'SKILL.md'), '# Good Skill');
-    // Missing SKILL.md
+    // SKILL.md ausente
     const badSkill = path.join(testDir, 'bad-skill');
     fs.mkdirSync(badSkill);
-    // Empty SKILL.md
+    // SKILL.md vazio
     const emptySkill = path.join(testDir, 'empty-skill');
     fs.mkdirSync(emptySkill);
     fs.writeFileSync(path.join(emptySkill, 'SKILL.md'), '');
@@ -1941,15 +1941,15 @@ function runTests() {
     cleanupTestDir(testDir);
   })) passed++; else failed++;
 
-  // ── Round 30: validate-commands skill warnings and workflow edge cases ──
+  // ── Rodada 30: avisos de skill do validate-commands e casos extremos de fluxo de trabalho ──
   console.log('\nRound 30: validate-commands (skill warnings):');
 
   if (test('warns (not errors) when skill directory reference is not found', () => {
     const testDir = createTestDir();
     const agentsDir = createTestDir();
     const skillsDir = createTestDir();
-    // Create a command that references a skill via path (skills/name/) format
-    // but the skill doesn't exist — should warn, not error
+    // Cria um comando que referencia uma skill via formato de caminho (skills/name/)
+    // mas a skill não existe — deve avisar, não dar erro
     fs.writeFileSync(path.join(testDir, 'cmd-a.md'),
       '# Command A\nSee skills/nonexistent-skill/ for details.');
 

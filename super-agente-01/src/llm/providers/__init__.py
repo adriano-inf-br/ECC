@@ -1,4 +1,4 @@
-"""Provider adapters for multiple LLM backends."""
+"""Adaptadores de provedor para múltiplos backends de LLM."""
 
 from llm.providers.astraflow import AstraflowCNProvider, AstraflowProvider
 from llm.providers.atlas import AtlasProvider

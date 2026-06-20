@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Validate agent.yaml exports the legacy command shim surface.
+ * Valida que o agent.yaml exporta a superfície de shims de comando legados.
  */
 
 const assert = require('assert');

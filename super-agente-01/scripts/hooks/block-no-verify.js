@@ -1,16 +1,16 @@
 #!/usr/bin/env node
 /**
- * PreToolUse Hook: Block --no-verify flag
+ * PreToolUse Hook: Bloqueia a flag --no-verify
  *
- * Blocks git hook-bypass flags (--no-verify, -c core.hooksPath=) to protect
- * pre-commit, commit-msg, and pre-push hooks from being skipped by AI agents.
+ * Bloqueia flags de bypass de hook do git (--no-verify, -c core.hooksPath=) para proteger
+ * os hooks pre-commit, commit-msg e pre-push de serem ignorados por agents de IA.
  *
- * Replaces the previous npx-based invocation that failed in pnpm-only projects
- * (EBADDEVENGINES) and could not be disabled via ECC_DISABLED_HOOKS.
+ * Substitui a invocação anterior baseada em npx que falhava em projetos exclusivamente pnpm
+ * (EBADDEVENGINES) e não podia ser desativada via ECC_DISABLED_HOOKS.
  *
- * Exit codes:
- *   0 = allow (not a git command or no bypass flags)
- *   2 = block (bypass flag detected)
+ * Códigos de saída:
+ *   0 = permitir (não é um comando git ou sem flags de bypass)
+ *   2 = bloquear (flag de bypass detectada)
  */
 
 'use strict';
@@ -19,7 +19,7 @@ const MAX_STDIN = 1024 * 1024;
 let raw = '';
 
 /**
- * Git commands that support the --no-verify flag.
+ * Comandos git que suportam a flag --no-verify.
  */
 const GIT_COMMANDS_WITH_NO_VERIFY = [
   'commit',
@@ -31,14 +31,14 @@ const GIT_COMMANDS_WITH_NO_VERIFY = [
 ];
 
 /**
- * Characters that can appear immediately before 'git' in a command string.
+ * Caracteres que podem aparecer imediatamente antes de 'git' em uma string de comando.
  */
 const VALID_BEFORE_GIT = ' \t\n\r;&|$`(<{!"\']/.~\\';
 
-// Git config section and variable names are case-insensitive
-// (subsection names are case-sensitive but core.hooksPath has none),
-// so we normalize the candidate token to lowercase before matching.
-// See https://git-scm.com/docs/git-config — "The variable names are
+// Os nomes de seção e variável da config do git não diferenciam maiúsculas/minúsculas
+// (nomes de subseção diferenciam, mas core.hooksPath não tem subseção),
+// então normalizamos o token candidato para minúsculas antes de comparar.
+// Veja https://git-scm.com/docs/git-config — "The variable names are
 // case-insensitive."
 const GIT_CONFIG_KEY_PREFIX = 'core.hookspath=';
 
@@ -72,11 +72,11 @@ const COMMIT_OPTIONS_WITH_INLINE_VALUE = [
   '--pathspec-from-file=',
 ];
 
-// Short options that take a value. When seen as part of a combined
-// short-option token (e.g. -tn), git's parser treats the rest of the
-// token as the option's value (template path 'n' here), so the scanner
-// must stop at this character — anything after it is the inline value,
-// not another flag.
+// Opções curtas que recebem um valor. Quando vistas como parte de um token
+// combinado de opções curtas (ex. -tn), o parser do git trata o restante do
+// token como o valor da opção (caminho de template 'n' aqui), então o scanner
+// deve parar neste caractere — qualquer coisa após ele é o valor inline,
+// não outra flag.
 const COMMIT_SHORT_OPTIONS_WITH_VALUE = new Set(['m', 'F', 'C', 'c', 't']);
 
 function tokenizeShellWords(input, start = 0, end = input.length) {
@@ -252,7 +252,7 @@ function isCommitNoVerifyShortFlag(value) {
 }
 
 /**
- * Check if a position in the input is inside a shell comment.
+ * Verifica se uma posição na entrada está dentro de um comentário de shell.
  */
 function isInComment(input, idx) {
   const lineStart = input.lastIndexOf('\n', idx - 1) + 1;
@@ -267,7 +267,7 @@ function isInComment(input, idx) {
 }
 
 /**
- * Find the next 'git' token in the input starting from a position.
+ * Encontra o próximo token 'git' na entrada a partir de uma posição.
  */
 function findGit(input, start) {
   let pos = start;
@@ -291,9 +291,9 @@ function findGit(input, start) {
 }
 
 /**
- * Detect which git subcommand (commit, push, etc.) is being invoked.
- * Returns { command, offset } where offset is the position right after the
- * subcommand keyword, so callers can scope flag checks to only that portion.
+ * Detecta qual subcomando git (commit, push, etc.) está sendo invocado.
+ * Retorna { command, offset } onde offset é a posição logo após a
+ * palavra-chave do subcomando, para que os chamadores possam limitar as verificações de flag a apenas essa parte.
  */
 function detectGitCommand(input, start = 0) {
   while (start < input.length) {
@@ -305,9 +305,9 @@ function detectGitCommand(input, start = 0) {
       continue;
     }
 
-    // Find the first matching subcommand token after "git".
-    // We pick the one closest to "git" so that argument values like
-    // "git push origin commit" don't misclassify "commit" as the subcommand.
+    // Encontra o primeiro token de subcomando correspondente após "git".
+    // Escolhemos o mais próximo de "git" para que valores de argumento como
+    // "git push origin commit" não classifiquem "commit" erroneamente como o subcomando.
     let bestCmd = null;
     let bestIdx = Infinity;
 
@@ -324,18 +324,18 @@ function detectGitCommand(input, start = 0) {
         if (/[;|]/.test(input.slice(git.idx + git.len, cmdIdx))) break;
         if (isInComment(input, cmdIdx)) { searchPos = cmdIdx + 1; continue; }
 
-        // Verify this token is the first non-flag word after "git" — i.e. the
-        // actual subcommand, not an argument value to a different subcommand.
+        // Verifica que este token é a primeira palavra que não é flag após "git" — ou seja, o
+        // subcomando de fato, não um valor de argumento de um subcomando diferente.
         const gap = input.slice(git.idx + git.len, cmdIdx);
         const tokens = gap.trim().split(/\s+/).filter(Boolean);
-        // Every token before the candidate must be a flag or a flag argument.
-        // Git global flags like -c take a value argument (e.g. -c key=value).
+        // Todo token antes do candidato deve ser uma flag ou um argumento de flag.
+        // Flags globais do git como -c recebem um argumento de valor (ex. -c key=value).
         let onlyFlagsAndArgs = true;
         let expectFlagArg = false;
         for (const t of tokens) {
           if (expectFlagArg) { expectFlagArg = false; continue; }
           if (t.startsWith('-')) {
-            // -c is a git global flag that takes the next token as its argument
+            // -c é uma flag global do git que recebe o próximo token como seu argumento
             if (t === '-c' || t === '-C' || t === '--work-tree' || t === '--git-dir' ||
                 t === '--namespace' || t === '--super-prefix') {
               expectFlagArg = true;

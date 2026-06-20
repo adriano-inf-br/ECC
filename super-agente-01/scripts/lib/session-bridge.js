@@ -1,11 +1,11 @@
 'use strict';
 
 /**
- * Shared session bridge utilities for ECC hooks.
+ * Utilitários compartilhados de ponte de sessão para hooks do ECC.
  *
- * The bridge file is a small JSON aggregate in /tmp that allows
- * statusline, metrics-bridge, and context-monitor to share state
- * without scanning large JSONL logs on every invocation.
+ * O arquivo de ponte é um pequeno agregado JSON em /tmp que permite que
+ * statusline, metrics-bridge e context-monitor compartilhem estado
+ * sem escanear grandes logs JSONL a cada invocação.
  */
 
 const crypto = require('crypto');
@@ -16,10 +16,10 @@ const path = require('path');
 const MAX_SESSION_ID_LENGTH = 64;
 
 /**
- * Sanitize a session ID for safe use in file paths.
- * Rejects path traversal, strips unsafe chars, limits length.
+ * Sanitiza um session ID para uso seguro em caminhos de arquivo.
+ * Rejeita travessia de caminho, remove caracteres inseguros, limita o comprimento.
  * @param {string} raw
- * @returns {string|null} Safe session ID or null if invalid
+ * @returns {string|null} Session ID seguro ou null se inválido
  */
 function sanitizeSessionId(raw) {
   if (!raw || typeof raw !== 'string') return null;
@@ -29,8 +29,8 @@ function sanitizeSessionId(raw) {
 }
 
 /**
- * Get the bridge file path for a session.
- * @param {string} sessionId - Already-sanitized session ID
+ * Obtém o caminho do arquivo de ponte para uma sessão.
+ * @param {string} sessionId - Session ID já sanitizado
  * @returns {string}
  */
 function getBridgePath(sessionId) {
@@ -38,8 +38,8 @@ function getBridgePath(sessionId) {
 }
 
 /**
- * Read bridge data. Returns null on any error.
- * @param {string} sessionId - Already-sanitized session ID
+ * Lê os dados da ponte. Retorna null em qualquer erro.
+ * @param {string} sessionId - Session ID já sanitizado
  * @returns {object|null}
  */
 function readBridge(sessionId) {
@@ -52,23 +52,23 @@ function readBridge(sessionId) {
 }
 
 /**
- * Write bridge data atomically (write unique-suffix tmp then rename).
+ * Escreve os dados da ponte atomicamente (escreve tmp com sufixo único e depois renomeia).
  *
- * The tmp path includes `process.pid` plus a random nonce so concurrent
- * writers (e.g. PostToolUse `ecc-metrics-bridge` and the background
- * `ecc-statusline`, both writing to the same session bridge) do not
- * clobber each other's tmp file mid-write. With a fixed `.tmp` suffix
- * two writers could both call `writeFileSync` against the same path
- * before either reaches `renameSync`, causing one writer's payload to
- * silently overwrite the other and the second `renameSync` to throw
- * ENOENT once the rename consumes the file.
+ * O caminho do tmp inclui `process.pid` mais um nonce aleatório para que
+ * escritores concorrentes (ex.: o `ecc-metrics-bridge` de PostToolUse e o
+ * `ecc-statusline` em segundo plano, ambos escrevendo na mesma ponte de
+ * sessão) não sobrescrevam o arquivo tmp um do outro no meio da escrita. Com
+ * um sufixo `.tmp` fixo, dois escritores poderiam ambos chamar `writeFileSync`
+ * contra o mesmo caminho antes de qualquer um chegar a `renameSync`, fazendo
+ * o payload de um escritor sobrescrever silenciosamente o do outro e o
+ * segundo `renameSync` lançar ENOENT assim que o rename consome o arquivo.
  *
- * Same pattern already used by `writeCostWarningIfChanged` in
- * `scripts/hooks/ecc-metrics-bridge.js` (commit 9b1d8918) for the
- * cost-warning cache; this commit applies it to the session-bridge
- * primitive too.
+ * Mesmo padrão já usado por `writeCostWarningIfChanged` em
+ * `scripts/hooks/ecc-metrics-bridge.js` (commit 9b1d8918) para o
+ * cache de aviso de custo; este commit o aplica também à primitiva
+ * session-bridge.
  *
- * @param {string} sessionId - Already-sanitized session ID
+ * @param {string} sessionId - Session ID já sanitizado
  * @param {object} data
  */
 function writeBridgeAtomic(sessionId, data) {
@@ -78,28 +78,31 @@ function writeBridgeAtomic(sessionId, data) {
   try {
     renameWithRetry(tmp, target);
   } catch (err) {
-    try { fs.unlinkSync(tmp); } catch { /* ignore */ }
+    try { fs.unlinkSync(tmp); } catch { /* ignorar */ }
     throw err;
   }
 }
 
 /**
- * Replace a file via rename, retrying briefly on transient OS-level errors.
+ * Substitui um arquivo via rename, tentando novamente brevemente em erros
+ * transitórios de nível de SO.
  *
- * POSIX `rename(2)` is atomic between source and destination, so concurrent
- * writers each rename onto the same target without conflict. Windows
- * `MoveFileExW` is different: it fails with EPERM/EACCES/EBUSY if the
- * target is currently being renamed by *another* process — a short race
- * window that fires reliably under our PostToolUse + statusline concurrency.
+ * O `rename(2)` POSIX é atômico entre origem e destino, então escritores
+ * concorrentes renomeiam cada um sobre o mesmo destino sem conflito. O
+ * `MoveFileExW` do Windows é diferente: falha com EPERM/EACCES/EBUSY se o
+ * destino estiver sendo renomeado no momento por *outro* processo — uma curta
+ * janela de corrida que dispara de forma confiável sob nossa concorrência de
+ * PostToolUse + statusline.
  *
- * To stay portable, retry up to 5 times with exponential backoff (20 ms,
- * 40, 80, 160, 320) on the Windows-only transient codes. POSIX runs hit
- * the first try and exit immediately. Other error codes (ENOENT, ENOSPC,
- * EROFS, …) re-throw without retry — they are not transient.
+ * Para manter a portabilidade, tenta novamente até 5 vezes com backoff
+ * exponencial (20 ms, 40, 80, 160, 320) nos códigos transitórios exclusivos do
+ * Windows. Execuções POSIX acertam na primeira tentativa e saem imediatamente.
+ * Outros códigos de erro (ENOENT, ENOSPC, EROFS, …) são relançados sem nova
+ * tentativa — eles não são transitórios.
  *
- * Sleep uses `Atomics.wait` on a throwaway SharedArrayBuffer so the
- * retry path does not busy-spin the CPU. This works on the main thread
- * in Node ≥ 17 (and on workers in earlier versions).
+ * O sleep usa `Atomics.wait` em um SharedArrayBuffer descartável para que o
+ * caminho de nova tentativa não fique ocupando a CPU em espera ativa. Isso
+ * funciona na thread principal no Node ≥ 17 (e em workers em versões anteriores).
  *
  * @param {string} tmp
  * @param {string} target
@@ -119,18 +122,18 @@ function renameWithRetry(tmp, target) {
       try {
         Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, delayMs);
       } catch {
-        // Atomics.wait throws on the main thread in some older runtimes;
-        // fall back to a brief busy-wait so the retry path still has a delay.
+        // Atomics.wait lança na thread principal em alguns runtimes mais antigos;
+        // recorre a uma breve espera ativa para que o caminho de nova tentativa ainda tenha um atraso.
         const until = Date.now() + delayMs;
-        while (Date.now() < until) { /* spin */ }
+        while (Date.now() < until) { /* espera ativa */ }
       }
     }
   }
 }
 
 /**
- * Resolve session ID from environment variables.
- * @returns {string|null} Sanitized session ID or null
+ * Resolve o session ID a partir de variáveis de ambiente.
+ * @returns {string|null} Session ID sanitizado ou null
  */
 function resolveSessionId() {
   const raw = process.env.ECC_SESSION_ID || process.env.CLAUDE_SESSION_ID || '';

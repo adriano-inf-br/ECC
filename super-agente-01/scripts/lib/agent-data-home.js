@@ -1,13 +1,14 @@
 /**
- * Resolve ECC agent data home (memory persistence root) across harnesses.
+ * Resolve o agent data home do ECC (raiz de persistência de memória) entre harnesses.
  *
- * Docstring policy: public entry points here are documented; small internal
- * helpers (e.g. `expandHomePath`, `readProjectConfigAt`) are left undocumented on
- * purpose, consistent with ECC script modules elsewhere. Automated PR reviewers
- * (e.g. CodeRabbit) may still flag low JSDoc coverage against a high threshold on
- * the diff—that check is informational for this repo, not a bar every helper in
- * touched files must meet. Prefer clarity in code and tests over blanket JSDoc on
- * private helpers unless maintainers adopt a project-wide coverage rule.
+ * Política de docstring: os pontos de entrada públicos aqui são documentados; pequenos
+ * helpers internos (ex.: `expandHomePath`, `readProjectConfigAt`) ficam sem documentação
+ * de propósito, de forma consistente com outros módulos de script do ECC. Revisores
+ * automatizados de PR (ex.: CodeRabbit) ainda podem sinalizar baixa cobertura de JSDoc
+ * contra um limite alto no diff—essa verificação é informativa para este repositório,
+ * não uma exigência que todo helper nos arquivos tocados deva atender. Prefira clareza
+ * no código e nos testes em vez de JSDoc genérico em helpers privados, a menos que os
+ * mantenedores adotem uma regra de cobertura para todo o projeto.
  *
  * @see https://github.com/affaan-m/ECC/issues/2065
  */
@@ -21,20 +22,20 @@ const DEFAULT_CURSOR_ECC_DIR_SEGMENTS = ['.cursor', 'ecc'];
 const PROJECT_CONFIG_RELATIVE = path.join('.cursor', 'ecc-agent-data.json');
 
 /**
- * Home directory for tilde expansion and default agent-data paths.
+ * Diretório home para expansão de til e caminhos padrão de agent-data.
  *
- * Intentionally mirrors `getHomeDir()` in `scripts/lib/utils.js` (HOME/USERPROFILE,
- * then `os.homedir()`). Do not import `utils.getHomeDir` here: `utils.js` already
- * requires this module (`resolveAgentDataHome`), which would create a circular
- * dependency and risk divergent defaults for `~/.cursor/ecc` vs `~/.claude`.
+ * Espelha intencionalmente `getHomeDir()` em `scripts/lib/utils.js` (HOME/USERPROFILE,
+ * depois `os.homedir()`). Não importe `utils.getHomeDir` aqui: `utils.js` já
+ * requer este módulo (`resolveAgentDataHome`), o que criaria uma dependência
+ * circular e arriscaria padrões divergentes para `~/.cursor/ecc` vs `~/.claude`.
  *
- * If consolidation is needed later, prefer one of:
+ * Se a consolidação for necessária mais tarde, prefira uma destas opções:
  *
- * | Approach | Tradeoff |
+ * | Abordagem | Tradeoff |
  * | --- | --- |
- * | Shared `scripts/lib/home-dir.js` imported by both | Clean; breaks the cycle |
- * | Keep duplicate + cross-reference comment (this file) | Zero require risk |
- * | Move all resolution here; thin-wrap from `utils` | Larger refactor |
+ * | `scripts/lib/home-dir.js` compartilhado importado por ambos | Limpo; quebra o ciclo |
+ * | Manter duplicata + comentário de referência cruzada (este arquivo) | Risco zero de require |
+ * | Mover toda a resolução para cá; wrapper fino a partir de `utils` | Refatoração maior |
  */
 function getHomeDirFromEnv() {
   const explicitHome = process.env.HOME || process.env.USERPROFILE;
@@ -62,7 +63,7 @@ function expandHomePath(value, baseDir) {
 }
 
 /**
- * Project root for a config file under .cursor/ecc-agent-data.json.
+ * Raiz do projeto para um arquivo de configuração em .cursor/ecc-agent-data.json.
  */
 function resolveProjectRootFromConfigPath(configPath) {
   const configDir = path.dirname(path.resolve(configPath));
@@ -73,8 +74,8 @@ function resolveProjectRootFromConfigPath(configPath) {
 }
 
 /**
- * True when the current process is a Cursor hook subprocess.
- * Cursor documents CURSOR_VERSION and CURSOR_PROJECT_DIR for hook scripts.
+ * Verdadeiro quando o processo atual é um subprocesso de hook do Cursor.
+ * O Cursor documenta CURSOR_VERSION e CURSOR_PROJECT_DIR para scripts de hook.
  */
 function isCursorHookRuntime() {
   if (process.env.CURSOR_VERSION && String(process.env.CURSOR_VERSION).trim()) {
@@ -137,7 +138,7 @@ function resolveProjectDir() {
 }
 
 /**
- * Resolve agent data home without mutating process.env.
+ * Resolve o agent data home sem mutar process.env.
  */
 function resolveAgentDataHome(options = {}) {
   const fromEnv = expandHomePath(process.env[AGENT_DATA_HOME_ENV]);
@@ -155,8 +156,8 @@ function resolveAgentDataHome(options = {}) {
 }
 
 /**
- * Set ECC_AGENT_DATA_HOME on the current process when unset (hook subprocess safety net).
- * @returns {string} Resolved agent data home
+ * Define ECC_AGENT_DATA_HOME no processo atual quando não estiver definido (rede de segurança para subprocessos de hook).
+ * @returns {string} agent data home resolvido
  */
 function ensureAgentDataHomeEnv(options = {}) {
   const resolved = resolveAgentDataHome(options);
@@ -167,7 +168,7 @@ function ensureAgentDataHomeEnv(options = {}) {
 }
 
 /**
- * Build Cursor sessionStart hook output env payload.
+ * Constrói o payload de env de saída do hook sessionStart do Cursor.
  */
 function getCursorSessionEnvPayload(options = {}) {
   const agentDataHome = resolveAgentDataHome({

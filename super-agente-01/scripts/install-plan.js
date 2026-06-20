@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Inspect selective-install profiles and module plans without mutating targets.
+ * Inspeciona perfis de instalação seletiva e planos de módulos sem alterar os alvos.
  */
 
 const {

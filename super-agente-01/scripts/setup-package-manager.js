@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 /**
- * Package Manager Setup Script
+ * Script de Configuração do Gerenciador de Pacotes
  *
- * Interactive script to configure preferred package manager.
- * Can be run directly or via the /setup-pm command.
+ * Script interativo para configurar o gerenciador de pacotes preferido.
+ * Pode ser executado diretamente ou via o comando /setup-pm.
  *
  * Usage:
  *   node scripts/setup-package-manager.js [pm-name]
@@ -153,7 +153,7 @@ function setProject(pmName) {
   }
 }
 
-// Main
+// Principal
 const args = process.argv.slice(2);
 
 if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
@@ -193,7 +193,7 @@ if (projectIdx !== -1) {
   process.exit(0);
 }
 
-// If just a package manager name is provided, set it globally
+// Se apenas um nome de gerenciador de pacotes for fornecido, defina-o globalmente
 const pmName = args[0];
 if (PACKAGE_MANAGERS[pmName]) {
   setGlobal(pmName);

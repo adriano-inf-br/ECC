@@ -1,5 +1,5 @@
 /**
- * Direct coverage for scripts/ci/catalog.js.
+ * Cobertura direta para scripts/ci/catalog.js.
  */
 
 'use strict';

@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
- * NanoClaw v2 — Barebones Agent REPL for Everything Claude Code
+ * NanoClaw v2 — REPL minimalista de Agent para o Everything Claude Code
  *
- * Zero external dependencies. Session-aware REPL around `claude -p`.
+ * Zero dependências externas. REPL com reconhecimento de sessão em torno de `claude -p`.
  */
 
 'use strict';
@@ -72,7 +72,7 @@ function loadECCContext(skillList) {
     try {
       chunks.push(fs.readFileSync(skillPath, 'utf8'));
     } catch {
-      // Skip missing skills silently to keep REPL usable.
+      // Ignora skills ausentes silenciosamente para manter o REPL utilizável.
     }
   }
 
@@ -95,13 +95,13 @@ function askClaude(systemPrompt, history, userMessage, model) {
   }
   args.push('-p');
 
-  // On Windows the `claude` binary installed via npm is `claude.cmd`/`claude.ps1`,
-  // and Node's spawn() cannot resolve those wrappers via PATH without shell: true.
-  // But shell mode concatenates args *unescaped*, so a multi-line prompt passed as
-  // an arg gets mangled (newlines and the `===` section markers truncate it, and
-  // claude receives an empty prompt). Fix: send the prompt over stdin via `input`
-  // and keep only the short, safe flags (`--model`, `-p`) as args.
-  // 'claude' is a hardcoded literal here (not user input), so shell mode is safe.
+  // No Windows o binário `claude` instalado via npm é `claude.cmd`/`claude.ps1`,
+  // e o spawn() do Node não consegue resolver esses wrappers via PATH sem shell: true.
+  // Mas o modo shell concatena os args *sem escape*, então um prompt de múltiplas linhas passado
+  // como arg fica corrompido (quebras de linha e os marcadores de seção `===` o truncam, e
+  // o claude recebe um prompt vazio). Correção: enviar o prompt via stdin com `input`
+  // e manter apenas as flags curtas e seguras (`--model`, `-p`) como args.
+  // 'claude' é um literal fixo aqui (não entrada do usuário), então o modo shell é seguro.
   const result = spawnSync('claude', args, {
     input: fullPrompt,
     encoding: 'utf8',
@@ -124,9 +124,9 @@ function askClaude(systemPrompt, history, userMessage, model) {
 
 function parseTurns(history) {
   const turns = [];
-  // Bound the input: the lazy `[\s\S]*?` body re-scans toward EOF from each
-  // `### [` start, so a very large/adversarial history file can drive O(n^2)
-  // scanning (ReDoS). Session histories are far below this cap.
+  // Limita a entrada: o corpo preguiçoso `[\s\S]*?` reanalisa em direção ao EOF a partir de cada
+  // início `### [`, de modo que um arquivo de histórico muito grande/adversarial pode provocar
+  // varredura O(n^2) (ReDoS). Históricos de sessão ficam bem abaixo desse limite.
   const text = String(history || '');
   const safe = text.length > 5_000_000 ? text.slice(0, 5_000_000) : text;
   const regex = /### \[([^\]]+)\] ([^\n]+)\n([\s\S]*?)\n---\n/g;

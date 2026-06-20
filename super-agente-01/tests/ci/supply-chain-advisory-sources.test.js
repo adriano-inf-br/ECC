@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Validate the supply-chain advisory source refresh report.
+ * Valida o relatório de atualização das fontes de avisos da cadeia de suprimentos.
  */
 
 const assert = require('assert');

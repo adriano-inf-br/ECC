@@ -1,4 +1,4 @@
-"""Provider factory and resolver."""
+"""Fábrica e resolvedor de provedores."""
 
 from __future__ import annotations
 

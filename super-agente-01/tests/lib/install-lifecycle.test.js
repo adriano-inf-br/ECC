@@ -1,5 +1,5 @@
 /**
- * Tests for scripts/lib/install-lifecycle.js
+ * Testes para scripts/lib/install-lifecycle.js
  */
 
 const assert = require('assert');

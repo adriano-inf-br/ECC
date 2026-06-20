@@ -1,5 +1,5 @@
 /**
- * Tests for scripts/lib/install-manifests.js
+ * Testes para scripts/lib/install-manifests.js
  */
 
 const assert = require('assert');

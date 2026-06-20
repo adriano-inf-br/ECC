@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Entry point for llm CLI."""
+"""Ponto de entrada para a CLI llm."""
 
 from llm.cli.selector import main
 

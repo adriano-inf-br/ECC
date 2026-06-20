@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 /**
- * Skill Creator - Pretty Output Formatter
+ * Skill Creator - Formatador de Saída Estilizada
  *
- * Creates beautiful terminal output for the /skill-create command
- * similar to @mvanhorn's /last30days skill
+ * Cria uma saída de terminal bonita para o comando /skill-create
+ * semelhante à skill /last30days do @mvanhorn
  */
 
-// ANSI color codes - no external dependencies
+// Códigos de cor ANSI - sem dependências externas
 const chalk = {
   bold: (s) => `\x1b[1m${s}\x1b[0m`,
   cyan: (s) => `\x1b[36m${s}\x1b[0m`,
@@ -20,7 +20,7 @@ const chalk = {
   bgCyan: (s) => `\x1b[46m${s}\x1b[0m`,
 };
 
-// Box drawing characters
+// Caracteres de desenho de caixa
 const BOX = {
   topLeft: '╭',
   topRight: '╮',
@@ -32,10 +32,10 @@ const BOX = {
   verticalLeft: '┤',
 };
 
-// Progress spinner frames
+// Quadros do spinner de progresso
 const SPINNER = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
 
-// Helper functions
+// Funções auxiliares
 function box(title, content, width = 60) {
   const lines = content.split('\n');
   const top = `${BOX.topLeft}${BOX.horizontal} ${chalk.bold(chalk.cyan(title))} ${BOX.horizontal.repeat(Math.max(0, width - title.length - 5))}${BOX.topRight}`;
@@ -77,7 +77,7 @@ async function animateProgress(label, steps, callback) {
   }
 }
 
-// Main output formatter
+// Formatador de saída principal
 class SkillCreateOutput {
   constructor(repoName, options = {}) {
     this.repoName = repoName;
@@ -173,7 +173,7 @@ ${chalk.yellow('4.')} Evolve into skills: ${chalk.cyan('/evolve')}
   }
 }
 
-// Demo function to show the output
+// Função de demonstração para exibir a saída
 async function demo() {
   const output = new SkillCreateOutput('PMX');
 
@@ -235,10 +235,10 @@ async function demo() {
   output.footer();
 }
 
-// Export for use in other scripts
+// Exporta para uso em outros scripts
 module.exports = { SkillCreateOutput, demo };
 
-// Run demo if executed directly
+// Executa a demonstração se for executado diretamente
 if (require.main === module) {
   demo().catch(console.error);
 }

@@ -1,5 +1,5 @@
 /**
- * Tests for scripts/lib/install-targets/registry.js
+ * Testes para scripts/lib/install-targets/registry.js
  */
 
 const assert = require('assert');
@@ -1005,7 +1005,7 @@ function runTests() {
       const distDir = path.join(repoRoot, '.opencode', 'dist');
       fs.mkdirSync(distDir, { recursive: true });
       fs.writeFileSync(path.join(distDir, 'index.js'), '// stub\n');
-      // Intentionally omit dist/plugins and dist/tools.
+      // Omite intencionalmente dist/plugins e dist/tools.
 
       const issues = adapter.validate({ homeDir: '/Users/example', repoRoot });
       assert.strictEqual(issues.length, 1, 'Should surface a single validation issue for partial builds');
@@ -1026,7 +1026,7 @@ function runTests() {
       const distDir = path.join(repoRoot, '.opencode', 'dist');
       fs.mkdirSync(distDir, { recursive: true });
       fs.writeFileSync(path.join(distDir, 'index.js'), '// stub\n');
-      // Materialize plugins/tools as files instead of directories.
+      // Materializa plugins/tools como arquivos em vez de diretórios.
       fs.writeFileSync(path.join(distDir, 'plugins'), 'not-a-dir');
       fs.writeFileSync(path.join(distDir, 'tools'), 'not-a-dir');
 
@@ -1046,11 +1046,11 @@ function runTests() {
     const adapter = getInstallTargetAdapter('opencode');
     const repoRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'install-targets-opencode-enotdir-'));
     try {
-      // Create `.opencode/dist` as a regular file. Stat'ing
-      // `.opencode/dist/index.js` then throws ENOTDIR (intermediate component
-      // is a file, not a directory). The validate gate must treat this as a
-      // missing artefact and surface the structured opencode-plugin-not-built
-      // issue, not propagate the raw fs error.
+      // Cria `.opencode/dist` como um arquivo comum. Fazer stat de
+      // `.opencode/dist/index.js` então lança ENOTDIR (o componente intermediário
+      // é um arquivo, não um diretório). O gate de validação deve tratar isso como
+      // um artefato ausente e expor o problema estruturado opencode-plugin-not-built,
+      // sem propagar o erro bruto de fs.
       const opencodeDir = path.join(repoRoot, '.opencode');
       fs.mkdirSync(opencodeDir, { recursive: true });
       fs.writeFileSync(path.join(opencodeDir, 'dist'), 'not-a-dir');

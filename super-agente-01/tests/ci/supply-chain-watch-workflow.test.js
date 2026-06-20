@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Validate the scheduled supply-chain watch workflow contract.
+ * Valida o contrato do fluxo de trabalho agendado de monitoramento da cadeia de suprimentos.
  */
 
 const assert = require('assert');

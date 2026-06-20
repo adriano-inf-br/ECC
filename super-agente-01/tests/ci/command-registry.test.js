@@ -1,5 +1,5 @@
 /**
- * Direct coverage for scripts/ci/generate-command-registry.js.
+ * Cobertura direta para scripts/ci/generate-command-registry.js.
  */
 
 'use strict';

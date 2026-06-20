@@ -1,7 +1,7 @@
 /**
- * Tests for scripts/lib/package-manager.js
+ * Testes para scripts/lib/package-manager.js
  *
- * Run with: node tests/lib/package-manager.test.js
+ * Execute com: node tests/lib/package-manager.test.js
  */
 
 const assert = require('assert');
@@ -9,10 +9,10 @@ const path = require('path');
 const fs = require('fs');
 const os = require('os');
 
-// Import the modules
+// Importa os módulos
 const pm = require('../../scripts/lib/package-manager');
 
-// Test helper
+// Helper de teste
 function test(name, fn) {
   try {
     fn();
@@ -25,14 +25,14 @@ function test(name, fn) {
   }
 }
 
-// Create a temporary test directory
+// Cria um diretório de teste temporário
 function createTestDir() {
   const testDir = path.join(os.tmpdir(), `pm-test-${Date.now()}`);
   fs.mkdirSync(testDir, { recursive: true });
   return testDir;
 }
 
-// Clean up test directory
+// Limpa o diretório de teste
 function cleanupTestDir(testDir) {
   fs.rmSync(testDir, { recursive: true, force: true });
 }
@@ -64,14 +64,14 @@ function withIsolatedHome(fn) {
   }
 }
 
-// Test suite
+// Suíte de testes
 function runTests() {
   console.log('\n=== Testing package-manager.js ===\n');
 
   let passed = 0;
   let failed = 0;
 
-  // PACKAGE_MANAGERS constant tests
+  // Testes da constante PACKAGE_MANAGERS
   console.log('PACKAGE_MANAGERS Constant:');
 
   if (test('PACKAGE_MANAGERS has all expected managers', () => {
@@ -92,7 +92,7 @@ function runTests() {
   })) passed++;
   else failed++;
 
-  // detectFromLockFile tests
+  // Testes de detectFromLockFile
   console.log('\ndetectFromLockFile:');
 
   if (test('detects npm from package-lock.json', () => {
@@ -157,11 +157,11 @@ function runTests() {
   if (test('respects detection priority (pnpm > npm)', () => {
     const testDir = createTestDir();
     try {
-      // Create both lock files
+      // Cria ambos os lock files
       fs.writeFileSync(path.join(testDir, 'package-lock.json'), '{}');
       fs.writeFileSync(path.join(testDir, 'pnpm-lock.yaml'), '');
       const result = pm.detectFromLockFile(testDir);
-      // pnpm has higher priority in DETECTION_PRIORITY
+      // pnpm tem prioridade mais alta em DETECTION_PRIORITY
       assert.strictEqual(result, 'pnpm');
     } finally {
       cleanupTestDir(testDir);
@@ -169,7 +169,7 @@ function runTests() {
   })) passed++;
   else failed++;
 
-  // detectFromPackageJson tests
+  // Testes de detectFromPackageJson
   console.log('\ndetectFromPackageJson:');
 
   if (test('detects package manager from packageManager field', () => {
@@ -219,18 +219,18 @@ function runTests() {
   })) passed++;
   else failed++;
 
-  // getAvailablePackageManagers tests
+  // Testes de getAvailablePackageManagers
   console.log('\ngetAvailablePackageManagers:');
 
   if (test('returns array of available managers', () => {
     const available = pm.getAvailablePackageManagers();
     assert.ok(Array.isArray(available), 'Should return array');
-    // npm should always be available with Node.js
+    // npm deve estar sempre disponível com o Node.js
     assert.ok(available.includes('npm'), 'npm should be available');
   })) passed++;
   else failed++;
 
-  // getPackageManager tests
+  // Testes de getPackageManager
   console.log('\ngetPackageManager:');
 
   if (test('returns object with name, config, and source', () => {
@@ -276,7 +276,7 @@ function runTests() {
   })) passed++;
   else failed++;
 
-  // getRunCommand tests
+  // Testes de getRunCommand
   console.log('\ngetRunCommand:');
 
   if (test('returns correct install command', () => {
@@ -311,7 +311,7 @@ function runTests() {
   })) passed++;
   else failed++;
 
-  // getExecCommand tests
+  // Testes de getExecCommand
   console.log('\ngetExecCommand:');
 
   if (test('returns correct exec command for npm', () => {
@@ -346,7 +346,7 @@ function runTests() {
   })) passed++;
   else failed++;
 
-  // getCommandPattern tests
+  // Testes de getCommandPattern
   console.log('\ngetCommandPattern:');
 
   if (test('generates pattern for dev command', () => {
@@ -369,7 +369,7 @@ function runTests() {
   })) passed++;
   else failed++;
 
-  // getSelectionPrompt tests
+  // Testes de getSelectionPrompt
   console.log('\ngetSelectionPrompt:');
 
   if (test('returns informative prompt', () => {
@@ -380,7 +380,7 @@ function runTests() {
   })) passed++;
   else failed++;
 
-  // setProjectPackageManager tests
+  // Testes de setProjectPackageManager
   console.log('\nsetProjectPackageManager:');
 
   if (test('sets project package manager', () => {
@@ -389,7 +389,7 @@ function runTests() {
       const result = pm.setProjectPackageManager('pnpm', testDir);
       assert.strictEqual(result.packageManager, 'pnpm');
       assert.ok(result.setAt, 'Should have setAt timestamp');
-      // Verify file was created
+      // Verifica se o arquivo foi criado
       const configPath = path.join(testDir, '.claude', 'package-manager.json');
       assert.ok(fs.existsSync(configPath), 'Config file should exist');
       const saved = JSON.parse(fs.readFileSync(configPath, 'utf8'));
@@ -407,7 +407,7 @@ function runTests() {
   })) passed++;
   else failed++;
 
-  // setPreferredPackageManager tests
+  // Testes de setPreferredPackageManager
   console.log('\nsetPreferredPackageManager:');
 
   if (test('rejects unknown package manager', () => {
@@ -417,7 +417,7 @@ function runTests() {
   })) passed++;
   else failed++;
 
-  // detectFromPackageJson edge cases
+  // Casos extremos de detectFromPackageJson
   console.log('\ndetectFromPackageJson (edge cases):');
 
   if (test('handles invalid JSON in package.json', () => {
@@ -444,7 +444,7 @@ function runTests() {
   })) passed++;
   else failed++;
 
-  // getExecCommand edge cases
+  // Casos extremos de getExecCommand
   console.log('\ngetExecCommand (edge cases):');
 
   if (test('returns exec command without args', () => {
@@ -463,7 +463,7 @@ function runTests() {
   })) passed++;
   else failed++;
 
-  // getRunCommand additional cases
+  // Casos adicionais de getRunCommand
   console.log('\ngetRunCommand (additional):');
 
   if (test('returns correct build command', () => {
@@ -511,7 +511,7 @@ function runTests() {
   })) passed++;
   else failed++;
 
-  // DETECTION_PRIORITY tests
+  // Testes de DETECTION_PRIORITY
   console.log('\nDETECTION_PRIORITY:');
 
   if (test('has pnpm first', () => {
@@ -524,7 +524,7 @@ function runTests() {
   })) passed++;
   else failed++;
 
-  // getCommandPattern additional cases
+  // Casos adicionais de getCommandPattern
   console.log('\ngetCommandPattern (additional):');
 
   if (test('generates pattern for install command', () => {
@@ -547,7 +547,7 @@ function runTests() {
   })) passed++;
   else failed++;
 
-  // getPackageManager robustness tests
+  // Testes de robustez de getPackageManager
   console.log('\ngetPackageManager (robustness):');
 
   if (test('falls through on corrupted project config JSON', () => {
@@ -559,7 +559,7 @@ function runTests() {
     try {
       delete process.env.CLAUDE_PACKAGE_MANAGER;
       const result = pm.getPackageManager({ projectDir: testDir });
-      // Should fall through to default (npm) since project config is corrupt
+      // Deve cair para o padrão (npm) já que a configuração do projeto está corrompida
       assert.ok(result.name, 'Should return a package manager');
       assert.ok(result.source !== 'project-config', 'Should not use corrupt project config');
     } finally {
@@ -591,7 +591,7 @@ function runTests() {
   })) passed++;
   else failed++;
 
-  // getRunCommand validation tests
+  // Testes de validação de getRunCommand
   console.log('\ngetRunCommand (validation):');
 
   if (test('rejects empty script name', () => {
@@ -630,7 +630,7 @@ function runTests() {
   })) passed++;
   else failed++;
 
-  // getExecCommand validation tests
+  // Testes de validação de getExecCommand
   console.log('\ngetExecCommand (validation):');
 
   if (test('rejects empty binary name', () => {
@@ -664,7 +664,7 @@ function runTests() {
   })) passed++;
   else failed++;
 
-  // getPackageManager source detection tests
+  // Testes de detecção de origem de getPackageManager
   console.log('\ngetPackageManager (source detection):');
 
   if (test('detects from valid project-config (.claude/package-manager.json)', () => {
@@ -691,11 +691,11 @@ function runTests() {
     const testDir = fs.mkdtempSync(path.join(os.tmpdir(), 'pm-priority-'));
     const claudeDir = path.join(testDir, '.claude');
     fs.mkdirSync(claudeDir, { recursive: true });
-    // Project config says bun
+    // A configuração do projeto diz bun
     fs.writeFileSync(path.join(claudeDir, 'package-manager.json'), JSON.stringify({ packageManager: 'bun' }));
-    // package.json says yarn
+    // package.json diz yarn
     fs.writeFileSync(path.join(testDir, 'package.json'), JSON.stringify({ packageManager: 'yarn@4.0.0' }));
-    // Lock file says npm
+    // Lock file diz npm
     fs.writeFileSync(path.join(testDir, 'package-lock.json'), '{}');
     const originalEnv = process.env.CLAUDE_PACKAGE_MANAGER;
     try {
@@ -714,9 +714,9 @@ function runTests() {
 
   if (test('package.json takes priority over lock file', () => {
     const testDir = fs.mkdtempSync(path.join(os.tmpdir(), 'pm-pj-lock-'));
-    // package.json says yarn
+    // package.json diz yarn
     fs.writeFileSync(path.join(testDir, 'package.json'), JSON.stringify({ packageManager: 'yarn@4.0.0' }));
-    // Lock file says npm
+    // Lock file diz npm
     fs.writeFileSync(path.join(testDir, 'package-lock.json'), '{}');
     const originalEnv = process.env.CLAUDE_PACKAGE_MANAGER;
     try {
@@ -752,11 +752,11 @@ function runTests() {
   })) passed++;
   else failed++;
 
-  // setPreferredPackageManager success
+  // sucesso de setPreferredPackageManager
   console.log('\nsetPreferredPackageManager (success):');
 
   if (test('successfully saves preferred package manager', () => {
-    // This writes to ~/.claude/package-manager.json — read original to restore
+    // Isto escreve em ~/.claude/package-manager.json — lê o original para restaurar
     const utils = require('../../scripts/lib/utils');
     const configPath = path.join(utils.getClaudeDir(), 'package-manager.json');
     const original = utils.readFile(configPath);
@@ -764,25 +764,25 @@ function runTests() {
       const config = pm.setPreferredPackageManager('bun');
       assert.strictEqual(config.packageManager, 'bun');
       assert.ok(config.setAt, 'Should have setAt timestamp');
-      // Verify it was persisted
+      // Verifica se foi persistido
       const saved = JSON.parse(fs.readFileSync(configPath, 'utf8'));
       assert.strictEqual(saved.packageManager, 'bun');
     } finally {
-      // Restore original config
+      // Restaura a configuração original
       if (original) {
         fs.writeFileSync(configPath, original, 'utf8');
       } else {
         try {
           fs.unlinkSync(configPath);
         } catch (_err) {
-          // ignore
+          // ignora
         }
       }
     }
   })) passed++;
   else failed++;
 
-  // getCommandPattern completeness
+  // completude de getCommandPattern
   console.log('\ngetCommandPattern (completeness):');
 
   if (test('generates pattern for test command', () => {
@@ -800,7 +800,7 @@ function runTests() {
   })) passed++;
   else failed++;
 
-  // getRunCommand PM-specific format tests
+  // Testes de formato específico por PM de getRunCommand
   console.log('\ngetRunCommand (PM-specific formats):');
 
   if (test('pnpm custom script: pnpm (no run keyword)', () => {
@@ -891,7 +891,7 @@ function runTests() {
   })) passed++;
   else failed++;
 
-  // getExecCommand PM-specific format tests
+  // Testes de formato específico por PM de getExecCommand
   console.log('\ngetExecCommand (PM-specific formats):');
 
   if (test('pnpm exec: pnpm dlx <binary>', () => {
@@ -935,7 +935,7 @@ function runTests() {
     try {
       process.env.CLAUDE_PACKAGE_MANAGER = 'totally-fake-pm';
       const result = pm.getPackageManager();
-      // Should ignore invalid env var and fall through
+      // Deve ignorar a variável de ambiente inválida e cair adiante
       assert.notStrictEqual(result.name, 'totally-fake-pm', 'Should not use unknown PM');
     } finally {
       if (originalEnv !== undefined) {

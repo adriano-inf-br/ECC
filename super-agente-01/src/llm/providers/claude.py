@@ -1,4 +1,4 @@
-"""Claude provider adapter."""
+"""Adaptador de provedor Claude."""
 
 from __future__ import annotations
 

@@ -1,8 +1,8 @@
 'use strict';
 /**
- * Tests for scripts/lib/path-safety.js — the install-state containment guard
- * that fixes arbitrary file write/delete via attacker-controlled install-state
- * (GHSA-hfpv-w6mp-5g95).
+ * Testes para scripts/lib/path-safety.js — o guard de contenção de install-state
+ * que corrige escrita/exclusão arbitrária de arquivos via install-state controlado
+ * por atacante (GHSA-hfpv-w6mp-5g95).
  */
 
 const assert = require('assert');
@@ -33,7 +33,7 @@ const outside = fs.mkdtempSync(path.join(os.tmpdir(), 'path-safety-out-'));
 try {
   test('allows a path inside the trusted root', () => {
     const p = path.join(root, '.cursor', 'rules', 'x.md');
-    // Returns the canonicalized path (symlinks like /var -> /private/var resolved).
+    // Retorna o caminho canonicalizado (symlinks como /var -> /private/var resolvidos).
     assert.doesNotThrow(() => assertWithinTrustedRoot(p, root, 'repair'));
     assert.ok(assertWithinTrustedRoot(p, root, 'repair').endsWith(path.join('.cursor', 'rules', 'x.md')));
     assert.strictEqual(isWithinRoot(p, root), true);
@@ -62,7 +62,7 @@ try {
       console.log('    (symlink unsupported on this platform; skipping)');
       return;
     }
-    // root/link -> outside, so root/link/PWNED resolves outside the root.
+    // root/link -> outside, então root/link/PWNED resolve fora do root.
     const evil = path.join(linkDir, 'PWNED.txt');
     assert.throws(() => assertWithinTrustedRoot(evil, root, 'repair'), /outside the install root/);
   });

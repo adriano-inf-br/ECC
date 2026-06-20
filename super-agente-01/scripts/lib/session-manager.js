@@ -1,11 +1,11 @@
 /**
- * Session Manager Library for Claude Code
- * Provides core session CRUD operations for listing, loading, and managing sessions
+ * Biblioteca de Gerenciador de Sessão para o Claude Code
+ * Fornece operações CRUD centrais de sessão para listar, carregar e gerenciar sessões
  *
- * Sessions are stored as markdown files in ~/.claude/session-data/ with
- * legacy read compatibility for ~/.claude/sessions/:
- * - YYYY-MM-DD-session.tmp (old format)
- * - YYYY-MM-DD-<short-id>-session.tmp (new format)
+ * As sessões são armazenadas como arquivos markdown em ~/.claude/session-data/ com
+ * compatibilidade de leitura legada para ~/.claude/sessions/:
+ * - YYYY-MM-DD-session.tmp (formato antigo)
+ * - YYYY-MM-DD-<short-id>-session.tmp (formato novo)
  */
 
 const fs = require('fs');
@@ -18,18 +18,18 @@ const {
   log
 } = require('./utils');
 
-// Session filename pattern: YYYY-MM-DD-[session-id]-session.tmp
-// The session-id is optional (old format) and can include letters, digits,
-// underscores, and hyphens, but must not start with a hyphen.
-// Matches: "2026-02-01-session.tmp", "2026-02-01-a1b2c3d4-session.tmp",
-// "2026-02-01-frontend-worktree-1-session.tmp", and
+// Padrão de nome de arquivo de sessão: YYYY-MM-DD-[session-id]-session.tmp
+// O session-id é opcional (formato antigo) e pode incluir letras, dígitos,
+// underscores e hífens, mas não pode começar com um hífen.
+// Corresponde a: "2026-02-01-session.tmp", "2026-02-01-a1b2c3d4-session.tmp",
+// "2026-02-01-frontend-worktree-1-session.tmp", e
 // "2026-02-01-ChezMoi_2-session.tmp"
 const SESSION_FILENAME_REGEX = /^(\d{4}-\d{2}-\d{2})(?:-([a-zA-Z0-9_][a-zA-Z0-9_-]*))?-session\.tmp$/;
 
 /**
- * Parse session filename to extract metadata
- * @param {string} filename - Session filename (e.g., "2026-01-17-abc123-session.tmp" or "2026-01-17-session.tmp")
- * @returns {object|null} Parsed metadata or null if invalid
+ * Faz o parse do nome de arquivo de sessão para extrair metadados
+ * @param {string} filename - Nome de arquivo de sessão (ex.: "2026-01-17-abc123-session.tmp" ou "2026-01-17-session.tmp")
+ * @returns {object|null} Metadados extraídos ou null se inválido
  */
 function parseSessionFilename(filename) {
   if (!filename || typeof filename !== 'string') return null;
@@ -38,32 +38,32 @@ function parseSessionFilename(filename) {
 
   const dateStr = match[1];
 
-  // Validate date components are calendar-accurate (not just format)
+  // Valida que os componentes da data são corretos no calendário (não apenas o formato)
   const [year, month, day] = dateStr.split('-').map(Number);
   if (month < 1 || month > 12 || day < 1 || day > 31) return null;
-  // Reject impossible dates like Feb 31, Apr 31 — Date constructor rolls
-  // over invalid days (e.g., Feb 31 → Mar 3), so check month roundtrips
+  // Rejeita datas impossíveis como 31 de fev, 31 de abr — o construtor Date
+  // transborda dias inválidos (ex.: 31 de fev → 3 de mar), então verifica se o mês se mantém
   const d = new Date(year, month - 1, day);
   if (d.getMonth() !== month - 1 || d.getDate() !== day) return null;
 
-  // match[2] is undefined for old format (no ID)
+  // match[2] é undefined no formato antigo (sem ID)
   const shortId = match[2] || 'no-id';
 
   return {
     filename,
     shortId,
     date: dateStr,
-    // Use local-time constructor (consistent with validation on line 40)
-    // new Date(dateStr) interprets YYYY-MM-DD as UTC midnight which shows
-    // as the previous day in negative UTC offset timezones
+    // Usa o construtor de horário local (consistente com a validação na linha 40)
+    // new Date(dateStr) interpreta YYYY-MM-DD como meia-noite UTC, o que aparece
+    // como o dia anterior em fusos horários com deslocamento UTC negativo
     datetime: new Date(year, month - 1, day)
   };
 }
 
 /**
- * Get the full path to a session file
- * @param {string} filename - Session filename
- * @returns {string} Full path to session file
+ * Obtém o caminho completo para um arquivo de sessão
+ * @param {string} filename - Nome de arquivo de sessão
+ * @returns {string} Caminho completo para o arquivo de sessão
  */
 function getSessionPath(filename) {
   return path.join(getSessionsDir(), filename);
@@ -209,18 +209,18 @@ function getMatchingSessionCandidates(normalizedSessionId) {
 }
 
 /**
- * Read and parse session markdown content
- * @param {string} sessionPath - Full path to session file
- * @returns {string|null} Session content or null if not found
+ * Lê e faz o parse do conteúdo markdown da sessão
+ * @param {string} sessionPath - Caminho completo para o arquivo de sessão
+ * @returns {string|null} Conteúdo da sessão ou null se não encontrado
  */
 function getSessionContent(sessionPath) {
   return readFile(sessionPath);
 }
 
 /**
- * Parse session metadata from markdown content
- * @param {string} content - Session markdown content
- * @returns {object} Parsed metadata
+ * Faz o parse dos metadados da sessão a partir do conteúdo markdown
+ * @param {string} content - Conteúdo markdown da sessão
+ * @returns {object} Metadados extraídos
  */
 function parseSessionMetadata(content) {
   const metadata = {
@@ -239,31 +239,31 @@ function parseSessionMetadata(content) {
 
   if (!content) return metadata;
 
-  // Extract title from first heading
+  // Extrai o título do primeiro cabeçalho
   const titleMatch = content.match(/^#\s+(.+)$/m);
   if (titleMatch) {
     metadata.title = titleMatch[1].trim();
   }
 
-  // Extract date
+  // Extrai a data
   const dateMatch = content.match(/\*\*Date:\*\*\s*(\d{4}-\d{2}-\d{2})/);
   if (dateMatch) {
     metadata.date = dateMatch[1];
   }
 
-  // Extract started time
+  // Extrai o horário de início
   const startedMatch = content.match(/\*\*Started:\*\*\s*([\d:]+)/);
   if (startedMatch) {
     metadata.started = startedMatch[1];
   }
 
-  // Extract last updated
+  // Extrai a última atualização
   const updatedMatch = content.match(/\*\*Last Updated:\*\*\s*([\d:]+)/);
   if (updatedMatch) {
     metadata.lastUpdated = updatedMatch[1];
   }
 
-  // Extract control-plane metadata
+  // Extrai os metadados do plano de controle
   const projectMatch = content.match(/\*\*Project:\*\*\s*(.+)$/m);
   if (projectMatch) {
     metadata.project = projectMatch[1].trim();
@@ -279,7 +279,7 @@ function parseSessionMetadata(content) {
     metadata.worktree = worktreeMatch[1].trim();
   }
 
-  // Extract completed items
+  // Extrai os itens concluídos
   const completedSection = content.match(/### Completed\s*\n([\s\S]*?)(?=###|\n\n|$)/);
   if (completedSection) {
     const items = completedSection[1].match(/- \[x\]\s*(.+)/g);
@@ -288,7 +288,7 @@ function parseSessionMetadata(content) {
     }
   }
 
-  // Extract in-progress items
+  // Extrai os itens em andamento
   const progressSection = content.match(/### In Progress\s*\n([\s\S]*?)(?=###|\n\n|$)/);
   if (progressSection) {
     const items = progressSection[1].match(/- \[ \]\s*(.+)/g);
@@ -297,13 +297,13 @@ function parseSessionMetadata(content) {
     }
   }
 
-  // Extract notes
+  // Extrai as notas
   const notesSection = content.match(/### Notes for Next Session\s*\n([\s\S]*?)(?=###|\n\n|$)/);
   if (notesSection) {
     metadata.notes = notesSection[1].trim();
   }
 
-  // Extract context to load
+  // Extrai o contexto a carregar
   const contextSection = content.match(/### Context to Load\s*\n```\n([\s\S]*?)```/);
   if (contextSection) {
     metadata.context = contextSection[1].trim();
@@ -313,17 +313,17 @@ function parseSessionMetadata(content) {
 }
 
 /**
- * Calculate statistics for a session
- * @param {string} sessionPathOrContent - Full path to session file, OR
- *   the pre-read content string (to avoid redundant disk reads when
- *   the caller already has the content loaded).
- * @returns {object} Statistics object
+ * Calcula estatísticas para uma sessão
+ * @param {string} sessionPathOrContent - Caminho completo para o arquivo de sessão, OU
+ *   a string de conteúdo previamente lida (para evitar leituras de disco redundantes
+ *   quando o chamador já tem o conteúdo carregado).
+ * @returns {object} Objeto de estatísticas
  */
 function getSessionStats(sessionPathOrContent) {
-  // Accept pre-read content string to avoid redundant file reads.
-  // If the argument looks like a file path (no newlines, ends with .tmp,
-  // starts with / on Unix or drive letter on Windows), read from disk.
-  // Otherwise treat it as content.
+  // Aceita a string de conteúdo previamente lida para evitar leituras de arquivo redundantes.
+  // Se o argumento parecer um caminho de arquivo (sem quebras de linha, termina em .tmp,
+  // começa com / no Unix ou com letra de unidade no Windows), lê do disco.
+  // Caso contrário, trata-o como conteúdo.
   const looksLikePath = typeof sessionPathOrContent === 'string' &&
     !sessionPathOrContent.includes('\n') &&
     sessionPathOrContent.endsWith('.tmp') &&
@@ -345,13 +345,13 @@ function getSessionStats(sessionPathOrContent) {
 }
 
 /**
- * Get all sessions with optional filtering and pagination
- * @param {object} options - Options object
- * @param {number} options.limit - Maximum number of sessions to return
- * @param {number} options.offset - Number of sessions to skip
- * @param {string} options.date - Filter by date (YYYY-MM-DD format)
- * @param {string} options.search - Search in short ID
- * @returns {object} Object with sessions array and pagination info
+ * Obtém todas as sessões com filtragem e paginação opcionais
+ * @param {object} options - Objeto de opções
+ * @param {number} options.limit - Número máximo de sessões a retornar
+ * @param {number} options.offset - Número de sessões a pular
+ * @param {string} options.date - Filtrar por data (formato YYYY-MM-DD)
+ * @param {string} options.search - Buscar no short ID
+ * @returns {object} Objeto com o array de sessões e informações de paginação
  */
 function getAllSessions(options = {}) {
   const {
@@ -361,10 +361,10 @@ function getAllSessions(options = {}) {
     search = null
   } = options;
 
-  // Clamp offset and limit to safe non-negative integers.
-  // Without this, negative offset causes slice() to count from the end,
-  // and NaN values cause slice() to return empty or unexpected results.
-  // Note: cannot use `|| default` because 0 is falsy — use isNaN instead.
+  // Limita offset e limit a inteiros não negativos seguros.
+  // Sem isso, um offset negativo faz slice() contar a partir do fim,
+  // e valores NaN fazem slice() retornar resultados vazios ou inesperados.
+  // Nota: não é possível usar `|| default` porque 0 é falsy — use isNaN em vez disso.
   const offsetNum = Number(rawOffset);
   const offset = Number.isNaN(offsetNum) ? 0 : Math.max(0, Math.floor(offsetNum));
   const limitNum = Number(rawLimit);
@@ -376,7 +376,7 @@ function getAllSessions(options = {}) {
     return { sessions: [], total: 0, offset, limit, hasMore: false };
   }
 
-  // Apply pagination
+  // Aplica a paginação
   const paginatedSessions = sessions.slice(offset, offset + limit);
 
   return {
@@ -389,10 +389,10 @@ function getAllSessions(options = {}) {
 }
 
 /**
- * Get a single session by ID (short ID or full path)
- * @param {string} sessionId - Short ID or session filename
- * @param {boolean} includeContent - Include session content
- * @returns {object|null} Session object or null if not found
+ * Obtém uma única sessão por ID (short ID ou caminho completo)
+ * @param {string} sessionId - Short ID ou nome de arquivo de sessão
+ * @param {boolean} includeContent - Incluir o conteúdo da sessão
+ * @returns {object|null} Objeto de sessão ou null se não encontrado
  */
 function getSessionById(sessionId, includeContent = false) {
   if (typeof sessionId !== 'string') {
@@ -412,7 +412,7 @@ function getSessionById(sessionId, includeContent = false) {
     if (includeContent) {
       sessionRecord.content = getSessionContent(sessionRecord.sessionPath);
       sessionRecord.metadata = parseSessionMetadata(sessionRecord.content);
-      // Pass pre-read content to avoid a redundant disk read
+      // Passa o conteúdo previamente lido para evitar uma leitura de disco redundante
       sessionRecord.stats = getSessionStats(sessionRecord.content || '');
     }
 
@@ -423,9 +423,9 @@ function getSessionById(sessionId, includeContent = false) {
 }
 
 /**
- * Get session title from content
- * @param {string} sessionPath - Full path to session file
- * @returns {string} Title or default text
+ * Obtém o título da sessão a partir do conteúdo
+ * @param {string} sessionPath - Caminho completo para o arquivo de sessão
+ * @returns {string} Título ou texto padrão
  */
 function getSessionTitle(sessionPath) {
   const content = getSessionContent(sessionPath);

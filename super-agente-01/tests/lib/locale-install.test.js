@@ -1,5 +1,5 @@
 /**
- * Tests for --locale translated docs installs.
+ * Testes para instalações de docs traduzidos via --locale.
  */
 
 const assert = require('assert');

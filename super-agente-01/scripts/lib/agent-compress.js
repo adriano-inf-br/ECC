@@ -4,8 +4,8 @@ const fs = require('fs');
 const path = require('path');
 
 /**
- * Parse YAML frontmatter from a markdown string.
- * Returns { frontmatter: {}, body: string }.
+ * Faz o parsing do frontmatter YAML de uma string markdown.
+ * Retorna { frontmatter: {}, body: string }.
  */
 function parseFrontmatter(content) {
   const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n([\s\S]*))?$/);
@@ -21,16 +21,16 @@ function parseFrontmatter(content) {
     const key = line.slice(0, colonIdx).trim();
     let value = line.slice(colonIdx + 1).trim();
 
-    // Handle JSON arrays (e.g. tools: ["Read", "Grep"])
+    // Trata arrays JSON (ex.: tools: ["Read", "Grep"])
     if (value.startsWith('[') && value.endsWith(']')) {
       try {
         value = JSON.parse(value);
       } catch {
-        // keep as string
+        // mantém como string
       }
     }
 
-    // Strip surrounding quotes
+    // Remove as aspas ao redor
     if (typeof value === 'string' && value.startsWith('"') && value.endsWith('"')) {
       value = value.slice(1, -1);
     }
@@ -42,8 +42,8 @@ function parseFrontmatter(content) {
 }
 
 /**
- * Extract the first meaningful paragraph from agent body as a summary.
- * Skips headings, list items, code blocks, and table rows.
+ * Extrai o primeiro parágrafo significativo do corpo do agent como um resumo.
+ * Ignora títulos, itens de lista, blocos de código e linhas de tabela.
  */
 function extractSummary(body, maxSentences = 1) {
   const lines = body.split('\n');
@@ -54,7 +54,7 @@ function extractSummary(body, maxSentences = 1) {
   for (const line of lines) {
     const trimmed = line.trim();
 
-    // Track fenced code blocks
+    // Acompanha blocos de código cercados (fenced)
     if (trimmed.startsWith('```')) {
       inCodeBlock = !inCodeBlock;
       continue;
@@ -69,7 +69,7 @@ function extractSummary(body, maxSentences = 1) {
       continue;
     }
 
-    // Skip headings, list items (bold, plain, asterisk), numbered lists, table rows
+    // Ignora títulos, itens de lista (negrito, simples, asterisco), listas numeradas, linhas de tabela
     if (
       trimmed.startsWith('#') ||
       trimmed.startsWith('- ') ||
@@ -98,7 +98,7 @@ function extractSummary(body, maxSentences = 1) {
 }
 
 /**
- * Load and parse a single agent file.
+ * Carrega e faz o parsing de um único arquivo de agent.
  */
 function loadAgent(filePath) {
   const content = fs.readFileSync(filePath, 'utf8');
@@ -117,7 +117,7 @@ function loadAgent(filePath) {
 }
 
 /**
- * Load all agents from a directory.
+ * Carrega todos os agents de um diretório.
  */
 function loadAgents(agentsDir) {
   if (!fs.existsSync(agentsDir)) return [];
@@ -129,7 +129,7 @@ function loadAgents(agentsDir) {
 }
 
 /**
- * Compress an agent to catalog entry (metadata only).
+ * Comprime um agent para uma entrada de catálogo (apenas metadados).
  */
 function compressToCatalog(agent) {
   return {
@@ -141,7 +141,7 @@ function compressToCatalog(agent) {
 }
 
 /**
- * Compress an agent to summary entry (metadata + first paragraph).
+ * Comprime um agent para uma entrada de resumo (metadados + primeiro parágrafo).
  */
 function compressToSummary(agent) {
   return {
@@ -153,14 +153,14 @@ function compressToSummary(agent) {
 const allowedModes = ['catalog', 'summary', 'full'];
 
 /**
- * Build a compressed catalog from a directory of agents.
+ * Constrói um catálogo comprimido a partir de um diretório de agents.
  *
- * Modes:
- *  - 'catalog': name, description, tools, model only (~2-3k tokens for 27 agents)
- *  - 'summary': catalog + first paragraph summary (~4-5k tokens)
- *  - 'full':    no compression, full body included
+ * Modos:
+ *  - 'catalog': apenas name, description, tools, model (~2-3k tokens para 27 agents)
+ *  - 'summary': catálogo + resumo do primeiro parágrafo (~4-5k tokens)
+ *  - 'full':    sem compressão, corpo completo incluído
  *
- * Returns { agents: [], stats: { totalAgents, originalBytes, compressedBytes, compressedTokenEstimate, mode } }
+ * Retorna { agents: [], stats: { totalAgents, originalBytes, compressedBytes, compressedTokenEstimate, mode } }
  */
 function buildAgentCatalog(agentsDir, options = {}) {
   const mode = options.mode || 'catalog';
@@ -195,7 +195,7 @@ function buildAgentCatalog(agentsDir, options = {}) {
   }
 
   const compressedJson = JSON.stringify(compressed);
-  // Rough token estimate: ~4 chars per token for English text
+  // Estimativa aproximada de tokens: ~4 caracteres por token para texto em inglês
   const compressedTokenEstimate = Math.ceil(compressedJson.length / 4);
 
   return {
@@ -211,18 +211,18 @@ function buildAgentCatalog(agentsDir, options = {}) {
 }
 
 /**
- * Lazy-load a single agent's full content by name.
- * Returns null if not found.
+ * Carrega de forma preguiçosa (lazy-load) o conteúdo completo de um único agent pelo nome.
+ * Retorna null se não for encontrado.
  */
 function lazyLoadAgent(agentsDir, agentName) {
-  // Validate agentName: only allow alphanumeric, hyphen, underscore
+  // Valida agentName: permite apenas alfanuméricos, hífen e sublinhado
   if (!/^[\w-]+$/.test(agentName)) {
     return null;
   }
 
   const filePath = path.resolve(agentsDir, `${agentName}.md`);
 
-  // Verify the resolved path is still within agentsDir
+  // Verifica se o caminho resolvido ainda está dentro de agentsDir
   const resolvedAgentsDir = path.resolve(agentsDir);
   if (!filePath.startsWith(resolvedAgentsDir + path.sep)) {
     return null;

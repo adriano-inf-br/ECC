@@ -4,8 +4,9 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 
-// Claude Code stores MCP servers under "mcpServers" in ~/.claude.json (user
-// scope) and in project-local .mcp.json files (project scope). Each entry:
+// O Claude Code armazena os servidores MCP em "mcpServers" no ~/.claude.json
+// (escopo de usuário) e em arquivos .mcp.json locais ao projeto (escopo de
+// projeto). Cada entry:
 //   { type: "stdio"|"http"|"sse", command, args[], env{}, url }
 function mapClaudeServer(name, raw, source) {
   if (!raw || typeof raw !== 'object') {

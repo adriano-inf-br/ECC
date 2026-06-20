@@ -35,14 +35,14 @@ function staleCoordinationLabels(issue, nextLabels, policy) {
   );
 }
 
-// applyClaim performs a read (getIssue) → check (assertIssueClaimable) → write
-// (editIssue) sequence that is NOT atomic. Two concurrent callers can both read
-// an unclaimed issue, pass the check, and both succeed — resulting in a
-// double-claim. A code-review finding suggested fixing this via
-// context.store.acquireLock(repo, issueNumber), but that API does not exist in
-// store.js; adding a call to it would throw at runtime. Left as-is until a
-// locking primitive is available — callers should prevent races via external
-// serialization (e.g. a serialized job queue or GitHub branch-protection rule).
+// applyClaim executa uma sequência de leitura (getIssue) → verificação (assertIssueClaimable) → escrita
+// (editIssue) que NÃO é atômica. Dois chamadores concorrentes podem ambos ler
+// uma issue não reivindicada, passar na verificação e ambos terem sucesso — resultando em uma
+// reivindicação dupla. Uma constatação de revisão de código sugeriu corrigir isso via
+// context.store.acquireLock(repo, issueNumber), mas essa API não existe em
+// store.js; adicionar uma chamada a ela lançaria erro em tempo de execução. Mantido como está até que uma
+// primitiva de bloqueio esteja disponível — os chamadores devem evitar condições de corrida via
+// serialização externa (ex.: uma fila de jobs serializada ou uma regra de branch-protection do GitHub).
 function applyClaim(repo, issueNumber, options = {}, context = {}) {
   assertValidRepo(repo);
   assertValidIssueNumber(issueNumber);

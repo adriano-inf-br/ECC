@@ -1,4 +1,4 @@
-"""Prompt builder for normalizing prompts across providers."""
+"""Construtor de prompts para normalizar prompts entre provedores."""
 
 from __future__ import annotations
 

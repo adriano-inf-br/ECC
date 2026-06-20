@@ -81,7 +81,7 @@ test('normalizeServerEntry strips secret values, keeps only env key names', () =
 });
 
 test('redactArgs strips secrets in args (value, --flag value, --flag=value forms)', () => {
-  // Real-world leak: browserbase passes the Anthropic key as a CLI arg.
+  // Vazamento do mundo real: o browserbase passa a chave da Anthropic como argumento de CLI.
   const out = redactArgs([
     '-y', '@browserbasehq/mcp-server-browserbase',
     '--modelName', 'claude-3-7-sonnet-latest',
@@ -186,8 +186,8 @@ test('opencode reader splits command array and reads environment', () => {
 
 test('collectMcpInventory merges harnesses, detects fragmentation + drift, redacts secrets', () => {
   const home = tmpHome();
-  // claude + opencode agree on github (consistent); codex github uses a
-  // different command (drift). github appears in all 3 => fragmentation x3.
+  // claude + opencode concordam sobre o github (consistente); o github do codex usa um
+  // comando diferente (drift). o github aparece nos 3 => fragmentação x3.
   fs.writeFileSync(path.join(home, '.claude.json'), JSON.stringify({
     mcpServers: { github: { ...GITHUB_STDIO, env: { GITHUB_PERSONAL_ACCESS_TOKEN: 'ghp_secret_claude' } } }
   }), 'utf8');
@@ -237,7 +237,7 @@ test('CLI parseArgs + human report render fragmentation', () => {
 });
 
 
-// --- branch/error coverage: readers degrade gracefully, CLI main(), collect skips ---
+// --- cobertura de branch/erro: readers degradam graciosamente, CLI main(), collect ignora ---
 
 function captureStdout(fn) {
   const original = console.log;

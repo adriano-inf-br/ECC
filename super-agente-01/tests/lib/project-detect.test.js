@@ -21,7 +21,7 @@ const {
   getElixirDeps
 } = require('../../scripts/lib/project-detect');
 
-// Test helper
+// Helper de teste
 function test(name, fn) {
   try {
     fn();
@@ -34,19 +34,19 @@ function test(name, fn) {
   }
 }
 
-// Create a temporary directory for testing
+// Cria um diretório temporário para testes
 function createTempDir() {
   return fs.mkdtempSync(path.join(os.tmpdir(), 'ecc-test-'));
 }
 
-// Clean up temp directory
+// Limpa o diretório temporário
 function cleanupDir(dir) {
   try {
     fs.rmSync(dir, { recursive: true, force: true });
   } catch { /* ignore */ }
 }
 
-// Write a file in the temp directory
+// Escreve um arquivo no diretório temporário
 function writeTestFile(dir, filePath, content = '') {
   const fullPath = path.join(dir, filePath);
   const dirName = path.dirname(fullPath);
@@ -60,7 +60,7 @@ function runTests() {
   let passed = 0;
   let failed = 0;
 
-  // Rule definitions tests
+  // Testes de definições de regras
   console.log('Rule Definitions:');
 
   if (test('LANGUAGE_RULES is non-empty array', () => {
@@ -90,7 +90,7 @@ function runTests() {
     }
   })) passed++; else failed++;
 
-  // Empty directory detection
+  // Detecção de diretório vazio
   console.log('\nEmpty Directory:');
 
   if (test('empty directory returns unknown primary', () => {
@@ -106,7 +106,7 @@ function runTests() {
     }
   })) passed++; else failed++;
 
-  // Python detection
+  // Detecção de Python
   console.log('\nPython Detection:');
 
   if (test('detects python from requirements.txt', () => {
@@ -165,7 +165,7 @@ function runTests() {
     }
   })) passed++; else failed++;
 
-  // TypeScript/JavaScript detection
+  // Detecção de TypeScript/JavaScript
   console.log('\nTypeScript/JavaScript Detection:');
 
   if (test('detects typescript from tsconfig.json', () => {
@@ -175,7 +175,7 @@ function runTests() {
       writeTestFile(dir, 'package.json', '{"dependencies":{}}');
       const result = detectProjectType(dir);
       assert.ok(result.languages.includes('typescript'));
-      // Should NOT also include javascript when TS is detected
+      // NÃO deve incluir javascript também quando TS é detectado
       assert.ok(!result.languages.includes('javascript'));
     } finally {
       cleanupDir(dir);
@@ -282,7 +282,7 @@ function runTests() {
     }
   })) passed++; else failed++;
 
-  // Go detection
+  // Detecção de Go
   console.log('\nGo Detection:');
 
   if (test('detects golang from go.mod', () => {

@@ -1,5 +1,5 @@
 /**
- * Direct tests for scripts/lib/install-executor.js.
+ * Testes diretos para scripts/lib/install-executor.js.
  */
 
 'use strict';

@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 /**
- * ECC Capabilities Dashboard — agents, skills, commands, MCPs, rules & hooks
- * With multi-language, routing, search suggestions, recently viewed, fine UI
+ * Painel de Recursos do ECC — agents, skills, comandos, MCPs, regras e hooks
+ * Com suporte multi-idioma, roteamento, sugestões de busca, vistos recentemente e UI refinada
  *
- * Usage: node scripts/dashboard-web.js [port]
- * Open http://localhost:3456
+ * Uso: node scripts/dashboard-web.js [port]
+ * Abra http://localhost:3456
  *
- * Contribution: https://github.com/affaan-m/ECC
+ * Contribuição: https://github.com/affaan-m/ECC
  */
 
 const fs = require('fs');
@@ -102,7 +102,7 @@ const LANG = {
 const LANG_KEYS = Object.keys(LANG);
 
 function renderHTML(data) {
-  // data passed from Node.js - use for static template values
+  // dados passados pelo Node.js - usar para valores estáticos do template
   const ag = JSON.stringify(data.agents).replace(/</g, '\\u003c');
   const sk = JSON.stringify(data.skills).replace(/</g, '\\u003c');
   const co = JSON.stringify(data.commands).replace(/</g, '\\u003c');
@@ -421,7 +421,7 @@ function copy(text, btn) {
   if (btn) { btn.classList.add('done'); setTimeout(() => btn.classList.remove('done'), 1000); }
 }
 
-// Recently viewed
+// Vistos recentemente
 function recents() { try { return JSON.parse(localStorage.getItem('ecc-recent') || '[]'); } catch { return []; } }
 function addRecent(type, name) {
   if (!name || !/^[\\w\\-./@]+$/.test(name)) return;
@@ -440,7 +440,7 @@ function aType(name) {
   return 'other';
 }
 
-// Language
+// Idioma
 function setLang(l) {
   lang = l; localStorage.setItem('ecc-lang', l);
   document.querySelectorAll('.lang-drop .li').forEach(el => el.classList.toggle('active', el.dataset.lang === l));

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Guard agent-facing curl examples from exposing credentials in argv.
+ * Protege os exemplos de curl voltados a agents contra a exposição de credenciais no argv.
  */
 
 const assert = require('assert');

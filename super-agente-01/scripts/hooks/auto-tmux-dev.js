@@ -1,34 +1,34 @@
 #!/usr/bin/env node
 /**
- * Auto-Tmux Dev Hook - Start dev servers in tmux/cmd automatically
+ * Auto-Tmux Dev Hook - Inicia servidores de desenvolvimento em tmux/cmd automaticamente
  *
- * macOS/Linux: Runs dev server in a named tmux session (non-blocking).
- *              Falls back to original command if tmux is not installed.
- * Windows: Opens dev server in a new cmd window (non-blocking).
+ * macOS/Linux: Executa o servidor de desenvolvimento em uma sessão tmux nomeada (não bloqueante).
+ *              Volta ao comando original se o tmux não estiver instalado.
+ * Windows: Abre o servidor de desenvolvimento em uma nova janela cmd (não bloqueante).
  *
- * Runs before Bash tool use. If command is a dev server (npm run dev, pnpm dev, yarn dev, bun run dev),
- * transforms it to run in a detached session.
+ * Executa antes do uso da ferramenta Bash. Se o comando for um servidor de desenvolvimento (npm run dev, pnpm dev, yarn dev, bun run dev),
+ * transforma-o para executar em uma sessão desanexada.
  *
- * Benefits:
- * - Dev server runs detached (doesn't block Claude Code)
- * - Session persists (can run `tmux capture-pane -t <session> -p` to see logs on Unix)
- * - Session name matches project directory (allows multiple projects simultaneously)
+ * Benefícios:
+ * - O servidor de desenvolvimento roda desanexado (não bloqueia o Claude Code)
+ * - A sessão persiste (pode-se executar `tmux capture-pane -t <session> -p` para ver os logs no Unix)
+ * - O nome da sessão corresponde ao diretório do projeto (permite múltiplos projetos simultaneamente)
  *
- * Session management (Unix):
- * - Checks tmux availability before transforming
- * - Kills any existing session with the same name (clean restart)
- * - Creates new detached session
- * - Reports session name and how to view logs
+ * Gerenciamento de sessão (Unix):
+ * - Verifica a disponibilidade do tmux antes de transformar
+ * - Encerra qualquer sessão existente com o mesmo nome (reinício limpo)
+ * - Cria nova sessão desanexada
+ * - Reporta o nome da sessão e como visualizar os logs
  *
- * Session management (Windows):
- * - Opens new cmd window with descriptive title
- * - Allows multiple dev servers to run simultaneously
+ * Gerenciamento de sessão (Windows):
+ * - Abre nova janela cmd com título descritivo
+ * - Permite que múltiplos servidores de desenvolvimento rodem simultaneamente
  */
 
 const path = require('path');
 const { spawnSync } = require('child_process');
 
-const MAX_STDIN = 1024 * 1024; // 1MB limit
+const MAX_STDIN = 1024 * 1024; // limite de 1MB
 let data = '';
 
 function run(rawInput) {
@@ -36,20 +36,20 @@ function run(rawInput) {
     const input = typeof rawInput === 'string' ? JSON.parse(rawInput) : rawInput;
     const cmd = input.tool_input?.command || '';
 
-    // Detect dev server commands: npm run dev, pnpm dev, yarn dev, bun run dev
-    // Use word boundary (\b) to avoid matching partial commands
+    // Detecta comandos de servidor de desenvolvimento: npm run dev, pnpm dev, yarn dev, bun run dev
+    // Usa limite de palavra (\b) para evitar correspondência com comandos parciais
     const devServerRegex = /(npm run dev\b|pnpm( run)? dev\b|yarn dev\b|bun run dev\b)/;
 
     if (devServerRegex.test(cmd)) {
-      // Get session name from current directory basename, sanitize for shell safety
-      // e.g., /home/user/Portfolio → "Portfolio", /home/user/my-app-v2 → "my-app-v2"
+      // Obtém o nome da sessão a partir do basename do diretório atual, sanitiza para segurança no shell
+      // ex.: /home/user/Portfolio → "Portfolio", /home/user/my-app-v2 → "my-app-v2"
       const rawName = path.basename(process.cwd());
-      // Replace non-alphanumeric characters (except - and _) with underscore to prevent shell injection
+      // Substitui caracteres não alfanuméricos (exceto - e _) por sublinhado para evitar injeção de shell
       const sessionName = rawName.replace(/[^a-zA-Z0-9_-]/g, '_') || 'dev';
 
       if (process.platform === 'win32') {
-        // Windows: open in a new cmd window (non-blocking)
-        // Escape double quotes in cmd for cmd /k syntax
+        // Windows: abre em uma nova janela cmd (não bloqueante)
+        // Escapa aspas duplas no cmd para a sintaxe cmd /k
         const escapedCmd = cmd.replace(/"/g, '""');
         return JSON.stringify({
           ...input,
@@ -59,16 +59,16 @@ function run(rawInput) {
           },
         });
       } else {
-        // Unix (macOS/Linux): Check tmux is available before transforming
+        // Unix (macOS/Linux): Verifica se o tmux está disponível antes de transformar
         const tmuxCheck = spawnSync('which', ['tmux'], { encoding: 'utf8' });
         if (tmuxCheck.status === 0) {
-          // Escape single quotes for shell safety: 'text' -> 'text'\''text'
+          // Escapa aspas simples para segurança no shell: 'text' -> 'text'\''text'
           const escapedCmd = cmd.replace(/'/g, "'\\''");
 
-          // Build the transformed command:
-          // 1. Kill existing session (silent if doesn't exist)
-          // 2. Create new detached session with the dev command
-          // 3. Echo confirmation message with instructions for viewing logs
+          // Monta o comando transformado:
+          // 1. Encerra a sessão existente (silencioso se não existir)
+          // 2. Cria nova sessão desanexada com o comando de desenvolvimento
+          // 3. Exibe mensagem de confirmação com instruções para visualizar os logs
           const transformedCmd = `SESSION="${sessionName}"; tmux kill-session -t "$SESSION" 2>/dev/null || true; tmux new-session -d -s "$SESSION" '${escapedCmd}' && echo "[Hook] Dev server started in tmux session '${sessionName}'. View logs: tmux capture-pane -t ${sessionName} -p -S -100"`;
           return JSON.stringify({
             ...input,
@@ -78,13 +78,13 @@ function run(rawInput) {
             },
           });
         }
-        // else: tmux not found, pass through original command unchanged
+        // senão: tmux não encontrado, repassa o comando original sem alteração
       }
     }
 
     return JSON.stringify(input);
   } catch {
-    // Invalid input — pass through original data unchanged
+    // Entrada inválida — repassa os dados originais sem alteração
     return typeof rawInput === 'string' ? rawInput : JSON.stringify(rawInput);
   }
 }

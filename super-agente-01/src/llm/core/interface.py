@@ -1,4 +1,4 @@
-"""LLM Provider interface definition."""
+"""Definição da interface de provedor de LLM."""
 
 from __future__ import annotations
 

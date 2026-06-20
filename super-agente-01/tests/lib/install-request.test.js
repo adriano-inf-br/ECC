@@ -1,5 +1,5 @@
 /**
- * Tests for scripts/lib/install/request.js
+ * Testes para scripts/lib/install/request.js
  */
 
 const assert = require('assert');

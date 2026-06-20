@@ -1,4 +1,4 @@
-"""Tools module for tool/function calling abstraction."""
+"""Módulo de tools para abstração de chamada de tools/funções."""
 
 from llm.tools.executor import ReActAgent, ToolExecutor, ToolRegistry
 

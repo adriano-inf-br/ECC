@@ -1,15 +1,15 @@
 /**
- * Package Manager Detection and Selection
- * Automatically detects the preferred package manager or lets user choose
+ * Detecção e Seleção de Gerenciador de Pacotes
+ * Detecta automaticamente o gerenciador de pacotes preferido ou permite que o usuário escolha
  *
- * Supports: npm, pnpm, yarn, bun
+ * Suporta: npm, pnpm, yarn, bun
  */
 
 const fs = require('fs');
 const path = require('path');
 const { commandExists, getClaudeDir, readFile, writeFile } = require('./utils');
 
-// Package manager definitions
+// Definições de gerenciadores de pacotes
 const PACKAGE_MANAGERS = {
   npm: {
     name: 'npm',
@@ -53,16 +53,16 @@ const PACKAGE_MANAGERS = {
   }
 };
 
-// Priority order for detection
+// Ordem de prioridade para detecção
 const DETECTION_PRIORITY = ['pnpm', 'bun', 'yarn', 'npm'];
 
-// Config file path
+// Caminho do arquivo de configuração
 function getConfigPath() {
   return path.join(getClaudeDir(), 'package-manager.json');
 }
 
 /**
- * Load saved package manager configuration
+ * Carrega a configuração de gerenciador de pacotes salva
  */
 function loadConfig() {
   const configPath = getConfigPath();
@@ -79,7 +79,7 @@ function loadConfig() {
 }
 
 /**
- * Save package manager configuration
+ * Salva a configuração de gerenciador de pacotes
  */
 function saveConfig(config) {
   const configPath = getConfigPath();
@@ -87,7 +87,7 @@ function saveConfig(config) {
 }
 
 /**
- * Detect package manager from lock file in project directory
+ * Detecta o gerenciador de pacotes a partir do lock file no diretório do projeto
  */
 function detectFromLockFile(projectDir = process.cwd()) {
   for (const pmName of DETECTION_PRIORITY) {
@@ -102,7 +102,7 @@ function detectFromLockFile(projectDir = process.cwd()) {
 }
 
 /**
- * Detect package manager from package.json packageManager field
+ * Detecta o gerenciador de pacotes a partir do campo packageManager do package.json
  */
 function detectFromPackageJson(projectDir = process.cwd()) {
   const packageJsonPath = path.join(projectDir, 'package.json');
@@ -112,26 +112,26 @@ function detectFromPackageJson(projectDir = process.cwd()) {
     try {
       const pkg = JSON.parse(content);
       if (pkg.packageManager) {
-        // Format: "pnpm@8.6.0" or just "pnpm"
+        // Formato: "pnpm@8.6.0" ou apenas "pnpm"
         const pmName = pkg.packageManager.split('@')[0];
         if (PACKAGE_MANAGERS[pmName]) {
           return pmName;
         }
       }
     } catch {
-      // Invalid package.json
+      // package.json inválido
     }
   }
   return null;
 }
 
 /**
- * Get available package managers (installed on system)
+ * Obtém os gerenciadores de pacotes disponíveis (instalados no sistema)
  *
- * WARNING: This spawns child processes (where.exe on Windows, which on Unix)
- * for each package manager. Do NOT call this during session startup hooks —
- * it can exceed Bun's spawn limit on Windows and freeze the plugin.
- * Use detectFromLockFile() or detectFromPackageJson() for hot paths.
+ * AVISO: Isto gera processos filhos (where.exe no Windows, which no Unix)
+ * para cada gerenciador de pacotes. NÃO chame isto durante hooks de início de
+ * sessão — pode exceder o limite de spawn do Bun no Windows e congelar o plugin.
+ * Use detectFromLockFile() ou detectFromPackageJson() em caminhos críticos.
  */
 function getAvailablePackageManagers() {
   const available = [];

@@ -1,0 +1,564 @@
+---
+name: dart-flutter-patterns
+description: Padrões prontos para produção de Dart e Flutter cobrindo null safety, estado imutável, composição assíncrona, arquitetura de widgets, frameworks populares de gerenciamento de estado (BLoC, Riverpod, Provider), navegação com GoRouter, networking com Dio, geração de código com Freezed e clean architecture.
+metadata:
+  origin: ECC
+---
+
+# Dart/Flutter Patterns
+
+## Quando Usar
+
+Use esta skill quando:
+- Iniciar um novo recurso Flutter e precisar de padrões idiomáticos para gerenciamento de estado, navegação ou acesso a dados
+- Revisar ou escrever código Dart e precisar de orientação sobre null safety, tipos selados (sealed) ou composição assíncrona
+- Configurar um novo projeto Flutter e escolher entre BLoC, Riverpod ou Provider
+- Implementar clientes HTTP seguros, integração com WebView ou armazenamento local
+- Escrever testes para widgets do Flutter, Cubits ou providers do Riverpod
+- Conectar o GoRouter com guardas de autenticação
+
+## Como Funciona
+
+Esta skill fornece padrões de código Dart/Flutter prontos para copiar e colar, organizados por preocupação:
+1. **Null safety** — evite `!`, prefira `?.`/`??`/pattern matching
+2. **Estado imutável** — sealed classes, `freezed`, `copyWith`
+3. **Composição assíncrona** — `Future.wait` concorrente, `BuildContext` seguro após `await`
+4. **Arquitetura de widgets** — extraia para classes (não métodos), propagação de `const`, rebuilds com escopo
+5. **Gerenciamento de estado** — eventos do BLoC/Cubit, notifiers e providers derivados do Riverpod
+6. **Navegação** — GoRouter com guardas de autenticação reativas via `refreshListenable`
+7. **Networking** — Dio com interceptors, refresh de token com guarda de retry única
+8. **Tratamento de erros** — captura global, `ErrorWidget.builder`, integração com crashlytics
+9. **Testes** — unitário (BLoC test), widget (overrides de ProviderScope), fakes em vez de mocks
+
+## Exemplos
+
+```dart
+// Estado selado — previne estados impossíveis
+sealed class AsyncState<T> {}
+final class Loading<T> extends AsyncState<T> {}
+final class Success<T> extends AsyncState<T> { final T data; const Success(this.data); }
+final class Failure<T> extends AsyncState<T> { final Object error; const Failure(this.error); }
+
+// GoRouter com redirecionamento de auth reativo
+final router = GoRouter(
+  refreshListenable: GoRouterRefreshStream(authCubit.stream),
+  redirect: (context, state) {
+    final authed = context.read<AuthCubit>().state is AuthAuthenticated;
+    if (!authed && !state.matchedLocation.startsWith('/login')) return '/login';
+    return null;
+  },
+  routes: [...],
+);
+
+// Provider derivado do Riverpod com firstWhereOrNull seguro
+@riverpod
+double cartTotal(Ref ref) {
+  final cart = ref.watch(cartNotifierProvider);
+  final products = ref.watch(productsProvider).valueOrNull ?? [];
+  return cart.fold(0.0, (total, item) {
+    final product = products.firstWhereOrNull((p) => p.id == item.productId);
+    return total + (product?.price ?? 0) * item.quantity;
+  });
+}
+```
+
+---
+
+Padrões práticos e prontos para produção para aplicações Dart e Flutter. Agnósticos de biblioteca onde possível, com cobertura explícita dos pacotes mais comuns do ecossistema.
+
+---
+
+## 1. Fundamentos de Null Safety
+
+### Prefira Patterns ao Operador Bang
+
+```dart
+// RUIM — quebra em tempo de execução se for null
+final name = user!.name;
+
+// BOM — forneça um fallback
+final name = user?.name ?? 'Unknown';
+
+// BOM — pattern matching do Dart 3 (preferível para casos complexos)
+final display = switch (user) {
+  User(:final name, :final email) => '$name <$email>',
+  null => 'Guest',
+};
+
+// BOM — guard com retorno antecipado
+String getUserName(User? user) {
+  if (user == null) return 'Unknown';
+  return user.name; // promovido a não-null após a verificação
+}
+```
+
+### Evite o Uso Excessivo de `late`
+
+```dart
+// RUIM — adia o erro de null para o tempo de execução
+late String userId;
+
+// BOM — nullable com inicialização explícita
+String? userId;
+
+// OK — use late apenas quando a inicialização é garantida antes do primeiro acesso
+// (ex.: em initState() antes de qualquer interação com widget)
+late final AnimationController _controller;
+
+@override
+void initState() {
+  super.initState();
+  _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 300));
+}
+```
+
+---
+
+## 2. Estado Imutável
+
+### Sealed Classes para Hierarquias de Estado
+
+```dart
+sealed class UserState {}
+
+final class UserInitial extends UserState {}
+
+final class UserLoading extends UserState {}
+
+final class UserLoaded extends UserState {
+  const UserLoaded(this.user);
+  final User user;
+}
+
+final class UserError extends UserState {
+  const UserError(this.message);
+  final String message;
+}
+
+// Switch exaustivo — o compilador exige todos os ramos
+Widget buildFrom(UserState state) => switch (state) {
+  UserInitial() => const SizedBox.shrink(),
+  UserLoading() => const CircularProgressIndicator(),
+  UserLoaded(:final user) => UserCard(user: user),
+  UserError(:final message) => ErrorText(message),
+};
+```
+
+### Freezed para Imutabilidade sem Boilerplate
+
+```dart
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'user.freezed.dart';
+part 'user.g.dart';
+
+@freezed
+class User with _$User {
+  const factory User({
+    required String id,
+    required String name,
+    required String email,
+    @Default(false) bool isAdmin,
+  }) = _User;
+
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+}
+
+// Uso
+final user = User(id: '1', name: 'Alice', email: 'alice@example.com');
+final updated = user.copyWith(name: 'Alice Smith'); // atualização imutável
+final json = user.toJson();
+final fromJson = User.fromJson(json);
+```
+
+---
+
+## 3. Composição Assíncrona
+
+### Concorrência Estruturada com Future.wait
+
+```dart
+Future<DashboardData> loadDashboard(UserRepository users, OrderRepository orders) async {
+  // Rode concorrentemente — não use await sequencialmente
+  final (userList, orderList) = await (
+    users.getAll(),
+    orders.getRecent(),
+  ).wait; // desestruturação de record do Dart 3 + extensão Future.wait
+
+  return DashboardData(users: userList, orders: orderList);
+}
+```
+
+### Padrões de Stream
+
+```dart
+// O repository expõe streams reativos para dados ao vivo
+Stream<List<Item>> watchCartItems() => _db
+    .watchTable('cart_items')
+    .map((rows) => rows.map(Item.fromRow).toList());
+
+// Na camada de widget — declarativo, sem subscription manual
+StreamBuilder<List<Item>>(
+  stream: cartRepository.watchCartItems(),
+  builder: (context, snapshot) => switch (snapshot) {
+    AsyncSnapshot(connectionState: ConnectionState.waiting) =>
+        const CircularProgressIndicator(),
+    AsyncSnapshot(:final error?) => ErrorWidget(error.toString()),
+    AsyncSnapshot(:final data?) => CartList(items: data),
+    _ => const SizedBox.shrink(),
+  },
+)
+```
+
+### BuildContext Após Await
+
+```dart
+// CRÍTICO — sempre verifique mounted após qualquer await em StatefulWidget
+Future<void> _handleSubmit() async {
+  setState(() => _isLoading = true);
+  try {
+    await authService.login(_email, _password);
+    if (!mounted) return; // ← guard antes de usar o context
+    context.go('/home');
+  } on AuthException catch (e) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message)));
+  } finally {
+    if (mounted) setState(() => _isLoading = false);
+  }
+}
+```
+
+---
+
+## 4. Arquitetura de Widgets
+
+### Extraia para Classes, Não Métodos
+
+```dart
+// RUIM — método privado retornando widget, impede otimização
+Widget _buildHeader() {
+  return Container(
+    padding: const EdgeInsets.all(16),
+    child: Text(title, style: Theme.of(context).textTheme.headlineMedium),
+  );
+}
+
+// BOM — classe de widget separada, habilita const, reutilização de element
+class _PageHeader extends StatelessWidget {
+  const _PageHeader(this.title);
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      child: Text(title, style: Theme.of(context).textTheme.headlineMedium),
+    );
+  }
+}
+```
+
+### Propagação de const
+
+```dart
+// RUIM — novas instâncias a cada rebuild
+child: Padding(
+  padding: EdgeInsets.all(16.0),       // não é const
+  child: Icon(Icons.home, size: 24.0), // não é const
+)
+
+// BOM — const interrompe a propagação do rebuild
+child: const Padding(
+  padding: EdgeInsets.all(16.0),
+  child: Icon(Icons.home, size: 24.0),
+)
+```
+
+### Rebuilds com Escopo
+
+```dart
+// RUIM — a página inteira é reconstruída a cada mudança do contador
+class CounterPage extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final count = ref.watch(counterProvider); // reconstrói tudo
+    return Scaffold(
+      body: Column(children: [
+        const ExpensiveHeader(), // reconstruído desnecessariamente
+        Text('$count'),
+        const ExpensiveFooter(), // reconstruído desnecessariamente
+      ]),
+    );
+  }
+}
+
+// BOM — isole a parte que é reconstruída
+class CounterPage extends StatelessWidget {
+  const CounterPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: Column(children: [
+        ExpensiveHeader(),        // nunca reconstruído (const)
+        _CounterDisplay(),        // só este reconstrói
+        ExpensiveFooter(),        // nunca reconstruído (const)
+      ]),
+    );
+  }
+}
+
+class _CounterDisplay extends ConsumerWidget {
+  const _CounterDisplay();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final count = ref.watch(counterProvider);
+    return Text('$count');
+  }
+}
+```
+
+---
+
+## 5. Gerenciamento de Estado: BLoC/Cubit
+
+```dart
+// Cubit — estado síncrono ou assíncrono simples
+class AuthCubit extends Cubit<AuthState> {
+  AuthCubit(this._authService) : super(const AuthState.initial());
+  final AuthService _authService;
+
+  Future<void> login(String email, String password) async {
+    emit(const AuthState.loading());
+    try {
+      final user = await _authService.login(email, password);
+      emit(AuthState.authenticated(user));
+    } on AuthException catch (e) {
+      emit(AuthState.error(e.message));
+    }
+  }
+
+  void logout() {
+    _authService.logout();
+    emit(const AuthState.initial());
+  }
+}
+
+// No widget
+BlocBuilder<AuthCubit, AuthState>(
+  builder: (context, state) => switch (state) {
+    AuthInitial() => const LoginForm(),
+    AuthLoading() => const CircularProgressIndicator(),
+    AuthAuthenticated(:final user) => HomePage(user: user),
+    AuthError(:final message) => ErrorView(message: message),
+  },
+)
+```
+
+---
+
+## 6. Gerenciamento de Estado: Riverpod
+
+```dart
+// Provider assíncrono com auto-dispose
+@riverpod
+Future<List<Product>> products(Ref ref) async {
+  final repo = ref.watch(productRepositoryProvider);
+  return repo.getAll();
+}
+
+// Notifier com mutações complexas
+@riverpod
+class CartNotifier extends _$CartNotifier {
+  @override
+  List<CartItem> build() => [];
+
+  void add(Product product) {
+    final existing = state.where((i) => i.productId == product.id).firstOrNull;
+    if (existing != null) {
+      state = [
+        for (final item in state)
+          if (item.productId == product.id) item.copyWith(quantity: item.quantity + 1)
+          else item,
+      ];
+    } else {
+      state = [...state, CartItem(productId: product.id, quantity: 1)];
+    }
+  }
+
+  void remove(String productId) =>
+      state = state.where((i) => i.productId != productId).toList();
+
+  void clear() => state = [];
+}
+
+// Provider derivado (padrão selector)
+@riverpod
+int cartCount(Ref ref) => ref.watch(cartNotifierProvider).length;
+
+@riverpod
+double cartTotal(Ref ref) {
+  final cart = ref.watch(cartNotifierProvider);
+  final products = ref.watch(productsProvider).valueOrNull ?? [];
+  return cart.fold(0.0, (total, item) {
+    // firstWhereOrNull (do pacote collection) evita StateError quando o produto está ausente
+    final product = products.firstWhereOrNull((p) => p.id == item.productId);
+    return total + (product?.price ?? 0) * item.quantity;
+  });
+}
+```
+
+---
+
+## 7. Navigation with GoRouter
+
+```dart
+final router = GoRouter(
+  initialLocation: '/',
+  // refreshListenable re-evaluates redirect whenever auth state changes
+  refreshListenable: GoRouterRefreshStream(authCubit.stream),
+  redirect: (context, state) {
+    final isLoggedIn = context.read<AuthCubit>().state is AuthAuthenticated;
+    final isGoingToLogin = state.matchedLocation == '/login';
+    if (!isLoggedIn && !isGoingToLogin) return '/login';
+    if (isLoggedIn && isGoingToLogin) return '/';
+    return null;
+  },
+  routes: [
+    GoRoute(path: '/login', builder: (_, __) => const LoginPage()),
+    ShellRoute(
+      builder: (context, state, child) => AppShell(child: child),
+      routes: [
+        GoRoute(path: '/', builder: (_, __) => const HomePage()),
+        GoRoute(
+          path: '/products/:id',
+          builder: (context, state) =>
+              ProductDetailPage(id: state.pathParameters['id']!),
+        ),
+      ],
+    ),
+  ],
+);
+```
+
+---
+
+## 8. HTTP with Dio
+
+```dart
+final dio = Dio(BaseOptions(
+  baseUrl: const String.fromEnvironment('API_URL'),
+  connectTimeout: const Duration(seconds: 10),
+  receiveTimeout: const Duration(seconds: 30),
+  headers: {'Content-Type': 'application/json'},
+));
+
+// Add auth interceptor
+dio.interceptors.add(InterceptorsWrapper(
+  onRequest: (options, handler) async {
+    final token = await secureStorage.read(key: 'auth_token');
+    if (token != null) options.headers['Authorization'] = 'Bearer $token';
+    handler.next(options);
+  },
+  onError: (error, handler) async {
+    // Guard against infinite retry loops: only attempt refresh once per request
+    final isRetry = error.requestOptions.extra['_isRetry'] == true;
+    if (!isRetry && error.response?.statusCode == 401) {
+      final refreshed = await attemptTokenRefresh();
+      if (refreshed) {
+        error.requestOptions.extra['_isRetry'] = true;
+        return handler.resolve(await dio.fetch(error.requestOptions));
+      }
+    }
+    handler.next(error);
+  },
+));
+
+// Repository using Dio
+class UserApiDataSource {
+  const UserApiDataSource(this._dio);
+  final Dio _dio;
+
+  Future<User> getById(String id) async {
+    final response = await _dio.get<Map<String, dynamic>>('/users/$id');
+    return User.fromJson(response.data!);
+  }
+}
+```
+
+---
+
+## 9. Error Handling Architecture
+
+```dart
+// Global error capture — set up in main()
+void main() {
+  FlutterError.onError = (details) {
+    FlutterError.presentError(details);
+    crashlytics.recordFlutterFatalError(details);
+  };
+
+  PlatformDispatcher.instance.onError = (error, stack) {
+    crashlytics.recordError(error, stack, fatal: true);
+    return true;
+  };
+
+  runApp(const App());
+}
+
+// Custom ErrorWidget for production
+class App extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    ErrorWidget.builder = (details) => ProductionErrorWidget(details);
+    return MaterialApp.router(routerConfig: router);
+  }
+}
+```
+
+---
+
+## 10. Testing Quick Reference
+
+```dart
+// Unit test — use case
+test('GetUserUseCase returns null for missing user', () async {
+  final repo = FakeUserRepository();
+  final useCase = GetUserUseCase(repo);
+  expect(await useCase('missing-id'), isNull);
+});
+
+// BLoC test
+blocTest<AuthCubit, AuthState>(
+  'emits loading then error on failed login',
+  build: () => AuthCubit(FakeAuthService(throwsOn: 'login')),
+  act: (cubit) => cubit.login('user@test.com', 'wrong'),
+  expect: () => [const AuthState.loading(), isA<AuthError>()],
+);
+
+// Widget test
+testWidgets('CartBadge shows item count', (tester) async {
+  await tester.pumpWidget(
+    ProviderScope(
+      overrides: [cartNotifierProvider.overrideWith(() => FakeCartNotifier(count: 3))],
+      child: const MaterialApp(home: CartBadge()),
+    ),
+  );
+  expect(find.text('3'), findsOneWidget);
+});
+```
+
+---
+
+## References
+
+- [Effective Dart: Design](https://dart.dev/effective-dart/design)
+- [Flutter Performance Best Practices](https://docs.flutter.dev/perf/best-practices)
+- [Riverpod Documentation](https://riverpod.dev/)
+- [BLoC Library](https://bloclibrary.dev/)
+- [GoRouter](https://pub.dev/packages/go_router)
+- [Freezed](https://pub.dev/packages/freezed)
+- Skill: `flutter-dart-code-review` — comprehensive review checklist
+- Rules: `rules/dart/` — coding style, patterns, security, testing, hooks
